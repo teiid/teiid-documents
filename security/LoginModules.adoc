@@ -1,0 +1,191 @@
+
+== LoginModules
+
+LoginModules are an essential part of the JAAS security framework and provide Teiid customizable user authentication and the ability to reuse existing LoginModules defined for JBossAS. Refer to the JBoss Application Server security documentation for information about configuring security in JBoss Application Server, http://docs.jboss.org/jbossas/admindevel326/html/ch8.chapter.html[http://docs.jboss.org/jbossas/admindevel326/html/ch8.chapter.html].
+
+Teiid can be configured with multiple named application policies that group together relevant LoginModules. These security-domain names can be referenced on a per vdb.
+
+The security-domain attribute under the authentication element in `teiid` subsystem in the `<jboss-install>/standalone/configuration/standalone-teiid.xml` file is used set the security-domain name. For example, in default configuration under `teiid` subsystem you will find
+
+[source,xml]
+----
+<authentication security-domain="teiid-security"/>
+  
+<transport name="jdbc" protocol="teiid" socket-binding="teiid-jdbc">
+   <ssl mode="login"/>
+</transport>
+----
+
+If no domain can authenticate the user, the login attempt will fail. Details of the failed attempt including invalid users, which domains were consulted, etc. will be in the server log with appropriate levels of severity.
+
+=== security-domain in VDB
+
+Starting from Teiid 8.7 version, a VDB can be configured to use a separate security-domain than security-domain defined on the transport that it is being accessed on. This configuration is defined in the vdb.xml file, see https://docs.jboss.org/author/display/TEIID/VDB+Definition[VDB Definition] for more information. The security-domain defined on transport configuration will be used as default security-domain, if a security-domain is not configured for a specific VDB.
+
+[source,xml]
+----
+<vdb name="vdb" version="1">
+    <property name="security-domain" value="custom-security" />
+    ...
+</vdb>
+----
+
+TIP: In existing installations an appropriate security domain may already be configured for use by administrative clients (typically for `admin-console`). If the admin connections (CLI and adminshell) are not secured, it is recommended that you secure that interface by executing `add-user.sh` script in the `bin/scripts` directory.
+
+== Built-in LoginModules
+
+JBossAS provides several LoginModules for common authentication needs, such as authenticating from a link:LoginModules.adoc[Text Based LoginModule] or a link:LoginModules.adoc[LDAP Based LoginModule].
+
+You can install multiple login modules as part of single security domain configuration and configure them to be part of the login process. For example, for `teiid-security` domain, you can configure a file based and also LDAP based login modules, and have your user authenticated with either or both login modules. If you want to write your own custom login module, refer to the
+https://docs.jboss.org/author/display/TEIID/Developer%27s+Guide[Developer’s Guide] for instructions.
+
+For all the available login modules refer to http://community.jboss.org/docs/DOC-11287[http://community.jboss.org/docs/DOC-11287].
+
+== Realm Based LoginModule
+
+The _RealmDirectLoginModule_ utilizes a separately configured security realm, by default ApplicationRealm, to perform authentication. The below XML fragment under `security' subsystem shows a realm based login module.
+
+[source,xml]
+.standalone-teiid.xml
+----
+ <subsystem xmlns="urn:jboss:domain:security:1.1">
+    <security-domains>
+        <security-domain name="teiid-security" cache-type="default">
+            <authentication>
+                <login-module code="RealmDirect" flag="required">
+                    <module-option name="password-stacking" value="useFirstPass"/>
+                </login-module>
+            </authentication>
+        </security-domain>
+    </security-domains>
+</subsystem>
+----
+
+== Text Based LoginModule
+
+Refer to http://community.jboss.org/docs/DOC-12510[http://community.jboss.org/docs/DOC-12510]. The _UsersRolesLoginModule_ utilizes simple text files to authenticate users and to define their groups. The below XML fragment under `security' subsystem shows a Text based login module.
+
+[source,xml]
+.standalone-teiid.xml
+----
+ <subsystem xmlns="urn:jboss:domain:security:1.1">
+    <security-domains>
+        <security-domain name="teiid-security" cache-type="default">
+            <authentication>
+                <login-module code="UsersRoles" flag="required">
+                    <module-option name="usersProperties" value="$(jboss.server.config.dir)/teiid-security-users.properties"/>
+                    <module-option name="rolesProperties" value="$(jboss.server.config.dir)/teiid-security-roles.properties"/>
+                </login-module>
+            </authentication>
+        </security-domain>
+    </security-domains>
+</subsystem>
+----
+
+WARNING: The _UsersRolesLoginModule_ is not recommended for production use and is strongly recommended that you replace this login module.
+
+User names and passwords are stored in the _<jboss-as>/standalone/configuration/teiid-security-users.properties_ file.
+
+Example user.properties file
+
+----
+# A users.properties file for use with the UsersRolesLoginModule
+# username=password
+
+fred=password
+george=password
+...
+----
+
+JAAS role assignments are stored in the _<jboss-as>/standalone/configuration/teiid-security-roles.properties_ file.
+
+Example user.properties file
+
+----
+# A roles.properties file for use with the UsersRolesLoginModule
+# username=role1,role2,...
+
+data_role_1=fred,sally
+data_role_2=george
+----
+
+User and role names are entirely up to the needs of the given deployment. For example each application team can set their own security constraints for their VDBs, by mapping their VDB data roles to application specific JAAS roles, e.g. app_role_1=user1,user2,user3.
+
+NOTE: Teiid data roles names are independent of JAAS roles. VDB creators can choose whatever name they want for their data roles, which are then mapped at deployment time to JAAS roles.
+
+== LDAP Based LoginModule
+
+See http://community.jboss.org/docs/DOC-11253[LDAP LoginModule configuration] for the AS community guide. The following are streamlined installation instructions.
+
+Configure LDAP authentication by editing _standalone-teiid.xml_ under `security'` subsystem. Once the security-domain is defined, then edit the `security-domain` attribute for Teiid’s `transport` for which you want use this LDAP login.
+
+[source,xml]
+.standalone-teiid.xml
+----
+<subsystem xmlns="urn:jboss:domain:security:1.1">
+    <security-domains>
+        <security-domain name="ldap_security_domain">
+            <authentication>
+                <login-module code="LdapExtended" flag="required">
+                    <module-option name="java.naming.factory.initial" value="com.sun.jndi.ldap.LdapCtxFactory" />
+                    <module-option name="java.naming.provider.url" value="ldap://mydomain.org:389" />
+                    <module-option name="java.naming.security.authentication" value="simple" />
+                    <module-option name="bindDN" value="myuser" />
+                    <module-option name="bindCredential" value="mypasswd" />
+                    <module-option name="baseCtxDN" value="ou=People,dc=XXXX,dc=ca" />
+                    <module-option name="baseFilter" value="(cn={0})" />
+                    <module-option name="rolesCtxDN" value="ou=Webapp-Roles,ou=Groups,dc=XXXX,dc=ca" />
+                    <module-option name="roleFilter" value="(member={1})" />
+                    <module-option name="uidAttributeID" value="member" />
+                    <module-option name="roleAttributeID" value="cn" />
+                    <module-option name="roleAttributeIsDN" value="true" />
+                    <module-option name="roleNameAttributeID" value="cn" />
+                    <module-option name="roleRecursion" value="-1" />
+                    <module-option name="searchScope" value="ONELEVEL_SCOPE" />
+                    <module-option name="allowEmptyPasswords" value="false" />
+                    <module-option name="throwValidateError" value="true" />
+                </login-module>
+            </authentication>
+        </security-domain>
+    </security-domains>
+</subsystem>
+----
+
+NOTE: If using SSL to the LDAP server, ensure that the Corporate CA Certificate is added to the JRE trust store.
+
+== Database LoginModule
+
+Login module that uses Database-based authentication. Refer to http://community.jboss.org/docs/DOC-9511[http://community.jboss.org/docs/DOC-9511].
+
+== Cert LoginModule
+
+Login module that uses X509 certificate based authentication. See http://community.jboss.org/docs/DOC-9160[http://community.jboss.org/docs/DOC-9160].
+
+== Role Mapping LoginModule
+
+If the LoginModule you are using exposes role names that you wish to map to more application specific names, then you can use the RoleMappingLoginModule. This uses a properties file to inject additional role names, and optionally replace the existing role, on authenticated subjects.
+
+[source,xml]
+.standalone-teiid.xml
+----
+<subsystem xmlns="urn:jboss:domain:security:1.1">
+    <security-domains>
+        <security-domain name="ldap_security_domain">
+            <authentication>
+                ...
+                <login-module code="org.jboss.security.auth.spi.RoleMappingLoginModule" flag="optional">
+                    <module-option name="rolesProperties" value="${jboss-install}/standalone/configuration/roles.properties" />
+                    <module-option name="replaceRole" value="false" />
+                </login-module>
+                ...
+            </authentication>
+        </security-domain>
+    </security-domains>
+</subsystem>
+----
+
+== Custom LoginModules
+
+If your authentication needs go beyond the provided LoginModules, please refer to the JAAS development guide at http://java.sun.com/j2se/1.5.0/docs/guide/security/jaas/JAASLMDevGuide.html[http://java.sun.com/j2se/1.5.0/docs/guide/security/jaas/JAASLMDevGuide.html]. There are also numerous guides available.
+
+If you are extending one of the built-in LoginModules, refer to http://community.jboss.org/docs/DOC-9466[http://community.jboss.org/docs/DOC-9466].

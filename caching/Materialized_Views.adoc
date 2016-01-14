@@ -1,0 +1,32 @@
+
+= Materialized Views
+
+Teiid supports materialized views.  Materialized views are just like other views, but their transformations are pre-computed and stored just like a regular table. When queries are issued against the views through the Teiid Server, the cached results are used.  This saves the cost of accessing all the underlying data sources and re-computing the view transformations each time a query is executed.
+
+Materialized views are appropriate when the underlying data does not change rapidly, or when it is acceptable to retrieve data that is "stale" within some period of time, or when it is preferred for end-user queries to access staged data rather than placing additional query load on operational sources.
+
+== Support Summary
+
+* Caching of relational table or view records (pre-computing all transformations)
+* Model-based definition of virtual groups to cache (requires Teiid Designer)
+* User ability to override use of materialized view cache for specific queries through link:Hints_and_Options.adoc[Hints and Options]
+
+== Materialized View Definition
+
+Materialized views are defined in Teiid Designer by setting the materialized property on a table or view in a virtual (view) relational model. Setting this property’s value to true (the default is false) allows the data generated for this virtual table to be treated as a materialized view.
+
+IMPORTANT: It is important to ensure that all key/index information is present as these will be used by the materialization process to enhance the performance of the materialized table.
+
+The target materialized table may also be set in the properties. If the value is left blank, the default, then internal materialization will be used. Otherwise for external materialization, the value should reference the fully qualified name of a table (or possibly view) with the same columns as the materialized view. For most basic scenarios the simplicity of internal materialization makes it the more appealing option.
+
+Reasons to use external materialization
+
+* The cached data needs to be fully durable. Internal materialization does not survive a cluster restart.
+* Full control is needed of loading and refresh. Internal materialization does offer several system supported methods for refreshing, but does not give full access to the materialized table.
+* Control is needed over the materialized table definition. Internal materialization does support link:Materialized_Views.adoc[Secondary Indexes], but they cannot be directly controlled. Constraints or other database features cannot be added to internal materialization tables.
+* The data volume is large. Internal materialization (and temp tables in general) have memory overhead for each page. A rough guideline is that there can be 100 million rows in all materialized tables across all VDBs for every gigabyte of heap.
+
+IMPORTANT: Materialized view tables default to the VDB scope. By default if a materialized view definition directly or transitively contains a non-deterministic function call, such as random or hasRole, the
+resulting table will contain only the initially evaluated values. In most instances you should consider nesting a materialized view without the deterministic results that is joined with relevant non-deterministic
+values in a parent view. You may also scope the materialized view to be session specific, but that may limit the reuse of the results in many situations.
+

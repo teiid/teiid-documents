@@ -1,0 +1,115 @@
+= Teiid Server Transport Security 
+
+There are two types of remote transports, each with it’s own encryption configuration:
+
+* "teiid" - Defaults to only encrypt login traffic, in which none of the other configuration properties are used.
+* "pg" - Defaults to no SSL
+
+NOTE: The pg transport for ODBC access defaults to clear text username password authentication.
+
+SSL configuration is part of the _transport_ configuration in the Teiid subsystem.
+
+== Encryption Modes
+
+Teiid supports a couple different encryption modes based on the _mode_ attribute on _ssl_ element.
+
+* *logIn* - This is the default setting for the transports.
+** JDBC (non-data by default) messages between client and server are encrypted using 128 bit AES with a http://en.wikipedia.org/wiki/Diffie-Hellman_key_exchange[Diffie-Hellman] key that is negotiated per connection. When possible a 2048 bit key exchange will be used otherwise 1024 bit will be used. Oracle/Sun 1.7 JREs are known not to support key lengths over 1024 bits. The https://docs.jboss.org/author/display/TEIID/Driver+Connection[connection property] encryptRequest can be used to encrypt requests and results using the same 128 AES scheme.
+** For the pg transport authentication is expected to be secure - which currently is only GSS logins.
+
+* *enabled* - Mode to enable SSL. Clients are required to connect using SSL.
+
+* *disabled* - turns off any kind of encryption. This is the default for the pg transport.
+
+== SSL Authentication Modes
+
+* *anonymous* – No certificates are required, but all communications are still encrypted using the TLS_DH_anon_WITH_AES_128_CBC_SHA SSL suite. In most secure intranet environments, anonymous is suitable to just bulk encrypt traffic without the need to setup SSL certificates. No certificates are exchanged, settings are not needed for the keystore and truststore properties. Clients must have `org.teiid.ssl.allowAnon` set to true (the default) to connect to an anonymous server.
+
+* *1-way* – Only authenticates the server to the client. Requires a private key keystore to be created for the server and a truststore at the client that authenticates that certificate.
+
+* *2-way* – Mutual client and server authentication. The server and client applications each have a keystore for their private keys and each has a truststore that authenticates the other. The server will present a certificate, which is obtained from the keystore related properties. The client should have a truststore configured to accept the server certificate. The client is also expected to present a certificate, which is obtained from its keystore. The client certificate should be accepted by the trust store configured by the truststore related properties.
+
+For non-anonymous SSL, the suite is negotiated - see _enabled-cipher-suites_ below below.
+
+Depending upon the SSL mode, follow the guidelines of your organization around creating/obtaining private keys. If you have no organizational requirements, then follow this guide to create
+link:Generating_Self_Signed_Certificates.adoc[self-signed certificates] with their respective keystores and truststores. The following keystore and truststore combinations are required for different SSL modes. The names of the files can be chosen by the user. The following files are shown for example purposes only.
+
+_1-way_
+
+1.  server.keystore - has server’s private key
+2.  server.truststore - has server’s public key
+
+_2-way_
+
+1.  server.keystore - has server’s private key
+2.  server.truststore - has server’s public key
+3.  client.keystore - client’s private key
+4.  client.truststore - has client’s public key
+
+Full Configuration Options
+
+[source,xml]
+.Example XML Configuration
+----
+<ssl mode="enabled" authentication-mode="1-way" ssl-protocol="TSLv1" keymanagement-algorithm="algo"
+         enabled-cipher-suites="SSL_RSA_WITH_RC4_128_MD5,SSL_RSA_WITH_RC4_128_SHA">
+            <keystore name="cert.keystore" password="passwd" type="JKS" key-alias="alias" key-password="passwd1"/>
+            <truststore name="cert.truststore" password="passwd"/>
+</ssl>
+----
+
+Properties
+
+* mode - diabled|login|enabled _disabled_ = no transport or message level security will be used. _login_ = only the login traffic will be encrypted at a message level using 128 bit AES with an ephemeral DH key exchange. Only applies to the `teiid` transport and no other config values are needed in this mode. _enabled_ = traffic will be secured with SSL using the other configuration properties. `teiid` transport clients *must* connect using SSL with the mms protocol. ODBC "pg" transport clients may optionally use SSL.
+
+* ssl-protocol- Type of SSL protocol to be used. Optional - by default TLSv1.
+
+CAUTION: SSLv3 is not recommended due to the POODLE security vulnerability.
+
+* keystore/type - Keystore type created by the keytool. Optional - by default "JKS" is used.
+
+* authentication-mode - anonymous|1-way|2-way, Type of SSL Authentication Mode.
+
+* keymanagement-algorithm - Type of key algorithm used. Optional - by default is based upon the VM, e.g. "SunX509"
+
+* keystore/name - The file name of the keystore, which contains the private key of the Server. The file name can be relative resource path available to the Teiid deployer classloader or an absolute file system path. A typical installation would place the keystore file in the conf directory of the profile where Teiid is deployed with a file name relative to the conf path. Typically required if 1-way or 2-way authentication is used.
+
+* keystore/password - password for the keystore. Required if the keystore has a password.
+
+* keystore/key-alias - Alias name for the private key to use. Optional - only needed if there are multiple private keys in the keystore and you need to choose which one to use.
+
+* keystore/key-password - Alias name for the private key to use. Optional - only needed if the key password is different than the keystore password.
+
+* truststore/name - This is the truststore containing the public certificate(s) for client keys. Depending upon how you created the keystore and truststores, this may be same file as defined under "keystore/name" property. Required if "authenticationMode" is "2-way".
+
+* truststore/password - password for the truststore. Required if the truststore has a password.
+
+* enabled-cipher-suites - A comma separated list of cipher suites allowed for encryption between server and client. The values must be valid supported cipher suites otherwise SSL connections will fail. Optional - defaults to all supported cipher suites for the vm.
+
+Alternatively, you can use the CLI to add or modify the transport configuration
+
+----
+/subsystem=teiid/transport=jdbc:write-attribute(name=ssl-mode,value=enabled)
+/subsystem=teiid/transport=jdbc:write-attribute(name=ssl-authentication-mode,value=1-way)
+/subsystem=teiid/transport=jdbc:write-attribute(name=ssl-ssl-protocol,value=TLSv1)
+/subsystem=teiid/transport=jdbc:write-attribute(name=ssl-keymanagement-algorithm,value=SunX509)
+/subsystem=teiid/transport=jdbc:write-attribute(name=ssl-enabled-cipher-suites,value="SSL_RSA_WITH_RC4_128_MD5,SSL_RSA_WITH_RC4_128_SHA")
+/subsystem=teiid/transport=jdbc:write-attribute(name=keystore-name,value=ssl-example.keystore)
+/subsystem=teiid/transport=jdbc:write-attribute(name=keystore-password,value=redhat)
+/subsystem=teiid/transport=jdbc:write-attribute(name=keystore-type,value=JKS)
+/subsystem=teiid/transport=jdbc:write-attribute(name=keystore-key-alias,value=teiid)
+/subsystem=teiid/transport=jdbc:write-attribute(name=keystore-key-password,value=redhat)
+/subsystem=teiid/transport=jdbc:write-attribute(name=truststore-name,value=ssl-example.truststore)
+/subsystem=teiid/transport=jdbc:write-attribute(name=truststore-password,value=redhat)
+----
+
+NOTE: If you do not like to leave clear text passwords in the configuration file, then you can use JBoss AS vault mechanism for storing the keystore and truststore passwords. Use the directions defined here https://community.jboss.org/docs/DOC-17248[https://community.jboss.org/docs/DOC-17248]
+
+== Encryption Strength
+
+Both anonymous SSL and login only (JDBC specific) encryption are configured to use 128 bit AES encryption by default. By default 1-way and 2-way SSL allow for cipher suite negotiation based upon the default cipher suites supported by the respective Java platforms of the client and server. Users can restrict the cipher suites used by specifying the _enabled-cipher-suites_ property above in the SSL configuration.
+
+== Examples
+
+* https://developer.jboss.org/docs/DOC-55352[1-way ssl authentication mode]
+

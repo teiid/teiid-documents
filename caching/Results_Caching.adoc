@@ -1,0 +1,133 @@
+
+= Results Caching
+
+Teiid provides the capability to cache the results of specific user queries and virtual procedure calls.  This caching technique can yield significant performance gains if users of the system submit the same queries or execute the same procedures often.
+
+== Support Summary
+
+* Caching of user query results including XML document model results.
+* Caching of virtual procedure results.
+* Scoping of results is automatically determined to be VDB/user (replicated) or session level. The default logic will be influenced by every function evaluated, consider the DETERMINISM property on all source models/tables/procedures, and the Scope from the ExecutionContext or CacheDirective.
+* Configurable number of cache entries and time to live.
+* Administrative clearing.
+
+== User Interaction
+
+=== User Query Cache
+
+User query result set caching will cache result sets based on an exact match of the incoming SQL string and PreparedStatement parameter values if present. Caching only applies to SELECT, set query, and stored procedure execution statements; it does not apply to SELECT INTO statements, or INSERT, UPDATE, or DELETE statements.
+
+End users or client applications explicitly state whether to use result set caching. This can be done by setting the JDBC ResultSetCacheMode execution property to true (default false)
+
+[source,java]
+----
+Properties info = new Properties();
+…
+info.setProperty("ResultSetCacheMode", "true");
+Connection conn = DriverManager.getConnection(url, info);
+----
+
+or by adding a link:Hints_and_Options.adoc[Cache Hint] to the query. Note that if either of these mechanisms are used, Teiid must also have result set caching enabled (the default is enabled).
+
+The most basic form of the cache hint, `/*+ cache */`, is sufficient to inform the engine that the results of the non-update command should be cached.
+
+[source,java]
+.*PreparedStatement ResultSet Caching*
+----
+PreparedStatement ps = connection.prepareStatement("/*+ cache */ select col from t where col2 = ?");
+ps.setInt(1, 5);
+ps.execute();
+----
+
+The results will be cached with the default ttl and use the SQL string and the parameter value as part of the cache key.
+
+The pref_mem and ttl options of the cache hint may also be used for result set cache queries. If a cache hint is not specified, then the default time to live of the result set caching configuration will be used.
+
+[source,sql]
+.*Advanced ResultSet Caching*
+----
+/*+ cache(pref_mem ttl:60000) */ select col from t
+----
+
+In this example the memory preference has been enabled and the time to live is set to 60000 milliseconds or 1 minute. The ttl for an entry is actually treated as it’s maximum age and the entry may be purged sooner if the maximum number of cache entries has been reached.
+
+NOTE: Each query is re-checked for authorization using the current user’s permissions, regardless of whether or not the results have been cached.
+
+=== Procedure Result Cache
+
+Similar to materialized views, cached virtual procedure results are used automatically when a matching set of parameter values is detected for the same procedure execution. Usage of the cached results may be
+bypassed when used with the link:Hints_and_Options.adoc[OPTION NOCACHE] clause. Usage is covered in link:Hints_and_Options.adoc[Hints and Options].
+
+== Cached Virtual Procedure Definition
+
+To indicate that a virtual procedure should be cached, it’s definition should include a link:Hints_and_Options.adoc[Cache Hint].
+
+[source,sql]
+.*Procedure Caching*
+----
+/*+ cache */
+BEGIN
+    ...
+END
+----
+
+Results will be cached with the default ttl.
+
+The `pref_mem` and `ttl` options of the cache hint may also be used for procedure caching.
+
+Procedure results cache keys include the input parameter values. To prevent one procedure from filling the cache, at most 256 cache keys may be created per procedure per VDB.
+
+A cached procedure will always produce all of its results prior to allowing those results to be consumed and placed in the cache. This differs from normal procedure execution which in some situations allows the returned results to be consumed in a streaming manner.
+
+== Cache Configuration
+
+By default result set caching is enabled with 1024 maximum entries with a maximum entry age of 2 hours. There are actually 2 caches configured with these settings. One cache holds results that are specific to sessions and is local to each Teiid instance. The other cache holds VDB scoped results and can be replicated. See the teiid subsystem configuration for tuning. The user may also override the default maximum
+entry age via the link:Hints_and_Options.adoc[Cache Hint].
+
+Result set caching is not limited to memory. There is no explicit limit on the size of the results that can be cached. Cached results are primarily stored in the _BufferManager_ and are subject to it’s configuration - including the restriction of maximum buffer space.
+
+While the result data is not held in memory, cache keys - including parameter values - may be held in memory. Thus the cache should not be given an unlimited maximum size.
+
+Result set cache entries can be invalidated by data change events. The _max-staleness_ setting determines how long an entry will remain in the case after one of the tables that contributed to the results has been changed. See the https://docs.jboss.org/author/display/TEIID/Developer%27s+Guide[Developer’s Guide] for further customization.
+
+== Extension Metadata
+
+You can use the extension metadata property
+
+[source,xml]
+----
+{http://www.teiid.org/ext/relational/2012}data-ttl
+----
+
+as a model property or on a source table to indicate a default TTL. A negative value means no TTL, 0 means do not cache, and a positive number indicates the time to live in milliseconds. If no TTL is specified on the table, then the schema will be checked. The TTL for the cache entry will be taken as the least positive value among all TTLs. Thus setting this value as a model property can quickly disable any caching against a particular source.
+
+For example, setting the property in the vdb.xml:
+
+[source,xml]
+----
+<vdb name="vdbname" version="1">
+    <model name="Customers">
+        <property name="teiid_rel:data-ttl" value="0"/>
+        ...
+----
+
+== Cache Administration
+
+The result set cache can be cleared through the AdminAPI using the `clearCache` method. The expected cache key is "QUERY_SERVICE_RESULT_SET_CACHE".
+
+[source,java]
+.*Clearing the ResultSet Cache in AdminShell*
+----
+connectAsAdmin()
+clearCache("QUERY_SERVICE_RESULT_SET_CACHE")
+----
+
+See the https://docs.jboss.org/author/display/TEIID/Administrator%27s+Guide[Administrator’s Guide] for more on using the AdminAPI and AdminShell.
+
+== Limitations
+
+* XML, BLOB, CLOB, and OBJECT type cannot be used as part of the cache key for prepared statement of procedure cache keys.
+* The exact SQL string, including the cache hint if present, must match the cached entry for the results to be reused. This allows cache usage to skip parsing and resolving for faster responses.
+* Result set caching is transactional by default using the NON_XA transaction mode. If you want full XA support, then change the configuration to use NON_DURABLE_XA.
+* Clearing the results cache clears all cache entries for all VDBs.
+

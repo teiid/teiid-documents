@@ -1,0 +1,331 @@
+
+= External Materialization
+
+External materialized views cache their data in an external database system. External materialized views give the administrator full control over the loading and refresh strategies.
+
+Starting from Teiid version 8.5, Teiid gives the option to configure metadata on the view to control the simple load and refresh policies. Administrators of Teiid system are free to manage their external materialization table through other means based on their needs.
+
+== User Managed Materialization Management
+
+*Typical Usage Steps*
+
+* Create materialized views and corresponding physical materialized target tables in Designer. This can be done through setting the materialized and target table manually, or by selecting the desired views, right clicking, then selecting Modeling->"Create Materialized Views"
+* Generate the DDL for your physical model materialization target tables. This can be done by selecting the model, right clicking, then choosing Export->"Metadata Modeling"->"Data Definition Language (DDL) File". This script can be used to create the desired schema for your materialization target on whatever source you choose.
+* Determine a load and refresh strategy. With the schema created the most simplistic approach is to just load the data. The load can even be done through Teiid with
+
+[source,sql]
+----
+insert into target_table select * from matview option nocache matview
+----
+
+That however may be too simplistic because your index creation may be more performant if deferred until after the table has been created. Also full snapshot refreshes are best done to a staging table then swapping it for the existing physical table to ensure that the refresh does not impact user queries and to ensure that the table is valid prior to use.
+
+== Metadata Based Materialization Management
+
+Users when they are designing their views, they can define additional metadata on their views to control the loading and refreshing of external materialization cache. This option provides a limited but a powerful way to manage the materialization views. For this purpose, https://docs.jboss.org/author/display/TEIID/SystemSchema[SYSADMIN Schema] model in your VDB defines three stored procedures (loadMatView,
+updateMatView, matViewStatus) in its schema. Based on the defined metadata on the view, and these https://docs.jboss.org/author/display/TEIID/SystemProcedures[SYSADMIN procedures] a simple scheduler automatically starts during the VDB deployment and loads and keeps the cache fresh.
+
+NOTE: The Designer tooling for this feature is lacking at this moment but this will be added in coming releases.
+
+*Usage Steps*
+
+* To manage and report the loading and refreshing activity of materialization view, Teiid expects the user to define "Status" table with following schema in any one of the source models. Create this table on the physical database, before you do the import of this physical source.
+
+[source,sql]
+----
+CREATE TABLE status
+(
+  VDBName varchar(50) not null,
+  VDBVersion integer not null,
+  SchemaName varchar(50) not null,
+  Name varchar(256) not null,
+  TargetSchemaName varchar(50),
+  TargetName varchar(256) not null,
+  Valid boolean not null,
+  LoadState varchar(25) not null,
+  Cardinality long,
+  Updated timestamp not null,
+  LoadNumber long not null,
+  PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
+);
+----
+
+NOTE: MariaDB have Silent Column Changes function, according to https://mariadb.com/kb/en/mariadb/silent-column-changes/[MariaDB document], `long' type will silently change to `MEDIUMTEXT' , so If execute above schema in MariaDB, `Cardinality' and `LoadNumber' column should change to `bigint' type.
+
+* Create Views and corresponding physical materialized target tables in Designer or using DDL in Dynamic VDB. This can be done through setting the materialized and target table manually, or by selecting the desired views, right clicking, then selecting Modeling->"Create Materialized Views" in the Designer.
+* Define the following extension properties on the view.
+
+|===
+|Property Name |Description |Optional |Default Value
+
+|teiid_rel:ALLOW_MATVIEW_MANAGEMENT
+|Allow Teiid based management
+|false
+|false
+
+|teiid_rel:MATVIEW_STATUS_TABLE
+|fully qualified Status Table Name defined above
+|false
+|n/a
+
+|teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT
+|semi-colon(;) separated DDL/DML commands to run before the actual load of the cache, typically used to truncate staging table
+|true
+|When not defined, no script will be run
+
+|teiid_rel:MATVIEW_LOAD_SCRIPT
+|semi-colon(;) separated DDL/DML commands to run for loading of the cache
+|true
+|will be determined based on view transformation
+
+|teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT
+|semi-colon(;) separated DDL/DML commands to run after the actual load of the cache. Typically used to rename staging table to actual cache table. Required when MATVIEW_LOAD_SCRIPT not defined to copy data from
+teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
+|true
+|When not defined, no script will be run
+
+|teiid_rel:MATVIEW_SHARE_SCOPE
+|Allowed values are \{NONE, VDB, SCHEMA}, which define if the cached contents are shared among different VDB versions and different VDBs as long as schema names match
+|true
+|NONE
+
+|teiid_rel:MATERIALIZED_STAGE_TABLE
+|When MATVIEW_LOAD_SCRIPT property not defined, Teiid loads the cache contents into this table. Required when MATVIEW_LOAD_SCRIPT not defined
+|false
+|n/a
+
+|teiid_rel:ON_VDB_START_SCRIPT
+|DML commands to run start of vdb
+|true
+|n/a
+
+|teiid_rel:ON_VDB_DROP_SCRIPT
+|DML commands to run at VDB un-deploy; typically used for cleaning thecache/status tables
+|true
+|n/a
+
+|teiid_rel:MATVIEW_ONERROR_ACTION
+|Action to be taken when mat view contents are requested but cache is invalid. Allowed values are (THROW_EXCEPTION = throws an exception, IGNORE = ignores the warning and supplied invalidated data, WAIT = waits until the data is refreshed and valid then provides the updated data)
+|true
+|WAIT
+
+|teiid_rel:MATVIEW_TTL
+|time to live in milliseconds. Provide property or cache hint on view transformation - property takes precedence.
+|true
+|2^63 milliseconds - effectively the table will not refresh, but will be loaded a single time initially
+|===
+
+
+* Once the VDB with a model with above properties defined and deployed, the following sequence of events will take place
+
+1.  Upon the VDB deployment, teiid_rel:ON_VDB_START_SCRIPT will be run on completion of the deployment.
+2.  Based on the teiid_rel:MATVIEW_TTL defined a scheduler entry will be created to run SYSADMIN.loadMatView procedure, which loads the cache contents.
+3.  This procedure, first inserts/updates a entry in teiid_rel:MATVIEW_STATUS_TABLE, which indicates that the cache is being loaded.
+4.  In same procedure, then teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT will be run if defined
+5.  In same procedure, then teiid_rel:MATVIEW_LOAD_SCRIPT will be run if defined, otherwise one will be automatically created based on the view’s transformation logic.
+6.  Then, teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT will be run, to close out and create any indexes on the mat view table.
+7.  The procedure, then will set teiid_rel:MATVIEW_STATUS_TABLE entry to "LOADED" and valid.
+8.  Based on the teiid_rel:MATVIEW_TTL, the SYSADMIN.matViewStatus is ran by the Scheduler, to queue further cache re-loads.
+9.  When VDB is un-deployed (not when server is restarted) the teiid_rel:ON_VDB_DROP_SCRIPT script will be run.
+
+TIP: The start/stop scripts are not cluster aware - that is they will run on each cluster member as the VDB is deployed. When deploying into a clustered environment, the scripts should be written in such a way as to be cluster safe.
+
+User can any time run SYSADMIN.updateMatView procedure to partially update the cache contents rather than complete refresh of contents with SYSADMIN.loadMatview procedure. When partial update is run the cache expiration time is renewed for new term based on Cache Hint again.
+
+A sample Dynamic VDB with these properties can be defined as below
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<vdb name="sakila" version="1">
+    <description>Shows how to call JPA entities</description>
+
+    <model name="pg">
+        <source name="pg" translator-name="postgresql-override" connection-jndi-name="java:/sakila-ds"/>
+    </model>
+
+    <model name="sakila" type="VIRTUAL">
+    <metadata type="DDL"><![CDATA[
+        CREATE VIEW actor (
+           actor_id integer,
+           first_name varchar(45) NOT NULL,
+           last_name varchar(45) NOT NULL,
+           last_update timestamp NOT NULL
+        ) OPTIONS (MATERIALIZED 'TRUE', UPDATABLE 'TRUE',
+                MATERIALIZED_TABLE 'pg.public.mat_actor',
+                "teiid_rel:MATERIALIZED_STAGE_TABLE" 'pg.public.mat_actor_staging',
+                "teiid_rel:ALLOW_MATVIEW_MANAGEMENT" 'true',
+                "teiid_rel:MATVIEW_STATUS_TABLE" 'pg.public.status',
+                "teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT" 'execute pg.native("truncate table mat_actor_staging");',
+                "teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT" 'execute pg.native("ALTER TABLE mat_actor RENAME TO mat_actor_temp");execute pg.native("ALTER TABLE mat_actor_staging RENAME TO mat_actor");execute pg.native("ALTER TABLE mat_actor_temp RENAME TO mat_actor_staging;")',
+                "teiid_rel:MATVIEW_SHARE_SCOPE" 'NONE',
+                "teiid_rel:MATVIEW_ONERROR_ACTION" 'THROW_EXCEPTION',
+                "teiid_rel:MATVIEW_TTL" 300000,
+                "teiid_rel:ON_VDB_DROP_SCRIPT" 'DELETE FROM pg.public.status WHERE Name="actor" AND schemaname = "sakila"')
+            AS SELECT actor_id, first_name, last_name, last_update from pg."public".actor;
+     ]]>
+    </metadata>
+    </model>
+    <translator name="postgresql-override" type="postgresql">
+        <property name="SupportsNativeQueries" value="true"/>
+    </translator>
+</vdb>
+----
+
+== Materialization with Embedded Server
+
+With Dynamic VDB and above table extension properties, we can set up External Materialization to Embedded Server.
+
+=== Usage Steps
+
+1. Create MATERIALIZED_TABLE, MATVIEW_STATUS_TABLE and MATERIALIZED_STAGE_TABLE
+
+MATERIALIZED_TABLE is necessary, it can be any name, but it’s structure should match to materialization view.  MATVIEW_STATUS_TABLE is necessary, it should be named as `status', it’s structure like the below schema
+
+[source,sql]
+----
+CREATE TABLE status 
+( 
+  VDBName varchar(50) not null, 
+  VDBVersion integer not null, 
+  SchemaName varchar(50) not null, 
+  Name varchar(256) not null, 
+  TargetSchemaName varchar(50), 
+  TargetName varchar(256) not null, 
+  Valid boolean not null, 
+  LoadState varchar(25) not null, 
+  Cardinality long, 
+  Updated timestamp not null, 
+  LoadNumber long not null, 
+  PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name) 
+);
+----
+
+If 'teiid_rel:MATVIEW_LOAD_SCRIPT' MATERIALIZED_STAGE_TABLE is necessary, it can be any name, but it’s structure should match to materialization view.
+
+2. Create Materialization Views
+
+Create Materialization Views and corresponding physical materialized target table, staging table, status table, it should be manually created in a model of Dynamic VDB, the model type should be 'VIRTUAL'.
+
+3. Set up Embedded Server
+
+Excepting add ConnectionFactory and Translator to Embedded Server, TransactionManager also is necessay, the set up code snipets snippet like
+
+[source,java]
+----
+EmbeddedServer server = new EmbeddedServer(); 
+… 
+server.addConnectionFactory("name", Object); 
+… 
+server.addTranslator("name", ExecutionFactory); 
+… 
+EmbeddedConfiguration config = new EmbeddedConfiguration(); 
+config.setTransactionManager(EmbeddedHelper.getTransactionManager()); 
+server.start(config); 
+… 
+server.deployVDB("matView-vdb.xml");
+----
+
+=== Usage Example
+
+The following steps show a sample Dynamic VDB with Materialization view in Embedded Server
+
+1. Run below schema script against a H2 Database before deploy Dynamic VDB
+
+[source,sql]
+----
+CREATE TABLE status( 
+  VDBName varchar(50) not null, 
+  VDBVersion integer not null, 
+  SchemaName varchar(50) not null, 
+  Name varchar(256) not null, 
+  TargetSchemaName varchar(50), 
+  TargetName varchar(256) not null, 
+  Valid boolean not null, 
+  LoadState varchar(25) not null, 
+  Cardinality long, 
+  Updated timestamp not null, 
+  LoadNumber long not null, 
+  PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name) 
+);
+
+CREATE TABLE h2_test_mat( 
+   product_id integer, 
+   SYMBOL varchar(16) 
+);
+
+CREATE TABLE mat_test_staging( 
+   product_id integer, 
+   SYMBOL varchar(16) 
+);
+
+CREATE TABLE  PRODUCT ( 
+   ID integer, 
+   SYMBOL varchar(16), 
+   COMPANY_NAME varchar(256), 
+   CONSTRAINT PRODUCT_PK PRIMARY KEY(ID) 
+);
+
+INSERT INTO PRODUCT (ID,SYMBOL,COMPANY_NAME) VALUES(100,’IBM’,’International Business Machines Corporation’); 
+INSERT INTO PRODUCT (ID,SYMBOL,COMPANY_NAME) VALUES(101,’DELL’,’Dell Computer Corporation’); 
+INSERT INTO PRODUCT (ID,SYMBOL,COMPANY_NAME) VALUES(102,’HPQ’,’Hewlett-Packard Company’); 
+INSERT INTO PRODUCT (ID,SYMBOL,COMPANY_NAME) VALUES(103,’GE’,’General Electric Company’); 
+INSERT INTO PRODUCT (ID,SYMBOL,COMPANY_NAME) VALUES(104,’SAP’,’SAP AG’); 
+INSERT INTO PRODUCT (ID,SYMBOL,COMPANY_NAME) VALUES(105,’TM’,’Toyota Motor Corporation’);
+----
+
+2. Create Dynamic VDB with DDL content as below
+
+[source,xml]
+----
+        <metadata type="DDL"><![CDATA[ 
+        CREATE VIEW MatView     ( 
+            product_id integer, 
+            symbol string 
+        )OPTIONS (MATERIALIZED `TRUE', UPDATABLE `TRUE',          
+               MATERIALIZED_TABLE `Accounts.h2_test_mat', 
+               "teiid_rel:MATVIEW_TTL" 20000, 
+               "teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT" `execute
+accounts.native('`truncate table mat_test_staging'`);', 
+               "teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT"  `execute
+accounts.native('`ALTER TABLE h2_test_mat RENAME TO
+h2_test_mat_temp'`);execute accounts.native('`ALTER TABLE
+mat_test_staging RENAME TO h2_test_mat'`);execute
+accounts.native('`ALTER TABLE h2_test_mat_temp RENAME TO
+mat_test_staging'`);', 
+               "teiid_rel:ON_VDB_DROP_SCRIPT" `DELETE FROM
+Accounts.status WHERE Name='`MatView'`AND schemaname ='`Stocks'’’, 
+               "teiid_rel:MATERIALIZED_STAGE_TABLE"
+`Accounts.mat_test_staging', 
+               "teiid_rel:ALLOW_MATVIEW_MANAGEMENT" `true', 
+               "teiid_rel:MATVIEW_STATUS_TABLE" `status', 
+               "teiid_rel:MATVIEW_SHARE_SCOPE" `NONE', 
+               "teiid_rel:MATVIEW_ONERROR_ACTION" `THROW_EXCEPTION') 
+        AS 
+    SELECT  A.ID, A.symbol FROM  Accounts.PRODUCT AS A; 
+        ]]> </metadata> 
+    </model>
+----
+
+3. Run Test
+
+Deploy Dynamic VDB to Embedded Server, run below code
+
+[source,java]
+----
+Thread.currentThread().sleep(10 * 1000); // wait loadMatView finish 
+executeQuery(conn, "select * from MatView"); 
+executeUpdate(conn, "INSERT INTO PRODUCT (ID,SYMBOL,COMPANY_NAME)
+VALUES(2000,’RHT’,’Red Hat Inc’)");
+
+Thread.currentThread().sleep(30 * 1000); // make sure MatView be updated
+
+executeQuery(conn, "select * from MatView"); 
+executeUpdate(conn, "DELETE FROM PRODUCT  WHERE ID = 2000");
+
+Thread.currentThread().sleep(30 * 1000); // make sure MatView be updated
+
+executeQuery(conn, "select * from MatView");
+---
+
+The test result is the MatView can catch the updated of underlying source table `PRODUCT'.

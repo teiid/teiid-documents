@@ -1,0 +1,227 @@
+
+== Kerberos support through GSSAPI
+
+
+Teiid supports kerberos authentication using GSSAPI for single sign-on applications. This service ticket negotiation based authentication is supported through remote JDBC/ODBC drivers and LocalConnections. Client configuration is different for each client type.
+
+== LocalConnection
+
+Set the JDBC URL property _PassthroughAuthentication_ as true and use http://community.jboss.org/docs/DOC-10680[JBoss Negotiation] for authentication of your web-application with kerberos. When the web application authenticates with the provided kerberos token, the same subject authenticated will be used in Teiid. For details about configuration, check the JBoss Negotiation documentation.
+
+== Remote Connections (JDBC/ODBC)
+
+On the server, edit the `<jboss-install>/standalone/configuration/standalone-teiid.xml` under "security-domains" subsystem add the following. Make necessary changesrelated to your configuration in terms of key tab locations, service principal etc. You need to configure two separate security domains.
+
+=== Configure one security domain to represent the identity of the server.
+
+The first security domain authenticates the container itself to the directory service. It needs to use a login module which accepts some type of static login mechanism, because a real user is not involved. This example uses a static principal and references a keytab file which contains the credential.
+
+[source,xml]
+.standalone-teiid.xml
+----
+<security-domain name="host">
+   <authentication>
+      <login-module code="Kerberos" flag="required">
+         <module-option name="storeKey" value="true"/>
+         <module-option name="useKeyTab" value="true"/>
+         <module-option name="principal" value="host/testserver@MY_REALM"/> <!-- service principal -->
+         <module-option name="keyTab" value="/path/to/service.keytab"/>
+         <module-option name="doNotPrompt" value="true"/>
+         <module-option name="debug" value="false"/>
+      </login-module>
+   </authentication>
+</security-domain>    
+----
+
+=== Configure a second security domain to secure the Teiid application.
+
+The second security domain is used to authenticate the individual user to the Kerberos server. You need at least one login module to authenticate the user, and another to search for the roles to apply to the user. The following XML code shows an example SPNEGO security domain. It includes an authorization module to map roles to individual users. You can also use a module which searches for the roles on the authentication server itself. Note the name of security-domain MUST match realm
+
+[source,xml]
+.standalone-teiid.xml
+----
+<security-domain name="MY_REALM">
+   <authentication>
+      <!-- Check the username and password -->
+      <login-module code="SPNEGO"  flag="requisite">
+         <module-option name="password-stacking" value="useFirstPass"/>
+         <module-option name="serverSecurityDomain" value="host"/>
+      </login-module>
+      <!-- Search for roles -->
+      <login-module code="UserRoles" flag="requisite">
+         <module-option name="password-stacking" value="useFirstPass" />
+         <module-option name="usersProperties" value="spnego-users.properties" />
+         <module-option name="rolesProperties" value="spnego-roles.properties" />
+      </login-module> 
+   </authentication>
+</security-domain>
+----
+
+NOTE: *"User Roles/Groups associations"* Kerberos does not assign any user roles to the authenticated subject, that is reason you need to configure a separate role mapping module to assign roles. As an example in the above, "UserRoles" login-module is added. User need to edit `"spnego-roles.properties" file and add groups
+in the format of `user@MY_REALM=my-group`. Check JBoss EAP documentation, as to all the available mapping modules available.
+
+SPENGO security-domain delegates the calls relating to Kerberos to Kerberos server based on "serverSecurityDomain" property. If you would like configure the choice of authenticating using Kerberos or some other
+security domain on the same JDBC/ODBC transport, then you need to supply property
+
+[source,xml]
+----
+<module-option name="usernamePasswordDomain" value="{user-name-based-auth}"/>
+----
+
+under SPENGO security-domain. The process of selecting "kerberos" or "\{user-name-based-auth}" domain for authentication is defined below.
+
+The above configuration defined security-domains, before you can use these domains for logging into Teiid, they need to be associated with Teiid’s transport configuration or VDB configuration. Paragraphs below offer both solutions.
+
+=== Defining a "default" authentication based on Teiid Transport
+
+User can define a "default" authentication per transport as below that can be used for all the VDBs system wide.
+
+[source,xml]
+.For JDBC:
+----
+<transport name="jdbc" protocol="teiid" socket-binding="teiid-jdbc"/>
+        <authentication security-domain="MY_REALM" type="GSS"/>
+</transport>
+----
+
+[source,xml]
+.For ODBC:
+----
+<transport name="odbc" protocol="pg" socket-binding="teiid-odbc"/>
+        <authentication security-domain="MY_REALM" type="GSS"/>
+</transport>
+----
+
+*"What is the value of Type"*
+
+The "type" attribute above defines the type of authentication that needs to be enforced on the transport/vdb. The allowed values for type are
+
+* USERPASSWORD - only allow user name/password based authentications
+* GSS - only allow GSS API based authentication (Kerberos5).
+
+=== Defining VDB based authentication
+
+You can add following combination VDB properties in the vdb.xml file to
+select or force the security-domain and authentication type.
+
+[source,xml]
+----
+<property name="security-domain" value="MY_REALM" />
+<property name="gss-pattern" value="{regex}" />
+<property name="password-pattern" value="{regex}" />
+<property name="authentication-type" value="GSS or USERPASSWORD" />
+----
+
+All the properties above are optional on a VDB. If you want to define VDB based security configuration "security-domain" property is required. If you want to enforce single authentication type use "authentication-type" property is required. If your security domain can support both GSS and USERPASSWORD, then you can define "gss-pattern" and "password-pattern" properties, and define a regular expression as the value. During the connection, these regular expressions are matched against the connecting user’s name provided to select which authentication method user prefers. For example, if the configuration is defined as below
+
+[source,xml]
+----
+<property name="security-domain" value="MY_REALM" />
+<property name="gss-pattern" value="logasgss" />
+----
+
+and if you passed the "user=logasgss" in the connection string, then GSS authentication is selected as login authentication mechanism. If the user name does not match, then default transport’s authentication method is selected. Alternatively, if you want choose USERPASSWORD
+
+[source,xml]
+----
+<property name="security-domain" value="MY_REALM" />
+<property name="password-pattern" value="*-simple" />
+----
+
+and if the user name is like "mike-simple", then that user will be subjected to authenticate against USERPASSWORD based authentication domain. You can configure different security-domains for different VDBS. VDB authentication will no longer be dependent upon underlying transport. If you like force "GSS" all the time then use configuration like below
+
+[source,xml]
+----
+<property name="security-domain" value="MY_REALM" />
+<property name="authentication-type" value="GSS" />
+----
+
+=== Required System Properties on Server
+
+Edit the "standalone.conf" file in the "$\{jboss-as}/bin" directory and add the following JVM options (changing the realm and KDC settings according to your environment)
+
+----
+JAVA_OPTS = "$JAVA_OPTS -Djava.security.krb5.realm=EXAMPLE.COM -Djava.security.krb5.kdc=kerberos.example.com -Djavax.security.auth.useSubjectCredsOnly=false"
+----
+
+or
+
+----
+JAVA_OPTS = "$JAVA_OPTS -Djava.security.krb5.conf=/path/to/krb5.conf -Djava.security.krb5.debug=false -Djavax.security.auth.useSubjectCredsOnly=false"
+----
+
+or you can also add these properties inside standalone-teiid.xml file, right after \{<extensions>} segment as
+
+[source,xml]
+----
+<system-properties>
+    <property name="java.security.krb5.conf" value="/pth/to/krb5.conf"/>
+    <property name="java.security.krb5.debug" value="false"/>
+    <property name="javax.security.auth.useSubjectCredsOnly" value="false"/>
+</system-properties>
+----
+
+This finishes the configuration on the server side, restart the server and make sure there are no errors during start up.
+
+=== JDBC Client Configuration
+
+Your workstation where the JDBC Client exists must have been authenticated using GSS API against Active Directory or Enterprise directory server. See this website http://spnego.sourceforge.net[http://spnego.sourceforge.net] on instructions as to how to verify your system is authenticated into enterprise directory server. Contact your company’s operations team if you have any questions.
+
+In your client VM the JAAS configuration for Kerberos authentication needs to be written. A sample configuration file (client.conf) is show below
+
+.*"client.conf"*
+----
+Teiid {
+    com.sun.security.auth.module.Krb5LoginModule required
+    useTicketCache=true
+    storeKey=true
+    useKeyTab=true 
+    keyTab="/path/to/krb5.keytab" 
+    doNotPrompt=true 
+    debug=false
+    principal="user@EXAMPLE.COM";
+};
+----
+
+Make sure you have configured the "keytab" properly, you can check this website for utilities and instructions to check your access to KDC server and to create keytab especially on windows environments http://spnego.sourceforge.net[http://spnego.sourceforge.net]. For Redhat Linux see https://access.redhat.com/site/solutions/208173[https://access.redhat.com/site/solutions/208173]
+
+Add the following JVM options to your client’s startup script - change Realm and KDC settings according to your environment
+
+.*"Based on krb5.conf file"*
+----
+-Djava.security.krb5.conf=/path/to/krb5.conf (default on Linux /etc/krb5.conf)
+-Djava.security.auth.login.config=/path/to/client.conf
+-Djavax.security.auth.useSubjectCredsOnly=false
+-Dsun.security.krb5.debug=false
+----
+
+or
+
+.*"Based on KDC and Realm file"*
+----
+-Djava.security.krb5.realm=EXAMPLE.COM
+-Djava.security.krb5.kdc=kerberos.example.com
+-Djavax.security.auth.useSubjectCredsOnly=false
+-Dsun.security.krb5.debug=false
+-Djava.security.auth.login.config=/path/to/client.conf
+----
+
+Add the following additional URL connection properties to Teiid JDBC connection string along with URL property. Note that when configured with Kerberos, in order to participate in Kerberos based authentication
+you need to configure "user" property as required by "gss-pattern" or define the "authentication-type" property on the VDB or transport. However, after successful login into security-domain, the user name from GSS login context will be used for representing the session in the Teiid.
+
+----
+jaasName=Teiid;user={pattern};kerberosServicePrincipleName=host/testserver@MY_REALM
+----
+
+_jassName_ defines the JAAS configuration name in login.config file. This property is optional, if omitted the "Teiid" is used as the default configuration name.
+
+_kerberosServicePrincipleName_ defines service principle that needs to be requested on behalf of the service that is being connected to using the Kerberos principle configured. If this property is omitted the default service principle would be "TEIID/hostname" and hostname is derived from the JDBC connection URL.
+
+NOTE: In order to avoid adding the service principle name to all your JDBC and ODBC clients, Teiid can use the default service principle name as "TEIID/hostname". Create this service ticket in KDC. This also helps if you move your Teiid server one host to another by simply creating a new principle in KDC with new host name. Then you would only required to update hostname in the URL.
+
+=== ODBC Client Configuration
+
+Create a DSN for the VDB on the client machine to the VDB that you would like to connect using PostgreSQL ODBC driver. In order to participate in Kerberos based authentication you need to configure "user" property as required by "gss-pattern" or define the "authentication-type" property on the VDB or transport.
+
+No additional configuration is needed as part of this, except that your workstation where the ODBC DSN exists must have been authenticated using GSS API against Active Directory or other Enterprise directory server. See this website http://spnego.sourceforge.net[http://spnego.sourceforge.net] on instructions as to how to verify your system is authenticated into enterprise directory server. Contact your company’s operations team if you have any questions.
+

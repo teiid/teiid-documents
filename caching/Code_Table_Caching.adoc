@@ -1,0 +1,58 @@
+
+= Code Table Caching
+
+Teiid provides a short cut to creating an internal materialized view table via the _lookup_ function.
+
+The _lookup_ function provides a way to accelerate getting a value out of a table when a key value is provided.  The function automatically caches all of the key/return pairs for the referenced table.  This caching is performed on demand, but will proactively load the results to other members in a cluster. Subsequent lookups against the same table using the same key and return columns will use the cached information.
+
+This caching solution is appropriate for integration of "reference data" with transactional or operational data.  Reference data is usually static and small data sets that are used frequently.  Examples are ISO country codes, state codes, and different types of financial instrument identifiers.
+
+== Usage
+
+This caching mechanism is automatically invoked when the lookup scalar function is used. The lookup function returns a scalar value, so it may be used anywhere an expression is expected. Each time this function is called with a unique combination of referenced table, return column, and key column (the first 3 arguments to the function).
+
+See the https://docs.jboss.org/author/display/TEIID/Lookup+Function[Lookup Function] in the Reference Guide for more information on use of the _lookup_ function.
+
+[source,java]
+.*Country Code Lookup*
+----
+lookup('ISOCountryCodes', 'CountryCode', 'CountryName', 'United States')
+----
+
+== Limitations
+
+* The use of the lookup function automatically performs caching; there is no option to use the lookup function and not perform caching.
+* No mechanism is provided to refresh code tables
+* Only a single key/return column is cached - values will not be session/user specific.
+
+== Materialized View Alternative
+
+The _lookup_ function is a shortcut to create an internal materialized view with an appropriate primary key. In many situations, it may be better to directly create the analogous materialized view rather than to
+use a code table.
+
+
+[source,sql]
+.*Country Code Lookup Against A Mat View*
+----
+SELECT (SELECT CountryCode From MatISOCountryCodes WHERE CountryName = tbl.CountryName) as cc FROM tbl
+----
+
+Here MatISOCountryCodes is a view selecting from ISOCountryCodes that has been marked as materialized and has a primary key and index on CountryName. The scalar subquery will use the index to lookup the country code for each country name in tbl.
+
+Reasons to use a materialized view:
+
+* More control of the possible return columns. Code tables will create a materialized view for each key/value pair. If there are multiple return columns it would be better to have a single materialized view.
+* Proper materialized views have built-in system procedure/table support.
+* More control via the cache hint.
+* The ability to use OPTION NOCACHE.
+* There is almost no performance difference.
+
+Steps to create a materialized view:
+
+1.  Create a view selecting the appropriate columns from the desired table. In general, this view may have an arbitrarily complicated transformation query.
+2.  Designate the appropriate column(s) as the primary key. Additional indexes can be added if needed.
+3.  Set the materialized property to true.
+4.  Add a cache hint to the transformation query. To mimic the behavior of the implicit internal materialized view created by the lookup function, use the link:Hints_and_Options.adoc[Hints and Options] `/*+ cache(pref_mem) */` to indicate that the table data pages should prefer to remain in memory.
+
+Just as with the lookup function, the materialized view table will be created on first use and reused subsequently. See the link:Materialized_Views.adoc[Materialized Views] for more.
+
