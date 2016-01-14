@@ -1,0 +1,5 @@
+= Summary
+
+. link:embedded/Embedded_Guide.adoc[Embedded Guide]
+.. link:embedded/Logging_in_Teiid_Embedded.adoc[Logging in Teiid Embedded]
+.. link:embedded/Secure_Embedded_with_PicketBox.adoc[Secure Embedded with PicketBox]
