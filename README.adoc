@@ -1,0 +1,21 @@
+
+image::cover_small.jpg[Teiid Logo]
+
+
+== How to Edit
+
+GitHub (https://github.com/teiid/teiid-documents[teiid/teiid-documents]) as a host for book's sources, to edit the book's content is simple as submit a change to GitHub as below 3 steps:
+
+*Step.1* clone the sources
+
+----
+git clone git@github.com:teiid/teiid-documents.git
+---- 
+
+*Step.2* do edit
+
+Use any text editor to edit the adoc files, http://asciidoctor.org/docs/asciidoc-syntax-quick-reference/[AsciiDoc Syntax Quick Reference] can help you in AsciiDoc Syntax.
+
+*Step.3* submit your change
+
+Once you finished this steps, the content of book will updated automatically.

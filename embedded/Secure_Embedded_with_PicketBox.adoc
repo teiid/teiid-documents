@@ -1,0 +1,167 @@
+
+PicketBox is a Java Security Framework that build on top of JAAS. PicketBox is configured via a schema formatted Security Configuration File(https://raw.githubusercontent.com/picketbox/picketbox/master/security-jboss-sx/jbosssx/src/main/resources/schema/security-config_5_0.xsd[security-config_5_0.xsd]) and provides various LoginModule Implementations (UsersRolesLoginModule, LdapExtLoginModule, DatabaseServerLoginModule, etc). The following are 5 key steps to execute a authentication:
+
+[source,java]
+----
+//1. establish the JAAS Configuration with picketbox authentication xml file
+SecurityFactory.prepare();
+
+//2. load picketbox authentication xml file
+PicketBoxConfiguration config = new PicketBoxConfiguration();
+config.load(SampleMain.class.getClassLoader().getResourceAsStream("picketbox/authentication.conf"));
+
+//3. get AuthenticationManager
+AuthenticationManager authManager = SecurityFactory.getAuthenticationManager(securityDomain);
+
+//4. execute authentication
+authManager.isValid(userPrincipal, credString, subject);
+
+//5. release resource
+SecurityFactory.release();
+----
+
+Teiid Embedded exposes 2 methods for security authentication:
+
+* EmbeddedConfiguration.setSecurityHelper() - associated with a _org.teiid.security.SecurityHelper_ in the engine jar. If no SecurityHelper is set, then no authentication will be performed.
+* EmbeddedConfiguration.setSecurityDomain() - associated with a application-policy’s name in Security Configuration file. If no SecurityDomain is set, then a default `teiid-security` will be used.
+
+https://raw.githubusercontent.com/teiid/teiid-embedded/master/src/main/java/org/teiid/embedded/security/EmbeddedSecurityHelper.java[EmbeddedSecurityHelper] is a sample implementation of _SecurityHelper_, https://raw.githubusercontent.com/teiid/teiid-embedded/master/src/main/resources/picketbox/authentication.conf[authentication.conf]
+is a sample Security Configuration file.
+
+== How to develop a SecurityHelper
+
+Add ’teiid-engine-VERSION.jar’to classpath is necessary. If you are using the maven to pull artifacts, the engine dependency can added as below,
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.jboss.teiid</groupId>
+    <artifactId>teiid-engine</artifactId>
+</dependency>
+----
+
+The key to develop a SecurityHelper is implement the authenticate() method. PicketBox’s 5 key steps to execute an authentication is shown in the example below:
+
+[source,java]
+----
+@Override
+public SecurityContext authenticate(String securityDomain, String baseUserName, Credentials credentials, String applicationName) throws LoginException {
+
+    SecurityFactory.prepare();
+    try {
+        PicketBoxConfiguration config = new PicketBoxConfiguration();
+        config.load(this.getClass().getClassLoader().getResourceAsStream("picketbox/authentication.conf"));
+
+        AuthenticationManager authManager = SecurityFactory.getAuthenticationManager(securityDomain);
+        if (authManager != null){
+            final Principal userPrincipal = new SimplePrincipal(baseUserName);
+            final Subject subject = new Subject();
+            final String credString = credentials==null?null:new String(credentials.getCredentialsAsCharArray());
+            final String domain = securityDomain;
+            boolean isValid = authManager.isValid(userPrincipal, credString, subject);
+            if (isValid) {
+                SecurityContext securityContext = AccessController.doPrivileged(new PrivilegedAction<SecurityContext>(){
+                    @Override
+                    public SecurityContext run() {
+                        SecurityContext sc;
+                        try {
+                            sc = SecurityContextFactory.createSecurityContext(userPrincipal, credString, subject, domain);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                        return sc;
+                    }});
+                return securityContext;
+            }
+        }
+    } finally {
+        SecurityFactory.release();
+    }
+    throw new LoginException("The username " +  baseUserName + " and/or password could not be authenticated by security domain " + securityDomain + ".");
+}
+----
+
+You can just return null from negotiateGssLogin unless you want to all GSS authentications from JDBC/ODBC.
+
+== Embedded Security with UsersRolesLoginModule
+
+Add the following content to PicketBox Security Configuration file:
+
+[source,xml]
+----
+<application-policy name = "teiid-security">
+    <authentication>
+        <login-module code = "org.jboss.security.auth.spi.UsersRolesLoginModule" flag = "required"></login-module>
+    </authentication>
+</application-policy>
+----
+
+To prepare users/roles by add users.properties and roles.properties to class path. A sample of users.properties
+
+----
+testUser=password
+----
+
+A sample of roles.properties
+
+----
+testUser=user
+----
+
+To start Embedded Server with UsersRolesLoginModule based security authentication via:
+
+[source,java]
+----
+EmbeddedServer server =
+...
+EmbeddedConfiguration config = new EmbeddedConfiguration();
+config.setSecurityDomain("teiid-security-file");
+config.setSecurityHelper(new EmbeddedSecurityHelper());
+server.start(config);
+----
+
+== Embedded Security with LdapExtLoginModule
+
+Add the following content to the PicketBox Security Configuration File:
+
+[source,xml]
+----
+<application-policy name = "teiid-security-ldap">
+    <authentication>
+        <login-module code = "org.jboss.security.auth.spi.LdapExtLoginModule" flag = "required">
+            <module-option name="java.naming.factory.initial">com.sun.jndi.ldap.LdapCtxFactory</module-option>
+            <module-option name="java.naming.provider.url">ldap://HOST:389</module-option>
+            <module-option name="java.naming.security.authentication">simple</module-option>
+            <module-option name="bindDN">cn=Manager,dc=example,dc=com</module-option>
+            <module-option name="bindCredential">redhat</module-option>
+            <module-option name="baseCtxDN">ou=Customers,dc=example,dc=com</module-option>
+            <module-option name="baseFilter">(uid={0})</module-option>
+            <module-option name="rolesCtxDN">ou=Roles,dc=example,dc=com</module-option>
+            <module-option name="roleFilter">(uniqueMember={1})</module-option>
+            <module-option name="roleAttributeID">cn</module-option>
+        </login-module>
+    </authentication>
+</application-policy>
+----
+
+To define security users/roles refer to your LDAP Vendors documentation. For example, if you use OpenLDAP, then with the ldif file https://raw.githubusercontent.com/teiid/teiid-embedded-examples/master/embedded-portfolio-security/src/main/resources/customer-security.ldif[customer-security.ldif], execute
+
+----
+ldapadd -x -D "cn=Manager,dc=example,dc=com" -w redhat -f customer-security.ldif
+----
+
+to setup users/roles.
+
+TIP: module-options setting like url, bindDN, bindCredential, baseCtxDN, rolesCtxDN should match to your LDAP server setting.
+
+To start Embedded Server with LdapExtLoginModule based security authentication via:
+
+[source,java]
+----
+EmbeddedServer server =
+...
+EmbeddedConfiguration config = new EmbeddedConfiguration();
+config.setSecurityDomain("teiid-security-ldap");
+config.setSecurityHelper(new EmbeddedSecurityHelper());
+server.start(config);
+----

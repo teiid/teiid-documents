@@ -1,0 +1,216 @@
+
+
+= Embedded Guide
+
+Embedded is a light-weight version of Teiid for use in any Java 7+ JRE. JBoss AS nor any application server is not required. This feature/kit are still evolving. Please consult the source examples and even unit tests utilizing the EmbeddedServer for a more complete guide as to its use.
+
+== Configuration
+
+The primary way to configure Teiid Embedded is with the `EmbeddedConfiguration` class. It is provided to the `EmbeddedServer` at start-up and dictates much of the behavior of the embedded instance. From there the running server instance may have translators and VDBs deployed as needed. Additional modifications to the `EmbeddedConfiguration` after the server is started will not have an effect.
+
+In many cases an `EmbeddedConfiguration` instance can just be instantiated and passed to the `EmbeddedServer` without the need to set additional properties. Many properties, including those used to configure the BufferManager, will be given a similar name to their server side counter part - for example setProcessorBatchSize.
+
+IMPORTANT: Most of the default configuration values for memory and threads assume that there is only one Teiid instance in the vm. If you are using multiple Teiid Embedded instances in the same vm, then memory and thread resources should be configured manually.
+
+== The Classpath
+
+=== Embedded kit
+
+Your application is responsible for having the appropriate classpath to utilize Teiid embedded. Typically you will want to include all of the jars from the embedded kit’s lib directory. As needed by your deployment you should include jars from the optional folder along with any jars needed to provide source access. Hibernate core 4.1.6 or compatible is needed, but not included in the kit, if you wish to utilize the JDBC translator support for dependent joins using temp tables.
+
+=== OSGI
+
+All Teiid jars can also be deployed as bundles in a OSGI container like Karaf. If you are working with Karaf, a feature.xml file is available in maven repo for your convenience. Usage pattern is below
+
+----
+features:addurl mvn:org.jboss.teiid/teiid/8.6.0.Final/xml/karaf-features
+features:install -v teiid
+----
+
+=== Maven
+
+If you are trying run Teidd Embedded with Maven based project and using maven to pull artifacts, the `runtime`, `admin`, `connector`, `translator` dependencies are necessary as below
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.jboss.teiid</groupId>
+    <artifactId>teiid-runtime</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>org.jboss.teiid</groupId>
+    <artifactId>teiid-admin</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>org.jboss.teiid.connectors</groupId>
+    <artifactId>translator-SOURCE</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>org.jboss.teiid.connectors</groupId>
+    <artifactId>connector-SOURCE</artifactId>
+</dependency>
+----
+
+=== Vulnerable Libraries
+
+Prior to Teiid 8.13/8.12.2 when using the remote JDBC transport, Teiid embedded could be susceptible to deserialization exploits if it also included most versions of common-collections, older version of groovy, or spring in the classpath - see also http://www.infoq.com/news/2015/11/commons-exploit[this posting] for more details on the affected libraries.
+
+== VDB Deployment
+
+VDBs may be deployed in several ways in Embedded.
+
+*VDB Metadata API*
+
+VDB deployment can be done directly through VDB metadata objects that are the underpinning of vdb.xml deployment. Models (schemas) are deployed as a set to form a named vdb - see the `EmbeddedServer.deployVDB` method.
+
+*XML Deployment*
+
+Similar to a server based -vdb.xml deployment an `InputStream` may be given to a vdb.xml file - see the `EmbeddedServer.deployVDB(InputStream)` method.
+
+*Zip Deployment*
+
+Similar to a server based .vdb deployment a `URL` may be given to a zip file - see the `EmbeddedServer.deployVDBZip` method. The use of the zip lib for dependency loading is not enabled in Embedded. See https://docs.jboss.org/author/display/TEIID/Dynamic+VDBs[Dynamic VDBs] and https://docs.jboss.org/author/display/TEIID/Metadata+Repositories[Metadata Repositories] for more on a typical vdb zip structure. Teiid Designer 7 and later VDBs are also supported via this method, but are subject to all of the limitations/differences highlighted in this guide.
+
+*Translators*
+
+Translators instances can be scoped to a VDB in AS using declarations in a vdb.xml file, however named instances in embedded are scoped to the entire `EmbeddedServer` and must be registered via the `EmbeddedServer.addTranslator` methods. Note that there are two `addTranslator` methods:
+
+* `addTranslator(Class<? extends ExecutionFactory> clazz)` - Adds a default instance of the ExecutionFactory, using the default name either from the Translator annotation or the class name.
+* `addTranslator(String name, ExecutionFactory<?, ?> ef)` - Adds a pre-initialized (ExecutionFactory.start() must have already been called) instance of the ExecutionFactory,  using the given translator name, this is functionally equivalent to using a vdb.xml translator override.
+
+A new server instance does not assume any translators are deployed and does not perform any sort of library scanning to find translators.
+
+*Sources*
+
+The Embedded Server will still attempt to lookup the given JNDI connection factory names via JNDI. In most non-container environments it is likely that no such bindings exist. In this case the Embedded Server instance must have `ConnectionFactoryProvider` instances manually registered, either using the `EmbeddedServer.addConnectionFactory` method, or the  `EmbeddedServer.addConnectionFactoryProvider` method to implement `ConnectionFactoryProvider` registering. Note that the Embedded Server does not have built-in pooling logic, so to make better use of a standard `java.sql.DataSource` or to enable proper use of `javax.sql.XADataSource` you must first configure the instance via a third-party connection pool.
+
+[source,java]
+.Example - Deployment
+----
+EmbeddedServer es = new EmbeddedServer();
+EmbeddedConfiguration ec = new EmbeddedConfiguration();
+//set any configuration properties
+ec.setUseDisk(false);
+es.start(ec);
+
+//example of adding a translator by pre-initialized ExecutionFactory and given translator name
+H2ExecutionFactory ef = new H2ExecutionFactory()
+ef.setSupportsDirectQueryProcedure(true);
+ef.start();
+es.addTranslator("translator-h2", ef);
+
+//add a Connection Factory with a third-party connection pool
+DataSource ds = EmbeddedHelper.newDataSource("org.h2.Driver", "jdbc:h2:mem://localhost/~/account", "sa", "sa");
+es.addConnectionFactory("java:/accounts-ds", ds);
+
+//add a vdb
+
+//physical model
+ModelMetaData mmd = new ModelMetaData();
+mmd.setName("my-schema");
+mmd.addSourceMapping("my-schema", "translator-h2", "java:/accounts-ds");
+
+//virtual model
+ModelMetaData mmd1 = new ModelMetaData();
+mmd1.setName("virt");
+mmd1.setModelType(Type.VIRTUAL);
+mmd1.setSchemaSourceType("ddl");
+mmd1.setSchemaText("create view \"my-view\" OPTIONS (UPDATABLE 'true') as select * from \"my-table\"");
+
+es.deployVDB("test", mmd, mmd1);
+----
+
+*Secured Data Sources*
+
+If Source related security authentication, for example, if you want connect/federate/integrate Twitter supplied rest source, a security authentication is a necessary, the following steps can use to execute security authentication:
+
+. refer to link:Secure_Embedded_with_PicketBox.adoc[Secure Embedded with PicketBox] start section to develop a SubjectFactory, 
+. initialize a ConnectionManager with http://ironjacamar.org/[ironjacamar] libaries, set SubjectFactory to ConnectionManager
+. use the following method to create ConnectionFactory
+
+[source,java]
+.Example - Secured Data Sources
+----
+WSManagedConnectionFactory mcf = new WSManagedConnectionFactory();
+NoTxConnectionManagerImpl cm = new NoTxConnectionManagerImpl();
+cm.setSecurityDomain(securityDomain);
+cm.setSubjectFactory(new EmbeddedSecuritySubjectFactory(authConf))
+Object connectionFactory = mcf.createConnectionFactory(cm);
+server.addConnectionFactory("java:/twitterDS", connectionFactory);
+----
+
+https://github.com/teiid/teiid-embedded-examples/tree/master/socialmedia-integration/twitter-as-a-datasource[twitter-as-a-datasource] is a completed example.
+
+== Access from client applications
+
+Typically when Teiid is deployed as Embedded Server, and if your end user application is also deployed in the same virtual machine as the Teiid Embedded, you can use *Local JDBC Connection*, to access to your virtual database. For example:
+
+[source,java]
+.Example - Local JDBC Connection
+----
+EmbeddedServer es = ...
+Driver driver = es.getDriver();
+Connection conn = driver.connect("jdbc:teiid:<vdb-name>", null);
+// do work with conn; create statement and execute it
+conn.close();
+----
+
+This is the most efficient method as it does not impose any serialization of objects.
+
+If your client application is deployed in remote VM, or your client application is not a JAVA based application then accesses to the Teiid Embedded is not possible through above mechanism. In those situations, you need to open a socket based connection from remote client application to the Embedded Teiid Server. By default, when you start the Embedded Teiid Sever it does not add any capabilities to accept remote JDBC/ODBC based connections. If you would like to expose the functionality to accept remote JDBC/ODBC connection requests, then configure necessary *transports* during the initialization of the Teiid Embedded Server. The example below shows a sample code to enable a ODBC transport
+
+[source,java]
+.Example - Remote ODBC transport
+----
+EmbeddedServer es = new EmbeddedServer()
+SocketConfiguration s = new SocketConfiguration();
+s.setBindAddress("<host-name>");
+s.setPortNumber(35432);
+s.setProtocol(WireProtocol.pg);
+EmbeddedConfiguration config = new EmbeddedConfiguration();
+config.addTransport(s);
+es.start(config);
+----
+
+if you want to add a JDBC transport, follow the instructions above, however set the protocol to `WireProtocol.teiid` and choose a different port number. Once the above server is running, you can use same https://docs.jboss.org/author/display/TEIID/Connecting+to+a+Teiid+Server[instructions] as Teiid Server to access Embedded Teiid Server from remote client application. Note that you can add multiple transports to single Embedded Server instance, to expose different transports.
+
+== Security
+
+The primary interface for Teiid embedded’s security is the `org.teiid.security.SecurityHelper` in the engine jar. The SecurityHelper instance is associated with with the EmbeddedServer via `EmbeddedConfiguration.setSecurityHelper`. If no SecurityHelper is set, then no authentication will be performed. A SecurityHelper controls authentication and associates a security context with a thread. How a security context is obtained can depend upon the security domain name. The default security domain name is `teiid-security` and can be changed via `EmbeddedConfiguration.setSecurityDomain`. The effective security domain may also be configured via a transport of the VDB.
+
+See the https://github.com/teiid/teiid/blob/master/jboss-integration/src/main/java/org/teiid/jboss/JBossSecurityHelper.java[JBoss Security Helper source] for an example of expected mechanics.
+
+You can just return null from negotiateGssLogin unless you want to all GSS authentications from JDBC/ODBC.
+
+=== Example
+
+https://github.com/teiid/teiid-embedded-examples/tree/master/embedded-portfolio-security[embedded-portfolio-security] demonstrates how to implement security authentication in Teiid Embedded:
+
+* https://github.com/teiid/teiid-embedded-examples/blob/master/common/src/main/java/org/teiid/example/EmbeddedSecurityHelper.java[EmbeddedSecurityHelper] is the implementation of `org.teiid.security.SecurityHelper`
+* https://raw.githubusercontent.com/teiid/teiid-embedded-examples/master/embedded-portfolio-security/src/main/resources/users.properties[users.properties] and https://raw.githubusercontent.com/teiid/teiid-embedded-examples/master/embedded-portfolio-security/src/main/resources/roles.properties[roles.properties] in class path user to pre define users and roles
+* https://raw.githubusercontent.com/teiid/teiid-embedded-examples/master/common/src/main/resources/picketbox/authentication.conf[application-policy]’s name in authentication.conf should match to security domain(`EmbeddedConfiguration.setSecurityDomain`)
+
+== Transactions
+
+Transaction processing requires setting the `TransactionManager` in the `EmbeddedConfiguration` used to start the `EmbeddedServer`. A client facing `javax.sql.DataSource` is not provided for embedded. However the usage of provided `java.sql.Driver` should be sufficient as the embedded server is by default able to detect thread bound transactions and appropriately propagate the transaction to threads launched as part of request processing. The usage of local connections is also permitted.
+
+== AdminApi
+
+Embedded provides a the `Admin` interface via the `EmbeddedServer.getAdmin` method. Not all methods are implemented for embedded - for example those that deal with data sources. Also the deploy method may only deploy VDB xml artifacts.
+
+== Logging
+
+Teiid by default use JBoss Logging, which will utilize JUL (Java Util Logging) or other common logging frameworks depending upon their presence in the classpath. Refer to link:Logging_in_Teiid_Embedded.adoc[Logging in Teiid Embedded] for details.
+
+The internal interface for Teiid embedded’s logging is `org.teiid.logging.Logger` in teiid-api jar. The Logger instance is associated with the `org.teiid.logging.LogManager` via static method `LogManager.setLogListener()`. You may alternatively choose to directly set a `Logger` of your choice.
+
+== Other Differences Between Teiid Embedded and an AS Deployment
+
+* There is no default JDBC/ODBC socket transport in embedded. You are expected to obtain a `Driver` connection via the `EmbeddedServer.getDriver` method. If you want remote JDBC/ODBC transport see above on how to add a transport.
+* A `MetadataRepository` is scoped to a VDB in AS, but is scoped to the entire `EmbeddedServer` instance and must be registered via the `EmbeddedServer.addMetadataRepository` method.
+* MDC logging values are not available as Java logging lacks the concept of a mapped diagnostic context.
+* Translator overrides in vdb.xml files is not supported.
+

@@ -1,0 +1,79 @@
+
+Teiid’s LogManager is an interface to a single logging framework that is easily accessible by any component. Using the LogManager, a component can quickly submit a log message, and can rely upon the LogManager to determine
+
+* whether that message is to be recorded or discarded
+* where to send any recorded messages
+
+== JBoss Logging
+
+JBoss Logging is used by default. The JBoss Logging jar is already in the kit and you just need to ensure the jboss-logging library is in your class path. If you use Maven, add the dependency as shown below:
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.jboss.logging</groupId>
+    <artifactId>jboss-loggging</artifactId>
+</dependency>
+----
+
+== Bridging with JBoss Logging
+
+JBoss LogManager is a replacement for the JDK logging system LogManager that fixes or works around many serious problems in the default implementation. To use JBoss LogManager with JBoss Logging, the only need to do is add jboss-logmanager library to class path. If use Maven to pull dependencies, add the dependency as shown below:
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.jboss.logging</groupId>
+    <artifactId>jboss-logmanager</artifactId>
+</dependency>
+----
+
+https://raw.githubusercontent.com/teiid/teiid-embedded-examples/master/embedded-logging/src/main/java/org/teiid/example/TeiidEmbeddedLogging.java[TeiidEmbeddedLogging] is a example for Logging with JBoss LogManager.
+
+A sample logging.properties for Teiid Embedded:
+
+----
+loggers=sun.rmi,com.arjuna
+
+logger.level=TRACE
+logger.handlers=FILE,CONSOLE
+
+logger.sun.rmi.level=WARN
+logger.sun.rmi.useParentHandlers=true
+
+logger.com.arjuna.level=WARN
+logger.com.arjuna.useParentHandlers=true
+
+handler.CONSOLE=org.jboss.logmanager.handlers.ConsoleHandler
+handler.CONSOLE.level=INFO
+handler.CONSOLE.formatter=COLOR-PATTERN
+handler.CONSOLE.properties=autoFlush,target,enabled
+handler.CONSOLE.autoFlush=true
+handler.CONSOLE.target=SYSTEM_OUT
+handler.CONSOLE.enabled=true
+
+handler.FILE=org.jboss.logmanager.handlers.PeriodicRotatingFileHandler
+handler.FILE.formatter=PATTERN
+handler.FILE.properties=append,autoFlush,enabled,suffix,fileName
+handler.FILE.constructorProperties=fileName,append
+handler.FILE.append=true
+handler.FILE.autoFlush=true
+handler.FILE.enabled=true
+handler.FILE.suffix=.yyyy-MM-dd
+handler.FILE.fileName=target/teiid-embedded.log
+
+formatter.PATTERN=org.jboss.logmanager.formatters.PatternFormatter
+formatter.PATTERN.properties=pattern
+formatter.PATTERN.pattern=%d{yyyy-MM-dd HH\:mm\:ss,SSS} %-5p \[%c\] (%t) %s%e%n
+
+formatter.COLOR-PATTERN=org.jboss.logmanager.formatters.PatternFormatter
+formatter.COLOR-PATTERN.properties=pattern
+formatter.COLOR-PATTERN.pattern=%K{level}%d{HH\:mm\:ss,SSS} %-5p \[%c\] (%t) %s%e%n
+----
+
+== Bridging with Log4j
+
+To bridge JBoss Logging with Log4j, the only need to do is have a 1.x log4j jar in your class path.
+
+If your system use Log4j as logging framework, with above JBoss LogManager bridge Log4j functionality and steps in *Bridging with JBoss logging*, it’s easy to set up logging framework consistent between Teiid Embedded and your system.
+
