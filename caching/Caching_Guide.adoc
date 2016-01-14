@@ -1,0 +1,7 @@
+
+= Caching Guide
+
+Teiid provides several capabilities for caching data including: materialized views, result set caching, and code table caching. These techniques can be used to significantly improve performance in many situations.
+
+With the exception of external materialized views, the cached data is accessed through the BufferManager. For better performance the BufferManager setting should be adjusted to the memory constraints of your installation. See the Admin Guide for more on parameter tuning.
+

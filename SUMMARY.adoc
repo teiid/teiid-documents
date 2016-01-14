@@ -1,5 +1,25 @@
 = Summary
 
+
+. link:caching/Caching_Guide.adoc[Caching Guide]
+.. link:caching/Results_Caching.adoc[Results Caching]
+.. link:caching/Materialized_Views.adoc[Materialized Views]
+... link:caching/External_Materialization.adoc[External Materialization]
+... link:caching/Internal_Materialization.adoc[Internal Materialization]
+.. link:caching/Code_Table_Caching.adoc[Code Table Caching]
+.. link:caching/Translator_Results_Caching.adoc[Translator Results Caching]
+.. link:caching/Hints_and_Options.adoc[Hints and Options]
+.. link:caching/Programmatic_Control.adoc[Programmatic Control]
+
 . link:embedded/Embedded_Guide.adoc[Embedded Guide]
 .. link:embedded/Logging_in_Teiid_Embedded.adoc[Logging in Teiid Embedded]
 .. link:embedded/Secure_Embedded_with_PicketBox.adoc[Secure Embedded with PicketBox]
+
+. link:security/Security_Guide.adoc[Security Guide]
+.. link:security/LoginModules.adoc[LoginModules]
+.. link:security/Teiid_Server_Transport_Security.adoc[Teiid Server Transport Security]
+.. link:security/Generating_Self_Signed_Certificates.adoc[Generating Self Signed Certificates]
+.. link:security/Data_Source_Security.adoc[Data Source Security]
+.. link:security/Kerberos_support_through_GSSAPI.adoc[Kerberos support through GSSAPI]
+.. link:security/Custom_Authorization_Validator.adoc[Custom Authorization Validator]
+.. link:security/SAML_Based_Security_For_OData.adoc[SAML Based Security For OData]

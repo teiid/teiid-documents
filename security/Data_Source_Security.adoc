@@ -1,0 +1,151 @@
+== Security at the Data Source Level
+
+In some use cases, the user might need to pass-in different credentials to their data sources based on the logged in user rather than using the shared credentials for all the logged users. To support this feature, JBoss AS and Teiid provide multiple different login modules to be used in conjunction with Teiid’s main security domain. See this http://community.jboss.org/docs/DOC-9350[document] for details on configuration. Note that the below directions need to be used in conjunction with this document.
+
+== CallerIdentity
+
+If client wants to pass in simple text password or a certificate or a custom serialized object as token credential to the data source, user can configure "CallerIdentity" login module. Using this login module, user can pass-in same credential that user logged into Teiid security domain to the data source. Here is a sample configuration:
+
+[source,xml]
+.standalone-teiid.xml
+----
+<subsystem xmlns="urn:jboss:domain:security:1.1">
+    <security-domains>
+        <security-domain name="my-security-domain">
+            <authentication>
+                <login-module code="RealmDirect" flag="required">
+                    <module-option name="password-stacking" value="useFirstPass"/>
+                </login-module>
+
+                <login-module code="org.picketbox.datasource.security.CallerIdentityLoginModule" flag="required">
+                    <module-option name="password-stacking" value="useFirstPass"/>
+                </login-module>
+
+            </authentication>
+        </security-domain>
+    </security-domains>
+</subsystem>  
+----
+
+NOTE: *"applicability"* - CallerIdentity Login module is only applicable when logged in subject contains the text based credentials, where this login module retrieves and uses the username and password for the data source authentication purposes. When working with non character based passwords use Passthough Identity defined below.
+
+In the datasource configuration, instead of supplying the userid/pasword you need to add the following element
+
+[source,xml]
+.In JDBC Datasource
+----
+<datasource jndi-name="java:/mysql-ds" pool-name="mysql-ds" enabled="true">
+    <connection-url>jdbc:mysql://localhost:3306/txns</connection-url>
+    <driver>mysql</driver>
+     <pool><allow-multiple-users/></pool>
+     <security>
+          <security-domain>my-security-domain</security-domain>
+     </security>
+</datasource>
+----
+
+NOTE: This security domain only should be used as data source security domains, not as generic purpose security domain.
+
+[source,xml]
+.*In a connection factory ex:ldap*
+----
+        <resource-adapter>
+            <archive>teiid-connector-ldap.rar</archive>
+            <transaction-support>NoTransaction</transaction-support>
+            <connection-definitions>
+                <connection-definition class-name="org.teiid.resource.adapter.ldap.LDAPManagedConnectionFactory" 
+                        jndi-name="java:/ldapDS" 
+                        enabled="true" 
+                        use-java-context="true" 
+                        pool-name="ldap-ds">
+
+                  <config-property name="LdapUrl">ldap://ldapServer:389</config-property>
+                  <config-property name="LdapAdminUserDN">cn=???,ou=???,dc=???</config-property>
+                  <config-property name="LdapAdminUserPassword">pass</config-property>
+                  <config-property name="LdapTxnTimeoutInMillis">-1</config-property>
+
+                  <security>
+                     <security-domain>my-security-domain</security-domain>
+                 </security>
+                </connection-definition>
+            </connection-definitions>
+        </resource-adapter>
+----
+
+In the above configuration example, in the primary login module “UsersRoles” is setup to hold the passwords in the file, and when user logs in with password, the *same* userid and password will be also set on the logged in Subject after authentication. These credentials can be extracted by the data source by asking for Subject’s private credentials.
+
+Please note that encoding and decoding of this object is strictly up to the user as JBoss AS and Teiid will only act as a carrier of the information from login module to connection factory. Using this CallerIdentity module, the connection pool for data source is segmented by Subject.
+
+== Pass Through Identity
+
+This one is similar to Caller Identity login module, where the calling user’s credentials and roles are passed as is. This is especially useful when dealing with non-text based credentials where you want to pass down the payload as is. The example is when kerberos login is used the logged in subject contains GSSCredential object that contains the GSS token.
+
+[source,xml]
+.standalone-teiid.xml
+----
+<subsystem xmlns="urn:jboss:domain:security:1.1">
+    <security-domains>
+        <security-domain name="passthrough-security">  
+            <authentication>  
+                <login-module code="org.teiid.jboss.PassthroughIdentityLoginModule" flag="required" module="org.jboss.teiid">  
+                    <module-option name="username" value="guest"/>  
+                    <module-option name="password" value="guest"/>  
+                </login-module>  
+            </authentication>  
+        </security-domain>  
+    </security-domains>
+</subsystem>  
+----
+
+In the datasource configuration, instead of supplying the userid/pasword you need to add the following element
+
+[source,xml]
+.In JDBC Datasource
+----
+<datasource jndi-name="java:/mysql-ds" pool-name="mysql-ds" enabled="true">
+    <connection-url>jdbc:mysql://localhost:3306/txns</connection-url>
+    <driver>mysql</driver>
+     <pool><allow-multiple-users/></pool>
+     <security>
+          <security-domain>passthrough-security</security-domain>
+     </security>
+</datasource>
+----
+
+NOTE: This security domain only should be used as data source security domains, not as generic purpose security domain.
+
+== Role Based Credential Map
+
+In some use cases, the users are divided by their functionality and they have varied levels of security access to data sources. These types of users are identified by their roles as to what they have access to. In the above "CallerIdentity" login scenario, that may be too fine-grained security at data sources, that can lead resource exhaustion as every user has their own separate connection. Using Role based security gives a balance, where the users with same role are treated equally for authentication purposes at the data source. Teiid provides a login module called "RoleBasedCredentialMap" for this purposes, where administrator can define a role-based authentication module, where given the role of the user from the primary login module, this module will hold a credential to that role. So, it is the container of credentials that maps to different roles. If a user has multiple roles, the first role that has the credential will be chosen. Below find the sample configuration.
+
+[source,xml]
+.standalone-teiid.xml
+----
+<subsystem xmlns="urn:jboss:domain:security:1.1">
+    <security-domains>
+        <security-domain name="my-security-domain">
+            <authentication>
+                <login-module code="RealmDirect" flag="required">
+                    <module-option name="password-stacking" value="useFirstPass"/>
+                </login-module>
+
+                <login-module code="org.teiid.jboss.RoleBasedCredentialMapIdentityLoginModule" flag="required">
+                    <module-option name="password-stacking" value="useFirstPass"/>
+                    <module-option name="credentialMap" value="teiid-credentialmap.properties"/>
+                </login-module>
+
+            </authentication>
+        </security-domain>
+    </security-domains>
+    </subsystem>
+----
+
+Then follow the same instructions as above in defining the _security-domain_ in the data source or connection factory configuration.
+
+In the above configuration example, in the primary login module "UsersRolesLoginModule" is set up for logging in the primary user and assign some roles. The "RoleBasedCredentialMap" login module is configured to hold role to password information in the file defined by "credentialMap" property. When user logs in, the role information from the primary login module is taken, and extracts the role’s passsword and attaches as a private credential to the Subject.
+
+NOTE: *Obfuscate your passwords* - If you do not like to leave clear text passwords in the configuration file, then you can use JBoss AS vault mechanism for storing the keystore and truststore passwords. Use the directions defined here https://community.jboss.org/docs/DOC-17248[https://community.jboss.org/docs/DOC-17248]
+
+== Translator Customization
+
+Teiid’s extensible https://docs.jboss.org/author/display/TEIID/Translator+Development[Translator framework] also provides hooks for securing access at the DataSource level. The `ExecutionFactory.getConnection` may be overridden to initialize the source connection in any number of ways, such as re-authentication, based upon the Teiid `Subject`, execution payload, session variables, and any of the other relevant information accessible via the `ExecutionContext` and the `CommandContext`. You may even also modify the generated source SQL in any way that is seen fit in the relevant `Execution`.
