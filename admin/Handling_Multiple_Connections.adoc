@@ -1,0 +1,49 @@
+
+= Handling Multiple Connections
+
+Using AdminShell, a user can actively manage more than one connection to a single or multiple Teiid systems. For example, two separate connections can be maintained, one to the development server and one to the integration server at the same time. This is possible because AdminShell supports a feature called named connections.
+
+Every time a connection is made, the connection has an explicit or an implicitly assigned name.   If another connect command is executed then a new connection is made with a unique name and execution will be switched to use the new connection.   The previous connection will be held as it is in its current state, and will not be closed.
+
+You can use the following command to find out the current connection’s name
+
+[source,java]
+----
+name = getConnectionName();    
+----
+
+Knowing the names of the connection that user is working with is important to switch the active connection to a previous connection. To switch the active connection, use the following command and supply the name of the connection to be used
+
+[source,java]
+----
+useConnection("name");    
+----
+
+If user supplies the same name as the active connection as they are currently participating in, then this operation will simply return with out any modifications. There is no limitation the number of simultaneous connections.
+
+The following shows an example of using and switching between two connections.
+
+[source,java]
+----
+// creates a connection 
+connectAsAdmin();               
+
+//capture the connection name
+conn1 = getConnectionName();
+
+deploy("file.vdb")
+
+// creates a second connection 
+connectAsAdmin();       
+
+conn2 = getConnectionName();
+
+deploy("file.vdb")
+
+// switch the connection to "conn1"
+useConnection(conn1);   
+
+// close the connection in the "conn1"
+disconnectAll();
+----
+

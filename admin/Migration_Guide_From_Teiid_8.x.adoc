@@ -1,0 +1,60 @@
+
+= Migration Guide From Teiid 8.x
+
+Teiid strives to maintain consistency between all versions, but when necessary breaking configuration and VDB/sql changes are made - and then typically only for major releases. This guide expands upon the release notes included in the kit to cover changes since 8.x.
+
+== Configuration Changes
+
+=== Security Related
+
+There is now a single session service. Session service related properties, prefixed by authentication, are no longer specified per transport. Instead they now appear as a single sibling to the transports.
+
+[source,xml]
+.*Old standalone.xml Configuration*
+----
+  <transport name="local"/>
+  <transport name="odata">
+    <authentication security-domain="teiid-security"/>
+  </transport>
+  <transport name="jdbc" protocol="teiid" socket-binding="teiid-jdbc">
+    <authentication security-domain="teiid-security"/>
+  </transport>
+  <transport name="odbc" protocol="pg" socket-binding="teiid-odbc">
+    <authentication security-domain="teiid-security"/>
+    <ssl mode="disabled"/>
+  </transport>
+----
+
+[source,xml]
+.*New standalone.xml Configuration*
+----
+  <authentication security-domain="teiid-security"/>
+
+  <transport name="local"/>
+  <transport name="odata"/>
+  <transport name="jdbc" protocol="teiid" socket-binding="teiid-jdbc"/>
+  <transport name="odbc" protocol="pg" socket-binding="teiid-odbc">
+    <ssl mode="disabled"/>
+  </transport>
+----
+
+The default maximum number of sessions was increased to 10000 to accommodate for this change.
+
+In addition there is a new property trust-all-local that defaults to true and allows unauthenticated access by local pass-through connections over the embedded transport - this was effectively the default behavior of 8.x and before when no security-domain was set on the embedded transport. You may choose to disallow that type of access by setting the property to false in stead.
+
+=== Local Transport
+
+The embedded transport was renamed to local to avoid confusion with Teiid embedded.
+
+=== Behavioral
+
+==== widenComparisonToString
+
+The resolver’s default behavior was to widen comparisons to string, but 9.0 now defaults org.teiid.widenComparisonToString to false. For example with this setting as false a comparison such as "timestamp_col < 'a'" will produce an exception whereas when set to true it would effectively evaluate "cast(timestamp_col as string) < 'a'". If you experience resolving errors when a vdb is deployed you should update the vdb if possible before reverting to the old resolving behavior.
+
+== Kitting Changes
+
+=== Legacy Drivers
+
+The drivers for JRE 1.4/1.5 systems have been discontinued. If you still need a client for those platforms, you should use the appropriate 8.x driver.
+

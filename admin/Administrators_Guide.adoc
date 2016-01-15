@@ -1,0 +1,4 @@
+= Administrator's Guide
+
+This guide is intended for any user who assumes role of a developer/administrator of Teiid instance. This guide guides user through installation of Teiid Server, configuration of different services and deployment of Teiid artifacts such as VDBs. Before one can delve into Teiid it is very important to learn few basic constructs of Teiid, like what is VDB? what is Model? etc. For that please read the short introduction here http://teiid.jboss.org/basics/[http://teiid.jboss.org/basics/]
+

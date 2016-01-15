@@ -1,0 +1,88 @@
+
+= Phoenix Data Sources
+
+The following is a example for setting up Phoenix Data Sources, which is precondition for link:JDBC_Data_Sources.adoc[Apache HBase Translator]. In addition to the Data Sources set up, this article also cover mapping Phoenix table to an existing HBase table and creating a new Phoenix table.
+
+There are configuration templates for Phoenix data sources in the "<jboss-install>/docs/teiid/datasources" directory. A complete description how a data source can be added into JBoss AS7.x is also described http://community.jboss.org/docs/DOC-16657[here].
+
+== Configuring a Phoenix data source in JBoss/WildFly (JBoss AS 7.x or later)
+
+Configuring a Phoenix data source is nearly identical to configuring link:JDBC_Data_Sources.adoc[JDBC Data Sources]. The first step is deploying the Phoenix driver jar. Using below CLI command to deploy Phoenix driver:
+
+[source,java]
+----
+module add --name=org.apache.phoenix  --resources=/path/to/phoenix-[version]-client.jar  --dependencies=javax.api,sun.jdk,org.apache.log4j,javax.transaction.api
+/subsystem=datasources/jdbc-driver=phoenix:add(driver-name=phoenix,driver-module-name=org.apache.phoenix,driver-class-name=org.apache.phoenix.jdbc.PhoenixDriver)
+----
+
+The Driver jar can be download from http://phoenix.apache.org/[phoenix document.]
+
+The second steps is creating the Data Source base on above deployed driver, which is also like creating link:JDBC_Data_Sources.adoc[JDBC Data Source]. Using below CLI command to create Data Source:
+
+[source,java]
+----
+/subsystem=datasources/data-source=phoenixDS:add(jndi-name=java:/phoenixDS,  driver-name=phoenix, connection-url=jdbc:phoenix:{zookeeper quorum server}, enabled=true, use-java-context=true, user-name={user}, password={password})
+/subsystem=datasources/data-source=phoenixDS/connection-properties=phoenix.connection.autoCommit:add(value=true)
+----
+
+Please make sure the URL, Driver, and other properties are configured correctly:
+
+* jndi-name - The JNDI name need to match the JNDI name you used in VDB 
+* driver-name - The Driver name need to match the driver you deployed in above steps 
+* connection-url - The URL need to match the HBase zookeeper quorum server, the format like _jdbc:phoenix [ :<zookeeper quorum> [ :<port number> ] [ :<root node> ] ]_, ’_jdbc:phoenix:127.0.0.1:2181_’ is a example
+* user-name/password - The user credentials for Phoenix Connection
+
+The Phoenix Connection AutoCommit default is false. Set _phoenix.connection.autoCommit_  to true if you will be executing INSERT/UPDATE/DELETE statements against Phoenix.
+
+== Mapping Phoenix table to an existing HBase table
+
+Mapping Phoenix table to an existing HBase table has 2 steps. The first step is installing phoenix-[version]-server.jar to the classpath of every HBase region server. An easy way to do this is to copy it into the HBase lib - for more details please refer to the http://phoenix.apache.org/download.html[phoenix documentation].
+
+The second step is executing the DDL to map a Phoenix table to an existing HBase table. The DDL can either be executed via http://phoenix.apache.org/download.html[Phoenix Command Line], or executed by JDBC.
+
+The Following is a example for mapping an existing HBase Customer with the following structure:
+
+image:images/raw.githubusercontent.com/kylinsoong/kylinsoong.github.io/master/img/teiid/hbase-table-1.png[images/raw.githubusercontent.com/kylinsoong/kylinsoong.github.io/master/img/teiid/hbase-table-1.png]
+
+As depicted above, the HBase _Customer_ table have 2 column families, _customer_ and _sales_, and each has 2 column qualifiers, _name_, _city_, _product_ and _amount_ respectively. We can map this Table to Phoenix via DDL:
+
+[source,sql]
+----
+CREATE TABLE IF NOT EXISTS "Customer"("ROW_ID" VARCHAR PRIMARY KEY, "customer"."city" VARCHAR, "customer"."name" VARCHAR, "sales"."amount" VARCHAR, "sales"."product" VARCHAR)
+----
+
+For more about mapping Phoenix table to an existing HBase table please refer to the http://phoenix.apache.org/faq.html#How_I_map_Phoenix_table_to_an_existing_HBase_table[phoenix documentation].
+
+== Creating a new Phoenix table
+
+Creating a new Phoenix table is just like mapping to an existing HBase table. Phoenix will create any metadata (table, column families) that do not exist. Similar to the above example the DDL to create the Phoenix/HBase Customer table would be:
+
+[source,sql]
+----
+CREATE TABLE IF NOT EXISTS "Customer"("ROW_ID" VARCHAR PRIMARY KEY, "customer"."city" VARCHAR, "customer"."name" VARCHAR, "sales"."amount" VARCHAR, "sales"."product" VARCHAR)
+----
+
+== Defining Foreign Table in VDB
+
+Finally, we need define a Foreign Table in VDB that map to Phoenix table, the following principles should be considered in defining Foreign Table:
+
+* nameinsource option in Table used to match Phoenix table name
+* nameinsource option in Column used to match HBase Table’s Columns
+* create a primary key is recommended, the primary key column should match Phoenix table’s primary key/HBase row id.
+
+With "_Mapping Phoenix table to an existing HBase table_" section’s `Customer' table, below is a example:
+
+[source,sql]
+----
+CREATE FOREIGN TABLE Customer (   
+    PK string OPTIONS (nameinsource 'ROW_ID'),   
+    city string OPTIONS (nameinsource '"city"'),   
+    name string OPTIONS (nameinsource '"name"'),   
+    amount string OPTIONS (nameinsource '"amount"'),   
+    product string OPTIONS (nameinsource '"product"'),   
+    CONSTRAINT PK0 PRIMARY KEY(PK)
+) OPTIONS(nameinsource '"Customer"', "UPDATABLE" 'TRUE');
+----
+
+NOTE: "Constraint violation. X may not be null" exception may thrown if updating a table without defining a primary key.
+

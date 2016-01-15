@@ -1,0 +1,24 @@
+
+= Default Connection Properties
+
+The file "connection.properties" in the installation directory of the AdminShell defines the default connection properties with which user can connect to Teiid system. The following properties can be defined using this file
+
+[source,java]
+----
+jdbc.user=user
+jdbc.password=user
+jdbc.url=jdbc:teiid:admin@mm://localhost:31000;
+
+admin.host=localhost
+admin.port=9990
+admin.user=admin
+admin.password=admin
+----
+
+A call to "connect()" or "connectionAsAdmin()" without any input parameters, will connect to the Teiid system using the properties defined in properties file. However, a user can always pass in parameters in the connect method to connect to a same or different server than one mentioned in the "connection.properties".  Look all the all the different connect methods using the "adminHelp()" method.
+ 
+
+NOTE: Note that it is not secure to leave the passwords in clear text, as defined above. Please take necessary measures to secure the properties file, or do not use this feature and always pass in password interactively or some other secure way.
+
+NOTE: At any given time user can be actively connected to more than one system or have more than one connection to same system.  To manage the connections correctly each connection is created given a unique connection name. To learn more about this look at link:Handling_Multiple_Connections.adoc[Handling Multiple Connections].
+

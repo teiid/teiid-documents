@@ -1,0 +1,60 @@
+
+= Apache Accumulo Data Sources
+
+Accumulo data sources use a Teiid specific JCA connector that is deployed into Wildfly 10.0 during installation. There are many ways to create a Accumulo data source, using CLI, link:AdminShell.adoc[AdminShell], admin-console, etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
+
+Execute the following command using the https://docs.jboss.org/author/display/AS72/Admin+Guide#AdminGuide-RunningtheCLI[CLI] once you connected to the Server. Make sure you provide the correct URL and user credentials. Add any additional properties required by the connector by duplicating the "connection-definitions" command below. Edit the JNDI name to match the JNDI name you used in VDB.
+
+[source,java]
+----
+batch
+/subsystem=resource-adapters/resource-adapter=accumulo/connection-definitions=teiid:add(jndi-name=java:/accumulo-ds, class-name=org.teiid.resource.adapter.accumulo.AccumuloManagedConnectionFactory, enabled=true, use-java-context=true)
+/subsystem=resource-adapters/resource-adapter=accumulo/connection-definitions=teiid/config-properties=ZooKeeperServerList:add(value=localhost:2181)
+/subsystem=resource-adapters/resource-adapter=accumulo/connection-definitions=teiid/config-properties=Username:add(value=user)
+/subsystem=resource-adapters/resource-adapter=accumulo/connection-definitions=teiid/config-properties=Password:add(value=password)
+/subsystem=resource-adapters/resource-adapter=accumulo/connection-definitions=teiid/config-properties=InstanceName:add(value=instancename)
+/subsystem=resource-adapters/resource-adapter=accumulo/connection-definitions=teiid/config-properties=Roles:add(value=public)
+/subsystem=resource-adapters/resource-adapter=accumulo:activate
+runbatch
+----
+
+All the properties that are defined on the RAR file are
+
+|===
+|Property Name |Description |Required |Default
+
+|ZooKeeperServerList
+|A comma separated list of zoo keeper server locations. Each location can contain an optional port, of the format host:port
+|true
+|none
+
+|Username
+|Connection User’s Name
+|true
+|none
+
+|Password
+|Connection User’s password
+|true
+|none
+
+|InstanceName
+|Accumulo instance name
+|true
+|none
+
+|Roles
+|optional visibility for user, supply multiple with comma separated
+|false
+|none
+|===
+
+To find out all the properties that are supported by this Accumulo Connector execute the following command in the CLI.
+
+[source,java]
+----
+/subsystem=teiid:read-rar-description(rar-name=accumulo)
+----
+
+TIP: *Developer’s Tip* - If Wildfly 10.0 is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in *"<jboss-install>/docs/teiid/datasources/accumulo"* directory under "resource-adapters" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
+

@@ -1,0 +1,64 @@
+
+= Deploying VDBs
+
+A http://www.jboss.org/teiid/basics/virtualdatabases.html[VDB] is the primary means to define a Virtual Database in Teiid. A user can create a VDB using Teiid Designer - http://www.jboss.org/teiiddesigner/[http://www.jboss.org/teiiddesigner/] - or follow the instructions in the Reference Guide to create a "Dynamic VDB" without Teiid Designer.
+
+Once you have a "VDB" built it can be deployed/undeployed in Teiid runtime in different ways.
+
+WARNING: If VDB versioning is not used to give distinct version numbers, overwriting a VDB of the same name will terminate all connections to the old VDB. It is recommended that VDB versioning be used for production systems.
+
+CAUTION: Removing an existing VDB will immediately clean up VDB file resources, and will automatically terminate existing sessions.
+
+CAUTION: The runtime names of deployed VDB artifacts must either be *.vdb for a zip file or *-vdb.xml for an xml file. Failure to name the deployment properly will result in a deployment failure as the Teiid subsystem will not know how to properly handle the artifact.
+
+== Direct File Deployment
+
+Copy the VDB file into the
+
+----
+<jboss-install>/standalone/deployments
+----
+
+directory. Then create an empty marker file with same name as the VDB with extension ".dodeploy" in the same directory. For example, if your vdb name is "enterprise.vdb", then marker file name must be "enterprise.vdb.dodeploy". Make sure that there are no other VDB files with the same name. If a VDB already exists with the same name, then this VDB will be replaced with the new VDB. This is the simplest way to deploy a VDB. This is mostly designed for quick deployment during development, when the Teiid server is available locally on the developer’s machine.
+
+NOTE: This only works in the Standalone mode. For Domain mode, you must use one of the other available methods.
+
+== Admin Console Deployment (Web)
+
+Use the admin web console at:
+
+----
+http://<host>:<port>/console
+----
+
+More details for this can be found in the Admin Console VDB deployment section. This is the easiest way to deploy a VDB to a remote server.
+
+== CLI based Deployment
+~~~~~~~~~~~~~~~~~~~~
+
+JBoss AS/WildFly provides command line interface (CLI) for doing any kind of administrative task. Execute
+
+----
+bin/jboss-cli.sh --connect
+----
+
+command and run
+
+----
+# in stand alone mode
+deploy /path/to/my.vdb
+
+# in domain mode
+deploy /path/to/my.vdb --server-groups=main-server-group
+----
+
+to deploy the VDB. Note that in domain mode, you need to either select a particular "server-group" or all available server groups are deployment options. Check out https://docs.jboss.org/author/display/AS7/Admin+Guide[CLI documentation] for more general usage of the CLI.
+
+== AdminShell Deployment
+
+Teiid provides a groovy based AdminShell scripting tool, which can be used to deploy a VDB. See the "deploy" method. Consult the link:AdminShell.adoc[AdminShell] documentation for more information. Note that using the AdminShell scripting, you can automate deployment of artifacts in your environment. When using AdminShell, in domain mode, the VDB is deployed to all the available servers.
+
+== Admin API Deployment
+
+The Admin API (look in org.teiid.adminpi.*) provides Java API methods that lets a user connect to a Teiid runtime and deploy a VDB. If you need to programatically deploy a VDB use this method. This method is preferable for OEM users, who are trying to extend the Teiid’s capabilities through their applications. When using Admin API, in domain mode, the VDB is deployed to all the servers.
+
