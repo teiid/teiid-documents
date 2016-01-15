@@ -1,0 +1,175 @@
+
+= Logging
+
+The Teiid system provides a wealth of information via logging. To control logging level, contexts, and log locations, you should be familiar with http://logging.apache.org/log4j/[log4j] and the container’s _standalone-teiid.xml_ or _domain-teiid.xml_ configuration files depending upon the start up mode of WildFly.
+
+All the logs produced by Teiid are prefixed by "org.teiid". This makes it extremely easy to control of of Teiid logging from a single context. Note however that changes to the log configuration file manually require a restart to take affect. CLI based log context modifications are possible, however details are beyond the scope of this document.
+
+If you expect a high volume of logging information or use expensive custom audit/command loggers, it is a good idea to use an aynch appender to minimize the performance impact. For example you can use a configuration snippet like the one below to insert an asynch handler in front of the target appender.
+
+[source,xml]
+----
+<periodic-rotating-file-handler name="COMMAND_FILE">
+    <level name="DEBUG" />
+    <formatter>
+        <pattern-formatter pattern="%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%E%n" />
+    </formatter>
+    <file relative-to="jboss.server.log.dir" path="command.log" />
+    <suffix value=".yyyy-MM-dd" />
+</periodic-rotating-file-handler>
+
+<async-handler name="ASYNC">
+  <level name="DEBUG"/>
+  <queue-length value="1024"/>
+  <overflow-action value="block"/>
+  <subhandlers>
+    <handler name="COMMAND_FILE"/>
+  </subhandlers>
+</async-handler>
+
+<logger category="org.teiid.COMMAND_LOG">
+    <level name="DEBUG" />
+    <handlers>
+        <handler name="ASYNC" />
+    </handlers>
+</logger>
+----
+
+== Logging Contexts
+
+While all of Teiid’s logs are prefixed with _"org.teiid"_, there are more specific contexts depending on the functional area of the system. Note that logs originating from third-party code, including integrated org.jboss components, will be logged through their respective contexts and not through _"org.teiid"_. See the table below for information on contexts relevant to Teiid. See the container’s _standalone-teiid.xml_ for a more complete listing of logging contexts used in the container.
+
+|===
+|Context |Description
+
+|com.arjuna
+|Third-party transaction manager. This will include information about all transactions, not just those for Teiid.
+
+|org.teiid
+|Root context for all Teiid logs. Note: there are potentially other contexts used under org.teiid than are shown in this table.
+
+|org.teiid.PROCESSOR
+|Query processing logs. See also org.teiid.PLANNER for query planning logs.
+
+|org.teiid.PLANNER
+|Query planning logs.
+
+|org.teiid.SECURITY
+|Session/Authentication events - see also AUDIT logging
+
+|org.teiid.TRANSPORT
+|Events related to the socket transport.
+
+|org.teiid.RUNTIME
+|Events related to work management and system start/stop.
+
+|org.teiid.CONNECTOR
+|Connector logs.
+
+|org.teiid.BUFFER_MGR
+|Buffer and storage management logs.
+
+|org.teiid.TXN_LOG
+|Detail log of all transaction operations.
+
+|org.teiid.COMMAND_LOG
+|See command logging
+
+|org.teiid.AUDIT_LOG
+|See audit logging
+
+|org.teiid.ADMIN_API
+|Admin API logs.
+
+|org.teiid.ODBC
+|ODBC logs.
+|===
+
+== Command Logging
+
+Command logging captures executing commands in the Teiid System. This includes user commands (that have been submitted to Teiid at an INFO level), data source commands (that are being executed by the connectors at a DEBUG level), and query plan commands (for when the query planning is performed at a TRACE level) are tracked through command logging.
+
+The user command, "START USER COMMAND", is logged when Teiid starts working on the query for the first time. This does not include the time the query was waiting in the queue. And a corresponding user command, "END USER COMMAND", is logged when the request is complete (i.e. when statement is closed or all the batches are retrieved). There is only one pair of these for every user query.
+
+The query plan command, "PLAN USER COMMAND", is logged when Teiid finishes the query planning process. There is no corresponding ending log entry.
+
+The data source command, "START DATA SRC COMMAND", is logged when a query is sent to the data source. And a corresponding data source command, "END SRC COMMAND", is logged when the execution is closed (i.e all the rows has been read). There can be one pair for each data source query that has been executed by Teiid, and there can be number of pairs depending upon your query.
+
+With this information being captured, the overall query execution time in Teiid can be calculated. Additionally, each source query execution time can be calculated. If the overall query execution time is showing a performance issue, then look at each data source execution time to see where the issue maybe.
+
+To enable command logging to the default log location, simply enable the DETAIL level of logging for the org.teiid.COMMAND_LOG context.
+
+NOTE: *"Want to log to a database?"* - If you would like to log Command log messages to any database, then look at the https://github.com/teiid/teiid-extensions[https://github.com/teiid/teiid-extensions] project. The installation zip file is available in Teiid downloads page.
+
+To enable command logging to an alternative file location, configure a separate file appender for the DETAIL logging of the org.teiid.COMMAND_LOG context. An example of this is shown below and can also be found in the standalone-teiid.xml distributed with Teiid.
+
+[source,xml]
+----
+<periodic-rotating-file-handler name="COMMAND_FILE">
+    <level name="DEBUG" />
+    <formatter>
+        <pattern-formatter pattern="%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%E%n" />
+    </formatter>
+    <file relative-to="jboss.server.log.dir" path="command.log" />
+    <suffix value=".yyyy-MM-dd" />
+</periodic-rotating-file-handler>
+
+<logger category="org.teiid.COMMAND_LOG">
+    <level name="DEBUG" />
+    <handlers>
+        <handler name="COMMAND_FILE" />
+    </handlers>
+</logger>
+----
+
+See the https://docs.jboss.org/author/display/TEIID/Developer%27s+Guide[Developer’s Guide] to develop a https://docs.jboss.org/author/display/TEIID/Custom+Logging[custom logging solution] if file based logging, or any other built-in Log4j logging, is not sufficient.
+
+The following is an example of a data source command and what one would look like when printed to the command log:
+
+[source,java]
+----
+2012-02-22 16:01:53,712 DEBUG [org.teiid.COMMAND_LOG] (Worker1_QueryProcessorQueue11 START DATA SRC COMMAND: startTime=2012-02-22 16:01:53.712 
+requestID=Ku4/dgtZPYk0.5 sourceCommandID=4 txID=null modelName=DTHCP translatorName=jdbc-simple sessionID=Ku4/dgtZPYk0 
+principal=user@teiid-security 
+sql=HCP_ADDR_XREF.HUB_ADDR_ID, CPN_PROMO_HIST.PROMO_STAT_DT FROM CPN_PROMO_HIST, HCP_ADDRESS, HCP_ADDR_XREF 
+WHERE (HCP_ADDRESS.ADDR_ID = CPN_PROMO_HIST.SENT_ADDR_ID) AND (HCP_ADDRESS.ADDR_ID = HCP_ADDR_XREF.ADDR_ID) AND 
+(CPN_PROMO_HIST.PROMO_STAT_CD NOT LIKE 'EMAIL%') AND (CPN_PROMO_HIST.PROMO_STAT_CD <> 'SENT_EM') AND 
+(CPN_PROMO_HIST.PROMO_STAT_DT > {ts'2010-02-22 16:01:52.928'})
+----
+
+Note the following pieces of information:
+
+* modelName: this represents the physical model for the data source that the query is being issued.   
+* translatorName: shows type of translator used to communicate to the data source. 
+* principal: shows the user account who submitted the query
+* startTime/endTime: the time of the action, which is based on the type command being executed.
+* sql: is the command submitted to the engine or to the translator for execution - which is NOT necessarily the final sql command submitted to the actual data source.  But it does show what the query engine decided to push down.
+
+END events will additionally contain:
+
+* finalRowCount: the number of rows returned to the engine by the source query.
+* cpuTime: the number of nanoseconds of cpu time used by the source command. Can be compared to the start/end wall clock times to determine cpu vs. idle time.
+
+== Audit Logging
+
+Audit logging captures important security events. This includes the enforcement of permissions, authentication success/failures, etc.
+
+To enable audit logging to the default log location, simply enable the DEBUG level of logging for the org.teiid.AUDIT_LOG context.
+
+NOTE: *"Want to log to a database?"* - If you would like to log Audit log messages to any database, then look at the https://github.com/teiid/teiid-extensions[https://github.com/teiid/teiid-extensions] project. The installation zip file will be available in Teiid downloads page.
+
+To enable audit logging to an alternative file location, configure a separate file appender for the DETAIL logging of the org.teiid.AUDIT_LOG context. See the https://docs.jboss.org/author/display/TEIID/Developer%27s+Guide[Developer’s Guide] to develop a https://docs.jboss.org/author/display/TEIID/Custom+Logging[custom logging solution] if file based, or any other built-in Log4j, logging is not sufficient.
+
+== Additional Logging Information
+
+Once a session has been created, each log made by Teiid will include the session id and vdb name/version in the MDC (mapped diagnostic context) with keys of teiid-session and teiid-vdb respectively.
+
+Any log in the scope of a query will include the request id in the MDC with key of teiid-request.
+
+Custom loggers, or format patterns, can take advantage of this information to better correlate log entries. See for example Teiid default _standalone-teiid.xml_ that uses a pattern format which includes the session id prior to the message:
+
+[source,xml]
+----
+<pattern-formatter pattern="%d{HH:mm:ss,SSS} %-5p [%c] (%t) %X{teiid-session} %s%E%n"/>
+----
+

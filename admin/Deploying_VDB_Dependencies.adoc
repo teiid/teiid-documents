@@ -1,0 +1,13 @@
+
+= Deploying VDB Dependencies
+
+Apart from deploying the VDB, the user is also responsible for providing all the necessary dependent libraries, configuration for creating the data sources that are needed by the models (schemas) defined in "META-INF/vdb.xml" file inside your VDB. For example, if you are trying to integrate data from Oracle RDBMS and File sources in your VDB, then you are responsible for providing the JDBC driver for the Oracle source and any necessary documents and configuration that are needed by the File Translator.
+
+Data source instances may be used by single VDB, or may be shared with as other VDBs or other applications. Consider sharing connections to data sources that have heavy-weight and resource constrained.
+
+With the exception of JDBC sources, other supported data sources have a corresponding JCA connector (.rar) files in "<jboss-install>/standalone/deployments" directory. Either directly edit the standalone-teiid.xml or use CLI to create the required data sources by the VDB. Example configurations are provided for all the sources in "<jboss-install>/docs/teiid/datasources" directory. Note that in the _Domain_ mode, you must use CLI or admin-console or AdminShell to configure the data sources.
+
+Some data sources may contain passwords or other sensitive information. See the WIKI article https://community.jboss.org/wiki/JBossAS7SecuringPasswords[EncryptingDataSourcePasswords] to not store passwords in plain text.
+
+Once the VDB and its dependencies are deployed, then client applications can connect using the JDBC API. If there are any errors in the deployment, a connection attempt will not be successful and a message will be logged. You can use the admin-console tool or check the log files for errors and correct them before proceeding. Check https://docs.jboss.org/author/display/TEIID/Client+Developer%27s+Guide[Client Developer’s Guide] on how to use JDBC to connect to your VDB.
+

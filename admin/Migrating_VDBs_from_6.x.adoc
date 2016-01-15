@@ -1,0 +1,5 @@
+
+= Migrating VDBs from 6.x
+
+VDBs from prior release contain an older configuration file version that is no longer supported. Note - XML and File based sources from previous releases have changed, and require manual changes to the VDB.
+

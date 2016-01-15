@@ -1,0 +1,65 @@
+
+= Salesforce Data Sources
+
+Salesforce data sources use a Teiid specific JCA connector that is deployed into Wildfly 10.0 during installation. There are two versions of the salesforce resource adapter - salesforce, which currently provides connectivity to the 22.0 Salesforce API and salesforce-34, which provides connectivity to the 34.0 Salesforce API. The version 22.0 support has been deprecated.
+
+If you need connectivity to an API version other than what is built in, please utilize the project https://github.com/teiid/salesforce[https://github.com/teiid/salesforce] to generate new resource adapter / translator pair.
+
+There are many ways to create the salesforce data source, using CLI,link:AdminShell.adoc[AdminShell], admin-console etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
+
+Execute following command using the https://docs.jboss.org/author/display/AS72/Admin+Guide#AdminGuide-RunningtheCLI[CLI] once you connected to the Server. Make sure you provide the correct URL and user credentials. Add any additional properties required by the connector by duplicating the "connection-definitions" command below. Edit the JNDI name to match the JNDI name you used in VDB.
+
+[source,java]
+----
+batch
+/subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS:add(jndi-name=java:/sfDS, class-name=org.teiid.resource.adapter.salesforce.SalesForceManagedConnectionFactory, enabled=true, use-java-context=true)
+/subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=URL:add(value=https://www.salesforce.com/services/Soap/u/22.0)
+/subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=username:add(value={user})
+/subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=password:add(value={password})
+/subsystem=resource-adapters/resource-adapter=salesforce:activate
+runbatch
+----
+
+The salesforce-34 connection definition configuration is similar to the above. The resource adapter name would instead be salesforce-34, and the url would point to 34.0 instead.
+
+To find out all the properties that are supported by this Salesforce Connector execute the following command in the CLI.
+
+[source,sql]
+----
+/subsystem=teiid:read-rar-description(rar-name=salesforce)
+----
+
+TIP: *Developer’s Tip* - If Wildfly 10.0 is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in *"<jboss-install>/docs/teiid/datasources/salesforce" directory under "resource-adapters" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
+
+== Mutual Authentication
+
+If you need to connect to Salesforce using Mutual Authentication, follow the directions to setup Salesforce at https://help.salesforce.com/apex/HTViewHelpDoc?id=security_keys_uploading_mutual_auth_cert.htm&language=en_US[https://help.salesforce.com/apex/HTViewHelpDoc?id=security_keys_uploading_mutual_auth_cert.htm&language=en_US] then configure the below CXF configuration file on the resource-adapter by adding following property to above cli script
+
+[source,java]
+----
+/subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=ConfigFile:add(value=${jboss.server.config.dir}/cxf-https.xml)
+----
+
+[source,xml]
+.*cxf-https.xml*
+----
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:sec="http://cxf.apache.org/configuration/security"
+    xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+    xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
+    xsi:schemaLocation="http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/configuration/security.xsd">
+  
+    <http-conf:conduit name="*.http-conduit">
+        <http-conf:client ConnectionTimeout="120000" ReceiveTimeout="240000"/>
+        <http-conf:tlsClientParameters secureSocketProtocol="SSL">
+          <sec:trustManagers>
+            <sec:keyStore type="JKS" password="changeit" file="/path/to/truststore.jks"/>
+          </sec:trustManagers>
+        </http-conf:tlsClientParameters>
+    </http-conf:conduit>
+</beans>
+----
+
+more information about CXF configuration file can be found at http://cxf.apache.org/docs/client-http-transport-including-ssl-support.html#ClientHTTPTransport(includingSSLsupport)-ConfiguringSSLSupport[http://cxf.apache.org/docs/client-http-transport-including-ssl-support.html#ClientHTTPTransport(includingSSLsupport)-ConfiguringSSLSupport]
+

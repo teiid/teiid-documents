@@ -1,0 +1,169 @@
+
+= Getting Started
+
+To learn the basics of http://groovy.codehaus.org/[Groovy] take a look at their documents and tutorials on their website.
+
+Basic knowledge of the Java programming language and types is required in order to effectively design and develop scripts using the AdminShell. To learn Java language find learning resources at http://java.sun.com/[http://java.sun.com].
+
+You can learn about the Teiid AdminAPI either using "adminHelp()" function or by using the JavaDocs.
+
+AdminShell is a specialized version of Groovy which works in several different modes: interactive shell, graphical console, or script run mode. In interactive shell mode (launched via adminshell), the user can invoke connect to a live Teiid system and issue any ad-hoc commands to control the system. The interactive buffer can be used to develop a script and the interactive session input and output can be captured into a log file, more on this later in the document.
+
+In graphical mode (lanched via adminshell-console), the user can develop and run scripts using a text editor that supports syntax highlighting.
+
+In the script run mode, the user can execute/play back previously developed scripts. This mode especially useful to automate any testing or to perform any repeated configurations/migrations changes to a Teiid system.
+
+== Essential Rules
+
+To use AdminShell successfully, there are some basic syntactical rules to keep in mind.
+
+1.  In interactive shell mode, most commands (as seen by the help command) are used to control shell behavior and are not general Groovy scripting constructs. Admin methods will typically be called using functional notation:
+
+[source,java]
+----
+connectAsAdmin()
+----
+
+2.  All commands and functions are case sensitive.
+3.  An ending semicolon is optional for Groovy statements.
+4.  If a function requires input parameter(s), they should be declared inside "(" and ")". A function may have more than one parameter. String parameters can be wrapped in double or single quotes. Example:
+
+[source,java]
+----
+connectAsAdmin("localhost", "9990", "user", "password", "conn1")
+----
+
+5.  Local admin connection may not require a password. Remote connections will typically be over the 9993 https port instead. Other Java methods and classes can be used from your scripts, if the required Java class libraries are already in class path. You may place additional jars in the lib directory to have be automatically part of the class path. An example showing an import:
+
+[source,java]
+----
+import my.package.*;
+myObject = new MyClass();
+myObject.doSomething();
+----
+
+To execute the commands and arbitrary script in interactive mode you enter them first and press enter to execute, then enter the next line, so on.
+
+To exit the tool in the interactive mode, first disconnect if you are connected to the Teiid system by executing "disconnect();" then type "exit". In the script mode, when execution of the script finishes the tool will exit automatically, however you still have to disconnect from Teiid system in the script.
+
+NOTE: If SSL is turned on the Teiid server, you would need to adjust the connection URL and the client SSL settings as necessary (typically this will only be needed for 2-way SSL).
+
+== Help
+
+The adminHelp() methods lists all the available administrative API methods in the AdminShell. Please note that none of the Groovy Shell commands or other available function calls will be shown in this list
+
+[source,java]
+----
+adminHelp();
+----
+
+To get a specific definition about a method and it’s required input parameters, use adminHelp("method")
+
+[source,java]
+----
+adminHelp("deploy");
+
+/*
+ *Deploy a VDB from file
+ */
+void deploy(
+    String /* file name */)
+  throws AdminException
+  throws FileNotFoundException
+----
+
+The sqlHelp() methods lists all Sql extension methods.
+
+[source,java]
+----
+sqlHelp();
+----
+
+To get a specific definition about a method and it’s required input parameters, use sqlHelp("method")
+
+== Basic Commands
+
+The list below contains some common commands used in AdminShell.
+
+[source,java]
+.*Basic Commands*
+----
+println "xxx";   // print something to console
+
+adminHelp();     // shows all the available admin commands; 
+
+sql = connect(); // get an extended Groovy Sql connection using connection.properties file
+
+sql.execute(<SQL>); // run any SQL command. 
+
+connectAsAdmin(); // connect as admin; no need have the vdb name. SQL commands will not work under this connection
+
+println getConnectionName();  // returns the current connection name
+
+useConnection(<connection name>); // switches to using the given connection settings
+
+disconnect();   // disconnects the current connection in the context
+----
+
+=== Some examples
+
+[source,java]
+.*Example of Deploying a VDB*
+----
+connectAsAdmin();
+deploy("/path/to/<name>.vdb");
+
+// check to validate the deployment
+VDB vdb = getVDB("<name>", 1);
+if (vdb != null){
+     print (vdb.getName()+"."+vdb.getVersion()+" is deployed";
+}
+else {
+     print ("<name>.vdb failed to deploy";
+}
+----
+
+[source,java]
+.*Create a Datasource(oracle)*
+----
+connectAsAdmin();
+
+// first deploy the JDBC jar file for Oracle
+deploy("ojdbc6.jar");
+
+props = new Properties();
+props.setProperty("connection-url","jdbc:oracle:thin:@<host>:1521:<sid>");
+props.setProperty("user-name", "scott");
+props.setProperty("password", "tiger");
+    
+createDataSource("oracleDS", "ojdbc6.jar", props);
+----
+
+[source,java]
+.*Create a Resource Adapter(file) based Data source*
+----
+connectAsAdmin();
+
+props = new Properties();
+props.setProperty("jndi-name","java:/fileDS");
+props.setProperty("ParentDirectory", "${jboss.server.base.dir}/myData");
+props.setProperty("AllowParentPaths", "true");
+
+// NOTE:  the 2nd argument, template-name, must match the 'id' of one of the resource-adapters that are currently defined in the server 
+createDataSource("MyFile", "file", props);
+----
+
+[source,java]
+.*Execute SQL Query against Teiid*
+----
+sql = connect("jdbc:teiid:<vdb>@mm://<host>:31000", "user", "user");
+
+// select
+sql.eachRow("select * from sys.tables") { println "${it}" }
+
+// update, insert, delete
+sql.execute(<sql command>);
+----
+
+NOTE: Learn more about http://groovy.codehaus.org/Tutorial+6+-+Groovy+SQL[Groovy SQL]
+

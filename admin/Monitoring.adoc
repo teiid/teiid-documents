@@ -1,0 +1,140 @@
+
+= Monitoring
+----------
+
+Teiid provides information about its current operational state. This information can be useful in tuning, monitoring, and managing load and through-put. The runtime data can be accessed using administrative tools (i.e. Admin Console, AdminShell or Admin API).
+
+== Query/Session details:
+
+|===
+|Name |Description
+
+|Current Sessions
+|List current connected sessions
+
+|Current Request
+|List current executing requests
+
+|Current Transactions
+|List current executing transactions
+
+|Query Plan
+|Retrieves the query plan for a specific request
+|===
+
+There are administrative options for terminating sessions, queries, and transactions.
+
+== Metrics:
+
+=== Session/Query
+
+|===
+|Name |Property |Description |Comment
+
+|Session Count
+|sessionCount
+|Indicates the number of user connections currently active
+|To ensure number of sessions are not restricted at peak times, check _max-sessions-allowed_ (default 5000) is set accordingly and review _sessions-expiration-timelimit_
+
+|Query Count
+|queryCount
+|Indicates the number of queries currently active.
+|
+ 
+|Active Query Plan Count
+|ENGINE_STATISTIC.active-plans-count
+|Number of query plans currently being processed
+|To ensure maximum through-put, see the QueryEngine section in link:Threading.adoc[Threading] on tuning.
+
+|Waiting Query Plan Count
+|ENGINE_STATISTIC.waiting-plans-count
+|Number of query plans currently waiting
+|
+ 
+|Max Waiting Query Plan Watermark
+|ENGINE_STATISTIC.max-waitplan-watermark
+|The maximum number of query plans that have been waiting at one time, since the last time the server started
+|
+
+|Long Running Queries
+|longRunningQueries
+|List current executing queries that have surpassed the query threshold(_query-threshold-in-seconds_).
+|Setup alert to warn when one or more queries are consuming resources for an extended period of time. If running too long, an option is to cancel request or increase threshold.
+|===
+
+=== Buffer Manager
+
+For tuning suggestions, see link:Memory_Management.adoc[Memory Management].
+
+|===
+|Name |Property |Description |Comment
+
+|Disk Write Count
+|ENGINE_STATISTIC.buffermgr-disk-write-count
+|Disk write count for the buffer manager.
+|
+ 
+|Disk Read Count
+|ENGINE_STATISTIC.buffermgr-disk-read-count
+|Disk read count for the buffer manager.
+|
+ 
+|Cache Write Count
+|ENGINE_STATISTIC.buffermgr-cache-write-count
+|Cache write count for the buffer manager.
+|
+ 
+|Cache Read Count
+|ENGINE_STATISTIC.buffermgr-cache-read-count
+|Cache read count for the buffer manager.
+|
+ 
+|Disk Space Used (MB)
+|ENGINE_STATISTIC.buffermgr-diskspace-used-mb
+|Indicates amount of storage space currently used by buffer files
+|Setup alert to warn when used buffer space is at an unacceptable level, based on the setting of _max-buffer-space_
+
+|Total memory in use (KB)
+|ENGINE_STATISTIC.total-memory-inuse-kb
+|Estimate of the current memory usage in kilobytes.
+|
+
+|Total memory in use by active plans (KB)
+|ENGINE_STATISTIC.total-memory-inuse-active-plans-kb
+|Estimate of the current memory usage by active plans in kilobytes
+|
+|===
+
+ 
+
+=== Plan/Result Cache
+
+For tuning suggestions, see link:Cache_Tuning.adoc[Cache Tuning].
+
+|===
+|Name |Property |Description
+
+|Prepared Plan Cache Size
+|PREPARED_PLAN_CACHE.total-entries
+|Current number of entries in cache.
+
+|Prepared Plan Cache # of Requests
+|PREPARED_PLAN_CACHE.request-count
+|Total number of requests made against cache.
+
+|Prepared Plan Cache Hit Ratio %
+|PREPARED_PLAN_CACHE.hit-ratio
+|Percentage of positive cache hits
+
+|ResultSet Cache Size
+|QUERY_SERVICE_RESULT_SET_CACHE.total-entries
+|Current number of entries in cache.
+
+|ResultSet Cache # of Requests
+|QUERY_SERVICE_RESULT_SET_CACHE.request-count
+|Total number of requests made against cache.
+
+|ResultSet Cache Hit Ratio %
+|QUERY_SERVICE_RESULT_SET_CACHE.hit-ratio
+|Percentage of positive cache hits.
+|===

@@ -1,0 +1,53 @@
+
+= Coherence Data Sources
+
+Coherence data sources use a Teiid specific JCA connector that is deployed into Wildfly 10.0 during installation. This connector can be configured to support running Coherence within the same VM as Teiid or as a remote cache.
+
+The following are the configuration properties that can be configured for this connector:
+
+|===
+|Property Name |Req. |Description
+
+|CacheName
+|Y
+|Name of the Coherence Cache to read and write to
+
+|CacheClassName
+|Y
+|Name of the Class stored in the Coherence Cache
+
+|PrimaryKeyFieldName
+|Y
+|The name of the attribute that identifies the primary key to the Cache
+
+|PrimaryKeyFieldClassName
+|N
+|[Optional]The primary key class name that identifies how the key is stored in the cache, if different than the object type of the primary key field
+|===
+
+There are many ways to create the data source, using CLI, link:AdminShell.adoc[AdminShell], admin-console etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
+
+Execute following command using https://docs.jboss.org/author/display/AS72/Admin+Guide#AdminGuide-RunningtheCLI[CLI] once you connected to the Server. Make sure you provide the correct directory name and other properties below. Add any additional properties required by the connector by duplicating the "connection-definitions" command below. Edit the JNDI name to match the JNDI name you used in VDB. This script can be found in the https://github.com/teiid/teiid-coherence/blob/master/connector-coherence/kits/jboss-as7/docs/teiid/datasources/coherence/create-coherence-ds.cli[github repository].
+
+[source,java]
+----
+batch
+/subsystem=resource-adapters/resource-adapter=coherence:add(module=org.jboss.teiid.resource-adapter.coherence)
+/subsystem=resource-adapters/resource-adapter=coherence/connection-definitions=coherenceDS:add(jndi-name="java:/coherenceDS", class-name=org.teiid.resource.adapter.coherence.CoherenceManagedConnectionFactory, enabled="true", use-java-context="true")
+/subsystem=resource-adapters/resource-adapter=coherence/connection-definitions=coherenceDS/config-properties=CacheName:add(value="class.name")
+/subsystem=resource-adapters/resource-adapter=coherence/connection-definitions=coherenceDS/config-properties=CacheClassName:add(value="cache.class.name")
+/subsystem=resource-adapters/resource-adapter=coherence/connection-definitions=coherenceDS/config-properties=PrimaryKeyFieldName:add(value="key.name")
+#/subsystem=resource-adapters/resource-adapter=coherence/connection-definitions=coherenceDS/config-properties=PrimaryKeyFieldClassName:add(value="${key.field.class.name}")
+/subsystem=resource-adapters/resource-adapter=coherence:activaterunbatch
+----
+
+To find out all the properties that are supported by this Coherence Connector execute the following command in the CLI.
+
+[source,java]
+----
+/subsystem=teiid:read-rar-description(rar-name=coherence)
+----
+
+TIP: *Developer’s Tip* - If Wildfly 10.0 is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration. An example of what can be copy and pasted can be found in the https://github.com/teiid/teiid-coherence/blob/master/connector-coherence/kits/jboss-as7/docs/teiid/datasources/coherence/coherence-ds.xml[github
+repository]. Shutdown the server before you edit this file, and restart after the modifications are done.
+

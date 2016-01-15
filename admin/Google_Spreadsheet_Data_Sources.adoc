@@ -1,0 +1,56 @@
+
+== Google Spreadsheet Data Sources
+
+Authentication to your google account may be done in two ways. ClientLogin (requires login and password) or OAuth (more complicated, requires user to supply refresh token).
+
+Google JCA connector is named teiid-connector-google.rar. The examples include a sample google.xml file. The JCA connector has number of config-properties to drive authentication.  The JCA connector connects to exactly one spreadsheet.
+
+|===
+|Config property |Description
+
+|AuthMethod
+|Method to access Google. This property can be set to one of: ClientLogin, OAuth2. If the setting is ClientLogin it is necessary to provide additional two config properties Username, Password. If the setting is OAuth2 it is necessary to provide RefreshToken.
+
+|RefreshToken
+|Use guide below to retrieve RefreshToken. Request access to Google Drive and Spreadsheet API. Applicable only if AuthMethod=OAuth2
+
+|Username
+|Username to Google account. Applicable only if AuthMethod=ClientLogin
+
+|Password
+|Password to Google account. Applicable only if AuthMethod=ClientLogin
+
+|SpreadsheetName
+|Required property with name of the Spreadsheet that is datasource for this connector.
+
+|BatchSize
+|Maximum number of rows that can be fetched at a time. Defaults to 4096.
+|===
+
+== Getting an OAuth Refresh Token
+
+Use this request:
+
+https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive+https%3A%2F%2Fspreadsheets.google.com%2Ffeeds&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&client_id=217138521084.apps.googleusercontent.com[https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive+https%3A%2F%2Fspreadsheets.google.com%2Ffeeds&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&client_id=217138521084.apps.googleusercontent.com]
+
+Then copy the authorization code into following POST request and run it in command line:
+
+[source,curl]
+----
+curl \--data-urlencode code=<AUTH_CODE> \
+--data-urlencode client_id=217138521084.apps.googleusercontent.com \
+--data-urlencode client_secret=gXQ6-lOkEjE1lVcz7giB4Poy \
+--data-urlencode redirect_uri=urn:ietf:wg:oauth:2.0:oob \
+--data-urlencode grant_type=authorization_code https://accounts.google.com/o/oauth2/token
+----
+
+The refresh token will be in the response
+
+== Implementation Details
+
+Google Translator is implemented using GData API [1] (java library for [4]) and Google Visualization Protocol [2]. Authentication is implemented using OAuth2 for devices [3]. 
+1. https://developers.google.com/google-apps/spreadsheets/[https://developers.google.com/google-apps/spreadsheets/]
+2. https://developers.google.com/chart/interactive/docs/querylanguage[https://developers.google.com/chart/interactive/docs/querylanguage] 
+3. https://developers.google.com/accounts/docs/OAuth2ForDevices[https://developers.google.com/accounts/docs/OAuth2ForDevices] 
+4. https://developers.google.com/google-apps/spreadsheets[https://developers.google.com/google-apps/spreadsheets]
+

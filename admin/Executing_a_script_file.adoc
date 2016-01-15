@@ -1,0 +1,40 @@
+
+= Executing a script file
+
+To execute a script file "foo.groovy" in a directory "some/directory" in the interactive comamnd line tool, execute as following
+
+[source,java]
+----
+. some/directory/foo.groovy
+----
+
+"foo.groovy" is read into current context of the shell as if you typed in the whole document. If your script only contained method calls, you can explicitly invoke the call to execute.
+
+Full execute syntax may also be used, and is required outside of the interactive command line tool:
+
+[source,java]
+----
+evaluate("some/directory/foo.groovy" as File) 
+----
+
+To execute the same file without entering interactive mode, run
+
+[source,java]
+----
+./adminshell.sh . some/directory/foo.groovy
+----
+
+Parameters can be passed in as Java System properties. For example
+
+[source,java]
+----
+./adminshell.sh -Dparam=value . some/directory/foo.groovy
+----
+
+Inside the script file, you can access these properties using System.getProperty
+
+[source,java]
+----
+value = System.getProperty(“param”); // will return "value"
+----
+
