@@ -1,0 +1,28 @@
+
+= ODBC Support
+
+Open Database Connectivity (ODBC) is a standard database access method developed by the SQL Access group in 1992. ODBC, just like JDBC in Java, allows consistent client access regardless of which database management system (DBMS) is handling the data. ODBC uses a driver to translate the application’s data queries into commands that the DBMS understands. For this to work, both the application and the DBMS must be ODBC-compliant – that is, the application must be capable of issuing ODBC commands and the DBMS must be capable of responding to them.
+
+Teiid can provide ODBC access to deployed VDBs in the Teiid runtime through http://www.postgresql.org/[PostgreSQL]’s ODBC driver. This is possible because Teiid has a PostgreSQL server emulation layer accessible via socket clients.
+
+NOTE: By default, ODBC is enabled and running on on port _35432_.
+
+The pg emulation is not complete. The intention of the ODBC access is to provide non-JDBC connectivity to issue Teiid queries - not pgsql queries. While many PostgreSQL constructs are supported the default behavior for queries matches Teiid’s expectations. See https://docs.jboss.org/author/display/TEIID/System+Properties[System Properties] for optional properties that further emulate pgsql handling.
+
+Known Limitations:
+
+* Updateable cursors are not supported. You will receive parsing errors containing the pg system column ctid if this feature is not disabled.
+* LO support is not available. LOBs will be returned as string or bytea as appropriate using the transport max lob size setting.
+* The Teiid object type will map to the PostgreSQL UNKNOWN type, which cannot be serialized by the ODBC layer. Cast/Convert should be used to provide a type hint when appropriate - for example teiid_session_set returns an object value. "SELECT teiid_session_set('x', 'y')" will fail, but "SELECT cast(teiid_session_set('x', 'y') as string)" will succeed.
+
+Before an application can use ODBC, you must first install the ODBC
+driver on same machine that the application is running on and then
+create a Data Source Name (DSN) that represents a connection profile for
+your Teiid VDB.
+
+WARNING: By default Teiid supports plain text password authentication for ODBC. If the client/server are not configured to use SSL or GSS authentication, the password will be sent in plain text over the network. If you need secure passwords in transit and are not using SSL, then consider installing a security domain that will accept safe password values from the client (for example encrypted or hashed).
+
+See the https://docs.jboss.org/author/display/TEIID/Security+Guide[Security Guide] for details on configuring SSL for and using Kerberos with the pg transport.
+
+Many times is is not possible to use Teiid specific connection properties when making an ODBC connection. If you find yourself in this situation and cannot use post connection SET statements, then the VDB itself may take default connection properties for ODBC. Use VDB properties of the form connection.XXX to control things like partial results mode, result set caching, etc.
+

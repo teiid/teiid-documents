@@ -1,0 +1,65 @@
+
+= Local Transactions
+
+A Local transaction from a client perspective affects only a single resource, but can coordinate multiple statements.
+
+== JDBC Specific
+
+The `Connection` class uses the "autoCommit" flag to explicitly control local transactions. By default, autoCommit is set to "true", which indicates request level or implicit transaction control. example of how to use local transactions by setting the autoCommit flag to false.
+
+[source,java]
+.*Local transaction control using autoCommit*
+----
+// Set auto commit to false and start a transaction
+connection.setAutoCommit(false);
+
+try {
+    // Execute multiple updates
+    Statement statement = connection.createStatement();
+    statement.executeUpdate(“INSERT INTO Accounts (ID, Name) VALUES (10, ‘Mike’)”);
+    statement.executeUpdate(“INSERT INTO Accounts (ID, Name) VALUES (15, ‘John’)”);
+    statement.close();
+
+    // Commit the transaction
+    connection.commit();
+
+} catch(SQLException e) {
+    // If an error occurs, rollback the transaction
+    connection.rollback();
+}
+----
+
+This example demonstrates several things:
+
+1.  Setting autoCommit flag to false. This will start a transaction bound to the connection.
+2.  Executing multiple updates within the context of the transaction.
+3.  When the statements are complete, the transaction is committed by calling commit().
+4.  If an error occurs, the transaction is rolled back using the rollback() method. 
+
+Any of the following operations will end a local transaction:
+
+1.  Connection.setAutoCommit(true) – if previously set to false
+2.  Connection.commit()
+3.  Connection.rollback()
+4.  A transaction will be rolled back automatically if it times out.
+
+=== Turning Off JDBC Local Transaction Controls
+
+In some cases, tools or frameworks above Teiid will call setAutoCommit(false), commit() and rollback() even when all access is read-only and no transactions are necessary. In the scope of a local transaction Teiid will start and attempt to commit an XA transaction, possibly complicating configuration or causing performance degradation.
+
+In these cases, you can override the default JDBC behavior to indicate that these methods should perform no action regardless of the commands being executed. To turn off the use of local transactions, add this property to the JDBC connection URL
+
+[source,java]
+----
+disableLocalTxn=true
+----
+
+TIP: Turning off local transactions can be dangerous and can result in inconsistent results (if reading data) or inconsistent data in data stores (if writing data). For safety, this mode should be used only if you are certain that the calling application does not need local transactions.
+
+== Transaction Statements
+
+Transaction control statements, which are also applicable to ODBC clients, explicitly control the local transaction boundaries. The relevant statements are:
+
+* *START TRANSACTION*- synonym for `connection.setAutoCommit(false)`
+* *COMMIT*- synonym for `connection.setAutoCommit(true)` 
+* *ROLLBACK*- synonym for `connection.rollback()` and returning to auto commit mode.

@@ -1,0 +1,11 @@
+
+= JDBC Support
+
+Teiid provides a robust JDBC driver that implements most of the JDBC API according to the latest specification and supported Java version. Most tooling designed to work with JDBC should work seamlessly with the Teiid driver. When in doubt, see link:Unsupported_JDBC_Methods.adoc[Unsupported JDBC Methods] for functionality that has yet to be implemented.
+
+If you’re needs go beyond JDBC, Teiid has also provided link:JDBC_Extensions.adoc[JDBC Extensions] for asynch handling, federation, and other features.
+
+== Generated Keys
+
+Teiid supports returning generated keys for JDBC sources and from Teiid temp tables with SERIAL primary key columns. However the current implementation will return only the last set of keys generated and will return the key results directly from the source - no view projection of other intermediate handling is performed. For most scenarios (single source inserts) this handling is sufficient. A custom solution may need to be developed if you are using a FOR EACH ROW instead of trigger to process your inserts and target multiple tables that each return generated keys. It is possible to develop a UDF that also manipulates the returned generated keys - see the `org.teiid.CommandContext` methods dealing with generated keys for more.
+

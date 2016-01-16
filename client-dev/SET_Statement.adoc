@@ -1,0 +1,58 @@
+
+= SET Statement
+
+Execution properties may also be set on the connection by using the SET statement. The SET statement is not yet a language feature of Teiid and is handled only in the JDBC client.
+
+SET Syntax:
+
+* SET [PAYLOAD] (parameter|SESSION AUTHORIZATION) value
+* SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL (READ UNCOMMITTED|READ COMMITTED|REPEATABLE READ|SERIALIZABLE)
+
+Syntax Rules:
+
+* The parameter must be an identifier - it can contain spaces or other special characters only if quoted.
+* The value may be either a non-quoted identifier or a quoted string literal value.
+* If payload is specified, e.g. "SET PAYLOAD x y", then a session scoped payload properties object will have the corresponding name value pair set.  The payload object is not fully session scoped.  It will be removed from the session when the XAConnection handle is closed/returned to the pool (assumes the use of TeiidDataSource).  The session scoped payload is superseded by the usage of TeiidStatement.setPayload.
+* Using SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL is equivalent to calling Connection.setTransactionIsolation with the corresponding level.
+
+The SET statement is most commonly used to control planning and execution.
+
+* SET SHOWPLAN (ON|DEBUG|OFF)
+* SET NOEXEC (ON|OFF)
+
+[source,java]
+.*Enabling Plan Debug*
+----
+
+Statement s = connection.createStatement();
+s.execute("SET SHOWPLAN DEBUG");
+...
+Statement s1 = connection.createStatement();
+ResultSet rs = s1.executeQuery("select col from table");
+
+ResultSet planRs = s1.exeuteQuery("SHOW PLAN");
+planRs.next();
+String debugLog = planRs.getString("DEBUG_LOG");
+----
+
+
+
+[source,java]
+.*Query Plan without executing the query*
+----
+s.execute("SET NOEXEC ON");
+s.execute("SET SHOWPLAN DEBUG");
+...
+e.execute("SET NOEXEC OFF");
+----
+
+The SET statement may also be used to control authorization. A SET SESSION AUTHORIZATION statement will perform a link:Reauthentication.adoc[Reauthentication] given the credentials currently set on the connection. The connection credentials may be changed by issuing a SET PASSWORD statement. A SET PASSWORD statement does not perform a reauthentication.
+
+[source,java]
+.*Changing Session Authorization*
+----
+Statement s = connection.createStatement();
+s.execute("SET PASSWORD 'someval'");
+s.execute("SET SESSION AUTHORIZATION 'newuser'");
+----
+

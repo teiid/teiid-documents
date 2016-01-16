@@ -1,0 +1,19 @@
+
+= DSN Less Connection
+
+You can also connect to Teiid VDB using ODBC with out explicitly creating a DSN. However, in these scenarios your application needs, what is called as "DSN less connection string". The below is a sample connection string
+
+For Windows:
+
+----
+ODBC;DRIVER={PostgreSQL Unicode};DATABASE=<vdb-name>;SERVER=<host-name>;PORT=<port>;Uid=<username>;Pwd=<password>;c4=0;c7=0;            
+----
+
+For *nix:
+
+----
+ODBC;DRIVER={PostgreSQL};DATABASE=<vdb-name>;SERVER=<host-name>;PORT=<port>;Uid=<username>;Pwd=<password>;c4=0;c7=0;            
+----
+
+All the available pg driver connection options with their descriptions that can be used are defined here http://psqlodbc.projects.pgfoundry.org/docs/config.html[http://psqlodbc.projects.pgfoundry.org/docs/config.html]. When using these properties on the connection string, their property names are defined here http://psqlodbc.projects.pgfoundry.org/docs/config-opt.html[http://psqlodbc.projects.pgfoundry.org/docs/config-opt.html]
+

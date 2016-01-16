@@ -1,0 +1,131 @@
+
+= Driver Connection
+
+Use *org.teiid.jdbc.TeiidDriver* as the driver class.
+
+Use the following URL format for JDBC connections:
+
+[source,java]
+----
+jdbc:teiid:<vdb-name>@mm[s]://<host>:<port>;[prop-name=prop-value;]*
+----
+
+URL Components
+
+1.  <vdb-name> - Name of the VDB you are connecting to. Optionally VDB name can also contain version information inside it. For example: "myvdb.2", this is equivalent to supplying the "version=2" connection property defined below. However, use of vdb name in this format and the "version" property at the same time is not allowed.
+2.  mm - defines Teiid JDBC protocol, mms defines a secure channel (see link:SSL_Client_Connections.adoc[SSL Client Connections] for more)
+3.  <host> - defines the server where the Teiid Server is installed. If you are using IPv6 binding address as the host name, place it in square brackets. ex:[::1]
+4.  <port> - defines the port on which the Teiid Server is listening for incoming JDBC connections.
+5.  [prop-name=prop-value] - additionally you can supply any number of name value pairs separated by semi-colon [;]. All supported URL properties are defined in the link:Driver_Connection.adoc[connection properties] section. Property values should be URL encoded if they contain reserved characters, e.g. (’?’, '=', ';', etc.)
+
+== URL Connection Properties
+
+The following table shows all the supported connection properties that can used with Teiid JDBC Driver URL connection string, or on the Teiid JDBC Data Source class.
+
+.*Connection Properties*
+[cols="2,2,5a"]
+|===
+|Property Name |Type |Description
+
+|`ApplicationName`
+|`String`
+|Name of the client application; allows the administrator to identify the connections
+
+|`FetchSize`
+|`int`
+|Size of the resultset; The default size if 500. <=0 indicates that the default should be used.
+
+|`partialResultsMode`
+|`boolean`
+|Enable/disable support partial results mode. Default false. See the link:Partial_Results_Mode.adoc[Partial Results Mode] section.
+
+|`autoCommitTxn`
+|`String`
+|Only applies only when "autoCommit" is set to "true". This determines how a executed command needs to be transactionally wrapped inside the Teiid engine to maintain the data integrity.
+
+* ON - Always wrap command in distributed transaction
+* OFF - Never wrap command in distributed transaction
+* DETECT (default)- If the executed command is spanning more than one source it automatically uses distributed transaction. link:Transactions.adoc[Transactions] for more information.
+
+|`disableLocalTxn`
+|`boolean`
+|If "true", the autoCommit setting, commit and rollback will be ignored for local transactions. Default false.
+
+|`user`
+|`String`
+|User name
+
+|`Password`
+|`String`
+|Credential for user
+
+|`ansiQuotedIdentifiers`
+|`boolean`
+|Sets the parsing behavior for double quoted entries in SQL. The default, true, parses dobuled quoted entries as identifiers. If set to false, then double quoted values that are valid string literals will be parsed as string literals.
+
+|`version`
+|`integer`
+|Version number of the VDB
+
+|`resultSetCacheMode`
+|`boolean`
+|ResultSet caching is turned on/off. Default false.
+
+|`autoFailover`
+|`boolean`
+|If true, will automatically select a new server instance after a communication exception. Default false. This is typically not needed when connections are managed, as the connection can be purged from the pool.
+
+|`SHOWPLAN`
+|`String`
+|(typically not set as a connection property) Can be ON, OFF,DEBUG;
+
+* ON returns the query plan along with the results
+* DEBUG additionally prints the query planner debug information in the log and returns it with the results. Both the plan and the log are available through JDBC API extensions.
+* Default OFF.
+
+|`NoExec`
+|`String`
+|(typically not set as a connection property) Can be ON, OFF; ON prevents query execution, but parsing and planning will still occur. Default OFF.
+
+|`PassthroughAuthentication`
+|`boolean`
+|Only applies to "local" connections. When this option is set to "true", then Teiid looks for already authenticated security context on the calling thread. If one found it uses that users credentials to create session. Teiid also verifies that the same user is using this connection during the life of the connection. if it finds a different security context on the calling thread, it switches the identity on the connection, if the new user is also eligible to log in to Teiid otherwise connection fails to execute.
+
+|`useCallingThread`
+|`boolean`
+|Only applies to "local" connections. When this option is set to "true" (the default), then the calling thread will be used to process the query. If false, then an engine thread will be used.
+
+|`QueryTimeout`
+|`integer`
+|Default query timeout in seconds. Must be >= 0. 0 indicates no timeout. Can be overriden by `Statement.setQueryTimeout`. Default 0.
+
+|`useJDBC4ColumnNameAndLabelSemantics`
+|`boolean`
+|A change was made in JDBC4 to return unaliased column names as the ResultSetMetadata column name. Prior to this, if a column alias were used it was returned as the column name. Setting this property to false
+will enable backwards compatibility when JDBC3 and older support is still required. Defaults to true.
+
+|`jaasName`
+|`String`
+|JAAS configuration name. Only applies when configuring a GSS authentication. Defaults to Teiid. See the Security Guide for configuration required for GSS.
+
+|`kerberosServicePrincipleName`
+|`String`
+|Kerberos authenticated principle name. Only applies when configuring a GSS authentication. See the Security Guide for configuration required for GSS
+
+|`encryptRequest`
+|`boolean`
+|Only applies to non-SSL socket connections.  When "true" the request message and any associate payload will be encrypted using the connection cryptor.  Default false.
+
+|`disableResultSetFetchSize`
+|`boolean`
+|In some situations tooling may choose undesirable fetch sizes for processing results. Set to true to disable honoring ResultSet.setFetchSize. Default false.
+
+|`loginTimeout`
+|`integer`
+|The login timeout in seconds. Must be >= 0. 0 indicates no timeout. If a connection cannot be created in approximately the the timeout value an exception will be thrown. Default 0, no timeout.
+
+|`reportAsViews`
+|`boolean`
+|If DatabaseMetaData will report Teiid views as a VIEW table type. If false then Teiid views will be reported as a TABLE. Default true.
+|===
+

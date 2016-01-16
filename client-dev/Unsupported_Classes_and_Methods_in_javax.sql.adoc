@@ -1,0 +1,8 @@
+= Unsupported Classes and Methods in "javax.sql"
+
+|===
+|Class name |Methods
+
+|`RowSet*`
+|`Not Supported`
+|===

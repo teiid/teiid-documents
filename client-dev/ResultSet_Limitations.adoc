@@ -1,0 +1,7 @@
+
+= ResultSet Limitations
+
+* TYPE_SCROLL_SENSITIVE is not supported.
+* `UPDATABLE` ResultSets are not supported.
+* Returning multiple ResultSets from Procedure execution is not supported.
+

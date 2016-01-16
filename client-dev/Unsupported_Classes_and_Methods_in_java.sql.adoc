@@ -1,0 +1,129 @@
+
+= Unsupported Classes and Methods in "java.sql"
+
+|===
+|Class name |Methods
+
+|`Blob`
+|
+[source,java]
+----
+getBinaryStream(long, long) - throws SQLFeatureNotSupportedException
+setBinaryStream(long) - - throws SQLFeatureNotSupportedException
+setBytes - - throws SQLFeatureNotSupportedException
+truncate(long) - throws SQLFeatureNotSupportedException
+----
+
+|`CallableStatement`
+|
+[source,java]
+----
+getObject(int parameterIndex, Map&lt;String, Class&lt;?&gt;&gt; map) - throws SQLFeatureNotSupportedException
+getRef - throws SQLFeatureNotSupportedException
+getRowId - throws SQLFeatureNotSupportedException
+getURL(String parameterName) - throws SQLFeatureNotSupportedException
+registerOutParameter - ignores
+registerOutParameter(String parameterName, *) - throws SQLFeatureNotSupportedException
+setRowId(String parameterName, RowId x) - throws SQLFeatureNotSupportedException
+setURL(String parameterName, URL val) - throws SQLFeatureNotSupportedException
+----
+
+|`Clob`
+|
+[source,java]
+----
+getCharacterStream(long arg0, long arg1) - throws SQLFeatureNotSupportedException
+setAsciiStream(long arg0) - throws SQLFeatureNotSupportedException
+setCharacterStream(long arg0) - throws SQLFeatureNotSupportedException
+setString - throws SQLFeatureNotSupportedException
+truncate - throws SQLFeatureNotSupportedException
+----
+
+|`Connection`
+|
+[source,java]
+----
+createBlob - throws SQLFeatureNotSupportedException
+createClob - throws SQLFeatureNotSupportedException
+createNClob - throws SQLFeatureNotSupportedException
+createSQLXML - throws SQLFeatureNotSupportedException
+createStruct(String typeName, Object[] attributes) - throws SQLFeatureNotSupportedException
+getClientInfo - throws SQLFeatureNotSupportedException
+releaseSavepoint - throws SQLFeatureNotSupportedException
+rollback(Savepoint savepoint) - throws SQLFeatureNotSupportedException
+setHoldability - throws SQLFeatureNotSupportedException
+setSavepoint - throws SQLFeatureNotSupportedException
+setTypeMap - throws SQLFeatureNotSupportedException
+----
+
+|`DatabaseMetaData`
+|
+[source,java]
+----
+getAttributes - throws SQLFeatureNotSupportedException
+getClientInfoProperties  - throws SQLFeatureNotSupportedException
+getRowIdLifetime - throws SQLFeatureNotSupportedException
+----
+
+|`NClob`
+|`Not Supported`
+
+|`PreparedStatement`
+|
+[source,java]
+----
+setRef - throws SQLFeatureNotSupportedException
+setRowId - throws SQLFeatureNotSupportedException
+setUnicodeStream - throws SQLFeatureNotSupportedException
+----
+
+|`Ref`
+|`Not Implemented`
+
+|`ResultSet`
+|
+[source,java]
+----
+deleteRow - throws SQLFeatureNotSupportedException
+getHoldability - throws SQLFeatureNotSupportedException
+getObject(*, Map&lt;String, Class&lt;?&gt;&gt; map) - throws SQLFeatureNotSupportedException
+getRef - throws SQLFeatureNotSupportedException
+getRowId - throws SQLFeatureNotSupportedException
+getUnicodeStream - throws SQLFeatureNotSupportedException
+getURL - throws SQLFeatureNotSupportedException
+insertRow - throws SQLFeatureNotSupportedException
+moveToInsertRow - throws SQLFeatureNotSupportedException
+refreshRow - throws SQLFeatureNotSupportedException
+rowDeleted - throws SQLFeatureNotSupportedException
+rowInserted - throws SQLFeatureNotSupportedException
+rowUpdated - throws SQLFeatureNotSupportedException
+setFetchDirection - throws SQLFeatureNotSupportedException
+update*  - throws SQLFeatureNotSupportedException
+----
+
+|`RowId`
+|`Not Supported`
+
+|`Savepoint`
+|`not Supported`
+
+|`SQLData`
+|`Not Supported`
+
+|`SQLInput`
+|`not Supported`
+
+|`SQLOutput`
+|`Not Supported`
+
+|`Statement`
+
+[source,java]
+----
+setCursorName(String)
+----
+
+`Struct`
+
+`Not Supported`
+|===

@@ -1,0 +1,14 @@
+
+= SHOW Statement
+
+The SHOW statement can be used to see a varitey of information. The SHOW statement is not yet a language feature of Teiid and is handled only in the JDBC client.
+
+SHOW Usage:
+
+* *SHOW PLAN*- returns a resultset with a clob column PLAN_TEXT, an xml column PLAN_XML, and a clob column DEBUG_LOG with a row containing the values from the previously executed query. If SHOWPLAN is OFF or no plan is available, no rows are returned. If SHOWPLAN is not set to DEBUG, then DEBUG_LOG will return a null value.
+
+* *SHOW ANNOTATIONS*- returns a resultset with string columns CATEGORY, PRIORITY, ANNOTATION, RESOLUTION and a row for each annotation on the previously executed query. If SHOWPLAN is OFF or no plan is available, no rows are returned.
+
+* *SHOW* <property> - the inverse of SET, shows the property value for the given property, returns a resultset with a single string column with a name matching the property key.
+
+* *SHOW ALL*- returns a resultset with a NAME string column and a VALUE string column with a row entry for every property value. The SHOW statement is most commonly used to retrieve the query plan, see the plan debug example.

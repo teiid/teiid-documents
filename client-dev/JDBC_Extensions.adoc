@@ -1,0 +1,5 @@
+
+= JDBC Extensions
+
+These are custom extensions to JDBC API from Teiid to support various features.
+

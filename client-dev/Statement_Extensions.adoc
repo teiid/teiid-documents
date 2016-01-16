@@ -1,0 +1,30 @@
+
+= Statement Extensions
+
+The Teiid statement extension interface, `org.teiid.jdbc.TeiidStatement`, provides functionality beyond the JDBC standard. To use the extension interface, simply cast or unwap the statement returned by the Connection. The following methods are provided on the extension interface:
+
+.*Connection Properties*
+|===
+|Method Name |Description
+
+|`getAnnotations`
+|Get the query engine annotations if the statement was last executed with SHOWPLAN ON/DEBUG. Each `org.teiid.client.plan.Annotation` contains a description, a category, a severity, and possibly a resolution of notes recorded during query planning that can be used to understand choices made by the query planner.
+
+|`getDebugLog`
+|Get the debug log if the statement was last executed with SHOWPLAN DEBUG.
+
+|`getExecutionProperty`
+|Get the current value of an execution property on this statement object.
+
+|`getPlanDescription`
+|Get the query plan description if the statement was last executed with SHOWPLAN ON/DEBUG. The plan is a tree made up of `org.teiid.client.plan.PlanNode` objects. Typically `PlanNode.toString()` or `PlanNode.toXml()` will be used to convert the plan into a textual form.
+
+|`getRequestIdentifier`
+|Get an identifier for the last command executed on this statement. If no command has been executed yet, null is returned.
+
+|`setExecutionProperty`
+|Set the execution property on this statement. See the link:Execution_Properties.adoc[Execution Properties] section for more information. It is generally preferable to use the link:SET_Statement.adoc[SET Statement] unless the execution property applies only to the statement being executed.
+
+|`setPayload`
+|Set a per-command payload to pass to translators. Currently the only built-in use is for sending hints for Oracle data source.
+|===
