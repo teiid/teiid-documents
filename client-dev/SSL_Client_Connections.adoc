@@ -1,0 +1,136 @@
+
+== Client SSL Settings
+
+The following sections define the properties required for each SSL mode. Note that when connecting to Teiid Server with SSL enabled, you _MUST_ use the _"mms"_ protocol, instead of "mm" in the JDBC connection URL, for example
+
+[source,java]
+----
+jdbc:teiid:<myVdb>@mms://<host>:<port>
+----
+
+There are two different sets of properties that a client can configure to enable 1-way or 2-way SSL. See also the https://docs.jboss.org/author/display/TEIID/Teiid+Server+Transport+Security[Teiid Server Transport Security] chapter if you are responsible for configuring the server as well.
+
+=== Option 1: Java SSL properties
+
+These are standard Java defined system properties to configure the SSL under any JVM, Teiid is not unique in its use of SSL. Provide the following system properties to the client VM process.
+
+[source,java]
+.*1-way SSL*
+----
+-Djavax.net.ssl.trustStore=<dir>/server.truststore (required)
+-Djavax.net.ssl.trustStorePassword=<password> (optional)
+-Djavax.net.ssl.keyStoreType (optional)
+----
+
+[source,java]
+.*2-way SSL*
+----
+-Djavax.net.ssl.keyStore=<dir>/client.keystore (required)
+-Djavax.net.ssl.keyStrorePassword=<password> (optional)
+-Djavax.net.ssl.trustStore=<dir>/server.truststore (required)
+-Djavax.net.ssl.trustStorePassword=<password> (optioanl)
+-Djavax.net.ssl.keyStroreType=<keystore type> (optional)
+----
+
+=== Option 2: Teiid Specific Properties
+
+Use this option when the above "javax" based properties are already in use by the host process. For example if your client application is a Tomcat process that is configured for https protocol and the above Java based properties are already in use, and importing Teiid-specific certificate keys into those https certificate keystores is not allowed.
+
+In this scenario, a different set of Teiid-specific SSL properties can be set as system properties or defined inside the a "teiid-client-settings.properties" file. A sample "teiid-client-settings.properties" file can be found inside the "teiid-<version>-client.jar" file at the root called "teiid-client-settings.orig.properties". Extract this file, make a copy, change the property values required for the chosen SSL mode, and place this file in the client application’s classpath before the "teiid-<version>-client.jar" file.
+
+SSL properties and definitions that can be set in a "teiid-client-settings.properties" file are shown below.
+
+[source,java]
+----
+########################################
+# SSL Settings
+########################################
+
+#
+# The key store type.  Defaults to JKS
+#
+
+org.teiid.ssl.keyStoreType=JKS
+
+#
+# The key store algorithm, defaults to
+# the system property "ssl.TrustManagerFactory.algorithm"
+#
+
+#org.teiid.ssl.algorithm=
+
+#
+# The classpath or filesystem location of the
+# key store.
+#
+# This property is required only if performing 2-way
+# authentication that requires a specific private
+# key.
+#
+
+#org.teiid.ssl.keyStore=
+
+#
+# The key store password (not required)
+#
+
+#org.teiid.ssl.keyStorePassword=
+
+#
+# The key alias(not required, if given named certificate is used)
+#
+
+#org.teiid.ssl.keyAlias=
+
+#
+# The key password(not required, used if the key password is different than the keystore password)
+#
+
+#org.teiid.ssl.keyPassword=
+
+#
+# The classpath or filesystem location of the
+# trust store.
+#
+# This property is required if performing 1-way
+# authentication that requires trust not provided
+# by the system defaults.
+#
+
+#org.teiid.ssl.trustStore=
+
+#
+# The trust store password (not required)
+#
+
+#org.teiid.ssl.trustStorePassword=
+
+#
+# The cipher protocol, defaults to TLSv3
+#
+
+org.teiid.ssl.protocol=TLSv1
+
+#
+# Whether to allow anonymous SSL
+# (the TLS_DH_anon_WITH_AES_128_CBC_SHA cipher suite)
+# defaults to true
+#
+
+org.teiid.ssl.allowAnon=true
+----
+
+
+[source,java]
+.*1-way SSL*
+----
+org.teiid.ssl.trustStore=<dir>/server.truststore (required)
+----
+
+[source,java]
+.*2-way SSL*
+----
+org.teiid.ssl.keyStore=<dir>/client.keystore (required)
+org.teiid.ssl.trustStore=<dir>/server.truststore (required)
+----
+

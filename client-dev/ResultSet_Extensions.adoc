@@ -1,0 +1,13 @@
+
+= ResultSet Extensions
+--------------------
+
+The Teiid result set extension interface, `org.teiid.jdbc.TeiidResultSet`, provides functionality beyond the JDBC standard. To use the extension interface, simply cast or unwap a result set returned by a Teiid statement. The following methods are provided on the extension interface:
+
+.*Connection Properties*
+|===
+|Method Name |Description
+
+|`available`
+|Returns an estimate of the minimum number of rows that can be read (after the current) without blocking or the end of the ResultSet is reached.
+|===

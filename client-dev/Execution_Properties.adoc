@@ -1,0 +1,33 @@
+
+= Execution Properties
+
+Execution properties may be set on a per statement basis through the `TeiidStatement` interface or on the connection via the link:SET_Statement.adoc[SET Statement]. For convenience, the property keys are defined by constants on the `org.teiid.jdbc.ExecutionProperties` interface.
+
+.*Execution Properties*
+|===
+|Property Name/String Constant |Description
+
+|`PROP_TXN_AUTO_WRAP / autoCommitTxn`
+|Same as the connection property.
+
+|`PROP_PARTIAL_RESULTS_MODE / partialResultsMode`
+|See the link:Partial_Results_Mode.adoc[Partial Results Mode]
+
+|`PROP_XML_FORMAT / XMLFormat`
+|Determines the formatting of XML documents returned by XML document models. See the link:XML_extensions.adoc[XML extensions#Document formatting] section.
+
+|`PROP_XML_VALIDATION / XMLValidation`
+|Determines whether XML documents returned by XML document models will be validated against their schema after processing. See the Reference Guide’s "XML SELECT Command" chapter and "document validation" section.
+
+|`RESULT_SET_CACHE_MODE / resultSetCacheMode`
+|Same as the connection property.
+
+|`SQL_OPTION_SHOWPLAN / SHOWPLAN`
+|Same as the connection property.
+
+|`NOEXEC / NOEXEC`
+|Same as the connection property.
+
+|`JDBC4COLUMNNAMEANDLABELSEMANTICS / useJDBC4ColumnNameAndLabelSemantics`
+|Same as the connection property.
+|===

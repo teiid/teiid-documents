@@ -1,0 +1,65 @@
+
+= Using Global Transactions
+
+Global or client XA transactions are only applicable to JDBC clients. They all the client to coordinate multiple resources in a single transaction. To take advantage of XA transactions on the client side, use the `TeiidDataSource` (or Teiid Embedded with transaction detection enabled).
+
+When an XAConnection is used in the context of a UserTransaction in an application server, such as JBoss, WebSphere, or Weblogic, the resulting connection will already be associated with the current XA transaction. No additional client JDBC code is necessary to interact with the XA transaction.
+
+[source,java]
+.*Usage with UserTransaction*
+----
+   UserTransaction ut = context.getUserTransaction();
+   try {
+      ut.begin();
+      Datasource oracle = lookup(...)
+      Datasource teiid = lookup(...)
+
+      Connection c1 = oracle.getConnection();
+      Connection c2 = teiid.getConnection();
+
+      // do something with Oracle connection
+      // do something with Teiid connection
+      c1.close();
+      c2.close();
+      ut.commit();
+   } catch (Exception ex) {
+       ut.rollback();
+   }
+----
+
+In the case that you are not running in a JEE container environment and you have your own transaction manger to co-ordinate the XA transactions, code will look some what like below.
+
+[source,java]
+.*Manual Usage of XA transactions*
+----
+XAConnection xaConn = null;
+XAResource xaRes = null;
+Connection conn = null;
+Statement stmt = null;
+
+try {
+  xaConn = <XADataSource instance>.getXAConnection();
+  xaRes = xaConn.getXAResource();
+  Xid xid = <new Xid instance>;
+  conn = xaConn.getConnection();
+  stmt = conn.createStatement();
+
+  xaRes.start(xid, XAResource.TMNOFLAGS);
+  stmt.executeUpdate("insert into …");
+  <other statements on this connection or other resources enlisted in this transaction>
+  xaRes.end(xid, XAResource.TMSUCCESS);
+
+  if (xaRes.prepare(xid) == XAResource.XA_OK) {
+    xaRes.commit(xid, false);
+  }
+}
+catch (XAException e) {
+  xaRes.rollback(xid);
+}
+finally {
+  <clean up>
+}
+----
+
+With the use of global transactions multiple Teiid XAConnections may participate in the same transaction. The Teiid JDBC XAResource "isSameRM" method returns "true" only if connections are made to the same server instance in a cluster. If the Teiid connections are to different server instances then transactional behavior may not be the same as if they were to the same cluster member. For example, if the client transaction manager uses the same XID for each connection (which it should not since isSameRM will return false), duplicate XID exceptions may arise from the same physical source accessed through different cluster members. More commonly if the client transaction manager uses a different branch identifier for each connection, issues may arise with sources that lock or isolate changes based upon branch identifiers.
+

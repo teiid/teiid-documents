@@ -1,0 +1,24 @@
+
+= Connecting to a Teiid Server
+
+The Teiid JDBC API provides Java Database Connectivity (JDBC) access to any Virtual Database (VDB) deployed on a Teiid Server. The Teiid JDBC API is compatible with the JDBC 4.0 specification; however, it does not fully support all methods. Advanced features, such as updatable result sets or SQL3 data types, are not supported.
+
+Java client applications connecting to a Teiid Server will need to use Java 1.6 JDK. Previous versions of Java are not supported.
+
+Before you can connect to the Teiid Server using the Teiid JDBC API, please do following tasks first.
+
+1.  Install the Teiid Server. See the "Admin Guide" for instructions.
+2.  Build a Virtual Database (VDB). You can either build a "Dynamic VDB" (Designer not required), or you can use the Eclipse based GUI tool http://www.jboss.org/teiiddesigner.html[Designer]. Check the "Reference
+Guide" for instructions on how to build a VDB. If you do not know what VDB is, then start with this http://www.jboss.org/teiid/basics/virtualdatabases.html[document].
+3.  Deploy the VDB into Teiid Server. Check https://docs.jboss.org/author/display/TEIID/Administrator%27s+Guide[Administrator’s Guide] for instructions.
+4.  Start the Teiid Server (JBoss AS), if it is not already running.
+
+Now that you have the VDB deployed in the Teiid Server, client applications can connect to the Teiid Server and issue SQL queries against deployed VDB using JDBC API. If you are new to JDBC, see Java’s documentation about http://java.sun.com/docs/books/tutorial/jdbc/index.html[JDBC]. Teiid ships with teiid-9.0.0.Final-jdbc.jar that can be found in the http://www.jboss.org/teiid/downloads.html[downloads].
+
+Main classes in the client JAR:
+
+* `org.teiid.jdbc.TeiidDriver`- allows JDBC connections using the http://java.sun.com/javase/6/docs/api/java/sql/DriverManager.html[DriverManager] class.
+* `org.teiid.jdbc.TeiidDatasource`- allows JDBC connections using the http://java.sun.com/javase/6/docs/api/javax/sql/DataSource.html[DataSource] or http://java.sun.com/javase/6/docs/api/javax/sql/XADataSource.html[XADataSource] class. You should use this class to create managed or XA connections.
+
+Once you have established a connection with the Teiid Server, you can use standard JDBC API classes to interrogate metadata and execute queries.
+

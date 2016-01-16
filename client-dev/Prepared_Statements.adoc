@@ -1,0 +1,13 @@
+
+= Prepared Statements
+
+Teiid provides a standard implementation of `java.sql.PreparedStatement`. PreparedStatements can be very important in speeding up common statement execution, since they allow the server to skip parsing, resolving, and planning of the statement. See the Java documentation for more information on http://download.oracle.com/javase/6/docs/technotes/guides/jdbc/getstart/preparedstatement.html#1000039[PreparedStatement usage].
+
+`PreparedStatement` Considerations
+
+* It is not necessary to pool client side Teiid `PreparedStatements`, since Teiid performs plan caching on the server side.
+* The number of cached plans is configurable (see the Admin Guide), and are purged by the least recently used (LRU).
+* Cached plans are not distributed through a cluster. A new plan must be created for each cluster member.
+* Plans are cached for the entire VDB or for just a particular session. The scope of a plan is detected automatically based upon the functions evaluated during it’s planning process.
+* Stored procedures executed through a `CallableStatement` have their plans cached just as a `PreparedStatement`.
+* Bind variable types in function signatures, e.g. "where t.col = abs(?)" can be determined if the function has only one signature or if the function is used in a predicate where the return type can be determined. In more complex situations it may be necessary to add a type hint with a cast or convert, e.g. upper(convert(?, string)).
