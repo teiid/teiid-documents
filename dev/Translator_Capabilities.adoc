@@ -1,0 +1,379 @@
+
+= Translator Capabilities
+
+The `ExecutionFactory` class defines all the methods that describe the capabilities of a Translator. These are used by the Connector Manager to determine what kinds of commands the translator is capable of executing. A base `ExecutionFactory` class implements all the basic capabilities methods, which says your translator does not support any capabilities. Your extended `ExecutionFactory` class must override the the necessary methods to specify which capabilities your translator supports.  You should consult the debug log of query planning (set showplan debug) to see if desired pushdown requires additional capabilities.
+
+== Capability Scope
+
+Note capabilities are determined and cached for the lifetime of the translator. Capabilities based on connection/user are not supported.
+
+== Capabilities
+
+The following table lists the capabilities that can be specified in the `ExecutionFactory` class.
+
+.*Available Capabilities*
+|===
+|Capability |Requires |Description
+
+|SelectDistinct
+|
+|Translator can support SELECT DISTINCT in queries.
+
+|SelectExpression
+|
+|Translator can support SELECT of more than just column references.
+
+|SelectWithoutFrom
+|
+|Translator can support a SELECT of scalar values without a FROM clause
+
+|AliasedTable
+|
+|Translator can support Tables in the FROM clause that have an alias.
+
+|InnerJoins
+|
+|Translator can support inner and cross joins
+
+|SelfJoins
+|AliasedGroups and at least one of the join type supports.
+|Translator can support a self join between two aliased versions of the same Table.
+
+|OuterJoins
+|
+|Translator can support LEFT and RIGHT OUTER JOIN.
+
+|FullOuterJoins
+|
+|Translator can support FULL OUTER JOIN.
+
+|DependentJoins
+|Base join and criteria support
+|Translator supports key set dependent join pushdown. See link:Dependent_Join_Pushdown.adoc[Dependent Join Pushdown]. When set the MaxDependentInPredicates and MaxInCriteriaSize values are not used by the engine, rather all independent values are made available to the pushdown command.
+
+|FullDependentJoins
+|Base join and criteria support
+|Translator supports full dependent join pushdown. See link:Dependent_Join_Pushdown.adoc[Dependent Join Pushdown]. When set the MaxDependentInPredicates and MaxInCriteriaSize values are not used by the engine, rather the entire independent dataset is made available to the pushdown command.
+
+|SubqueryInOn
+|Join and base subquery support, such as ExistsCriteria
+|Translator can support subqueries in the ON clause. Defaults to true.
+
+|InlineViews
+|AliasedTable
+|Translator can support a named subquery in the FROM clause.
+
+|BetweenCriteria
+|
+|Not currently used - between criteria is rewriten as compound comparisions.
+
+|CompareCriteriaEquals
+|
+|Translator can support comparison criteria with the operator ``=''.
+
+|CompareCriteriaOrdered
+|
+|Translator can support comparison criteria with the operator ``=>'' or ``<=''.
+
+|CompareCriteriaOrderedExclusive
+|
+|Translator can support comparison criteria with the operator ``>'' or ``<''. Defaults to CompareCriteriaOrdered
+
+|LikeCriteria
+|
+|Translator can support LIKE criteria.
+
+|LikeCriteriaEscapeCharacter
+|LikeCriteria
+|Translator can support LIKE criteria with an ESCAPE character clause.
+
+|SimilarTo
+|
+|Translator can support SIMILAR TO criteria.
+
+|LikeRegexCriteria
+|
+|Translator can support LIKE_REGEX criteria.
+
+|InCriteria
+|MaxInCriteria
+|Translator can support IN predicate criteria.
+
+|InCriteriaSubquery
+|
+|Translator can support IN predicate criteria where values are supplied by a subquery.
+
+|IsNullCriteria
+|
+|Translator can support IS NULL predicate criteria.
+
+|OrCriteria
+|
+|Translator can support the OR logical criteria.
+
+|NotCriteria
+|
+|Translator can support the NOT logical criteria. IMPORTANT: This capability also applies to negation of predicates, such as specifying IS NOT NULL, ``<'' (not ``=>''), ``>'' (not ``<=''), etc.
+
+|ExistsCriteria
+|
+|Translator can support EXISTS predicate criteria.
+
+|QuantifiedCompareCriteriaAll
+|
+|Translator can support a quantified comparison criteria using the ALL quantifier.
+
+|QuantifiedCompareCriteriaSome
+|
+|Translator can support a quantified comparison criteria using the SOME or ANY quantifier.
+
+|OnlyLiteralComparison
+|
+|Translator if only Literal comparisons (equality, ordered, like, etc.) are supported for non-join conditions.
+
+|Convert(int fromType, int toType)
+|
+|Used for fine grained control of convert/cast pushdown. The `ExecutionFactory.getSupportedFunctions()` should contain `SourceSystemFunctions.CONVERT`.  This method can then return false to indicate a lack of specific support. See `TypeFacility.RUNTIME_CODES` for the possible type codes. The engine will does not care about an unnecessary conversion where fromType == toType.  By default lob conversion is disabled.
+
+|OrderBy
+|
+|Translator can support the ORDER BY clause in queries.
+
+|OrderByUnrelated
+|OrderBy
+|Translator can support ORDER BY items that are not directly specified in the select clause.
+
+|OrderByNullOrdering
+|OrderBy
+|Translator can support ORDER BY items with NULLS FIRST/LAST.
+
+|OrderByWithExtendedGrouping
+|OrderBy
+|Translator can support ORDER BY directly over a GROUP BY with an extended grouping element such as a ROLLUP.
+
+|GroupBy
+|
+|Translator can support an explicit GROUP BY clause.
+
+|GroupByRollup
+|GroupBy
+|Translator can support GROUP BY (currently a single) ROLLUP.
+
+|Having
+|GroupBy
+|Translator can support the HAVING clause.
+
+|AggregatesAvg
+|
+|Translator can support the AVG aggregate function.
+
+|AggregatesCount
+|
+|Translator can support the COUNT aggregate function.
+
+|AggregatesCountStar
+|
+|Translator can support the COUNT(*) aggregate function.
+
+|AggregatesDistinct
+|At least one of the aggregate functions.
+|Translator can support the keyword DISTINCT inside an aggregate function.  This keyword indicates that duplicate values within a group of rows will be ignored.
+
+|AggregatesMax
+|
+|Translator can support the MAX aggregate function.
+
+|AggregatesMin
+|
+|Translator can support the MIN aggregate function.
+
+|AggregatesSum
+|
+|Translator can support the SUM aggregate function.
+
+|AggregatesEnhancedNumeric
+|
+|Translator can support the VAR_SAMP, VAR_POP, STDDEV_SAMP, STDDEV_POP aggregate functions.
+
+|ScalarSubqueries
+|
+|Translator can support the use of a subquery in a scalar context (wherever an expression is valid).
+
+|ScalarSubqueryProjection
+|ScalarSubqueries
+|Translator can support the use of a projected scalar subquery.
+
+|CorrelatedSubqueries
+|At least one of the subquery pushdown capabilities.
+|Translator can support a correlated subquery that refers to an elementin the outer query.
+
+|CorrelatedSubqueryLimit
+|CorrelatedSubqueries
+|Defaults to CorrelatedSubqueries support. Translator can support a correlated subquery with a limit clause.
+
+|CaseExpressions
+|
+|Not currently used - simple case is rewriten as searched case.
+
+|SearchedCaseExpressions
+|
+|Translator can support ``searched'' CASE expressions anywhere that expressions are accepted.
+
+|Unions
+|
+|Translator support UNION and UNION ALL
+
+|Intersect
+|
+|Translator supports INTERSECT
+
+|Except
+|
+|Translator supports Except
+
+|SetQueryOrderBy
+|Unions, Intersect, or Except
+|Translator supports set queries with an ORDER BY
+
+|RowLimit
+|
+|Translator can support the limit portion of the limit clause
+
+|RowOffset
+|
+|Translator can support the offset portion of the limit clause
+
+|FunctionsInGroupBy
+|GroupBy
+|Translator can support non-column reference grouping expressions.
+
+|InsertWithQueryExpression
+|
+|Translator supports INSERT statements with values specified by an QueryExpression.
+
+|BatchedUpdates
+|
+|Translator supports a batch of INSERT, UPDATE and DELETE commands to be executed together.
+
+|BulkUpdate
+|
+|Translator supports updates with multiple value sets
+
+|CommonTableExpressions
+|
+|Translator supports the WITH clause.
+
+|SubqueryCommonTableExpressions
+|CommonTableExpressions
+|Translator supports a WITH clause in subqueries.
+
+|ElementaryOlapOperations
+|
+|Translator supports window functions and analytic functions RANK, DENSE_RANK, and ROW_NUMBER.
+
+|WindowOrderByWithAggregates
+|ElementaryOlapOperations
+|Translator supports windowed aggregates with a window order by clause.
+
+|WindowDistinctAggregates
+|ElementaryOlapOperations, AggregatesDistinct
+|Translator supports windowed distinct aggregates.
+
+|AdvancedOlapOperations
+|ElementaryOlapOperations
+|Translator supports aggregate conditions.
+
+|OnlyFormatLiterals
+|function support for a parse/format function and an implementation of the supportsFormatLiteral method.
+|Translator supports only literal format patterns that must be validated by the supportsFormatLiteral method.
+
+|FormatLiteral(String literal, Format type)
+|OnlyFormatLiterals
+|Translator supports the given literal format string.
+
+|ArrayType
+|
+|Translator supports the push down of array values.
+
+|OnlyCorrelatedSubqueries
+|CorrelatedSubqueries
+|Translator ONLY supports correlated subqueries.  Uncorrelated scalar and exists subqueries will be pre-evaluated prior to push-down.
+
+|SelectWithoutFrom
+|SelectExpressions
+|Translator supports selecting values without a FROM clause, e.g. SELECT 1.
+|===
+
+Note that any pushdown subquery must itself be compliant with the Translator capabilities.
+
+== Command Form
+
+The method `ExecutionFactory.useAnsiJoin()` should return true if the Translator prefers the use of ANSI style join structure for join trees that contain only INNER and CROSS joins.
+
+The method `ExecutionFactory.requiresCriteria()` should return true if the Translator requires criteria for any Query, Update, or Delete. This is a replacement for the model support property ``Where All''.
+
+== Scalar Functions
+
+The method `ExecutionFactory.getSupportedFunctions()` can be used to specify which system/user defined scalar and user defined aggregate functions the Translator supports. The constants interface `org.teiid.translator.SourceSystemFunctions` contains the string names of all possible built-in pushdown functions, which includes the four standard math operators: +, -, *, and /.
+
+Not all system functions appear in SourceSystemFunctions, since some system functions will always be evaluated in Teiid, are simple aliases to other functions, or are rewritten to a more standard expression.
+
+This documentation for system functions can be found at https://docs.jboss.org/author/display/TEIID/Scalar+Functions[Scalar Functions]. If the Translator states that it supports a function, it must support all type combinations and overloaded forms of that function.
+
+A translator may also indicate support for scalar functions that are intended for pushdown evaluation by that translator, but are not registered as user defined functions via a model/schema.  These pushdown
+functions are reported to the engine via the `ExecutionFactory.getPushDownFunctions()` list as `FunctionMethod` metadata objects. The `FuncitonMethod` representation allow the translator to control all of the metadata related to the function, including type signature, determinism, varargs, etc. The simplest way to add a pushdown function is with a call to `ExecutionFactory.addPushDownFunction`:
+
+[source,java]
+----
+FunctionMethod addPushDownFunction(String qualifier, String name, String returnType, String...paramTypes)
+----
+
+This resulting function will be known as sys.qualifier.name, but can be called with just name as long as the function name is unique. The returned `FunctionMethod` object may be further manipulated depending upon the needs of the source. An example of adding a custom concat vararg function in an `ExecutionFactory` subclass:
+
+[source,java]
+----
+public void start() throws TranslatorException {
+  super.start();
+  FunctionMethod func = addPushDownFunction("oracle", "concat", "string", "string", "string");
+  func.setVarArgs(true);
+  ...
+}
+----
+
+== Physical Limits
+
+The method `ExecutionFactory.getMaxInCriteriaSize()` can be used to specify the maximum number of values that can be passed in an IN criteria.  This is an important constraint as an IN criteria is frequently used to pass criteria between one source and another using a dependent join.
+
+The method `ExecutionFactory.getMaxDependentInPredicates()` is used to specify the maximum number of IN predicates (of at most MaxInCriteriaSize) that can be passed as part of a dependent join. For example if there are 10000 values to pass as part of the dependent join and a MaxInCriteriaSize of 1000 and a MaxDependentInPredicates setting of 5, then the dependent join logic will form two source queries each with 5 IN predicates of 1000 values each combined by OR.
+
+The method `ExecutionFactory.getMaxFromGroups()` can be used to specify the maximum number of FROM Clause groups that can used in a join. -1 indicates there is no limit.
+
+== Update Execution Modes
+
+The method `ExecutionFactory.supportsBatchedUpdates()` can be used to indicate that the Translator supports executing the `BatchedUpdates` command.
+
+The method `ExecutionFactory.supportsBulkUpdate()` can be used to indicate that the Translator accepts update commands containg multi valued Literals.
+
+Note that if the translator does not support either of these update modes, the query engine will compensate by issuing the updates individually.
+
+== Default Behavior
+
+The method `ExecutionFactory.getDefaultNullOrder()` specifies the default null order. Can be one of UNKNOWN, LOW, HIGH, FIRST, LAST. This is only used if ORDER BY is supported, but null ordering is not.
+
+The method `ExecutionFactory.getCollation()` specifies the default collation. If set to a value that does not match the collation locale defined by org.teiid.collationLocale, then some ordering may not be pushed down.
+
+The method `ExecutionFactory.getRequiredLikeEscape()` specifies the required like escape character. Used only when a source supports a specific escape.
+
+== Use of Connections
+
+|===
+|Method |Description |Default
+
+|is/setSourceRequired
+|True indicates a source connection is required for fetching the metadata of the source or executing queries.
+|true
+
+|is/setSourceRequiredForMetadata
+|True indicates a source connection is required for fetching the metadata of the source.
+|SourceRequired
+|===

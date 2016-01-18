@@ -1,0 +1,10 @@
+
+= Packaging
+
+Once the "ExecutionFactory" class is implemented, package it in a JAR file. Then add the following named file in "META-INF/services/org.teiid.translator.ExecutionFactory" with contents specifying the name of your main Translator file. Note that, the name must exactly match to above. This is java’s standard service loader pattern. This will register the Translator for deployment when the jar is deployed into JBoss AS.
+
+[source,java]
+----
+org.teiid.translator.custom.CustomExecutionFactory        
+----
+

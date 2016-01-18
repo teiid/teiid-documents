@@ -1,0 +1,20 @@
+
+= User Defined Functions
+
+If you need to extend Teiid’s scalar or aggregate function library, then Teiid provides a means to define custom or User Defined Functions(UDF).
+
+The following are used to define a UDF.
+
+* _Function Name_ When you create the function name, keep these requirements in mind:
+** You cannot overload existing Teiid System functions.
+** The function name must be unique among user-defined functions in its model for the number of arguments. You can use the same function name for different numbers of types of arguments. Hence, you can overload your user-defined functions.
+** The function name cannot contain the `.' character.
+** The function name cannot exceed 255 characters.
+* _Input Parameters_- defines a type specific signature list. All arguments are considered required.
+* _Return Type_- the expected type of the returned scalar value.
+* _Pushdown_- can be one of REQUIRED, NEVER, ALLOWED. Indicates the expected pushdown behavior. If NEVER or ALLOWED are specified then a Java implementation of the function should be supplied. If REQUIRED is used, then user must extend the Translator for the source and add this function to its pushdown function library.
+* _invocationClass/invocationMethod_- optional properties indicating the method to invoke when the UDF is not pushed down.
+* _Deterministic_- if the method will always return the same result for the same input parameters. Defaults to false. It is important to mark the function as deterministic if it returns the same value for the same inputs as this will lead to better performance. See also the Relational extension boolean metadata property "deterministic" and the DDL OPTION property "determinism". Defaults to false. It is important to mark the function as deterministic if it returns the same value for the same inputs as this will lead to better performance. See also the Relational extension boolean metadata property "deterministic" and the DDL OPTION property "determinism".
+
+Even _Pushdown_ required functions need to be added as a UDF to allow Teiid to properly parse and resolve the function. _Pushdown_ scalar functions differ from normal user-defined functions in that no code is provided for evaluation in the engine. An exception will be raised if a pushdown required function cannot be evaluated by the appropriate source.
+

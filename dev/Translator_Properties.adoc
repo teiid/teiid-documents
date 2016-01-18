@@ -1,0 +1,124 @@
+
+= Translator Properties
+
+During translator development, a translator developer can define three (3) different types of property sets that can help customize the behavior of the translator. The sections below describes each one.
+
+== Translator Override Properties
+
+On the "ExecutionFactory" class a translator developer can define any number of "getter/setter" methods with the @TranslatorProperty annotation. These properties (also referred to a execution properties) can be used for extending the capabilities of the translator. It is important to define default values for all these properties, as these properties are being defined to change the default behavior of the translator. If needed, the values for these properties are supplied in "vdb.xml" file during the deploy time when the translator is used to represent vdb’s model. A sample example is given below:
+
+[source,java]
+----
+@TranslatorProperty(display="Copy LOBs",description="If true, returned LOBs will be copied, rather than streamed from the source",advanced=true)
+public boolean isCopyLobs() {
+    return copyLobs;
+}
+    
+public void setCopyLobs(boolean copyLobs) {
+    this.copyLobs = copyLobs;
+----
+
+at runtime these properties can be defined in vdb.xml as
+
+[source,java]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<vdb name="vdb" version="1">
+    <model name="PM1">
+        <source name="connector" translator-name="my-translator-override" />
+    </model>
+    <translator name="my-translator-override" type="my-translator">
+        <property name="CopyLobs" value="true" />
+    </translator>
+</vdb>
+----
+
+== Metadata Import Properties
+
+If a translator is defining schema information based on the physical source (i.e. implementing _getMetadata_ method on _ExecutionFactory_) it is connected to, then import properties provide a way to customize the behavior of the import process. For example, in the JDBC translator users can exclude certain tables that match a regular expression etc. To define a import property, the @TranslatorPropery annotation is used on any getter/setter method on the "ExecutionFactory" class or any class that implements the "MetadataProcessor" interface, with _category_ property defined as "PropertyType.IMPORT". For example.
+
+[source,java]
+----
+@Translator(name = "my-translator", description = "My Translator")
+public class MyExecutionFactory extends ExecutionFactory<ConnectionFactory, MyConnection> {
+...
+    public MetadataProcessor<C> getMetadataProcessor() {
+        return MyMetadataProcessor();
+    }
+}
+
+public MyMetadataProcessor implements MetadataProcessor<MyConnection> {
+
+    public void process(MetadataFactory metadataFactory, MyConnection connection) throws TranslatorException{
+        // schema generation code here 
+    }
+
+    @TranslatorProperty(display="Header Row Number", category=PropertyType.IMPORT, description="Row number that contains the header information")
+    public int getHeaderRowNumber() {
+        return headerRowNumber;
+    }
+
+    public void setHeaderRowNumber(int headerRowNumber) {
+        this.headerRowNumber = headerRowNumber;
+    }
+}
+----
+
+Below is an example showing how to use import properties with a vdb.xml file
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<vdb name="vdb" version="1">
+    <model name="PM1">
+        <property name="importer.HeaderRowNumber" value="12"/>
+        <source name="connector" translator-name="my-translator" />
+    </model>
+</vdb>
+----
+
+NOTE: *"Designer Integration"* - When properties are defined using the annotation mechanism and when using the "Teiid Connection" importer in the Designer, these properties will automatically show up in appropriate wizard for input.
+
+== Extension Metadata Properties
+
+During the execution of the command in translator, a translator is responsible to convert Teiid supplied SQL command into data source specific query. Most of times this conversion is not a trivial task can be converted from one form to another. There are many cases built-in metadata is not sufficient and additional metadata about source is useful to form a request to the underlying physical source system. Extension Metadata Properties one such mechanism to fill the gap in the metadata. These can be defined specific for a given translator.
+
+A translator is a plugin, that is communicating with Teiid engine about it’s source with it’s metadata. Metadata in this context is definitions of Tables, Columns, Procedures, Keys etc. This metadata can be decorated with additional custom metadata and fed to Teiid query engine. Teiid query engine keeps this extended metadata intact along with its schema objects, and when a user query is submitted to the the translator for execution, this extended metadata can be retrieved for making decisions in the translator code.
+
+Extended properties are defined using annotation class called @ExtensionMetadataProperty on the fields in your "MetadataProcessor" or "ExcutionFactory" classes.
+
+For example, say translator requires a "encoding" property on Table, to do the correct un-marshaling of data, this property can be defined as
+
+[source,java]
+----
+public class MyMetadataProcessor implements MetadataProcessor<MyConnection> {
+    public static final String URI = "{http://www.teiid.org/translator/mytranslator/2014}";
+    
+    @ExtensionMetadataProperty(applicable=Table.class, datatype=String.class, display="Encoding", description="Encoding", required=true)
+    public static final String ENCODING = URI+"encode";
+
+    public void process(MetadataFactory mf, FileConnection conn) throws TranslatorException {
+        ..
+        Table t = mf.addTable(tableName);
+        t.setProperty(ENCODING, "UTF-16");
+        
+        // add columns etc.
+        ..
+    }
+}
+----
+
+Now during the execution, on the COMMAND object supplied to the "Execution" class, user can
+
+[source,java]
+----
+    Select select = (Select)command;
+    NamedTable tableReferece = select.getFrom().get(0);
+    Table t = tableReference.getMetadataObject();
+    String encoding = t.getProperty(MyMetadataProcessor.ENCODING, false);
+
+    // use the encoding value as needed to marshal or unmarshal data 
+----
+
+NOTE: *"Designer Integration"* - When extended properties are defined using the annotation mechanism, when using "Teiid Connection" importer in the Designer, you do not need to define the "Metadata Extension Defn" in designer and register to to use with your model, the required definitions are automatically downloaded and configured to use. (This feature is not available in current Designer version)
+

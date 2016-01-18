@@ -1,0 +1,85 @@
+
+= Source Supported Functions
+
+While Teiid provides an extensive scalar function library, it contains only those functions that can be evaluated within the query engine. In many circumstances, especially for performance, a source function allows for calling a source specific function. The semantics of defining the source function as similar or same to one of defining the UDF.
+
+For example, suppose you want to use the Oracle-specific functions _score_ and _contains_ like:
+
+[source,java]
+----
+SELECT score(1), ID, FREEDATA FROM Docs WHERE contains(freedata, 'nick', 1) > 0
+----
+
+The _score_ and _contains_ functions are not part of built-in scalar function library. While you could write your own custom scalar function to mimic their behavior, it’s more likely that you would want to use the actual Oracle functions that are provided by Oracle when using the Oracle Free Text functionality.
+
+In order to configure Teiid to _push_ the above function evaluation to Oracle, Teiid provides a few different ways one can configure their instance.
+
+== Extending the Translator
+
+The ExecutionFactory.getPushdownFunctions method can be used to describe functions that are valid against all instances of a given translator type. The function names are expected to be prefixed by the translator type, or some other logical grouping, e.g. salesforce.includes. The full name of the function once imported into the system will qualified by the SYS schema, e.g. SYS.salesforce.includes.
+
+Any funcitons added via these mechanisms do not need to be declared in ExecutionFactory.getSupportedFunctions. Any of the additional handling, such as adding a FunctionModifier, covered above is also applicable here. All pushdown functions will have function name set to only the simple name. Schema or other qualification will be removed. Handling, such as function modifiers, can check the function metadata if there is the potential for an ambiguity.
+
+For example, to extend the Oracle Connector
+
+* _Required_- extend the OracleExecutionFactory and add _SCORE_ and _CONTAINS_ as supported pushdown functions by either overriding or adding additional functions in "getPushDownFunctions" method. For this example, we’ll call the class `MyOracleExecutionFactory`. Add the `org.teiid.translator.Translator` annotation to the class, e.g. `@Translator(name="myoracle")`
+
+* Optionally register new FunctionModifiers on the start of the ExecutionFactory to handle translation of these functions. Given that the syntax of these functions is same as other typical functions, this probably isn’t needed - the default translation should work.
+
+* Create a new translator JAR containing your custom ExecutionFactory. Refer to link:Packaging.html[Packaging] and link:Deployment.adoc[Deployment] for instructions on using the JAR file. Once this is extended translator is deployed in the Teiid Server, use "myoracle" as translator name instead of the "oracle" in your VDB’s Oracle source configuration.
+
+If you source handing of the function can be described by simple parameter substitution into a string, then you may not need to extend the translator for a source specific function. You can use the extension property teiid_rel:native-query to define the syntax handling - see also https://docs.jboss.org/author/display/TEIID/DDL+Metadata[DDL Metadata] for functions.
+
+== When Using Designer
+
+If you are designing your VDB using the Designer, you can define a function on any "source" model, and that function is automatically added as pushdown function when the VDB is deployed. There is no additional need for adding Java code.
+
+== When Using Dynamic VDB
+
+If you are using the Dynamic VDB, and defining the metadata https://docs.jboss.org/author/display/TEIID/DDL+Metadata[using DDL], you can define your source function in the VDB as
+
+[source,xml]
+----
+<vdb name="{vdb-name}" version="1">
+    <model name="{model-name}" type="PHYSICAL">
+        <source name="AccountsDB" translator-name="oracle" connection-jndi-name="java:/oracleDS"/>
+        <metadata type="DDL"><![CDATA[
+           CREATE FOREIGN FUNCTION SCORE (val integer) RETURNS integer;
+           .... (other tables, procedures etc)
+         ]]>
+        </metadata>
+    </model>
+</vdb>
+----
+
+By default, in the Dynamic VDBs, metadata for the _Source_ models is automatically retrieved from the source if they were JDBC, File, WebService. The File and WebService sources are static, so one can not add additional metadata on them. However on the JDBC sources you can retrieve the metadata from source and then user can append additional metadata on top of them. For example
+
+[source,xml]
+----
+<vdb name="{vdb-name}" version="1">
+    <model name="{model-name}" type="PHYSICAL">
+        <source name="AccountsDB" translator-name="oracle" connection-jndi-name="java:/oracleDS"/>
+        <metadata type="NATIVE,DDL"><![CDATA[
+           CREATE FOREIGN FUNCTION SCORE (val integer) RETURNS integer;
+         ]]>
+        </metadata>
+    </model>
+</vdb>
+----
+
+The above example uses _NATIVE_ metadata type (_NATIVE_ is the default for source/physical models) first to retrieve schema information from source, then uses _DDL_ metadata type to add additional metadata. Only metadata not available via the NATIVE translator logic would need to be specified via DDL.
+
+Alternatively, if you are using custom _MetadataRepository_ with your VDB, then provide the "function" metadata directly from your implementation. ex.
+
+[source,xml]
+----
+<vdb name="{vdb-name}" version="1">
+    <model name="{model-name}" type="PHYSICAL">
+        <source name="AccountsDB" translator-name="oracle" connection-jndi-name="java:/oracleDS"/>
+        <metadata type="{metadata-repo-module}"></metadata>
+    </model>
+</vdb>
+----
+
+In the above example, user can implement _MetadataRepository_ interface and package the implementation class along with its dependencies in a JBoss AS module and supply the module name in the above XML. For more information on how to write a Metadata Repository refer to link:Custom_Metadata_Repository.adoc[Custom Metadata Repository].
+

@@ -1,0 +1,150 @@
+
+= Support for User-Defined Functions (Non-Pushdown)
+
+To define a non-pushdown function, a Java function must be provided that matches the metadata supplied either in the Designer or Dynamic VDB defined metadata.  User Defined Function (or UDF) and User Defined Aggregate Function (or UDAF) may be called at runtime just like any other function or aggregate function respectively.
+
+== Metadata in Designer
+
+A user defined function created on any VDB on view model by creating a Function just as a base table. You would require all the information defined on link:User_Defined_Functions.adoc[User Defined Functions] to create a UDF. Make sure you provide the JAVA code implementation details in the properties dialog for the UDF.
+
+== Metadata for Dynamic VDBs
+
+When defining the metadata using DDL in the Dynamic VDBs, user can define a UDF or UDAF (User Defined Aggregate Function) as shown below.
+
+[source,xml]
+----
+<vdb name="{vdb-name}" version="1">
+    <model name="{model-name}" type="VIRTUAL">
+         <metadata type="DDL"><![CDATA[
+             CREATE VIRTUAL FUNCTION celsiusToFahrenheit(celsius decimal) RETURNS decimal OPTIONS (JAVA_CLASS 'org.something.TempConv',  JAVA_METHOD 'celsiusToFahrenheit');
+             CREATE VIRTUAL FUNCTION sumAll(arg integer) RETURNS integer OPTIONS (JAVA_CLASS 'org.something.SumAll',  JAVA_METHOD 'addInput', AGGREGATE 'true', VARARGS 'true', "NULL-ON-NULL" 'true'); ]]> </metadata>
+    </model>
+</vdb>
+----
+
+You must create a Java method that contains the function’s logic. This Java method should accept the necessary arguments, which the Teiid System will pass to it at runtime, and function should return the calculated or altered value.
+
+See https://docs.jboss.org/author/display/TEIID/DDL+Metadata[DDL Metadata] for all possible options related to functions defined via DDL.
+
+=== Writing the Java Code required by the UDF
+
+The number of input arguments and types must match the function metadata defined in Designer or on Dynamic VDB metadata.
+
+Code Requirements For UDFs
+
+* The java class containing the function method must be defined public.
+
+NOTE: One implementation class can contain more than one UDF implementation methods.
+
+* The function method must be public and static.
+
+Code Requirements For UDAFs
+
+* The java class containing the function method must be defined public and extend org.teiid.UserDefinedAggregate
+* The function method must be public.
+
+Other Considerations
+
+* Any exception can be thrown, but Teiid will rethrow the exception as a `FunctionExecutionException` .
+* You may optionally add an additional `org.teiid.CommandContext` argument as the first parameter. The `CommandContext` interface provides access to information about the current command, such as the executing user, Subject, the vdb, the session id, etc. This `CommandContext` parameter should not be declared in the function metadata.
+
+[source,java]
+.*Sample UDF code*
+----
+package org.something;
+
+public class TempConv
+{
+   /**
+   * Converts the given Celsius temperature to Fahrenheit, and returns the
+   * value.
+   * @param doubleCelsiusTemp
+   * @return Fahrenheit
+   */
+   public static Double celsiusToFahrenheit(Double doubleCelsiusTemp)
+   {
+      if (doubleCelsiusTemp == null)
+      {
+         return null;
+      }
+      return (doubleCelsiusTemp)*9/5 + 32;
+   }
+}
+----
+
+[source,java]
+.*Sample UDAF code*
+----
+package org.something;
+
+public static class SumAll implements UserDefinedAggregate<Integer> {
+
+    private boolean isNull = true;
+    private int result;
+
+    public void addInput(Integer... vals) {
+        isNull = false;
+        for (int i : vals) {
+            result += i;
+        }
+    }
+
+    @Override
+    public Integer getResult(org.teiid.CommandContext commandContext) {
+        if (isNull) {
+            return null;
+        }
+        return result;
+    }
+
+    @Override
+    public void reset() {
+        isNull = true;
+        result = 0;
+    }
+
+}
+----
+
+[source,java]
+.*Sample CommandContext Usage*
+----
+package org.something;
+
+public class SessionInfo
+{
+   /**
+   * @param context
+   * @return the created Timestamp
+   */
+   public static Timestamp sessionCreated(CommandContext context)
+   {
+      return new Timestamp(context.getSession().getCreatedTime());
+   }
+}
+----
+
+The corresponding UDF would be declared as Timestamp sessionCreated().
+
+== Post Code Activities
+
+* After coding the functions you should compile the Java code into a Java Archive (JAR) file.
+
+=== Zip Deployment
+
+The JAR file may be placed in your VDB under the "/lib" directory. It will automatically be used for the VDB classloader classpath when deployed.
+
+=== AS Module
+
+Create a JBoss AS module with the JAR file under _<jboss-as>/modules_ directory and define the module on the -vdb.xml file as shown below example
+
+[source,xml]
+----
+<vdb name="{vdb-name}" version="1">
+    <property name ="lib" value ="{module-name}"></property>
+     ...
+</vdb>
+----
+
+The lib property value may contain a space delimited list of module names if more than one dependency is needed.
+

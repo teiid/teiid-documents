@@ -1,0 +1,35 @@
+
+= Deploying the Adapter
+
+Once the RAR file is built, deploy it by copying the RAR file into ""deploy" directory of JBoss AS’s chosen profile. Typically the server does not need to be restarted when a new RAR file is being added. Alternatively, you can also use ""admin-console", a web based monitoring and configuration tool, to deploy this file into the container.
+
+Once the Connector’s RAR file is deployed into the JBoss container, now you can create an instance of this connector to be used with your Translator. Creating an instance of this Connector is no different than creating a ""Connection Factory" in JBoss AS. Again, you have two ways to create a ""ConnectionFactory".
+
+Edit standalone.xml or domain.xml file, and add following XML in the "resource-adapters" subystem.
+
+[source,xml]
+----
+<!-- If susbsytem is already defined, only copy the contents under it and edit to suit your needs -->
+<subsystem xmlns="urn:jboss:domain:resource-adapters:1.0">
+    <resource-adapters>
+        <resource-adapter>
+            <archive>teiid-connector-sample.rar</archive>
+            <transaction-support>NoTransaction</transaction-support>
+            <connection-definitions>
+                <connection-definition class-name="org.teiid.resource.adapter.MyManagedConnectionFactory"  jndi-name="${jndi-name}" 
+                        enabled="true" 
+                        use-java-context="true" 
+                        pool-name="sample-ds">
+                      <config-property name="UserName">jdoe</config-property>
+                      <config-property name="Count">12</config-property>
+                </connection-definition>
+            </connection-definitions>
+        </resource-adapter>
+    </resource-adapters>
+</subsystem>
+----
+
+There are lot more properties that you can define for pooling, transactions, security, etc., in this file. Check JBoss AS documentation for all the available properties.
+
+Alternatively, you can use the web based ""admin-console" configuration and monitoring program, to create a new Connection Factory. Have your RAR file name and needed configuration properties handy and fill out web form to create the ConnectionFactory.
+

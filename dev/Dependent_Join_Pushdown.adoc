@@ -1,0 +1,19 @@
+
+= Dependent Join Pushdown
+
+Dependent joins are a technique used in federation to reduce the cost of cross source joins. Join values from one side of a join are made available to the other side which reduces the number of tuples needed to preform the join. Translators may indicate support for dependent join pushdown via the supportsDependentJoin and supportsFullDependentJoin capabilities. The handling of pushdown dependent join queries can be complicated.
+
+NOTE: See the JDBC Translator for the reference implementation of dependent join pushdown handling based up the creation temporary tables.
+
+== Key Pushdown
+
+The more simplistic mode of dependent join pushdown is to push only the key (equi-join) values to effectively evaluate a semi-join - the full join will still be processed by the engine after the retrieval. The ordering (if present) and all of the non-dependent criteria constructs on the pushdown command *must* be honored. The dependent criteria, which will be a `Comparison` with a `Parameter` (possibly in `Array` form), may be ignored in part or in total to retrieve a superset of the tuples requested.
+
+Pushdown key dependent join queries will be instances of `Select` with the relevant dependent values available via `Select.getDependentValues()`. A dependent value tuple list is associated to Parameters by id via the `Parameter.getDepenentValueId()` identifier. The dependent tuple list provide rows that are referenced by the column positions (available via `Parameter.getValueIndex()`). Care should be taken with the tuple values as they may guaranteed to be ordered, but will be unique with respect to all of the `Parameter` references against the given dependent value tuple list.
+
+== Full Pushdown
+
+In some scenarios, typically with small independent data sets or extensive processing above the join that can be pushed to the source, it is advantageous for the source to handle the dependent join pushdown. This feature is marked as supported by the supportsFullDependentJoin capability. Here the source is expected to process the command exactly as specified - the dependent join is not optional
+
+Full pushdown dependent join queries will be instances of `QueryExpression` with the relevant dependent values available via special common table definitions using `QueryExpression.getWith()`. The independent side of a full pushdown join will appear as a common table `WithItem` with a dependent value tuple list available via `WithItem.getDependentValues()`. The dependent value tuples will positionally match the columns defined by `WithItem.getColumns()`. The dependent value tuple list is not guaranteed to be in any particular order.
+

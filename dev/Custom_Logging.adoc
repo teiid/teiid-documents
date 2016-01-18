@@ -1,0 +1,92 @@
+
+= Custom Logging
+
+The Teiid system provides a wealth of information using logging. To control logging level, contexts, and log locations, you should be familiar with container’s `standalone.xml` or `domain.xml` configuration file and check out "logging" subsystem. Refer to the https://docs.jboss.org/author/display/TEIID/Administrator%27s+Guide[Administrator’s Guide] for more details about different https://docs.jboss.org/author/display/TEIID/Logging[Teiid contexts] available.
+
+If you want a custom log handler, follow the directions to write a custom _http://docs.oracle.com/javase/6/docs/api/java/util/logging/Handler.html[java.util.logging.Handler]_. If you develop a custom logging Handler, the implementation class along should be placed as a jar in "org.jboss.teiid" module and define its name in the module.xml file as part of the module along with any dependencies it may need. See below.
+
+== Command Logging API
+
+If you want to build a custom handler for command logging that will have access to java.util.logging http://docs.oracle.com/javase/6/docs/api/java/util/logging/LogRecord.html[LogRecords] to the "COMMAND_LOG" context, the handler will receive a instance of LogRecord message, this object will contain a parameter of type `org.teiid.logging.CommandLogMessage`. The relevant Teiid classes are defined in the _teiid-api-9.0.0.Final.jar_. The CommmdLogMessage includes information about vdb, session, command sql, etc. CommandLogMessages are logged at the INFO (user queries), DEBUG (source queries), and TRACE (query plan) levels.
+
+[source,java]
+.*Sample CommandLogMessage Usage*
+----
+package org.something;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
+
+public class CommandHandler extends Handler {
+    @Override
+    public void publish(LogRecord record) {
+    CommandLogMessage msg = (CommandLogMessage)record.getParameters()[0];
+        //log to a database, trigger an email, etc.
+    }
+
+    @Override
+    public void flush() {
+    }
+
+    @Override
+    public void close() throws SecurityException {
+    }
+}
+----
+
+== Audit Logging API
+
+If you want to build a custom handler for command logging that will have access to java.util.logging http://docs.oracle.com/javase/6/docs/api/java/util/logging/LogRecord.html[LogRecords]
+to the "AUDIT_LOG" context, the handler will receive a instance of LogRecord message, this object will contain a parameter of type `org.teiid.logging.AuditMessage`. The `AuditMessage` includes information about user, the action, and the target(s) of the action. The relevant Teiid classes are defined in the _teiid-api-9.0.0.Final.jar_. AuditMessages are logged at the DEBUG level. AuditMessages are used for both data role validation and for logon/logoff events. Only logon events will contain `LogonInfo`.
+
+[source,java]
+.*Sample AuditMessage Usage*
+----
+package org.something;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
+
+public class AuditHandler extends Handler {
+    @Override
+    public void publish(LogRecord record) {
+    AuditMessage msg = (AuditMessage)record.getParameters()[0];
+        //log to a database, trigger an email, etc.
+    }
+
+    @Override
+    public void flush() {
+    }
+
+    @Override
+    public void close() throws SecurityException {
+    }
+}
+----
+
+== Configuration
+
+Now that you have developed a custom handler class, now package implementation in Jar file, then copy this Jar file into `<jboss-as7>/modules/org/jboss/teiid/main` folder, and edit `module.xml` file in the same directory and add
+
+[source,xml]
+----
+   <resource-root path="{your-jar-name}.jar" />
+----
+
+then use the cli to update the logging configuration, such as shown with the auditcommand scripts in the bin/scripts directory or edit `standalone-teiid.xml` or `domain.xml` file by locating the "logging" subsystem and add the following entries:
+
+[source,xml]
+----
+   <custom-handler name="COMMAND" class="org.teiid.logging.CommandHandler" 
+     module="org.jboss.teiid">
+   </custom-handler>
+
+   ..other entries
+
+   <logger category="org.teiid.COMMAND_LOG">
+       <level name="DEBUG"/>
+       <handlers>
+           <handler name="COMMAND"/>
+       </handlers>
+   </logger>
+----
+
+Change the above configuration accordingly for AuditHandler, if you are working with Audit Messages.

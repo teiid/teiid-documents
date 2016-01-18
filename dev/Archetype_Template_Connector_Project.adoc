@@ -1,0 +1,98 @@
+
+= Archetype Template Connector Project
+
+One way to start developing a custom connector (resource-adapter) is to create a project using the Teiid archetype template. When the project is created from the template, it will contain the essential classes and resources for you to begin adding your custom logic. Additionally, the maven dependencies are defined in the pom.xml so that you can begin compiling the classes.
+
+NOTE: The project will be created as an independent project and has no parent maven dependencies. It’s designed to be built independent of building Teiid.
+
+You have 2 options for creating a connector project; in Eclipse by creating a new maven project from the arche type or by using the command line to generate the project.
+
+== Create Project in Eclipse
+
+To create a Java project in Eclipse from an arche type, perform the following:
+
+* Open the JAVA perspective
+* From the menu select File –> New —> Other
+* In the tree, expand Maven and select Maven Project, press Next
+* On the "Select project name and Location" window, you can accept the defaults, press Next
+* On the "Select an Archetype" window, select Configure button
+* Add the remote catalog: https://repository.jboss.org/nexus/content/repositories/releases/[https://repository.jboss.org/nexus/content/repositories/releases/] then click OK to return
+* Enter "teiid" in the filter to see the Teiid arche types.
+* Select the connector-archetype v8.7.1, then press Next
+* Enter all the information (i.e., Group ID, Artifact ID, etc.) needed to generate the project, then click Finish
+
+The project will be created and name according to the _*ArtifactID*_.
+
+== Create Project using Command Line
+
+To create a custom connector project from the command line, you can use the following template command:
+
+[source,java]
+----
+mvn archetype:generate   -DarchethypeRepository=https://repository.jboss.org/nexus/content/repositories/releases/   \
+  -DarchetypeGroupId=org.jboss.teiid.arche-types               \
+  -DarchetypeArtifactId=connector-archetype          \
+  -DarchetypeVersion=8.7.1               \
+  -DgroupId=${groupId}                  \
+  -DartifactId=connector-${connector-name}  \
+  -Dpackage=org.teiid.resource.adapter.${connector-name}    \
+  -Dversion=${teiid.version}    \
+  -Dconnector-name=${connector-name}   \
+  -Dvendor-name=${vendor-name}    \
+  -Dteiid-version=${teiid-version}
+----
+
+where:
+
+[source,java]
+----
+  -DarchetypeGroupId    -  is the group ID for the arche type to use to generate
+  -DarchetypeArtifactId -  is the artifact ID for the arche type to use to generate
+  -DarchetypeVersion    -  is the version of the arche type to use to generate
+  -DgroupId     -  (user defined) group ID for the new connector project pom.xml
+  -DartifactId      -  (user defined) artifact ID for the new connector project pom.xml
+  -Dpackage     -  (user defined) the package structure where the java and resource files will be created
+  -Dversion     -  (user defined) the version that the new connector project pom.xml will be
+  -Dconnector-name  -  (user defined) the name (type) of the new connector project, used to create the java class names and rar
+  -Dvendor-name     -  name of the Vendor for the data source, updates the rar
+  -Dteiid-version   -  the Teiid version the connector will depend upon
+----
+
+The following is an example:
+
+[source,java]
+----
+mvn archetype:generate   -DarchethypeRepository=https://repository.jboss.org/nexus/content/repositories/releases/                                \
+  -DarchetypeGroupId=org.jboss.teiid.arche-types              \
+  -DarchetypeArtifactId=connector-archetype          \
+  -DarchetypeVersion=8.7.1      \
+  -DgroupId=org.jboss.teiid.connectors      \
+  -Dpackage=org.teiid.resource.adapter.myType    \
+  -DartifactId=connector-myType \
+  -Dversion=0.0.1-SNAPSHOT    \
+  -Dconnector-name=myType   \
+  -Dvendor-name=MyVendor    \
+  -Dteiid-version=8.7.0.Final
+----
+
+When executed, you will be asked to confirm the properties
+
+[source,java]
+----
+Confirm properties configuration:
+groupId: org.jboss.teiid.connectors
+artifactId: connector-myType
+version: 0.0.1-SNAPSHOT
+package: org.teiid.resource.adapter.myType
+connector-name: myType
+vendor-name: MyVendor
+teiid-version: 8.7.0.Final
+ Y: : 
+----
+
+type Y (yes) and press enter, and the creation of the connector project will be done
+
+Upon creation, a directory based on the _*artifactId*_ will be created, that will contain the project. Note: The project will not compile because the $\{connector-name}Connection interface in the ConnectionImpl has not been added as a dependency in the pom.xml. This will need to be done.
+
+Now you are ready to start adding your custom code.
+

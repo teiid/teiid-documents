@@ -1,0 +1,62 @@
+
+= PreParser
+
+If it is desirable to manipulate incoming queries prior to being handled by Teiid logic, then a custom pre-parser can be installed. Use the _PreParser_ interface provided in the _org.teiid.api_ jar to plug-in a pre-parser for the Teiid engine. See link:Setting_up_the_build_environment.adoc[Setting up the build environment] to start development. For Example:
+
+[source,java]
+.*Sample Java Code*
+----
+import org.teiid.PreParser;
+...
+
+package com.something;
+
+public class CustomPreParser implements PreParser {
+
+    @Override
+    public String preParse(String command, CommandContext context) {
+        //manipulate the command
+    }
+}
+----
+
+Then build a JAR archive with above implementation class and create a file named _org.teiid.PreParser_ in _META-INF/services_ directory with contents:
+
+[source,java]
+----
+com.something.CustomPreParser
+----
+
+The the jar has been built, this needs to be deployed in the JBoss AS as a module under _<jboss-as>/modules_ directory. Follow the below steps to create a module.
+
+* Create a directory _<jboss-as>/modules/com/something/main_
+
+* Under this directory create a ``module.xml'' file that looks like
+
+[source,xml]
+.*Sample module.xml file*
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="urn:jboss:module:1.0" name="com.something">
+    <resources>
+        <resource-root path="something.jar" />
+    </resources>
+    <dependencies>
+        <module name="javax.api"/>
+        <module name="javax.resource.api"/>
+        <module name="org.jboss.teiid.common-core"/>
+        <module name="org.jboss.teiid.teiid-api" />
+    </dependencies>
+</module>
+----
+
+* Copy the jar file under this same directory. Make sure you add any additional dependencies if required by your implementation class under dependencies.
+
+* Use the cli or modify the configuration to set the preparser-module in the Teiid subsystem configuration to the appropriate module name.
+
+* Restart the server
+
+== Development Considerations
+
+* Changing the incoming query to a different type of statement is not recommended as are any modifications to the number or types of projected symbols.
+
