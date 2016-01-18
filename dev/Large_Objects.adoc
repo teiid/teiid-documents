@@ -1,0 +1,36 @@
+
+= Large Objects
+
+This section examines how to use facilities provided by the Teiid API to use large objects such as blobs, clobs, and xml in your Translator.
+
+== Data Types
+
+Teiid supports three large object runtime data types:  blob, clob, and xml. A blob is a "binary large object", a clob is a "character larg  object", and "xml" is a "xml document". Columns modeled as a blob, clob, or xml are treated similarly by the translator framework to support memory-safe streaming.  
+
+== Why Use Large Object Support?
+
+Teiid allows a Translator to return a large object through the Teiid translator API by just returning a reference to the actual large object. Access to that LOB will be streamed as appropriate rather than retrieved all at once.  This is useful for several reasons:
+
+1.  Reduces memory usage when returning the result set to the user.
+2.  Improves performance by passing less data in the result set.
+3.  Allows access to large objects when needed rather than assuming that users will always use the large object data.
+4.  Allows the passing of arbitrarily large data values. However, these benefits can only truly be gained if the Translator itself does not materialize an entire large object all at once.  For example, the Java JDBC API supports a streaming interface for blob and clob data.
+
+== Handling Large Objects
+
+The Translator API automatically handles large objects (Blob/Clob/SQLXML) through the creation of special purpose wrapper objects when it retrieves results.
+
+Once the wrapped object is returned, the streaming of LOB is automatically supported. These LOB objects then can for example appear in client results, in user defined functions, or sent to other translators.
+
+A Execution is usually closed and the underlying connection is either closed/released as soon as all rows for that execution have been retrieved. However, LOB objects may need to be read after their initial retrieval of results.  When LOBs are detected the default closing behavior is prevented by setting a flag via the `ExecutionContext.keepAlive` method.
+
+When the "keepAlive" alive flag is set, then the execution object is only closed when user’s Statement is closed.
+
+[source,java]
+----
+executionContext.keepExecutionAlive(true);
+----
+
+== Inserting or Updating Large Objects
+
+LOBs will be passed to the Translator in the language objects as Literal containing a java.sql.Blob, java.sql.Clob, or java.sql.SQLXML.  You can use these interfaces to retrieve the data in the large object and use it for insert or update.

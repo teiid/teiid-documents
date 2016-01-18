@@ -1,0 +1,68 @@
+
+= Runtime Updates
+
+Teiid supports several mechanisms for updating the runtime system.
+
+== Data Updates
+
+Data change events are used by Teiid to invalidate result set cache entries. Result set cache entries are tracked by the tables that contributed to their results. By default Teiid will capture internal data events against physical sources and distribute them across the cluster. This approach has several limitations. First updates are scoped only to their originating VDB/version. Second updates made out side of Teiid are not captured. To increase data consistency external change data capture tools can be used to send events to Teiid. From within a Teiid cluster the `org.teiid.events.EventDistributorFactory` and `org.teiid.events.EventDistributor` can be used to distribute change events. The `EventDistributorFactory` can be looked up by its name _"teiid/event-distributor-factory"_. See https://docs.jboss.org/author/display/TEIID/Programmatic+Control[Programmatic Control] for a dataModification example.
+
+When externally capturing all update events, _"detect-change-events"_ property in the teiid subsystem in can be set to _false_, to not duplicate change events. By default, this property is set to _true_.
+
+NOTE: Using the `org.teiid.events.EventDistributor` interface you can also update runtime metadata. Please check the API.
+
+The use of the other `EventDistributor` methods to manually distribute other events is not always necessary. Check the https://docs.jboss.org/author/display/TEIID/System+Procedures[System Procedures] for SQL based updates.
+
+== Runtime Metadata Updates
+
+Runtime updates via system procedures and DDL statements are by default ephemeral. They are effective across the cluster only for the currently running vdbs. With the next vdb start the values will revert to whatever is stored in the vdb. Updates may be made persistent though by configuring a `org.teiid.metadata.MetadataRepository`. An instance of a `MetadataRepository` can be installed via VDB file. In Designer based VDB, you can edit the vdb.xml file in the META-INF directory or use Dynamic VDB file as below.
+
+[source,xml]
+----
+<vdb name="{vdb-name}" version="1">
+    <model name="{model-name}" type="VIRTUAL">
+         <metadata type="{jboss-as-module-name}"></metadata>
+    </model>
+</vdb>
+----
+
+In the above code fragment, replace the \{jboss-as-module-name} with a JBoss AS module name that has library that implements the `org.teiid.metadata.MetadataRepository` interface and defines file "META-INF/services/org.teiid.metadata.MetadataRepository" with name of the implementation file.
+
+The `MetadataRepository` repository instance may fully implement as many of the methods as needed and return null from any unneeded getter.
+
+It is not recommended to directly manipulate `org.teiid.metadata.AbstractMetadataRecord` instances. System procedures and DDL statements should be used instead since the effects will be distributed through the cluster and will not introduce inconsistencies.
+
+`org.teiid.metadata.AbstractMetadataRecord` objects passed to the `MetadataRepository` have not yet been modified. If the `MetadataRepository` cannot persist the update, then a `RuntimeException` should be thrown to prevent the update from being applied by the runtime engine.
+
+The MetadataRepository can be accessed by multiple threads both during load or at runtime with through DDL statements. Your implementation should handle any needed synchronization.
+
+=== Costing Updates
+
+See the Reference for the system procedures `SYSADMIN.setColumnStats` and `SYSADMIN.setTableStats`. To make costing updates persistent `MetadataRepository` implementations should be provided for:
+
+[source,java]
+----
+TableStats getTableStats(String vdbName, int vdbVersion, Table table);
+void setTableStats(String vdbName, int vdbVersion, Table table, TableStats tableStats);
+ColumnStats getColumnStats(String vdbName, int vdbVersion, Column column);
+void setColumnStats(String vdbName, int vdbVersion, Column column, ColumnStats columnStats);
+----
+
+=== Schema Updates
+
+See the Reference for supported DDL statements. To make schema updates persistent implementations should be provided for:
+
+[source,java]
+----
+String getViewDefinition(String vdbName, int vdbVersion, Table table);
+void setViewDefinition(String vdbName, int vdbVersion, Table table, String viewDefinition);
+String getInsteadOfTriggerDefinition(String vdbName, int vdbVersion, Table table, Table.TriggerEvent triggerOperation);
+void setInsteadOfTriggerDefinition(String vdbName, int vdbVersion, Table table, Table.TriggerEvent triggerOperation, String triggerDefinition);
+boolean isInsteadOfTriggerEnabled(String vdbName, int vdbVersion, Table table, Table.TriggerEvent triggerOperation);
+void setInsteadOfTriggerEnabled(String vdbName, int vdbVersion, Table table, Table.TriggerEvent triggerOperation, boolean enabled);
+String getProcedureDefinition(String vdbName, int vdbVersion, Procedure procedure);
+void setProcedureDefinition(String vdbName, int vdbVersion, Procedure procedure, String procedureDefinition);           
+LinkedHashMap<String, String> getProperties(String vdbName, int vdbVersion, AbstractMetadataRecord record);
+void setProperty(String vdbName, int vdbVersion, AbstractMetadataRecord record, String name, String value);
+----
+

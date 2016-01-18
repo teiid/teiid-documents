@@ -1,0 +1,145 @@
+
+= Extending The JDBC Translator
+
+The JDBC Translator can be extended to handle new JDBC drivers and database versions. This is one of the most common needs of custom Translator development. This chapter outlines the process by which a user can modify the behavior of the JDBC Translator for a new source, rather than starting from scratch.
+
+To design a JDBC Translator for any RDMS that is not already provided by the Teiid, extend the `org.teiid.translator.jdbc.JDBCExecutionFactory` class in the "translator-jdbc" module. There are three types of methods that you can override from the base class to define the behavior of the Translator.
+
+|===
+|Extension |Purpose
+
+|Capabilities
+|Specify the SQL syntax and functions the source supports.
+
+|SQL Translation
+|Customize what SQL syntax is used, how source-specific functions are supported, how procedures are executed.
+
+|Results Translation
+|Customize how results are retrieved from JDBC and translated.
+|===
+
+== Capabilities Extension
+
+This extension must override the methods that begin with "supports" that describe translator capabilities. Refer to link:Command_Language.adoc[Command Language#Translator Capabilities] for all the available translator capabilities.
+
+The most common example is adding support for a scalar function – this requires both declaring that the translator has the capability to execute the function and often modifying the SQL Translator to translate the function appropriately for the source.
+
+Another common example is turning off unsupported SQL capabilities (such as outer joins or subqueries) for less sophisticated JDBC sources.
+
+== SQL Translation Extension
+
+The JDBCExcecutionFactory provides several methods to modify the command and the string form of the resulting syntax before it is sent to the JDBC driver, including:
+
+* Change basic SQL syntax options. See the useXXX methods, e.g. useSelectLimit returns true for SQLServer to indicate that limits are applied in the SELECT clause.
+* Register one or more FunctionModifiers that define how a scalar function should be modified or transformed.
+* Modify a LanguageObject. - see the translate, translateXXX, and FunctionModifiers.translate methods. Modify the passed in object and return null to indicate that the standard syntax output should be used.
+* Change the way SQL strings are formed for a LanguageObject. - - see the translate, translateXXX, and FunctionModifiers.translate methods. Return a list of parts, which can contain strings and LanguageObjects, that will be appended in order to the SQL string. If the in coming LanguageObject appears in the returned list it will not be translated again. Refer to link:Extending_The_JDBC_Translator.adoc[Using FunctionModifiers].
+
+== Results Translation Extension
+
+The JDBCExecutionFactory provides several methods to modify the java.sql.Statement and java.sql.ResultSet interactions, including:
+
+1.  Overriding the createXXXExecution to subclass the corresponding JDBCXXXExecution. The JDBCBaseExecution has protected methods to get the appropriate statement (getStatement, getPreparedStatement, getCallableStatement) and to bind prepared statement values bindPreparedStatementValues.
+2.  Retrieve values from the JDBC ResultSet or CallableStatement - see the retrieveValue methods.
+
+== Adding Function Support
+
+Refer to link:User_Defined_Functions.adoc[User Defined Functions] for adding new functions to Teiid. This example will show you how to declare support for the function and modify how the function is passed to the data source.
+
+Following is a summary of all coding steps in supporting a new scalar function:
+
+1.  Override the capabilities method to declare support for the function (REQUIRED)
+2.  Implement a FunctionModifier to change how a function is translated and register it for use (OPTIONAL) There is a capabilities method getSupportedFunctions() that declares all supported scalar functions.
+
+An example of an extended capabilities class to add support for the "abs" absolute value function:
+
+[source,java]
+----
+package my.connector;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ExtendedJDBCExecutionFactory extends JDBCExecutionFactory 
+{
+   @Override
+   public List getSupportedFunctions() 
+   {
+      List supportedFunctions = new ArrayList();
+      supportedFunctions.addAll(super.getSupportedFunctions());
+      supportedFunctions.add("ABS"); 
+      return supportedFunctions;
+   }
+}
+----
+
+In general, it is a good idea to call super.getSupportedFunctions() to ensure that you retain any function support provided by the translator you are extending.
+
+This may be all that is needed to support a Teiid function if the JDBC data source supports the same syntax as Teiid. The built-in SQL translation will translate most functions as: "function(arg1, arg2,…)".
+
+== Using FunctionModifiers
+
+In some cases you may need to translate the function differently or even insert additional function calls above or below the function being translated. The JDBC translator provides an abstract class `FunctionModifier` for this purpose.
+
+During the start method a modifier instance can be registered against a given function name via a call to `JDBCExecutionFactory.registerFunctionModifier`.
+
+The FunctionModifier has a method called `translate`. Use the translate method to change the way the function is represented.
+
+An example of overriding the translate method to change the MOD(a, b) function into an infix operator for Sybase (a % b). The translate method returns a list of strings and language objects that will be assembled by the translator into a final string. The strings will be used as is and the language objects will be further processed by the translator.
+
+[source,java]
+----
+public class ModFunctionModifier extends FunctionModifier 
+{
+   public List translate(Function function) 
+   {
+      List parts = new ArrayList();
+      parts.add("(");        
+      Expression[] args = function.getParameters();
+      parts.add(args[0]);
+      parts.add(" % "); 
+      parts.add(args[1]);
+      parts.add(")");    
+      return parts;
+   }
+}
+----
+
+In addition to building your own FunctionModifiers, there are a number of pre-built generic function modifiers that are provided with the translator.
+
+|===
+|Modifier |Description
+
+|AliasModifier
+|Handles simply renaming a function ("ucase" to "upper" for example)
+
+|EscapeSyntaxModifier
+|Wraps a function in the standard JDBC escape syntax for functions: \{fn xxxx()}
+|===
+
+To register the function modifiers for your supported functions, you must call the `ExecutionFactory.registerFunctionModifier(String name, FunctionModifier modifier)` method.
+
+[source,java]
+----
+public class ExtendedJDBCExecutionFactory extends JDBCExecutionFactory
+{              
+   @Override
+   public void start() 
+   {
+      super.start();
+
+      // register functions.
+      registerFunctionModifier("abs", new MyAbsModifier()); 
+      registerFunctionModifier("concat", new AliasModifier("concat2")); 
+   }
+}
+----
+
+Support for the two functions being registered ("abs" and "concat") must be declared in the capabilities as well. Functions that do not have modifiers registered will be translated as usual.
+
+== Installing Extensions
+
+Once you have developed an extension to the JDBC translator, you must install it into the Teiid Server. The process of packaging or deploying the extended JDBC translators is exactly as any other other translator. Since the RDMS is accessible already through its JDBC driver, there is no need to develop a resource adapter for this source as JBoss AS provides a wrapper JCA connector (DataSource) for any JDBC driver.
+
+Refer to link:Packaging.html[Packaging] and link:Deployment.adoc[Deployment] for more details.
+

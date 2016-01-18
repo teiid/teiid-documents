@@ -1,0 +1,188 @@
+
+= Extending the ExecutionFactory Class
+
+The main class in the translator implementation is ExecutionFactory. A base class is provided in the Teiid API, so a custom translator must extend `org.teiid.translator.ExecutionFactory` to connect and query an enterprise data source. This extended class must provide a no-arg constructor that can be constructed using Java reflection libraries. This Execution Factory needs to define/override the following elements.
+
+[source,java]
+----
+package org.teiid.translator.custom;
+
+@Translator(name="custom", description="Connect to My EIS")
+public class CustomExecutionFactory extends ExecutionFactory<MyConnectionFactory, MyConnection> {
+
+    public CustomExecutionFactory() {
+    }
+}                
+----
+
+Define the annotation `@Translator` on extended "ExecutionFactory" class. This annotation defines the name, which is used as the identifier during deployment, and the description of your translator. This name is what you will be using in the VDB and else where in the configuration to refer to this translator.
+
+== ConnectionFactory
+
+Defines the "ConnectionFactory" interface that is defined in resource adapter. This is defined as part of class definition of extended "ExecutionFactory" class. Refer to "MyConnectionFactory" sample in the link:Developing_JEE_Connectors.adoc[Developing JEE Connectors] chapter.
+
+== Connection
+
+Defines the "Connection" interface that is defined in the resource adapter. This is defined as part of class definition of extended "ExecutionFactory" class. Refer to "MyConnection" class sample invthe link:Developing_JEE_Connectors.adoc[Developing JEE Connectors] chapter.
+
+== Configuration Properties
+
+If the translator requires external configuration, that defines ways for the user to alter the behavior of a program, then define an attribute variable in the class and define "get" and "set" methods for that attribute. Also, annotate each "get" method with `@TranslatorProperty` annotation and provide the metadata about the property.
+
+For example, if you need a property called "foo", by providing the annotation on these properties, the Teiid tooling can automatically interrogate and provide a graphical way to configure your Translator while designing your VDB.
+
+[source,java]
+----
+private String foo = "blah";
+@TranslatorProperty(display="Foo property", description="description about Foo") 
+public String getFoo() 
+{
+   return foo;
+}
+
+public void setFoo(String value) 
+{
+   return this.foo = value;
+} 
+----
+
+The `@TranslatorProperty` defines the following metadata that you can define about your property
+
+* display: Display name of the property
+* description: Description about the property
+* required: The property is a required property
+* advanced: This is advanced property; A default value must be provided. A property can not be "advanced" and "required" at same time.
+* masked: The tools need to mask the property; Do not show in plain text; used for passwords
+
+Only java primitive (int, boolean), primitive object wrapper (java.lang.Integer), or Enum types are supported as Translator properties. Complex objects are not supported. The default value will be derived from calling the getter method, if available, on a newly constructed instance. All properties _should_ have a default value. If there is no applicable default, then the property should be marked in the annotation as `required`. Initialization will fail if a required property value is not provided.
+
+== Initializing the Translator
+
+Override and implement the `start` method (be sure to call "super.start()") if your translator needs to do any initializing before it is used by the Teiid engine. This method will be called by Teiid, once after all the configuration properties set above are injected into the class.
+
+== Extended Translator Capabilities
+
+These are various methods that typically begin with method signature "supports" on the "ExecutionFactory" class. These methods need to be overridden to describe the execution capabilities of the Translator. Refer to link:Translator_Capabilities.adoc[Translator Capabilities] for more on these methods.
+
+== Execution (and sub-interfaces)
+
+Based on types of executions you are supporting, the following methods need to be overridden to provide implementations for their respective return interfaces.
+
+* `createResultSetExecution`- Override if you are doing read based operation that is returning a rows of results. For ex: select
+* `createUpdateExecution`- Override if you are doing write based operations. For ex:insert, update, delete
+* `createProcedureExecution`- Overide if you are doing procedure based operations. For ex; stored procedures. This works well for non-relational sources. You can choose to implement all the execution modes or just what you need. See more details on this below.
+
+== Metadata
+
+Override and implement the method `getMetadataProcessor()`, if you want to expose the metadata about the source for use in Dynamic VDBs. This defines the tables, column names, procedures, parameters, etc. for use in the query engine. This method is used by Designer tooling when the Teiid Connection importer is used. A sample MetadataProcessor may look like
+
+[source,java]
+----
+public class MyMetadataProcessor implements MetadataProcessor<Connection> {
+
+     public void process(MetadataFactory mf, Connection conn) {
+            Object somedata = connection.getSomeMetadata();
+
+            Table table = mf.addTable(tableName);
+            Column col1 = mf.addColumn("col1", TypeFacility.RUNTIME_NAMES.STRING, table);
+            column col2 = mf.addColumn("col2", TypeFacility.RUNTIME_NAMES.STRING, table);
+
+            //add a pushdown function that can also be evaluated in the engine
+            Method method = ...           
+            Function f = mf.addFunction("func", method); 
+
+            //add a pushdown aggregate function that can also be evaluated in the engine
+            Method aggMethod = ...           
+            Function af = mf.addFunction("agg", aggMethod);
+            af.setAggregateAttributes(new AggregateAttributes());
+            ...
+     }
+}
+----
+
+If your MetadataProcessor needs external properties that are needed during the import process, you can define them on MetadataProcessor. For example, to define a import property called "Column Name Pattern", which can be used to filter which columns are defined on the table, can be defined in the code like the following
+
+[source,java]
+----
+    @TranslatorProperty(display="Column Name Pattern", category=PropertyType.IMPORT, description="Pattern to derive column names")
+    public String getColumnNamePattern() {
+        return columnNamePattern;
+    }
+
+    public void setColumnNamePattern(String columnNamePattern) {
+        this.columnNamePattern = columnNamePattern;
+    }
+----
+
+Note the category type. The configuration property defined in the previous section is different from this one. Configuration properties define the runtime behavior of translator, where as "IMPORT" properties define the metadata import behavior, and aid in controlling what metadata is exposed by your translator.
+
+These properties can be automatically injected through "import" properties set through Designer when using the "Teiid Connection" importer or the properties can be defined under the <model> construct in the vdb.xml file, like
+
+[source,xml]
+----
+  <vdb name="myvdb" version="1">
+     <model name="legacydata" type="PHYSICAL">
+        <property name="importer.ColumnNamePattern" value="col*"/>
+        ....
+        <source name = .../>
+     </model>
+  </vdb>
+----
+
+== Extension Metadata Properties
+
+There may be times when implementing a custom translator, the built in metadata about your schema is not enough to process the incoming query due to variance of semantics with your source query. To aid this issue, Teiid provides a mechanism called "Extension Metadata", which is a mechanism to define custom properties and then add those properties on metadata object (table, procedure, function, column, index etc.). For example, in my custom translator a table represents a file on disk. I could define a extension metadata property as
+
+[source,java]
+----
+public class MyMetadataProcessor implements MetadataProcessor<Connection> {
+     public static final String NAMESPACE = "{http://my.company.corp}";
+
+      @ExtensionMetadataProperty(applicable={Table.class}, datatype=String.class, display="File name", description="File Name", required=true)
+     public static final String FILE_PROP = NAMESAPCE+"FILE";
+
+     public void process(MetadataFactory mf, Connection conn) {
+            Object somedata = connection.getSomeMetadata();
+
+            Table table = mf.addTable(tableName);
+            table.setProperty(FILE_PROP, somedata.getFileName());
+
+            Column col1 = mf.addColumn("col1", TypeFacility.RUNTIME_NAMES.STRING, table);
+            column col2 = mf.addColumn("col2", TypeFacility.RUNTIME_NAMES.STRING, table);
+        
+     }
+}
+----
+
+The `@ExtensionMetadataProperty` defines the following metadata that you can define about your property
+
+* applicable: Metadata object this is applicable on. This is array of metadata classes like Table.class, Column.class.
+* datatype: The java class indicating the data type
+* display: Display name of the property
+* description: Description about the property
+* required: Indicates if the property is a required property
+
+=== How this is used?
+
+When you define an extension metadata property like above, during the runtime you can obtain the value of that property. If you get the query object which contains `SELECT * FROM MyTable', MyTable will be represented by an object called "NamedTable". So you can do the following
+
+[source,java]
+----
+for (TableReference tr:query.getFrom()) {
+    NamedTable t = (NameTable) tr;
+    Table table = t.getMetadataObject();
+    String file = table.getProperty(FILE_PROP);
+    ..
+}
+----
+
+Now you have accessed the file name you set during the construction of the Table schema object, and you can use this value however you seem feasible to execute your query. With the combination of built in metadata properties and extension metadata properties you can design and execute queries for a variety of sources.
+
+== Logging
+
+Teiid provides `org.teiid.logging.LogManager` class for logging purposes. Create a logging context and use the LogManager to log your messages. These will be automatically sent to the main Teiid logs. You can edit the "jboss-log4j.xml" inside "conf" directory of the JBoss AS’s profile to add the custom context. Teiid uses Log4J as its underlying logging system.
+
+== Exceptions
+
+If you need to bubble up any exception use `org.teiid.translator.TranslatorException` class.
+

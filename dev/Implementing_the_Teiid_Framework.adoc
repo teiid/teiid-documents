@@ -1,0 +1,136 @@
+
+= Implementing the Teiid Framework
+
+If you are going to use the Teiid framework for developing a JCA connector, follow these steps. The required classes are in `org.teiid.resource.api` package. Please note that Teiid framework does not make use JCA’s CCI framework, only the JCA’s SPI interfaces.
+
+* Define Managed Connection Factory
+* Define the Connection Factory class
+* Define the Connection class
+* Define the configuration properties in a "ra.xml" file
+
+== Define Managed Connection Factory
+
+Extend the `BasicManagedConnectionFactory`, and provide a implementation for the "createConnectionFactory()" method. This method defines a factory method that can create connections.
+
+This class also defines configuration variables, like user, password, URL etc to connect to the EIS system. Define an attribute for each configuration variable, and then provide both "getter" and "setter" methods for them. Note to use only "java.lang" objects as the attributes, DO NOT use Java primitives for defining and accessing the properties. See the following code for an example.
+
+[source,java]
+----
+public class MyManagedConnectionFactory extends BasicManagedConnectionFactory 
+{
+   @Override
+   public Object createConnectionFactory() throws ResourceException 
+   {
+      return new MyConnectionFactory();
+   }
+
+   // config property name (metadata for these are defined inside the ra.xml)
+   String userName;
+   public String getUserName()          {  return this.userName;  }
+   public void setUserName(String name){  this.userName = name;  }
+
+   // config property count  (metadata for these are defined inside the ra.xml)
+   Integer count;
+   public Integer getCount()            {  return this.count;  }
+   public void setCount(Integer value) {  this.count = value; }               
+
+}
+----
+
+== Define the Connection Factory class
+
+Extend the `BasicConnectionFactory` class, and provide a implementation for the "getConnection()" method.
+
+[source,java]
+----
+public class MyConnectionFactory extends BasicConnectionFactory 
+{
+   @Override
+   public MyConnection getConnection() throws ResourceException 
+   {
+      return new MyConnection();
+   }  
+}
+----
+
+Since the Managed connection object created the "ConnectionFactory" class it has access to all the configuration parameters, if "getConnection" method needs to do pass any of credentials to the underlying EIS system. The Connection Factory class can also get reference to the calling user’s `javax.security.auth.Subject` during "getConnection" method by calling
+
+[source,java]
+----
+Subject subject = ConnectionContext.getSubject();
+----
+
+This "Subject" object can give access to logged-in user’s credentials and roles that are defined. Note that this may be null.
+
+Note that you can define "security-domain" for this resource adapter, that is separate from the Teiid defined "security-domain" for validating the JDBC end user. However, it is users responsibility to make the necessary logins before the Container’s thread accesses this resource adapter, and this can get overly complex.
+
+== Define the Connection class
+
+Extend the `BasicConnection` class, and provide a implementation based on your access of the Connection object in the Translator. If your connection is stateful, then override "isAlive()" and "cleanup()" methods and provide proper implementations. These are called to check if a Connection is stale or need to flush them from the connection pool etc. by the Container.
+
+[source,java]
+----
+public class MyConnection extends BasicConnection 
+{
+   public void doSomeOperation(command)
+   {
+      // do some operation with EIS system..
+      // This is method you use in the Translator, you should know
+      // what need to be done here for your source..
+   }
+     
+   @Override
+   public boolean isAlive() 
+   {
+      return true;
+   }
+   
+   @Override
+   public void cleanUp() 
+   {
+         
+   }
+}
+----
+
+== XA Transactions
+
+If your EIS source can participate in XA transactions, then on your Connection object, override the "getXAResource()" method and provide the "XAResource" object for the EIS system. Refer to link:Implementing_the_Teiid_Framework.adoc[Define the Connection class]. Also, You need to extend the "BasicResourceAdapter" class and provide implementation for method "public XAResource[] getXAResources(ActivationSpec[] specs)" to participate in crash recovery.
+
+Note that, only when the resource adapters are XA capable, then Teiid can make them participate in a distributed transactions. If they are not XA capable, then source can participate in distributed query but will not participate in the transaction. Transaction semantics are defined by how you you configured "connection-factory" in a "resource-adapter". i.e. jta=true/false.
+
+== Define the configuration properties in a "ra.xml" file
+
+Define a "ra.xml" file in "META-INF" directory of your RAR file. An example file is provided in link:ra.xml_file_Template.html[ra.xml file Template].
+
+For every attribute defined inside the your ManagedConnectionFactory
+class, define the following XML configuration for that attribute inside
+the "ra.xml" file. These properties are used by user to configure instance of this Connector inside a Container. Also, during the startup the Container reads these properties from this file and knows how to inject provided values in the "-ds.xml" file into a instance of "ManagedConnectionFactory" to create the Connection. Refer to link:Developing_JEE_Connectors.adoc[Developing JEE Connectors#Define Managed Connection Factory].
+
+[source,xml]
+----
+<config-property>
+   <description>
+      {$display:"${display-name}",$description:"${description}", $allowed="${allowed}", 
+      $required="${true|false}", $defaultValue="${default-value}"}
+   </description>
+   <config-property-name>${property-name}</config-property-name>
+   <config-property-type>${property-type}</config-property-type>
+   <config-property-value>${optioal-property-value}</config-property-value>
+</config-property>
+----
+
+The format and contents of "<description>" element may be used as extended metadata for tooling. The special format must begin and end with curly braces e.g. \{…}. This use of the special format and all properties is optional. Property names begin with '$' and are separated from the value with ':'. Double quotes identifies a single value. A pair of square brackets, e.g. […], containing comma separated double quoted entries denotes a list value.
+
+Extended metadata properties
+
+* $display: Display name of the property
+* $description: Description about the property
+* $required: The property is a required property; or optional and a default is supplied
+* $allowed: If property value must be in certain set of legal values, this defines all the allowed values
+* $masked: The tools need to mask the property; Do not show in plain text; used for passwords
+* $advanced: Notes this as Advanced property
+* $editable: Property can be modified; or read-only
+
+Note that all these are optional properties; however in the absence of this metadata, Teiid tooling may not work as expected.
+

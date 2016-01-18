@@ -1,0 +1,193 @@
+
+= Command Language
+
+== Language
+
+Teiid sends commands to your Translator in object form. These classes are all defined in the "org.teiid.language" package. These objects can be combined to represent any possible command that Teiid may send to the Translator. However, it is possible to notify Teiid that your Translator can only accept certain kinds of constructs via the capabilities defined on the "ExecutionFactory" class. Refer to link:Command_Language.adoc[Translator Capabilities] for more information.
+
+The language objects all extend from the `LanguageObject` interface. Language objects should be thought of as a tree where each node is a language object that has zero or more child language objects of types that are dependent on the current node.
+
+All commands sent to your Translator are in the form of these language trees, where the root of the tree is a subclass of `Command`. Command has several sub-interfaces, namely:
+
+* `QueryExpression`
+* `Insert`
+* `Update`
+* `Delete`
+* `BatchedUpdates`
+* `Call` 
+
+Important components of these commands are expressions, criteria, and joins, which are examined in closer detail below. For more on the classes and interfaces described here, refer to the Teiid JavaDocs http://docs.jboss.org/teiid/7.6/apidocs[http://docs.jboss.org/teiid/7.6/apidocs].
+
+== Expressions
+
+An expression represents a single value in context, although in some cases that value may change as the query is evaluated.  For example, a literal value, such as 5 represents an integer value.  An column reference such as "table.EmployeeName" represents a column in a data source and may take on many values while the command is being evaluated.
+
+* `Expression` – base expression interface
+* `ColumnReference` – represents an column in the data source
+* `Literal` – represents a literal scalar value.
+* `Parameter` – represents a parameter with multiple values. The command should be an instance of BatchedCommand, which provides all values via getParameterValues.
+* `Function` – represents a scalar function with parameters that are also Expressions
+* `AggregateFunction` – represents an aggregate function which can hold a single expression
+* `WindowFunction` – represents an window function which holds an AggregateFunction (which is also used to represent analytical functions) and a WindowSpecification
+* `ScalarSubquery` – represents a subquery that returns a single value
+* `SearchedCase, SearchedWhenClause` – represents a searched CASE expression.  The searched CASE expression evaluates the criteria in WHEN clauses till one evaluates to TRUE, then evaluates the associated THEN clause.
+* `Array` – represents an array of expressions, currently only used by the engine in multi-attribute dependent joins - see the supportsArrayType capability.
+
+== Condition
+
+A criteria is a combination of expressions and operators that evaluates to true, false, or unknown.  Criteria are most commonly used in the WHERE or HAVING clauses.
+
+* `Condition` – the base criteria interface
+* `Not` – used to NOT another criteria
+* `AndOr` – used to combine other criteria via AND or OR
+* `SubuqeryComparison` – represents a comparison criteria with a subquery including a quantifier such as SOME or ALL
+* `Comparison` – represents a comparison criteria with =, >, <, etc.
+* `BaseInCondition` – base class for an IN criteria
+* `In` – represents an IN criteria that has a set of expressions for values
+* `SubqueryIn` – represents an IN criteria that uses a subquery to produce the value set
+* `IsNull` – represents an IS NULL criteria
+* `Exists` – represents an EXISTS criteria that determines whether a subquery will return any values
+* `Like` – represents a LIKE/SIMILAR TO/LIKE_REGEX criteria that compares string values
+
+== The FROM Clause
+
+The FROM clause contains a list of `TableReference`’s.  
+
+* `NamedTable` – represents a single Table
+* `Join` – has a left and right `TableReference` and information on the join between the items
+* `DerivedTable` – represents a table defined by an inline `QueryExpression`
+
+A list of `TableReference` are used by default, in the pushdown query when no outer joins are used. If an outer join is used anywhere in the join tree, there will be a tree of `Join` s with a single root. This latter form is the ANSI preferred style. If you wish all pushdown queries containing joins to be in ANSI style have the capability "useAnsiJoin" return true. Refer to link:Command_Language.adoc[Command Form] for more information.
+
+== QueryExpression Structure
+
+`QueryExpression` is the base for both SELECT queries and set queries. It may optionally take an `OrderBy` (representing a SQL ORDER BY clause), a `Limit` (represent a SQL LIMIT clause), or a `With` (represents a SQL WITH clause).
+
+== Select Structure
+
+Each `QueryExpression` can be a `Select` describing the expressions (typically elements) being selected and an `TableReference` specifying the table or tables being selected from, along with any join information.  The `Select` may optionally also supply an `Condition` (representing a SQL WHERE clause), a `GroupBy` (representing a SQL GROUP BY clause), an an `Condition` (representing a SQL HAVING clause).
+
+== SetQuery Structure
+
+A `QueryExpression` can also be a `SetQuery` that represents on of the SQL set operations (UNION, INTERSECT, EXCEPT) on two `QueryExpression`. The all flag may be set to indicate UNION ALL (currently INTERSECT and EXCEPT ALL are not allowed in Teiid)
+
+== With Structure
+
+A `With` clause contains named `QueryExpressions` held by `WithItems` that can be referenced as tables in the main `QueryExpression`.
+
+== Insert Structure
+
+Each `Insert` will have a single `NamedTable` specifying the table being inserted into.  It will also has a list of `ColumnReference` specifying the columns of the `NamedTable` that are being inserted into. It also has `InsertValueSource`, which will be a list of Expressions (`ExpressionValueSource`) or a `QueryExpression`
+
+== Update Structure
+
+Each `Update` will have a single `NamedTable` specifying the table being updated and list of `SetClause` entries that specify `ColumnReference` and `Expression` pairs for the update. The Update may optionally provide a criteria `Condition` specifying which rows should be updated.
+
+== Delete Structure
+
+Each `Delete` will have a single `NamedTable` specifying the table being deleted from. It may also optionally have a criteria specifying which rows should be deleted.  
+
+== Call Structure
+
+Each `Call` has zero or more `Argument` objects. The `Argument` objects describe the input parameters, the output result set, and the output parameters.  
+
+== BatchedUpdates Structure
+
+Each `BatchedUpdates` has a list of `Command` objects (which must be either `Insert`, `Update` or `Delete`) that compose the batch.
+
+== Language Utilities
+
+This section covers utilities available when using, creating, and manipulating the language interfaces.
+
+== Data Types
+
+The Translator API contains an interface `TypeFacility` that defines data types and provides value translation facilities. This interface can be obtained from calling "getTypeFacility()" method on the "ExecutionFactory" class.
+
+The TypeFacitlity interface has methods that support data type transformation and detection of appropriate runtime or JDBC types.  The TypeFacility.RUNTIME_TYPES and TypeFacility.RUNTIME_NAMES interfaces defines constants for all Teiid runtime data types.  All `Expression` instances define a data type based on this set of types.  These constants are often needed in understanding or creating language interfaces.
+
+== Language Manipulation
+
+In Translators that support a fuller set of capabilities (those that generally are translating to a language of comparable to SQL), there is often a need to manipulate or create language interfaces to move closer to the syntax of choice.  Some utilities are provided for this purpose:
+
+Similar to the TypeFacility, you can call "getLanguageFactory()" method on the "ExecutionFactory" to get a reference to the `LanguageFactory` instance for your translator.  This interface is a factory that can be used to create new instances of all the concrete language interface objects.  
+
+Some helpful utilities for working with `Condition` objects are provided in the `LanguageUtil` class.  This class has methods to combine `Condition` with AND or to break an `Condition` apart based on AND operators.  These utilities are helpful for breaking apart a criteria into individual filters that your translator can implement.
+
+== Runtime Metadata
+
+Teiid uses a library of metadata, known as "runtime metadata" for each virtual database that is deployed in Teiid. The runtime metadata is a subset of metadata as defined by models in the Teiid models that compose the virtual database.  While builing your VDB in the Designer, you can define what called "Extension Model", that defines any number of arbitary properties on a model and its objects. At runtime, using this runtime metadata interface, you get access to those set properties defined during the design time, to define/hint any execution behavior.
+
+Translator gets access to the `RuntimeMetadata` interface at the time of `Excecution` creation. Translators can access runtime metadata by using the interfaces defined in `org.teiid.metadata` package.  This package defines API representing a Schema, Table, Columns and Procedures, and ways to navigate these objects.
+
+== Metadata Objects
+
+All the language objects extend `AbstractMetadataRecord` class
+
+* Column - returns Column metadata record
+* Table - returns a Table metadata record
+* Procedure - returns a Procedure metadata record
+* ProcedureParameter - returns a Procedure Parameter metadata record 
+
+Once a metadata record has been obtained, it is possible to use its metadata about that object or to find other related metadata.
+
+== Access to Runtime Metadata
+
+The RuntimeMetadata interface is passed in for the creation of an "Execution". See "createExecution" method on the "ExecutionFactory" class. It provides the ability to look up metadata records based on their fully qualified names in the VDB.
+
+The process of getting a Table’s properties is sometimes needed for translator development.  For example to get the "NameInSource" property or all extension properties:
+
+[source,java]
+.*Obtaining Metadata Properties*
+----
+//getting the Table metadata from an Table is straight-forward
+Table table = runtimeMetadata.getTable("table-name");
+String contextName = table.getNameInSource();
+
+//The props will contain extension properties
+Map<String, String> props = table.getProperties();
+----
+
+== Language Visitors
+
+== Framework
+
+The API provides a language visitor framework in the `org.teiid.language.visitor` package.  The framework provides utilities useful in navigating and extracting information from trees of language objects.
+
+The visitor framework is a variant of the Visitor design pattern, which is documented in several popular design pattern references.  The visitor pattern encompasses two primary operations: traversing the nodes of a graph (also known as iteration) and performing some action at each node of the graph.  In this case, the nodes are language interface objects and the graph is really a tree rooted at some node.  The provided framework allows for customization of both aspects of visiting.
+
+The base `AbstractLanguageVisitor` class defines the visit methods for all leaf language interfaces that can exist in the tree.  The LanguageObject interface defines an acceptVisitor() method – this method will call back on the visit method of the visitor to complete the contract.  A base class with empty visit methods is provided as AbstractLanguageVisitor.  The AbstractLanguageVisitor is just a visitor shell – it performs no actions when visiting nodes and does not provide any iteration.
+
+The `HierarchyVisitor` provides the basic code for walking a language object tree.  `The HierarchyVisitor` performs no action as it walks the tree – it just encapsulates the knowledge of how to walk it.  If your translator wants to provide a custom iteration that walks the objects in a special order (to exclude nodes, include nodes multiple times, conditionally include nodes, etc) then you must either extend HierarchyVisitor or build your own iteration visitor.  In general, that is not necessary.
+
+The `DelegatingHierarchyVisitor` is a special subclass of the HierarchyVisitor that provides the ability to perform a different visitor’s processing before and after iteration.  This allows users of this class to implement either pre- or post-order processing based on the HierarchyVisitor.  Two helper methods are provided on `DelegatingHierarchyVisitor` to aid in executing pre- and post-order visitors.  
+
+== Provided Visitors
+
+The `SQLStringVisitor` is a special visitor that can traverse a tree of language interfaces and output the equivalent Teiid SQL.  This visitor can be used to print language objects for debugging and logging.  The `SQLStringVisitor` does not use the `HierarchyVisitor` described in the last section; it provides both iteration and processing type functionality in a single custom visitor.    
+
+The `CollectorVisitor` is a handy utility to collect all language objects of a certain type in a tree. Some additional helper methods exist to do common tasks such as retrieving all elements in a tree, retrieving all groups in a tree, and so on.  
+
+== Writing a Visitor
+
+Writing your own visitor can be quite easy if you use the provided facilities.  If the normal method of iterating the language tree is sufficient, then just follow these steps:
+
+Create a subclass of AbstractLanguageVisitor.  Override any visit methods needed for your processing.  For instance, if you wanted to count the number of elements in the tree, you need only override the `visit(ColumnReference)` method.  Collect any state in local variables and provide accessor methods for that state.
+
+Decide whether to use pre-order or post-order iteration. Note that visitation order is based upon syntax ordering of SQL clauses - not processing order.
+
+Write code to execute your visitor using the utility methods on DelegatingHierarchyVisitor:
+
+[source,java]
+----
+// Get object tree
+LanguageObject objectTree = …
+
+// Create your visitor initialize as necessary
+MyVisitor visitor = new MyVisitor();
+
+// Call the visitor using pre-order visitation
+DelegatingHierarchyVisitor.preOrderVisit(visitor, objectTree);
+
+// Retrieve state collected while visiting
+int count = visitor.getCount();
+----
