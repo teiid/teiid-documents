@@ -1,0 +1,245 @@
+
+= Numeric Functions
+
+Numeric functions return numeric values (integer, long, float, double, biginteger, bigdecimal). They generally take numeric values as inputs, though some take strings.
+
+|===
+|Function |Definition |Datatype Constraint
+
+|+ - * /
+|Standard numeric operators
+|x in \{integer, long, float, double, biginteger, bigdecimal}, return type is same as x [a]
+
+|ABS(x)
+|Absolute value of x
+|See standard numeric operators above
+
+|ACOS(x)
+|Arc cosine of x
+|x in \{double, bigdecimal}, return type is double
+
+|ASIN(x)
+|Arc sine of x
+|x in \{double, bigdecimal}, return type is double
+
+|ATAN(x)
+|Arc tangent of x
+|x in \{double, bigdecimal}, return type is double
+
+|ATAN2(x,y)
+|Arc tangent of x and y
+|x, y in \{double, bigdecimal}, return type is double
+
+|CEILING(x)
+|Ceiling of x
+|x in \{double, float}, return type is double
+
+|COS(x)
+|Cosine of x
+|x in \{double, bigdecimal}, return type is double
+
+|COT(x)
+|Cotangent of x
+|x in \{double, bigdecimal}, return type is double
+
+|DEGREES(x)
+|Convert x degrees to radians
+|x in \{double, bigdecimal}, return type is double
+
+|EXP(x)
+|e^x
+|x in \{double, float}, return type is double
+
+|FLOOR(x)
+|Floor of x
+|x in \{double, float}, return type is double
+
+|FORMATBIGDECIMAL(x, y)
+|Formats x using format y
+|x is bigdecimal, y is string, returns string
+
+|FORMATBIGINTEGER(x, y)
+|Formats x using format y
+|x is biginteger, y is string, returns string
+
+|FORMATDOUBLE(x, y)
+|Formats x using format y
+|x is double, y is string, returns string
+
+|FORMATFLOAT(x, y)
+|Formats x using format y
+|x is float, y is string, returns string
+
+|FORMATINTEGER(x, y)
+|Formats x using format y
+|x is integer, y is string, returns string
+
+|FORMATLONG(x, y)
+|Formats x using format y
+|x is long, y is string, returns string
+
+|LOG(x)
+|Natural log of x (base e)
+|x in \{double, float}, return type is double
+
+|LOG10(x)
+|Log of x (base 10)
+|x in \{double, float}, return type is double
+
+|MOD(x, y)
+|Modulus (remainder of x / y)
+|x in \{integer, long, float, double, biginteger, bigdecimal}, return type is same as x
+
+|PARSEBIGDECIMAL(x, y)
+|Parses x using format y
+|x, y are strings, returns bigdecimal
+
+|PARSEBIGINTEGER(x, y)
+|Parses x using format y
+|x, y are strings, returns biginteger
+
+|PARSEDOUBLE(x, y)
+|Parses x using format y
+|x, y are strings, returns double
+
+|PARSEFLOAT(x, y)
+|Parses x using format y
+|x, y are strings, returns float
+
+|PARSEINTEGER(x, y)
+|Parses x using format y
+|x, y are strings, returns integer
+
+|PARSELONG(x, y)
+|Parses x using format y
+|x, y are strings, returns long
+
+|PI()
+|Value of Pi
+|return is double
+
+|POWER(x,y)
+|x to the y power
+|x in \{double, bigdecimal, biginteger}, return is the same type as x
+
+|RADIANS(x)
+|Convert x radians to degrees
+|x in \{double, bigdecimal}, return type is double
+
+|RAND()
+|Returns a random number, using generator established so far in the query or initializing with system clock if necessary.
+|Returns double.
+
+|RAND(x)
+|Returns a random number, using new generator seeded with x.
+|x is integer, returns double.
+
+|ROUND(x,y)
+|Round x to y places; negative values of y indicate places to the left of the decimal point
+|x in \{integer, float, double, bigdecimal} y is integer, return is same type as x
+
+|SIGN(x)
+|1 if x > 0, 0 if x = 0, -1 if x < 0
+|x in \{integer, long, float, double, biginteger, bigdecimal}, return type is integer
+
+|SIN(x)
+|Sine value of x
+|x in \{double, bigdecimal}, return type is double
+
+|SQRT(x)
+|Square root of x
+|x in \{long, double, bigdecimal}, return type is double
+
+|TAN(x)
+|Tangent of x
+|x in \{double, bigdecimal}, return type is double
+
+|BITAND(x, y)
+|Bitwise AND of x and y
+|x, y in \{integer}, return type is integer
+
+|BITOR(x, y)
+|Bitwise OR of x and y
+|x, y in \{integer}, return type is integer
+
+|BITXOR(x, y)
+|Bitwise XOR of x and y
+|x, y in \{integer}, return type is integer
+
+|BITNOT(x)
+|Bitwise NOT of x
+|x in \{integer}, return type is integer
+|===
+
+[a] The precision and scale of non-bigdecimal arithmetic function functions results matches that of Java. The results of bigdecimal operations match Java, except for division, which uses a preferred scale of max(16, dividend.scale + divisor.precision + 1), which then has trailing zeros removed by setting the scale to max(dividend.scale, normalized scale)
+
+== Parsing Numeric Datatypes from Strings
+
+Teiid offers a set of functions you can use to parse numbers from strings. For each string, you need to provide the formatting of the string. These functions use the convention established by the java.text.DecimalFormat class to define the formats you can use with these functions. You can learn more about how this class defines numeric string formats by visiting the Sun Java Web site at the following http://java.sun.com/javase/6/docs/api/java/text/DecimalFormat.html[URL for Sun Java].
+
+For example, you could use these function calls, with the formatting string that adheres to the java.text.DecimalFormat convention, to parse strings and return the datatype you need:
+
+|===
+|Input String |Function Call to Format String |Output Value |Output Datatype
+
+|'$25.30'
+|parseDouble(cost, '$#,##0.00;($#,##0.00)')
+|25.3
+|double
+
+|'25%'
+|parseFloat(percent, '#,##0%')
+|25
+|float
+
+|'2,534.1'
+|parseFloat(total, '#,##0.###;-#,##0.###')
+|2534.1
+|float
+
+|'1.234E3'
+|parseLong(amt, '0.###E0')
+|1234
+|long
+
+|'1,234,567'
+|parseInteger(total, '#,##0;-#,##0')
+|1234567
+|integer
+|===
+
+== Formatting Numeric Datatypes as Strings
+
+Teiid offers a set of functions you can use to convert numeric datatypes into strings. For each string, you need to provide the formatting. These functions use the convention established within the java.text.DecimalFormat class to define the formats you can use with these functions. You can learn more about how this class defines numeric string formats by visiting the Sun Java Web site at the following http://java.sun.com/javase/6/docs/api/java/text/DecimalFormat.html[URL for Sun Java] .
+
+For example, you could use these function calls, with the formatting string that adheres to the java.text.DecimalFormat convention, to format the numeric datatypes into strings:
+
+|===
+|Input Value |Input Datatype |Function Call to Format String |Output String
+
+|25.3
+|double
+|formatDouble(cost, '$#,##0.00;($#,##0.00)')
+|'$25.30'
+
+|25
+|float
+|formatFloat(percent, '#,##0%')
+|'25%'
+
+|2534.1
+|float
+|formatFloat(total, '#,##0.###;-#,##0.###')
+|'2,534.1'
+
+|1234
+|long
+|formatLong(amt, '0.###E0')
+|'1.234E3'
+
+|1234567
+|integer
+|formatInteger(total, '#,##0;-#,##0')
+|'1,234,567'
+|===
+

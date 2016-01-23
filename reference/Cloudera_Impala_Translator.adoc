@@ -1,0 +1,25 @@
+
+= Cloudera Impala Translator (impala)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The Coudera Impala Translator, known by the type name *_impala_*, is for use with Cloudera Impala 1.2.1 or later.
+
+Impala has limited support for data types. It is does not have native support for time/date/xml or LOBs. These limitations are reflected in the translator capabilities. A Teiid view can use these types, however the transformation would need to specify the necessary conversions. Note that in those situations, the evaluations will be done in the Teiid engine.
+
+The DatabaseTimeZone translator property should not be used.
+
+Impala only supports EQUI join, so using any other joins types on its source tables will result in inefficient queries.
+
+To write criteria based on partitioned columns, modeled them on source table, but do not include them in selection columns.
+
+NOTE: Impala Hive importer does not have concept of catalog or source schema, nor does it import keys, procedures, indexes, etc.
+
+Impala specific importer properties:
+
+_useDatabaseMetaData_- Set to true to use the normal import logic with the option to import index information disabled. Defaults to false.
+
+NOTE: If useDatabaseMetaData is false the typical JDBC DatabaseMetaData calls are not used so not all of the common JDBC importer properties are applicable to Impala. You may still use excludeTables regardless.
+
+NOTE: Some versions of Impala requires the use of a LIMIT when performing an ORDER BY. If no default is configured in Impala, then an exception can occur when a Teiid query with an ORDER BY but no LIMIT is issued. You should set an Impala wide default, or configure the connection pool to use a new connection sql string to issue a SET DEFAULT_ORDER_BY_LIMIT statement. See the http://www.cloudera.com/content/cloudera-content/cloudera-docs/Impala/latest/Installing-and-Using-Impala/ciiu_langref_sql.html?scroll=limit_unique_1[Cloudera docs] for more on limit options - such as controlling what happens when the limit is exceeded.
+

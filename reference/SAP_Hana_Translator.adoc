@@ -1,0 +1,11 @@
+
+= SAP Hana Translator (hana)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The SAP Hana Translator, known by the name of *_hana_*, is for use with SAP Hana.
+
+== Known Issues
+
+https://issues.jboss.org/browse/TEIID-3805[TEIID-3805] - The pushdown of the substring function is inconsistent with the Teiid substring function when the from index exceeds the length of the string. SAP Hana will return an empty string, while Teiid produces a null value.
+

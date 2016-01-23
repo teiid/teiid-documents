@@ -1,0 +1,21 @@
+
+= Comments
+
+Teiid supports multi-line comments enclosed with /* */:
+
+[source,sql]
+----
+/* comment
+comment
+comment... */
+----
+
+And single line comments:
+
+[source,sql]
+----
+SELECT ... -- comment
+----
+
+Comment nesting is supported.
+

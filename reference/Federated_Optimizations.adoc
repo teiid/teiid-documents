@@ -1,0 +1,148 @@
+
+= Federated Optimizations
+
+== Access Patterns
+
+Access patterns are used on both physical tables and views to specify the need for criteria against a set of columns. Failure to supply the criteria will result in a planning error, rather than a run-away source query. Access patterns can be applied in a set such that only one of the access patterns is required to be satisfied.
+
+Currently any form of criteria referencing an affected column may satisfy an access pattern.
+
+== Pushdown
+
+In federated database systems pushdown refers to decomposing the user level query into source queries that perform as much work as possible on their respective source system. Pushdown analysis requires knowledge of source system capabilities, which is provided to Teiid though the Connector API. Any work not performed at the source is then processed in Federate’s relational engine.
+
+Based upon capabilities, Teiid will manipulate the query plan to ensure that each source performs as much joining, filtering, grouping, etc. as possible. In may cases, such as with join ordering, planning is a combination of link:Federated_Optimizations.adoc#18646293_FederatedOptimizations-StandardRelationalTechniques[Standard Relational Techniques] and, cost based and heuristics for pushdown optimization.
+
+Criteria and join push down are typically the most important aspects of the query to push down when performance is a concern. See link:Query_Plans.adoc[Query Plans] on how to read a plan to ensure that source queries are as efficient as possible.
+
+== Dependent Joins
+
+A special optimization called a dependent join is used to reduce the rows returned from one of the two relations involved in a multi-source join. In a dependent join, queries are issued to each source sequentially rather than in parallel, with the results obtained from the first source used to restrict the records returned from the second. Dependent joins can perform some joins much faster by drastically reducing the amount of data retrieved from the second source and the number of join comparisons that must be performed.
+
+The conditions when a dependent join is used are determined by the query planner based on link:Federated_Optimizations.adoc#18646293_FederatedOptimizations-AccessPatterns[Access Patterns], hints, and costing information. There are three different kinds of dependent joins that Teiid supports
+
+* Join based on in/equality support - where the engine will determine how to break of the queries
+* Key Pushdown - where the translator has access to the full set of key values and determines what queries to send
+* Full Pushdown - where translator ships the all data from the independent side to the translator. Can be used automatically by costing or can be specified as an option in the hint.
+
+Teiid supports hints to control dependent join behavior:
+
+* MAKEIND - indicates that the clause should be the independent side of a dependent join.
+* MAKEDEP - indicates that the clause should be the dependent side of a join. MAKEDEP as a non-comment hint supports optional max and join arguments - MAKEDEP(JOIN) meaning that the entire join should be pushed, and MAKEDEP(MAX:5000) meaning that the dependent join should only be performed if there are less than the max number of values from the independent side.
+* MAKENOTDEP - prevents the clause from being the dependent side of ajoin.
+
+Theses can be placed in either the link:OPTION_Clause.adoc[OPTION Clause] or directly in the link:FROM_Clause.html[FROM Clause]. As long as all link:Federated_Optimizations.adoc#18646293_FederatedOptimizations-AccessPatterns[Access Patterns] can be met, the MAKEIND, MAKEDEP, and MAKENOTDEP hints override any use of costing information. MAKENOTDEP supersedes the other hints.
+
+TIP: The MAKEDEP/MAKEIND hint should only be used if the proper query plan is not chosen by default. You should ensure that your costing information is representative of the actual source cardinality. An inappropriate MAKEDEP/MAKEIND hint can force an inefficient join structure and may result in many source queries.
+
+The engine will for IN clauses to filter the values coming from the dependent side. If the number of values from the independent side exceeds the translators MaxInCriteriaSize, the values will be split into multiple IN predicates up to MaxDependentPredicates. When the number of independent values exceeds MaxInCriteriaSize*MaxDependentPredicates, then multiple dependent queries will be issued in parallel.
+
+TIP: While these hints can be applied to views, the optimizer will by default remove views when possible. This can result in the hint placement being significantly different than the original intention. You should consider using the NO_UNNEST hint to prevent the optimizer from removing the view in these cases.
+
+NOTE: *Full Pushdown* - A Full Pushdown, some times also called as data-ship pushdown, is where all the data from independent side of the join is sent to dependent side. Currently this is only supported in the JDBC translators. To enable it, provide translator override property "enableDependentJoins" to "true". The the JDBC source must support creation temp tables (this is determined by using Hibernate dialect capabilities for the source). Once these properties are enabled and MAKEDEP hint is used, the translator will ship the data as temp table contents and push the dependent join to the source for full rocessing. If you are working with custom translators see https://docs.jboss.org/author/display/TEIID/Dependent+Join+Pushdown[Dependent Join Pushdown] as to how to support it.
+
+== Copy Criteria
+
+Copy criteria is an optimization that creates additional predicates based upon combining join and where clause criteria. For example, equi-join predicates (source1.table.column = source2.table.column) are used to create new predicates by substituting source1.table.column for source2.table.column and vice versa. In a cross source scenario, this allows for where criteria applied to a single side of the join to be applied to both source queries
+
+== Projection Minimization
+
+Teiid ensures that each pushdown query only projects the symbols required for processing the user query. This is especially helpful when querying through large intermediate view layers.
+
+== Partial Aggregate Pushdown
+
+Partial aggregate pushdown allows for grouping operations above multi-source joins and unions to be decomposed so that some of the grouping and aggregate functions may be pushed down to the sources.
+
+== Optional Join
+
+The optional join hint indicates to the optimizer that a joined table should be omitted if none of its columns are used by the output of the user query or in a meaningful way to construct the results of the user query. This hint is typically only used in view layers containing multi-source joins.
+
+The optional join hint is applied as a comment on a join clause. It can be applied in both ANSI and non-ANSI joins. With non-ANSI joins an entire joined table may be marked as optional.
+
+[source,sql]
+.*Example Optional Join Hint*
+----
+select a.column1, b.column2 from a, /*+ optional */ b WHERE a.key = b.key
+----
+
+Suppose this example defines a view layer X. If X is queried in such a way as to not need b.column2, then the optional join hint will cause b to be omitted from the query plan. The result would be the same as if X were defined as:
+
+[source,sql]
+.*Example Optional Join Hint*
+----
+select a.column1 from a
+-----------------------
+
+[source,sql]
+.*Example ANSI Optional Join Hint*
+----
+select a.column1, b.column2, c.column3 from /*+ optional */ (a inner join b ON a.key = b.key) INNER JOIN c ON a.key = c.key
+----
+
+In this example the ANSI join syntax allows for the join of a and b to be marked as optional. Suppose this example defines a view layer X. Only if both column a.column1 and b.column2 are not needed, e.g. "SELECT column3 FROM X" will the join be removed.
+
+The optional join hint will not remove a bridging table that is still required.
+
+[source,sql]
+.*Example Bridging Table*
+----
+select a.column1, b.column2, c.column3 from /*+ optional */ a, b, c WHERE ON a.key = b.key AND a.key = c.key
+----
+
+Suppose this example defines a view layer X. If b.column2 or c.column3 are solely required by a query to X, then the join on a be removed. However if a.column1 or both b.column2 and c.column3 are needed, then the optional join hint will not take effect.
+
+When a join clause is omitted via the optional join hint, the relevant criteria is not applied. Thus it is possible that the query results may not have the same cardinality or even the same row values as when the join is fully applied.
+
+Left/right outer joins where the inner side values are not used and whose rows under go a distinct operation will automatically be treated as an optional join and do not require a hint.
+
+[source,sql]
+.*Example Unnecessary Optional Join Hint*
+----
+    select distinct a.column1 from a LEFT OUTER JOIN /*+optional*/ b ON a.key = b.key
+----
+
+NOTE: A simple "SELECT COUNT(*) FROM VIEW" against a view where all join tables are marked as optional will not return a meaningful result.
+
+== Source Hints
+
+Teiid user and transformation queries can contain a meta source hint that can provide additional information to source queries. The source hint has the form:
+
+[source,sql]
+----
+/*+ sh[[ KEEP ALIASES]:'arg'] source-name[ KEEP ALIASES]:'arg1' ... */
+----
+
+* The source hint is expected to appear after the query (SELECT, INSERT, UPDATE, DELETE) keyword.
+* Source hints may appear in any subquery or in views. All hints applicable to a given source query will be collected and pushed down together as a list. The order of the hints is not guaranteed.
+* The sh arg is optional and is passed to all source queries via the `ExecutionContext.getGeneralHints` method. The additional args should have a source-name that matches the source name assigned to the translator in the VDB. If the source-name matches, the hint values will be supplied via the `ExecutionContext.getSourceHints` method. See the https://docs.jboss.org/author/display/TEIID/Developer%27s+Guide[Developer’s Guide] for more on using an ExecutionContext.
+* Each of the arg values has the form of a string literal - it must be surrounded in single quotes and a single quote can be escaped with another single quote. Only the Oracle translator does anything with source hints by default. The Oracle translator will use both the source hint and the general hint (in that order) if available to form an Oracle hint enclosed in /*+ … */.
+* If the KEEP ALIASES option is used either for the general hint or on the applicable source specific hint, then the table/view aliases from the user query and any nested views will be preserved in the push-down query. This is useful in situations where the source hint may need to reference aliases and the user does not wish to rely on the generated aliases (which can be seen in the query plan in the relevant source queries - see above). However in some situations this may result in an invalid source query if the preserved alias names are not valid for the source or result in a name collision. If the usage of KEEP ALIASES results in an error, the query could be modified by preventing view removal with the NO_UNNEST hint, the aliases modified, or the KEEP ALIASES option could be removed and the query plan used to determine the generated alias names.
+
+[source,sql]
+.*Sample Source Hints*
+----
+SELECT /*+ sh:'general hint' */ ... 
+
+SELECT /*+ sh KEEP ALIASES:'general hint' my-oracle:'oracle hint' */ ... 
+----
+
+== Partitioned Union
+
+Union partitioning is inferred from the transformation/inline view. If one (or more) of the UNION columns is defined by constants and/or has WHERE clause IN predicates containing only constants that make each branch mutually exclusive, then the UNION is considered partitioned. UNION ALL must be used and the UNION cannot have a LIMIT, WITH, or ORDER BY clause (although individual branches may use LIMIT, WITH, or ORDER BY). Partitioning values should not be null. For example the view definition "select 1 as x, y from foo union all select z, a from foo1 where z in (2, 3)" would be considered partitioned on column x, since the first branch can only be the value 1 and the second branch can only be the values 2 or 3. Note that more advanced or explicit partition could be considered in the future. The concept of a partitioned union is used for performing partition-wise joins, in link:Updatable_Views.adoc[Updatable Views], and link:Federated_Optimizations.adoc#18646293_FederatedOptimizations-PartialAggregatePushdown[Partial Aggregate Pushdown].
+
+== Standard Relational Techniques
+
+Teiid also incorporates many standard relational techniques to ensure efficient query plans.
+
+* Rewrite analysis for function simplification and evaluation.
+* Boolean optimizations for basic criteria simplification.
+* Removal of unnecessary view layers.
+* Removal of unnecessary sort operations.
+* Advanced search techniques through the left-linear space of join trees.
+* Parallelizing of source access during execution.
+* link:Subquery_Optimization.adoc[Subquery Optimization]
+
+== Join Compensation
+
+Some source systems only allow "relationship" queries logically producing left outer join results even when queried with an inner join Teiid will attempt to form an appropriate left outer join. These sources are restricted to only supporting key joins. In some circumstances foreign key relationships on the same source should not be traversed at all or with the referenced table on the outer side of join. The extension property teiid_rel:allow-join can be used on the foreign key to further restrict the pushdown behavior. With a value of "false" no join pushdown will be allowed, and with a value of "inner" the referenced table must be on the inner side of the join. If the join pushdown is prevented, the join will be processed as a federated join.
+

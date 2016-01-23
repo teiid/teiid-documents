@@ -1,0 +1,21 @@
+
+= Processing
+
+== Join Algorithms
+
+Nested loop does the most obvious processing – for every row in the outer source, it compares with every row in the inner source. Nested loop is only used when the join criteria has no equi-join predicates.
+
+Merge join first sorts the input sources on the joined columns.  You can then walk through each side in parallel (effectively one pass through each sorted source) and when you have a match, emit a row.  In general, merge join is on the order of n+m rather than n*m in nested loop.  Merge join is the default algorithm.
+
+Using costing information the engine may also delay the decision to perform a full sort merge join. Based upon the actual row counts involved, the engine can choose to build an index of the smaller side (which will perform similarly to a hash join) or to only partially sort the larger side of the relation.
+
+Joins involving equi-join predicates are also eligible to be made into link:Federated_Optimizations.adoc#18646293_FederatedOptimizations-DependentJoins[dependent joins].
+
+== Sort Based Algorithms
+
+Sorting is used as the basis of the Sort (ORDER BY), Grouping (GROUP BY), and DupRemoval (SELECT DISTINCT) operations.  The sort algorithm is a multi-pass merge-sort that does not require all of the result set to ever be in memory yet uses the maximal amount of memory allowed by the buffer manager.
+
+It consists of two phases.  The first phase ("sort") will take an unsorted input stream and produce one or more sorted input streams. Each pass reads as much of the unsorted stream as possible, sorts it, and writes it back out as a new stream.  Since the stream may be more than can fit in memory, this may result in many sorted streams.
+
+The second phase ("merge") consists of a set of phases that grab the next batch from as many sorted input streams as will fit in memory.  It then repeatedly grabs the next tuple in sorted order from each stream and outputs merged sorted batches to a new sorted stream.  At completion of the pass, all input streams are dropped.  In this way, each pass reduces the number of sorted streams.  When only one stream remains, it is the final output.
+

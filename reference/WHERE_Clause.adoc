@@ -1,0 +1,9 @@
+
+= WHERE Clause
+
+The WHERE clause defines the criteria to limit the records affected by SELECT, UPDATE, and DELETE statements.
+
+The general form of the WHERE is:
+
+* WHERE link:Criteria.adoc[Criteria]
+

@@ -1,0 +1,47 @@
+
+= WITH Clause
+
+Teiid supports non-recursive common table expressions via the WITH clause.  WITH clause items may be referenced as tables in subsequent with clause items and in the main query. The WITH clause can be thought of as providing query scoped temporary tables.
+
+Usage:
+
+[source,sql]
+----
+WITH name [(column, ...)] AS (query expression) ...
+----
+
+Syntax Rules:
+
+* All of the projected column names must be unique. If they are not unique, then the column name list must be provided.
+* If the columns of the WITH clause item are declared, then they must match the number of columns projected by the query expression.
+* Each with clause item must have a unique name.
+
+NOTE: The WITH clause is also subject to optimization and it’s entries may not be processed if they are not needed in the subsequent query.
+
+== Recursive Common Table Expressions
+
+A recursive common table expression is a special form of a common table expression that is allowed to refer to itself to build the full common table result in a recursive or iterative fashion.
+
+Usage:
+
+[source,sql]
+----
+WITH name [(column, ...)] AS (anchor query expression UNION [ALL] recursive query expression) ...
+----
+
+The recursive query expression is allowed to refer to the common table by name. Processing flows with The anchor query expression executed first. The results will be added to the common table and will be referenced for the execution of the recursive query expression. The process will be repeated against the new results until there are no more intermediate results.
+
+NOTE: A non terminating recursive common table expression can lead to excessive processing.
+
+To prevent runaway processing of a recursive common table expression, processing is by default limited to 10000 iterations. Recursive common table expressions that are pushed down are not subject to this limit, but may be subject to other source specific limits. The limit can be modified by setting the session variable teiid.maxRecusion to a larger integer value. Once the max has been exceeded an exception will be thrown.
+
+Example:
+
+[source,sql]
+----
+SELECT teiid_session_set('teiid.maxRecursion', 25);
+WITH n (x) AS (values('a') UNION select chr(ascii(x)+1) from n where x < 'z') select * from n
+----
+
+This will fail to process as the recursion limit will be reached before processing completes.
+

@@ -1,0 +1,7 @@
+
+= DDL Commands
+
+Teiid supports a subset of DDL at runtime to create/drop temporary tables and to manipulate procedure and view definitions. It is not currently possible to arbitrarily drop/create non-temporary metadata entries.  See link:DDL_Metadata.adoc[DDL Metadata] for DDL used within a VDB to define schemas.
+
+NOTE: A `MetadataRepository` must be configured to make a non-temporary metadata update persistent. See the Developers Guide Runtime Metadata Updates section for more.
+

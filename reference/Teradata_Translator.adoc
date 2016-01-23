@@ -1,0 +1,9 @@
+
+= Teradata Translator (teradata)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The Teradata Translator, known by the type name *_teradata_*, is for use with Teradata V2R5.1 or later.
+
+With Teradata driver version 15 date, time, and timestamp values by default will be adjusted for the Teiid server timezone. To remove this adjustment, set the translator DatabaseTimezone property to GMT or whatever the Teradata server defaults to.
+

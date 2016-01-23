@@ -1,0 +1,15 @@
+
+= Terminology
+
+* VM or Process – a JBossAS instance running Teiid.  
+
+* Host – a machine that is ``hosting'' one or more VMs.
+
+* Service – a subsystem running in a VM (often in many VMs) and providing a  related set of functionality. In addition to these main components, the service platform provides a core set of services available to applications built on top of the service platform.  These services are:
+
+* Session – the Session service manages active session information.
+
+* Buffer Manager – the link:Data_Management.adoc#18646301_DataManagement-BufferManagement[Buffer Manager] service provides access to data management for intermediate results.
+
+* Transaction – the Transaction service manages global, local, and request scoped transactions.  See also the documentation on link:Transaction_Support.adoc[Transaction Support].
+

@@ -1,0 +1,7 @@
+
+= Intersystems Cache Translator (intersystems-cache)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The Intersystem Cache Translator, known by the type name *_intersystems-cache_*, is for use with Intersystems Cache Object database (only relational aspect of it).
+

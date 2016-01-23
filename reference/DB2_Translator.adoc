@@ -1,0 +1,12 @@
+
+= DB2 Translator (db2)
+
+Also see common link:JDBC_Translators.html[JDBC Translator Information]
+
+The DB2 Translator, known by the type name *_db2_*, if for use with DB2 8 or later and DB2 for i 5.4 or later.
+
+DB2 specific execution properties:
+
+* _DB2ForI_- indicates that the the DB2 instance is DB2 for i. Defaults to false.
+* _supportsCommonTableExpressions_- indicates that the DB2 instance supports Common Table Expressions. Defaults to true. Some older versions, or instances running in a conversion mode, of DB2 lack full common table expression support and may need support disabled.
+

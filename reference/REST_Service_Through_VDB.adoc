@@ -1,0 +1,158 @@
+
+= REST Service Through VDB
+
+With help of link:DDL_Metadata.html[DDL Metadata] variety of metadata can be defined on VDB schema models. This metadata is not limited to just defining the tables, procedures and functions. The capabilities of source systems or any extensions to metadata can also be defined on the schema objects using the OPTIONS clause. One such extension properties that Teiid defines is to expose Teiid procedures as REST based services.
+
+== Expose Teiid Procedure as Rest Service
+
+One can define below REST based properties on a Teiid virtual procedure, and when the VDB is deployed the Teiid VDB deployer will analyse the metadata and deploy a REST service automatically. When the VDB un-deployed the REST service also deployed.
+
+|===
+|Property Name |Description |Is Required |Allowed Values
+
+|METHOD
+|HTTP Method to use
+|Yes
+|GET \| POST\| PUT \| DELETE
+
+|URI
+|URI of procedure
+|Yes
+|ex:/procedure
+
+|PRODUCES
+|Type of content produced by the service
+|no
+|xml \| json \| plain \| any text
+
+|CHARSET
+|When procedure returns Blob, and content type text based, this character set to used to convert the data
+|no
+|US-ASCII \| UTF-8
+|===
+
+The above properties must be defined with NAMESPACE `http://teiid.org/rest' on the metadata. Here is an example VDB that defines the REST based service.
+
+[source,xml]
+.*Example VDB with REST based metadata properties*
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<vdb name="sample" version="1">    
+    <property name="{http://teiid.org/rest}auto-generate" value="true"/>
+
+    <model name="PM1">
+        <source name="text-connector" translator-name="loopback" />
+         <metadata type="DDL"><![CDATA[
+                CREATE FOREIGN TABLE G1 (e1 string, e2 integer);
+                CREATE FOREIGN TABLE G2 (e1 string, e2 integer);
+        ]]> </metadata>
+    </model>
+    <model name="View" type ="VIRTUAL">
+         <metadata type="DDL"><![CDATA[
+            SET NAMESPACE 'http://teiid.org/rest' AS REST;
+            CREATE VIRTUAL PROCEDURE g1Table(IN p1 integer) RETURNS TABLE (xml_out xml) OPTIONS (UPDATECOUNT 0, "REST:METHOD" 'GET', "REST:URI" 'g1/{p1}')
+            AS
+            BEGIN
+                SELECT XMLELEMENT(NAME "rows", XMLATTRIBUTES (g1Table.p1 as p1), XMLAGG(XMLELEMENT(NAME "row", XMLFOREST(e1, e2)))) AS xml_out FROM PM1.G1;
+            END
+            ]]> </metadata>
+    </model>
+
+</vdb>
+----
+
+NOTE: <property name="\{http://teiid.org/rest[http://teiid.org/rest]}auto-generate" value="true"/>, can be used to control the generation of the REST based WAR based on the VDB. This property along with at least one procedure with REST based extension metadata is required to generate a REST WAR file. Also, the procedure needs to return result set with single column of either XML, Clob, Blob or String. When PRODUCES property is not defined, this property is derived from the result column that is projected out.
+
+when the above VDB is deployed in the JBoss AS + Teiid server, and if the VDB is valid and after the metadata is loaded then a REST war generated automatically and deployed into the local JBoss AS server. The REST VDB is deployed with "\{vdb-name}_\{vdb-version}" context. The model name is prepended to uri of the service call. For example the procedure in above example can be accessed as
+
+[source,sql]
+----
+http://{host}:8080/sample_1/view/g1/123
+----
+
+where "sample_1" is context, "view" is model name, "g1" is URI, and 123 is parameter \{p1} from URI. If you defined a procedure that returns a XML content, then REST service call should be called with "accepts" HTTP header of "application/xml". Also, if you defined a procedure that returns a JSON content and PRODUCES property is defined "json" then HTTP client call should include the "accepts" header of "application/json". In the situations where "accepts" header is missing, and only one procedure is defined with unique path, that procedure will be invoked. If there are multiple procedures with same URI path, for example one generating XML and another generating JSON content then "accepts" header directs the REST engine as to which procedure should be invoked to get the results. A wrong "accepts" header will result in error.
+
+*"GET Methods"*
+
+When designing the procedures that will be invoked through GET based call, the input parameters for procedures can be defined in the PATH of the URI, as the \{p1} example above, or they can also be defined as query parameter, or combination of both. For example
+
+[source,sql]
+----
+http://{host}:8080/sample_1/view/g1?p1=123
+http://{host}:8080/sample_1/view/g1/123?p2=foo
+----
+
+Make sure that the number of parameters defined on the URI and query match to the parameters defined on procedure definition. If you defined a default value for a parameter on the procedure, and that parameter going to be passed in query parameter on URL then you have choice to omit that query parameter, if you defined as PATH you must supply a value for it.
+
+*"POST methods"*
+
+'POST' methods MUST not be defined with URI with PATHS for parameters as in GET operations, the procedure parameters are automatically added as @FormParam annotations on the generated procedure. A client invoking this service must use FORM to post the values for the parameters. The FORM field names MUST match the names of the procedure parameters names.
+
+If any one of the procedure parameters are BLOB, CLOB or XML type, then POST operation can be only invoked using "multipart/form-data" https://www.ietf.org/rfc/rfc2388.txt[RFC-2388] protocol. This allows user to upload large binary or XML files efficiently to Teiid using streaming".
+
+*"VARBINARY type"*
+
+If a parameter to the procedure is VARBINARY type then the value of the parameter must be properly BASE64 encoded, irrespective of the HTTP method used to execute the procedure. If this VARBINARY has large content, then consider using BLOB.
+
+== Security on Generated Services
+
+By default all the generated Rest based services are secured using "HTTPBasic" with security domain "teiid-security" and with security role "rest". However, these properties can be customized by defining the then in vdb.xml file.
+
+[source,xml]
+.*Example vdb.xml file security specification*
+----
+<vdb name="sample" version="1">
+    <property name="{http://teiid.org/rest}auto-generate" value="true"/>
+    <property name="{http://teiid.org/rest}security-type" value="HttpBasic"/>
+    <property name="{http://teiid.org/rest}security-domain" value="teiid-security"/>
+    <property name="{http://teiid.org/rest}security-role" value="example-role"/>
+    ...
+</vdb>
+----
+
+* _auto-generate - will automatically generate the WAR file for the deployed VDB
+* _security-type_ - defines the security type. allowed values are "HttpBasic" or "none". If omitted will default to "HttpBasic"
+* _security-domain_ - defines JAAS security domain to be used with HttpBasic. If omitted will default to "teiid-security"
+* _security-role_ - security role that HttpBasic will use to authorize the users. If omitted the value will default to "rest"
+
+NOTE: *rest-security* - it is our intention to provide other types of securities like Kerberos and OAuth2 in future releases.
+
+== Special Ad-Hoc Rest Services
+
+Apart from the explicitly defined procedure based rest services, the generated jax-rs war file will also implicitly include a special rest based service under URI "/query" that can take any XML or JSON producing SQL as parameter and expose the results of that query as result of the service. This service is defined with "POST", accepting a Form Parameter named "sql". For example, after you deploy the VDB defined in above example, you can issue a HTTP POST call as
+
+[source,xml]
+----
+    http://localhost:8080/sample_1/view/query
+    sql=SELECT XMLELEMENT(NAME "rows",XMLAGG(XMLELEMENT(NAME "row", XMLFOREST(e1, e2)))) AS xml_out FROM PM1.G1
+----
+
+A sample HTTP Request from Java can be made like below
+
+[source,java]
+----
+   public static String httpCall(String url, String method, String params) throws Exception {
+        StringBuffer buff = new StringBuffer();
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.setRequestMethod(method);
+        connection.setDoOutput(true);
+        
+        if (method.equalsIgnoreCase("post")) {
+            OutputStreamWriter wr = new OutputStreamWriter(connection.getOutputStream());
+            wr.write(params);
+            wr.flush();
+        }
+        
+        BufferedReader serverResponse = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String line;
+        while ((line = serverResponse.readLine()) != null) {
+            buff.append(line);
+        }
+        return buff.toString();
+    }
+
+    public static void main(String[] args) throws Exception {
+        String params = URLEncoder.encode("sql", "UTF-8") + "=" + URLEncoder.encode("SELECT XMLELEMENT(NAME "rows",XMLAGG(XMLELEMENT(NAME "row", XMLFOREST(e1, e2)))) AS xml_out FROM PM1.G1", "UTF-8");
+        httpCall("http://localhost:8080/sample_1/view/query", "POST", params);
+    }
+----

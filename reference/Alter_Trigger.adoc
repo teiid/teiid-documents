@@ -1,0 +1,20 @@
+
+= Alter Trigger
+
+Usage:
+
+[source,sql]
+----
+ALTER TRIGGER ON name INSTEAD OF INSERT|UPDATE|DELETE (AS FOR EACH ROW block) | (ENABLED|DISABLED)
+----
+
+Syntax Rules:
+
+* The target, name, must be an updatable view.
+
+* Triggers are not yet true schema objects. They are scoped only to their view and have no name.
+
+* An link:Update_Procedures_(Triggers).html[Update Procedures (Triggers)] must already exist for the given trigger event.
+
+NOTE: If the default inherent update is chosen in Teiid Designer, any SQL associated with update (shown in a greyed out text box) is not part of the VDB and cannot be enabled with an alter trigger statement.
+

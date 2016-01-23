@@ -1,0 +1,109 @@
+
+= Virtual Procedures
+
+Virtual procedures are defined using the Teiid procedural language. A virtual procedure has zero or more input/inout/out parameters, an optional return parameter, and an optional result set. Virtual procedures support the ability to execute queries and other SQL commands, define temporary tables, add data to temporary tables, walk through result sets, use loops, and use conditional logic.
+
+== Virtual Procedure Definition
+
+In Designer:
+
+[source,sql]
+----
+[CREATE VIRTUAL PROCEDURE] statement
+----
+
+In DDL: link:DDL_Metadata.adoc#20316193_DDLMetadata-CreateProcedure%2FFunction[DDL Metadata#Create Procedure/Function]
+
+Within the body of the procedure, any valid link:Procedure_Language.adoc[statement] may be used.
+
+There is no explicit cursoring or value returning statement, rather the last unnamed command statement executed in the procedure that returns a result set will be returned as the result. The output of that statement must match the expected result set and parameters of the procedure.
+
+== Procedure Parameters
+
+Virtual procedures can take zero or more IN/INOUT parameters and may also have any number of OUT parameters and an optional RETURN parameter. Each input has the following information that is used during runtime processing:
+
+* Name - The name of the input parameter
+
+* Datatype - The design-time type of the input parameter
+
+* Default value - The default value if the input parameter is not specified
+
+* Nullable - NO_NULLS, NULLABLE, NULLABLE_UNKNOWN; parameter is optional if nullable, and is not required to be listed when using named parameter syntax 
+
+You reference a parameter in a virtual procedure by using the fully-qualified name of the param (or less if unambiguous). For example, MySchema.MyProc.Param1.
+
+[source,sql]
+.*Example of Referencing an Input Parameter and Assigning an Out Parameter for `GetBalance` Procedure*
+----
+BEGIN 
+  MySchema.GetBalance.RetVal = UPPER(MySchema.GetBalance.AcctID);
+  SELECT Balance FROM MySchema.Accts WHERE MySchema.Accts.AccountID = MySchema.GetBalance.AcctID; 
+END
+----
+
+If an INOUT parameter is not assigned any value in a procedure it will remain the value it was assigned for input. Any OUT/RETURN parameter not assigned a value will remain the as the default NULL value. The INOUT/OUT/RETURN output values are validated against the NOT NULL metadata of the parameter.
+
+[[]]
+Example Virtual Procedures
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This example is a LOOP that walks through a cursored table and uses CONTINUE and BREAK.
+
+[source,sql]
+.*Virtual Procedure Using LOOP, CONTINUE, BREAK*
+----
+BEGIN
+  DECLARE double total;
+  DECLARE integer transactions;
+  LOOP ON (SELECT amt, type FROM CashTxnTable) AS txncursor
+  BEGIN
+    IF(txncursor.type <> 'Sale')
+    BEGIN
+      CONTINUE;
+    END ELSE 
+    BEGIN
+      total = (total + txncursor.amt);
+      transactions = (transactions + 1);
+      IF(transactions = 100)
+      BEGIN
+        BREAK;
+      END
+    END
+  END
+  SELECT total, (total / transactions) AS avg_transaction;
+END
+----
+
+This example is uses conditional logic to determine which of two SELECT statements to execute.
+
+[source,sql]
+.*Virtual Procedure with Conditional SELECT*
+----
+BEGIN 
+  DECLARE string VARIABLES.SORTDIRECTION; 
+  VARIABLES.SORTDIRECTION = PartsVirtual.OrderedQtyProc.SORTMODE; 
+  IF ( ucase(VARIABLES.SORTDIRECTION) = 'ASC' ) 
+  BEGIN 
+    SELECT * FROM PartsVirtual.SupplierInfo WHERE QUANTITY > PartsVirtual.OrderedQtyProc.QTYIN ORDER BY PartsVirtual.SupplierInfo.PART_ID; 
+  END ELSE 
+  BEGIN 
+    SELECT * FROM PartsVirtual.SupplierInfo WHERE QUANTITY > PartsVirtual.OrderedQtyProc.QTYIN ORDER BY PartsVirtual.SupplierInfo.PART_ID DESC;
+  END
+END 
+----
+
+== Executing Virtual Procedures
+
+You execute procedures using the SQL link:DML_Commands.adoc#18646216_DMLCommands-EXECUTECommand[EXECUTE] command. If the procedure has defined inputs, you specify those in a sequential list, or using "name=value" syntax. You must use the name of the input parameter, scoped by the full procedure name if the parameter name is ambiguous in the context of other columns or variables in the procedure.
+
+A virtual procedure call will return a result set just like any SELECT, so you can use this in many places you can use a SELECT. Typically you’ll use the following syntax:
+
+[source,sql]
+----
+SELECT * FROM (EXEC ...) AS x
+----
+
+== Limitations
+
+Teiid virtual procedures may only return 1 result set. If you need to pass in a result set or pass out multiple result set, then consider using global temporary tables.
+

@@ -1,0 +1,27 @@
+
+= Updatable Views
+
+Any view may be marked as updatable. In many circumstances the view definition may allow the view to be inherently updatable without the need to manually define a trigger to handle INSERT/UPDATE/DELETE operations.
+
+An inherently updatable view cannot be defined with a query that has:
+
+* A set operation (INTERSECT, EXCEPT, UNION).
+
+* SELECT DISTINCT
+
+* Aggregation (aggregate functions, GROUP BY, HAVING)
+
+* A LIMIT clause
+
+A UNION ALL can define an inherently updatable view only if each of the UNION branches is itself inherently updatable. A view defined by a UNION ALL can support inherent INSERTs if it is a link:Federated_Optimizations.adoc#18646293_FederatedOptimizations-PartitionedUnion[Federated Optimizations#Partitioned Union] and the INSERT specifies values that belong to a single partition.
+
+Any view column that is not mapped directly to a column is not updatable and cannot be targeted by an UPDATE set clause or be an INSERT column.
+
+If a view is defined by a join query or has a WITH clause it may still be inherently updatable. However in these situations there are further restrictions and the resulting query plan may execute multiple statements. For a non-simple query to be updatable, it is required:
+
+* An INSERT/UPDATE can only modify a single link:Key-preserved_Table.html[Key-preserved Table].
+
+* To allow DELETE operations there must be only a single link:Key-preserved_Table.html[Key-preserved Table].
+
+If the default handling is not available or you wish to have an alternative implementation of an INSERT/UPDATE/DELETE, then you may use link:Update_Procedures_Triggers.adoc[Update Procedures (Triggers)] to define procedures to handle the respective operations.
+

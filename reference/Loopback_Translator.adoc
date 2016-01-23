@@ -1,0 +1,37 @@
+
+= Loopback Translator
+
+The Loopback translator, known by the type name _loopback_, provides a quick testing solution. It supports all SQL constructs and returns default results, with some configurable behavior.
+
+*Execution Properties* 
+
+|===
+|Name |Description |Default
+
+|ThrowError
+|true to always throw an error
+|false
+
+|RowCount
+|Rows returned for non-update queries.
+|1
+
+|WaitTime
+|Wait randomly up to this number of milliseconds with each source query.
+|0
+
+|PollIntervalInMilli
+|if positive results will be ``asynchronously'' returned - that is a DataNotAvailableException will be thrown initially and the engine will wait the poll interval before polling for the results.
+|-1
+
+|DelegateName
+|set to the name of the translator to mimic the capabilities of
+|
+|=== 
+
+You can also use the Loopback translator to mimic how a real source query would be formed for a given translator (although loopback will still return dummy data that may not be useful for your situation). To enable this behavior, set the DelegateName property to the name of the translator you wish to mimic. For example to disable all capabilities, set the DelegateName property to "jdbc-simple".
+
+== JCA Resource Adapter
+
+A source connection is not required for this translator.
+

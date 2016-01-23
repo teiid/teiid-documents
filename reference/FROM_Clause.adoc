@@ -1,0 +1,174 @@
+
+= FROM Claus 
+
+The FROM clause specifies the target table(s) for SELECT, UPDATE, and
+DELETE statements.
+
+Example Syntax:
+
+* FROM table [[AS] alias]
+
+* FROM table1 [INNER|LEFT OUTER|RIGHT OUTER|FULL OUTER] JOIN table2 ON join-criteria
+
+* FROM table1 CROSS JOIN table2
+
+* FROM (subquery) [AS] alias
+
+* FROM link:FROM_Clause.adoc#18646226_FROMClause-NestedTableReference[TABLE(subquery)] [AS] alias
+
+* FROM table1 JOIN /*+ MAKEDEP */ table2 ON join-criteria
+
+* FROM table1 JOIN /*+ MAKENOTDEP */ table2 ON join-criteria
+
+* FROM /*+ MAKEIND */ table1 JOIN table2 ON join-criteria
+
+* FROM /*+ NO_UNNEST */ vw1 JOIN table2 ON join-criteria
+
+* FROM table1 left outer join link:Federated_Optimizations.adoc#18646293_FederatedOptimizations-OptionalJoin[/*+ optional */] table2 ON join-criteria
+
+* FROM link:TEXTTABLE.adoc[TEXTTABLE…]
+
+* FROM link:FROM_Clause.adoc#18646226_FROMClause-XMLTABLE[XMLTABLE…]
+
+* FROM link:ARRAYTABLE.adoc[ARRAYTABLE…]
+
+* FROM link:OBJECTTABLE.adoc[OBJECTTABLE…]
+
+* FROM (link:Subqueries.adoc#18646222_Subqueries-Inlineviews[SELECT …]
+
+== From Clause Hints
+
+From clause hints are typically specified in a comment block preceding the affected clause. MAKEDEP and MAKENOTDEP may also appear after in non-comment form after the affected clause. If multiple hints apply to that clause, the hints should be placed in the same comment block.
+
+Example Hint
+
+[source,sql]
+----
+FROM /*+ MAKEDEP PRESERVE */ (tbl1 inner join tbl2 inner join tbl3 on tbl2.col1 = tbl3.col1 on tbl1.col1 = tbl2.col1), tbl3 WHERE tbl1.col1 = tbl2.col1
+----
+
+=== Dependent Joins
+
+MAKEIND, MAKEDEP, and MAKENOTDEP are hints used to control link:Federated_Optimizations.adoc#18646293_FederatedOptimizations-DependentJoins[dependent join] behavior. They should only be used in situations where the optimizer does not choose the most optimal plan based upon query structure, metadata, and costing information. The hints may appear in a comment that proceeds the from clause. The hints can be specified against any from clause, not just a named table.
+
+* MAKEIND - treat this clause as the independent (feeder) side of a dependent join if possible.
+* MAKEDEP - treat this clause as the dependent (filtered) side of a dependent join if possible.
+* MAKENOTDEP - do not treat this clause as the dependent (filtered) side of a join.
+
+MAKEDEP and MAKEIND support optional max and join arguments:
+
+* MAKEDEP(JOIN) means that the entire join should be pushed
+* MAKEDEP(NO JOIN) means that the entire join should not be pushed
+* MAKEDEP(MAX:val) meaning that the dependent join should only be performed if there are less than the max number of values from the independent side.
+
+=== Other Hints
+
+NO_UNNEST can be specified against a subquery from clause or view to instruct the planner to not merge the nested SQL in the surrounding query - also known as view flattening. This hint only applies to Teiid planning and is not passed to source queries. NO_UNNEST may appear in a comment that proceeds the from clause.
+
+The PRESERVE hint can be used against an ANSI join tree to preserve the structure of the join rather than allowing the Teiid optimizer to reorder the join. This is similar in function to the Oracle ORDERED or MySQL STRAIGHT_JOIN hints.
+
+[source,sql]
+.*Example PRESERVE Hint*
+----
+FROM /*+ PRESERVE */ (tbl1 inner join tbl2 inner join tbl3 on tbl2.col1 = tbl3.col1 on tbl1.col1 = tbl2.col1)
+----
+
+== Nested Table Reference
+
+Nested tables may appear in the FROM clause with the TABLE keyword. They are an alternative to using a view with normal join semantics. The columns projected from the command contained in the nested table may be used just as any of the other FROM clause projected columns in join criteria, the where clause, etc.
+
+A nested table may have correlated references to preceding FROM clause column references as long as INNER and LEFT OUTER joins are used. This is especially useful in cases where then nested expression is a procedure or function call.
+
+Valid example:
+
+[source,sql]
+----
+select * from t1, TABLE(call proc(t1.x)) t2
+----
+
+Invalid example, since t1 appears after the nested table in the from clause:
+
+[source,sql]
+----
+select * from TABLE(call proc(t1.x)) t2, t1
+----
+
+NOTE: *Multiple Execution* - The usage of a correlated nested table may result in multiple executions of the table expression - once for each correlated row.
+
+== XMLTABLE
+
+The XMLTABLE function uses XQuery to produce tabular ouput. The XMLTABLE function is implicitly a nested table and may be correlated to preceding FROM clause entries. XMLTABLE is part of the SQL/XML 2006 specification.
+
+Usage:
+
+[source,sql]
+----
+XMLTABLE([<NSP>,] xquery-expression [<PASSING>] [COLUMNS <COLUMN>, ... )] AS name
+----
+
+[source,sql]
+----
+COLUMN := name (FOR ORDINALITY | (datatype [DEFAULT expression] [PATH string]))
+----
+
+See link:XML_Functions.adoc#18646259_XMLFunctions-XMLELEMENT[XMLELEMENT] for the definition of NSP - XMLNAMESPACES.
+
+See link:XML_Functions.adoc#18646259_XMLFunctions-XMLQUERY[XMLQUERY] for the definition of PASSING.
+
+See also link:XML_Functions.adoc#18646259_XMLFunctions-XMLQUERY[XMLQUERY]
+
+NOTE: See also link:XQuery_Optimization.adoc[XQuery Optimization]
+
+Parameters
+
+* The optional XMLNAMESPACES clause specifies the namepaces for use in the XQuery and COLUMN path expressions.
+
+* The xquery-expression should be a valid XQuery. Each sequence item returned by the xquery will be used to create a row of values as defined by the COLUMNS clause.
+
+* If COLUMNS is not specified, then that is the same as having the COLUMNS clause: "COLUMNS OBJECT_VALUE XML PATH '."', which returns the entire item as an XML value.
+
+* A FOR ORDINALITY column is typed as integer and will return the 1-based item number as its value.
+
+* Each non-ordinality column specifies a type and optionally a PATH and a DEFAULT expression.
+
+* If PATH is not specified, then the path will be the same as the column name. 
+
+Syntax Rules:
+
+* Only 1 FOR ORDINALITY column may be specified.
+
+* The columns names must not contain duplicates.
+
+* The blob datatype is supported, but there is only built-in support for xs:hexBinary values.  For xs:base64Binary, use a workaround of a PATH that uses the explicit value constructor "xs:base64Binary(<path>)".
+
+* The column expression must evaluate to a single value if a non-array type is expected.
+
+Examples
+
+Use of passing, returns 1 row [1]:
+
+[source,sql]
+----
+select * from xmltable('/a' PASSING xmlparse(document '<a id="1"/>') COLUMNS id integer PATH '@id') x
+----
+
+As a nested table:
+
+[source,sql]
+----
+select x.* from t, xmltable('/x/y' PASSING t.doc COLUMNS first string, second FOR ORDINALITY) x
+----
+
+Invalid multi-value:
+
+[source,sql]
+----
+select * from xmltable('/a' PASSING xmlparse(document '<a><b id="1"/><b id="2"/></a>') COLUMNS id integer PATH 'b/@id') x
+----
+
+Array multi-value:
+
+[source,sql]
+----
+select * from xmltable('/a' PASSING xmlparse(document '<a><b id="1"/><b id="2"/></a>') COLUMNS id integer[] PATH 'b/@id') x
+----

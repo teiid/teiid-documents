@@ -1,0 +1,88 @@
+
+= Oracle Translator (oracle)
+
+Also see common link:JDBC_Translators.html[JDBC Translator Information]
+
+The Oracle Translator, known by the type name *_oracle_*, is for use with Oracle 9i or later.
+
+Sequences may be used with the Oracle translator. A sequence may be modeled as a table with a name in source of DUAL and columns with the name in source set to\{\{<sequence name>.[nextval|currval].}}
+
+Teiid 8.4 and Prior Oracle Sequence DDL
+
+[source,sql]
+----
+CREATE FOREIGN TABLE seq (nextval integer OPTIONS (NAMEINSOURCE 'seq.nextval'), currval integer options (NAMEINSOURCE 'seq.currval') ) OPTIONS (NAMEINSOURCE 'DUAL')
+----
+
+With Teiid 8.5 it’s no longer necessary to rely on a table representation and Oracle specific handling for sequences. See link:DDL_Metadata.adoc[DDL Metadata] for representing currval and nextval as source functions.
+
+You can also use a sequence as the default value for insert columns by setting the column to autoincrement and the name in source to `<element name>:SEQUENCE=<sequence name>.<sequence value>`.
+
+A rownum column can also added to any Oracle physical table to support the rownum pseudo-column. A rownum column should have a name in source of `rownum`. These rownum columns do not have the same semantics as the Oracle rownum construct so care must be taken in their usage.
+
+Out parameters for procedures may also be used to return a result set, if this is not represented correctly by the automatic import you need to manually create a result set and represent the output parameter with native type "REF CURSOR".
+
+[source,sql]
+.*DDL for out parameter result set*
+----
+create foreign procedure proc (in x integer, out y object options (native_type 'REF CURSOR')) 
+returns table (a integer, b string) 
+----
+
+Oracle specific importer properties:
+
+* _useGeometryType_- Use the Teiid Geomety type when importing columns with a source type of SDO_GEOMETRY. Defaults to false.
+* _useIntegralTypes_- Use integral types rather than decimal when the scale is 0. Defaults to false.
+
+Oracle specific execution properties:
+
+* _OracleSuppliedDriver_- indicates that the Oracle supplied driver (typically prefixed by ojdbc) is being used. Defaults to true. Set to false when using DataDirect or other Oracle JDBC drivers.
+
+=== Geo Spatial function support
+
+Oracle translator supports geo spatial functions. The supported functions are:
+
+Relate = sdo_relate
+
+[source,sql]
+----
+CREATE FOREIGN FUNCTION sdo_relate (arg1 string,  arg2 string,  arg3 string) RETURNS string;
+CREATE FOREIGN FUNCTION sdo_relate (arg1 Object,  arg2 Object,  arg3 string) RETURNS string;
+CREATE FOREIGN FUNCTION sdo_relate (arg1 string,  arg2 Object,  arg3 string) RETURNS string;
+CREATE FOREIGN FUNCTION sdo_relate (arg1 Object,  arg2 string,  arg3 string) RETURNS string;
+----
+
+Nearest_Neighbor = sdo_nn
+
+[source,sql]
+----
+CREATE FOREIGN FUNCTION sdo_nn (arg1 string,  arg2 Object,  arg3 string,  arg4 integer) RETURNS string;
+CREATE FOREIGN FUNCTION sdo_nn (arg1 Object,  arg2 Object,  arg3 string,  arg4 integer) RETURNS string;
+CREATE FOREIGN FUNCTION sdo_nn (arg1 Object,  arg2 string,  arg3 string,  arg4 integer) RETURNS string;
+----
+
+Within_Distance = sdo_within_distance
+
+[source,sql]
+----
+CREATE FOREIGN FUNCTION sdo_within_distance (arg1 Object,  arg2 Object,  arg3 string) RETURNS string;
+CREATE FOREIGN FUNCTION sdo_within_distance (arg1 string,  arg2 Object,  arg3 string) RETURNS string;
+CREATE FOREIGN FUNCTION sdo_within_distance (arg1 Object,  arg2 string,  arg3 string) RETURNS string;
+----
+
+Nearest_Neigher_Distance = sdo_nn_distance
+
+[source,sql]
+----
+CREATE FOREIGN FUNCTION sdo_nn_distance (arg integer) RETURNS integer;
+----
+
+Filter = sdo_filter
+
+[source,sql]
+----
+CREATE FOREIGN FUNCTION sdo_filter (arg1 Object,  arg2 string,  arg3 string) RETURNS string;
+CREATE FOREIGN FUNCTION sdo_filter (arg1 Object,  arg2 Object,  arg3 string) RETURNS string;
+CREATE FOREIGN FUNCTION sdo_filter (arg1 string,  arg2 object,  arg3 string) RETURNS string;
+----
+

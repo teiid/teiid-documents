@@ -1,0 +1,157 @@
+
+= Infinispan Cache Translator
+
+The Infinispan translator, known by the name of _infinispan-cache_, is a bridge for reading and writing java objects to/from an Infinispan/JDG Cache. This translator extends the link:Object_Translator.adoc[Object Translator] and uses it for the core processing of reading and writing objects. The Infinispan Cache Translator is written so that it can control how the cache is searched and any capabilities that are needed to control that behavior.
+
+== Searching Capabilities
+
+Supports the options for using either DSL searching (JDG 6.3+), Hibernate/Lucene searching (now deprecated), or Key searching (when no indexing is used). See the https://docs.jboss.org/author/display/teiidexamples/JBoss+Data+Grid+%28JDG%29+running+in+Library+Mode+as+a+Data+Source+Example[jdg-local-cache] quick start for an example. Note, this assumes you will be installing JDG into the same server installation, running in library mode.
+
+=== Installation
+
+The *infinispan-cache* translator is not configured, out-of-the-box, in the standalone-teiid.xml configuration. To configure the translator, run the https://github.com/teiid/teiid/blob/master/build/kits/jboss-as7/docs/teiid/datasources/infinispan/add-infinispan-cache-translator.cli[add-infinispan-cache-translator.cli] script. This script can also be found in the teiid-jboss-dist.zip kit, under docs/teiid/datasources/infinispan.
+
+=== Execution Properties
+
+|===
+|Name |Description |Required |Default
+
+|SupportsLuceneSearching
+|Setting to true assumes your objects are annotated and Hibernate/Lucene will be used to search the cache
+|No
+|false
+
+|SupportsDSLSearching
+|Setting to true assumes your are using JDG v6.3 or better and your cache has indexing enabled
+|No
+|false
+
+|SupportsIsNullCriteria
+|Setting to true assumes https://issues.jboss.org/browse/TEIID-3539[https://issues.jboss.org/browse/TEIID-3539] has been resolved
+|No
+|false
+
+|SupportsCompareCriteriaOrdered
+|Setting to true assumes https://issues.jboss.org/browse/TEIID-3627[https://issues.jboss.org/browse/TEIID-3627] has been resolved
+|No
+|false
+
+|SupportsNotCriteria
+|Setting to true assumes https://issues.jboss.org/browse/TEIID-3573[https://issues.jboss.org/browse/TEIID-3573] has been resolved
+|No
+|false
+|===
+
+SupportsNotCriteria defaults to false because the testing of _column_ <> 1 returns true when the _column_ is null, which isn’t correct by SQL standards - see https://issues.jboss.org/browse/TEIID-3573[https://issues.jboss.org/browse/TEIID-3573]. There is an enhancement coming that will enable adding "_column_ IS NOT NULL" when _column_ <> 1 type criteria is detected.
+
+SupportsIsNullCriteria defaults to false because Infinispan/JDG has an issue with issuing a IS NULL check on a numeric type attribute - see https://issues.jboss.org/browse/TEIID-3539[https://issues.jboss.org/browse/TEIID-3539]. Set this to true if you need this check and can control which non-numeric columns that this will be issued against.
+
+SupportsCompareCriteriaOrdered defaults to false because the Infinispan/JDG has an issue with string comparisons - see https://issues.jboss.org/browse/TEIID-3627[https://issues.jboss.org/browse/TEIID-3627].
+
+=== Supported Capabilities
+
+The following are the connector capabilities when Key Searching is used:
+
+* SELECT command
+* CompareCriteria - only EQ
+* InCriteria
+
+The following are the connector capabilities when DSL Searching is enabled:
+
+* SELECT command
+* CompareCriteria - EQ, NE
+* CompareCriteria - GT, LT, GE, and LE can be enabled, see Execution Properties
+* And/Or Criteria
+* In Criteria
+* Like Criteria
+* Or Criteria
+* IsNull check - see Execution Properties
+* Not (negation) - example: Not In, Not Like
+* INSERT, UPDATE, DELETE
+
+== Usage
+
+* Retrieve objects from a cache and transform into rows and columns.
+* Perform writes to the cache
+
+== Metadata
+
+=== Definition Requirements
+
+* The table for the root class, must have a primary key defined, which must map to an attribute in the class.
+* The table "name in source" (NIS) will be the name of the cache this table/class is stored
+* The primary object that represents the cached object should have a name in source of `this'.  All other columns will have their name in source (which defaults to the column name) interpreted as the path to the column value from the primary object.
+* All columns that are not the primary key nor covered by a lucene index should be marked as SEARCHABLE `Unsearchable'.
+* Attributes defined as repeatable (i.e., collections, arrays, etc.) or a container class, will be supported as 1-to-* relationships, and will have corresponding registered class (if they are to be searched).
+* A 1-to-* relationship class must have a foreign key to map to the root class/table, where the name in source for the foreign key is the name of the root class method to access those child objects. Note, this is the class method, not a reference in the google protobuf definition.
+* Dynamic VDBs using metadata import will automatically build the physical table for the root object and will have each top level member represented as a column.
+
+=== Options for Defining
+
+The following is an example of a key search and a view that associated player names with their team. It uses a dynamic vdb to define the physical source and views using DDL.   It uses a TeamObject class, shown below, with a teamName field that is used as its cache key and a String list of players. 
+
+[source,java]
+----
+public class TeamObject {
+
+   private String teamName;
+   private List<String> players = new ArrayList<String>();
+
+   public String getTeamName() {
+      return teamName;
+   }
+
+   public void setTeamName(String teamName) {
+       this.teamName = teamName;
+   }
+
+   public List<String> getPlayers() {
+       return players;
+   }
+
+}
+----
+
+Note that by just using a dynamic vdb, the native import logic will provide you with a TeamObject physical table that can be queried. An equivalent Team table is shown here for demonstration purposes.
+
+[source,xml]
+----
+<vdb name="team" version="1">
+    <model name="Team" visible="false">
+        <source name="objsource" translator-name="infinispan1" connection-jndi-name="java:infinispan-jndi"/>
+        <metadata type="DDL"><![CDATA[
+
+            CREATE FOREIGN TABLE Team (
+                TeamObject Object OPTIONS (NAMEINSOURCE 'this', SEARCHABLE 'Unsearchable'),
+                teamName varchar(255) PRIMARY KEY)
+              OPTIONS (NAMEINSOURCE 'teams');
+
+         ]]> </metadata>
+    </model>
+    <model name="TeamView" type="VIRTUAL">
+         <metadata type="DDL"><![CDATA[
+             CREATE VIEW Players (
+                  TeamName varchar(255) PRIMARY KEY,
+                  PlayerName varchar(255)
+             )
+             AS
+             SELECT t.TeamName, y.Name FROM Team as T,
+                   OBJECTTABLE('m.players' PASSING T.TeamObject as m COLUMNS Name string 'teiid_row') as y;
+
+        ]]> </metadata>
+    </model>
+
+    <translator name="infinispan1" type="infinispan-cache">
+        <property name="SupportsLuceneSearching" value="true"/>
+    </translator>
+</vdb>
+----
+
+Notice the use of the [OBJECTABLE] function to parse the object from Team and transform into rows and column. This is only for demonstration purposes, and is not required in order to parse the object into rows and columns.
+
+This metadata could also be defined by using the Teiid Designer Teiid Connection Importer.
+
+== JCA Resource Adapter
+
+See the Infinispan Datasources resource adapter for this translator. It can be configured to lookup the cache container via JNDI or created (i.e., ConfigurationFileName (deprecated) or RemoteServerList). 
+

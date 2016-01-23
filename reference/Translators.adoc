@@ -1,0 +1,104 @@
+
+= Translators
+
+The Teiid Connector Architecture (TCA) provides Teiid with a robust mechanism for integrating with external systems. The TCA defines a common client interface between Teiid and an external system that includes metadata as to what SQL constructs are supported for pushdown and the ability to import metadata from the external system.
+
+A Translator is the heart of the TCA and acts as the bridge logic between Teiid and an external system, which is most commonly accessed through a JCA resource adapter. Refer to the Teiid Developers Guide for details on developing custom Translators and JCA resource adapters for use with Teiid.
+
+TIP: The TCA is not the same as the JCA, the JavaEE Connector Architecture, although the TCA is designed for use with JCA resource adapters.
+
+TIP: The import capabilities of Teiid Translators is currently only used in link:Dynamic_VDBs.adoc[Dynamic VDBs] and not by Teiid Designer.
+
+A Translator is typically paired with a particular JCA resource adapter. In instances where pooling, environment dependent configuration management, advanced security handling, etc. are not needed, then a JCA resource adapter is not needed. The configuration of JCA ConnectionFactories for needed resource adapters is not part of this guide, please see the Teiid Administrator Guide and the kit examples for configuring resource adapters for use in JBossAS.
+
+Translators can have a number of configurable properties. These are broken down into execution properties, which determine aspects of how data is retrieved, and import settings, which determine what metadata is read for import.
+
+The execution properties for a translator typically have reasonable defaults. For specific translator types, e.g. the Derby translator, base execution properties are already tuned to match the source. In most cases the user will not need to adjust their values.
+
+.*Base Execution Properties - shared by all translators*
+|===
+|Name |Description |Default
+
+|Immutable
+|Set to true to indicate that the source never changes.
+|false
+
+|RequiresCriteria
+|Set to true to indicate that source SELECT/UPDATE/DELETE queries require a where clause.
+|false
+
+|SupportsOrderBy
+|Set to true to indicate that the ORDER BY clause is supported.
+|false
+
+|SupportsOuterJoins
+|Set to true to indicate that OUTER JOINs are supported.
+|false
+
+|SupportsFullOuterJoins
+|If outer joins are supported, true indicates that FULL OUTER JOINs are supported.
+|false
+
+|SupportsInnerJoins
+|Set to true to indicate that INNER JOINs are supported.
+|false
+
+|SupportedJoinCriteria
+|If joins are supported, defines what criteria may be used as the join criteria. May be one of (ANY, THETA, EQUI, or KEY).
+|ANY
+
+|MaxInCriteriaSize
+|If in criteria are supported, defines what the maximum number of in entries are per predicate. -1 indicates no limit.
+|-1
+
+|MaxDependentInPredicates
+|If in criteria are supported, defines what the maximum number of predicates that can be used for a dependent join. Values less than 1 indicate to use only one in predicate per dependent value pushed (which matches the pre-7.4 behavior).
+|-1
+
+|DirectQueryProcedureName
+|if the direct query procedure is supported on the translator, this property indicates the name of the procedure.
+|native
+
+|SupportsDirectQueryProcedure
+|Set to true to indicate the translator supports the direct execution of commands
+|false
+
+|ThreadBound
+|Set to true to indicate the translator’s Executions should be processed by only a single thread
+|false
+
+|CopyLobs
+|If true, then returned lobs (clob, blob, sql/xml) will be copied by the engine in a memory safe manner. Use this option if the source does not support memory safe lobs or you want to disconnect lobs from the source connection.
+|false
+
+NOTE: Only a subset of the supports metadata can be set through execution properties. If more control is needed, please consult the https://docs.jboss.org/author/display/TEIID/Developer%27s+Guide[Developer’s Guide].
+
+There are no base importer settings.
+
+== Override Execution Properties
+
+For all the translators to override Execution Properties can be configured in the _vdb.xml_ file.
+
+Example Overriding of Translator Property
+
+[source,java]
+----
+<model name="ora">
+     <source name="ora" translator-name="oracle-override" connection-jndi-name="java:/oracle"/>
+</model>
+
+<translator name="oracle-override" type="oracle">
+     <property name="RequiresCriteria" value="true"/>
+</translator>
+----
+
+The above XML fragment is overriding the _oracle_ translator and altering the behavior of _RequiresCriteria_ property to true. Note that the modified translator is only available in the scope of this VDB.
+
+See also link:VDB_Definition.adoc[VDB Definition].
+
+== Parameterizable Native Queries
+
+In some situations the teiid_rel:native-query property and native procedures accept parameterizable strings that can positionally reference IN parameters. A parameter reference has the form $integer, i.e. $1 Note that 1 based indexing is used and that only IN parameters may be referenced. Dollar-sign integer is therefore reserved, but may be escaped with another $, i.e. $$1. The value will be bound as a prepared value or a literal is a source specific manner. The native query must return a result set that matches the expectation of the calling procedure.
+
+For example the native-query ``select c from g where c1 = $1 and c2 = `$$1''' results in a JDBC source query of ``select c from g where c1 = ? and c2 = `$1''', where ? will be replaced with the actual value bound to parameter 1.
+

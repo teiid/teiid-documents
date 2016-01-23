@@ -1,0 +1,11 @@
+
+= Data Roles
+
+Data roles, also called entitlements, are sets of permissions defined per VDB that dictate data access (create, read, update, delete). Data roles use a fine-grained permission system that Teiid will enforce at runtime and provide audit log entries for access violations - see https://docs.jboss.org/author/display/TEIID/Logging[Logging] and https://docs.jboss.org/author/display/TEIID/Custom+Logging[Custom Logging] for more.
+
+Prior to applying data roles, you should consider restricting source system access through the fundamental design of your VDB. Foremost, Teiid can only access source entries that are represented in imported metadata. You should narrow imported metadata to only what is necessary for use by your VDB. When using Teiid Designer, you may then go further and modify the imported metadata at a granular level to remove specific columns, mark tables as non-updatable, etc.
+
+If data role validation is enabled and data roles are defined in a VDB, then access permissions will be enforced by the Teiid Server. The use of data roles may be disabled system wide by removing the setting for the teiid subsystem policy-decider-module.  Data roles also have built-in link:Security_Functions.adoc[system functions] that can be used for row-based and other authorization checks.
+
+TIP: Unlike previous versions of Teiid data roles will only be checked if present in a VDB. A VDB deployed without data roles is open for use by any authenticated user. If you want to ensure some attempt has been made at securing access, then set the data-roles-required configuration element to true via the CLI or in the standalone.xml on the teiid subsystem.
+

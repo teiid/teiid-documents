@@ -1,0 +1,7 @@
+
+= Teiid Translator (teiid)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The Teiid Translator, known by the type name *_teiid_*, is for use with Teiid 6.0 or later.
+

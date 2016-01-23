@@ -1,0 +1,27 @@
+
+= AutoCommitTxn Execution Property
+
+Since user level commands may execute multiple source commands, users can specify the AutoCommitTxn execution property to control the transactional behavior of a user command when not in a local or global transaction.
+
+.*AutoCommitTxn Settings*
+|===
+|Setting |Description
+
+|OFF
+|Do not wrap each command in a transaction. Individual source commands may commit or rollback regardless of the success or failure of the overall command.
+
+|ON
+|Wrap each command in a transaction. This mode is the safest, but may introduce performance overhead.
+
+|DETECT
+|This is the default setting. Will automatically wrap commands in a transaction, but only if the command seems to be transactionally unsafe.
+|===
+
+The concept of command safety with respect to a transaction is determined by Teiid based upon command type, the transaction isolation level, and available metadata. A wrapping transaction is not needed if:
+
+* If a user command is fully pushed to the source.
+* If the user command is a SELECT (including XML) and the transaction isolation is not REPEATABLE_READ nor SERIALIABLE.
+* If the user command is a stored procedure and the transaction isolation is not REPEATABLE_READ nor SERIALIABLE and the link:Updating_Model_Count.adoc[Updating Model Count] is zero.
+
+The update count may be set on all procedures as part of the procedure metadata in the model.
+

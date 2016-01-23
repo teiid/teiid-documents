@@ -1,0 +1,77 @@
+
+= System Functions
+
+System functions provide access to information in the Teiid system from within a query.
+
+== COMMANDPAYLOAD
+
+Retrieve a string from the command payload or null if no command payload was specified. The command payload is set by the `TeiidStatement.setPayload` method on the Teiid JDBC API extensions on a per-query basis.
+
+COMMANDPAYLOAD([key])
+
+If the key parameter is provided, the command payload object is cast to a java.util.Properties object and the corresponding property value for the key is returned. If the key is not specified the return value is the command payload object toString value.
+
+key, return value are strings
+
+== ENV
+
+Retrieve a system environment property.
+
+ENV(key)
+
+To prevent untrusted access to system properties, this function is not enabled by default. The ENV function may be enabled via the allowEnvFunction property in the file.
+
+key, return value are strings
+
+== NODE_ID
+
+Retrieve the node id - typically the System property value for "jboss.node.name" which will not be set for Teiid embedded.
+
+NODE_ID()
+
+return value is string.
+
+== SESSION_ID
+
+Retrieve the string form of the current session id.
+
+SESSION_ID()
+
+return value is string.
+
+== USER
+
+Retrieve the name of the user executing the query.
+
+USER()
+
+return value is string.
+
+== CURRENT_DATABASE
+
+Retrieve the catalog name of the database. The VDB name is always the catalog name.
+
+CURRENT_DATABASE()
+
+return value is string.
+
+== TEIID_SESSION_GET
+
+Retrieve the session variable.
+
+TEIID_SESSION_GET(name)
+
+name is a string and the return value is an object.
+
+A null name will return a null value. Typically you will use the a get wrapped in a CAST to convert to the desired type.
+
+== TEIID_SESSION_SET
+
+Set the session variable.
+
+TEIID_SESSION_SET(name, value)
+
+name is a string, value is an object, and the return value is an object.
+
+The previous value for the key or null will be returned. A set has no effect on the current transaction and is not affected by commit/rollback.
+

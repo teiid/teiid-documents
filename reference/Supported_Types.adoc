@@ -1,0 +1,159 @@
+
+= Supported Types
+
+Teiid supports a core set of runtime types. Runtime types can be different than semantic types defined in type fields at design time. The runtime type can also be specified at design time or it will be automatically chosen as the closest base type to the semantic type.
+
+.*Teiid Runtime Types*
+|===
+|Type |Description |Java Runtime Class |JDBC Type |ODBC Type
+
+|string or varchar
+|variable length character string with a maximum length of 4000.
+|java.lang.String
+|VARCHAR
+|VARCHAR
+
+|varbinary
+|variable length binary string with a nominal maximum length of 8192.
+|byte[] [a]
+|VARBINARY
+|VARBINARY
+
+|char
+|a single Unicode character
+|java.lang.Character
+|CHAR
+|CHAR
+
+|boolean
+|a single bit, or Boolean, that can be true, false, or null (unknown)
+|java.lang.Boolean
+|BIT
+|SMALLINT
+
+|byte or tinyint
+|numeric, integral type, signed 8-bit
+|java.lang.Byte
+|TINYINT
+|SMALLINT
+
+|short or smallint
+|numeric, integral type, signed 16-bit
+|java.lang.Short
+|SMALLINT
+|SMALLINT
+
+|integer or serial
+|numeric, integral type, signed 32-bit. The serial type also implies not null and has an auto-incrementing value that starts at 1. serial types are not automatically UNIQUE.
+|java.lang.Integer
+|INTEGER
+|INTEGER
+
+|long or bigint
+|numeric, integral type, signed 64-bit
+|java.lang.Long
+|BIGINT
+|NUMERIC
+
+|biginteger
+|numeric, integral type, arbitrary precision of up to 1000 digits
+|java.math.BigInteger
+|NUMERIC
+|NUMERIC
+
+|float or real
+|numeric, floating point type, 32-bit IEEE 754 floating-point numbers
+|java.lang.Float
+|REAL
+|FLOAT
+
+|double
+|numeric, floating point type, 64-bit IEEE 754 floating-point numbers
+|java.lang.Double
+|DOUBLE
+|DOUBLE
+
+|bigdecimal or decimal
+|numeric, floating point type, arbitrary precision of up to 1000 digits.
+|java.math.BigDecimal
+|NUMERIC
+|NUMERIC
+
+|date
+|datetime, representing a single day (year, month, day)
+|java.sql.Date
+|DATE
+|DATE
+
+|time
+|datetime, representing a single time (hours, minutes, seconds, milliseconds)
+|java.sql.Time
+|TIME
+|TIME
+
+|timestamp
+|datetime, representing a single date and time (year, month, day, hours, minutes, seconds, milliseconds, nanoseconds)
+|java.sql.Timestamp
+|TIMESTAMP
+|TIMESTAMP
+
+|object
+|any arbitrary Java object, must implement java.lang.Serializable
+|Any
+|JAVA_OBJECT
+|VARCHAR
+
+|blob
+|binary large object, representing a stream of bytes
+|java.sql.Blob [b]
+|BLOB
+|VARCHAR
+
+|clob
+|character large object, representing a stream of characters
+|java.sql.Clob [c]
+|CLOB
+|VARCHAR
+
+|xml
+|XML document
+|java.sql.SQLXML [d]
+|JAVA_OBJECT
+|VARCHAR
+
+|geometry
+|Geospatial Object
+|java.sql.Blob [e]
+|BLOB
+|BLOB
+|===
+
+NOTE: Even if a type is declared with a length, precision, or scale argument, those restrictions are effectively ignored by the runtime system.
+
+[a] The runtime type is org.teiid.core.types.BinaryType. Translators will need to explicitly handle BinaryType values. UDFs will instead have a byte[] value passed. 
+[b] The concrete type is expected to be org.teiid.core.types.BlobType 
+[c] The concrete type is expected to be org.teiid.core.types.ClobType 
+[d] The concrete type is expected to be org.teiid.core.types.XMLType 
+[e] The concrete type is expected to be org.teiid.core.types.GeometryType
+
+== Arrays
+
+WARNING: Teiid’s support for arrays is a new feature as of the 8.5 release. Support will be refined and enhanced in subsequent releases.
+
+An array of any type is designated by adding [] for each array dimension
+to the type declaration.
+
+Example array types:
+
+[source,sql]
+----
+string[]
+----
+
+[source,sql]
+----
+integer[][]
+----
+
+NOTE: Teiid array handling is typically in memory. It is not advisable to rely on the usage of large array values. Also arrays of lobs are not well supported and will typically not be handled correctly when serialized.
+

@@ -1,0 +1,29 @@
+
+= Sybase Translator (sybase)
+
+The Sybase Translator, known by the type name *_sybase_*, is for use with Sybase version 12.5 or later.
+
+If used in a dynamic vdb and no import properties are specified (not recommended, see import properties below), then exceptions can be thrown retrieving system table information. You should specify a schemaPattern or use excludeTables to exclude system tables if this occurs.
+
+If the name in source metadata contains quoted identifiers (such as required by reserved words or words containing characters that would not otherwise be allowed) and you are using a jconnect Sybase driver, you must first configure the connection pool to enable *quoted_identifier*:
+
+Driver URL with SQLINITSTRING
+
+[source,sql]
+----
+jdbc:sybase:Tds:host.at.some.domain:5000/db_name?SQLINITSTRING=set quoted_identifier on
+----
+
+If you are a jconnect Sybase driver and will target the source for dependent joins, you should allow the translator to send more values by setting the JCONNECT_VERSION. Otherwise you will get exceptions with statements that have more than 481 bind values:
+
+Driver URL with JCONNECT_VERSION
+
+[source,sql]
+----
+jdbc:sybase:Tds:host.at.some.domain:5000/db_name?SQLINITSTRING=set quoted_identifier on&JCONNECT_VERSION=6
+----
+
+Sybase specific execution properties:
+
+* _JtdsDriver_- indicates that the open source JTDS driver is being used. Defaults to false.
+

@@ -1,0 +1,44 @@
+
+= Miscellaneous Functions
+
+Other functions.
+
+== array_get
+
+Retuns the object value at a given array index.
+
+[source,sql]
+----
+array_get(array, index)
+----
+
+array is the object type, index must be an integer, and the return type is object.
+
+1-based indexing is used. The actual array value should be a java.sql.Array or java array type. A null will be returned if either argument is null or if the index is out of bounds.
+
+== array_length
+
+Returns the length for a given array
+
+[source,sql]
+----
+array_length(array)
+----
+
+array is the object type, and the return type is integer.
+
+The actual array value should be a java.sql.Array or java array type. An exception will be thrown if the array value is the wrong type.
+
+== uuid
+
+Retuns a universally unique identifier.
+
+[source,sql]
+----
+uuid()
+----
+
+the return type is string.
+
+Generates a type 4 (pseudo randomly generated) UUID using a cryptographically strong random number generator. The format is XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX where each X is a hex digit.
+

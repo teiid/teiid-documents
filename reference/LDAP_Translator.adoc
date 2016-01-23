@@ -1,0 +1,355 @@
+
+= LDAP Translator
+
+The LDAP translator is implemented by the org.teiid.translator.ldap.LDAPExecutionFactory class and known by the translator type name ldap. The LDAP translator exposes an LDAP directory tree relationally with pushdown support for filtering via criteria. This is typically coupled with the LDAP resource adapter.
+
+NOTE: The resource adapter for this translator is provided by configuring the ldap data source in the JBoss EAP instance.
+
+*Execution Properties*
+
+|===
+|Name |Description |Default
+
+|SearchDerfaultBaseDN
+|Default Base DN for LDAP Searches
+|null
+
+|SearchDefaultScope
+|Default Scope for LDAP Searches. Can be one of SUBTREE_SCOPE, OBJECT_SCOPE, ONELEVEL_SCOPE.
+|ONELEVEL_SCOPE
+
+|RestrictToObjectClass
+|Restrict Searches to objectClass named in the Name field for a table
+|false
+
+|UsePagination
+|Use a PagedResultsControl to page through large results. This is not supported by all directory servers.
+|false
+
+|ExceptionOnSizeLimitExceeded
+|Set to true to throw an exception when a SizeLimitExceededException is received and a LIMIT is not properly enforced.
+|false
+|===
+
+There are no import settings for the ldap translator; it also does not provide metadata.
+
+=== Metadata Options
+
+==== SEARCHABLE 'equality_only'
+
+For openldap, apacheds, and other ldap servers dn attributes have search restrictions, such that only equality predicates are supported. Use SEARCHABLE `equality_only` to indicates that only equality predicates should be pushed down. Any other predicate would need evaluated in the engine. For example
+
+[source,sql]
+----
+ col string OPTIONS (SEARCHABLE 'equality_only', ...) 
+----
+
+==== teiid_ldap:rdn_type
+
+Used on a column with a dn value to indicate the rdn to extract. If the entry suffix does not match this rdn type, then no row will be produced. For example
+
+[source,sql]
+----
+ col string OPTIONS ("teiid_ldap:rdn_type" 'cn', ...) 
+----
+
+==== teiid_ldap:dn_prefix
+
+Used on a column if rdn_type is specified to indicates that the values should match this prefix, no row will be produced for a non-matching entry. For example
+
+[source,sql]
+----
+ col string OPTIONS ("teiid_ldap:rdn_type" 'cn', "teiid_ldap:dn_prefix" 'ou=groups,dc=example,dc=com', ...) 
+----
+
+=== Multivalued Attribute Support
+
+If one of the methods below is not used and the attribute is mapped to a non-array type, then any value may be returned on a read operation. Also insert/update/delete support will not be multi-value aware.
+
+=== Concatenation
+
+String columns with a default value of "multivalued-concat" will concatenate all attribute values together in alphabetical order using a ? delimiter. Insert/update will function as expected if all applicable values are supplied in the concatenated format.
+
+=== Array support
+
+Multiple attribute values may also supported as an array type. The array type mapping also allows for insert/update operations.
+
+For example here is ddl with objectClass and uniqueMember as arrays:
+
+[source,sql]
+----
+create foreign table ldap_groups (objectClass string[], DN string, name string options (nameinsource 'cn'), uniqueMember string[]) options (nameinsource 'ou=groups,dc=teiid,dc=org', updatable true)
+----
+
+The array values can be retrieved with a SELECT. An example insert with array values could look like:
+
+[source,sql]
+----
+insert into ldap_groups (objectClass, DN, name, uniqueMember) values (('top', 'groupOfUniqueNames'), 'cn=a,ou=groups,dc=teiid,dc=org', 'a', ('cn=Sam Smith,ou=people,dc=teiid,dc=org',))
+----
+
+=== Unwrap
+
+When a multivalued attribute represents an association between entities, it’s possible to use extension metadata properties to represent it as a 1-to-many or many-to-many relationship.
+
+Example many-to-many DDL:
+
+[source,sql]
+----
+CREATE foreign table users (username string primary key options (nameinsource 'cn'), surname string options (nameinsource 'sn'), ...) options (nameinsource 'ou=users,dc=example,dc=com');
+
+CREATE foreign table groups (groupname string primary key options (nameinsource 'cn'), description string, ...) options (nameinsource 'ou=groups,dc=example,dc=com');
+
+CREATE foreign table membership (username string options (nameinsource 'cn'), groupname options (nameinsource 'memberOf', SEARCHABLE 'equality_only', "teiid_rel:partial_filter" true, "teiid_ldap:unwrap" true, "teiid_ldap:dn_prefix" 'ou=groups,dc=example,dc=com', "teiid_ldap:rdn_type" 'cn'), foreign key (username) references users (username), foreign key (groupname) references groups (groupname)) options (nameinsource 'ou=users,dc=example,dc=com');
+----
+
+The result from "select * from membership" will then produce 1 row for each memberOf and the key value will be based upon the cn rdn value rather than the full dn. Also queries that join between users and membership will be pushed as a single query.
+
+If the unwrap attribute is missing or there are no values, then a single row with a null value will be produced.
+
+=== Native Queries
+
+LDAP procedures may optionally have native queries associated with them - see link:Translators.adoc#18646290_Translators-native[Parameterizable Native Queries]. The operation prefix (select;, insert;, update;, delete; - see below for more) must be present in the native-query, butit will not be issued as part of the query to the
+
+[source,sql]
+.*Example DDL for an LDAP native procedure*
+----
+CREATE FOREIGN PROCEDURE proc (arg1 integer, arg2 string) OPTIONS ("teiid_rel:native-query" 'search;context-name=corporate;filter=(&(objectCategory=person)(objectClass=user)(!cn=$2));count-limit=5;timeout=$1;search-scope=ONELEVEL_SCOPE;attributes=uid,cn') returns (col1 string, col2 string);
+----
+
+Parameter values will have reserved characters escaped, but are otherwise directly substituted into the query.
+
+=== Direct Query Procedure
+
+NOTE: This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:Translators.adoc#18646290_Translators-OverrideExecutionProperties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
+
+TIP: By default the name of the procedure that executes the queries directly is *native*. link:Translators.adoc#18646290_Translators-OverrideExecutionProperties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
+
+The LDAP translator provides a procedure to execute any ad-hoc LDAP query directly against the source without Teiid parsing or resolving. Since the metadata of this procedure’s results are not known to Teiid, they are returned as an object array. link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications.
+
+=== Search
+
+[source,sql]
+.*Search Example*
+----
+SELECT x.* FROM (call pm1.native('search;context-name=corporate;filter=(objectClass=*);count-limit=5;timeout=6;search-scope=ONELEVEL_SCOPE;attributes=uid,cn')) w,
+ ARRAYTABLE(w.tuple COLUMNS "uid" string , "cn" string) AS x
+----
+
+from the above code, the "*search*" keyword followed by below properties. Each property must be delimited by semi-colon (;) If a property contains a semi-colon (;), it should be escaped by another semi-colon - see alsolink:Translators.adoc#18646290_Translators-native[Parameterizable Native Queries] and the native-query procedure example above.
+
+|===
+|Name |Description |Required
+
+|context-name
+|LDAP Context name
+|Yes
+
+|filter
+|query to filter the records in the context
+|No
+
+|count-limit
+|limit the number of results. same as using LIMIT
+|No
+
+|timeout
+|Time out the query if not finished in given milliseconds
+|No
+
+|search-scope
+|LDAP search scope, one of SUBTREE_SCOPE, OBJECT_SCOPE, ONELEVEL_SCOPE
+|No
+
+|attributes
+|attributes to retrieve
+|Yes
+|===
+
+=== Delete
+
+[source,sql]
+.*Delete Example*
+----
+SELECT x.* FROM (call pm1.native('delete;uid=doe,ou=people,o=teiid.org')) w,
+ ARRAYTABLE(w.tuple COLUMNS "updatecount" integer) AS x
+----
+
+form the above code, the "*delete*" keyword followed the "DN" string. All the string contents after the "delete;" used as DN.
+
+=== Create or Update
+
+[source,sql]
+.*Create Example*
+----
+SELECT x.* FROM
+ (call pm1.native('create;uid=doe,ou=people,o=teiid.org;attributes=one,two,three', 'one', 2, 3.0)) w,
+ ARRAYTABLE(w.tuple COLUMNS "update_count" integer) AS x
+----
+
+form the above code, the "*create*" keyword followed the "DN" string. All the string contents after the "create;" is used as DN. It also takes one property called "attributes" which is comma separated list of attributes. The values for each attribute is specified as separate argument to the "native" procedure.
+
+Update is similar to "create".
+
+[source,sql]
+.*Update Example*
+----
+SELECT x.* FROM
+ (call pm1.native('update;uid=doe,ou=people,o=teiid.org;attributes=one,two,three', 'one', 2, 3.0)) w,
+ ARRAYTABLE(w.tuple COLUMNS "update_count" integer) AS x
+----
+
+== LDAP Connector Capabilities Support
+
+LDAP does not provide the same set of functionality as a relational database. The LDAP Connector supports many standard SQL constructs, and performs the job of translating those constructs into an equivalent LDAP search statement. For example, the SQL statement:
+
+[source,sql]
+----
+SELECT firstname, lastname, guid
+FROM public_views.people
+WHERE
+(lastname='Jones' and firstname IN ('Michael', 'John'))
+OR
+guid > 600000
+----
+
+uses a number of SQL constructs, including:
+
+* SELECT clause support
+* select individual element support (firstname, lastname, guid)
+* FROM support
+* WHERE clause criteria support
+* nested criteria support
+* AND, OR support
+* Compare criteria (Greater-than) support
+* IN support
+
+The LDAP Connector executes LDAP searches by pushing down the equivalent LDAP search filter whenever possible, based on the supported capabilities. Teiid automatically provides additional database functionality when the LDAP Connector does not explicitly provide support for a given SQL construct. In these cases, the SQL construct cannot be pushed down to the data source, so it will be evaluated in Teiid, in order to ensure that the operation is performed. In cases where certain SQL capabilities cannot be pushed down to LDAP, Teiid pushes down the capabilities that are supported, and fetches a set of data from LDAP. Teiid then evaluates the additional capabilities, creating a subset of the original data set. Finally, Teiid will pass the result to the client. It is useful to be aware of unsupported capabilities, in order to avoid fetching large data sets from LDAP when possible.
+
+=== LDAP Connector Capabilities Support List
+
+The following capabilities are supported in the LDAP Connector, and will be evaluated by LDAP:
+
+* SELECT queries
+* SELECT element pushdown (for example, individual attribute selection)
+* AND criteria
+* Compare criteria (e.g. <, <=, >, >=, =, !=)
+* IN criteria
+* LIKE criteria.
+* OR criteria
+* INSERT, UPDATE, DELETE statements (must meet Modeling requirements)
+
+Due to the nature of the LDAP source, the following capability is not supported:
+
+* SELECT queries
+
+The following capabilities are not supported in the LDAP Connector, and will be evaluated by Teiid after data is fetched by the connector:
+
+* Functions
+* Aggregates
+* BETWEEN Criteria
+* Case Expressions
+* Aliased Groups
+* Correlated Subqueries
+* EXISTS Criteria
+* Joins
+* Inline views
+* IS NULL criteria
+* NOT criteria
+* ORDER BY
+* Quantified compare criteria
+* Row Offset
+* Searched Case Expressions
+* Select Distinct
+* Select Literals
+* UNION
+* XA Transactions
+
+== Usage
+
+https://github.com/teiid/teiid-quickstarts/tree/master/ldap-as-a-datasource[ldap-as-a-datasource] quickstart demonstrates using the ldap Translator to access data in OpenLDAP Server. The name of the translator to use in vdb.xml is "translator-ldap", for example:
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?> 
+<vdb name="ldapVDB" version="1"> 
+<model name="HRModel"> 
+<source name="local" translator-name="translator-ldap"
+connection-jndi-name="java:/ldapDS"/> 
+</model> 
+</vdb>
+----
+
+The translator does not provide a connection to the OpenLDAP. For that purpose, Teiid has a JCA adapter that provides a connection to OpenLDAP using the Java Naming API. To define such connector, use the following XML fragment in standalone-teiid.xml. See a example in "<jboss-as>/docs/teiid/datasources/ldap"
+
+[source,xml]
+----
+<resource-adapter id="ldapQS"> 
+<module slot="main" id="org.jboss.teiid.resource-adapter.ldap"/> 
+<connection-definitions> 
+<connection-definition
+class-name="org.teiid.resource.adapter.ldap.LDAPManagedConnectionFactory"
+jndi-name="java:/ldapDS" enabled="true" use-java-context="true"
+pool-name="ldapDS"> 
+<config-property name="LdapAdminUserPassword"> 
+redhat 
+</config-property> 
+<config-property name="LdapAdminUserDN"> 
+cn=Manager,dc=example,dc=com 
+</config-property> 
+<config-property name="LdapUrl"> 
+ldap://localhost:389 
+</config-property> 
+</connection-definition> 
+</connection-definitions> 
+</resource-adapter>
+----
+
+The above defines the translator and connector. For more ways to create the connector see https://docs.jboss.org/author/display/TEIID/LDAP+Data+Sources[LDAP Data Sources], LDAP translator can derive the metadata based on existing Users/Groups in LDAP Server, user need to define the metadata. For example, you can define a schema using DDL:
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?> 
+<vdb name="ldapVDB" version="1"> 
+<model name="HRModel"> 
+<metadata type="DDL"><![CDATA[ 
+CREATE FOREIGN TABLE HR_Group ( 
+DN string options (nameinsource `dn'), 
+SN string options (nameinsource `sn'), 
+UID string options (nameinsource `uid'), 
+MAIL string options (nameinsource `mail'), 
+NAME string options (nameinsource `cn') 
+) OPTIONS(nameinsource `ou=HR,dc=example,dc=com', updatable true); 
+]]> 
+</metadata> 
+</model> 
+</vdb>
+----
+
+when SELECT operation below executed against table using Teiid will retrieve Users/Groups in LDAP Server:
+
+[source,sql]
+----
+SELECT * FROM HR_Group
+----
+
+== LDAP Attribute Datatype Support
+
+LDAP providers currently return attribute value types of java.lang.String and byte[], and do not support the ability to return any other attribute value type. The LDAP Connector currently supports attribute value types of java.lang.String only. Therefore, all attributes are modeled using the String datatype in Teiid Designer. Conversion functions that are available in Teiid allow you to use models that convert a String value from LDAP into a different data type. Some conversions may be applied implicitly, and do not require the use of any conversion functions. Other conversions must be applied explicitly, via the use of CONVERT functions. Since the CONVERT functions are not supported by the underlying LDAP system, they will be evaluated in Teiid. Therefore, if any criteria is evaluated against a converted datatype, that evaluation cannot be pushed to the data source, since the native type is String.
+
+When converting from String to other types, be aware that criteria against that new data type will not be pushed down to the LDAP data source. This may decrease performance for certain queries.
+
+As an alternative, the data type can remain a string and the client application can make the conversion, or the client application can circumvent any LDAP supports <= and >=, but has no equivalent for < or >. In order to support < or > pushdown to the source, the LDAP Connector will translate < to <=, and it will translate > to >=. When using the LDAP Connector, be aware that strictly-less-than and strictly-greater-than comparisons will behave differently than expected. It is advisable to use <= and >= for queries against an LDAP based data source, since this has a direct mapping to comparison operators in LDAP.
+
+=== LDAP: Testing Your Connector
+
+You must define LDAP Connector properties accurately or the Teiid server will return unexpected results, or none at all. As you deploy the connector in Console, improper configuration can lead to problems when you attempt to start your connector. You can test your LDAP Connector in Teiid Designer prior to Console deployment by submitting queries at modeling time for verification.
+
+=== LDAP: Console Deployment Issues
+
+The Console shows an Exception That Says Error Synchronizing the Server, If you receive an exception when you synchronize the server and your LDAP Connector is the only service that does not start, it means that there was a problem starting the connector. Verify whether you have correctly typed in your connector properties to resolve this issue.
+
+== JCA Resource Adapter
+
+The resource adapter for this translator provided through "LDAP Data Source", Refer to Admin Guide for configuration.
+

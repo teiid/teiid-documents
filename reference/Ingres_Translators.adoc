@@ -1,0 +1,15 @@
+
+= Ingres Translators (ingres / ingres93)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The Ingres translation is supported by 2 translators.
+
+== ingres
+
+The Ingres Translator, known by the type name *_ingres_*, is for use with Ingres 2006 or later.
+
+== ingres93
+
+The Ingres93 Translator, known by the type name *_ingres93_*, is for use with Ingres 9.3 or later.
+

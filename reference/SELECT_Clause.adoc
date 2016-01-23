@@ -1,0 +1,17 @@
+
+= SELECT Clause
+
+SQL queries that start with the SELECT keyword and are often referred to as "SELECT statements". Teiid supports most of the standard SQL query constructs.
+
+Usage:
+
+[source,sql]
+----
+SELECT [DISTINCT|ALL] ((expression [[AS] name])|(group identifier.STAR))*|STAR ...
+----
+
+Syntax Rules:
+
+* Aliased expressions are only used as the output column names and in the ORDER BY clause. They cannot be used in other clauses of the query.
+* DISTINCT may only be specified if the SELECT symbols are comparable.
+

@@ -1,0 +1,80 @@
+
+= Data Sources
+------------
+
+Teiid provides the means (i.e., link:Translators.adoc[Translators] and https://docs.jboss.org/author/display/TEIID/Deploying+VDB+Dependencies[JEE connectors] ) to access a variety of types of data sources. The types of data sources that are currently accessible are:
+
+1.  link:JDBC_Translators.adoc[Databases]
+* link:Oracle_Translator.adoc[Oracle]
+* link:PostgreSQL_Translator.adoc[PostgreSQL]
+* link:MySQL_Translators.adoc[MySQL/MariaDB]
+* link:DB2_Translator.adoc[DB2]
+* link:Microsoft_SQL_Server_Translator.adoc[Microsoft SQL Server]
+* link:Sybase_Translator.adoc[Sybase]
+* link:SybaseIQ_Translator.adoc[Sybase IQ]
+* link:Microsoft_Access_Translators.adoc[Microsoft Access]
+* link:Derby_Translator.adoc[Derby]
+* link:H2_Translator.adoc[H2]
+* link:HSQL_Translator.adoc[HSQL]
+* link:Ingres_Translators.adoc[Ingres]
+* link:Informix_Translator.adoc[Informix]
+* link:MetaMatrix_Translator.adoc[MetaMatrix]
+* link:Teradata_Translator.adoc[Teradata]
+* link:Vertica_Translator.adoc[Vertica]
+* link:JDBC_ANSI_Translator.adoc[Generic ANSI SQL] - for typical JDBC/ODBC sources
+* link:JDBC_Simple_Translator.adoc[Simple SQL] - for any JDBC/ODBC source
+
+2.  link:Web_Services_Translator.adoc[Web Services]
+* SOAP
+* REST
+* Arbitrary HTTP(S)
+
+3.  link:OData_Translator.adoc[OData]
+
+4.  Big Data / No SQL / Search Engines / JCR and Other Sources
+* link:Actian_Vector_Translator.adoc[Actian Vector]
+* link:Amazon_SimpleDB_Translator.adoc[Amazon SimpleDB]
+* link:Apache_Accumulo_Translator.adoc[Apache Accumulo]
+* link:Cassandra_Translator.adoc[Apache Cassandra DB]
+* link:Apache_SOLR_Translator.adoc[Apache SOLR]
+* link:JDBC_Translators.adoc[Apache Spark]
+* link:Greenplum_Translator.adoc[Greenplum]
+* link:Hive_Translator.adoc[Hive / Hadoop]
+* link:Cloudera_Impala_Translator.adoc[Impala / Hadoop]
+* link:ModeShape_Translator.adoc[ModeShape JCR Repository]
+* link:MongoDB_Translator.adoc[Mongo DB]
+* link:OLAP_Translator.adoc[Mondrian OLAP]
+* link:Netezza_Translator.adoc[Netezza data warehouse appliance]
+* link:Apache_HBase_Translator.adoc[Phoenix / HBase]
+* link:PrestoDB_Translator.adoc[PrestoDB]
+* link:Redshift_Translator.adoc[Redshift]
+
+5.  Enterprise Systems
+* link:OSISoft_PI_Translator.adoc[OSISoft PI]
+* link:Salesforce_Translators.adoc[SalesForce]
+* link:SAP_Gateway_Translator.adoc[SAP Gateway]
+* link:SAP_Hana_Translator.adoc[SAP Hana]
+* link:Teiid_Translator.adoc[Teiid]
+
+6.  Object Sources
+* link:Infinispan_Cache_Translator.adoc[JDG / Infinispan Library Mode]
+* link:Infinispan_Cache_DSL_Translator.adoc[JDG / Infinispan Remote Cache Mode]
+* link:Intersystems_Cache_Translator.adoc[Intersystems Cache Object Database]
+* link:JPA_Translator.adoc[JPA] sources
+
+7.  link:LDAP_Translator.adoc[LDAP]
+* RedHat Directory Server
+* Active Directory
+
+8.  link:File_Translator.adoc[Files]
+* link:FROM_Clause.html#18646226_FROMClause-TEXTTABLE[Delimited / Fixed width]
+* link:FROM_Clause.html#18646226_FROMClause-XMLTABLE[XML]
+
+9.  Spreadsheets
+* link:Microsoft_Excel_Translator.adoc[Excel]
+* link:Google_Spreadsheet_Translator.adoc[Google Spreadsheet]
+
+This represents data sources that have been validated to work using the available translators and connectors. However, this does not preclude a new data source from working. It can be as easy as extending an existing translator, to creating a new translator using the https://docs.jboss.org/author/display/TEIID/Translator+Development[Translator Development] extensions.
+
+Take a look at the list of link:Translators.adoc[Translators] that are used as the bridge between Teiid and the external system.
+

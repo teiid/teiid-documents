@@ -1,0 +1,61 @@
+
+= Special Conversion Cases
+
+== Conversion of String Literals
+
+Teiid automatically converts string literals within a SQL statement to their implied types. This typically occurs in a criteria comparison where an expression with a different datatype is compared to a literal string:
+
+[source,sql]
+----
+SELECT * FROM my.table WHERE created_by = ‘2003-01-02’
+----
+
+Here if the created_by column has the datatype of date, Teiid automatically converts the string literal to a date datatype as well.
+
+== Converting to Boolean
+
+Teiid can automatically convert literal strings and numeric type values to Boolean values as follows:
+
+|===
+|Type |Literal Value |Boolean Value
+
+|String
+|'false'
+|false
+
+| 
+|`unknown'
+|null
+
+| 
+|other
+|true
+
+|Numeric
+|0
+|false
+
+| 
+|other
+|true
+|===
+
+== Date/Time/Timestamp Type Conversions
+
+Teiid can implicitly convert properly formatted literal strings to their associated date-related datatypes as follows:
+
+|===
+|String Literal Format |Possible Implicit Conversion Type
+
+|yyyy-mm-dd
+|DATE
+
+|hh:mm:ss
+|TIME
+
+|yyyy-mm-dd[ hh:mm:ss.[fff…]]
+|TIMESTAMP
+|===
+
+The formats above are those expected by the JDBC date types. To use other formats see the functions `PARSEDATE` , `PARSETIME` , `PARSETIMESTAMP` .
+
