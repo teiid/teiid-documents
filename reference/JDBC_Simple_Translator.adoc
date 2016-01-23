@@ -1,0 +1,7 @@
+
+= JDBC Simple Translator (jdbc-simple)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The JDBC Simple translator, known by the type name *_jdbc-simple_*, is the same as link:JDBC_ANSI_Translator.adoc[jdbc-ansi], except disables support for nearly all pushdown constructs for maximum compatibility.
+

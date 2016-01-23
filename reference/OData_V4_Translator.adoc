@@ -1,0 +1,158 @@
+
+= OData V4 Translator
+
+The OData V4 translator, known by the type name _"odata4"_ exposes the OData Version 4 data sources and uses the Teiid WS resource adapter for making web service calls. This translator is extension of _Web Services Translator_.
+
+NOTE: *What is Odata* - The http://www.odata.org[Open Data Protocol (OData)] Web protocol is for querying and updating data that provides a way to unlock your data and free it from silos that exist in applications today. OData does this by applying and building upon Web technologies such as HTTP, Atom Publishing Protocol (AtomPub) and JSON to provide access to information from a variety of applications, services, and stores. OData is being used to expose and access information from a variety of sources including, but not limited to, relational databases, file systems, content management systems and traditional Web sites.
+
+Using this specification from OASIS group, with the help from the http://olingo.apache.org/[Olingo] framework, Teiid maps OData V4 CSDL (Conceptual Schema Definition Language) document from the OData endpoint provided and converts the OData metadata into Teiid’s relational schema. The below table shows the mapping selections in OData V4 Translator from CSDL document
+
+|===
+|OData |Mapped to Relational Entity
+
+|EntitySet
+|Table
+
+|EntityType
+|Table see [1]
+
+|ComplexType
+|Table see [2]
+
+|FunctionImport
+|Procedure [3]
+
+|ActionImport
+|Procedure [3]
+
+|NavigationProperties
+|Table [4]
+|===
+
+[1] Only if the EntityType is exposed as the EntitySet in the Entity Container 
+[2] Only if the complex type is used as property in the exposed EntitySet. This table will be designed as child table with foreign key [1 to 1] or [1 to many] relationship to the parent +
+[3] If the return type is EntityType or ComplexType, the procedure is designed to return a table 
+[4] Navigation properties are exposed as tables. The table will be created with foreign key relationship to the parent.
+
+All CRUD operations will be appropriately mapped to the resulting entity based on the SQL submitted to the OData translator.
+
+== Usage
+
+Usage of a OData source is similar a JDBC translator. The metadata import is supported through the translator, once the metadata is imported from source system and exposed in relational terms, then this source can be queried as if the EntitySets, Function Imports and Action Imports were local to the Teiid system.
+
+The below is sample VDB that can read metadata service from TripPin service on http://odata.org[http://odata.org] site.
+
+[source,xml]
+----
+<vdb name="trippin" version="1">
+    <model name="trippin">
+         <source name="odata4" translator-name="odata4" connection-jndi-name="java:/tripDS"/>
+    </model>
+</vdb>
+----
+
+The required resource-adapter configuration will look like
+
+[source,xml]
+----
+<resource-adapter id="trippin">
+    <module slot="main" id="org.jboss.teiid.resource-adapter.webservice"/>
+    <transaction-support>NoTransaction</transaction-support>
+    <connection-definitions>
+        <connection-definition class-name="org.teiid.resource.adapter.ws.WSManagedConnectionFactory" jndi-name="java:/tripDS" enabled="true" use-java-context="true" pool-name="teiid-trip-ds">
+            <config-property name="EndPoint">
+                http://services.odata.org/V4/(S(va3tkzikqbtgu1ist44bbft5))/TripPinServiceRW
+            </config-property>
+        </connection-definition>
+    </connection-definitions>
+</resource-adapter>
+----
+
+Once you configure above resource-adapter and deploy the VDB successfully, then you can connect to the VDB deployed using Teiid JDBC driver and issue SQL statements like
+
+[source,sql]
+----
+SELECT * FROM trippin.People;
+SELECT * FROM trippin.People WHERE UserName = 'russelwhyte';
+SELECT * FROM trippin.People p INNER JOIN trippin.People_Friends pf ON p.UserName = pf.People_UserName; (note that People_UserName is implicitly added by Teiid metadata)
+EXEC GetNearestAirport(lat, lon) ;
+----
+
+== Configuration of Translator
+
+=== Execution Properties
+
+Execution properties extend/limit the functionality of the translator based on the physical source capabilities. Sometimes default properties need to adjusted for proper execution of the translator.
+
+*Execution Properties*
+
+|===
+|Name |Description |Default
+
+|SupportsOdataCount
+|Supports $count
+|true
+
+|SupportsOdataFilter
+|Supports $filter
+|true
+
+|SupportsOdataOrderBy
+|Supports $orderby
+|true
+
+|SupportsOdataSkip
+|Supports $skip
+|true
+
+|SupportsOdataTop
+|Supports $top
+|true
+
+|SupportsUpdates
+|Supports INSERT/UPDATE/DELETE
+|true
+|===
+
+Sometimes it’s possible that the odata server you are querying does not fully implement all OData specification features. If your OData implementation does not support a certain feature, then turn off the corresponding capability using "execution Properties", so that Teiid will not pushdown invalid queries to the translator. For example, to turn off $filter you add following to your vdb.xml
+
+[source,xml]
+----
+<translator name="odata-override" type="odata">
+     <property name="SupportsOdataFilter" value="false"/>
+</translator>
+----
+
+then use "odata-override" as the translator name on your source model.
+
+=== Importer Properties
+
+Importer properties define the behavior of the translator during the metadata import from the physical source.
+
+*Importer Properties*
+
+|===
+|Name |Description |Default
+
+|schemaNamespace
+|Namespace of the schema to import
+|null
+|===
+
+Example importer settings to only import tables and views from http://services.odata.org/V4/(S(nivess3y23eyhit4jbppgtdj))/TripPinServiceRW/$metadata[Trippin] service exposed on odata.org
+
+[source,xml]
+----
+<property name="importer.schemaNamespace" value="Microsoft.OData.SampleService.Models.TripPin"/>
+----
+
+You can leave this property undefined, as if it does not find one configured the translator will select the default name of the EntityContainer.
+
+=== JCA Resource Adapter
+
+The resource adapter for this translator is a https://docs.jboss.org/author/display/TEIID/Web+Service+Data+Sources[Web Service Data Source].
+
+NOTE: *Native Queries* - Native or direct query execution is not supported through OData translator. However, user can use Web Services Translator’s _invokehttp_ method directly to issue a Rest based call and parse results using SQLXML.
+
+NOTE: *Want to use as OData Server?* - Teiid can not only consume OData based data sources, but it can expose any data source as an OData based webservice. For more information see https://docs.jboss.org/author/display/TEIID/OData+Support[OData Support].
+

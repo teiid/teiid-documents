@@ -1,0 +1,7 @@
+
+= Redshift Translator (redshift)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The Redshift Translator, known by the type name *_redshift_*, is for use with the Redshift database. This translator is an extension of the link:PostgreSQL_Translator.adoc[PostgreSQL Translator] and inherits its options.
+

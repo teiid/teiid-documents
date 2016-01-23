@@ -1,0 +1,20 @@
+
+= Security Functions
+
+Security functions provide the ability to interact with the security system.
+
+== HASROLE
+
+Whether the current caller has the Teiid data role roleName.
+
+[source,sql]
+----
+hasRole([roleType,] roleName)
+----
+
+_roleName_ must be a string, the return type is boolean.
+
+The two argument form is provided for backwards compatibility. roleType is a string and must be `data'.
+
+Role names are case-sensitive and only match Teiid link:Data_Roles.adoc[Data Roles]. JAAS roles/groups names are not valid for this function - unless there is corresponding data role with the same name.
+

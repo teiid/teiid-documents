@@ -1,0 +1,7 @@
+
+= OSISoft PI Translator (osisoft-pi)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The OSISoft Translator, known by the type name *_osisoft-pi_*, is for use with OSIsoft PI.
+

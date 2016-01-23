@@ -1,0 +1,40 @@
+
+= Identifiers
+
+SQL commands contain references to tables and columns. These references are in the form of identifiers, which uniquely identify the tables and columns in the context of the command. All queries are processed in the context of a virtual database, or VDB. Because information can be federated across multiple sources, tables and columns must be scoped in some manner to avoid conflicts. This scoping is provided by schemas, which contain the information for each data source or set of views.
+
+Fully-qualified table and column names are of the following form, where
+the separate `parts' of the identifier are delimited by periods.
+
+* TABLE: <schema_name>.<table_spec>
+* COLUMN: <schema_name>.<table_spec>.<column_name>
+
+_Syntax Rules:_
+
+* Identifiers can consist of alphanumeric characters, or the underscore (_) character, and must begin with an alphabetic character. Any Unicode character may be used in an identifier.
+* Identifiers in double quotes can have any contents. The double quote character can it’s be escaped with an additional double quote. e.g. "some", " id"
+* Because different data sources organize tables in different ways, some prepending catalog or schema or user information, Teiid allows table specification to be a dot-delimited construct.
+
+NOTE: When a table specification contains a dot resolving will allow for the match of a partial name against any number of the end segments in the name. e.g. a table with the fully-qualified name vdbname."sourcescema.sourcetable" would match the partial name sourcetable.
+
+* Columns, schemas, and aliases identifiers cannot contain a dot.
+* Identifiers, even when quoted, are not case-sensitive in Teiid.
+
+Some examples of valid fully-qualified table identifiers are:
+
+* MySchema.Portfolios
+* "MySchema.Portfolios"
+* MySchema.MyCatalog.dbo.Authors
+
+Some examples of valid fully-qualified column identifiers are:
+
+* MySchema.Portfolios.portfolioID
+* "MySchema.Portfolios"."portfolioID"
+* MySchema.MyCatalog.dbo.Authors.lastName
+
+Fully-qualified identifiers can always be used in SQL commands. Partially- or unqualified forms can also be used, as long as the resulting names are unambiguous in the context of the command. Different forms of qualification can be mixed in the same query.
+
+== Reserved Words
+
+Teiid’s reserved words include the standard SQL 2003 Foundation, SQL/MED, and SQL/XML reserved words, as well as Teiid specific words such as BIGINTEGER, BIGDECIMAL, or MAKEDEP. See the link:BNF_for_SQL_Grammar.adoc[BNF for SQL Grammar] Reserved Keywords and Reserved Keywords For Future Use sections for all reserved words.
+

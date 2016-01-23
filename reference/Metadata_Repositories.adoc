@@ -1,0 +1,76 @@
+
+= Metadata Repositories
+
+Traditionally the metadata for a Virtual Database is built by Teiid Designer and supplied to Teiid engine through a VDB archive file. This VDB file contains .INDEX metadata files. By default they are loaded by a _MetadataRepository_ with the name _INDEX_. Other built-in metadata repositories include the following:
+
+== NATIVE
+
+This is only applicable on source models (and is also the default), when used the metadata for the model is retrieved from the source database itself.
+
+[source,xml]
+.*Sample vdb.xml file*
+----
+<vdb name="{vdb-name}" version="1">
+    <model name="{model-name}" type="PHYSICAL">
+        <source name="AccountsDB" translator-name="oracle" connection-jndi-name="java:/oracleDS"/>
+        <metadata type="NATIVE"></metadata>
+    </model>
+</vdb>
+----
+
+== DDL
+
+[source,xml]
+.*Sample vdb.xml file*
+----
+<vdb name="{vdb-name}" version="1">
+    <model name="{model-name}" type="PHYSICAL">
+        <source name="AccountsDB" translator-name="oracle" connection-jndi-name="java:/oracleDS"/>
+        <metadata type="DDL">
+          **DDL Here**
+        </metadata>
+    </model>
+</vdb>
+----
+
+This is applicable to both source and view models. See link:DDL_Metadata.adoc[DDL Metadata] for more information on how to use this feature.
+
+== FILE
+
+[source,xml]
+.*Sample vdb.xml file*
+----
+<vdb name="{vdb-name}" version="1">
+    <model name="{model-name}" type="PHYSICAL">
+        <source name="AccountsDB" translator-name="oracle" connection-jndi-name="java:/oracleDS"/>
+        <metadata type="DDL-FILE">/accounts.ddl</metadata>
+    </model>
+</vdb>
+----
+
+DDL is applicable to both source and view models in zip VDB deployments. See link:DDL_Metadata.adoc[DDL Metadata] for more information on how to use this feature.
+
+== Chaining Repositories
+
+When defining the metadata type for a model, multiple metadata elements can be used. All the repository instances defined are consulted in the order configured to gather the metadata for the given model. For example:
+
+[source,xml]
+.*Sample vdb.xml file*
+----
+<vdb name="{vdb-name}" version="1">
+    <model name="{model-name}" type="PHYSICAL">
+        <source name="AccountsDB" translator-name="oracle" connection-jndi-name="java:/oracleDS"/>
+        <metadata type="NATIVE"/>
+        <metadata type="DDL">
+          **DDL Here**
+        </metadata>
+    </model>
+</vdb>
+----
+
+NOTE: For the above model, _NATIVE_ importer is first used, then DDL importer used to add additional metadata to _NATIVE_ imported metadata.
+
+=== Custom
+
+See https://docs.jboss.org/author/display/TEIID/Custom+Metadata+Repository[Custom Metadata Repository]
+

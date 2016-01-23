@@ -1,0 +1,42 @@
+
+= OLAP Translator
+
+The OLAP Services translator, known by the type name _olap_, exposes stored procedures for calling analysis sevices backed by a OLAP server using MDX query language. This translator exposes a stored procedure, invokeMDX, that returns a result set containing tuple array values for a given MDX query. invokeMDX will commonly be used with the ARRAYTABLE table function to extract the results.
+
+Since the Cube metadata exposed by the OLAP servers and relational database metadata are so different, there is no single way to map the metadata from one to other. It is best to query OLAP system using its own native MDX language through. MDX queries my be defined statically or built dynamically in Teiid’s abstraction layers.
+
+== Usage
+
+The olap translator exposes one low level procedure for accessing olap services.
+
+== InvokeMDX Procedure
+
+`invokeMdx` returns a resultset of the tuples as array values.
+
+[source,sql]
+----
+Procedure invokeMdx(mdx in STRING, params VARIADIC OBJECT) returns table (tuple object)
+----
+
+The mdx parameter is a MDX query to be executed on the OLAP server.
+
+The results of the query will be returned such that each row on the row axis will be packed into an array value that will first contain each hierarchy member name on the row axis then each measure value from the column axis.
+
+The use of link:Data_Roles.adoc[Data Roles] should be considered to prevent arbitrary MDX from being submitted to the invokeMDX procedure.
+
+== Native Queries
+
+OLAP source procedures may be created using the teiid_rel:native-query extension - see link:Translators.adoc#18646290_Translators-native[Parameterizable Native Queries].
+
+The parameter value substitution directly inserts boolean, and number values, and treats all other values as string literals.
+
+The procedure will invoke the native-query similar to an invokeMdx call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality.
+
+== Direct Query Procedure
+
+The invokeMdx procedure is the direct query procedure for the OLAP translator. It may be disabled or have it’s name changed via the common direct query translator properties just like any other source. A call to the direct query procedure without any parameters will not attempt to parse the mdx query for parameterization. If parameters are used, the value substitution directly inserts boolean, and number values, and treats all other values as string literals.
+
+== JCA Resource Adapter
+
+The resource adapter for this translator provided through data source in JBoss AS, Refer to Admin Guide for "JDBC Data Sources" configuration section. Two sample -ds.xml files provided for accessing OLAP servers in teiid-examples section. One is Mondrian specific, when Mondrian server is deployed in the same JBoss AS as Teiid (mondrian-ds.xml). To access any other OLAP servers using XMLA interface, the data source for them can be created using them example template olap-xmla-ds.xml
+

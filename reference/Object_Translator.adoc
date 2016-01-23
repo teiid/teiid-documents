@@ -1,0 +1,99 @@
+
+= Object Translator
+
+The Object translator, known by the name of _map-cache_, is a bridge for reading and writing java objects from external sources (i.e., Map cache) and delivering them to the engine for processing.  And to assist in providing that bridge, the ﻿link:OBJECTTABLE.adoc[OBJECTTABLE] function can be used to transform complex java objects into rows and columns.   
+
+== Search Capabilities
+
+Supports a local cache that is of type Map and it uses _key_ searching on the map to find objects.
+
+=== Supported Capabilities
+
+The following are the connector capabilities when Key Searching is used:
+
+* SELECT command
+* CompareCriteria - only EQ
+* InCriteria
+* Insert, Update and Delete
+
+== Usage
+
+* Retrieve objects from a cache and transform into rows and columns.
+* Perform writes to the cache
+
+== Metadata
+
+=== Definition Requirements
+
+* The table for the root class, must have a primary key defined, which must map to an attribute in the class.
+* The table "name in source" (NIS) will be the name of the cache this table/class is stored
+* The primary object that represents the cached object should have a name in source of 'this'.  All other columns will have their name in source (which defaults to the column name) interpreted as the path to the column value from the primary object.
+* All columns that are not the primary key nor covered by a lucene index should be marked as SEARCHABLE 'Unsearchable'.
+* Attributes defined as repeatable (i.e., collections, arrays, etc.) or a container class, will be supported as 1-to-* relationships, and will have corresponding registered class (if they are to be searched).
+* A 1-to-* relationship class must have a foreign key to map to the root class/table, where the name in source for the foreign key is the name of the root class method to access those child objects. Note, this is the class method, not a reference in the google protobuf definition.
+* Dynamic VDBs using metadata import will automatically determine a phsyical table for each root object and will have each top level member represented as a column.
+
+=== Options for Defining
+
+The following is an example of a key search and a view that associated player names with their team. It uses a dynamic vdb to define the physical source and views using DDL.   It uses a TeamObject class, shown below, with a teamName field that is used as its cache key and a String list of players. 
+
+[source,java]
+----
+public class TeamObject {
+
+   private String teamName;
+   private List<String> players = new ArrayList<String>();
+
+   public String getTeamName() {
+      return teamName;
+   }
+
+   public void setTeamName(String teamName) {
+       this.teamName = teamName;
+   }
+
+   public List<String> getPlayers() {
+       return players;
+   }
+
+}
+----
+
+Note that by just using a dynamic vdb, the native import logic will provide you with a TeamObject physical table that can be queried. An equivalent Team table is shown here for demonstration purposes.
+
+[source,xml]
+----
+<vdb name="team" version="1">
+    <model name="Team" visible="false">
+        <source name="objsource" translator-name="map-cache" connection-jndi-name="java:cache-jndi"/>
+        <metadata type="DDL"><![CDATA[
+
+            CREATE FOREIGN TABLE Team (
+                TeamObject Object OPTIONS (NAMEINSOURCE 'this', SEARCHABLE 'Unsearchable'),
+                teamName varchar(255) PRIMARY KEY)
+              OPTIONS (NAMEINSOURCE 'teams');
+
+         ]]> </metadata>
+    </model>
+    <model name="TeamView" type="VIRTUAL">
+         <metadata type="DDL"><![CDATA[
+             CREATE VIEW Players (
+                  TeamName varchar(255) PRIMARY KEY,
+                  PlayerName varchar(255)
+             )
+             AS
+             SELECT t.TeamName, y.Name FROM Team as T,
+                   OBJECTTABLE('m.players' PASSING T.TeamObject as m COLUMNS Name string 'teiid_row') as y;
+
+        ]]> </metadata>
+    </model>
+
+</vdb>
+----
+
+Notice the use of the [OBJECTABLE] function to parse the object from Team and transform into rows and column. This is only for demonstration purposes, and is not required in order to parse the object into rows and columns.
+
+This metadata could also be defined by using the Teiid Designer Teiid Connection Importer.
+
+== JCA Resource Adapter
+

@@ -1,0 +1,14 @@
+
+= Alter View
+
+Usage:
+
+[source,sql]
+----
+ALTER VIEW name AS queryExpression
+----
+
+Syntax Rules:
+
+* The alter query expression may be prefixed with a cache hint for materialized view definitions. The hint will take effect the next time the materialized view table is loaded.
+

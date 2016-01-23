@@ -1,0 +1,114 @@
+
+= GROUP BY Clause
+
+The GROUP BY clause denotes that rows should be grouped according to the specified expression values. One row will be returned for each group, after optionally filtering those aggregate rows based on a HAVING clause.
+
+The general form of the GROUP BY is:
+
+[source,sql]
+----
+GROUP BY expression [,expression]*
+----
+
+[source,sql]
+----
+GROUP BY ROLLUP(expression [,expression]*)
+----
+
+Syntax Rules:
+
+* Column references in the group by cannot be made to alias names in the SELECT clause.
+
+* Expressions used in the group by must appear in the select clause.
+
+* Column references and expressions in the SELECT/HAVING/ORDER BY clauses that are not used in the group by clause must appear in aggregate functions.
+
+* If an aggregate function is used in the SELECT clause and no GROUP BY is specified, an implicit GROUP BY will be performed with the entire result set as a single group. In this case, every column in the SELECT must be an aggregate function as no other column value will be fixed across the entire group.
+
+* The group by columns must be of a comparable type.
+
+== Rollups
+
+Just like normal grouping, rollup processing logically occurs before the HAVING clause is processed. A ROLLUP of expressions will produce the same output as a regular grouping with the addition of aggregate values computed at higher aggregation levels. For N expressions in the ROLLUP, aggregates will be provided over (), (expr1), (expr1, expr2), etc. up to (expr1, … exprN-1) with the other grouping expressions in the output as null values. For example with the normal aggregation query
+
+[source,sql]
+----
+SELECT country, city, sum(amount) from sales group by country, city
+----
+
+returning:
+
+|===
+|country |city |sum(amount)
+
+|US
+|St. Louis
+|10000
+
+|US
+|Raleigh
+|150000
+
+|US
+|Denver
+
+|20000
+
+|UK
+|Birmingham
+|50000
+
+|UK
+|London
+|75000
+|===
+
+The rollup query
+
+[source,sql]
+----
+SELECT country, city, sum(amount) from sales group by rollup(country, city)
+----
+
+would return:
+
+|===
+|country |city |sum(amount)
+
+|US
+|St. Louis
+|10000
+
+|US
+|Raleigh
+|150000
+
+|US
+|Denver
+|20000
+
+|US
+|*<null>*
+|180000
+
+|UK
+|Birmingham
+|50000
+
+|UK
+|London
+|75000
+
+|UK
+|*<null>*
+|125000
+
+|*<null>*
+|*<null>*
+|305000
+|===
+
+NOTE: Not all sources support ROLLUPs and some optimizations compared to normal aggregate processing may be inhibited by the use of a ROLLUP.
+
+Teiid’s support for ROLLUP is more limited than the SQL specification. In future releases support for CUBE, grouping sets, and more than a single extended grouping element may be supported.
+

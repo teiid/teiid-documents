@@ -1,0 +1,184 @@
+
+= JSON Functions
+
+JSON functions provide functionality for working with http://www.json.org/[JSON] (JavaScript Object Notation) data.
+
+== JSONTOXML
+
+Returns an xml document from JSON.
+
+[source,sql]
+----
+JSONTOXML(rootElementName, json)
+----
+
+rootElementName is a string, json is in \{clob, blob}. Return value is xml.
+
+The appropriate UTF encoding (8, 16LE. 16BE, 32LE, 32BE) will be detected for JSON blobs. If another encoding is used, see the to_chars function.
+
+The result is always a well-formed XML document.
+
+The mapping to XML uses the following rules:
+
+* The current element name is initially the rootElementName, and becomes the object value name as the JSON structure is traversed.
+* All element names must be valid xml 1.1 names. Invalid names are fully escaped according to the SQLXML specification.
+* Each object or primitive value will be enclosed in an element with the current name.
+* Unless an array value is the root, it will not be enclosed in an additional element.
+* Null values will be represented by an empty element with the attribute xsi:nil="true"
+* Boolean and numerical value elements will have the attribute xsi:type set to boolean and decimal respectively.
+
+JSON:
+
+Sample JSON to XML for jsonToXml(’person’, x)
+
+[source,sql]
+----
+{"firstName" : "John" , "children" : [ "Randy", "Judy" ]}
+----
+
+XML:
+
+Sample JSON to XML for jsonToXml(’person’, x)
+
+[source,sql]
+----
+<?xml version="1.0" ?>
+   <person>
+      <firstName>John</firstName>
+      <children>Randy</children>
+      <children>Judy<children>
+   </person>
+----
+
+JSON:
+
+[source,sql]
+.*Sample JSON to XML for jsonToXml('person', x) with a root array*
+----
+[{"firstName" : "George" }, { "firstName" : "Jerry" }]
+----
+
+XML (Notice there is an extra "person" wrapping element to keep the XML well-formed):
+
+
+[source,sql]
+.*Sample JSON to XML for jsonToXml(’person’, x) with a root array*
+----
+<?xml version="1.0" ?>
+<person>
+  <person>
+    <firstName>George</firstName>
+  </person>
+  <person>
+    <firstName>Jerry</firstName>
+  </person>
+</person>
+----
+
+JSON:
+
+[source,sql]
+.*Sample JSON to XML for jsonToXml(’root’, x) with an invalid name*
+----
+{"/invalid" : "abc" }
+----
+
+XML:
+
+[source,sql]
+.*Sample JSON to XML for jsonToXml(’root’, x) with an invalid name*
+----
+<?xml version="1.0" ?>
+<root>
+  <_u002F_invalid>abc</_u002F_invalid>
+</root>
+----
+
+== JSONARRAY
+
+Returns a JSON array.
+
+[source,sql]
+----
+JSONARRAY(value...)
+----
+
+value is any object link:JSON_Functions.adoc#61505556_JSONFunctions-ConversiontoJSON[convertable to a JSON] value. Return value is a clob marked as being valid JSON.
+
+Null values will be included in the result as null literals.
+
+mixed value example
+
+[source,sql]
+----
+jsonArray('a"b', 1, null, false, {d'2010-11-21'})
+----
+
+Would return
+
+[source,sql]
+----
+["a\"b",1,null,false,"2010-11-21"]
+----
+
+== JSONOBJECT
+
+Returns a JSON object.
+
+[source,sql]
+----
+JSONARRAY(value [as name] ...)
+----
+
+value is any object link:JSON_Functions.adoc#61505556_JSONFunctions-ConversiontoJSON[convertable to a JSON] value. Return value is a clob marked as being valid JSON.
+
+Null values will be included in the result as null literals.
+
+If a name is not supplied and the expression is a column reference, the column name will be used otherwise exprN will be used where N is the 1-based index of the value in the JSONARRAY expression.
+
+mixed value example
+
+[source,sql]
+----
+jsonObject('a"b' as val, 1, null as "null")
+----
+
+Would return
+
+[source,sql]
+----
+{"val":"a\"b","expr2":1,"null":null}
+----
+
+== JSONPARSE
+
+Validates and returns a JSON result.
+
+[source,sql]
+----
+JSONPARSE(value, wellformed)
+----
+
+value is blob with an appropriate JSON binary encoding (UTF-8, UTF-16, or UTF-32) or a clob. wellformed is a boolean indicating that validation should be skipped. Return value is a clob marked as being valid JSON.
+
+A null for either input will return null.
+
+json parse of a simple literal value
+
+[source,sql]
+----
+jsonParse('"a"', true)
+----
+
+== Conversion to JSON
+
+A straight-forward specification compliant conversion is used for converting values into their appropriate JSON document form.
+
+* null values are included as the null literal.
+* values parsed as JSON or returned from a JSON construction function (JSONPARSE, JSONARRAY, JSONARRAY_AGG) will be directly appended into a JSON result.
+* boolean values are included as true/false literals
+* numeric values are included as their default string conversion - in some circumstances if not a number or +-infinity results are allowed, invalid json may be obtained.
+* string values are included in their escaped/quoted form.
+* binary values are not implicitly convertable to JSON values and require a specific prior to inclusion in JSON.
+* all other values will be included as their string conversion in the appropriate escaped/quoted form.
+

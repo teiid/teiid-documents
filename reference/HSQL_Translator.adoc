@@ -1,0 +1,7 @@
+
+= HSQL Translator (hsql)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The HSQL Translator, known by the type name *_hsql_*, is for use with HSQLDB 1.7 or later.
+

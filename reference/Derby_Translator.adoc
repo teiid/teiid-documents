@@ -1,0 +1,7 @@
+
+= Derby Translator (derby)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The Derby Translator, known by the type name *_derby_*, is for use with Derby 10.1 or later.
+

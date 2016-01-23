@@ -1,0 +1,38 @@
+
+= Coherence Cache Translator
+
+The Coherence Cache translator, known by the name of _coherence_, is a bridge for reading and writing java objects to/from an Coherence Cache. This translator extends the link:Object_Translator.adoc[Object Translator] and uses it for the core processing of reading and writing objects. The Coherence Cache Translator is written so that it can control how the cache is searched and any capabilities that are needed to control that behavior.
+
+== Searching Capabilities
+
+Current searching capabilities that is performed by the cache is Key searching. Future enhancements are being targeted to work out the details for how the indexing can be configured so that searching on any indexed column is possible.
+
+== Installation
+
+The coherence translator is not built as part of core Teiid build. Its being stored in a separate https://github.com/teiid/teiid-coherence/tree/master/translator-coherence[teiid-coherence] github repository due to the coherence jar dependency is not available in a public maven repo. See the https://github.com/teiid/teiid-coherence/blob/master/README.md[README.md] for full details on building and installation.
+
+=== Execution Properties
+
+None applicable at this time.
+
+=== Supported Capabilities
+
+The following are the connector capabilities when Key Searching is used:
+
+* SELECT command
+* CompareCriteria - only EQ
+* InCriteria
+* Insert, Update, Delete
+
+== Usage
+
+* Retrieve objects from a cache and transform into rows and columns.
+* Perform writes to the cache
+
+== Metadata
+
+See the link:Object_Translator.adoc#55477048_ObjectTranslator-Metadata[Object Translator#Metadata] for details on defining the metadata.
+
+=== JCA Resource Adapter
+
+See the Coherence Datasources resource adapter for this translator.

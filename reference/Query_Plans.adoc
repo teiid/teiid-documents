@@ -1,0 +1,390 @@
+
+= Query Plans
+
+When integrating information using a federated query planner it is useful to view the query plans to better understand how information is being accessed and processed, and to troubleshoot problems.
+
+A query plan (also known as an execution or processing plan) is a set of instructions created by a query engine for executing a command submitted by a user or application. The purpose of the query plan is to execute the user’s query in as efficient a way as possible.
+
+== Getting a Query Plan
+
+You can get a query plan any time you execute a command. The SQL options available are as follows:
+
+*SET SHOWPLAN [ON|DEBUG]*- Returns the processing plan or the plan and the full planner link:Query_Planner.html[Debug Log]. See also the https://docs.jboss.org/author/display/TEIID/SET+Statement[SET Statement].
+
+With the above options, the query plan is available from the Statement object by casting to the `org.teiid.jdbc.TeiidStatement` interface or by using the "SHOW PLAN" https://docs.jboss.org/author/display/TEIID/SHOW+Statement[statement].
+
+Retrieving a Query Plan
+
+[source,sql]
+----
+statement.execute("set showplan on");
+ResultSet rs = statement.executeQuery("select ...");
+TeiidStatement tstatement = statement.unwrap(TeiidStatement.class);
+PlanNode queryPlan = tstatement.getPlanDescription();
+System.out.println(queryPlan);
+----
+
+The query plan is made available automatically in several of Teiid’s tools.
+
+== Analyzing a Query Plan
+
+Once a query plan has been obtained you will most commonly be looking for:
+
+* Source pushdown – what parts of the query that got pushed to each source
+** Ensure that any predicates especially against indexes are pushed
+
+* Joins - as federated joins can be quite expensive
+** Join ordering - typically influenced by costing
+** Join criteria type mismatches.
+** Join algorithm used - merge, enhanced merge, nested loop, etc.
+
+* Presence of federated optimizations, such as dependent joins.
+
+* Ensure hints have the desired affects - see https://docs.jboss.org/author/display/TEIID/Hints+and+Options[Hints and Options], hints in the link:FROM_Clause.adoc[FROM Clause], link:Subquery_Optimization.html[Subquery Optimization], and link:Federated_Optimizations.adoc[Federated Optimizations].
+
+All of the above information can be determined from the processing plan. You will typically be interested in analyzing the textual form of the final processing plan. To understand why particular decisions are made for debugging or support you will want to obtain the full debug log which will contain the intermediate planning steps as well as annotations as to why specific pushdown decisions are made.
+
+A query plan consists of a set of nodes organized in a tree structure. If you are executing a procedure or generating an XML document from an XML Document Model, the overall query plan will contain additional information related the surrounding procedural execution.
+
+In a procedural context the ordering of child nodes implies the order of execution. In most other situation, child nodes may be executed in any order even in parallel. Only in specific optimizations, such as dependent join, will the children of a join execute serially.
+
+== Relational Query Plans
+
+Relational plans represent the processing plan that is composed of nodes representing building blocks of logical relational operations. Relational processing plans differ from logical debug relational plans in that they will contain additional operations and execution specifics that were chosen by the optimizer.
+
+The nodes for a relational query plan are:
+
+* Access - Access a source. A source query is sent to the connection factory associated with the source. [For a dependent join, this node is called Dependent Access.]
+* Dependent Procedure Access - Access a stored procedure on a source using multiple sets of input values.
+* Batched Update - Processes a set of updates as a batch.
+* Project - Defines the columns returned from the node. This does not alter the number of records returned.
+* Project Into - Like a normal project, but outputs rows into a target table.
+* Insert Plan Execution - Similar to a project into, but executes a plan rather than a source query. Typically created when executing an insert into view with a query expression.
+* Window Function Project - Like a normal project, but includes window functions.
+* Select - Select is a criteria evaluation filter node (WHERE / HAVING).
+* Join - Defines the join type, join criteria, and join strategy (merge or nested loop).
+* Union All - There are no properties for this node, it just passes rows through from it’s children. Depending upon other factors, such as if there is a transaction or the source query concurrency allowed, not all of the union children will execute in parallel.
+* Sort - Defines the columns to sort on, the sort direction for each column, and whether to remove duplicates or not.
+* Dup Remove - Removes duplicate rows. The processing uses a tree structure to detect duplicates so that results will effectively stream at the cost of IO operations.
+* Grouping - Groups sets of rows into groups and evaluates aggregate functions.
+* Null - A node that produces no rows. Usually replaces a Select node where the criteria is always false (and whatever tree is underneath). There are no properties for this node.
+* Plan Execution - Executes another sub plan. Typically the sub plan will be a non-relational plan.
+* Dependent Procedure Execution - Executes a sub plan using multiple sets of input values.
+* Limit - Returns a specified number of rows, then stops processing. Also processes an offset if present.
+* XML Table - Evaluates XMLTABLE. The debug plan will contain more information about the XQuery/XPath with regards to their optimization - see the XQuery section below or link:XQuery_Optimization.adoc[XQuery Optimization].
+* Text Table - Evaluates TEXTTABLE
+* Array Table - Evaluates ARRAYTABLE
+* Object Table - Evaluates OBJECTTABLE
+
+=== Node Statistics
+
+Every node has a set of statistics that are output. These can be used to determine the amount of data flowing through the node. Before execution a processor plan will not contain node statistics. Also the statistics are updated as the plan is processed, so typically you’ll want the final statistics after all rows have been processed by the client.
+
+|===
+|Statistic |Description |Units
+
+|Node Output Rows
+|Number of records output from the node
+|count
+
+|Node Next Batch Process Time
+|Time processing in this node only
+|millisec
+
+|Node Cumulative Next Batch Process Time
+|Time processing in this node + child nodes
+|millisec
+
+|Node Cumulative Process Time
+|Elapsed time from beginning of processing to end
+|millisec
+
+|Node Next Batch Calls
+|Number of times a node was called for processing
+|count
+
+|Node Blocks
+|Number of times a blocked exception was thrown by this node or a child
+|count
+|===
+
+In addition to node statistics, some nodes display cost estimates computed at the node.
+
+|===
+|Cost Estimates |Description |Units
+
+|Estimated Node Cardinality
+|Estimated number of records that will be output from the node; -1 if unknown
+|count
+|===
+
+The root node will display additional information.
+
+|===
+|Top level Statistics |Description |Units
+
+|Data Bytes Sent
+|The size of the serialized data result (row and lob values) sent to the client
+|bytes
+|===
+
+=== Reading a Processor Plan
+
+The query processor plan can be obtained in a plain text or xml format. The plan text format is typically easier to read, while the xml format is easier to process by tooling. When possible tooling should be used to examine the plans as the tree structures can be deeply nested.
+
+Data flows from the leafs of the tree to the root. Sub plans for procedure execution can be shown inline, and are differentiated by different indentation. Given a user query of "SELECT pm1.g1.e1, pm1.g2.e2, pm1.g3.e3 from pm1.g1 inner join (pm1.g2 left outer join pm1.g3 on pm1.g2.e1=pm1.g3.e1) on pm1.g1.e1=pm1.g3.e1" the text for a processor plan that does not push down the joins would look like:
+
+[source,xml]
+----
+ProjectNode
+  + Output Columns:
+    0: e1 (string)
+    1: e2 (integer)
+    2: e3 (boolean)
+  + Cost Estimates:Estimated Node Cardinality: -1.0
+  + Child 0:
+    JoinNode
+      + Output Columns:
+        0: e1 (string)
+        1: e2 (integer)
+        2: e3 (boolean)
+      + Cost Estimates:Estimated Node Cardinality: -1.0
+      + Child 0:
+        JoinNode
+          + Output Columns:
+            0: e1 (string)
+            1: e1 (string)
+            2: e3 (boolean)
+          + Cost Estimates:Estimated Node Cardinality: -1.0
+          + Child 0:
+            AccessNode
+              + Output Columns:e1 (string)
+              + Cost Estimates:Estimated Node Cardinality: -1.0
+              + Query:SELECT g_0.e1 AS c_0 FROM pm1.g1 AS g_0 ORDER BY c_0
+              + Model Name:pm1
+          + Child 1:
+            AccessNode
+              + Output Columns:
+                0: e1 (string)
+                1: e3 (boolean)
+              + Cost Estimates:Estimated Node Cardinality: -1.0
+              + Query:SELECT g_0.e1 AS c_0, g_0.e3 AS c_1 FROM pm1.g3 AS g_0 ORDER BY c_0
+              + Model Name:pm1
+          + Join Strategy:MERGE JOIN (ALREADY_SORTED/ALREADY_SORTED)
+          + Join Type:INNER JOIN
+          + Join Criteria:pm1.g1.e1=pm1.g3.e1
+      + Child 1:
+        AccessNode
+          + Output Columns:
+            0: e1 (string)
+            1: e2 (integer)
+          + Cost Estimates:Estimated Node Cardinality: -1.0
+          + Query:SELECT g_0.e1 AS c_0, g_0.e2 AS c_1 FROM pm1.g2 AS g_0 ORDER BY c_0
+          + Model Name:pm1
+      + Join Strategy:ENHANCED SORT JOIN (SORT/ALREADY_SORTED)
+      + Join Type:INNER JOIN
+      + Join Criteria:pm1.g3.e1=pm1.g2.e1
+  + Select Columns:
+    0: pm1.g1.e1
+    1: pm1.g2.e2
+    2: pm1.g3.e3
+----
+
+Note that the nested join node is using a merge join and expects the source queries from each side to produce the expected ordering for the join. The parent join is an enhanced sort join which can delay the decision to perform sorting based upon the incoming rows. Note that the outer join from the user query has been modified to an inner join since none of the null inner values can be present in the query result.
+
+The same plan in xml form looks like:
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<node name="ProjectNode">
+    <property name="Output Columns">
+        <value>e1 (string)</value>
+        <value>e2 (integer)</value>
+        <value>e3 (boolean)</value>
+    </property>
+    <property name="Cost Estimates">
+        <value>Estimated Node Cardinality: -1.0</value>
+    </property>
+    <property name="Child 0">
+        <node name="JoinNode">
+            <property name="Output Columns">
+                <value>e1 (string)</value>
+                <value>e2 (integer)</value>
+                <value>e3 (boolean)</value>
+            </property>
+            <property name="Cost Estimates">
+                <value>Estimated Node Cardinality: -1.0</value>
+            </property>
+            <property name="Child 0">
+                <node name="JoinNode">
+                    <property name="Output Columns">
+                        <value>e1 (string)</value>
+                        <value>e1 (string)</value>
+                        <value>e3 (boolean)</value>
+                    </property>
+                    <property name="Cost Estimates">
+                        <value>Estimated Node Cardinality: -1.0</value>
+                    </property>
+                    <property name="Child 0">
+                        <node name="AccessNode">
+                            <property name="Output Columns">
+                                <value>e1 (string)</value>
+                            </property>
+                            <property name="Cost Estimates">
+                                <value>Estimated Node Cardinality: -1.0</value>
+                            </property>
+                            <property name="Query">
+                                <value>SELECT g_0.e1 AS c_0 FROM pm1.g1 AS g_0 ORDER BY c_0</value>
+                            </property>
+                            <property name="Model Name">
+                                <value>pm1</value>
+                            </property>
+                        </node>
+                    </property>
+                    <property name="Child 1">
+                        <node name="AccessNode">
+                            <property name="Output Columns">
+                                <value>e1 (string)</value>
+                                <value>e3 (boolean)</value>
+                            </property>
+                            <property name="Cost Estimates">
+                                <value>Estimated Node Cardinality: -1.0</value>
+                            </property>
+                            <property name="Query">
+                                <value>SELECT g_0.e1 AS c_0, g_0.e3 AS c_1 FROM pm1.g3 AS g_0
+                                    ORDER BY c_0</value>
+                            </property>
+                            <property name="Model Name">
+                                <value>pm1</value>
+                            </property>
+                        </node>
+                    </property>
+                    <property name="Join Strategy">
+                        <value>MERGE JOIN (ALREADY_SORTED/ALREADY_SORTED)</value>
+                    </property>
+                    <property name="Join Type">
+                        <value>INNER JOIN</value>
+                    </property>
+                    <property name="Join Criteria">
+                        <value>pm1.g1.e1=pm1.g3.e1</value>
+                    </property>
+                </node>
+            </property>
+            <property name="Child 1">
+                <node name="AccessNode">
+                    <property name="Output Columns">
+                        <value>e1 (string)</value>
+                        <value>e2 (integer)</value>
+                    </property>
+                    <property name="Cost Estimates">
+                        <value>Estimated Node Cardinality: -1.0</value>
+                    </property>
+                    <property name="Query">
+                        <value>SELECT g_0.e1 AS c_0, g_0.e2 AS c_1 FROM pm1.g2 AS g_0
+                            ORDER BY c_0</value>
+                    </property>
+                    <property name="Model Name">
+                        <value>pm1</value>
+                    </property>
+                </node>
+            </property>
+            <property name="Join Strategy">
+                <value>ENHANCED SORT JOIN (SORT/ALREADY_SORTED)</value>
+            </property>
+            <property name="Join Type">
+                <value>INNER JOIN</value>
+            </property>
+            <property name="Join Criteria">
+                <value>pm1.g3.e1=pm1.g2.e1</value>
+            </property>
+        </node>
+    </property>
+    <property name="Select Columns">
+        <value>pm1.g1.e1</value>
+        <value>pm1.g2.e2</value>
+        <value>pm1.g3.e3</value>
+    </property>
+</node>
+----
+
+Note that the same information appears in each of the plan forms. In some cases it can actually be easier to follow the simplified format of the debug plan final processor plan. From the link:Query_Planner.adoc[Debug Log] the same plan as above would appear as:
+
+[source,xml]
+----
+OPTIMIZATION COMPLETE:
+PROCESSOR PLAN:
+ProjectNode(0) output=[pm1.g1.e1, pm1.g2.e2, pm1.g3.e3] [pm1.g1.e1, pm1.g2.e2, pm1.g3.e3]
+  JoinNode(1) [ENHANCED SORT JOIN (SORT/ALREADY_SORTED)] [INNER JOIN] criteria=[pm1.g3.e1=pm1.g2.e1] output=[pm1.g1.e1, pm1.g2.e2, pm1.g3.e3]
+    JoinNode(2) [MERGE JOIN (ALREADY_SORTED/ALREADY_SORTED)] [INNER JOIN] criteria=[pm1.g1.e1=pm1.g3.e1] output=[pm1.g3.e1, pm1.g1.e1, pm1.g3.e3]
+      AccessNode(3) output=[pm1.g1.e1] SELECT g_0.e1 AS c_0 FROM pm1.g1 AS g_0 ORDER BY c_0
+      AccessNode(4) output=[pm1.g3.e1, pm1.g3.e3] SELECT g_0.e1 AS c_0, g_0.e3 AS c_1 FROM pm1.g3 AS g_0 ORDER BY c_0
+    AccessNode(5) output=[pm1.g2.e1, pm1.g2.e2] SELECT g_0.e1 AS c_0, g_0.e2 AS c_1 FROM pm1.g2 AS g_0 ORDER BY c_0
+----
+
+=== Node Properties
+
+==== Common
+
+* Output Columns - what columns make up the tuples returned by this node
+* Data Bytes Sent - how many data byte, not including messaging overhead, were sent by this query
+* Planning Time - the amount of time in milliseconds spent planning the query
+
+==== Relational
+
+* Relational Node ID - matches the node ids seen in the debug log Node(id)
+* Criteria - the boolean expression used for filtering
+* Select Columns - the columns that define the projection
+* Grouping Columns - the columns used for grouping
+* Grouping Mapping - shows the mapping of aggregate and grouping column internal names to their expression form
+* Query - the source query
+* Model Name - the model name
+* Sharing ID - nodes sharing the same source results will have the same sharing id
+* Dependent Join - if a dependent join is being used
+* Join Strategy - the join strategy (Nested Loop, Sort Merge, Enhanced Sort, etc.)
+* Join Type - the join type (Left Outer Join, Inner Join, Cross Join)
+* Join Criteria - the join predicates
+* Execution Plan - the nested execution plan
+* Into Target - the insertion target
+* Sort Columns - the columns for sorting
+* Sort Mode - if the sort performs another function as well, such as distinct removal
+* Rollup - if the group by has the rollup option
+* Statistics - the processing statistics
+* Cost Estimates - the cost/cardinality estimates including dependent join cost estimates
+* Row Offset - the row offset expression
+* Row Limit - the row limit expression
+* With - the with clause
+* Window Functions - the window functions being computed
+* Table Function - the table function (XMLTABLE, OBJECTTABLE, TEXTTABLE, etc.)
+
+==== XML
+
+* Message
+* Tag
+* Namespace
+* Data Column
+* Namespace Declarations
+* Optional Flag
+* Default Value
+* Recursion Direction
+* Bindings
+* Is Staging Flag
+* Source In Memory Flag
+* Condition
+* Default Program
+* Encoding
+* Formatted Flag
+
+==== Procedure
+
+* Expression
+* Result Set
+* Program
+* Variable
+* Then
+* Else
+
+== Other Plans
+
+XML document model queries and procedure execution (including instead of triggers) use intermediate and final plan forms that include relational plans. Generally the structure of the xml/procedure plans will closely match their logical forms. It’s the nested relational plans that will be of interest when analyzing performance issues.
+

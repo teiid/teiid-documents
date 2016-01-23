@@ -1,0 +1,186 @@
+
+= Date_Time Functions
+
+Date and time functions return or operate on dates, times, or timestamps.
+
+Parse and format Date/Time functions use the convention established within the java.text.SimpleDateFormat class to define the formats you can use with these functions. You can learn more about how this class defines formats by visiting the http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html[Javadocs for SimpleDateFormat].
+
+|===
+|Function |Definition |Datatype Constraint
+
+|CURDATE()
+|Return current date
+|returns date
+
+|CURTIME()
+|Return current time
+|returns time
+
+|NOW()
+|Return current timestamp (date and time)
+|returns timestamp
+
+|DAYNAME(x)
+|Return name of day in the default locale
+|x in \{date, timestamp}, returns string
+
+|DAYOFMONTH(x)
+|Return day of month
+|x in \{date, timestamp}, returns integer
+
+|DAYOFWEEK(x)
+|Return day of week (Sunday=1, Saturday=7)
+|x in \{date, timestamp}, returns integer
+
+|DAYOFYEAR(x)
+|Return day number in year
+|x in \{date, timestamp}, returns integer
+
+|EXTRACT(YEAR\|MONTH\|DAY\|HOUR\|MINUTE\|SECOND FROM x)
+|Return the given field value from the date value x. Produces the same result as the assoceated YEAR, MONTH, DAYOFMONTH, HOUR, MINUTE, SECOND functions.The SQL specification also allows for TIMEZONE_HOUR and TIMEZONE_MINUTE as extraction targets. In Teiid all date values are in the timezone of the server.
+|x in \{date, time, timestamp}, returns integer
+
+|FORMATDATE(x, y)
+|Format date x using format y
+|x is date, y is string, returns string
+
+|FORMATTIME(x, y)
+|Format time x using format y
+|x is time, y is string, returns string
+
+|FORMATTIMESTAMP(x, y)
+|Format timestamp x using format y
+|x is timestamp, y is string, returns string
+
+|FROM_UNIXTIME (unix_timestamp)
+|Return the Unix timestamp (in seconds) as a Timestamp value
+|Unix timestamp (in seconds)
+
+|HOUR(x)
+|Return hour (in military 24-hour format)
+|x in \{time, timestamp}, returns integer
+
+|MINUTE(x)
+|Return minute
+|x in \{time, timestamp}, returns integer
+
+|MODIFYTIMEZONE (timestamp, startTimeZone, endTimeZone)
+|Returns a timestamp based upon the incoming timestamp adjusted for the differential between the start and end time zones.  i.e. if the server is in GMT-6, then modifytimezone(\{ts '2006-01-10 04:00:00.0'},'GMT-7', 'GMT-8') will return the timestamp \{ts '2006-01-10 05:00:00.0'} as read in GMT-6.  The value has been adjusted 1 hour ahead to compensate for the difference between GMT-7 and GMT-8.
+|startTimeZone and endTimeZone are strings, returns a timestamp
+
+|MODIFYTIMEZONE (timestamp, endTimeZone)
+|Return a timestamp in the same manner as modifytimezone(timestamp, startTimeZone, endTimeZone), but will assume that the startTimeZone is the same as the server process.
+|Timestamp is a timestamp; endTimeZone is a string, returns a timestamp
+
+|MONTH(x)
+|Return month
+|x in \{date, timestamp}, returns integer
+
+|MONTHNAME(x)
+|Return name of month in the default locale
+|x in \{date, timestamp}, returns string
+
+|PARSEDATE(x, y)
+|Parse date from x using format y
+|x, y in \{string}, returns date
+
+|PARSETIME(x, y)
+|Parse time from x using format y
+|x, y in \{string}, returns time
+
+|PARSETIMESTAMP(x,y)
+|Parse timestamp from x using format y
+|x, y in \{string}, returns timestamp
+
+|QUARTER(x)
+|Return quarter
+|x in \{date, timestamp}, returns integer
+
+|SECOND(x)
+|Return seconds
+|x in \{time, timestamp}, returns integer
+
+|TIMESTAMPCREATE(date, time)
+|Create a timestamp from a date and time
+|date in \{date}, time in \{time}, returns timestamp
+
+|WEEK(x)
+|Return week in year 1-53, see also https://docs.jboss.org/author/display/TEIID/System+Properties[System Properties] for customization
+|x in \{date, timestamp}, returns integer
+
+|YEAR(x)
+|Return four-digit year
+|x in \{date, timestamp}, returns integer
+|===
+
+== Timestampadd/Timestampdiff
+
+=== Timestampadd
+
+Add a specified interval amount to the timestamp.
+
+[source,sql]
+----
+TIMESTAMPADD(interval, count, timestamp)
+----
+
+count is an integer and the return value is a timestamp. Intervals can be one of the following keywords:# SQL_TSI_FRAC_SECOND - fractional seconds (billionths of a second)
+
+1.  SQL_TSI_SECOND - seconds
+2.  SQL_TSI_MINUTE - minutes
+3.  SQL_TSI_HOUR - hours
+4.  SQL_TSI_DAY - days
+5.  SQL_TSI_WEEK - weeks using Sunday as the first day
+6.  SQL_TSI_MONTH - months
+7.  SQL_TSI_QUARTER - quarters (3 months) where the first quarter is months 1-3, etc.
+8.  SQL_TSI_YEAR - years
+
+The full interval amount based upon calendar fields will be added. For example adding 1 QUARTER will move the timestamp up by three full months and not just to the start of the next calendar quarter.
+
+=== Timestampdiff
+
+Calculates the number of date part intervals crossed between the two timestamps.
+
+[source,sql]
+----
+TIMESTAMPDIFF(interval, startTime, endTime)
+----
+
+Interval can be one of the same keywords as used by timestampadd; startTime, endTime are timestamps and the return value is a long.
+
+If (endTime > startTime), a non-negative number will be returned. If (endTime < startTime), a non-positive number will be returned. The date part difference difference is counted regardless of how close the timestamps are. For example, '2000-01-02 00:00:00.0' is still considered 1 hour ahead of `2000-01-01 23:59:59.999999'.
+
+*Compatibility Issues*
+
+* Timestampdiff typically returns an integer, however Teiid’s version returns a long. You may receive an exception if you expect a value out
+of the integer range from a pushed down timestampdiff.
+* Teiid’s implementation of timestamp diff in 8.2 and prior versions returned values based upon the number of whole canonical interval approximations (365 days in a year, 91 days in a quarter, 30 days in a month, etc.) crossed. For example the difference in months between 2013-03-24 and 2013-04-01 was 0, but based upon the date parts crossed is 1. See https://docs.jboss.org/author/display/TEIID/System+Properties[System Properties] for backwards compatibility.
+
+== Parsing Date Datatypes from Strings
+
+Teiid does not implicitly convert strings that contain dates presented in different formats, such as '19970101' and '31/1/1996' to date-related datatypes. You can, however, use the parseDate, parseTime, and parseTimestamp functions, described in the next section, to explicitly convert strings with a different format to the appropriate datatype. These functions use the convention established within the java.text.SimpleDateFormat class to define the formats you can use with these functions. You can learn more about how this class defines date and time string formats by visiting the http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html[Javadocs for SimpleDateFormat]. Note that the format strings will be locale specific to your Java default locale.
+
+For example, you could use these function calls, with the formatting string that adheres to the java.text.SimpleDateFormat convention, to parse strings and return the datatype you need:
+
+|===
+|String |Function Call To Parse String
+
+|'1997010'
+|parseDate(myDateString, 'yyyyMMdd')
+
+|'31/1/1996'
+|parseDate(myDateString, 'dd''/''MM''/''yyyy')
+
+|'22:08:56 CST'
+|parseTime (myTime, 'HH:mm:ss z')
+
+|'03.24.2003 at 06:14:32'
+|parseTimestamp(myTimestamp, 'MM.dd.yyyy''at''hh:mm:ss')
+|===
+
+== Specifying Time Zones
+
+Time zones can be specified in several formats. Common abbreviations such as EST for "Eastern Standard Time" are allowed but discouraged, as they can be ambiguous. Unambiguous time zones are defined in the form continent or ocean/largest city. For example, America/New_York, America/Buenos_Aires, or Europe/London. Additionally, you can specify a custom time zone by GMT offset: GMT[+/-]HH:MM.
+
+For example: GMT-05:00
+

@@ -1,0 +1,47 @@
+
+= Subqueries
+
+A subquery is a SQL query embedded within another SQL query. The query containing the subquery is the outer query.
+
+Supported subquery types:
+
+* Scalar subquery - a subquery that returns only a single column with a single value. Scalar subqueries are a type of expression and can be used where single valued expressions are expected.
+* Correlated subquery - a subquery that contains a column reference to from the outer query.
+* Uncorrelated subquery - a subquery that contains no references to the outer sub-query.
+
+== Inline views
+
+Subqueries in the FROM clause of the outer query (also known as "inline views") can return any number of rows and columns. This type of subquery must always be given an alias. An inline view is nearly identical to a traditional view. See also link:WITH_Clause.adoc[WITH Clause].
+
+[source,sql]
+.*Example Subquery in FROM Clause (Inline View)*
+----
+SELECT a FROM (SELECT Y.b, Y.c FROM Y WHERE Y.d = '3') AS X WHERE a = X.c AND b = X.b
+----
+
+== Subqueries can appear anywhere where an expression or criteria is expected.
+
+Subqueries are supported in quantified criteria, the EXISTS predicate, the IN predicate, and as link:Expressions.adoc#18646218_Expressions-ScalarSubqueries[Scalar Subqueries].
+
+[source,sql]
+.*Example Subquery in WHERE Using EXISTS*
+----
+SELECT a FROM X WHERE EXISTS (SELECT 1 FROM Y WHERE c=X.a)
+----
+
+[source,sql]
+.*Example Quantified Comparison Subqueries*
+----
+SELECT a FROM X WHERE a >= ANY (SELECT b FROM Y WHERE c=3) 
+SELECT a FROM X WHERE a < SOME (SELECT b FROM Y WHERE c=4) 
+SELECT a FROM X WHERE a = ALL (SELECT b FROM Y WHERE c=2)
+----
+
+[source,sql]
+.*Example IN Subquery*
+----
+SELECT a FROM X WHERE a IN (SELECT b FROM Y WHERE c=3)
+----
+
+See also link:Subquery_Optimization.adoc[Subquery Optimization].
+

@@ -1,0 +1,7 @@
+
+= Vertica Translator (vertica)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The Vertica Translator, known by the type name *_vertica_*, is for use with Vertica 6 or later.
+

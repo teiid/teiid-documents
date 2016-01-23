@@ -1,0 +1,14 @@
+
+= PostgreSQL Translator (postgresql)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The PostgreSQL Translator, known by the type name *_postgresql_*, is for use with 8.0 or later clients and 7.1 or later server.
+
+== Execution Properties
+
+PostgreSQL specific execution properties:
+
+* _PostGisVersion_- indicate the PostGIS version in use. Defaults to 0 meaning PostGIS is not installed. Will be set automatically if the database version is not set.
+* _ProjSupported_- boolean indicating if Proj is support for PostGis. Will be set automatically if the database version is not set.
+

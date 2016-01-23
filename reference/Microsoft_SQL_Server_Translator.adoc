@@ -1,0 +1,13 @@
+
+= Microsoft SQL Server Translator (sqlserver)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The Microsoft SQL Server Translator, known by the type name *_sqlserver_*, is for use with SQL Server 2000 or later. A SQL Server JDBC driver version 2.0 or later (or compatible e.g. JTDS 1.2 or later) should be used.  The SQL Server DatabaseVersion property may be set to 2000, 2005, 2008, or 2012, but otherwise expects a standard version number - e.g. "10.0".
+
+== Execution Properties
+
+SQL Server specific execution properties:
+
+* _JtdsDriver_- indicates that the open source JTDS driver is being used. Defaults to false.
+

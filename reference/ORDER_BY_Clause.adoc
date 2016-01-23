@@ -1,0 +1,23 @@
+
+= ORDER BY Clause
+
+The ORDER BY clause specifies how records should be sorted. The options are ASC (ascending) and DESC (descending).
+
+Usage:
+
+[source,sql]
+----
+ORDER BY expression [ASC|DESC] [NULLS (FIRST|LAST)], ...
+----
+
+Syntax Rules:
+
+* Sort columns may be specified positionally by a 1-based positional integer, by SELECT clause alias name, by SELECT clause expression, or by an unrelated expression.
+* Column references may appear in the SELECT clause as the expression for an aliased column or may reference columns from tables in the FROM clause. If the column reference is not in the SELECT clause the query must not be a set operation, specify SELECT DISTINCT, or contain a GROUP BY clause.
+* Unrelated expressions, expressions not appearing as an aliased expression in the select clause, are allowed in the order by clause of a non-set QUERY. The columns referenced in the expression must come from the from clause table references. The column references cannot be to alias names or positional.
+* The ORDER BY columns must be of a comparable type.
+* If an ORDER BY is used in an inline view or view definition without a limit clause, it will be removed by the Teiid optimizer.
+* If NULLS FIRST/LAST is specified, then nulls are guaranteed to be sorted either first or last. If the null ordering is not specified, then results will typically be sorted with nulls as low values, which is Teiid’s internal default sorting behavior. However not all sources return results with nulss sorted as low values by default, and Teiid may return results with different null orderings.
+
+WARNING: The use of positional ordering is no longer supported by the ANSI SQL standard and is a deprecated feature in Teiid. It is preferable to use alias names in the order by clause.
+

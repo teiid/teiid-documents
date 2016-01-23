@@ -1,0 +1,28 @@
+
+= MySQL Translator (mysql/mysql5)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+MySQL/MariaDB translation is supported by 2 translators.
+
+== mysql
+
+The Mysql translator, known by the type name *_mysql_*, is for use with MySQL version 4.x.
+
+== mysql5
+
+The Mysql5 translator, known by the type name *_mysql5_*, is for use with MySQL version 5 or later.
+
+Also supports compatible MySQL derivatives including MariaDB.
+
+== Usage
+
+The MySQL Translators expect the database or session to be using ANSI mode. If the database is not using ANSI mode, an initialization query should be used on the pool to set ANSI mode:
+
+[source,sql]
+----
+set SESSION sql_mode = 'ANSI'
+----
+
+If you may deal with null timestamp values, then set the connection property zeroDateTimeBehavior=convertToNull. Otherwise you’ll get conversion errors in Teiid that `0000-00-00 00:00:00' cannot be converted to a timestamp.
+

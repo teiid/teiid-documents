@@ -1,0 +1,56 @@
+
+= Apache SOLR Translator
+
+The Apache SOLR Translator, known by the type name _solr_, exposes querying functionality to https://docs.jboss.org/author/display/TEIID/Solr+Data+Sources[Solr Data Sources]. Apache Solr is a search engine built on top of Apache Lucene for indexing and searching. This translator provides an easy way connect to existing or a new Solr search system, and provides way to add documents/records from directly from user or from other sources that are integrated with Teiid. It also gives ability to read/update/delete existing documents from Solr Search system.
+
+== Properties
+
+The Solr Translator currently has no import or execution properties. It does not define any extension metadata.
+
+== Intended Usecases
+
+The usage Solr translator can be highly dependent on user’s usecase(s). Here are some common scenarios.
+
+* Solr source can be used in Teiid, to continually add/update the documents in the search system from other sources automatically.
+* If the search fields are stored in Solr system, this can be used as very low latency data retrieval for serving high traffic applications.
+* Solr translator can be used as a fast full text search. The Solr document can contain only the index information, then the results as an inverted index to gather target full documents from the other enterprise sources such as RDBMS, Web Service, SalesForce etc, all in single client call transparently with out any coding.
+
+== Usage
+
+Solr search system provides searches based on indexed search fields. Each Solr instance is typically configured with a single core that defines multiple fields with different type information. Teiid metadata querying mechanism is equipped with "Luke" based queries, that at deploy time of the VDB use this mechanism to retrieve all the stored/indexed fields. Currently Teiid does NOT support dynamic fields and non-stored fields. Based on retrieved fields, Solr translator exposes a single table that contains all the fields. If a field is multi-value based, it’s type is represented as Array type.
+
+Once this table is exposed through VDB in a Teiid database, and https://docs.jboss.org/author/display/TEIID/Solr+Data+Sources[Solr Data Sources] is created, the user can issue "INSERT/UPDATE/DELETE" based SQL calls to insert/update/delete documents into the Solr, and issue "SELECT" based calls to retrieve documents from Solr. You can use full range of SQL with Teiid system integrating other sources along with Solr source.
+
+The Solr Translator supports SELECT statements with a restrictive set of capabilities including: comparison predicates, IN predicates, LIMIT and Order By.
+
+An Example Dynamic VDB that shows Solr translator can be defined as
+
+[source,xml]
+----
+<vdb name="search" version="1">
+    <model name="solr">
+        <source name="node-one" translator-name="solr" connection-jndi-name="java:/solrDS"/>
+    </model>
+<vdb>
+----
+
+The translator does NOT provide a connection to the Solr. For that purpose, Teiid has a JCA adapter that provides a connection to Solr using the SolrJ Java library. To define such connector, see https://docs.jboss.org/author/display/TEIID/Solr+Data+Sources[Solr Data Sources] or see an example in "<jboss-as>/docs/teiid/datasources/solr"
+
+If you are using Designer Tooling, to create VDB then
+
+* Create/use a Teiid Designer Model project
+* Use "Teiid Connection >> Source Model" importer, create Solr Data Source using data source creation wizard and use _solr_ as translator in the importer. The search table is created in a source model by the time you finish with this importer.
+* Create a VDB and deploy into Teiid Server and use either jdbc, odbc, odata etc to query.
+
+== JCA Resource Adapter
+
+The Teiid specific Solr Resource Adapter should be used with this translator. See https://docs.jboss.org/author/display/TEIID/Solr+Data+Sources[Solr Data Sources] for connecting to a Solr Search Engine.
+
+=== Native Queries
+
+This feature is not applicable for Solr translator.
+
+=== Direct Query Procedure
+
+This feature is not available for Solr translator currently.
+

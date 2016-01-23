@@ -1,0 +1,7 @@
+
+= Greenplum Translator (greenplum)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The Greenplum Translator, known by the type name *_greenplum_*, is for use with the Greenplum database. This translator is an extension of the link:PostgreSQL_Translator.adoc[PostgreSQL Translator] and inherits its options.
+

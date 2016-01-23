@@ -1,0 +1,369 @@
+
+= Expressions
+
+Identifiers, literals, and functions can be combined into expressions. Expressions can be used almost anywhere in a query – SELECT, FROM (if specifying join criteria), WHERE, GROUP BY, HAVING, or ORDER BY.
+
+Teiid supports the following types of expressions:
+
+* link:Expressions.adoc#18646218_Expressions-ColumnIdentifiers[Column Identifiers]
+* link:Expressions.adoc#18646218_Expressions-Literals[Literals]
+* link:Scalar_Functions.adoc[Scalar Functions]
+* link:Expressions.adoc#18646218_Expressions-AggregateFunctions[Aggregate Functions]
+* link:Expressions.adoc#18646218_Expressions-WindowFunctions[Window Functions]
+* link:Expressions.adoc#18646218_Expressions-CaseandSearchedCase[Case and Searched Case]
+* link:Expressions.adoc#18646218_Expressions-ScalarSubqueries[Scalar Subqueries]
+* link:Expressions.adoc#18646218_Expressions-ParameterReferences[Parameter References]
+* link:Criteria.adoc[Criteria]
+* link:Expressions.adoc#18646218_Expressions-Arrays[Arrays]
+
+== Column Identifiers
+
+Column identifiers are used to specify the output columns in SELECT statements, the columns and their values for INSERT and UPDATE statements, and criteria used in WHERE and FROM clauses. They are also used in GROUP BY, HAVING, and ORDER BY clauses. The syntax for column identifiers was defined in the Identifiers section above.
+
+== Literals
+
+Literal values represent fixed values. These can any of the 'standard' data types.
+
+Syntax Rules:
+
+* Integer values will be assigned an integral data type big enough to hold the value (integer, long, or biginteger).
+* Floating point values will always be parsed as a double.
+* The keyword 'null' is used to represent an absent or unknown value and is inherently untyped. In many cases, a null literal value will be assigned an implied type based on context. For example, in the function '5 + null', the null value will be assigned the type 'integer' to match the type of the value '5'. A null literal used in the SELECT clause of a query with no implied context will be assigned to type 'string'.
+
+Some examples of simple literal values are:
+
+[source,sql]
+----
+'abc'
+----
+
+[source,sql]
+.*escaped single tick*
+----
+'isn"t true'
+----
+
+[source,sql]
+----
+5
+----
+
+[source,sql]
+.*scientific notation*
+----
+-37.75e01
+----
+
+[source,sql]
+.*exact numeric type BigDecimal*
+----
+100.0
+----
+
+[source,sql]
+----
+true
+----
+
+[source,sql]
+----
+false
+----
+
+[source,sql]
+.*unicode character*
+----
+'\u0027'
+----
+
+[source,sql]
+.*binary*
+----
+X'0F0A'
+----
+
+Date/Time Literals can use either JDBC link:Escaped_Literal_Syntax.adoc[Escaped Literal Syntax]:
+
+[source,sql]
+.*Date Literal*
+----
+{d'...'}
+----
+
+[source,sql]
+.*Time Literal*
+----
+{t'...'}
+----
+
+[source,sql]
+.*Timestamp Literal*
+----
+{ts'...'}
+----
+
+Or the ANSI keyword syntax:
+
+[source,sql]
+.*Date Literal*
+----
+DATE '...'
+----
+
+[source,sql]
+.*Time Literal*
+----
+TIME '...'
+----
+
+[source,sql]
+.*Timestamp Literal*
+----
+TIMESTAMP '...'
+----
+
+Either way the string literal value portion of the expression is expected to follow the defined format - "yyyy-MM-dd" for date, "hh:mm:ss" for time, and "yyyy-MM-dd[ hh:mm:ss[.fff…]]" for timestamp.
+
+== Aggregate Functions
+
+Aggregate functions take sets of values from a group produced by an explicit or implicit GROUP BY and return a single scalar value computed from the group.
+
+Teiid supports the following aggregate functions:
+
+* COUNT(*) – count the number of values (including nulls and duplicates) in a group. Returns an integer - an exception will be thrown if a larger count is computed.
+* COUNT(x) – count the number of values (excluding nulls) in a group. Returns an integer - an exception will be thrown if a larger count is computed.
+* SUM(x) – sum of the values (excluding nulls) in a group
+* AVG(x) – average of the values (excluding nulls) in a group
+* MIN(x) – minimum value in a group (excluding null)
+* MAX(x) – maximum value in a group (excluding null)
+* ANY(x)/SOME(x) – returns TRUE if any value in the group is TRUE (excluding null)
+* EVERY(x) – returns TRUE if every value in the group is TRUE (excluding null)
+* VAR_POP(x) – biased variance (excluding null) logically equals(sum(x^2) - sum(x)^2/count(x))/count(x); returns a double; null if count = 0
+* VAR_SAMP(x) – sample variance (excluding null) logically equals(sum(x^2) - sum(x)^2/count(x))/(count(x) - 1); returns a double; null if count < 2
+* STDDEV_POP(x) – standard deviation (excluding null) logically equals SQRT(VAR_POP(x))
+* STDDEV_SAMP(x) – sample standard deviation (excluding null) logically equals SQRT(VAR_SAMP(x))
+* TEXTAGG(expression [as name], … [DELIMITER char] [QUOTE char] [HEADER] [ENCODING id] [link:ORDER_BY_Clause.html[ORDER BY …]]) – CSV text aggregation of all expressions in each row of a group. When DELIMITER is not specified, by default comma(,) is used as delimiter. Double quotes(") is the default quote character. Use QUOTE to specify a different value. All non-null values will be quoted. If HEADER is specified, the result contains the header row as the first line - the header line will be present even if there are no rows in a group. This aggregation returns a blob.
+
+[source,sql]
+----
+TEXTAGG(col1, col2 as name DELIMITER '|' HEADER ORDER BY col1)
+----
+
+* XMLAGG(xml_expr [link:ORDER_BY_Clause.html[ORDER BY …]]) – xml concatenation of all xml expressions in a group (excluding null). The ORDER BY clause cannot reference alias names or use positional ordering.
+* JSONARRAY_AGG(x [link:ORDER_BY_Clause.html[ORDER BY …]]) – creates a JSON array result as a Clob including null value. The ORDER BY clause cannot reference alias names or use positional ordering. See also the link:JSON_Functions.adoc[JSONArray function].
+
+integer value example
+
+[source,sql]
+----
+jsonArray_Agg(col1 order by col1 nulls first)
+----
+
+could return
+
+[source,sql]
+----
+[null,null,1,2,3]
+----
+
+* STRING_AGG(x, delim) – creates a lob results from the concatenation of x using the delimiter delim. If either argument is null, no value is concatenated. Both arguments are expected to be character (string/clob) or binary (varbinary, blob) and the result will be clob or blob respectively. DISTINCT and ORDER BY are allowed in STRING_AGG.
+
+string agg example
+
+[source,sql]
+----
+string_agg(col1, ',' ORDER BY col1 ASC)
+----
+
+could return
+
+[source,sql]
+----
+'a,b,c'
+----
+
+* ARRAY_AGG(x [link:ORDER_BY_Clause.html[ORDER BY …]]) – creates an array with a base type matching the expression x. The ORDER BY clause cannot reference alias names or use positional ordering.
+* agg([DISTINCT|ALL] arg … [link:ORDER_BY_Clause.html[ORDER BY …]]) – a user defined aggregate function
+
+Syntax Rules:
+
+* Some aggregate functions may contain a keyword 'DISTINCT' before the expression, indicating that duplicate expression values should be ignored. DISTINCT is not allowed in COUNT(*) and is not meaningful in MIN or MAX (result would be unchanged), so it can be used in COUNT, SUM, and AVG.
+* Aggregate functions cannot be used in FROM, GROUP BY, or WHERE clauses without an intervening query expression.
+* Aggregate functions cannot be nested within another aggregate function without an intervening query expression.
+* Aggregate functions may be nested inside other functions.
+* Any aggregate function may take an optional FILTER clause of the form
+
+[source,sql]
+----
+FILTER ( WHERE condition )
+----
+
+The condition may be any boolean value expression that does not contain a subquery or a correlated variable. The filter will logically be evaluated for each row prior to the grouping operation. If false the aggregate function will not accumulate a value for the given row.
+
+For more information on aggregates, see the sections on GROUP BY or HAVING.
+
+== Window Functions
+
+Teiid supports ANSI SQL 2003 window functions. A window function allows an aggregate function to be applied to a subset of the result set, without the need for a GROUP BY clause. A window function is similar to an aggregate function, but requires the use of an OVER clause or window specification.
+
+Usage:
+
+[source,sql]
+----
+aggregate|ranking OVER ([PARTITION BY ...]] [ORDER BY ...])
+----
+
+aggregate can be any link:Expressions.adoc#18646218_Expressions-AggregateFunctions[Aggregate Functions]. Ranking can be one of ROW_NUMBER(), RANK(), DENSE_RANK().
+
+Syntax Rules:
+
+* Window functions can only appear in the SELECT and ORDER BY clauses of a query expression.
+* Window functions cannot be nested in one another.
+* Partitioning and order by expressions cannot contain subqueries or outer references.
+* The ranking (ROW_NUMBER, RANK, DENSE_RANK) functions require the use of the window specification ORDER BY clause.
+* An XMLAGG or JSONARRAY_AGG ORDER BY clause cannot be used when windowed.
+* The window specification ORDER BY clause cannot reference alias names or use positional ordering.
+* Windowed aggregates may not use DISTINCT if the window specification is ordered.
+
+== Analytical Function Definitions
+
+* ROW_NUMBER() – functional the same as COUNT(*) with the same window specification. Assigns a number to each row in a partition starting at 1.
+* RANK() – Assigns a number to each unique ordering value within each partition starting at 1, such that the next rank is equal to the count of prior rows.
+* DENSE_RANK() – Assigns a number to each unique ordering value within each partition starting at 1, such that the next rank is sequential.
+
+All values are integers - an exception will be thrown if a larger value is needed.
+
+== Processing
+
+Window functions are logically processed just before creating the output from the SELECT clause. Window functions can use nested aggregates if a GROUP BY clause is present. The is no guaranteed affect on the output ordering from the presence of window functions. The SELECT statement must have an ORDER BY clause to have a predictable ordering.
+
+Teiid will process all window functions with the same window specification together. In general a full pass over the row values coming into the SELECT clause will be required for each unique window specification. For each window specification the values will be grouped according to the PARTITION BY clause. If no PARTITION BY clause is specified, then the entire input is treated as a single partition. The output value is determined based upon the current row value, it’s peers (that is rows that are the same with respect to their ordering), and all prior row values based upon ordering in the partition. The ROW_NUMBER function will assign a unique value to every row regardless of the number of peers.
+
+[source,sql]
+.*Example Windowed Results*
+----
+SELECT name, salary, max(salary) over (partition by name) as max_sal,
+          rank() over (order by salary) as rank, dense_rank() over (order by salary) as dense_rank,
+          row_number() over (order by salary) as row_num FROM employees
+----
+
+|===
+|name |salary |max_sal |rank |dense_rank |row_num
+
+|John
+|100000
+|100000
+|2
+|2
+|2
+
+|Henry
+|50000
+|50000
+|5
+|4
+|5
+
+|John
+|60000
+|100000
+|3
+|3
+|3
+
+|Suzie
+|60000
+|150000
+|3
+|3
+|4
+
+|Suzie
+|150000
+|150000
+|1
+|1
+|1
+|===
+
+== Case and Searched Case
+
+Teiid supports two forms of the CASE expression which allows conditional logic in a scalar expression.
+
+Supported forms:
+
+* CASE <expr> ( WHEN <expr> THEN <expr>)+ [ELSE expr] END
+* CASE ( WHEN <criteria> THEN <expr>)+ [ELSE expr] END
+
+Each form allows for an output based on conditional logic. The first form starts with an initial expression and evaluates WHEN expressions until the values match, and outputs the THEN expression. If no WHEN is matched, the ELSE expression is output. If no WHEN is matched and no ELSE is specified, a null literal value is output. The second form (the searched case expression) searches the WHEN clauses, which specify an arbitrary criteria to evaluate. If any criteria evaluates to true, the THEN expression is evaluated and output. If no WHEN is true, the ELSE is evaluated or NULL is output if none exists.
+
+== Scalar Subqueries
+
+Subqueries can be used to produce a single scalar value in the SELECT, WHERE, or HAVING clauses only. A scalar subquery must have a single column in the SELECT clause and should return either 0 or 1 row. If no rows are returned, null will be returned as the scalar subquery value. For other types of subqueries, see the link:Subqueries.adoc[Subqueries] section.
+
+== Parameter References
+
+Parameters are specified using a '?' symbol. Parameters may only be used with PreparedStatement or CallableStatements in JDBC. Each parameter is linked to a value specified by 1-based index in the JDBC API.
+
+== Array
+
+Array values may be constructed using parenthesis around an expression list with an optional trailing comma.
+
+[source,sql]
+.*empty arrays*
+----
+() (,)
+----
+
+[source,sql]
+.*single element array*
+----
+(expr,)
+----
+
+NOTE: A trailing comma is required for the parser to recognize a single element expression as an array, rather than a simple nested expression.
+
+[source,sql]
+.*general array syntax*
+----
+(expr, expr ... [,])
+----
+
+If all of the elements in the array have the same type, the array will have a matching base type. If the element types differ the array base type will be object.
+
+An array element reference takes the form of:
+
+[source,sql]
+----
+array_expr[index_expr]
+----
+
+index_expr must resolve to an integer value. This syntax is effectively
+the same as the array_get system function and expects 1-based indexing.
+
+== Operator Precedence
+
+Teiid parses and evaluates operators with higher precedence before those with lower precedence. Operator with equal precedence are left associative. Operator precedence listed from high to low:
+
+|===
+|Operator |Description
+
+|[]
+|array element reference
+
+|+,-
+|positive/negative value expression
+
+|*,/
+|multiplication/division
+
+|+,-
+|addition/subtraction
+
+|\|\|\ 
+|concat
+
+|criteria
+|see link:Criteria.html[Criteria]
+|===
+

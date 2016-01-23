@@ -1,0 +1,18 @@
+
+= Escaped Literal Syntax
+
+Rather than relying on implicit conversion, datatype values may be expressed directly in SQL using escape syntax to define the type. Note that the supplied string value must match the expected format exactly or an exception will occur.
+
+|===
+|Datatype |Escaped Syntax
+
+|DATE
+|\{d `yyyy-mm-dd'}
+
+|TIME
+|\{t `hh-mm-ss'}
+
+|TIMESTAMP
+|\{ts `yyyy-mm-dd[ hh:mm:ss.[fff…]]'}
+|===
+

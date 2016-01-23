@@ -1,0 +1,59 @@
+
+= Decode Functions
+
+Decode functions allow you to have the Teiid Server examine the contents of a column in a result set and alter, or decode, the value so that your application can better use the results.
+
+|===
+|Function |Definition |Datatype Constraint
+
+|DECODESTRING(x, y [, z])
+|Decode column x using string of value pairs y with optional delimiter z and return the decoded column as a string. If a delimiter is not specified , is used. y has the formate SearchDelimResultDelimSearchDelimResult[DelimDefault] Returns Default if specified or x if there are no matches. *Deprecated. Use a CASE expression instead.*
+|all string
+
+|DECODEINTEGER(x, y [, z])
+|Decode column x using string of value pairs y with optional delimiter z and return the decoded column as an integer. If a delimiter is not specified , is used. y has the formate SearchDelimResultDelimSearchDelimResult[DelimDefault] Returns Default if specified or x if there are no matches. *Deprecated. Use a CASE expression instead.*
+|all string parameters, return integer
+|===
+
+Within each function call, you include the following arguments:
+
+1.  x is the input value for the decode operation. This will generally be a column name.
+
+2.  y is the literal string that contains a delimited set of input values and output values.
+
+3.  z is an optional parameter on these methods that allows you to specify what delimiter the string specified in y uses.
+
+For example, your application might query a table called PARTS that contains a column called IS_IN_STOCK which contains a Boolean value that you need to change into an integer for your application to process. In this case, you can use the DECODEINTEGER function to change the Boolean values to integers:
+
+[source,sql]
+----
+SELECT DECODEINTEGER(IS_IN_STOCK, 'false, 0, true, 1') FROM PartsSupplier.PARTS;
+----
+
+When the Teiid System encounters the value false in the result set, it replaces the value with 0.
+
+If, instead of using integers, your application requires string values, you can use the DECODESTRING function to return the string values you need:
+
+[source,sql]
+----
+SELECT DECODESTRING(IS_IN_STOCK, 'false, no, true, yes, null') FROM PartsSupplier.PARTS;
+----
+
+In addition to two input/output value pairs, this sample query provides a value to use if the column does not contain any of the preceding input values. If the row in the IS_IN_STOCK column does not contain true or false, the Teiid Server inserts a null into the result set.
+
+When you use these DECODE functions, you can provide as many input/output value pairs if you want within the string. By default, the Teiid System expects a comma delimiter, but you can add a third parameter to the function call to specify a different delimiter:
+
+[source,sql]
+----
+SELECT DECODESTRING(IS_IN_STOCK, 'false:no:true:yes:null',':') FROM PartsSupplier.PARTS;
+----
+
+You can use keyword null in the DECODE string as either an input value or an output value to represent a null value. However, if you need to use the literal string null as an input or output value (which means the word null appears in the column and not a null value) you can put the word in quotes: "null".
+
+[source,sql]
+----
+SELECT DECODESTRING( IS_IN_STOCK, 'null,no,"null",no,nil,no,false,no,true,yes' ) FROM PartsSupplier.PARTS;
+----
+
+If the DECODE function does not find a matching output value in the column and you have not specified a default value, the DECODE function will return the original value the Teiid Server found in that column.
+

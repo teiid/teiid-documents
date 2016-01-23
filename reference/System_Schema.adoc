@@ -1,0 +1,5 @@
+
+= System Schema
+
+The built-in SYS and SYSADMIN schemas provide metadata tables and procedures against the current VDB.
+

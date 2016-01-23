@@ -1,0 +1,41 @@
+
+= OPTION Clause
+
+The OPTION keyword denotes options the user can pass in with the command. These options are Teiid specific and not covered by any SQL specification.
+
+Usage:
+
+[source,sql]
+----
+OPTION option (, option)*
+----
+
+Supported options:
+
+* MAKEDEP table (,table)* - specifies source tables that should be made dependent in the join
+* MAKEIND table (,table)* - specifies source tables that should be made dependent in the join
+* MAKENOTDEP table (,table)* - prevents a dependent join from being used
+* NOCACHE [table (,table)*] - prevents cache from being used for all tables or for the given tables
+
+Examples:
+
+* OPTION MAKEDEP table1
+* OPTION NOCACHE
+
+All tables specified in the OPTION clause should be fully qualified, however the name may match either an alias name or the fully qualified name.
+
+The makedep and makeind hints can take optional arguments to control the dependent join. The extended hint form is:
+
+[source,sql]
+----
+MAKEDEP tbl([max:val] [[no] join])
+----
+
+* tbl(JOIN) means that the entire join should be pushed
+* tbl(NO JOIN) means that the entire join should not be pushed
+* tbl(MAX:val) meaning that the dependent join should only be performed if there are less than the max number of values from the independent side.
+
+TIP: Previous versions of Teiid accepted the PLANONLY, DEBUG, and SHOWPLAN option arguments. These are no longer accepted in the OPTION clause. Please see the Client Developers Guide for replacements to those options.
+
+NOTE: MAKEDEP and MAKENOTDEP hints may take table names in the form of @view1.view2…table. For example with an inline view "select * from (select * from tbl1, tbl2 where tbl1.c1 = tbl2.c2) as v1 option makedep @v1.tbl1" the hint will now be understood as applying under the v1 view.
+

@@ -1,0 +1,432 @@
+
+= XML Functions
+
+XML functions provide functionality for working with XML data. See also the link:JSON_Functions.adoc[JSONTOXML function].
+
+Examples provided with XML functions use the following table structure
+
+[source,sql]
+----
+TABLE  Customer (
+    CustomerId integer PRIMARY KEY,
+    CustomerName varchar(25),
+    ContactName varchar(25)
+    Address varchar(50),
+    City varchar(25),
+    PostalCode varchar(25),
+    Country varchar(25),                
+);
+----
+
+with Data
+
+|===
+|CustomerID |CustomerName |ContactName |Address |City |PostalCode |Country
+
+|87
+|Wartian Herkku
+|Pirkko Koskitalo
+|Torikatu 38
+|Oulu
+|90110
+|Finland
+
+|88
+|Wellington Importadora
+|Paula Parente
+|Rua do Mercado, 12
+|Resende
+|08737-363
+|Brazil
+
+|89
+|White Clover Markets
+|Karl Jablonski
+|305 - 14th Ave. S. Suite 3B
+|Seattle
+|98128
+|USA
+|===
+
+== XMLCAST
+
+Cast to or from XML.
+
+[source,sql]
+----
+XMLCAST(expression AS type)
+----
+
+Expression or type must be XML. The return value will be typed as type. This is the same functionality as XMLTABLE uses to convert values to the desired runtime type - with the exception that array type targets are not supported with XMLCAST.
+
+== XMLCOMMENT
+
+Returns an xml comment.
+
+[source,sql]
+----
+XMLCOMMENT(comment)
+----
+
+Comment is a string. Return value is xml.
+
+== XMLCONCAT
+
+Returns an XML with the concatenation of the given xml types.
+
+[source,sql]
+----
+XMLCONCAT(content [, content]*)
+----
+
+Content is xml. Return value is xml.
+
+If a value is null, it will be ignored. If all values are null, null is returned.
+
+[source,sql]
+.*"Concatenate two or more XML fragments"*
+----
+SELECT XMLCONCAT(
+         XMLELEMENT("name", CustomerName), 
+         XMLPARSE(CONTENT '<a>b</a>' WELLFORMED)
+       )
+FROM   Customer c
+WHERE  c.CustomerID = 87;
+
+==========================================================
+<name>Wartian Herkku</name><a>b</a>
+----
+
+== XMLELEMENT
+
+Returns an XML element with the given name and content.
+
+[source,sql]
+----
+XMLELEMENT([NAME] name [, <NSP>] [, <ATTR>][, content]*)
+
+ATTR:=XMLATTRIBUTES(exp [AS name] [, exp [AS name]]*)
+
+NSP:=XMLNAMESPACES((uri AS prefix | DEFAULT uri | NO DEFAULT))+
+----
+
+If the content value is of a type other than xml, it will be escaped when added to the parent element. Null content values are ignored. Whitespace in XML or the string values of the content is preserved, but no whitespace is added between content values.
+
+XMLNAMESPACES is used provide namespace information. NO DEFAULT is equivalent to defining the default namespace to the null uri - xmlns="". Only one DEFAULT or NO DEFAULT namespace item may be specified. The namespace prefixes xmlns and xml are reserved.
+
+If a attribute name is not supplied, the expression must be a column reference, in which case the attribute name will be the column name. Null attribute values are ignored.
+
+Name, prefix are identifiers. uri is a string literal. content can be any type. Return value is xml. The return value is valid for use in places where a document is expected.
+
+[source,sql]
+.*"Simple Example"*
+----
+SELECT XMLELEMENT("name", CustomerName)
+FROM   Customer c
+WHERE  c.CustomerID = 87;
+
+==========================================================
+<name>Wartian Herkku</name>
+----
+
+[source,sql]
+.*"Multiple Columns"*
+----
+SELECT XMLELEMENT("customer", 
+          XMLELEMENT("name", c.CustomerName),
+          XMLELEMENT("contact", c.ContactName))
+FROM   Customer c
+WHERE  c.CustomerID = 87;
+
+==========================================================
+<customer><name>Wartian Herkku</name><contact>Pirkko Koskitalo</contact></customer>
+----
+
+[source,sql]
+.*"Columns as Attributes"*
+----
+SELECT XMLELEMENT("customer", 
+          XMLELEMENT("name", c.CustomerName,
+            XMLATTRIBUTES(
+                  "contact" as c.ContactName,
+                  "id" as c.CustomerID
+            )
+          )
+       )
+FROM   Customer c
+WHERE  c.CustomerID = 87;
+
+==========================================================
+<customer><name contact="Pirkko Koskitalo" id="87">Wartian Herkku</name></customer>
+----
+
+== XMLFOREST
+
+Returns an concatenation of XML elements for each content item.
+
+[source,sql]
+----
+XMLFOREST(content [AS name] [, <NSP>] [, content [AS name]]*)
+----
+
+See link:XML_Functions.adoc#18646259_XMLFunctions-XMLELEMENT[XMLELEMENT] for the definition of NSP - XMLNAMESPACES
+
+Name is an identifier. Content can be any type. Return value is xml.
+
+If a name is not supplied for a content item, the expression must be a column reference, in which case the element name will be a partially escaped version of the column name.
+
+You can use XMLFORREST to simplify the declaration of multiple XMLELEMENTS, XMLFOREST function allows you to process multiple columns at once
+
+[source,sql]
+.*"Example"*
+----
+SELECT XMLELEMENT("customer", 
+          XMLFOREST(
+             c.CustomerName AS "name",
+             c.ContactName AS "contact"
+          ))
+FROM   Customer c
+WHERE  c.CustomerID = 87;
+
+==========================================================
+<customer><name>Wartian Herkku</name><contact>Pirkko Koskitalo</contact></customer>
+----
+
+== XMLAGG
+
+XMLAGG is an aggregate function, that takes a collection of XML elements and returns an aggregated XML document.
+
+[source,sql]
+----
+XMLAGG(xml)
+----
+
+From above example in XMLElement, each row in the Customer table table will generate row of XML if there are multiple rows matching the criteria. That will generate a valid XML, but it will not be well formed, because it lacks the root element. XMLAGG can used to correct that
+
+[source,sql]
+.*"Example"*
+----
+SELECT XMLELEMENT("customers",
+         XMLAGG(
+           XMLELEMENT("customer", 
+             XMLFOREST(
+               c.CustomerName AS "name",
+               c.ContactName AS "contact"
+             )))
+FROM   Customer c
+
+
+==========================================================
+<customers>
+<customer><name>Wartian Herkku</name><contact>Pirkko Koskitalo</contact></customer>
+<customer><name>Wellington Importadora</name><contact>Paula Parente</contact></customer>
+<customer><name>White Clover Markets</name><contact>Karl Jablonski</contact></customer>
+</customers>
+----
+
+== XMLPARSE
+
+Returns an XML type representation of the string value expression.
+
+[source,sql]
+----
+XMLPARSE((DOCUMENT|CONTENT) expr [WELLFORMED])
+----
+
+expr in \{string, clob, blob, varbinary}. Return value is xml.
+
+If DOCUMENT is specified then the expression must have a single root element and may or may not contain an XML declaration.
+
+If WELLFORMED is specified then validation is skipped; this is especially useful for CLOB and BLOB known to already be valid.
+
+[source,sql]
+----
+SELECT XMLPARSE(CONTENT '<customer><name>Wartian Herkku</name><contact>Pirkko Koskitalo</contact></customer>' WELLFORMED);
+
+Will return a SQLXML with contents
+=============================================================== 
+<customer><name>Wartian Herkku</name><contact>Pirkko Koskitalo</contact></customer>
+----
+
+== XMLPI
+
+Returns an xml processing instruction.
+
+[source,sql]
+----
+XMLPI([NAME] name [, content])
+----
+
+Name is an identifier. Content is a string. Return value is xml.
+
+== XMLQUERY
+
+Returns the XML result from evaluating the given xquery.
+
+[source,sql]
+----
+XMLQUERY([<NSP>] xquery [<PASSING>] [(NULL|EMPTY) ON EMPTY]]
+
+PASSING:=PASSING exp [AS name] [, exp [AS name]]*
+----
+
+See link:XML_Functions.adoc#18646259_XMLFunctions-XMLELEMENT[XMLELEMENT] for the definition of NSP - XMLNAMESPACES
+
+Namespaces may also be directly declared in the xquery prolog.
+
+The optional PASSING clause is used to provide the context item, which does not have a name, and named global variable values. If the xquery uses a context item and none is provided, then an exception will be raised. Only one context item may be specified and should be an XML type. All non-context non-XML passing values will be converted to an appropriate XML type. Null will be returned if the context item evaluates to null.
+
+The ON EMPTY clause is used to specify the result when the evaluted sequence is empty. EMPTY ON EMPTY, the default, returns an empty XML result. NULL ON EMPTY returns a null result.
+
+xquery in string. Return value is xml.
+
+XMLQUERY is part of the SQL/XML 2006 specification.
+
+See also link:FROM_Clause.adoc#18646226_FROMClause-XMLTABLE[FROM Clause#XMLTABLE]
+
+NOTE: See also link:XQuery_Optimization.adoc[XQuery Optimization]
+
+== XMLEXISTS
+
+Returns true if a non-empty sequence would be returned by evaluating the given xquery.
+
+[source,sql]
+----
+XMLEXISTS([<NSP>] xquery [<PASSING>]]
+
+PASSING:=PASSING exp [AS name] [, exp [AS name]]*
+----
+
+See link:XML_Functions.adoc#18646259_XMLFunctions-XMLELEMENT[XMLELEMENT] for the definition of NSP - XMLNAMESPACES
+
+Namespaces may also be directly declared in the xquery prolog.
+
+The optional PASSING clause is used to provide the context item, which does not have a name, and named global variable values. If the xquery uses a context item and none is provided, then an exception will be raised. Only one context item may be specified and should be an XML type. All non-context non-XML passing values will be converted to an appropriate XML type. Null/Unknown will be returned if the context item evaluates to null.
+
+xquery in string. Return value is boolean.
+
+XMLEXISTS is part of the SQL/XML 2006 specification.
+
+NOTE: See also link:XQuery_Optimization.adoc[XQuery Optimization]
+
+== XMLSERIALIZE
+
+Returns a character type representation of the xml expression.
+
+[source,sql]
+----
+XMLSERIALIZE([(DOCUMENT|CONTENT)] xml [AS datatype] [ENCODING enc] [VERSION ver] [(INCLUDING|EXCLUDING) XMLDECLARATION])
+----
+
+Return value matches datatype.  If no datatype is specified, then clob will be assumed.
+
+The type may be character (string, varchar, clob) or binary (blob, varbinar). CONTENT is the default. If DOCUMENT is specified and the xml is not a valid document or fragment, then an exception is raised.
+
+The encoding enc is specified as an identifier.  A character serialization may not specify an encoding.  The version ver is specified as a string literal.  If a particular XMLDECLARATION is not specified, then the result will have a declaration only if performing a non UTF-8/UTF-16 or non version 1.0 document serialization or the underlying xml has an declaration.  If CONTENT is being serialized, then the declaration will be omitted if the value is not a document or element.
+
+See the following example that produces a BLOB of XML in UTF-16 including the appropriate byte order mark of FE FF and XML declaration.
+
+[source,sql]
+.*Sample Binary Serialization*
+----
+XMLSERIALIZE(DOCUMENT value AS BLOB ENCODING "UTF-16" INCLUDING XMLDECLARATION)
+----
+
+== XMLTEXT
+
+Returns xml text.
+
+[source,sql]
+----
+XMLTEXT(text)
+----
+
+text is a string. Return value is xml.
+
+== XSLTRANSFORM
+
+Applies an XSL stylesheet to the given document.
+
+[source,sql]
+----
+XSLTRANSFORM(doc, xsl)
+----
+
+Doc, xsl in \{string, clob, xml}. Return value is a clob.
+
+If either argument is null, the result is null.
+
+== XPATHVALUE
+
+Applies the XPATH expression to the document and returns a string value for the first matching result. For more control over the results and XQuery, use the link:XML_Functions.adoc#18646259_XMLFunctions-XMLQUERY[XMLQUERY] function.
+
+[source,sql]
+----
+XPATHVALUE(doc, xpath)
+----
+
+Doc in \{string, clob, blob, xml}. xpath is string. Return value is a string.
+
+Matching a non-text node will still produce a string result, which includes all descendant text nodes. If a single element is matched that is marked with xsi:nil, then null will be returned.
+
+When the input document utilizes namespaces, it is sometimes necessary to specify XPATH that ignores namespaces:
+
+[source,xml]
+.*Sample XML for xpathValue Ignoring Namespaces*
+----
+<?xml version="1.0" ?>
+  <ns1:return xmlns:ns1="http://com.test.ws/exampleWebService">Hello<x> World</x></return>
+----
+
+Function:
+
+[source,sql]
+.*Sample xpathValue Ignoring Namespaces*
+----
+xpathValue(value, '/*[local-name()="return"]')
+----
+
+Results in `Hello World`
+
+== Examples
+
+=== Generating hierarchical XML from flat data structure
+
+With following table and its contents
+
+[source,sql]
+----
+Table {
+ x string,
+ y integer
+}
+----
+
+data like ['a', 1], ['a', 2], ['b', 3], ['b', 4], if you want generate a XML that looks like
+
+[source,xml]
+----
+<root>
+   <x>
+       a
+       <y>1</y>
+       <y>2</y>
+   </x>
+   <x>
+       b
+       <y>3</y>
+       <y>4</y>
+   </x>
+</root>
+----
+
+use the SQL statement in Teiid as below
+
+[source,sql]
+----
+select xmlelement(name "root", xmlagg(p)) 
+   from (select xmlelement(name "x", x, xmlagg(xmlelement(name "y", y)) as p from tbl group by x)) as v
+----
+
+another useful link of examples can be found http://oracle-base.com/articles/misc/sqlxml-sqlx-generating-xml-content-using-sql.php[here]
+

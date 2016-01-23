@@ -1,0 +1,4 @@
+
+= Scalar Functions
+
+Teiid provides an extensive set of built-in scalar functions. See also link:DML_Commands.adoc[SQL Support] and link:Datatypes.adoc[Datatypes]. In addition, Teiid provides the capability for user defined functions or UDFs. See the Developers Guide for adding UDFs. Once added UDFs may be called just like any other function.

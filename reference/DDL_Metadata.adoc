@@ -1,0 +1,501 @@
+
+= DDL Metadata
+
+Starting with Teiid 8.0, a VDB can define models/schemas using DDL. Here is small example of how one can define a View inside the "-vdb.xml" file. See the <metadata> element under <model>.
+
+[source,xml]
+.*Example to show view definition*
+----
+<model visible = "true" type = "VIRTUAL" name = "customers">
+     <metadata type = "DDL"><![CDATA[
+              CREATE VIEW PARTS (
+                   PART_ID integer PRIMARY KEY,
+                   PART_NAME varchar(255),
+                   PART_COLOR varchar(30),
+                   PART_WEIGHT varchar(255)
+               ) AS
+                  select a.id as PART_ID, a.name as PART_NAME, b.color as PART_COLOR, b.weight as PART_WEIGHT from modelA.part a, modelB.part b where a.id = b.id
+     ]]>
+     </metadata>
+</model>
+----
+
+Another complete DDL based example is at the end of this section.
+
+NOTE: *Metadata Repositories* - The declaration of metadata using DDL, NATIVE, or DDL-FILE is supported out of the box, however the _MetadataRepository_ interface allows users to plug-in their own metadata facilities. For example, you can write a Hibernate based store that can feed the necessary metadata. See https://docs.jboss.org/author/display/TEIID/Custom+Metadata+Repository[Custom Metadata Repository] for more information.
+
+NOTE: *Metadata for Source Models* - The DDL based schema is not constrained to be defined only for the view models.
+
+== BNF notation for the Metadata
+
+NOTE: *Grammar Reference* - The full grammar for DDL can be found in the link:BNF_for_SQL_Grammar.adoc[BNF for SQL Grammar].
+
+== Create FOREIGN Table
+
+A _FOREIGN_ table is table that is defined on PHYSICAL model that represents a real relational table in source databases like Oracle, SQLServer etc. For relational databases, Teiid has capability to automatically retrieve the database schema information upon the deployment of the VDB, if one like to auto import the existing schema. However, user can use below FOREIGN table semantics, when they would like to explicitly define tables on PHYSICAL models or represent non-relational data as relational in custom translators.
+
+image:images/create_table.jpg[images/create_table.jpg]
+
+Example:Create Foreign Table(Created on PHYSICAL model)
+
+[source,sql]
+----
+CREATE FOREIGN TABLE Customer (id integer PRIMARY KEY, firstname varchar(25), lastname varchar(25),  dob timestamp);
+
+CREATE FOREIGN TABLE Order (id integer PRIMARY KEY, customerid integer, saledate date, amount decimal(25,4), CONSTRAINT CUSTOMER_FK FOREGIN KEY(customerid) REFERENCES Customer(id));
+----
+
+== Create View
+
+A view is a virtual table. A view contains rows and columns,like a real table. The fields in a view are fields from one or more real tables from the source or other view models. They can also be expressions made up multiple columns, or aggregated columns. When column definitions are not defined on the view table, they will be derived from the projected columns of the view’s select transformation that is defined after the _AS_ keyword.
+
+You can add functions, JOIN statements and WHERE clauses to a view data as if the data were coming from one single table.
+
+image:images/create_view.jpg[images/create_view.jpg]
+
+*TABLE/VIEW OPTIONS*: (the below are well known options, any others properties defined will be considered as extension metadata)
+
+|===
+|Property |Data Type or Allowed Values |Description
+
+|UUID
+|string
+|Unique identifier for View
+
+|MATERIALIZED
+|'TRUE'\|'FALSE'
+|Defines if a table is materialized
+
+|MATERIALIZED_TABLE
+|'table.name'
+|If this view is being materialized to a external database, this defines the name of the table that is being materialized to
+
+|CARDINALITY
+|int
+|Costing information. Number of rows in the table. Used for planning purposes
+
+|UPDATABLE
+|'TRUE'\|'FALSE'
+|Defines if the view is allowed to update or not
+
+|ANNOTATION
+|string
+|Description of the view
+
+|DETERMINISM
+|NONDETERMINISTIC, COMMAND_DETERMINISTIC, SESSION_DETERMINISTIC, USER_DETERMINISTIC, VDB_DETERMINISTIC, DETERMINISTIC
+|Only checked on source tables
+|===
+
+[source,sql]
+.*Example:Create View Table(Created on VIRTUAL model)*
+----
+CREATE VIEW CustomerOrders (name varchar(50),  saledate date, amount decimal) OPTIONS (CARDINALITY 100, ANNOTATION 'Example')
+  AS
+  SELECT concat(c.firstname, c.lastname) as name, o.saledate as saledate, o.amount as amount FROM Customer C JOIN Order o ON c.id = o.customerid;
+----
+
+image:images/create_column.jpg[images/create_column.jpg]
+
+*COLUMN OPTIONS*: (the below are well known options, any others properties defined will be considered as extension metadata)
+
+|===
+|Property |Data Type or Allowed Values |Description
+
+|UUID
+|string
+|A unique identifier for the column
+
+|NAMEINSOURCE
+|string
+|If this is a column name on the FOREIGN table, this value represents name of the column in source database, if omitted the column name is used when querying for data against the source
+
+|CASE_SENSITIVE
+|'TRUE'\|'FALSE'
+|
+ 
+|SELECTABLE
+|'TRUE'\|'FALSE'
+|TRUE when this column is available for selection from the user query
+
+|UPDATABLE
+|'TRUE'\|'FALSE'
+|Defines if the column is updatable.  Defaults to true if the view/table is updatable.
+
+|SIGNED
+|'TRUE'\|'FALSE'
+|
+ 
+|CURRENCY
+|'TRUE'\|'FALSE'
+|
+ 
+|FIXED_LENGTH
+|'TRUE'\|'FALSE'
+|
+ 
+|SEARCHABLE
+|'SEARCHABLE'\|'UNSEARCHABLE'\|'LIKE_ONLY'\|'ALL_EXCEPT_LIKE'
+|column searchability, usually dictated by the data type
+
+|MIN_VALUE
+|
+| 
+
+|MAX_VALUE
+|
+| 
+
+|CHAR_OCTET_LENGTH
+|integer
+|
+ 
+|ANNOTATION
+|string
+|
+ 
+|NATIVE_TYPE
+|string
+|
+ 
+|RADIX
+|integer
+|
+ 
+|NULL_VALUE_COUNT
+|long
+|costing information. Number of NULLS in this column
+
+|DISTINCT_VALUES
+|long
+|costing information. Number of distinct values in this column
+|===
+
+Columns may also be marked as NOT NULL, auto_increment, and with a DEFAULT value. Currently only string values are supported as the default value. To have the string interpreted as an expression use the extension property teiid_rel:default_handling set to expression.
+
+=== CONSTRAINTS
+
+Constraints can be defined on table/view to define indexes and relationships to other tables/views. This information is used by the Teiid optimizer to plan queries or use the indexes in materialization tables to optimize the access to the data.
+
+image:images/constraint.jpg[images/constraint.jpg]
+
+CONSTRAINTS are same as one can define on RDBMS.
+
+[source,sql]
+.*Example of CONSTRAINTs*
+----
+CREATE VIEW CustomerOrders (name varchar(50),  saledate date, amount decimal, 
+   CONSTRAINT EXAMPLE_INDEX INDEX (name, amount),
+   ACCESSPATTERN (name),
+   PRIMARY KEY ...
+----
+
+=== INSTEAD OF TRIGGERS
+
+A view comprising multiple base tables must use an INSTEAD OF trigger to support inserts, updates and deletes that reference data in the tables. Based on the select transformation’s complexity some times INSTEAD OF TRIGGERS are automatically provided for the user when "UPDATABLE" OPTION on the view is set to "TRUE". However, using the CREATE TRIGGER mechanism user can provide/override the default behavior.
+
+image:images/create_trigger.jpg[images/create_trigger.jpg]
+
+[source,sql]
+.*Example:Define instead of trigger on View*
+----
+CREATE TRIGGER ON CustomerOrders INSTEAD OF INSERT AS
+   FOR EACH ROW
+   BEGIN ATOMIC
+   INSERT INTO Customer (...) VALUES (NEW.value ...);
+   END
+----
+
+== Create Procedure/Function
+
+Using the below syntax, user can define a
+
+* Source Procedure ("CREATE FOREIGN PROCEDURE") - a stored procedure in source
+* Source Function ("CREATE FOREIGN FUNCTION") - A function that is supported by the source, where Teiid will pushdown to source instead of evaluating in Teiid engine
+* Virtual Procedure ("CREATE VIRTUAL PROCEDURE") - Similar to stored procedure, however this is defined using the Teiid’s Procedure language and evaluated in the Teiid’s engine.
+* Function/UDF ("CREATE VIRTUAL FUNCTION") - A user defined function, that can be defined using the Teiid procedure language or can have the implementation defined using a https://docs.jboss.org/author/display/TEIID/Support+for+User-Defined+Functions+%28Non-Pushdown%29#SupportforUser-DefinedFunctions%28Non-Pushdown%29-MetadataDynamicVDBs[JAVA Class].
+
+image:images/create_procedure.jpg[images/create_procedure.jpg]
+
+See the full grammar for create function/procedure in the link:BNF_for_SQL_Grammar.adoc#18646304_BNFforSQLGrammar-createDDLProcedure[BNF for SQL Grammar#createDDLProcedure].
+
+*Variable Argument Support* 
+
+Instead of using just an IN parameter, the last non optional parameter can be declared VARIADIC to indicate that it can be repeated 0 or more times when the procedure is called
+
+[source,sql]
+.*Example:Vararg procedure*
+----
+CREATE FOREIGN PROCEDURE proc (x integer, VARIADIC z integer) returns (x string);
+----
+
+*FUNCTION OPTIONS*:(the below are well known options, any others properties defined will be considered as extension metadata)
+
+|===
+|Property |Data Type or Allowed Values |Description
+
+|UUID
+|string
+|unique Identifier
+
+|NAMEINSOURCE
+|If this is source function/procedure the name in the physical source, if different from the logical name given above
+|
+
+|ANNOTATION
+|string
+|Description of the function/procedure
+
+|CATEGORY
+|string
+|Function Category
+
+|DETERMINISM
+|NONDETERMINISTIC, COMMAND_DETERMINISTIC, SESSION_DETERMINISTIC, USER_DETERMINISTIC, VDB_DETERMINISTIC, DETERMINISTIC
+|Not used on virtual procedures
+
+|NULL-ON-NULL
+|'TRUE'\|'FALSE'
+|
+
+|JAVA_CLASS
+|string
+|Java Class that defines the method in case of UDF
+
+|JAVA_METHOD
+|string
+|The Java method name on the above defined java class for the UDF implementation
+
+|VARARGS
+|'TRUE'\|'FALSE'
+|Indicates that the last argument of the function can be repeated 0 to any number of times. default false. It is more proper to use a VARIADIC parameter.
+
+|AGGREGATE
+|'TRUE'\|'FALSE'
+|Indicates the function is a user defined aggregate function. Properties specific to aggregates are listed below.
+|===
+
+Note that NULL-ON-NULL, VARARGS, and all of the AGGREGATE properties are also valid relational extension metadata properties that can be used on source procedures marked as functions. See also https://docs.jboss.org/author/display/TEIID/Source+Supported+Functions[Source Supported Functions] for creating FOREIGN functions that are supported by a source.
+
+*AGGREGATE FUNCTION OPTIONS*:
+
+|===
+|Property |Data Type or Allowed Values |Description
+
+|ANALYTIC
+|'TRUE'\|'FALSE'
+|indicates the aggregate function must be windowed. default false.
+
+|ALLOWS-ORDERBY
+|'TRUE'\|'FALSE'
+|indicates the aggregate function supports an ORDER BY clause. default false
+
+|ALLOWS-DISTINCT
+|'TRUE'\|'FALSE'
+|indicates the aggregate function supports the DISTINCT keyword. default false
+
+|DECOMPOSABLE
+|'TRUE'\|'FALSE'
+|indicates the single argument aggregate function can be decomposed as agg(agg(x) ) over subsets of data. default false
+
+|USES-DISTINCT-ROWS
+|'TRUE'\|'FALSE'
+|indicates the aggregate function effectively uses distinct rows rather than all rows. default false
+|===
+
+Note that virtual functions defined using the Teiid procedure language cannot be aggregate functions.
+
+NOTE: *Providing the JAR libraries* - If you have defined a UDF (virtual) function without a Teiid procedure deinition, then it must be accompanied by its implementation in Java. To configure the Java library as dependency to the VDB, see https://docs.jboss.org/author/display/TEIID/Support+for+User-Defined+Functions+%28Non-Pushdown%29#SupportforUser-DefinedFunctions%28Non-Pushdown%29-MetadataDynamicVDBs[Support for User-Defined Functions]
+
+*PROCEDURE OPTIONS*:(the below are well known options, any others properties defined will be considered as extension metadata)
+
+|===
+|Property |Data Type or Allowed Values |Description
+
+|UUID
+|string
+|Unique Identifier
+
+|NAMEINSOURCE
+|string
+|In the case of source
+
+|ANNOTATION
+|string
+|Description of the procedure
+
+|UPDATECOUNT
+|int
+|if this procedure updates the underlying sources, what is the update count, when update count is >1 the XA protocol for execution is enforced
+|===
+
+[source,sql]
+.*Example:Define Procedure*
+----
+CREATE VIRTUAL PROCEDURE CustomerActivity(customerid integer) RETURNS (name varchar(25), activitydate date, amount decimal) AS
+   BEGIN
+   ...
+   END
+----
+
+[source,sql]
+.*Example:Define Virtual Function*
+----
+CREATE VIRTUAL FUNCTION CustomerRank(customerid integer) RETURNS integer AS
+   BEGIN
+   ...
+   END
+----
+
+Procedure columns may also be marked as NOT NULL, or with a DEFAULT value. Currently only string values are supported as the default value. To have the string interpreted as an expression use the extension property teiid_rel:default_handling set to expression. On a source procedure if you want the parameter to be defaultable in the source procedure and not supply a default value in Teiid, then the parameter must be nullable and use the extension property teiid_rel:default_handling set to omit.
+
+There can only be a single RESULT parameter and it must be an out parameter. A RESULT parameter is the same as having a single non-table RETURNS type. If both are declared they are expected to match otherwise an exception is thrown. One is no more correct than the other. "RETURNS type" is shorter hand syntax especially for functions, while the parameter form is useful for additional metadata (explicit name, extension metadata, also defining a returns table, etc.)
+
+*Relational Extension OPTIONS*:
+
+|===
+|Property |Data Type or Allowed Values |Description
+
+|native-query
+|Parameterized String
+|Applies to both functions and procedures. The replacement for the function syntax rather than the standard prefix form with parens. See also link:Translators.adoc#18646290_Translators-native[Translators#native]
+
+|non-prepared
+|boolean
+|Applies to JDBC procedures using the native-query option. If true a PreparedStatement will not be used to execute the native query.
+|===
+
+[source,sql]
+.*Example:Native Query*
+----
+CREATE FOREIGN FUNCTION func (x integer, y integer) returns integer OPTIONS ("teiid_rel:native-query" '$1 << $2');
+----
+
+[source,sql]
+.*Example:Sequence Native Query*
+----
+CREATE FOREIGN FUNCTION seq_nextval () returns integer OPTIONS ("teiid_rel:native-query" 'seq.nextval');
+----
+
+TIP: Until Teiid provides higher-level metadata support for sequences, a source function representation is the best fit to expose sequence functionality.
+
+== Options
+
+image:images/create_options.jpg[images/create_options.jpg]
+
+NOTE: Any option name of the form prefix:key will attempt to be resolved against the current set of namespaces. Failure to resolve will result in the option name being left as is. A resolved name will be replaced with \{uri}key. See also Namespaces for Extension Metadata.
+
+Options can also be added using the ALTER statement. See ALTER stmt.
+
+== ALTER Statement
+
+ALTER statements currently primarily supports adding OPTIONS properties to Tables, Views and Procedures. Using a ALTER statement, you can either add, modify or remove a property.
+
+image:images/alter.png[images/alter.png]
+
+=== ALTER COLUMN
+
+image:images/alterColumn.png[images/alterColumn.png]
+
+=== ALTER OPTION
+
+image:images/alterOption.png[images/alterOption.png]
+
+[source,sql]
+.*Example ALTER*
+----
+ALTER FOREIGN TABLE "customer" OPTIONS (ADD CARDINALITY 10000);
+ALTER FOREIGN TABLE "customer" ALTER COLUMN "name" OPTIONS(SET UPDATABLE FALSE)
+----
+
+ALTER statements are especially useful, when user would like to modify/enhance the metadata that has been imported from a NATIVE datasource. For example, if you have a database called "northwind", and you imported that metadata and would like to add CARDINALITY to its "customer" table, you can use ALTER statement, along with "chainable" metadata repositories feature to add this property to the desired table. The below shows an example -vdb.xml file, that illustrates the usage.
+
+[source,xml]
+.*Example VDB*
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<vdb name="northwind" version="1">
+    <model name="nw">
+        <property name="importer.importKeys" value="true"/>
+        <property name="importer.importProcedures" value="true"/>
+         <source name="northwind-connector" translator-name="mysql" connection-jndi-name="java:/nw-ds"/>
+         <metadata type = "NATIVE,DDL"><![CDATA[
+              ALTER FOREIGN TABLE "customer" OPTIONS (ADD CARDINALITY 10000);
+              ALTER FOREIGN TABLE "customer" ALTER COLUMN "name" OPTIONS(SET UPDATABLE FALSE);
+         ]]>
+         </metadata>
+    </model>
+</vdb>
+----
+
+== Data Types
+
+The following are the supported data types in the Teiid.
+
+image:images/datatypes.png[images/datatypes.png]
+
+== Namespaces for Extension Metadata
+
+When defining the extension metadata in the case of Custom Translators, the properties on tables/views/procedures/columns can define namespace for the properties such that they will not collide with the Teiid specific properties. The property should be prefixed with alias of the Namespace. Prefixes starting with teiid_ are reserved for use by Teiid.
+
+image:images/create_namespace.jpg[images/create_namespace.jpg]
+
+[source,sql]
+.*Example of Namespace*
+----
+SET NAMESPACE 'http://custom.uri' AS foo
+
+CREATE VIEW MyView (...) OPTIONS ("foo:mycustom-prop" 'anyvalue')
+----
+
+=== Built-in Namespace Prefixes
+
+|===
+|Prefix |URI |Description
+
+|teiid_rel
+|http://www.teiid.org/ext/relational/2012[http://www.teiid.org/ext/relational/2012]
+|Relational extensions. Uses include function and native query metadata
+
+|teiid_sf
+|http://www.teiid.org/translator/salesforce/2012[http://www.teiid.org/translator/salesforce/2012]
+|Salesforce extensions.
+|===
+
+== Full Example showing above DDL based metadata
+
+[source,xml]
+.*Full Example VDB with View Definition*
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<vdb name="twitter" version="1">
+
+    <description>Shows how to call Web Services</description>
+
+    <model name="twitter">
+        <source name="twitter" translator-name="rest" connection-jndi-name="java:/twitterDS"/>
+    </model>
+    <model name="twitterview" type="VIRTUAL">
+         <metadata type="DDL"><![CDATA[
+             CREATE VIRTUAL PROCEDURE getTweets(query varchar) RETURNS (created_on varchar(25), from_user varchar(25), to_user varchar(25),
+                 profile_image_url varchar(25), source varchar(25), text varchar(140)) AS
+                select tweet.* from
+                    (call twitter.invokeHTTP(action => 'GET', endpoint =>querystring(",query as "q"))) w,
+                    XMLTABLE('results' passing JSONTOXML('myxml', w.result) columns
+                    created_on string PATH 'created_at',
+                    from_user string PATH 'from_user',
+                    to_user string PATH 'to_user',
+                    profile_image_url string PATH 'profile_image_url',
+                    source string PATH 'source',
+                    text string PATH 'text') tweet;
+                CREATE VIEW Tweet AS select * FROM twitterview.getTweets;
+        ]]> </metadata>
+    </model>
+
+    <translator name="rest" type="ws">
+        <property name="DefaultBinding" value="HTTP"/>
+        <property name="DefaultServiceMode" value="MESSAGE"/>
+    </translator>
+</vdb>
+----
+

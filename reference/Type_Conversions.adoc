@@ -1,0 +1,100 @@
+
+= Type Conversions
+
+Data types may be converted from one form to another either explicitly or implicitly. Implicit conversions automatically occur in criteria and expressions to ease development. Explicit datatype conversions require the use of the *CONVERT* function or *CAST* keyword.
+
+Type Conversion Considerations:
+
+* Any type may be implicitly converted to the OBJECT type.
+* The OBJECT type may be explicitly converted to any other type.
+* The NULL value may be converted to any type.
+* Any valid implicit conversion is also a valid explicit conversion.
+* Situations involving literal values that would normally require explicit conversions may have the explicit conversion applied implicitly if no loss of information occurs.
+* If https://docs.jboss.org/author/display/TEIID/System+Properties[widenComparisonToString] is false (the default), when Teiid detects that an explicit conversion can not be applied implicitly in criteria, then an exception will be raised. If https://docs.jboss.org/author/display/TEIID/System+Properties[widenComparisonToString] is true, then depending upon the comparison a widening conversion will be applied or the criteria will be treated as false.
+
+For example:
+
+[source,sql]
+----
+SELECT * FROM my.table WHERE created_by = 'not a date'
+----
+
+With https://docs.jboss.org/author/display/TEIID/System+Properties[widenComparisonToString] as false and created_by is typed as date, rather than converting `not a date` to a date value, an exception will be raised.
+
+* Array conversions are currently only valid to and from compatible object arrays. It is not yet possible for example to cast from integer[] to long[].
+* Explicit conversions that are not allowed between two types will result in an exception before execution. Allowed explicit conversions may still fail during processing if the runtime values are not actually convertable.
+
+WARNING: The Teiid conversions of float/double/bigdecimal/timestamp to string rely on the JDBC/Java defined output formats. Pushdown behavior attempts to mimic these results, but may vary depending upon the actual source type and conversion logic. Care should be taken to not assume the string form in criteria or other places where a variation may cause different results.
+
+.*Type Conversions*
+|===
+|Source Type |Valid Implicit Target Types |Valid Explicit Target Types
+
+|string
+|clob
+|char, boolean, byte, short, integer, long, biginteger, float, double, bigdecimal, xml [a]
+
+|char
+|string
+|
+ 
+|boolean
+|string, byte, short, integer, long, biginteger, float, double, bigdecimal
+|
+ 
+|byte
+|string, short, integer, long, biginteger, float, double, bigdecimal
+|boolean
+
+|short
+|string, integer, long, biginteger, float, double, bigdecimal
+|boolean, byte
+
+|integer
+|string, long, biginteger, double, bigdecimal
+|boolean, byte, short, float
+
+|long
+|string, biginteger, bigdecimal
+|boolean, byte, short, integer, float, double
+
+|biginteger
+|string, bigdecimal
+|boolean, byte, short, integer, long, float, double
+
+|bigdecimal
+|string
+|boolean, byte, short, integer, long, biginteger, float, double
+
+|float
+|string, bigdecimal, double
+|boolean, byte, short, integer, long, biginteger
+
+|double
+|string, bigdecimal
+|boolean, byte, short, integer, long, biginteger, float
+
+|date
+|string, timestamp
+|
+ 
+|time
+|string, timestamp
+|
+ 
+|timestamp
+|string
+|date, time
+
+|clob
+|
+|string
+
+|xml
+|
+|string [b]
+|===
+
+[a] string to xml is equivalent to XMLPARSE(DOCUMENT exp) - See also link:XML_Functions.adoc#18646259_XMLFunctions-XMLPARSE[XML Functions#XMLPARSE]
+[b] xml to string is equivalent to XMLSERIALIZE(exp AS STRING) - see also link:XML_Functions.adoc#18646259_XMLFunctions-XMLSERIALIZE[XML Functions#XMLSERIALIZE]
+

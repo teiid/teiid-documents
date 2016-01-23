@@ -1,0 +1,38 @@
+
+= Hive Translator (hive)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The Hive Translator, known by the type name *_hive_*, is for use with Hive v.10 and SparkSQL v1.0 and later.
+
+== Capabilities
+
+Hive has limited support for data types. It does not have native support for time/xml or LOBs. These limitations are reflected in the translator capabilities. A Teiid view can use these types, however the transformation would need to specify the necessary conversions. Note that in those situations, the evaluations will be done in Teiid engine.
+
+The DatabaseTimeZone translator property should not be used.
+
+Hive only supports EQUI join, so using any other joins types on its source tables will result in inefficient queries.
+
+To write criteria based on partitioned columns, modeled them on source table, but do not include them in selection columns.
+
+NOTE: The Hive importer does not have concept of catalog or source schema, nor does it import keys, procedures, indexes, etc.
+
+== Import Properties
+
+* _trimColumnNames_- For Hive 0.11.0 and later the the DESCRIBE command metadata is https://issues.jboss.org/browse/TEIID-2524[inappropriately returned with padding], set to true to strip trim white space from column names. Defaults to false.
+
+* _useDatabaseMetaData_- For Hive 0.13.0 and later the normal JDBC DatabaseMetaData facilities are sufficient to perform an import. Set to true to use the normal import logic with the option to import index information disabled. Defaults to false. When true, trimColumnNames has no effect.
+
+NOTE:  If false the typical JDBC DatabaseMetaData calls are not used so not all of the common JDBC importer properties are applicable to Hive. You may still use excludeTables regardless.
+
+*"Database Name"*
+
+When the database name used in the Hive is different than "default", the metadata retrieval and execution of queries does not work as expected in Teiid, as Hive JDBC driver seems to be implicitly connecting (tested with < 0.12) to "default" database, thus ignoring the database name mentioned on connection URL. This can workaround in the Teiid in JBoss AS environment by setting the following in data source configuration.
+
+[source,xml]
+----
+    <new-connection-sql>use {database-name}</new-connection-sql>
+----
+
+This is fixed in > 0.13 version Hive Driver. See https://issues.apache.org/jira/browse/HIVE-4256[https://issues.apache.org/jira/browse/HIVE-4256]
+
