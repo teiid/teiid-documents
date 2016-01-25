@@ -17,7 +17,7 @@ Use any text editor to edit the adoc files, http://asciidoctor.org/docs/asciidoc
 
 *Step.3* submit your change
 
-Once you finished this steps, the content of https://teiid.gitbooks.io/documents/content[documents] will updated automatically.
+Once you finished this steps, the content of https://teiid.gitbooks.io/documents/content/[documents] will updated automatically.
 
 == Generate html/pdf/epub/mobi 
 
