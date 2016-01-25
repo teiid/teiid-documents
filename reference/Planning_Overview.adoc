@@ -4,10 +4,15 @@
 When the query engine receives an incoming SQL query it performs the following operations:
 
 1.  *Parsing* - validate syntax and convert to internal form
+
 2.  *Resolving* - link all identifiers to metadata and functions to the function library
+
 3.  *Validating* - validate SQL semantics based on metadata references and type signatures
+
 4.  *Rewriting* - rewrite SQL to simplify expressions and criteria
-5.  *Logical plan optimization* - the rewritten canonical SQL is converted into a logical plan for in-depth optimization. The Teiid optimizer is predominantly rule-based. Based upon the query structure and hints a certain rule set will be applied. These rules may trigger in turn trigger the execution of more rules. Within several rules, Teiid also takes advantage of costing information. The logical plan optimization steps can be seen by using link:Planning_Overview.adoc#18646292_PlanningOverview-GettingaQueryPlan[SHOWPLAN DEBUG] clause and are described in the link:Query_Planner.adoc[Query Planner] section.
+
+5.  *Logical plan optimization* - the rewritten canonical SQL is converted into a logical plan for in-depth optimization. The Teiid optimizer is predominantly rule-based. Based upon the query structure and hints a certain rule set will be applied. These rules may trigger in turn trigger the execution of more rules. Within several rules, Teiid also takes advantage of costing information. The logical plan optimization steps can be seen by using link:Query_Plans.adoc[SHOWPLAN DEBUG] clause and are described in the link:Query_Planner.adoc[Query Planner] section.
+
 6.  *Processing plan conversion* - the logic plan is converted into an executable form where the nodes are representative of basic processing operations. The final processing plan is displayed as the link:Query_Plans.adoc[Query Plans].
 
 The logical query plan is a tree of operations used to transform data in source tables to the expected result set. In the tree, data flows from the bottom (tables) to the top (output). The primary logical operations are _select_ (select or filter rows based on a criteria), _project_ (project or compute column values), _join_ , _source_ (retrieve data from a table), _sort_ (ORDER BY), _duplicate removal_ (SELECT DISTINCT), _group_ (GROUP BY), and _union_ (UNION).
