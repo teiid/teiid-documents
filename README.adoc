@@ -17,11 +17,11 @@ Use any text editor to edit the adoc files, http://asciidoctor.org/docs/asciidoc
 
 *Step.3* submit your change
 
-Once you finished this steps, the content of [documents](https://teiid.gitbooks.io/documents/content/) will updated automatically.
+Once you finished this steps, the content of https://teiid.gitbooks.io/documents/content[documents] will updated automatically.
 
 == Generate html/pdf/epub/mobi 
 
-Install [gitbook](https://github.com/GitbookIO/gitbook) and [ebook-convert](https://help.gitbook.com/build/ebookconvert.html), execute the following commands
+Install https://github.com/GitbookIO/gitbook[gitbook] and https://help.gitbook.com/build/ebookconvert.html[ebook-convert], execute the following commands
 
 ----
 $ gitbook build ./ teiid-document
