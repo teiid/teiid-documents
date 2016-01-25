@@ -1,10 +1,9 @@
 
 image::cover_small.jpg[Teiid Logo]
 
+== Contribute to Teiid Document
 
-== How to Edit
-
-GitHub (https://github.com/teiid/teiid-documents[teiid/teiid-documents]) as a host for book's sources, to edit the book's content is simple as submit a change to GitHub as below 3 steps:
+GitHub (https://github.com/teiid/teiid-documents[teiid/teiid-documents]) as a host for book's sources, to edit is simple as submit a change to GitHub as below 3 steps:
 
 *Step.1* clone the sources
 
@@ -18,4 +17,17 @@ Use any text editor to edit the adoc files, http://asciidoctor.org/docs/asciidoc
 
 *Step.3* submit your change
 
-Once you finished this steps, the content of book will updated automatically.
+Once you finished this steps, the content of [documents](https://teiid.gitbooks.io/documents/content/) will updated automatically.
+
+== Generate html/pdf/epub/mobi 
+
+Install [gitbook](https://github.com/GitbookIO/gitbook) and [ebook-convert](https://help.gitbook.com/build/ebookconvert.html), execute the following commands
+
+----
+$ gitbook build ./ teiid-document
+$ gitbook pdf ./ teiid-document.pdf
+$ gitbook epub ./ teiid-document.epub
+$ gitbook mobi ./ teiid-document.mobi
+----
+
+Once above commands execured success, `teiid-document` folder, `teiid-document.pdf`, `teiid-document.epub`, `teiid-document.mobi` will generated.
