@@ -31,6 +31,28 @@ ST_GeomFromWKB(bin [, srid])
 
 bin is a blob, srid is an optional integer. Return value is a geometry.
 
+=== ST_GeomFromEWKB
+
+Returns a geometry from a blob in EWKB format.
+
+[source,sql]
+----
+ST_GeomFromEWKB(bin)
+----
+
+bin is a blob. Return value is a geometry.  Only 2 dimensions are supported.
+
+=== ST_GeomFromText
+
+Returns a geometry from a Clob in EWKT format.
+
+[source,sql]
+----
+ST_GeomFromEWKT(text)
+----
+
+text is a clob. Return value is a geometry. Only 2 dimensions are supported.
+
 === ST_GeomFromGeoJSON
 
 Returns a geometry from a Clob in GeoJSON format.
@@ -71,6 +93,15 @@ ST_GeomAsBinary(geom)
 
 geom is a geometry. Return value is a blob in WKB format.
 
+=== ST_AsEWKB
+
+[source,sql]
+----
+ST_GeomAsEWKB(geom)
+----
+
+geom is a geometry. Return value is blob in EWKB format.
+
 === ST_AsGeoJSON
 
 [source,sql]
@@ -106,6 +137,19 @@ ST_AsKML(geom)
 ----
 
 geom is a geometry. Return value is a clob with the KML value. The KML value is effectively a simplified GML value and projected into SRID 4326.
+
+== Operators
+
+=== &&
+
+Returns true if the bounding boxes of geom1 and geom2 intersect. 
+
+[source,sql]
+----
+geom1 && geom2
+----
+
+geom1, geom2 are geometries. Return value is a boolean.
 
 == Relationship Functions
 
@@ -153,6 +197,17 @@ ST_DISTANCE(geom1, geom2)
 
 geom1, geom2 are geometries. Return value is a double.
 
+=== ST_DWITHIN
+
+Returns true if the geometries are within a given distance of one another.
+
+[source,sql]
+----
+ST_DWITHIN(geom1, geom2, dist)
+----
+
+geom1, geom2 are geometries. dist is a double. Return value is a boolean.    
+
 === ST_EQUALS
 
 Returns true if the two geometries are spatially equal - the points and order may differ, but neither geometry lies outside of the other.
@@ -197,7 +252,51 @@ ST_TOUCHES(geom1, geom2)
 
 geom1, geom2 are geometries. Return value is a boolean.
 
+=== ST_WITHIN
+
+Returns true if geom1 is completely inside geom2.
+
+[source,sql]
+----
+ST_WITHIN(geom1, geom2)
+----
+
+geom1, geom2 are geometries. Return value is a boolean.
+
 == Misc. Functions
+
+=== ST_FORCE_2D
+
+Removes the z coordinate value if present.
+
+[source,sql]
+----
+ST_FORCE_2D(geom)
+----
+
+geom is a geometry. Return value is a geometry.
+
+=== ST_ENVELOPE
+
+Computes the 2D bounding box of the given geometry.
+
+[source,sql]
+----
+ST_ENVELOPE(geom)
+----
+
+geom is a geometry. Return value is a geometry.
+
+=== ST_HASARC
+
+Test if the geometry has a circular string.
+
+[source,sql]
+----
+ST_HASARC(geom)
+----
+
+geom is a geometry. Return value is a geometry.  Will currently only report false as curved geometry types are not supported.
 
 === ST_SRID
 
@@ -221,6 +320,17 @@ ST_SetSRID(geom, srid)
 
 geom is a geometry. srid is an integer. Return value is a geometry. Only the SRID metadata of the geometry is modified.
 
+=== ST_SIMPLIFY
+
+Simplifies a Geometry using the Douglas-Peucker algorithm.
+
+[source,sql]
+----
+ST_SIMPLIFY(geom, distanceTolerance)
+----
+
+geom is a geometry. distanceTolerance is a double. Return value is a geometry.
+
 === ST_TRANSFORM
 
 Transforms the geometry value from one coordinate system to another.
@@ -232,3 +342,15 @@ ST_TRANSFORM(geom, srid)
 
 geom is a geometry. srid is an integer. Return value is a geometry. The srid value and the srid of the geometry value must exist in the SPATIAL_REF_SYS view.
 
+== Aggregate Functions
+
+=== ST_EXTENT
+
+Computes the 2D bounding box around all of the geometry values.  All values should have the same srid.
+
+[source,sql]
+----
+ST_EXTENT(geom)
+----
+
+geom is a geometry. Return value is a geometry.
