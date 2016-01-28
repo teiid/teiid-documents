@@ -71,7 +71,7 @@ Suppose this example defines a view layer X. If X is queried in such a way as to
 .*Example Optional Join Hint*
 ----
 select a.column1 from a
------------------------
+----
 
 [source,sql]
 .*Example ANSI Optional Join Hint*
