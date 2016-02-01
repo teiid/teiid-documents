@@ -1,7 +1,7 @@
 
 = Salesforce Data Sources
 
-Salesforce data sources use a Teiid specific JCA connector that is deployed into Wildfly 10.0 during installation. There are two versions of the salesforce resource adapter - salesforce, which currently provides connectivity to the 22.0 Salesforce API and salesforce-34, which provides connectivity to the 34.0 Salesforce API. The version 22.0 support has been deprecated.
+Salesforce data sources use a Teiid specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. There are two versions of the salesforce resource adapter - salesforce, which currently provides connectivity to the 22.0 Salesforce API and salesforce-34, which provides connectivity to the 34.0 Salesforce API. The version 22.0 support has been deprecated.
 
 If you need connectivity to an API version other than what is built in, please utilize the project https://github.com/teiid/salesforce[https://github.com/teiid/salesforce] to generate new resource adapter / translator pair.
 
@@ -29,7 +29,7 @@ To find out all the properties that are supported by this Salesforce Connector e
 /subsystem=teiid:read-rar-description(rar-name=salesforce)
 ----
 
-TIP: *Developer’s Tip* - If Wildfly 10.0 is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in *"<jboss-install>/docs/teiid/datasources/salesforce" directory under "resource-adapters" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
+TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in *"<jboss-install>/docs/teiid/datasources/salesforce" directory under "resource-adapters" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
 
 == Mutual Authentication
 

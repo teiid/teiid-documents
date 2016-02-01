@@ -11,7 +11,7 @@ copied from http://odata.org[http://odata.org]
 
 == Teiid Support for OData
 
-When a user successfully deploys a VDB into a Teiid Server, the OData protocol support is implicitly provided by the Teiid server without any further configuration. OData support is currently not available in the Teiid Embedded profile. Teiid makes use of JBoss AS and its already configured http://www.jboss.org/resteasy[RestEasy] and http://code.google.com/p/odata4j[OData4J] libraries to provide Rest based access to the VDB. The access would be similar to accessing to any web resources deployed on JBoss AS. OData support is implemented and deployed through a single WAR file across the Teiid system. A user can access this WAR file at <jboss-as>/modules/org/jboss/teiid/deployments/odata-9.0.0.Final.war.
+When a user successfully deploys a VDB into a Teiid Server, the OData protocol support is implicitly provided by the Teiid server without any further configuration. OData support is currently not available in the Teiid Embedded profile. Teiid makes use of JBoss AS and its already configured http://www.jboss.org/resteasy[RestEasy] and http://code.google.com/p/odata4j[OData4J] libraries to provide Rest based access to the VDB. The access would be similar to accessing to any web resources deployed on JBoss AS. OData support is implemented and deployed through a single WAR file across the Teiid system. A user can access this WAR file at <jboss-as>/modules/org/jboss/teiid/deployments/odata-{{ book.fullVersionNumber }}.war.
 
 === How to Access the data?
 

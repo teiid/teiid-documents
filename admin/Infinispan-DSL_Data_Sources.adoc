@@ -1,7 +1,7 @@
 
 = Infinispan-DSL Data Sources
 
-Infinispan-DSL data sources use a Teiid specific JCA connector that is deployed into Wildfly 10.0 during installation. This connector can be configured to support the following modes of Infinispan caches that will be accessed using the Hot Rod client:
+Infinispan-DSL data sources use a Teiid specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. This connector can be configured to support the following modes of Infinispan caches that will be accessed using the Hot Rod client:
 
 |===
 |Cache Type |Property Name |Obtain Cache By

@@ -13,7 +13,7 @@ First step in configuring the data source is deploying the required JDBC jar fil
    deploy /path/to/ojdbc6.jar
 ----
 
-TIP: *Developer’s Tip* - If Wildfly 10.0 is running in standalone mode, you can also manually copy this ’ojdbc6.jar" to the "<jboss-install>/standalone/deployments" directory, to automatically deploy without using the CLI tool.
+TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalone mode, you can also manually copy this ’ojdbc6.jar" to the "<jboss-install>/standalone/deployments" directory, to automatically deploy without using the CLI tool.
 
 == Create Data Source
 
@@ -27,5 +27,5 @@ Execute following command using https://docs.jboss.org/author/display/AS7/Admin
 /subsystem=datasources/data-source=oracel-ds:enable
 ----
 
-TIP: *Developer’s Tip* - If Wildfly 10.0 is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in *"<jboss-install>/docs/teiid/datasources/oracle" directory under "datasources" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
+TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in *"<jboss-install>/docs/teiid/datasources/oracle" directory under "datasources" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
 

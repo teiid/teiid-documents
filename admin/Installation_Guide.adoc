@@ -1,7 +1,7 @@
 
 = Installation Guide
 
-Teiid needs to be installed into an existing Wildfly 10.0 installation.
+Teiid needs to be installed into an existing {{ book.asVersionNumber }} installation.
 
 NOTE: Teiid provides an link:../embedded/Embedded_Guide.adoc[embedded kit], however it should be considered a tech preview as its APIs will likely evolve and there is sparse documentation.
 
@@ -11,7 +11,7 @@ NOTE: Teiid provides an link:../embedded/Embedded_Guide.adoc[embedded kit], howe
 
 NOTE: You may also choose to use an existing AS installation. However if a previous version of Teiid was already installed, you must remove the old Teiid distribution artifacts before installing the new version.
 
-* Download http://www.jboss.org/teiid/downloads.html[Teiid]. Unzip the downloaded artifact inside the WildFly installation. Teiid 9.0 directory structure matches Wildfly directly - it is just an overlay. This will add necessary modules and configuration files to install Teiid in Wildfly 10.0 in both _Standalone_ and _Domain_ modes. Teiid provides separate configuration files for both standalone mode and domain mode. Based on mode type you selected to run Wildfly 10.0 , you may have to run a CLI script to complete the Teiid installation.
+* Download http://www.jboss.org/teiid/downloads.html[Teiid]. Unzip the downloaded artifact inside the WildFly installation. Teiid {{ book.versionNumber }} directory structure matches Wildfly directly - it is just an overlay. This will add necessary modules and configuration files to install Teiid in {{ book.asVersionNumber }} in both _Standalone_ and _Domain_ modes. Teiid provides separate configuration files for both standalone mode and domain mode. Based on mode type you selected to run {{ book.asVersionNumber }} , you may have to run a CLI script to complete the Teiid installation.
 
 The "Domain" mode recommended in a clustered environment to take advantage of clustered caching and cluster safe distribution of events. Teiid’s default configuration for Domain mode through CLI script configured for high availability and clustered caching.
 
@@ -41,7 +41,7 @@ this will install Teiid subsystem into the running configuration of the WildFly 
 
 === Domain Mode
 
-To start the server in "Domain" mode, install Wildfly 10.0 and Teiid 9.0 on all the servers that are going to be part of the cluster. Select one of the servers as the "master" domain controller, the rest of the servers will be slaves that connect to the "master" domain controller for all the administrative operations. Please refer to Wildfly 10.0 provided https://docs.jboss.org/author/display/WFLY9/WildFly+9+Cluster+Howto[documentation] for full details.
+To start the server in "Domain" mode, install {{ book.asVersionNumber }} and Teiid {{ book.versionNumber }} on all the servers that are going to be part of the cluster. Select one of the servers as the "master" domain controller, the rest of the servers will be slaves that connect to the "master" domain controller for all the administrative operations. Please refer to {{ book.asVersionNumber }} provided https://docs.jboss.org/author/display/WFLY9/WildFly+9+Cluster+Howto[documentation] for full details.
 
 Once you configured all the servers, start the "master" node with following command
 
@@ -72,7 +72,7 @@ Once VDBs have been deployed, users can now connect their JDBC applications to T
 
 == Directory Structure Explained
 
-This shows the contents of the Teiid 9.0 deployment. The directory structure is exactly the same under any JBoss profile.
+This shows the contents of the Teiid {{ book.versionNumber }} deployment. The directory structure is exactly the same under any JBoss profile.
 
 .*Directory Structure*
 ----
@@ -112,10 +112,10 @@ This shows the contents of the Teiid 9.0 deployment. The directory structure is 
 | -
  
 |/modules/system/layers/base/org/jboss/teiid/*
-|This directory contains the Teiid modules for Wildfly 10.0 system
+|This directory contains the Teiid modules for {{ book.asVersionNumber }} system
 
 |/modules/system/layers/base/org/jboss/teiid/client
-|This directory contains Teiid client libraries. It has the Teiid JDBC driver jar, "teiid-9.0.0.Final-jdbc.jar", and also contains "teiid-hibernate-dialect-9.0.0.Final.jar" that contains Teiid’s Hibernate dialect.
+|This directory contains Teiid client libraries. It has the Teiid JDBC driver jar, "teiid-{{ book.fullVersionNumber }}-jdbc.jar", and also contains "teiid-hibernate-dialect-{{ book.fullVersionNumber }}.jar" that contains Teiid’s Hibernate dialect.
 
 |\{standalone or domain}/tmp/teiid
 |This directory under standalone or domain, contains temporary files created by Teiid. These are mostly created by the buffer manager. These files are not needed across a VM restart. Creation of Teiid lob values(for example through SQL/XML) will typically create one file per lob once it exceeds the allowable in memory size of 8KB. In heavy usage scenarios, consider pointing the buffer directory at a partition that is routinely defragmented.

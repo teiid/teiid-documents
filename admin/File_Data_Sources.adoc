@@ -1,7 +1,7 @@
 
 = File Data Sources
 
-File data sources use a Teiid specific JCA connector that is deployed into Wildfly 10.0 during installation. There are many ways to create the file data source, using CLI, link:AdminShell.adoc[AdminShell], admin-console, etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
+File data sources use a Teiid specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. There are many ways to create the file data source, using CLI, link:AdminShell.adoc[AdminShell], admin-console, etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
 
 Execute following command using the https://docs.jboss.org/author/display/AS72/Admin+Guide#AdminGuide-RunningtheCLI[CLI] once you connected to the Server. Make sure you provide the correct directory name and other properties below. Add any additional properties required by the connector by duplicating the "connection-definitions" command below. Edit the JNDI name to match the JNDI name you used in VDB.
 
@@ -22,5 +22,5 @@ To find out all the properties that are supported by this File Connector execute
 /subsystem=teiid:read-rar-description(rar-name=file)
 ----
 
-TIP: *Developer’s Tip* - If Wildfly 10.0 is running in standalone mode, you can also manually edit the  "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in "<jboss-install>/docs/teiid/datasources/file" directory under "resource-adapters" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
+TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalone mode, you can also manually edit the  "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in "<jboss-install>/docs/teiid/datasources/file" directory under "resource-adapters" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
 

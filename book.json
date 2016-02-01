@@ -1,0 +1,10 @@
+{
+    "variables" : {
+        "versionNumber" : "9.0",
+        "fullVersionNumber": "9.0.0.Final",
+        "asVersionNumber" :  "Wildfly 9.0.2",
+        "copyrightYear" :  "2016",
+        "copyrightHolder" :  "Red Hat, Inc.",
+        "javaVersionUrl" : "https://docs.oracle.com/javase/7"
+    }
+}

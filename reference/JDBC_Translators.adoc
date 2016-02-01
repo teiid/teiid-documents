@@ -143,7 +143,7 @@ When specifying the importer property, it must be prefixed with "importer.". Exa
 |false
 |===
 
-[1] JavaDoc for http://java.sun.com/javase/6/docs/api/java/sql/DatabaseMetaData.html[DatabaseMetaData] +
+[1] JavaDoc for {{ book.javaVersionUrl }}/docs/api/java/sql/DatabaseMetaData.html[DatabaseMetaData] +
 [2] The fully qualified name for exclusion is based upon the settings of the translator and the particulars of the database. All of the applicable name parts used by the translator settings (see useQualifiedName and useCatalogName) including catalog, schema, table will be combined as catalogName.schemaName.tableName with no quoting. For example Oracle does not report a catalog, so the name used with default settings for comparison would be just schemaName.tableName.
 
 WARNING: The default import settings will crawl all available metadata. This import process is time consuming and full metadata import is not needed in most situations. Most commonly you’ll want to limit the import by at least schemaPattern and tableTypes.

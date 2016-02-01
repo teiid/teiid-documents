@@ -1,7 +1,7 @@
 
 = Infinispan Data Sources
 
-Infinispan data sources use a Teiid specific JCA connector that is deployed into Wildfly 10.0 during installation. This connector can be configured to support the following modes of Infinispan caches:
+Infinispan data sources use a Teiid specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. This connector can be configured to support the following modes of Infinispan caches:
 
 |===
 |Cache Type |Obtain Cache By 
@@ -81,7 +81,7 @@ To find out all the properties that are supported by this Infinispan Connector e
 /subsystem=teiid:read-rar-description(rar-name=infinispan)
 ----
 
-TIP: *Developer’s Tip* - If Wildfly 10.0 is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in *"<jboss-install>/docs/teiid/datasources/infinispan" directory under "resource-adapters" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
+TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in *"<jboss-install>/docs/teiid/datasources/infinispan" directory under "resource-adapters" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
 
 NOTE: *Avoid Classloading Issues:* If you are using a servlet or other type of web application to create the DefaultCacheManager for the cache, be sure not to include the Infinispan jar dependencies in the application, but add their module dependencies.
 

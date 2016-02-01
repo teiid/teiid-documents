@@ -175,7 +175,7 @@ Numeric functions return numeric values (integer, long, float, double, bigintege
 
 == Parsing Numeric Datatypes from Strings
 
-Teiid offers a set of functions you can use to parse numbers from strings. For each string, you need to provide the formatting of the string. These functions use the convention established by the java.text.DecimalFormat class to define the formats you can use with these functions. You can learn more about how this class defines numeric string formats by visiting the Sun Java Web site at the following http://java.sun.com/javase/6/docs/api/java/text/DecimalFormat.html[URL for Sun Java].
+Teiid offers a set of functions you can use to parse numbers from strings. For each string, you need to provide the formatting of the string. These functions use the convention established by the java.text.DecimalFormat class to define the formats you can use with these functions. You can learn more about how this class defines numeric string formats by visiting the Sun Java Web site at the following {{ book.javaVersionUrl }}/docs/api/java/text/DecimalFormat.html[URL for Sun Java].
 
 For example, you could use these function calls, with the formatting string that adheres to the java.text.DecimalFormat convention, to parse strings and return the datatype you need:
 
@@ -210,7 +210,7 @@ For example, you could use these function calls, with the formatting string that
 
 == Formatting Numeric Datatypes as Strings
 
-Teiid offers a set of functions you can use to convert numeric datatypes into strings. For each string, you need to provide the formatting. These functions use the convention established within the java.text.DecimalFormat class to define the formats you can use with these functions. You can learn more about how this class defines numeric string formats by visiting the Sun Java Web site at the following http://java.sun.com/javase/6/docs/api/java/text/DecimalFormat.html[URL for Sun Java] .
+Teiid offers a set of functions you can use to convert numeric datatypes into strings. For each string, you need to provide the formatting. These functions use the convention established within the java.text.DecimalFormat class to define the formats you can use with these functions. You can learn more about how this class defines numeric string formats by visiting the Sun Java Web site at the following {{ book.javaVersionUrl }}/docs/api/java/text/DecimalFormat.html[URL for Sun Java] .
 
 For example, you could use these function calls, with the formatting string that adheres to the java.text.DecimalFormat convention, to format the numeric datatypes into strings:
 
