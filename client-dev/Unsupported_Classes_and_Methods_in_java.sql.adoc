@@ -54,6 +54,7 @@ rollback(Savepoint savepoint) - throws SQLFeatureNotSupportedException
 setHoldability - throws SQLFeatureNotSupportedException
 setSavepoint - throws SQLFeatureNotSupportedException
 setTypeMap - throws SQLFeatureNotSupportedException
+setRealOnly - effectively ignored
 ----
 
 |`DatabaseMetaData`
