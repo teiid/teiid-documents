@@ -23,7 +23,7 @@ Teiid supports a couple different encryption modes based on the _mode_ attribute
 
 == SSL Authentication Modes
 
-* *anonymous* – No certificates are required, but all communications are still encrypted using the TLS_DH_anon_WITH_AES_128_CBC_SHA SSL suite. In most secure intranet environments, anonymous is suitable to just bulk encrypt traffic without the need to setup SSL certificates. No certificates are exchanged, settings are not needed for the keystore and truststore properties. Clients must have `org.teiid.ssl.allowAnon` set to true (the default) to connect to an anonymous server.
+* *anonymous* – No certificates are required, but all communications are still encrypted using the TLS_DH_anon_WITH_AES_128_CBC_SHA SSL cipher suite. In most secure intranet environments, anonymous is suitable to just bulk encrypt traffic without the need to setup SSL certificates. No certificates are exchanged, settings are not needed for the keystore and truststore properties. JDBC Clients must have `org.teiid.ssl.allowAnon` set to true (the default) to connect to an anonymous server.  ODBC clients may not have the TLS_DH_anon_WITH_AES_128_CBC_SHA cipher suite available. 
 
 * *1-way* – Only authenticates the server to the client. Requires a private key keystore to be created for the server and a truststore at the client that authenticates that certificate.
 
