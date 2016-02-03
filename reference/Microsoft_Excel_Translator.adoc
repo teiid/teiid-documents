@@ -77,6 +77,10 @@ Import properties guide the schema generation part during the deployment of the 
 
 It is highly recommended that you define all the above importer properties, such that information inside the Excel Document is correctly interpreted.
 
+NOTE: Purely numerical cells in a column contain containing mixed types will have a string form matching their decimal representation, 
+thus integral values will have .0 appended.  If you need the exact text representation, then cell must be a string value which can be 
+forced by putting a single quote ' in front of the numeric text of the cell, or by putting a single space in front of the numeric text. 
+ 
 === Translator Extension Properties
 
 Currently there are no Translator Extension properties defined for this translator.
