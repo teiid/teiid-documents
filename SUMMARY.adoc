@@ -1,5 +1,7 @@
 = Summary
 
+. link:Legal_Notice.adoc[Legal Notice]
+
 . link:admin/Administrators_Guide.adoc[Administrator's Guide]
 .. link:admin/Installation_Guide.adoc[Installation Guide]
 .. link:admin/Deploying_VDBs.adoc[Deploying VDBs]
