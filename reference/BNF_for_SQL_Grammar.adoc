@@ -19,7 +19,7 @@
 |Keyword |Usage
 
 |_ADD_
-|link:BNF_for_SQL_Grammar.adoc#18646304_BNFforSQLGrammar-addSetOption[add set option]
+|<<add set option ::=, add set option>>
 
 |_ALL_
 |link:BNF_for_SQL_Grammar.adoc#18646304_BNFforSQLGrammar-aggregateSymbol[standard aggregate function], link:BNF_for_SQL_Grammar.adoc#18646304_BNFforSQLGrammar-function[function], link:BNF_for_SQL_Grammar.adoc#18646304_BNFforSQLGrammar-queryExpressionBody[query expression body], link:BNF_for_SQL_Grammar.adoc#18646304_BNFforSQLGrammar-queryTerm[query term] 

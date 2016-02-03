@@ -3,3 +3,15 @@
 
 Teiid at its core is a federated relational query engine. This query engine allows you to treat all of your data sources as one virtual database and access them in a single SQL query. This allows you to focus on building your application, not on hand-coding joins, and other relational operations, between data sources.
 
+
+== Child Pages
+
+* link:Planning_Overview.adoc[Planning Overview]
+* link:Federated_Optimizations.adoc[Federated Optimizations]
+* link:Subquery_Optimization.adoc[Subquery Optimization]
+* link:XQuery_Optimization.adoc[XQuery Optimization]
+* link:Federated_Failure_Modes.adoc[Federated Failure Modes]
+* link:Query_Plans.adoc[Query Plans]
+* link:Query_Planner.adoc[Query Planner]
+* link:Conformed_Tables.adoc[Conformed Tables]
+
