@@ -1,4 +1,6 @@
 
+link:./Legal_Notice.adoc[Legal Notice]
+
 image::cover_small.jpg[Teiid Logo]
 
 == Contribute to Teiid Document

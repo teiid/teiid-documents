@@ -9,13 +9,12 @@ A query plan (also known as an execution or processing plan) is a set of instruc
 
 You can get a query plan any time you execute a command. The SQL options available are as follows:
 
-*SET SHOWPLAN [ON|DEBUG]*- Returns the processing plan or the plan and the full planner link:Query_Planner.html[Debug Log]. See also the https://docs.jboss.org/author/display/TEIID/SET+Statement[SET Statement].
+*SET SHOWPLAN [ON|DEBUG]*- Returns the processing plan or the plan and the full planner link:Query_Planner.adoc[Debug Log]. See also the link:../client-dev/SET_Statement.adoc[SET Statement].
 
-With the above options, the query plan is available from the Statement object by casting to the `org.teiid.jdbc.TeiidStatement` interface or by using the "SHOW PLAN" https://docs.jboss.org/author/display/TEIID/SHOW+Statement[statement].
+With the above options, the query plan is available from the Statement object by casting to the `org.teiid.jdbc.TeiidStatement` interface or by using the link:../client-dev/SHOW_Statement.adoc[SHOW PLAN statement].
 
-Retrieving a Query Plan
-
-[source,sql]
+[source,java]
+.**Retrieving a Query Plan**
 ----
 statement.execute("set showplan on");
 ResultSet rs = statement.executeQuery("select ...");
@@ -40,7 +39,7 @@ Once a query plan has been obtained you will most commonly be looking for:
 
 * Presence of federated optimizations, such as dependent joins.
 
-* Ensure hints have the desired affects - see https://docs.jboss.org/author/display/TEIID/Hints+and+Options[Hints and Options], hints in the link:FROM_Clause.adoc[FROM Clause], link:Subquery_Optimization.html[Subquery Optimization], and link:Federated_Optimizations.adoc[Federated Optimizations].
+* Ensure hints have the desired affects - see link:../caching/Hints_and_Options.adoc[Hints and Options], hints in the link:FROM_Clause.adoc[FROM Clause], link:Subquery_Optimization.adoc[Subquery Optimization], and link:Federated_Optimizations.adoc[Federated Optimizations].
 
 All of the above information can be determined from the processing plan. You will typically be interested in analyzing the textual form of the final processing plan. To understand why particular decisions are made for debugging or support you will want to obtain the full debug log which will contain the intermediate planning steps as well as annotations as to why specific pushdown decisions are made.
 
@@ -54,7 +53,7 @@ Relational plans represent the processing plan that is composed of nodes represe
 
 The nodes for a relational query plan are:
 
-* Access - Access a source. A source query is sent to the connection factory associated with the source. [For a dependent join, this node is called Dependent Access.]
+* Access - Access a source. A source query is sent to the connection factory associated with the source. (For a dependent join, this node is called Dependent Access.)
 * Dependent Procedure Access - Access a stored procedure on a source using multiple sets of input values.
 * Batched Update - Processes a set of updates as a batch.
 * Project - Defines the columns returned from the node. This does not alter the number of records returned.
@@ -132,7 +131,7 @@ The root node will display additional information.
 
 The query processor plan can be obtained in a plain text or xml format. The plan text format is typically easier to read, while the xml format is easier to process by tooling. When possible tooling should be used to examine the plans as the tree structures can be deeply nested.
 
-Data flows from the leafs of the tree to the root. Sub plans for procedure execution can be shown inline, and are differentiated by different indentation. Given a user query of "SELECT pm1.g1.e1, pm1.g2.e2, pm1.g3.e3 from pm1.g1 inner join (pm1.g2 left outer join pm1.g3 on pm1.g2.e1=pm1.g3.e1) on pm1.g1.e1=pm1.g3.e1" the text for a processor plan that does not push down the joins would look like:
+Data flows from the leafs of the tree to the root. Sub plans for procedure execution can be shown inline, and are differentiated by different indentation. Given a user query of `SELECT pm1.g1.e1, pm1.g2.e2, pm1.g3.e3 from pm1.g1 inner join (pm1.g2 left outer join pm1.g3 on pm1.g2.e1=pm1.g3.e1) on pm1.g1.e1=pm1.g3.e1`, the text for a processor plan that does not push down the joins would look like:
 
 [source,xml]
 ----
