@@ -213,4 +213,4 @@ The internal interface for Teiid embedded’s logging is `org.teiid.logging.Logg
 * A `MetadataRepository` is scoped to a VDB in AS, but is scoped to the entire `EmbeddedServer` instance and must be registered via the `EmbeddedServer.addMetadataRepository` method.
 * MDC logging values are not available as Java logging lacks the concept of a mapped diagnostic context.
 * Translator overrides in vdb.xml files is not supported.
-
+* The legacy function model is not supported.
