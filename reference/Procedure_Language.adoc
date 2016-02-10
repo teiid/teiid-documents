@@ -163,7 +163,7 @@ Syntax Rules:
 
 == Assignment Statement
 
-An assignment statement assigns a value to a variable by either evaluating an expression.
+An assignment statement assigns a value to a variable by evaluating an expression.
 
 Usage:
 
@@ -178,6 +178,19 @@ Example Syntax
 ----
 myString = 'Thank you';
 VARIABLES.x = (SELECT Column1 FROM MySchema.MyTable);
+----
+
+Valid variables for assignment include any in scope variable that has been declared with a declaration statement, or the procedure in_out and out parameters.  In_out and out parameters can be accessed as their fully qualified name.
+
+Example Out Parameter
+
+[source,sql]
+----
+CREATE VIRTUAL PROCEDURE proc (OUT STRING x, INOUT STRING y) AS
+BEGIN
+  proc.x = 'some value ' || proc.y;
+  y = 'some new value';
+END
 ----
 
 == Special Variables

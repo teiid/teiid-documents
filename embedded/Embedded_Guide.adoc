@@ -175,6 +175,43 @@ config.addTransport(s);
 es.start(config);
 ----
 
+
+[source,java]
+.Example - SSL transport
+----
+EmbeddedServer server = new EmbeddedServer();  
+...  
+EmbeddedConfiguration config = new EmbeddedConfiguration();  
+SocketConfiguration socketConfiguration = new SocketConfiguration();  
+  
+SSLConfiguration sslConfiguration = new SSLConfiguration();  
+
+//Settings shown with their default values
+//sslConfiguration.setMode(SSLConfiguration.ENABLED);  
+//sslConfiguration.setAuthenticationMode(SSLConfiguration.ONEWAY);  
+//sslConfiguration.setSslProtocol(SocketUtil.DEFAULT_PROTOCOL);  
+//sslConfiguration.setKeymanagementAlgorithm(KeyManagerFactory.getDefaultAlgorithm());  
+
+//optionally restrict the cipher suites
+//sslConfiguration.setEnabledCipherSuites("SSL_RSA_WITH_RC4_128_MD5,SSL_RSA_WITH_RC4_128_SHA");
+
+//for the server key
+sslConfiguration.setKeystoreFilename("ssl-example.keystore");  
+sslConfiguration.setKeystorePassword("redhat");  
+sslConfiguration.setKeystoreType("JKS");  
+sslConfiguration.setKeystoreKeyAlias("teiid");  
+sslConfiguration.setKeystoreKeyPassword("redhat");  
+
+//for two way ssl set a truststore for client certs
+//sslConfiguration.setTruststoreFilename("ssl-example.truststore");  
+//sslConfiguration.setTruststorePassword("redhat");
+  
+socketConfiguration.setSSLConfiguration(sslConfiguration);  
+config.addTransport(socketConfiguration);  
+  
+server.start(config);
+----  
+
 if you want to add a JDBC transport, follow the instructions above, however set the protocol to `WireProtocol.teiid` and choose a different port number. Once the above server is running, you can use same https://docs.jboss.org/author/display/TEIID/Connecting+to+a+Teiid+Server[instructions] as Teiid Server to access Embedded Teiid Server from remote client application. Note that you can add multiple transports to single Embedded Server instance, to expose different transports.
 
 == Security
