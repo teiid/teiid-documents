@@ -10,7 +10,7 @@ Type Conversion Considerations:
 * The NULL value may be converted to any type.
 * Any valid implicit conversion is also a valid explicit conversion.
 * Situations involving literal values that would normally require explicit conversions may have the explicit conversion applied implicitly if no loss of information occurs.
-* If https://docs.jboss.org/author/display/TEIID/System+Properties[widenComparisonToString] is false (the default), when Teiid detects that an explicit conversion can not be applied implicitly in criteria, then an exception will be raised. If https://docs.jboss.org/author/display/TEIID/System+Properties[widenComparisonToString] is true, then depending upon the comparison a widening conversion will be applied or the criteria will be treated as false.
+* If link:../admin/System_Properties.adoc[widenComparisonToString] is false (the default), when Teiid detects that an explicit conversion can not be applied implicitly in criteria, then an exception will be raised. If link:../admin/System_Properties.adoc[widenComparisonToString] is true, then depending upon the comparison a widening conversion will be applied or the criteria will be treated as false.
 
 For example:
 
@@ -19,7 +19,7 @@ For example:
 SELECT * FROM my.table WHERE created_by = 'not a date'
 ----
 
-With https://docs.jboss.org/author/display/TEIID/System+Properties[widenComparisonToString] as false and created_by is typed as date, rather than converting `not a date` to a date value, an exception will be raised.
+With link:../admin/System_Properties.adoc[widenComparisonToString] as false and created_by is typed as date, rather than converting `not a date` to a date value, an exception will be raised.
 
 * Array conversions are currently only valid to and from compatible object arrays. It is not yet possible for example to cast from integer[] to long[].
 * Explicit conversions that are not allowed between two types will result in an exception before execution. Allowed explicit conversions may still fail during processing if the runtime values are not actually convertable.

@@ -53,5 +53,5 @@ NOTE: These affect Teiid globally, and not just through the ODBC transport.
 
 *Client*
 
-System properties can also be set for client VMs. See https://docs.jboss.org/author/display/TEIID/Additional+Socket+Client+Settings[Additional Socket Client Settings].
+System properties can also be set for client VMs. See link:../client-dev/Additional_Socket_Client_Settings.adoc[Additional Socket Client Settings].
 

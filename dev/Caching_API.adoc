@@ -1,7 +1,7 @@
 
 = Caching API
 
-Translators may contribute cache entries to the https://docs.jboss.org/author/display/TEIID/Results+Caching[result set cache] by the use of the `CacheDirective` object. Translators wishing to participate in caching should return a `CacheDirective` from the `ExecutionFactory.getCacheDirective` method, which is called prior to execution. The command passed to `getCacheDirective` will already have been vetted to ensure that the results are eligible for caching. For example update commands or commands with pushed dependent sets will not be eligible for caching.
+Translators may contribute cache entries to the link:../caching/Results_Caching.adoc[result set cache] by the use of the `CacheDirective` object. Translators wishing to participate in caching should return a `CacheDirective` from the `ExecutionFactory.getCacheDirective` method, which is called prior to execution. The command passed to `getCacheDirective` will already have been vetted to ensure that the results are eligible for caching. For example update commands or commands with pushed dependent sets will not be eligible for caching.
 
 If the translator returns null for the `CacheDirective`, which is the default implementation, the engine will not cache the translator results beyond the current command. It is up to your custom translator or custom delegating translator to implement your desired caching policy.
 
@@ -11,7 +11,7 @@ The returned `CacheDirective` will be set on the `ExecutionContext` and is avail
 
 If you plan on modifying the `CacheDirective` during execution, just make sure to return a new instance from the `ExecutionFactory.getCacheDirective` call, rather than returning a shared instance.
 
-The `CacheDirective` readAll Boolean field is used to control whether the entire result should be read if not all of the results were consumed by the engine. If readAll is false then any partial usage of the result will not result in it being added as a cache entry. Partial use is determined after any implicit or explicit limit has been applied. The other fields on the `CacheDirective` object map to the https://docs.jboss.org/author/display/TEIID/Hints+and+Options[cache hint options]. See the table below for the default values for all options.
+The `CacheDirective` readAll Boolean field is used to control whether the entire result should be read if not all of the results were consumed by the engine. If readAll is false then any partial usage of the result will not result in it being added as a cache entry. Partial use is determined after any implicit or explicit limit has been applied. The other fields on the `CacheDirective` object map to the link:../caching/Hints_and_Options.adoc[cache hint options]. See the table below for the default values for all options.
 
 |===
 |option |default

@@ -5,8 +5,8 @@ Since Teiid is installed in JBoss AS, there is no additional configuration neede
 
 Typically users create clusters to improve the performance of the system through:
 
-* *Load Balancing*: Take look at the https://docs.jboss.org/author/display/TEIID/Client+Developer%27s+Guide[Client Developer’s Guide] on how to use load balancing between multiple nodes.
-* *Fail Over*: Take look at the https://docs.jboss.org/author/display/TEIID/Client+Developer%27s+Guide[Client Developer’s Guide] on how to use fail over between multiple nodes.
+* *Load Balancing*: Take look at the link:../client-dev/Client_Developers_Guide.adoc[Client Developer’s Guide] on how to use load balancing between multiple nodes.
+* *Fail Over*: Take look at the link:../client-dev/Client_Developers_Guide.adoc[Client Developer’s Guide] on how to use fail over between multiple nodes.
 * *Distributed Caching*: This is automatically done for you once you configure it as specified above. 
 * *Event distribution*: metadata and data modifications will be distributed to all cluster members.
 

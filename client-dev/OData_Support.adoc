@@ -184,7 +184,7 @@ DataServiceVersion: 1.0
 
 By default OData access is secured using HTTPBasic authentication. The user will be authenticated against Teiid’s default security domain "teiid-security". Users are expected to have the *odata* role. However, if you wish to change the security domain, manually edit the _web.xml_ file WAR file in _<modules>/org/jboss/teiid/main/deployments_ directory. In future versions more WS-Security based configurations will be provided.
 
-NOTE: *SAML Based Security* - To provide Single-Sign-On (SSO) using SAML2 for OData access, please take a look in the https://docs.jboss.org/author/display/TEIID/Security+Guide[Security Guide] for https://docs.jboss.org/author/display/TEIID/SAML+Based+Security+For+OData[SAML Based Security For OData] section.
+NOTE: *SAML Based Security* - To provide Single-Sign-On (SSO) using SAML2 for OData access, please take a look in the link:../security/Security_Guide.adoc[Security Guide] for link:../security/SAML_Based_Security_For_OData.adoc[SAML Based Security For OData] section.
 
 ==== Configuration
 

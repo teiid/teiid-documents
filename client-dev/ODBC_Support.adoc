@@ -7,7 +7,7 @@ Teiid can provide ODBC access to deployed VDBs in the Teiid runtime through http
 
 NOTE: By default, ODBC is enabled and running on on port _35432_.
 
-The pg emulation is not complete. The intention of the ODBC access is to provide non-JDBC connectivity to issue Teiid queries - not pgsql queries. While many PostgreSQL constructs are supported the default behavior for queries matches Teiid’s expectations. See https://docs.jboss.org/author/display/TEIID/System+Properties[System Properties] for optional properties that further emulate pgsql handling.
+The pg emulation is not complete. The intention of the ODBC access is to provide non-JDBC connectivity to issue Teiid queries - not pgsql queries. While many PostgreSQL constructs are supported the default behavior for queries matches Teiid’s expectations. See link:../admin/System_Properties.adoc[System Properties] for optional properties that further emulate pgsql handling.
 
 Known Limitations:
 
@@ -22,7 +22,7 @@ your Teiid VDB.
 
 WARNING: By default Teiid supports plain text password authentication for ODBC. If the client/server are not configured to use SSL or GSS authentication, the password will be sent in plain text over the network. If you need secure passwords in transit and are not using SSL, then consider installing a security domain that will accept safe password values from the client (for example encrypted or hashed).
 
-See the https://docs.jboss.org/author/display/TEIID/Security+Guide[Security Guide] for details on configuring SSL for and using Kerberos with the pg transport.
+See the link:../security/Security_Guide.adoc[Security Guide] for details on configuring SSL for and using Kerberos with the pg transport.
 
 Many times is is not possible to use Teiid specific connection properties when making an ODBC connection. If you find yourself in this situation and cannot use post connection SET statements, then the VDB itself may take default connection properties for ODBC. Use VDB properties of the form connection.XXX to control things like partial results mode, result set caching, etc.
 

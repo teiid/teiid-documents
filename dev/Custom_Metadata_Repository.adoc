@@ -1,7 +1,7 @@
 
 = Custom Metadata Repository
 
-If above provided https://docs.jboss.org/author/display/TEIID/Metadata+Repositories[metadata facilities] are not sufficient then a developer can extend the _MetadataRepository_ class provided in the _org.teiid.api_ jar to plug-in their own metadata facilities into the Teiid engine. For example, a user can write a metadata facility that is based on reading data from a database or a JCR repository. See link:Setting_up_the_build_environment.adoc[Setting up the build environment] to start development. For Example:
+If above provided link:../reference/Metadata_Repositories.adoc[metadata facilities] are not sufficient then a developer can extend the _MetadataRepository_ class provided in the _org.teiid.api_ jar to plug-in their own metadata facilities into the Teiid engine. For example, a user can write a metadata facility that is based on reading data from a database or a JCR repository. See link:Setting_up_the_build_environment.adoc[Setting up the build environment] to start development. For Example:
 
 [source,java]
 .*Sample Java Code*

@@ -28,7 +28,7 @@ For example, to extend the Oracle Connector
 
 * Create a new translator JAR containing your custom ExecutionFactory. Refer to link:Packaging.html[Packaging] and link:Deployment.adoc[Deployment] for instructions on using the JAR file. Once this is extended translator is deployed in the Teiid Server, use "myoracle" as translator name instead of the "oracle" in your VDB’s Oracle source configuration.
 
-If you source handing of the function can be described by simple parameter substitution into a string, then you may not need to extend the translator for a source specific function. You can use the extension property teiid_rel:native-query to define the syntax handling - see also https://docs.jboss.org/author/display/TEIID/DDL+Metadata[DDL Metadata] for functions.
+If you source handing of the function can be described by simple parameter substitution into a string, then you may not need to extend the translator for a source specific function. You can use the extension property teiid_rel:native-query to define the syntax handling - see also link:../reference/DDL_Metadata.adoc[DDL Metadata] for functions.
 
 == When Using Designer
 
@@ -36,7 +36,7 @@ If you are designing your VDB using the Designer, you can define a function on a
 
 == When Using Dynamic VDB
 
-If you are using the Dynamic VDB, and defining the metadata https://docs.jboss.org/author/display/TEIID/DDL+Metadata[using DDL], you can define your source function in the VDB as
+If you are using the Dynamic VDB, and defining the metadata link:../reference/DDL_Metadata.adoc[using DDL], you can define your source function in the VDB as
 
 [source,xml]
 ----

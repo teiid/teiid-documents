@@ -52,7 +52,7 @@ deploy /path/to/my.vdb
 deploy /path/to/my.vdb --server-groups=main-server-group
 ----
 
-to deploy the VDB. Note that in domain mode, you need to either select a particular "server-group" or all available server groups are deployment options. Check out https://docs.jboss.org/author/display/AS7/Admin+Guide[CLI documentation] for more general usage of the CLI.
+to deploy the VDB. Note that in domain mode, you need to either select a particular "server-group" or all available server groups are deployment options. Check out {{ book.asDocRoot }}/Admin+Guide[CLI documentation] for more general usage of the CLI.
 
 == AdminShell Deployment
 

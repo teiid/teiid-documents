@@ -28,7 +28,7 @@ Examples
 select x.* from (call source.invokeMDX('some query')) r, arraytable(r.tuple COLUMNS first string, second bigdecimal) x
 ----
 
-ARRAYTABLE is effectively a shortcut for using the link:Miscellaneous_Functions.adoc#18646261_MiscellaneousFunctions-arrayget[Miscellaneous Functions#array_get] function in a nested table. For example
+ARRAYTABLE is effectively a shortcut for using the link:Miscellaneous_Functions.adoc#_array_get[Miscellaneous Functions#array_get] function in a nested table. For example
 
 [source,sql]
 ----

@@ -71,7 +71,7 @@ The execution properties for a translator typically have reasonable defaults. Fo
 |If true, then returned lobs (clob, blob, sql/xml) will be copied by the engine in a memory safe manner. Use this option if the source does not support memory safe lobs or you want to disconnect lobs from the source connection.
 |false
 
-NOTE: Only a subset of the supports metadata can be set through execution properties. If more control is needed, please consult the https://docs.jboss.org/author/display/TEIID/Developer%27s+Guide[Developer’s Guide].
+NOTE: Only a subset of the supports metadata can be set through execution properties. If more control is needed, please consult the link:../dev/Developers_Guide.adocDeveloper’s Guide].
 
 There are no base importer settings.
 

@@ -105,7 +105,7 @@ Parse and format Date/Time functions use the convention established within the j
 |date in \{date}, time in \{time}, returns timestamp
 
 |WEEK(x)
-|Return week in year 1-53, see also https://docs.jboss.org/author/display/TEIID/System+Properties[System Properties] for customization
+|Return week in year 1-53, see also link:../admin/System_Properties.adoc[System Properties] for customization
 |x in \{date, timestamp}, returns integer
 
 |YEAR(x)
@@ -154,7 +154,7 @@ If (endTime > startTime), a non-negative number will be returned. If (endTime < 
 
 * Timestampdiff typically returns an integer, however Teiid’s version returns a long. You may receive an exception if you expect a value out
 of the integer range from a pushed down timestampdiff.
-* Teiid’s implementation of timestamp diff in 8.2 and prior versions returned values based upon the number of whole canonical interval approximations (365 days in a year, 91 days in a quarter, 30 days in a month, etc.) crossed. For example the difference in months between 2013-03-24 and 2013-04-01 was 0, but based upon the date parts crossed is 1. See https://docs.jboss.org/author/display/TEIID/System+Properties[System Properties] for backwards compatibility.
+* Teiid’s implementation of timestamp diff in 8.2 and prior versions returned values based upon the number of whole canonical interval approximations (365 days in a year, 91 days in a quarter, 30 days in a month, etc.) crossed. For example the difference in months between 2013-03-24 and 2013-04-01 was 0, but based upon the date parts crossed is 1. See link:../admin/System_Properties.adoc[System Properties] for backwards compatibility.
 
 == Parsing Date Datatypes from Strings
 

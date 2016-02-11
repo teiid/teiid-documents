@@ -2,7 +2,7 @@
 = Internal Materialization
 
 Internal materialization creates Teiid temporary tables to hold the materialized table. While these tables are not fully durable, they perform well in most circumstances and the data is present at each Teiid
-instance which removes the single point of failure and network overhead of an external database. Internal materialization also provides more built-in facilities for refreshing and monitoring. See https://docs.jboss.org/author/display/TEIID/Memory+Management#MemoryManagement-Limitations[Memory Limitations] regarding size limitations.
+instance which removes the single point of failure and network overhead of an external database. Internal materialization also provides more built-in facilities for refreshing and monitoring. See link:../admin/Memory_Management.adoc#_limitations[Memory Limitations] regarding size limitations.
 
 The materialized option must be set for the view to be materialized. The link:Hints_and_Options.adoc[Cache Hint], when used in the context of an internal materialized view transformation query, provides the ability to fine tune the materialized table. The caching options are also settable via extension metadata:
 

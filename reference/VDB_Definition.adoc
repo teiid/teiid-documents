@@ -99,7 +99,7 @@ NOTE: An admin needs to configure a matching "custom-security" login module in s
 
 * _connection.XXX_ 
 
-For use by the ODBC transport and OData to set default connection/execution properties. See https://docs.jboss.org/author/display/TEIID/Driver+Connection[Driver Connection] for all properties. Note these are set on the connection after it has been established.
+For use by the ODBC transport and OData to set default connection/execution properties. See link:../client-dev/Driver_Connection.adoc[Driver Connection] for all properties. Note these are set on the connection after it has been established.
 
 
 [source,xml]
@@ -125,7 +125,7 @@ Used to override the visibility of imported vdb models, where model is the name 
 
 * _include-pg-metadata_ 
 
-By default, PG metadata is always added to VDB unless https://docs.jboss.org/author/display/TEIID/System+Properties[System Properties] set property _org.teiid.addPGMetadata_ to false. This property enables adding PG metadata per VDB. Please note that if you are using ODBC to access your VDB, the VDB must include PG metadata.
+By default, PG metadata is always added to VDB unless link:../admin/System_Properties.adoc[System Properties] set property _org.teiid.addPGMetadata_ to false. This property enables adding PG metadata per VDB. Please note that if you are using ODBC to access your VDB, the VDB must include PG metadata.
 
 * _lazy-invalidate_ 
 

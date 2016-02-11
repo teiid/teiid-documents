@@ -9,5 +9,5 @@ With the exception of JDBC sources, other supported data sources have a correspo
 
 Some data sources may contain passwords or other sensitive information. See the WIKI article https://community.jboss.org/wiki/JBossAS7SecuringPasswords[EncryptingDataSourcePasswords] to not store passwords in plain text.
 
-Once the VDB and its dependencies are deployed, then client applications can connect using the JDBC API. If there are any errors in the deployment, a connection attempt will not be successful and a message will be logged. You can use the admin-console tool or check the log files for errors and correct them before proceeding. Check https://docs.jboss.org/author/display/TEIID/Client+Developer%27s+Guide[Client Developer’s Guide] on how to use JDBC to connect to your VDB.
+Once the VDB and its dependencies are deployed, then client applications can connect using the JDBC API. If there are any errors in the deployment, a connection attempt will not be successful and a message will be logged. You can use the admin-console tool or check the log files for errors and correct them before proceeding. Check link:../client-dev/Client_Developers_Guide.adoc[Client Developer’s Guide] on how to use JDBC to connect to your VDB.
 

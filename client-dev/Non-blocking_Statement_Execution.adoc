@@ -42,7 +42,7 @@ A continuous query must do the following:
 * be executed with a forward-only result set
 * cannot be used in the scope of a transaction
 
-Since resource consumption is expected to be different in a continuous plan, it does not count against the server max active plan limit. Typically custom sources will be used to provide data streams. See the Developer’s Guide, in particular the section on https://docs.jboss.org/author/display/TEIID/Executing+Commands[ReusableExecutions] for more.
+Since resource consumption is expected to be different in a continuous plan, it does not count against the server max active plan limit. Typically custom sources will be used to provide data streams. See the Developer’s Guide, in particular the section on link:../dev/Executing_Commands.adoc[ReusableExecutions] for more.
 
 When the client wishes to end the continuous query, the `Statement.close()` or `Statement.cancel()` method should be called.  Typically your callback will close whenever it no long needs to process results.
 

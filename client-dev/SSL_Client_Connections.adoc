@@ -8,7 +8,7 @@ The following sections define the properties required for each SSL mode. Note th
 jdbc:teiid:<myVdb>@mms://<host>:<port>
 ----
 
-There are two different sets of properties that a client can configure to enable 1-way or 2-way SSL. See also the https://docs.jboss.org/author/display/TEIID/Teiid+Server+Transport+Security[Teiid Server Transport Security] chapter if you are responsible for configuring the server as well.
+There are two different sets of properties that a client can configure to enable 1-way or 2-way SSL. See also the link:../security/Teiid_Server_Transport_Security.adoc[Teiid Server Transport Security] chapter if you are responsible for configuring the server as well.
 
 === Option 1: Java SSL properties
 

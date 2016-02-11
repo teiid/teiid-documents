@@ -154,5 +154,5 @@ The resource adapter for this translator is a https://docs.jboss.org/author/disp
 
 NOTE: *Native Queries* - Native or direct query execution is not supported through OData translator. However, user can use Web Services Translator’s _invokehttp_ method directly to issue a Rest based call and parse results using SQLXML.
 
-NOTE: *Want to use as OData Server?* - Teiid can not only consume OData based data sources, but it can expose any data source as an OData based webservice. For more information see https://docs.jboss.org/author/display/TEIID/OData+Support[OData Support].
+NOTE: *Want to use as OData Server?* - Teiid can not only consume OData based data sources, but it can expose any data source as an OData based webservice. For more information see link:../client-dev/OData_Support.adoc[OData Support].
 

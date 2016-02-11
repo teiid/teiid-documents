@@ -68,7 +68,7 @@ NOTE: *Installing "Teiid" in other profiles* -
 
 Thats it!. WildFly and Teiid are now installed and running. See below instructions to customize various other settings.
 
-Once VDBs have been deployed, users can now connect their JDBC applications to Teiid. If you need help on connecting your application to Teiid using JDBC check out the https://docs.jboss.org/author/display/TEIID/Client+Developer%27s+Guide[Client Developer’s Guide].
+Once VDBs have been deployed, users can now connect their JDBC applications to Teiid. If you need help on connecting your application to Teiid using JDBC check out the link:../client-dev/Client_Developers_Guide.adoc[Client Developer’s Guide].
 
 == Directory Structure Explained
 

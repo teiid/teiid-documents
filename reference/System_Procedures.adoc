@@ -123,7 +123,7 @@ SYSADMIN.updateMatView(IN schemaName string NOT NULL, IN viewName string NOT NUL
 
 = Metadata Procedures
 
-NOTE: A MetadataRepository must be configured to make a non-temporary metadata update persistent. See the https://docs.jboss.org/author/display/TEIID/Developer%27s+Guide[Developer’s Guide] Runtime Metadata Updates section for more.
+NOTE: A MetadataRepository must be configured to make a non-temporary metadata update persistent. See the link:../dev/Developers_Guide.adocDeveloper’s Guide] Runtime Metadata Updates section for more.
 
 == SYSADMIN.setTableStats
 

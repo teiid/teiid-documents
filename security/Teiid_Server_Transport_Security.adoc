@@ -14,7 +14,7 @@ SSL configuration is part of the _transport_ configuration in the Teiid subsyste
 Teiid supports a couple different encryption modes based on the _mode_ attribute on _ssl_ element.
 
 * *logIn* - This is the default setting for the transports.
-** JDBC (non-data by default) messages between client and server are encrypted using 128 bit AES with a http://en.wikipedia.org/wiki/Diffie-Hellman_key_exchange[Diffie-Hellman] key that is negotiated per connection. When possible a 2048 bit key exchange will be used otherwise 1024 bit will be used. Oracle/Sun 1.7 JREs are known not to support key lengths over 1024 bits. The https://docs.jboss.org/author/display/TEIID/Driver+Connection[connection property] encryptRequest can be used to encrypt requests and results using the same 128 AES scheme.
+** JDBC (non-data by default) messages between client and server are encrypted using 128 bit AES with a http://en.wikipedia.org/wiki/Diffie-Hellman_key_exchange[Diffie-Hellman] key that is negotiated per connection. When possible a 2048 bit key exchange will be used otherwise 1024 bit will be used. Oracle/Sun 1.7 JREs are known not to support key lengths over 1024 bits. The link:../client-dev/Driver_Connection.adoc[connection property] encryptRequest can be used to encrypt requests and results using the same 128 AES scheme.
 ** For the pg transport authentication is expected to be secure - which currently is only GSS logins.
 
 * *enabled* - Mode to enable SSL. Clients are required to connect using SSL.

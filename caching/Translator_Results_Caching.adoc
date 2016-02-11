@@ -1,5 +1,5 @@
 
 = Translator Results Caching
 
-Translators can contribute cache entries into the link:Results_Caching.adoc[result set cache] via the use of the `CacheDirective` object.  The resulting cache entries behave just as if they were created by a user query.  See the Translator ﻿https://docs.jboss.org/author/display/TEIID/Caching+API[Caching API] for more on this feature.
+Translators can contribute cache entries into the link:Results_Caching.adoc[result set cache] via the use of the `CacheDirective` object.  The resulting cache entries behave just as if they were created by a user query.  See the Translator ﻿link:../dev/Caching_API.adoc[Caching API] for more on this feature.
 

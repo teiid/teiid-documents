@@ -5,6 +5,8 @@
         "asVersionNumber" :  "Wildfly 9.0.2",
         "copyrightYear" :  "2016",
         "copyrightHolder" :  "Red Hat, Inc.",
-        "javaVersionUrl" : "https://docs.oracle.com/javase/7"
-    }
+        "javaVersionUrl" : "https://docs.oracle.com/javase/7",
+        "asDocRoot" : "https://docs.jboss.org/author/display/WFLY9"
+    },
+    "plugins": ["collapsible-menu"]
 }

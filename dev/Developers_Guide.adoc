@@ -36,7 +36,7 @@ Teiid offers numerous built-in translators, including:
 
 * *Salesforce Translator* - Works with Salesforce interfaces.
 
-To see a full list of available translators, see https://docs.jboss.org/author/display/TEIID/Translators#Translators-ReferenceGuide[Translators#Reference Guide]
+To see a full list of available translators, see link:../reference/Translators.adoc[Translators]
 
 If there’s not an available translator that meets your need, Teiid provides the framework for developing your own custom translator. See the link:Translator_Development.adoc[Translator Development] section, as it will describe how to develop, package and deploy a custom developed translator.
 
@@ -56,7 +56,7 @@ The following are some of resource adapters that are available to Teiid:
 
 * _Salesforce:_ Provides JEE JCA connector to access Salesforce by invoking their Web Service interface. Used by the SalesForce Translator.
 
-To see a full list, see https://docs.jboss.org/author/display/TEIID/Deploying+VDB+Dependencies#DeployingVDBDependencies-Administrator%27sGuide[Deploying VDB Dependencies#Administrator’s Guide]
+To see a full list, see link:../admin/Deploying_VDB_Dependencies.adoc[Deploying VDB Dependencies]
 
 If there’s not an available resource-adapter that meets your need, Teiid provides the framework for developing your own JEE JCA Connector. See the link:Developing_JEE_Connectors.adoc[Developing JEE Connectors] section, as it will describe how to develop, package and deploy a resource adapter.
 
@@ -68,5 +68,5 @@ Teiid is highly extensible in other ways:
 
 * You may adapt logging to your needs, which is especially useful for custom audit or command logging. Refer to link:Custom_Logging.adoc[Custom Logging].
 
-* You may change the subsystem for custom authentication and authorization. Refer to https://docs.jboss.org/author/display/TEIID/LoginModules#LoginModules-CustomLoginModules[Custom Login Modules].
+* You may change the subsystem for custom authentication and authorization. Refer to link:../security/LoginModules.adoc#_custom_loginModules[Custom Login Modules].
 

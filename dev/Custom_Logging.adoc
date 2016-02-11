@@ -1,7 +1,7 @@
 
 = Custom Logging
 
-The Teiid system provides a wealth of information using logging. To control logging level, contexts, and log locations, you should be familiar with container’s `standalone.xml` or `domain.xml` configuration file and check out "logging" subsystem. Refer to the https://docs.jboss.org/author/display/TEIID/Administrator%27s+Guide[Administrator’s Guide] for more details about different https://docs.jboss.org/author/display/TEIID/Logging[Teiid contexts] available.
+The Teiid system provides a wealth of information using logging. To control logging level, contexts, and log locations, you should be familiar with container’s `standalone.xml` or `domain.xml` configuration file and check out "logging" subsystem. Refer to the link:../admin/Administrators_Guide.adoc[Administrator’s Guide] for more details about different link:../admin/Logging.adoc[Teiid contexts] available.
 
 If you want a custom log handler, follow the directions to write a custom _http://docs.oracle.com/javase/6/docs/api/java/util/logging/Handler.html[java.util.logging.Handler]_. If you develop a custom logging Handler, the implementation class along should be placed as a jar in "org.jboss.teiid" module and define its name in the module.xml file as part of the module along with any dependencies it may need. See below.
 

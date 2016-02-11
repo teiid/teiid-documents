@@ -27,7 +27,7 @@ The following are the configuration properties that can be configured for this c
 
 There are many ways to create the data source, using CLI, link:AdminShell.adoc[AdminShell], admin-console etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
 
-Execute following command using https://docs.jboss.org/author/display/AS72/Admin+Guide#AdminGuide-RunningtheCLI[CLI] once you connected to the Server. Make sure you provide the correct directory name and other properties below. Add any additional properties required by the connector by duplicating the "connection-definitions" command below. Edit the JNDI name to match the JNDI name you used in VDB. This script can be found in the https://github.com/teiid/teiid-coherence/blob/master/connector-coherence/kits/jboss-as7/docs/teiid/datasources/coherence/create-coherence-ds.cli[github repository].
+Execute following command using {{ book.asDocRoot }}/Admin+Guide#AdminGuide-RunningtheCLI[CLI] once you connected to the Server. Make sure you provide the correct directory name and other properties below. Add any additional properties required by the connector by duplicating the "connection-definitions" command below. Edit the JNDI name to match the JNDI name you used in VDB. This script can be found in the https://github.com/teiid/teiid-coherence/blob/master/connector-coherence/kits/jboss-as7/docs/teiid/datasources/coherence/create-coherence-ds.cli[github repository].
 
 [source,java]
 ----

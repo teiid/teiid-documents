@@ -5,5 +5,5 @@ Teiid separates the configuration of its socket transports for JDBC and ODBC. Ty
 
 NOTE: If you are using more than the 2 default socket transports on a machine with a high number of actual or virtual cores, you may need to consider manually configuring the max threads for each to transport to cut down on the number of threads created.
 
-JDBC clients may need to adjust low-level transport values, in addition to https://docs.jboss.org/author/display/TEIID/SSL+Client+Connections[SSL Client Connection] properties via a teiid-client-settings.properties file. This file also contains buffer, socket pooling, and maxObjectSize (effectively the maximum response size) settings.
+JDBC clients may need to adjust low-level transport values, in addition to link:../client-dev/SSL_Client_Connections.adoc[SSL Client Connection] properties via a teiid-client-settings.properties file. This file also contains buffer, socket pooling, and maxObjectSize (effectively the maximum response size) settings.
 
