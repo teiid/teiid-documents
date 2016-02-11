@@ -1,7 +1,7 @@
 
 = Custom Authorization Validator
 
-In situations where Teiid’s built-in https://docs.jboss.org/author/display/TEIID/Data+Roles[Data Roles] mechanism is not sufficient, a custom `org.teiid.PolicyDecider` can be installed via a JBoss module. Note that a PolicyDecider only makes high-level authorization decisions based upon the access context (INSERT, UPDATE, DELETE, etc.), the caller, and the resource (column, table/view, procedure, function, etc.). Data-level column masking and row based security policy information due to its interaction with the Teiid planner cannot be injected via a custom `org.teiid.PolicyDecider`. You may add column masking and row based security permissions via the `org.teiid.MetadataFactory` in custom a `org.teiid.MetadataRepository` or custom translator.
+In situations where Teiid’s built-in link:../reference/Data_Roles.adoc[Data Roles] mechanism is not sufficient, a custom `org.teiid.PolicyDecider` can be installed via a JBoss module. Note that a PolicyDecider only makes high-level authorization decisions based upon the access context (INSERT, UPDATE, DELETE, etc.), the caller, and the resource (column, table/view, procedure, function, etc.). Data-level column masking and row based security policy information due to its interaction with the Teiid planner cannot be injected via a custom `org.teiid.PolicyDecider`. You may add column masking and row based security permissions via the `org.teiid.MetadataFactory` in custom a `org.teiid.MetadataRepository` or custom translator.
 
 To provide a custom authorization validator, you must extend the `org.teiid.PolicyDecider` interface and build a custom java class. If you are using maven as your build process, you can use following dependencies:
 

@@ -1,7 +1,7 @@
 
 = Microsoft Excel Translator
 
-The Microsoft Excel Translator, known by the type name _excel_, exposes querying functionality to Excel documents using https://docs.jboss.org/author/display/TEIID/File+Data+Sources[File Data Sources]. Microsoft Excel is a popular spreadsheet software that is used by all the organizations across the globe for simple reporting purposes. This translator provides an easy way read a Excel spreadsheet and provide contents of the spreadsheet in the tabular form that can be integrated with other sources in Teiid.
+The Microsoft Excel Translator, known by the type name _excel_, exposes querying functionality to Excel documents using link:../admin/File_Data_Sources.adoc[File Data Sources]. Microsoft Excel is a popular spreadsheet software that is used by all the organizations across the globe for simple reporting purposes. This translator provides an easy way read a Excel spreadsheet and provide contents of the spreadsheet in the tabular form that can be integrated with other sources in Teiid.
 
 NOTE: *"Does it only work on Windows?"* -  No, it works on all platforms, including Windows and Linux. This translator uses Apache POI libraries to access the Excel documents which are platform independent.
 
@@ -43,7 +43,7 @@ The below shows example of Dynamic VDB, that shows a exposing a Excel Document.
 </vdb>
 ----
 
-"connection-jndi-name" in above represents connection to Excel document. The Excel translator does NOT provide a connection to the Excel Document. For that purpose, Teiid uses File JCA adapter that provides a connection to Excel. To define such connector, see https://docs.jboss.org/author/display/TEIID/File+Data+Sources[File Data Sources] or see an example in "<jboss-as>/docs/teiid/datasources/file". Once you configure both of the above, you can deploy them to Teiid Server and access the Excel Document using JDBC/ODBC/OData protocol.
+"connection-jndi-name" in above represents connection to Excel document. The Excel translator does NOT provide a connection to the Excel Document. For that purpose, Teiid uses File JCA adapter that provides a connection to Excel. To define such connector, see link:../admin/File_Data_Sources.adoc[File Data Sources] or see an example in "<jboss-as>/docs/teiid/datasources/file". Once you configure both of the above, you can deploy them to Teiid Server and access the Excel Document using JDBC/ODBC/OData protocol.
 
 == Designer VDB
 
@@ -137,7 +137,7 @@ TIP:Currently Excel translator does not support updates.
 
 == JCA Resource Adapter
 
-The Teiid specific Excel Resource Adapter does not exist, user should use File JCA adapter with this translator. See https://docs.jboss.org/author/display/TEIID/File+Data+Sources[File Data Sources] for opening a File based connection.
+The Teiid specific Excel Resource Adapter does not exist, user should use File JCA adapter with this translator. See link:../admin/File_Data_Sources.adoc[File Data Sources] for opening a File based connection.
 
 === Native Queries
 

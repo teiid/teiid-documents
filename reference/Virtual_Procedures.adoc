@@ -12,7 +12,7 @@ In Designer:
 [CREATE VIRTUAL PROCEDURE] statement
 ----
 
-In DDL: link:DDL_Metadata.adoc#20316193_DDLMetadata-CreateProcedure%2FFunction[DDL Metadata#Create Procedure/Function]
+In DDL: link:DDL_Metadata.adoc#_create_procedure_function[DDL Metadata#Create Procedure/Function]
 
 Within the body of the procedure, any valid link:Procedure_Language.adoc[statement] may be used.
 
@@ -94,7 +94,7 @@ END
 
 == Executing Virtual Procedures
 
-You execute procedures using the SQL link:DML_Commands.adoc#18646216_DMLCommands-EXECUTECommand[EXECUTE] command. If the procedure has defined inputs, you specify those in a sequential list, or using "name=value" syntax. You must use the name of the input parameter, scoped by the full procedure name if the parameter name is ambiguous in the context of other columns or variables in the procedure.
+You execute procedures using the SQL link:DML_Commands.adoc#_execute_command[EXECUTE] command. If the procedure has defined inputs, you specify those in a sequential list, or using "name=value" syntax. You must use the name of the input parameter, scoped by the full procedure name if the parameter name is ambiguous in the context of other columns or variables in the procedure.
 
 A virtual procedure call will return a result set just like any SELECT, so you can use this in many places you can use a SELECT. Typically you’ll use the following syntax:
 

@@ -20,7 +20,7 @@ If no domain can authenticate the user, the login attempt will fail. Details of 
 
 === security-domain in VDB
 
-Starting from Teiid 8.7 version, a VDB can be configured to use a separate security-domain than security-domain defined on the transport that it is being accessed on. This configuration is defined in the vdb.xml file, see https://docs.jboss.org/author/display/TEIID/VDB+Definition[VDB Definition] for more information. The security-domain defined on transport configuration will be used as default security-domain, if a security-domain is not configured for a specific VDB.
+Starting from Teiid 8.7 version, a VDB can be configured to use a separate security-domain than security-domain defined on the transport that it is being accessed on. This configuration is defined in the vdb.xml file, see link:../reference/VDB_Definition.adoc[VDB Definition] for more information. The security-domain defined on transport configuration will be used as default security-domain, if a security-domain is not configured for a specific VDB.
 
 [source,xml]
 ----
@@ -37,7 +37,7 @@ TIP: In existing installations an appropriate security domain may already be con
 JBossAS provides several LoginModules for common authentication needs, such as authenticating from a link:LoginModules.adoc[Text Based LoginModule] or a link:LoginModules.adoc[LDAP Based LoginModule].
 
 You can install multiple login modules as part of single security domain configuration and configure them to be part of the login process. For example, for `teiid-security` domain, you can configure a file based and also LDAP based login modules, and have your user authenticated with either or both login modules. If you want to write your own custom login module, refer to the
-link:../dev/Developers_Guide.adocDeveloper’s Guide] for instructions.
+link:../dev/Developers_Guide.adoc[Developer’s Guide] for instructions.
 
 For all the available login modules refer to http://community.jboss.org/docs/DOC-11287[http://community.jboss.org/docs/DOC-11287].
 

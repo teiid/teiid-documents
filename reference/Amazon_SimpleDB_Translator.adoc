@@ -1,7 +1,7 @@
 
 = Amazon SimpleDB Translator
 
-The Amazon SimpleDB Translator, known by the type name _simpledb_, exposes querying functionality to https://docs.jboss.org/author/display/TEIID/Amazon+SimpleDB+Data+Sources[Amazon SimpleDB Data Sources].
+The Amazon SimpleDB Translator, known by the type name _simpledb_, exposes querying functionality to link:../admin/Amazon_SimpleDB_Data_Sources.adoc[Amazon SimpleDB Data Sources].
 
 NOTE: *"Amazon SimpleDB"* - Amazon SimpleDB is a web service for running queries on structured data in real time. This service works in close conjunction with Amazon Simple Storage Service (Amazon S3) and Amazon Elastic Compute Cloud (Amazon EC2), collectively providing the ability to store, process and query data sets in the cloud. These services are designed to make web-scale computing easier and more cost-effective for developers. Read more about it at http://aws.amazon.com/simpledb/
 
@@ -104,5 +104,5 @@ SELECT X.*
 
 == JCA Resource Adapter
 
-The Teiid specific Amazon SimpleDB Resource Adapter should be used with this translator. See https://docs.jboss.org/author/display/TEIID/Amazon+SimpleDB+Data+Sources[Amazon SimpleDB Data Sources] for connecting to SimpleDB.
+The Teiid specific Amazon SimpleDB Resource Adapter should be used with this translator. See link:../admin/Amazon_SimpleDB_Data_Sources.adoc[Amazon SimpleDB Data Sources] for connecting to SimpleDB.
 

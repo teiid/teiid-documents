@@ -112,7 +112,7 @@ If the stream parameter is set to true, then the resulting lob value may only be
 
 == JCA Resource Adapter
 
-The resource adapter for this translator is a https://docs.jboss.org/author/display/TEIID/Web+Service+Data+Sources[Web Service Data Source].
+The resource adapter for this translator is a link:../admin/Web_Service_Data_Sources.adoc[Web Service Data Source].
 
-NOTE: *WS-Secuirty* - Currently you can only use WSDL based Procedures participate in WS-Security, when resource-adapter is configured with correct CXF configuration.
+NOTE: *WS-Security* - Currently you can only use WSDL based Procedures participate in WS-Security, when resource-adapter is configured with correct CXF configuration.
 

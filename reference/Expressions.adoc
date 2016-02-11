@@ -5,16 +5,16 @@ Identifiers, literals, and functions can be combined into expressions. Expressio
 
 Teiid supports the following types of expressions:
 
-* link:Expressions.adoc#18646218_Expressions-ColumnIdentifiers[Column Identifiers]
-* link:Expressions.adoc#18646218_Expressions-Literals[Literals]
+* link:Expressions.adoc#_column_identifiers[Column Identifiers]
+* link:Expressions.adoc#_literals[Literals]
 * link:Scalar_Functions.adoc[Scalar Functions]
-* link:Expressions.adoc#18646218_Expressions-AggregateFunctions[Aggregate Functions]
-* link:Expressions.adoc#18646218_Expressions-WindowFunctions[Window Functions]
-* link:Expressions.adoc#18646218_Expressions-CaseandSearchedCase[Case and Searched Case]
-* link:Expressions.adoc#18646218_Expressions-ScalarSubqueries[Scalar Subqueries]
-* link:Expressions.adoc#18646218_Expressions-ParameterReferences[Parameter References]
+* link:Expressions.adoc#_aggregate_functions[Aggregate Functions]
+* link:Expressions.adoc#_window_functions[Window Functions]
+* link:Expressions.adoc#_case_and_searched_case[Case and Searched Case]
+* link:Expressions.adoc#_scalar_subqueries[Scalar Subqueries]
+* link:Expressions.adoc#_parameter_references[Parameter References]
 * link:Criteria.adoc[Criteria]
-* link:Expressions.adoc#18646218_Expressions-Arrays[Arrays]
+* link:Expressions.adoc#_arrays[Arrays]
 
 == Column Identifiers
 
@@ -213,7 +213,7 @@ Usage:
 aggregate|ranking OVER ([PARTITION BY ...]] [ORDER BY ...])
 ----
 
-aggregate can be any link:Expressions.adoc#18646218_Expressions-AggregateFunctions[Aggregate Functions]. Ranking can be one of ROW_NUMBER(), RANK(), DENSE_RANK().
+aggregate can be any link:Expressions.adoc#_aggregate_functions[Aggregate Functions]. Ranking can be one of ROW_NUMBER(), RANK(), DENSE_RANK().
 
 Syntax Rules:
 

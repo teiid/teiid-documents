@@ -31,7 +31,7 @@ The following are the connector capabilities when Key Searching is used:
 
 == Metadata
 
-See the link:Object_Translator.adoc#55477048_ObjectTranslator-Metadata[Object Translator#Metadata] for details on defining the metadata.
+See the link:Object_Translator.adoc#_metadata[Object Translator#Metadata] for details on defining the metadata.
 
 === JCA Resource Adapter
 

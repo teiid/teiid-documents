@@ -88,7 +88,7 @@ Result set caching is not limited to memory. There is no explicit limit on the s
 
 While the result data is not held in memory, cache keys - including parameter values - may be held in memory. Thus the cache should not be given an unlimited maximum size.
 
-Result set cache entries can be invalidated by data change events. The _max-staleness_ setting determines how long an entry will remain in the case after one of the tables that contributed to the results has been changed. See the link:../dev/Developers_Guide.adocDeveloper’s Guide] for further customization.
+Result set cache entries can be invalidated by data change events. The _max-staleness_ setting determines how long an entry will remain in the case after one of the tables that contributed to the results has been changed. See the link:../dev/Developers_Guide.adoc[Developer’s Guide] for further customization.
 
 == Extension Metadata
 

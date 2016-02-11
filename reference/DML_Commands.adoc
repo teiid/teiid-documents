@@ -5,7 +5,7 @@ Teiid supports SQL for issuing queries and for defining view transformations; se
 
 There are 4 basic commands for manipulating data in SQL, corresponding to the CRUD create, read, update, and delete operations: INSERT, SELECT, UPDATE, and DELETE. A MERGE statement acts as a combination of INSERT and UPDATE.
 
-In addition, procedures can be executed using the EXECUTE command, through a link:DML_Commands.adoc#18646216_DMLCommands-ProceduralRelationalCommand[Procedural Relational Command], or an link:DML_Commands.adoc#18646216_DMLCommands-AnonymousProcedureBlock[Anonymous Procedure Block].
+In addition, procedures can be executed using the EXECUTE command, through a link:DML_Commands.adoc#_procedural_relational_command[Procedural Relational Command], or an link:DML_Commands.adoc#_anonymous_procedure_block[Anonymous Procedure Block].
 
 == SELECT Command
 
@@ -174,7 +174,7 @@ Syntax Rules:
 * Input values are passed via criteria. Values can be passed by '=','is null', or 'in' predicates. Disjuncts are not allowed. It is also not possible to pass the value of a non-comparable column through an equality predicate.
 * The procedure view automatically has an access pattern on its IN and IN_OUT parameters which allows it to be planned correctly as a dependent join when necessary or fail when sufficient criteria cannot be found.
 * Procedures containing duplicate names between the parameters (IN, IN_OUT, OUT, RETURN) and result set columns cannot be used in a procedural relational command.
-* Default values for IN, IN_OUT parameters are not used if there is no criteria present for a given input. Default values are only valid for link:DML_Commands.adoc#18646216_DMLCommands-EXECUTECommand[named procedure syntax].
+* Default values for IN, IN_OUT parameters are not used if there is no criteria present for a given input. Default values are only valid for link:DML_Commands.adoc#_execute_command[named procedure syntax].
 
 Multiple Execution
 

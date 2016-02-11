@@ -2,7 +2,7 @@
 = Data Sources
 ------------
 
-Teiid provides the means (i.e., link:Translators.adoc[Translators] and https://docs.jboss.org/author/display/TEIID/Deploying+VDB+Dependencies[JEE connectors] ) to access a variety of types of data sources. The types of data sources that are currently accessible are:
+Teiid provides the means (i.e., link:Translators.adoc[Translators] and link:../admin/Deploying_VDB_Dependencies.adoc[JEE connectors] ) to access a variety of types of data sources. The types of data sources that are currently accessible are:
 
 1.  link:JDBC_Translators.adoc[Databases]
 * link:Oracle_Translator.adoc[Oracle]
@@ -74,7 +74,7 @@ Teiid provides the means (i.e., link:Translators.adoc[Translators] and https://d
 * link:Microsoft_Excel_Translator.adoc[Excel]
 * link:Google_Spreadsheet_Translator.adoc[Google Spreadsheet]
 
-This represents data sources that have been validated to work using the available translators and connectors. However, this does not preclude a new data source from working. It can be as easy as extending an existing translator, to creating a new translator using the https://docs.jboss.org/author/display/TEIID/Translator+Development[Translator Development] extensions.
+This represents data sources that have been validated to work using the available translators and connectors. However, this does not preclude a new data source from working. It can be as easy as extending an existing translator, to creating a new translator using the link:../dev/Translator_Development.adoc[Translator Development] extensions.
 
 Take a look at the list of link:Translators.adoc[Translators] that are used as the bridge between Teiid and the external system.
 

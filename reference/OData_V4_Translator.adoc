@@ -150,7 +150,7 @@ You can leave this property undefined, as if it does not find one configured the
 
 === JCA Resource Adapter
 
-The resource adapter for this translator is a https://docs.jboss.org/author/display/TEIID/Web+Service+Data+Sources[Web Service Data Source].
+The resource adapter for this translator is a link:../admin/Web_Service_Data_Sources.adoc[Web Service Data Source].
 
 NOTE: *Native Queries* - Native or direct query execution is not supported through OData translator. However, user can use Web Services Translator’s _invokehttp_ method directly to issue a Rest based call and parse results using SQLXML.
 

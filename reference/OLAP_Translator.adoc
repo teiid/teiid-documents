@@ -26,7 +26,7 @@ The use of link:Data_Roles.adoc[Data Roles] should be considered to prevent ar
 
 == Native Queries
 
-OLAP source procedures may be created using the teiid_rel:native-query extension - see link:Translators.adoc#18646290_Translators-native[Parameterizable Native Queries].
+OLAP source procedures may be created using the teiid_rel:native-query extension - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries].
 
 The parameter value substitution directly inserts boolean, and number values, and treats all other values as string literals.
 

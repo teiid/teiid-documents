@@ -9,7 +9,7 @@
 
 * Session – the Session service manages active session information.
 
-* Buffer Manager – the link:Data_Management.adoc#18646301_DataManagement-BufferManagement[Buffer Manager] service provides access to data management for intermediate results.
+* Buffer Manager – the link:Data_Management.adoc#_buffer_management[Buffer Manager] service provides access to data management for intermediate results.
 
 * Transaction – the Transaction service manages global, local, and request scoped transactions.  See also the documentation on link:Transaction_Support.adoc[Transaction Support].
 

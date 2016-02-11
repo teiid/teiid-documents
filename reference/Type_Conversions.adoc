@@ -95,6 +95,6 @@ WARNING: The Teiid conversions of float/double/bigdecimal/timestamp to string re
 |string [b]
 |===
 
-[a] string to xml is equivalent to XMLPARSE(DOCUMENT exp) - See also link:XML_Functions.adoc#18646259_XMLFunctions-XMLPARSE[XML Functions#XMLPARSE]
-[b] xml to string is equivalent to XMLSERIALIZE(exp AS STRING) - see also link:XML_Functions.adoc#18646259_XMLFunctions-XMLSERIALIZE[XML Functions#XMLSERIALIZE]
+[a] string to xml is equivalent to XMLPARSE(DOCUMENT exp) - See also link:XML_Functions.adoc#_xmlparse[XML Functions#XMLPARSE]
+[b] xml to string is equivalent to XMLSERIALIZE(exp AS STRING) - see also link:XML_Functions.adoc#_xmlserialize[XML Functions#XMLSERIALIZE]
 

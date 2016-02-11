@@ -11,7 +11,7 @@ When externally capturing all update events, _"detect-change-events"_ property i
 
 NOTE: Using the `org.teiid.events.EventDistributor` interface you can also update runtime metadata. Please check the API.
 
-The use of the other `EventDistributor` methods to manually distribute other events is not always necessary. Check the https://docs.jboss.org/author/display/TEIID/System+Procedures[System Procedures] for SQL based updates.
+The use of the other `EventDistributor` methods to manually distribute other events is not always necessary. Check the link:../reference/System_Procedures[System Procedures] for SQL based updates.
 
 == Runtime Metadata Updates
 

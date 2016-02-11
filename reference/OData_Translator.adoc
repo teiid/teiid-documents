@@ -101,5 +101,5 @@ TIP: *Want to use as Server?* - Teiid can not only consume OData based data sour
 
 == JCA Resource Adapter
 
-The resource adapter for this translator is a https://docs.jboss.org/author/display/TEIID/Web+Service+Data+Sources[Web Service Data Source].
+The resource adapter for this translator is a link:../admin/Web_Service_Data_Sources.adoc[Web Service Data Source].
 

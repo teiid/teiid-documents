@@ -84,7 +84,7 @@ Sets the default query timeout in milliseconds for queries executed against this
 
 * _lib_ 
 
-Set to a list of modules for the vdb classpath for user defined function loading. See also https://docs.jboss.org/author/display/TEIID/Support+for+User-Defined+Functions+%28Non-Pushdown%29[Support for User-Defined Functions (Non-Pushdown)].
+Set to a list of modules for the vdb classpath for user defined function loading. See also link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[Support for User-Defined Functions (Non-Pushdown)].
 
 * _security-domain_ 
 
@@ -129,7 +129,7 @@ By default, PG metadata is always added to VDB unless link:../admin/System_Prope
 
 * _lazy-invalidate_ 
 
-By default TTL expiration will be invalidating - see https://docs.jboss.org/author/display/TEIID/Internal+Materialization[Internal Materialization]. Setting lazy-invalidate to true will make ttl refreshes non-invalidating.
+By default TTL expiration will be invalidating - see link:../caching/Internal_Materialization.adoc[Internal Materialization]. Setting lazy-invalidate to true will make ttl refreshes non-invalidating.
 
 * _deployment-name_ 
 
@@ -212,7 +212,7 @@ The optional metadata element defines the metadata repository type and optional 
 
 * _type_ 
 
-The metadata repository type. Defaults to INDEX for Designer VDBs and NATIVE for non-Designer VDB source models. For all other deployments/models a value must be specified. Built-in types include DDL, NATIVE, INDEX, and DDL-FILE. The usage of the raw text varies with the by type. NATIVE and INDEX (only for Designer VDBs) metadata repositories do not use the raw text. The raw text for DDL is expected to be be a series of DDL statements that define the schema - see also link:DDL_Metadata.adoc[DDL Metadata]. DDL-FILE (used only with zip deployments) is similar to DDL, except that the raw text specifies an absolute path relative to the vdb root of the location of a file containing the DDL. See also https://docs.jboss.org/author/display/TEIID/Custom+Metadata+Repository[Custom Metadata Repository]. Use more than 1 metadata element to define multiple sources of metadata.
+The metadata repository type. Defaults to INDEX for Designer VDBs and NATIVE for non-Designer VDB source models. For all other deployments/models a value must be specified. Built-in types include DDL, NATIVE, INDEX, and DDL-FILE. The usage of the raw text varies with the by type. NATIVE and INDEX (only for Designer VDBs) metadata repositories do not use the raw text. The raw text for DDL is expected to be be a series of DDL statements that define the schema - see also link:DDL_Metadata.adoc[DDL Metadata]. DDL-FILE (used only with zip deployments) is similar to DDL, except that the raw text specifies an absolute path relative to the vdb root of the location of a file containing the DDL. See also link:../dev/Custom_Metadata_Repository.adoc[Custom Metadata Repository]. Use more than 1 metadata element to define multiple sources of metadata.
 
 == Translator Element
 

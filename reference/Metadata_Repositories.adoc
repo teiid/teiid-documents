@@ -72,5 +72,5 @@ NOTE: For the above model, _NATIVE_ importer is first used, then DDL importer us
 
 === Custom
 
-See https://docs.jboss.org/author/display/TEIID/Custom+Metadata+Repository[Custom Metadata Repository]
+See link:../dev/Custom_Metadata_Repository.adoc[Custom Metadata Repository]
 

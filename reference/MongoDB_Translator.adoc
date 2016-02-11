@@ -62,7 +62,7 @@ The translator does not provide a connection to the MongoDB. For that purpose, T
     </resource-adapters>
 ----
 
-The above defines the translator and connector. For more ways to create the connector see https://docs.jboss.org/author/display/TEIID/MongoDB+Data+Sources[MongoDB Data Sources]. MongoDB translator can derive the metadata based on existing document collections in some scenarios, however when working with complex documents the interpretation of metadata may be inaccurate, in those situations the user MUST define the metadata. For example, you can define a schema using DDL:
+The above defines the translator and connector. For more ways to create the connector see link:../admin/MongoDB_Data_Sources.adoc[MongoDB Data Sources]. MongoDB translator can derive the metadata based on existing document collections in some scenarios, however when working with complex documents the interpretation of metadata may be inaccurate, in those situations the user MUST define the metadata. For example, you can define a schema using DDL:
 
 [source,xml]
 ----
@@ -576,13 +576,13 @@ NOTE: *example* - For a full example see https://github.com/teiid/teiid/blob/mas
 
 === Native Queries
 
-MongoDB source procedures may be created using the teiid_rel:native-query extension - see link:Translators.adoc#18646290_Translators-native[Parameterizable Native Queries]. The procedure will invoke the native-query similar to a direct procedure call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality.
+MongoDB source procedures may be created using the teiid_rel:native-query extension - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The procedure will invoke the native-query similar to a direct procedure call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality.
 
 === Direct Query Procedure
 
-This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:Translators.adoc#18646290_Translators-OverrideExecutionProperties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
+This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:Translators.adoc#_override_execution_properties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
 
-By default the name of the procedure that executes the queries directly is called *native*. link:Translators.adoc#18646290_Translators-OverrideExecutionProperties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
+By default the name of the procedure that executes the queries directly is called *native*. link:Translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
 
 The MongoDB translator provides a procedure to execute any ad-hoc aggregate query directly against the source without Teiid parsing or resolving. Since the metadata of this procedure’s results are not known to Teiid, they are returned as an object array containing single blob at array location one(1). This blob contains the JSON document. XMLTABLE can be used construct tabular output for consumption by client applications.
 

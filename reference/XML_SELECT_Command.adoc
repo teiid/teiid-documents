@@ -3,7 +3,7 @@
 
 Complex XML documents can be dynamically constructed by Teiid using XML Document Models. A document model is generally created from a schema. The document model is bound to relevant SQL statements through mapping classes. See the Designer guide for more on creating document models.
 
-XML documents may also created via XQuery with the link:XML_Functions.adoc#18646259_XMLFunctions-XMLQUERY[XMLQuery] function or with various other link:XML_Functions.adoc[SQL/XML] functions.
+XML documents may also created via XQuery with the link:XML_Functions.adoc#_xmlquery[XMLQuery] function or with various other link:XML_Functions.adoc[SQL/XML] functions.
 
 Querying XML documents is similar to querying relational tables. An idiomatic SQL variant with special scalar functions gives control over which parts of a given document to return.
 

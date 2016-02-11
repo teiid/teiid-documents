@@ -255,7 +255,7 @@ The following are the the connector capabilities supported by the Salesforce Con
 
 == Native Queries
 
-Salesforce procedures may optionally have native queries associated with them - see link:Translators.adoc#18646290_Translators-native[Parameterizable Native Queries]. The operation prefix (select;, insert;, update;, delete; - see below for more) must be present in the native-query, but it will not be issued as part of the query to the source.
+Salesforce procedures may optionally have native queries associated with them - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The operation prefix (select;, insert;, update;, delete; - see below for more) must be present in the native-query, but it will not be issued as part of the query to the source.
 
 [source,sql]
 .*Example DDL for a SF native procedure*
@@ -265,9 +265,9 @@ CREATE FOREIGN PROCEDURE proc (arg1 integer, arg2 string) OPTIONS ("teiid_rel:na
 
 === Direct Query Procedure
 
-This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:Translators.adoc#18646290_Translators-OverrideExecutionProperties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
+This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:Translators.adoc#_override_execution_properties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
 
-TIP: By default the name of the procedure that executes the queries directly is *native*. link:Translators.adoc#18646290_Translators-OverrideExecutionProperties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
+TIP: By default the name of the procedure that executes the queries directly is *native*. link:Translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
 
 The Salesforce translator provides a procedure to execute any ad-hoc SOQL query directly against the source without Teiid parsing or resolving. Since the metadata of this procedure’s results are not known to Teiid, they are returned as an object array. link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications. Teiid exposes this procedure with a simple query structure as follows:
 
@@ -282,7 +282,7 @@ SELECT x.* FROM (call sf_source.native('search;SELECT Account.Id, Account.Type, 
 
 from the above code, the "search" keyword followed by a query statement.
 
-NOTE: The SOQL is treated as a parameterized native query so that parameter values may be inserted in the query string properly - see link:Translators.adoc#18646290_Translators-native[Parameterizable Native Queries]
+NOTE: The SOQL is treated as a parameterized native query so that parameter values may be inserted in the query string properly - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]
 
 The results returned by search may contain the object Id as the first column value regardless of whether it was selected. Also queries that select columns from multiple object types will not be correct.
 
@@ -337,5 +337,5 @@ TIP: By default the name of the procedure that executes the queries directly is 
 
 == JCA Resource Adapter
 
-The resource adapter for this translator is provided through https://docs.jboss.org/author/display/TEIID/Salesforce+Data+Sources[Salesforce Data Sources]. Refer to Admin Guide for configuration.
+The resource adapter for this translator is provided through link:../admin/Salesforce_Data_Sources.adoc[Salesforce Data Sources]. Refer to Admin Guide for configuration.
 

@@ -3,7 +3,7 @@
 
 Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
 
-The Apache HBase Translator, known by the type name *_hbase_*, exposes querying functionality to http://hbase.apache.org/[HBase] Tables. http://phoenix.apache.org/[Apache Phoenix] is a JDBC SQL interface for HBase - see https://docs.jboss.org/author/display/TEIID/Phoenix+Data+Sources[Phoenix Data Sources] that is required for this translator as it pushes down commands into http://phoenix.apache.org/language/index.html[Phoenix SQL].
+The Apache HBase Translator, known by the type name *_hbase_*, exposes querying functionality to http://hbase.apache.org/[HBase] Tables. http://phoenix.apache.org/[Apache Phoenix] is a JDBC SQL interface for HBase - see link:../admin/Phoenix_Data_Sources.adoc[Phoenix Data Sources] that is required for this translator as it pushes down commands into http://phoenix.apache.org/language/index.html[Phoenix SQL].
 
 The DatabaseTimezone property should not be used with this translator.
 

@@ -1,5 +1,5 @@
 
 = Customizing
 
-See the link:../dev/Developers_Guide.adocDeveloper’s Guide] chapters on https://docs.jboss.org/author/display/TEIID/Custom+Authorization+Validator[Custom Authorization Validator]s and [Teiid:Login Modules] for details on using an alternative authorization scheme.
+See the link:../dev/Developers_Guide.adoc[Developer’s Guide] chapters on link:../security/Custom_Authorization_Validator.adoc[Custom Authorization Validator]s and [Teiid:Login Modules] for details on using an alternative authorization scheme.
 

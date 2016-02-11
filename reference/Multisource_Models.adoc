@@ -54,7 +54,7 @@ The pseudo column is by default not present in your actual metadata; it is not a
 
 == Planning and Execution
 
-The planner logically treats a multisource table as if it were a view containing the union all of the respective source tables.  More complex partitioning scenarios, such as heterogeneous sources or list partitioning will require the use of a link:Federated_Optimizations.adoc#18646293_FederatedOptimizations-PartitionedUnion[Federated Optimizations#Partitioned Union].
+The planner logically treats a multisource table as if it were a view containing the union all of the respective source tables.  More complex partitioning scenarios, such as heterogeneous sources or list partitioning will require the use of a link:Federated_Optimizations.adoc#_partitioned_union[Federated Optimizations#Partitioned Union].
 
 Most of the federated optimizations available over unions are still applicable in multisource mode. This includes aggregation pushdown/decomposition, limit pushdown, join partitioning, etc.
 

@@ -9,7 +9,7 @@ Merge join first sorts the input sources on the joined columns.  You can then w
 
 Using costing information the engine may also delay the decision to perform a full sort merge join. Based upon the actual row counts involved, the engine can choose to build an index of the smaller side (which will perform similarly to a hash join) or to only partially sort the larger side of the relation.
 
-Joins involving equi-join predicates are also eligible to be made into link:Federated_Optimizations.adoc#18646293_FederatedOptimizations-DependentJoins[dependent joins].
+Joins involving equi-join predicates are also eligible to be made into link:Federated_Optimizations.adoc#_dependent_joins[dependent joins].
 
 == Sort Based Algorithms
 

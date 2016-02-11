@@ -81,7 +81,7 @@ SYSADMIN.loadMatView(IN schemaName string NOT NULL, IN viewName string NOT NULL,
 
 == SYSADMIN.refreshMatView
 
-Returns integer RowsUpdated. -1 indicates a load is in progress, otherwise the cardinality of the table is returned. See the https://docs.jboss.org/author/display/TEIID/Caching+Guide[Caching Guide] for more.
+Returns integer RowsUpdated. -1 indicates a load is in progress, otherwise the cardinality of the table is returned. See the link:../caching/Caching_Guide.adoc[Caching Guide] for more.
 
 [source,sql]
 ----
@@ -123,7 +123,7 @@ SYSADMIN.updateMatView(IN schemaName string NOT NULL, IN viewName string NOT NUL
 
 = Metadata Procedures
 
-NOTE: A MetadataRepository must be configured to make a non-temporary metadata update persistent. See the link:../dev/Developers_Guide.adocDeveloper’s Guide] Runtime Metadata Updates section for more.
+NOTE: A MetadataRepository must be configured to make a non-temporary metadata update persistent. See the link:../dev/Developers_Guide.adoc[Developer’s Guide] Runtime Metadata Updates section for more.
 
 == SYSADMIN.setTableStats
 

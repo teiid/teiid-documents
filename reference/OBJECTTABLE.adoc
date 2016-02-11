@@ -12,7 +12,7 @@ OBJECTTABLE([LANGUAGE lang] rowScript [PASSING val AS name ...] COLUMNS colName 
 
 Parameters
 
-* lang - an optional string literal that is the case sensitive language name of the scripts to be processed. The script engine must be available via a JSR-223 ScriptEngineManager lookup. In some instances this may mean making additional modules available to your vdb, which can be done via the same process as adding modules/libraries https://docs.jboss.org/author/display/TEIID/Support+for+User-Defined+Functions+%28Non-Pushdown%29[for UDFs]. If a LANGUAGE is not specified, the default of 'teiid_script' (see below) will be used.
+* lang - an optional string literal that is the case sensitive language name of the scripts to be processed. The script engine must be available via a JSR-223 ScriptEngineManager lookup. In some instances this may mean making additional modules available to your vdb, which can be done via the same process as adding modules/libraries link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[for UDFs]. If a LANGUAGE is not specified, the default of 'teiid_script' (see below) will be used.
 * name - an identifier that will bind the val expression value into the script context.
 * rowScript is a string literal specifying the script to create the row values. for each non-null item the Iterator produces the columns will be evaluated.
 * colName/colType are the id/data type of the column, which can optionally be defaulted with the DEFAULT clause expression defaultExpr.

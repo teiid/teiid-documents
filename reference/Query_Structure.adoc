@@ -1,7 +1,7 @@
 
 = Query Structure
 
-A valid XML SELECT Command against a document model is of the form link:Query_Structure.adoc#18646243_QueryStructure-SELECTClause[SELECT …] link:Query_Structure.adoc#18646243_QueryStructure-FROMClause[FROM …] link:Query_Structure.adoc#18646243_QueryStructure-WHEREClause[WHERE …] link:Query_Structure.adoc#18646243_QueryStructure-ORDERBYClause[ORDER BY …] . The use of any other SELECT command clause is not allowed.
+A valid XML SELECT Command against a document model is of the form link:Query_Structure.adoc#_select_clause[SELECT …] link:Query_Structure.adoc#_from_clause[FROM …] link:Query_Structure.adoc#_where_clause[WHERE …] link:Query_Structure.adoc#_orderby_clause[ORDER BY …] . The use of any other SELECT command clause is not allowed.
 
 The fully qualified name for an XML element is:
 

@@ -14,7 +14,7 @@ Example Syntax:
 
 * FROM (subquery) [AS] alias
 
-* FROM link:FROM_Clause.adoc#18646226_FROMClause-NestedTableReference[TABLE(subquery)] [AS] alias
+* FROM link:FROM_Clause.adoc#_nested_table_reference[TABLE(subquery)] [AS] alias
 
 * FROM table1 JOIN /*+ MAKEDEP */ table2 ON join-criteria
 
@@ -24,17 +24,17 @@ Example Syntax:
 
 * FROM /*+ NO_UNNEST */ vw1 JOIN table2 ON join-criteria
 
-* FROM table1 left outer join link:Federated_Optimizations.adoc#18646293_FederatedOptimizations-OptionalJoin[/*+ optional */] table2 ON join-criteria
+* FROM table1 left outer join link:Federated_Optimizations.adoc#_optional_join[/*+ optional */] table2 ON join-criteria
 
 * FROM link:TEXTTABLE.adoc[TEXTTABLE…]
 
-* FROM link:FROM_Clause.adoc#18646226_FROMClause-XMLTABLE[XMLTABLE…]
+* FROM link:FROM_Clause.adoc#_xmltable[XMLTABLE…]
 
 * FROM link:ARRAYTABLE.adoc[ARRAYTABLE…]
 
 * FROM link:OBJECTTABLE.adoc[OBJECTTABLE…]
 
-* FROM (link:Subqueries.adoc#18646222_Subqueries-Inlineviews[SELECT …]
+* FROM (link:Subqueries.adoc#_inline_views[SELECT …]
 
 == From Clause Hints
 
@@ -49,7 +49,7 @@ FROM /*+ MAKEDEP PRESERVE */ (tbl1 inner join tbl2 inner join tbl3 on tbl2.col1 
 
 === Dependent Joins
 
-MAKEIND, MAKEDEP, and MAKENOTDEP are hints used to control link:Federated_Optimizations.adoc#18646293_FederatedOptimizations-DependentJoins[dependent join] behavior. They should only be used in situations where the optimizer does not choose the most optimal plan based upon query structure, metadata, and costing information. The hints may appear in a comment that proceeds the from clause. The hints can be specified against any from clause, not just a named table.
+MAKEIND, MAKEDEP, and MAKENOTDEP are hints used to control link:Federated_Optimizations.adoc#_dependent_joins[dependent join] behavior. They should only be used in situations where the optimizer does not choose the most optimal plan based upon query structure, metadata, and costing information. The hints may appear in a comment that proceeds the from clause. The hints can be specified against any from clause, not just a named table.
 
 * MAKEIND - treat this clause as the independent (feeder) side of a dependent join if possible.
 * MAKEDEP - treat this clause as the dependent (filtered) side of a dependent join if possible.
@@ -111,11 +111,11 @@ XMLTABLE([<NSP>,] xquery-expression [<PASSING>] [COLUMNS <COLUMN>, ... )] AS nam
 COLUMN := name (FOR ORDINALITY | (datatype [DEFAULT expression] [PATH string]))
 ----
 
-See link:XML_Functions.adoc#18646259_XMLFunctions-XMLELEMENT[XMLELEMENT] for the definition of NSP - XMLNAMESPACES.
+See link:XML_Functions.adoc#_xmlelement[XMLELEMENT] for the definition of NSP - XMLNAMESPACES.
 
-See link:XML_Functions.adoc#18646259_XMLFunctions-XMLQUERY[XMLQUERY] for the definition of PASSING.
+See link:XML_Functions.adoc#_xmlquery[XMLQUERY] for the definition of PASSING.
 
-See also link:XML_Functions.adoc#18646259_XMLFunctions-XMLQUERY[XMLQUERY]
+See also link:XML_Functions.adoc#_xmlquery[XMLQUERY]
 
 NOTE: See also link:XQuery_Optimization.adoc[XQuery Optimization]
 

@@ -1,7 +1,7 @@
 
 = Apache Accumulo Translator
 
-The Apache Accumulo Translator, known by the type name _accumulo_, exposes querying functionality to https://docs.jboss.org/author/display/TEIID/Accumulo+Data+Sources[Accumulo Data Sources]. https://accumulo.apache.org/[Apache Accumulo] is a sorted, distributed key value store with robust, scalable, high performance data storage and retrieval system. This translator provides an easy way connect to Accumulo system and provides relational way using SQL to add records from directly from user or from other sources that are integrated with Teiid. It also gives ability to read/update/delete existing records from Accumulo store. Teiid has capability to pass-in logged in user’s roles as visibility properties to restrict the data access.
+The Apache Accumulo Translator, known by the type name _accumulo_, exposes querying functionality to link:../admin/Accumulo_Data_Sources.adoc[Accumulo Data Sources]. https://accumulo.apache.org/[Apache Accumulo] is a sorted, distributed key value store with robust, scalable, high performance data storage and retrieval system. This translator provides an easy way connect to Accumulo system and provides relational way using SQL to add records from directly from user or from other sources that are integrated with Teiid. It also gives ability to read/update/delete existing records from Accumulo store. Teiid has capability to pass-in logged in user’s roles as visibility properties to restrict the data access.
 
 TIP: *"versions"* - The development was done using Accumulo 1.5.0, Hadoop 2.2.0 and Zookeeper 3.4.5
 
@@ -24,7 +24,7 @@ image:images/accumulo.png[accumulo.png]
 
 Based on above information, one can define a schema representing Accumulo table structures in Teiid using DDL or using Teiid Designer with help of metadata extension properties defined below. Since no data type information is defined on the columns, by default all columns are considered as string data types. However, during modeling of the schema, one can use various other data types supported through Teiid to define a data type of column, that user wishes to expose as.
 
-Once this schema is defined and exposed through VDB in a Teiid database, and https://docs.jboss.org/author/display/TEIID/Accumulo+Data+Sources[Accumulo Data Sources] is created, the user can issue "INSERT/UPDATE/DELETE" based SQL calls to insert/update/delete records into the Accumulo, and issue "SELECT" based calls to retrieve records from Accumulo. You can use full range of SQL with Teiid system integrating other sources along with Accumulo source.
+Once this schema is defined and exposed through VDB in a Teiid database, and link:../admin/Accumulo_Data_Sources.adoc[Accumulo Data Sources] is created, the user can issue "INSERT/UPDATE/DELETE" based SQL calls to insert/update/delete records into the Accumulo, and issue "SELECT" based calls to retrieve records from Accumulo. You can use full range of SQL with Teiid system integrating other sources along with Accumulo source.
 
 By default, Accumulo table structure is flat can not define relationships among tables. So, a SQL JOIN is performed in Teiid layer rather than pushed to source even if both tables on either side of the JOIN reside in the Accumulo. Currently any criteria based on EQUALITY and/or COMPARISON using complex AND/OR clauses are handled by Accumulo translator and will be properly executed at source.
 
@@ -39,7 +39,7 @@ An Example Dynamic VDB that shows Accumulo translator can be defined as
 <vdb>
 ----
 
-The translator does NOT provide a connection to the Accumulo. For that purpose, Teiid has a JCA adapter that provides a connection to Accumulo using Accumulo Java libraries. To define such connector, see https://docs.jboss.org/author/display/TEIID/Accumulo+Data+Sources[Accumulo Data Sources] or see an example in "<jboss-as>/docs/teiid/datasources/accumulo"
+The translator does NOT provide a connection to the Accumulo. For that purpose, Teiid has a JCA adapter that provides a connection to Accumulo using Accumulo Java libraries. To define such connector, see link:../admin/Accumulo_Data_Sources.adoc[Accumulo Data Sources] or see an example in "<jboss-as>/docs/teiid/datasources/accumulo"
 
 If you are using Designer Tooling, to create VDB
 
@@ -156,7 +156,7 @@ and repeat for each and every column, so that Teiid knows how to communicate cor
 
 == JCA Resource Adapter
 
-The Teiid specific Accumulo Resource Adapter should be used with this translator. See https://docs.jboss.org/author/display/TEIID/Accumulo+Data+Sources[Accumulo Data Sources] for connecting to a Accumulo Source.
+The Teiid specific Accumulo Resource Adapter should be used with this translator. See link:../admin/Accumulo_Data_Sources.adoc[Accumulo Data Sources] for connecting to a Accumulo Source.
 
 == Native Queries
 

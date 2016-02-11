@@ -21,7 +21,7 @@ For more complicated scenarios you are not limited to just an xml file deploymen
 * The vdb xml file must be name vdb.xml and placed in the zip under /META-INF/vdb.xml
 * If a /lib folder exists any jars found underneath will automatically be added to the vdb classpath.
 * For backwards compatability with Designer VDBs, ff any .INDEX file exists the default metadata repository will be assumed to be INDEX.
-* Files within the VDB zip are accessible by a https://docs.jboss.org/author/display/TEIID/Custom+Metadata+Repository[Custom Metadata Repository] using the `MetadataFactory.getVDBResources()` method, which returns a map of all `VDBResources` in the VDB keyed by absolute path relative to the vdb root.
+* Files within the VDB zip are accessible by a link:../dev/Custom_Metadata_Repository.adoc[Custom Metadata Repository] using the `MetadataFactory.getVDBResources()` method, which returns a map of all `VDBResources` in the VDB keyed by absolute path relative to the vdb root.
 * The built-in DDL-FILE metadata repository type may be used to define DDL-based metadata in files outside of the vdb.xml. This improves the memory footprint of the vdb metadata and the maintainability of vdb.xml.
 
 [source,xml]

@@ -22,7 +22,7 @@ Starting with Teiid 8.0, a VDB can define models/schemas using DDL. Here is smal
 
 Another complete DDL based example is at the end of this section.
 
-NOTE: *Metadata Repositories* - The declaration of metadata using DDL, NATIVE, or DDL-FILE is supported out of the box, however the _MetadataRepository_ interface allows users to plug-in their own metadata facilities. For example, you can write a Hibernate based store that can feed the necessary metadata. See https://docs.jboss.org/author/display/TEIID/Custom+Metadata+Repository[Custom Metadata Repository] for more information.
+NOTE: *Metadata Repositories* - The declaration of metadata using DDL, NATIVE, or DDL-FILE is supported out of the box, however the _MetadataRepository_ interface allows users to plug-in their own metadata facilities. For example, you can write a Hibernate based store that can feed the necessary metadata. See link:../dev/Custom_Metadata_Repository.adoc[Custom Metadata Repository] for more information.
 
 NOTE: *Metadata for Source Models* - The DDL based schema is not constrained to be defined only for the view models.
 
@@ -213,11 +213,11 @@ Using the below syntax, user can define a
 * Source Procedure ("CREATE FOREIGN PROCEDURE") - a stored procedure in source
 * Source Function ("CREATE FOREIGN FUNCTION") - A function that is supported by the source, where Teiid will pushdown to source instead of evaluating in Teiid engine
 * Virtual Procedure ("CREATE VIRTUAL PROCEDURE") - Similar to stored procedure, however this is defined using the Teiid’s Procedure language and evaluated in the Teiid’s engine.
-* Function/UDF ("CREATE VIRTUAL FUNCTION") - A user defined function, that can be defined using the Teiid procedure language or can have the implementation defined using a https://docs.jboss.org/author/display/TEIID/Support+for+User-Defined+Functions+%28Non-Pushdown%29#SupportforUser-DefinedFunctions%28Non-Pushdown%29-MetadataDynamicVDBs[JAVA Class].
+* Function/UDF ("CREATE VIRTUAL FUNCTION") - A user defined function, that can be defined using the Teiid procedure language or can have the implementation defined using a link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc#_metadata_dynamic_vdbs[JAVA Class].
 
 image:images/create_procedure.jpg[images/create_procedure.jpg]
 
-See the full grammar for create function/procedure in the link:BNF_for_SQL_Grammar.adoc#18646304_BNFforSQLGrammar-createDDLProcedure[BNF for SQL Grammar#createDDLProcedure].
+See the full grammar for create function/procedure in the link:BNF_for_SQL_Grammar.adoc[BNF for SQL Grammar].
 
 *Variable Argument Support* 
 
@@ -275,7 +275,7 @@ CREATE FOREIGN PROCEDURE proc (x integer, VARIADIC z integer) returns (x string)
 |Indicates the function is a user defined aggregate function. Properties specific to aggregates are listed below.
 |===
 
-Note that NULL-ON-NULL, VARARGS, and all of the AGGREGATE properties are also valid relational extension metadata properties that can be used on source procedures marked as functions. See also https://docs.jboss.org/author/display/TEIID/Source+Supported+Functions[Source Supported Functions] for creating FOREIGN functions that are supported by a source.
+Note that NULL-ON-NULL, VARARGS, and all of the AGGREGATE properties are also valid relational extension metadata properties that can be used on source procedures marked as functions. See also link:../dev/Source_Supported_Functions.adoc[Source Supported Functions] for creating FOREIGN functions that are supported by a source.
 
 *AGGREGATE FUNCTION OPTIONS*:
 
@@ -305,7 +305,7 @@ Note that NULL-ON-NULL, VARARGS, and all of the AGGREGATE properties are also va
 
 Note that virtual functions defined using the Teiid procedure language cannot be aggregate functions.
 
-NOTE: *Providing the JAR libraries* - If you have defined a UDF (virtual) function without a Teiid procedure deinition, then it must be accompanied by its implementation in Java. To configure the Java library as dependency to the VDB, see https://docs.jboss.org/author/display/TEIID/Support+for+User-Defined+Functions+%28Non-Pushdown%29#SupportforUser-DefinedFunctions%28Non-Pushdown%29-MetadataDynamicVDBs[Support for User-Defined Functions]
+NOTE: *Providing the JAR libraries* - If you have defined a UDF (virtual) function without a Teiid procedure deinition, then it must be accompanied by its implementation in Java. To configure the Java library as dependency to the VDB, see link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc#_metadata_dynamic_vdbs[Support for User-Defined Functions]
 
 *PROCEDURE OPTIONS*:(the below are well known options, any others properties defined will be considered as extension metadata)
 
@@ -358,7 +358,7 @@ There can only be a single RESULT parameter and it must be an out parameter. A R
 
 |native-query
 |Parameterized String
-|Applies to both functions and procedures. The replacement for the function syntax rather than the standard prefix form with parens. See also link:Translators.adoc#18646290_Translators-native[Translators#native]
+|Applies to both functions and procedures. The replacement for the function syntax rather than the standard prefix form with parens. See also link:Translators.adoc#_parameterizable_native_queries[Translators#native]
 
 |non-prepared
 |boolean

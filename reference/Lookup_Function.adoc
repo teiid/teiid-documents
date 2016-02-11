@@ -18,7 +18,7 @@ lookup('ISOCountryCodes', 'CountryCode', 'CountryName', 'United States')
 
 An ISOCountryCodes table is used to translate a country name to an ISO country code. One column, CountryName, represents the keyColumn. A second column, CountryCode, represents the returnColumn, containing the ISO code of the country. Hence, the usage of the lookup function here will provide a CountryName, shown above as `United States', and expect a CountryCode value in response.
 
-When you call this function for any combination of codeTable, returnColumn, and keyColumn for the first time, the Teiid System caches the result. The Teiid System uses this cache for all queries, in all sessions, that later access this lookup table. You should generally not use the lookup function for data that is subject to updates or may be session/user specific - including row based security and column masking effects. See the https://docs.jboss.org/author/display/TEIID/Code+Table+Caching[Caching Guide] for more on the caching aspects of the Lookup function.
+When you call this function for any combination of codeTable, returnColumn, and keyColumn for the first time, the Teiid System caches the result. The Teiid System uses this cache for all queries, in all sessions, that later access this lookup table. You should generally not use the lookup function for data that is subject to updates or may be session/user specific - including row based security and column masking effects. See the link:../caching/Code_Table_Caching.adoc[Caching Guide] for more on the caching aspects of the Lookup function.
 
 The keyColumn is expected to contain unique values for its corresponding codeTable. If the keyColumn contains duplicate values, an exception will be thrown.
 

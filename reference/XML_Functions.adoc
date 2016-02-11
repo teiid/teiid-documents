@@ -169,7 +169,7 @@ Returns an concatenation of XML elements for each content item.
 XMLFOREST(content [AS name] [, <NSP>] [, content [AS name]]*)
 ----
 
-See link:XML_Functions.adoc#18646259_XMLFunctions-XMLELEMENT[XMLELEMENT] for the definition of NSP - XMLNAMESPACES
+See link:XML_Functions.adoc#_xmlelement[XMLELEMENT] for the definition of NSP - XMLNAMESPACES
 
 Name is an identifier. Content can be any type. Return value is xml.
 
@@ -270,7 +270,7 @@ XMLQUERY([<NSP>] xquery [<PASSING>] [(NULL|EMPTY) ON EMPTY]]
 PASSING:=PASSING exp [AS name] [, exp [AS name]]*
 ----
 
-See link:XML_Functions.adoc#18646259_XMLFunctions-XMLELEMENT[XMLELEMENT] for the definition of NSP - XMLNAMESPACES
+See link:XML_Functions.adoc#_xmlelement[XMLELEMENT] for the definition of NSP - XMLNAMESPACES
 
 Namespaces may also be directly declared in the xquery prolog.
 
@@ -282,7 +282,7 @@ xquery in string. Return value is xml.
 
 XMLQUERY is part of the SQL/XML 2006 specification.
 
-See also link:FROM_Clause.adoc#18646226_FROMClause-XMLTABLE[FROM Clause#XMLTABLE]
+See also link:FROM_Clause.adoc#_xmltable[FROM Clause#XMLTABLE]
 
 NOTE: See also link:XQuery_Optimization.adoc[XQuery Optimization]
 
@@ -297,7 +297,7 @@ XMLEXISTS([<NSP>] xquery [<PASSING>]]
 PASSING:=PASSING exp [AS name] [, exp [AS name]]*
 ----
 
-See link:XML_Functions.adoc#18646259_XMLFunctions-XMLELEMENT[XMLELEMENT] for the definition of NSP - XMLNAMESPACES
+See link:XML_Functions.adoc#_xmlelement[XMLELEMENT] for the definition of NSP - XMLNAMESPACES
 
 Namespaces may also be directly declared in the xquery prolog.
 
@@ -358,7 +358,7 @@ If either argument is null, the result is null.
 
 == XPATHVALUE
 
-Applies the XPATH expression to the document and returns a string value for the first matching result. For more control over the results and XQuery, use the link:XML_Functions.adoc#18646259_XMLFunctions-XMLQUERY[XMLQUERY] function.
+Applies the XPATH expression to the document and returns a string value for the first matching result. For more control over the results and XQuery, use the link:XML_Functions.adoc#_xmlquery[XMLQUERY] function.
 
 [source,sql]
 ----

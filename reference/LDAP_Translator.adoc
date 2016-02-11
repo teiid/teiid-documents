@@ -109,7 +109,7 @@ If the unwrap attribute is missing or there are no values, then a single row wit
 
 === Native Queries
 
-LDAP procedures may optionally have native queries associated with them - see link:Translators.adoc#18646290_Translators-native[Parameterizable Native Queries]. The operation prefix (select;, insert;, update;, delete; - see below for more) must be present in the native-query, butit will not be issued as part of the query to the
+LDAP procedures may optionally have native queries associated with them - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The operation prefix (select;, insert;, update;, delete; - see below for more) must be present in the native-query, butit will not be issued as part of the query to the
 
 [source,sql]
 .*Example DDL for an LDAP native procedure*
@@ -121,9 +121,9 @@ Parameter values will have reserved characters escaped, but are otherwise direct
 
 === Direct Query Procedure
 
-NOTE: This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:Translators.adoc#18646290_Translators-OverrideExecutionProperties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
+NOTE: This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:Translators.adoc#_override_execution_properties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
 
-TIP: By default the name of the procedure that executes the queries directly is *native*. link:Translators.adoc#18646290_Translators-OverrideExecutionProperties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
+TIP: By default the name of the procedure that executes the queries directly is *native*. link:Translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
 
 The LDAP translator provides a procedure to execute any ad-hoc LDAP query directly against the source without Teiid parsing or resolving. Since the metadata of this procedure’s results are not known to Teiid, they are returned as an object array. link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications.
 
@@ -136,7 +136,7 @@ SELECT x.* FROM (call pm1.native('search;context-name=corporate;filter=(objectCl
  ARRAYTABLE(w.tuple COLUMNS "uid" string , "cn" string) AS x
 ----
 
-from the above code, the "*search*" keyword followed by below properties. Each property must be delimited by semi-colon (;) If a property contains a semi-colon (;), it should be escaped by another semi-colon - see alsolink:Translators.adoc#18646290_Translators-native[Parameterizable Native Queries] and the native-query procedure example above.
+from the above code, the "*search*" keyword followed by below properties. Each property must be delimited by semi-colon (;) If a property contains a semi-colon (;), it should be escaped by another semi-colon - see alsolink:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries] and the native-query procedure example above.
 
 |===
 |Name |Description |Required
@@ -305,7 +305,7 @@ ldap://localhost:389
 </resource-adapter>
 ----
 
-The above defines the translator and connector. For more ways to create the connector see https://docs.jboss.org/author/display/TEIID/LDAP+Data+Sources[LDAP Data Sources], LDAP translator can derive the metadata based on existing Users/Groups in LDAP Server, user need to define the metadata. For example, you can define a schema using DDL:
+The above defines the translator and connector. For more ways to create the connector see link:../admin/LDAP_Data_Sources.adoc[LDAP Data Sources], LDAP translator can derive the metadata based on existing Users/Groups in LDAP Server, user need to define the metadata. For example, you can define a schema using DDL:
 
 [source,xml]
 ----

@@ -21,7 +21,7 @@ SELECT a FROM (SELECT Y.b, Y.c FROM Y WHERE Y.d = '3') AS X WHERE a = X.c AND b 
 
 == Subqueries can appear anywhere where an expression or criteria is expected.
 
-Subqueries are supported in quantified criteria, the EXISTS predicate, the IN predicate, and as link:Expressions.adoc#18646218_Expressions-ScalarSubqueries[Scalar Subqueries].
+Subqueries are supported in quantified criteria, the EXISTS predicate, the IN predicate, and as link:Expressions.adoc#_scalar_subqueries[Scalar Subqueries].
 
 [source,sql]
 .*Example Subquery in WHERE Using EXISTS*

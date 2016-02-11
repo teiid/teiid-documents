@@ -23,7 +23,7 @@ INSERT INTO MySchema.MyTable (ColA,ColB) VALUES (50, 'hi');
 
 Syntax Rules:
 
-* link:DML_Commands.adoc#18646216_DMLCommands-EXECUTECommand[EXECUTE] command statements may access IN/OUT, OUT, and RETURN parameters. To access the return value the statement will have the form `var = EXEC proc...`. To access OUT or IN/OUT values named parameter syntax must be used. For example, `EXEC proc(in_param=>'1', out_param=>var)` will assign the value of the out parameter to the variable var. It is expected that the datatype of parameter will be implicitly convertable to the datatype of the variable.
+* link:DML_Commands.adoc#_execute_command[EXECUTE] command statements may access IN/OUT, OUT, and RETURN parameters. To access the return value the statement will have the form `var = EXEC proc...`. To access OUT or IN/OUT values named parameter syntax must be used. For example, `EXEC proc(in_param=>'1', out_param=>var)` will assign the value of the out parameter to the variable var. It is expected that the datatype of parameter will be implicitly convertable to the datatype of the variable.
 
 * The RETURN clause determines if the result of the command is returnable from the procedure. WITH RETURN is the default. If the command does not return a result set or the procedure does not return a result set, the RETURN clause is ignored. If WITH RETURN is specified, the result set of the command must match the expected result set of the procedure. Only the last successfully executed statement executed WITH RETURN will be returned as the procedure result set.  If there are no returnable result sets and the procedure declares that a result set will be returned, then an empty result set is returned.
 

@@ -21,13 +21,13 @@ The Teiid specific Google Spreadsheet Data Sources Resource Adapter should be us
 
 === Native Queries
 
-Google spreadsheet source procedures may be created using the teiid_rel:native-query extension - see link:Translators.adoc#18646290_Translators-native[Parameterizable Native Queries]. The procedure will invoke the native-query similar to an native procedure call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality. See the link:Google_Spreadsheet_Translator.adoc#55477052_GoogleSpreadsheetTranslator-Select[Select] format below.
+Google spreadsheet source procedures may be created using the teiid_rel:native-query extension - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The procedure will invoke the native-query similar to an native procedure call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality. See the link:Google_Spreadsheet_Translator.adoc#_select[Select] format below.
 
 === Direct Query Procedure
 
-NOTE: This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:Translators.adoc#18646290_Translators-OverrideExecutionProperties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
+NOTE: This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:Translators.adoc#_override_execution_properties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
 
-TIP: By default the name of the procedure that executes the queries directly is called *native*. link:Translators.adoc#18646290_Translators-OverrideExecutionProperties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
+TIP: By default the name of the procedure that executes the queries directly is called *native*. link:Translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
 
 The Google spreadsheet translator provides a procedure to execute any ad-hoc query directly against the source without any Teiid parsing or resolving. Since the metadata of this procedure’s execution results are not known to Teiid, they are returned as an object array. link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications. Teiid exposes this procedure with a simple query structure as below:
 

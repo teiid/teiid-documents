@@ -158,7 +158,7 @@ To enable audit logging to the default log location, simply enable the DEBUG lev
 
 NOTE: *"Want to log to a database?"* - If you would like to log Audit log messages to any database, then look at the https://github.com/teiid/teiid-extensions[https://github.com/teiid/teiid-extensions] project. The installation zip file will be available in Teiid downloads page.
 
-To enable audit logging to an alternative file location, configure a separate file appender for the DETAIL logging of the org.teiid.AUDIT_LOG context. See the link:../dev/Developers_Guide.adocDeveloper’s Guide] to develop a link:../dev/Custom_Logging.adoc[custom logging solution] if file based, or any other built-in Log4j, logging is not sufficient.
+To enable audit logging to an alternative file location, configure a separate file appender for the DETAIL logging of the org.teiid.AUDIT_LOG context. See the link:../dev/Developers_Guide.adoc[Developer’s Guide] to develop a link:../dev/Custom_Logging.adoc[custom logging solution] if file based, or any other built-in Log4j, logging is not sufficient.
 
 == Additional Logging Information
 
