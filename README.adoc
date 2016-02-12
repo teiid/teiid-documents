@@ -3,9 +3,15 @@ link:./Legal_Notice.adoc[Legal Notice]
 
 image::cover_small.jpg[Teiid Logo]
 
-== Contribute to Teiid Document
+== Contribute to Teiid Documentation
 
-GitHub (https://github.com/teiid/teiid-documents[teiid/teiid-documents]) as a host for book's sources, to edit is simple as submit a change to GitHub as below 3 steps:
+The pages themselves have commenting enabled.  You should be able to click on any text area to add a comment.
+
+The documentation project is hosted on GitHub at (https://github.com/teiid/teiid-documents[teiid/teiid-documents]).
+
+For simple changes you can just use the online editing capabilities of GitHub by navigating to the appropriate source file and selecting fork/edit.
+
+For larger changes follow these 3 steps:
 
 *Step.1* clone the sources
 
@@ -23,13 +29,13 @@ Once you finished this steps, the content of https://teiid.gitbooks.io/documents
 
 == Generate html/pdf/epub/mobi 
 
-Install https://github.com/GitbookIO/gitbook[gitbook] and https://help.gitbook.com/build/ebookconvert.html[ebook-convert], execute the following commands
+You may locally create rendered forms of the documentation.  To do this install https://github.com/GitbookIO/gitbook[gitbook] and https://help.gitbook.com/build/ebookconvert.html[ebook-convert], then execute the following commands from the checkout location:
 
 ----
-$ gitbook build ./ teiid-document
-$ gitbook pdf ./ teiid-document.pdf
-$ gitbook epub ./ teiid-document.epub
-$ gitbook mobi ./ teiid-document.mobi
+$ gitbook build ./ teiid-documents
+$ gitbook pdf ./ teiid-documents.pdf
+$ gitbook epub ./ teiid-documents.epub
+$ gitbook mobi ./ teiid-documents.mobi
 ----
 
-Once above commands execured success, `teiid-document` folder, `teiid-document.pdf`, `teiid-document.epub`, `teiid-document.mobi` will generated.
+Once above commands executes successfully, the `teiid-documents` folder, `teiid-documents.pdf`, `teiid-documents.epub`, and `teiid-documents.mobi` will be generated.
