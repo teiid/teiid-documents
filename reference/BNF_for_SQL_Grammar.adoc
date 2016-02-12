@@ -845,7 +845,7 @@
 xml forest>>, <<xmlNamespaces,xml namespaces>>, <<xmlQuery,xml query>>, <<xmlTable,xml table>>
 
 |[[token_CONCAT_OP]]_concat_op_
-|"||"
+|"\|\|"
 |<<commonValueExpression,common value expression>>
 
 |[[token_DECIMALVAL]]_decimal numeric literal_
