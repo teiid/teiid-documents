@@ -1,6 +1,20 @@
 
 = Query Planner
 
+* <<Canonical Plan and All Nodes, Canonical Plan and All Nodes>>
+* <<Node Properties, Node Properties>>
+** <<Access Properties, Access Properties>>
+** <<Set operation Properties, Set operation Properties>>
+** <<Join Properties, Join Properties>>
+** <<Project Properties, Project Properties>>
+** <<Select Properties, Select Properties>>
+** <<Sort Properties, Sort Properties>>
+** <<Source Properties, Source Properties>>
+** <<Group Properties, Group Properties>>
+** <<Tuple Limit Properties, Tuple Limit Properties>>
+** <<General and Costing Properties, General and Costing Properties>>
+* <<Rules, Rules>>
+
 For each sub-command in the user command an appropriate kind of sub-planner is used (relational, XML, procedure, etc).
 
 Each planner has three primary phases:
@@ -15,7 +29,7 @@ A relational processing plan is created by the optimizer after the logical plan 
 
 === Canonical Plan and All Nodes
 
-User SQL statements after rewrite are converted into a canonical plan form. The canonical plan form most closely resembles the initial SQL structure. A SQL select query has the following possible clauses (all but SELECT are optional):  WITH, SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY, LIMIT.  These clauses are logically executed in the following order:
+As link:Planning_Overview.adoc[Planning Overview], a user SQL statement after Parsing, Resolving, Validating, Rewriting, it be converted into a canonical plan form. The canonical plan form most closely resembles the initial SQL structure. A SQL select query has the following possible clauses (all but SELECT are optional):  WITH, SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY, LIMIT.  These clauses are logically executed in the following order:
 
 1.  WITH (create common table expressions) - handled by a specialized PROJECT NODE
 2.  FROM (read and join all data from tables) - SOURCE node for each from clause item, Join node (if >1 table)
@@ -27,113 +41,333 @@ User SQL statements after rewrite are converted into a canonical plan form. The 
 8.  ORDER BY (sort rows) - SORT node
 9.  LIMIT (limit result set to a certain range of results) - LIMIT node
 
-For example, a SQL statement such as SELECT max(pm1.g1.e1) FROM pm1.g1 WHERE e2 = 1 creates a logical plan:
+For example, a SQL statement such as `SELECT max(pm1.g1.e1) FROM pm1.g1 WHERE e2 = 1` creates a logical plan:
+
+image:images/teiid-query-plan-3.png[images/teiid-query-plan-3.png]
 
 [source,xml]
 ----
 Project(groups=[anon_grp0], props={PROJECT_COLS=[anon_grp0.agg0 AS expr1]})
-  Group(groups=[anon_grp0], props={SYMBOL_MAP={anon_grp0.agg0=MAX(pm1.g1.e1)}})
-    Select(groups=[pm1.g1], props={SELECT_CRITERIA=e2 = 1})
-      Source(groups=[pm1.g1])
+  Group(groups=[anon_grp0], props={SYMBOL_MAP={anon_grp0.agg0=MAX(pm1.G1.E1)}})
+    Select(groups=[pm1.G1], props={SELECT_CRITERIA=pm1.G1.E2 = 1})
+      Source(groups=[pm1.G1])
 ----
 
 Here the Source corresponds to the FROM clause, the Select corresponds to the WHERE clause, the Group corresponds to the implied grouping to create the max aggregate, and the Project corresponds to the SELECT clause.
 
-Note that the affect of grouping generates what is effectively an inline view, anon_grp0, to handle the projection of values created by the grouping.
+NOTE: The affect of grouping generates what is effectively an inline view, anon_grp0, to handle the projection of values created by the grouping.
 
-All Node Types:
+.**Node Types**
+|===
+|Type Name | Description
 
-* ACCESS - a source access or plan execution.
-* DUP_REMOVE - removes duplicate rows
-* JOIN - a join (LEFT OUTER, FULL OUTER, INNER, CROSS, SEMI, etc.)
-* PROJECT - a projection of tuple values
-* SELECT - a filtering of tuples
-* SORT - an ordering operation, which may be inserted to process other operations such as joins
-* SOURCE - any logical source of tuples including an inline view, a source access, XMLTABLE, etc.
-* GROUP - a grouping operation
-* SET_OP - a set operation (UNION/INTERSECT/EXCEPT)
-* NULL - a source of no tuples
-* TUPLE_LIMIT - row offset / limit
+|ACCESS
+|a source access or plan execution.
+
+|DUP_REMOVE 
+|removes duplicate rows
+
+|JOIN 
+|a join (LEFT OUTER, FULL OUTER, INNER, CROSS, SEMI, etc.)
+
+|PROJECT 
+|a projection of tuple values
+
+|SELECT 
+|a filtering of tuples
+
+|SORT 
+|an ordering operation, which may be inserted to process other operations such as joins
+
+|SOURCE 
+|any logical source of tuples including an inline view, a source access, XMLTABLE, etc.
+
+|GROUP 
+|a grouping operation
+
+|SET_OP 
+|a set operation (UNION/INTERSECT/EXCEPT)
+
+|NULL 
+|a source of no tuples
+
+|TUPLE_LIMIT 
+|row offset / limit
+|===
 
 === Node Properties
 
 Each node has a set of applicable properties that are typically shown on the node.
 
-* Access Properties
-** ATOMIC_REQUEST - The final form of a source request
-** MODEL_ID - The metadata object for the target model/schema
-** PROCEDURE_CRITERIA/PROCEDURE_INPUTS/PROCEDURE_DEFAULTS - Used in planning procedureal relational queries
-** IS_MULTI_SOURCE - set to true when the node represents a multi-source access
-** SOURCE_NAME - used to track the multi-source source name
-** CONFORMED_SOURCES - tracks the set of conformed sources when the conformed extension metadata is used
-** SUB_PLAN/SUB_PLANS - used in multi-source planning
-* SET_OPERATION/USE_ALL - defines the set operation(UNION/INTERSECT/EXCEPT) and if all rows or distinct rows are used.
-* Join Properties
-** JOIN_CRITERIA - all join predicates
-** JOIN_TYPE - type of join (INNER, LEFT OUTER, etc.)
-** JOIN_STRATEGY - the algorithm to use (nested loop, merge, etc.)
-** LEFT_EXPRESSIONS - the expressions in equi-join predicates that originate from the left side of the join
-** RIGHT_EXPRESSIONS - the expressions in equi-join predicates that originate from the right side of the join
-** DEPENDENT_VALUE_SOURCE - set if a dependent join is used
-** NON_EQUI_JOIN_CRITERIA - non-equi join predicates
-** SORT_LEFT - if the left side needs sorted for join processing
-** SORT_RIGHT - if the right side needs sorted for join processing
-** IS_OPTIONAL - if the join is optional
-** IS_LEFT_DISTINCT - if the left side is distinct with respect to the equi join predicates
-** IS_RIGHT_DISTINCT - if the right side is distinct with respect to the equi join predicates
-** IS_SEMI_DEP - if the dependent join represents a semi-join
-** PRESERVE - if the preserve hint is preserving the join order
-* Project Properties
-** PROJECT_COLS - the expressions projected
-** INTO_GROUP - the group targeted if this is a select into or insert with a query expression
-** HAS_WINDOW_FUNCTIONS - true if window functions are used
-** CONSTRAINT - the constraint that must be met if the values are being projected into a group
-* Select Properties
-** SELECT_CRITERIA - the filter
-** IS_HAVING - if the filter is applied after grouping
-** IS_PHANTOM - true if the node is marked for removal, but temporarily left in the plan.
-** IS_TEMPORARY - inferred criteria that may not be used in the final plan
-** IS_COPIED - if the criteria has already been processed by rule copy criteria
-** IS_PUSHED - if the criteria is pushed as far as possible
-** IS_DEPENDENT_SET - if the criteria is the filter of a dependent join
-* Sort Properties
-** SORT_ORDER - the order by that defines the sort
-** UNRELATED_SORT - if the ordering includes a value that is not being projected
-** IS_DUP_REMOVAL - if the sort should also perform duplicate removal over the entire projection
-* Source Properties - many source properties also become present on associated access nodes
-** SYMBOL_MAP - the mapping from the columns above the source to the projected expressions. Also present on Group nodes
-** PARTITION_INFO - the partitioning of the union branches
-** VIRTUAL_COMMAND - if the source represents an view or inline view, the query that defined the view
-** MAKE_DEP - hint information
-** PROCESSOR_PLAN - the processor plan of a non-relational source(typically from the NESTED_COMMAND)
-** NESTED_COMMAND - the non-relational command
-** TABLE_FUNCTION - the table function (XMLTABLE, OBJECTTABLE, etc.) defining the source
-** CORRELATED_REFERENCES - the correlated references for the nodes below the source
-** MAKE_NOT_DEP - if make not dep is set
-** INLINE_VIEW - If the source node represents an inline view
-** NO_UNNEST - if the no_unnest hint is set
-** MAKE_IND - if the make ind hint is set
-** SOURCE_HINT - the source hint. See link:Federated_Optimizations.adoc[Federated Optimizations].
-** ACCESS_PATTERNS - access patterns yet to be satisfied
-** ACCESS_PATTERN_USED - satisfied access patterns
-** REQUIRED_ACCESS_PATTERN_GROUPS - groups needed to satisfy the access patterns. Used in join planning.
-* Group Properties
-** GROUP_COLS - the grouping columns
-** ROLLUP - if the grouping includes a rollup
-* Tuple Limit Properties
-** MAX_TUPLE_LIMIT - expression that evaluates to the max number of tuples generated
-** OFFSET_TUPLE_COUNT - Expression that evaluates to the tuple offset of the starting tuple
-** IS_IMPLICIT_LIMIT - if the limit is created by the rewriter as part of a subquery optimization
-** IS_NON_STRICT - if the unordered limit should not be enforced strictly
-* General and Costing Properties
-** OUTPUT_COLS - the output columns for the node. Is typically set after rule assign output elements.
-** EST_SET_SIZE - represents the estimated set size this node would produce for a sibling node as the independent node in a dependent join scenario
-** EST_DEP_CARDINALITY - value that represents the estimated cardinality (amount of rows) produced by this node as the dependent node in a dependent join scenario
-** EST_DEP_JOIN_COST - value that represents the estimated cost of a dependent join (the join strategy for this could be Nested Loop or Merge)
-** EST_JOIN_COST - value that represents the estimated cost of a merge join (the join strategy for this could be Nested Loop or Merge)
-** EST_CARDINALITY - represents the estimated cardinality (amount of rows) produced by this node
-** EST_COL_STATS - column statistics including number of null values, distinct value count, etc.
-** EST_SELECTIVITY - represents the selectivity of a criteria node
+==== Access Properties
+
+.**Access Properties**
+|===
+|Property Name | Description
+
+|ATOMIC_REQUEST 
+|The final form of a source request
+
+|MODEL_ID 
+|The metadata object for the target model/schema
+
+|PROCEDURE_CRITERIA/PROCEDURE_INPUTS/PROCEDURE_DEFAULTS 
+|Used in planning procedureal relational queries
+
+|IS_MULTI_SOURCE 
+|set to true when the node represents a multi-source access
+
+|SOURCE_NAME 
+|used to track the multi-source source name
+
+|CONFORMED_SOURCES 
+|tracks the set of conformed sources when the conformed extension metadata is used
+
+|SUB_PLAN/SUB_PLANS 
+|used in multi-source planning
+|===
+
+==== Set operation Properties
+
+.**Set operation Properties**
+|===
+|Property Name | Description
+
+|SET_OPERATION/USE_ALL 
+|defines the set operation(UNION/INTERSECT/EXCEPT) and if all rows or distinct rows are used.
+|===
+
+==== Join Properties
+
+.**Join Properties**
+|===
+|Property Name | Description
+
+|JOIN_CRITERIA 
+|all join predicates
+
+|JOIN_TYPE 
+|type of join (INNER, LEFT OUTER, etc.)
+
+|JOIN_STRATEGY 
+|the algorithm to use (nested loop, merge, etc.)
+
+|LEFT_EXPRESSIONS 
+|the expressions in equi-join predicates that originate from the left side of the join
+
+|RIGHT_EXPRESSIONS 
+|the expressions in equi-join predicates that originate from the right side of the join
+
+|DEPENDENT_VALUE_SOURCE 
+|set if a dependent join is used
+
+|NON_EQUI_JOIN_CRITERIA 
+|non-equi join predicates
+
+|SORT_LEFT 
+|if the left side needs sorted for join processing
+
+|SORT_RIGHT 
+|if the right side needs sorted for join processing
+
+|IS_OPTIONAL 
+|if the join is optional
+
+|IS_LEFT_DISTINCT 
+|if the left side is distinct with respect to the equi join predicates
+
+|IS_RIGHT_DISTINCT 
+|if the right side is distinct with respect to the equi join predicates
+
+|IS_SEMI_DEP 
+|if the dependent join represents a semi-join
+
+|PRESERVE 
+|if the preserve hint is preserving the join order
+|===
+
+==== Project Properties
+
+.**Project Properties**
+|===
+|Property Name | Description
+
+|PROJECT_COLS 
+|the expressions projected
+
+|INTO_GROUP 
+|the group targeted if this is a select into or insert with a query expression
+
+|HAS_WINDOW_FUNCTIONS 
+|true if window functions are used
+
+|CONSTRAINT 
+|the constraint that must be met if the values are being projected into a group
+|===
+
+==== Select Properties
+
+.**Select Properties**
+|===
+|Property Name | Description
+
+|SELECT_CRITERIA 
+|the filter
+
+|IS_HAVING
+|if the filter is applied after grouping
+
+|IS_PHANTOM 
+|true if the node is marked for removal, but temporarily left in the plan.
+
+|IS_TEMPORARY 
+|inferred criteria that may not be used in the final plan
+
+|IS_COPIED 
+|if the criteria has already been processed by rule copy criteria
+
+|IS_PUSHED 
+|if the criteria is pushed as far as possible
+
+|IS_DEPENDENT_SET 
+|if the criteria is the filter of a dependent join
+|===
+
+==== Sort Properties
+
+.**Sort Properties**
+|===
+|Property Name | Description
+
+|SORT_ORDER 
+|the order by that defines the sort
+
+|UNRELATED_SORT 
+|if the ordering includes a value that is not being projected
+
+|IS_DUP_REMOVAL 
+|if the sort should also perform duplicate removal over the entire projection
+|===
+
+==== Source Properties
+
+.**Source Properties**
+|===
+|Property Name | Description
+
+|SYMBOL_MAP 
+|the mapping from the columns above the source to the projected expressions. Also present on Group nodes
+
+|PARTITION_INFO 
+|the partitioning of the union branches
+
+|VIRTUAL_COMMAND 
+|if the source represents an view or inline view, the query that defined the view
+
+|MAKE_DEP 
+|hint information
+
+|PROCESSOR_PLAN 
+|the processor plan of a non-relational source(typically from the NESTED_COMMAND)
+
+|NESTED_COMMAND 
+|the non-relational command
+
+|TABLE_FUNCTION 
+|the table function (XMLTABLE, OBJECTTABLE, etc.) defining the source
+
+|CORRELATED_REFERENCES 
+|the correlated references for the nodes below the source
+
+|MAKE_NOT_DEP 
+|if make not dep is set
+
+|INLINE_VIEW 
+|If the source node represents an inline view
+
+|NO_UNNEST 
+|if the no_unnest hint is set
+
+|MAKE_IND 
+|if the make ind hint is set
+
+|SOURCE_HINT 
+|the source hint. See link:Federated_Optimizations.adoc[Federated Optimizations].
+
+|ACCESS_PATTERNS 
+|access patterns yet to be satisfied
+
+|ACCESS_PATTERN_USED 
+|satisfied access patterns
+
+|REQUIRED_ACCESS_PATTERN_GROUPS 
+|groups needed to satisfy the access patterns. Used in join planning.
+|===
+
+NOTE: Many source properties also become present on associated access nodes.
+
+==== Group Properties
+
+.**Group Properties**
+|===
+|Property Name | Description
+
+|GROUP_COLS 
+|the grouping columns
+
+|ROLLUP 
+|if the grouping includes a rollup
+|===
+
+==== Tuple Limit Properties
+
+.**Tuple Limit Properties**
+|===
+|Property Name | Description
+
+|MAX_TUPLE_LIMIT 
+|expression that evaluates to the max number of tuples generated
+
+|OFFSET_TUPLE_COUNT 
+|Expression that evaluates to the tuple offset of the starting tuple
+
+|IS_IMPLICIT_LIMIT 
+|if the limit is created by the rewriter as part of a subquery optimization
+
+|IS_NON_STRICT 
+|if the unordered limit should not be enforced strictly
+|===
+
+==== General and Costing Properties
+
+.**General and Costing Properties**
+|===
+|Property Name | Description
+
+|OUTPUT_COLS 
+|the output columns for the node. Is typically set after rule assign output elements.
+
+|EST_SET_SIZE 
+|represents the estimated set size this node would produce for a sibling node as the independent node in a dependent join scenario
+
+|EST_DEP_CARDINALITY 
+|value that represents the estimated cardinality (amount of rows) produced by this node as the dependent node in a dependent join scenario
+
+|EST_DEP_JOIN_COST 
+|value that represents the estimated cost of a dependent join (the join strategy for this could be Nested Loop or Merge)
+
+|EST_JOIN_COST 
+|value that represents the estimated cost of a merge join (the join strategy for this could be Nested Loop or Merge)
+
+|EST_CARDINALITY 
+|represents the estimated cardinality (amount of rows) produced by this node
+
+|EST_COL_STATS 
+|column statistics including number of null values, distinct value count, etc.
+
+|EST_SELECTIVITY 
+|represents the selectivity of a criteria node
+|===
 
 === Rules
 
@@ -179,13 +413,13 @@ Dependent join is the key optimization we use to efficiently process multi-sourc
 * Push Non-Join Criteria - this rule will push predicates out of an on clause if it is not necessary for the correctness of the join.
 * Push Select Criteria - pushed select nodes as far as possible through unions, joins, and views layers toward the access nodes.  In most cases movement down the tree is good as this will filter rows earlier in the plan.  We currently do not undo the decisions made by Push Select Criteria.  However in situations where criteria cannot be evaluated by the source, this can lead to sub optimal plans.
 
-One of the most important optimization related to pushing criteria, is how the criteria will be pushed trough join.  Consider the following plan tree that represents a subtree of the plan for the query "select … from A inner join b on (A.x = B.x) where A.y = 3"
+One of the most important optimization related to pushing criteria, is how the criteria will be pushed through join.  Consider the following plan tree that represents a subtree of the plan for the query `select * from A inner join b on (A.x = B.x) where B.y = 3`
 
 [source,sql]
 ----
     SELECT (B.y = 3)
            |
-          JOIN - Inner Join on (A.x = B.x
+          JOIN - Inner Join on (A.x = B.x)
          /     \    
       SRC (A)   SRC (B)
 ----
@@ -369,7 +603,7 @@ XML programs can also be recursive, which involves using the same document fragm
 
 === XQuery
 
-XQuery is eligible for specific link:XQuery_Optimization.adoc[optimizations]. Document projection is the most common optimization. It will be shown in the debug plan as an annotation. For example with the user query containing "xmltable('/a/b' passing doc columns x string path `@x', val string path '/.')", the debug plan would show a tree of the document that will effectively be used by the context and path XQuerys:
+XQuery is eligible for specific link:XQuery_Optimization.adoc[optimizations]. Document projection is the most common optimization. It will be shown in the debug plan as an annotation. For example with the user query containing "xmltable('/a/b' passing doc columns x string path '@x', val string path '/.')", the debug plan would show a tree of the document that will effectively be used by the context and path XQuerys:
 
 [source,sql]
 ----
