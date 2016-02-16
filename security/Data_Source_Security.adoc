@@ -114,37 +114,6 @@ In the datasource configuration, instead of supplying the userid/pasword you nee
 
 NOTE: This security domain only should be used as data source security domains, not as generic purpose security domain.
 
-== Role Based Credential Map
-
-In some use cases, the users are divided by their functionality and they have varied levels of security access to data sources. These types of users are identified by their roles as to what they have access to. In the above "CallerIdentity" login scenario, that may be too fine-grained security at data sources, that can lead resource exhaustion as every user has their own separate connection. Using Role based security gives a balance, where the users with same role are treated equally for authentication purposes at the data source. Teiid provides a login module called "RoleBasedCredentialMap" for this purposes, where administrator can define a role-based authentication module, where given the role of the user from the primary login module, this module will hold a credential to that role. So, it is the container of credentials that maps to different roles. If a user has multiple roles, the first role that has the credential will be chosen. Below find the sample configuration.
-
-[source,xml]
-.standalone-teiid.xml
-----
-<subsystem xmlns="urn:jboss:domain:security:1.1">
-    <security-domains>
-        <security-domain name="my-security-domain">
-            <authentication>
-                <login-module code="RealmDirect" flag="required">
-                    <module-option name="password-stacking" value="useFirstPass"/>
-                </login-module>
-
-                <login-module code="org.teiid.jboss.RoleBasedCredentialMapIdentityLoginModule" flag="required">
-                    <module-option name="password-stacking" value="useFirstPass"/>
-                    <module-option name="credentialMap" value="teiid-credentialmap.properties"/>
-                </login-module>
-
-            </authentication>
-        </security-domain>
-    </security-domains>
-    </subsystem>
-----
-
-Then follow the same instructions as above in defining the _security-domain_ in the data source or connection factory configuration.
-
-In the above configuration example, in the primary login module "UsersRolesLoginModule" is set up for logging in the primary user and assign some roles. The "RoleBasedCredentialMap" login module is configured to hold role to password information in the file defined by "credentialMap" property. When user logs in, the role information from the primary login module is taken, and extracts the role’s passsword and attaches as a private credential to the Subject.
-
-NOTE: *Obfuscate your passwords* - If you do not like to leave clear text passwords in the configuration file, then you can use JBoss AS vault mechanism for storing the keystore and truststore passwords. Use the directions defined here https://community.jboss.org/docs/DOC-17248[https://community.jboss.org/docs/DOC-17248]
 
 == Translator Customization
 
