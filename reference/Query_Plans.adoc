@@ -9,7 +9,7 @@ A query plan (also known as an execution or processing plan) is a set of instruc
 
 You can get a query plan any time you execute a command. The SQL options available are as follows:
 
-*SET SHOWPLAN [ON|DEBUG]*- Returns the processing plan or the plan and the full planner link:Query_Planner.adoc[Debug Log]. See also the link:../client-dev/SET_Statement.adoc[SET Statement].
+*SET SHOWPLAN [ON|DEBUG]*- Returns the processing plan or the plan and the full planner link:Query_Planner.adoc#_reading_a_debug_plan[Debug Log]. See also the link:../client-dev/SET_Statement.adoc[SET Statement].
 
 With the above options, the query plan is available from the Statement object by casting to the `org.teiid.jdbc.TeiidStatement` interface or by using the link:../client-dev/SHOW_Statement.adoc[SHOW PLAN statement].
 
@@ -307,7 +307,7 @@ The same plan in xml form looks like:
 </node>
 ----
 
-Note that the same information appears in each of the plan forms. In some cases it can actually be easier to follow the simplified format of the debug plan final processor plan. From the link:Query_Planner.adoc[Debug Log] the same plan as above would appear as:
+Note that the same information appears in each of the plan forms. In some cases it can actually be easier to follow the simplified format of the debug plan final processor plan. From the link:Query_Planner.adoc#_reading_a_debug_plan[Debug Log] the same plan as above would appear as:
 
 [source,xml]
 ----
