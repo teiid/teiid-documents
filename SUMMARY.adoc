@@ -24,7 +24,6 @@
 ..... link:admin/OAuth_Authentication_With_REST_Based_Services.adoc[OAuth Authentication With REST Based Services]
 .... link:admin/Coherence_Data_Sources.adoc[Coherence Data Sources]
 ... link:admin/VDB_Versioning.adoc[VDB Versioning]
-... link:admin/Migrating_VDBs_from_6.x.adoc[Migrating VDBs from 6.x]
 .. link:admin/Logging.adoc[Logging]
 .. link:admin/Clustering_in_Teiid.adoc[Clustering in Teiid]
 .. link:admin/Monitoring.adoc[Monitoring]
@@ -132,7 +131,6 @@
 .. link:dev/AdminAPI.adoc[AdminAPI]
 .. link:dev/Custom_Logging.adoc[Custom Logging]
 .. link:dev/Runtime_Updates.adoc[Runtime Updates]
-.. link:dev/Advanced_Topics.adoc[Advanced Topics]
 .. link:dev/Custom_Metadata_Repository.adoc[Custom Metadata Repository]
 .. link:dev/PreParser.adoc[PreParser]
 
