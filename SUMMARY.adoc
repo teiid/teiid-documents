@@ -297,3 +297,5 @@
 .. link:security/Kerberos_support_through_GSSAPI.adoc[Kerberos support through GSSAPI]
 .. link:security/Custom_Authorization_Validator.adoc[Custom Authorization Validator]
 .. link:security/SAML_Based_Security_For_OData.adoc[SAML Based Security For OData]
+.. link:security/OAuth2_Based_Security_For_OData_Using_KeyCloak.adoc[OAuth2 Based Security For OData Using KeyCloak]
+.. link:security/SAML_Based_Security_For_OData_Using_KeyCloak.adoc[SAML Based Security For OData Using KeyCloak]

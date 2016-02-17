@@ -1,0 +1,116 @@
+This document will provide detailed instructions to enable SAML authentication on Teiid's OData interface using the Keycloak as authentication server (IDP). SAML is standard, so the modified OData WAR should work fine with any other compatible SAML Authorization server, however the configuration may be little different. Please consult their documentation for any such specifics of different authorization server other then KeyCloak.
+
+This examples will show case an example, where Teiid's OData rest interface is secured using SAML using Keycloak as IDP. The VDB accessed by the OData interface, the pass-through of SAML Assertion for OAuth token (SAML Bearer) is not yet available in KeyCloak, when the feature is available then Teiid will support it. However, if you are working with a IDP that supports the SAML Bearer, Teiid does support the mechanism where one can pass the "access-token" from web  layer to the data source layer. See the OAuth example as template and possible configuration needed. (note it is not exactly same, but very similar) 
+
+
+=== Download and install Keycloak as a separate web server.
+
+ * Login using the default "admin/admin" credentials into the Keycloak "master" realm.
+ * Add a new realm called "oauth-demo"
+
+image:images/realm.png[realm]
+
+ * Add a new user called "user" and add credentials. 
+
+image:images/users.png[users]
+
+Add two roles "odata" and "user". These are enterprise roles, that will be used by the web services to grant the access to user. Also these roles are used as "scopes" in the OAuth protocol.
+
+image:images/roles.png[roles]
+
+ * Add a new client called "odata4-saml", this client represents the Teiid's SAML client that we are going to create
+
+image:images/saml-main.png[saml-main]
+
+* Click on SAML Keys, either import your certificate or generate a new one. Then click export, and keep the exported certificate for later use.
+
+image:images/saml-keys.png[saml-keys]
+ 
+=== Install and configure Teiid server
+
+* Download and install Teiid server
+* Download Keycloak adapter for the EAP, and unzip over the Teiid server installation
+* Download Keycloak SAML adapter for EAP, and unzip over the Teiid server installation. (optional but need for another exercise)
+* Edit the standalone-teiid.xml, add the following sections
+
+In extensions add
+[source,xml]
+----
+    <extension module="org.keycloak.keycloak-saml-adapter-subsystem"/>
+    <extension module="org.keycloak.keycloak-adapter-subsystem"/>
+----
+    
+    
+Add these two subsystems any where in the file
+
+[source,xml]
+----
+        <subsystem xmlns="urn:jboss:domain:keycloak-saml:1.1"/>
+        <subsystem xmlns="urn:jboss:domain:keycloak:1.1"/>
+----    
+
+In security-domains add following security domain
+
+[source,xml]
+----
+    <security-domain name="keycloak">
+        <authentication>
+            <login-module code="org.keycloak.adapters.jboss.KeycloakLoginModule" flag="required"/>
+        </authentication>
+    </security-domain>
+----
+
+
+Under Teiid subsystem, change the "security-domain" of the "odata" transport, to 
+
+[source,xml]
+----
+    <transport name="odata">
+        <authentication security-domain="keycloak"/>
+    </transport>
+----
+
+
+=== Remove the default OData WAR file. 
+
+By default Teiid installation comes with OData web service WAR file configured with "HTTP Basic" authentication. Before we can replace it with new OAuth security based WAR file, this file needs to be removed. You can find this in "<eap>/modules/system/layers/dv/org/jboss/teiid/deployments" directory with "-odata4" post fix. Move this file to a different location from installation directory.
+
+=== Build the new OData WAR file that supports SAML.
+
+To build SAML based OData WAR file, Teiid provides a template maven project, that you (the developer) need to download, and update some configuration and build the WAR file. To download the template visit URL https://github.com/teiid/teiid-web-security 
+
+The above link provides templates for creating two WAR files, one WAR file is to create Teiid's OData service with OAuth, the next is for SAML. Choose the SAML one.
+
+Replace the "teiid-web-security/teiid-odata-saml-keycloak/src/main/webapp/WEB-INF/keyclock.json" file contents with "installation" script in "keycloak.json" format from Keycloak admin console's "odata4-saml" client application.
+
+Similarly replace the "teiid-web-security/teiid-odata-saml-keycloak/src/main/webapp/WEB-INF/keystore.jks" file with the exported keystore from earlier steps.
+
+Now build the "keycloak-saml.xml" file, and add all the sections of "metadata" specific to your service. This is where service knows where IDP is and what service this represents etc. So, pay attention to this file. 
+
+to build the WAR files running the maven command
+
+[source]
+----
+mvn clean package
+----
+
+Copy the WAR file from "teiid-web-security/teiid-odata-saml-keycloak/target" directory into the "<eap>/standalone/deployments" directory for deployment.
+
+
+Start both Keycloak and Teiid Servers. If both of these servers are in the same machine, then we need to offset the ports of Teiid server such that they will not conflict with that of the Keycloak server. For this example, I started the Teiid server as
+
+[source]
+----
+./standalone.sh -c standalone-teiid.xml -Djboss.socket.binding.port-offset=100
+----
+
+where all ports are offset by 100. So the management port is 10090 and default JDBC port will be 31100. The Keycloak server is started on default ports.
+
+=== Testing the example using Web Browser
+
+To test any SAML based application you must use a Web browser. Using a browser issue any OData specific query, and you will be redirected to do SAML authentication.
+
+[source]
+----
+http://localhost:8180/odata4/<vdb>.<version>/<model>/<view>
+----
