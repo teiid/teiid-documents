@@ -15,3 +15,5 @@ Within your queries, you can convert between datatypes using the CONVERT or CAST
 
 These functions are identical other than syntax; CAST is the standard SQL syntax, CONVERT is the standard JDBC/ODBC syntax.
 
+IMPORTANT: Options that are specified on the type, such as length, precision, scale, etc., are effectively ignored - the runtime is simply converting from one object type to another.
+
