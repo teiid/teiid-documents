@@ -63,7 +63,7 @@ Import properties guide the schema generation part during the deployment of the 
 |Property Name |Description |Default
 
 |importer.excelFileName
-|Defines the name of the Excel Document
+|Defines the name of the Excel Document to import metadata. This can be defined as a file pattern (*.xls), however when defined as pattern all files must be of same format and the translator will choose an arbitrary file to import metadata from. Use file pattern to read data from multiple Excel documents in the same directory, in single file case choose the absolute name.
 |required
 
 |importer.headerRowNumber
@@ -87,19 +87,19 @@ Currently there are no Translator Extension properties defined for this translat
 
 === Metadata Extension Properties
 
-Metadata Extension Properties are the properties that are defined on the schema artifacts like Table, Column, Procedure etc, to describe how the translator needs to interact or interpret with source systems. All the properties are defined with namespace "\{http://www.teiid.org/translator/excel/2014[http://www.teiid.org/translator/excel/2014\]}", which also has a recognized alias"teiid_excel".
+Metadata Extension Properties are the properties that are defined on the schema artifacts like Table, Column, Procedure etc, to describe how the translator needs to interact or interpret with source systems. All the properties are defined with namespace 'http://www.teiid.org/translator/excel/2014[http://www.teiid.org/translator/excel/2014\]', which also has a recognized alias 'teiid_excel'.
 
 |===
-|Property Name |Schema Item |Description |Mandatory
+|Property Name |Schema Item Property Belongs To |Description |Mandatory
 
 |FILE
 |Table
-|Defines Excel Document name or name pattern
+|Defines Excel Document name or name pattern (*.xls). File pattern can be used to read data from multiple files. 
 |Yes
 
 |FIRST_DATA_ROW_NUMBER
 |Table
-|Defines the row number where records start
+|Defines the row number where records start in the sheet (applies to every sheet)
 |optional
 
 |CELL_NUMBER
