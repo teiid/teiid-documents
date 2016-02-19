@@ -1,0 +1,303 @@
+
+= OData Version 4.0 Support
+
+Teiid strives to be compliant with the OData specification.  The rest of this chapter highlight some specifics of OData and Teiid's support, but you should also consult http://www.odata.org/documentation/[the specification].
+
+== How to Access the data?
+
+For example, if you have a vdb by name _northwind_ deployed that has a _customers_ table in a _NW_ model, then you can access that table with an HTTP GET via the URL:
+
+[source,xml]
+----
+http://localhost:8080/odata/northwind/NW/customers
+----
+
+this would be akin to making a JDBC/ODBC connection and issuing the SQL:
+
+[source,sql]
+----
+SELECT * FROM NW.customers
+----
+
+NOTE: Use correct case (upper or lower) in the resource path.  Unlike SQL, the names used in the URI as case-sensitive.
+
+The returned results from OData query can be in Atom/AtomPub XML or JSON format. JSON results are returned by default.
+
+== Query Basics
+
+Users can submit predicates with along their query to filter the results:
+
+[source,xml]
+----
+http://localhost:8080/odata/northwind/NW/customers?$filter=name+eq+'bob'
+----
+
+this would be similar to making a JDBC/ODBC connection and issuing the SQL
+
+[source,xml]
+----
+SELECT * FROM NW.customers where name = 'bob'
+----
+
+To request the result to be formatted in a specific format, add the query option $format
+
+[source,xml]
+----
+http://localhost:8080/odata/northwind/NW/customers?$format=JSON
+----
+
+Query options can be combined as needed. For example format with a filter:
+
+[source,xml]
+----
+http://localhost:8080/odata/northwind/NW/customers?$filter=name+eq+'bob'&$format=xml
+----
+
+OData allows for querying navigations from one entity to another. A navigation is similar to the foreign key relationships in relational databases. 
+
+For example, if the _customers_ table has an exported key to the _orders_ table on the _customers_ primary key called the customer_fk, then an OData GET could be issued like:
+
+[source,xml]
+----
+http://localhost:8080/odata/northwind/NW/customers(1234)/customer_fk?$filter=orderdate+gt+datetime'2012-12-31T21:23:38Z'
+----
+
+this would be akin to making a JDBC/ODBC connection and issuing the SQL:
+
+[source,sql]
+----
+SELECT o.* FROM NW.orders o join NW.customers c join o.customer_id = c.id where c.id=1234 and o.orderdate > {ts '2012-12-31 21:23:38'}
+----
+
+NOTE: *More Comprehensive Documentation about ODATA* - For detailed protocol access you can read the specification at http://odata.org[http://odata.org]. You can also read this very useful web resource http://msdn.microsoft.com/en-us/library/ff478141.aspx[for an example] of accessing an OData server.
+
+=== Not seeing all the rows?
+
+See the link:#_configuration[configuration section] below for more details. Generally batching is being utilized, which tooling should understand automatically, and additional queries with a $skiptoken query option specified are needed:
+
+[source,xml]
+----
+http://localhost:8080/odata/northwind/NW/customers?$skiptoken=xxx
+----
+
+=== "EntitySet Not Found" error?
+
+When you issue the above query are you seeing a message similar to below?
+
+[source,json]
+----
+{"error":{"code":null,"message":"Cannot find EntitySet, Singleton, ActionImport or FunctionImport with name 'xxx'."}}
+----
+
+Then, it means that either you supplied the model-name/table-name combination wrong, check the spelling and case.   
+
+It is possible that the entity is not part of the link:#_odata_metadata[metadata], such as when a table does not have any PRIMARY KEY or UNIQUE KEY(s).
+
+== How to update your data?
+
+Using the OData protocol it is possible to perform CREATE/UPDATE/DELETE operations along with READ operations shown above. These operations use different HTTP methods.
+
+INSERT/CREATE is accomplished through an HTTP method "POST".
+
+[source,xml]
+.*Example POST*
+----
+POST /service.svc/Customers HTTP/1.1
+Host: host
+Content-Type: application/atom+xml
+Accept: application/atom+xml
+Content-Length: nnn
+<?xml version="1.0" encoding="utf-8"?>
+<entry xml:base="http://host/service.svc/"
+xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices"
+xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+xmlns="http://www.w3.org/2005/Atom">
+    <id>http://host/service.svc/Customers('ASDFG')</id>
+    <title type="text" />
+    <updated>2008-12-07T8:00:00Z</updated>
+    <author>
+        <name />
+    </author>
+    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Orders" href="Orders(1)" />
+    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Orders" href="Orders(2)" />
+    <content type="application/xml">
+        <m:properties>
+            <d:CustomerID>ASDFG</d:CustomerID>
+            <d:CompanyName>Contoso Widgets</d:CompanyName>
+            <d:Address>
+                <d:Street>58 Contoso St</d:Street>
+                <d:City>Seattle</d:City>
+            </d:Address>
+        </m:properties>
+    </content>
+</entry>
+----
+
+An UPDATE is performed with an HTTP "PUT".
+
+[source,xml]
+.*Example PUT Update of Customer*
+----
+PUT /service.svc/Customers('ALFKI') HTTP/1.1
+Host: host
+Content-Type: application/atom+xml
+Accept: application/atom+xml
+Content-Length: nnn
+DataServiceVersion: 1.0
+MaxDataServiceVersion: 3.0
+Prefer: return-content
+<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://www.w3.org/2005/Atom">
+    <content type="application/xml">
+    <m:properties>
+        <d:CustomerID>ALFKI</d:CustomerID>
+        <d:CompanyName>Updated Company Name</d:CompanyName>
+        <d:Address>
+        <d:Street>Updated Street</d:Street>
+        </d:Address>
+    </m:properties>
+    </content>
+</entry>
+----
+
+The DELETE operation uses the HTTP "DELETE" method.
+
+[source,xml]
+.*Example Delete*
+----
+DELETE /service.svc/Customers('ALFKI') HTTP/1.1
+Host: host
+Content-Type: application/atom+xml
+Accept: application/atom+xml
+Content-Length: nnn
+DataServiceVersion: 1.0
+----
+
+== Security
+
+By default OData access is secured using HTTPBasic authentication. The user will be authenticated against Teiid’s default security domain "teiid-security". Users are expected to have the *odata* role. 
+
+However, if you wish to change the security domain use a deployment-overlay to override the _web.xml_ file in the odata4 file in the _<modules>/org/jboss/teiid/main/deployments_ directory. 
+
+In future versions more WS-Security based configurations will be provided.
+
+NOTE: *SAML Based Security* - To provide Single-Sign-On (SSO) using SAML2 for OData access, please take a look in the link:../security/Security_Guide.adoc[Security Guide] for link:../security/SAML_Based_Security_For_OData.adoc[SAML Based Security For OData] section.
+
+== Configuration
+
+The OData WAR file can be configured with following properties in the web.xml file.
+
+|===
+|Property Name |Description |Default Value
+
+|batch-size
+|Number of rows to send back each time, -1 returns all rows
+|256
+
+|skiptoken-cache-time
+|Time interval between the results being recycled/expired between $skiptoken requests
+|300000
+
+|local-transport-name
+|Teiid Local transport name for connection
+|odata
+
+|invalid-xml10-character-replacement
+|Replacement string if an invalid XML 1.0 character appears in the data - note that this replacement will occur even if JSON is requested. No value (the default) means that an exception will be thrown with XML results if such a character is encountered.
+|
+ 
+|proxy-base-uri
+|Defines the proxy server’s URI to be used in OData responses.
+|n/a
+
+|connection.XXX
+|Sets XXX as an execution property on the local connection. Can be used for example to enable result set cache mode.
+|n/a
+|===
+
+NOTE: *"Behind Proxy or In Cloud Environments?"* - If the Teiid server is configured behind a proxy server or deployed in cloud environment, or using a load-balancer then the URI of the server which is handling the OData request is different from URI of proxy. To generate valid links in the OData responses configure "proxy-base-uri" property in the web.xml. If this value is available as system property then define the property value like below
+
+[source,xml]
+----
+    <init-param>
+        <param-name>proxy-base-uri</param-name>
+        <param-value>${system-property-name}</param-value>
+    </init-param>  
+----
+
+To modify the web.xml, create a {{ book.asDocRoot }}/Deployment+Overlays[deployment-overlay] using the cli with the modified contents:
+
+[source]
+----
+deployment-overlay add --name=myOverlay --content=/WEB-INF/web.xml=/modified/web.xml --deployments=teiid-odata-odata4.war --redeploy-affected
+----
+
+Teiid OData server, implements cursoring logic when the result rows exceed the configured batch size. On every request, only _batch-size_ number of rows are returned. Each such request is considered an active cursor, with a specified amount of idle time specified by _skip-token-cache-time_. After the cursor is timed out, the cursor will be closed and remaining results will be cleaned up, and will no longer be available for further queries. Since there is no session based tracking of these cursors, if the request for skiptoken comes after the expired time, the original query will be executed again and tries to reposition the cursor to relative absolute potion, however the results are not guaranteed to be same as the underlying sources may have been updated with new information meanwhile.
+
+== Limitations
+
+The following feature limitations currently apply.
+
+* Blob support for media types are not supported.
+* "$value" construct to retrieve individual column value is not supported.
+* create/update/delete $links is not supported.
+* $expand is minimally supported.
+
+== Client Tools for Access
+
+OData access is really where the user comes in, depending upon your programming model and needs there are various ways you write your access layer into OData. The following are some suggestions:
+
+* Your Browser: The OData Explorer is an online tool for browsing an OData data service.
+* Microsoft .NET Framework 3.51: the WCF Data Services framework is available as a separate download for .NET 3.x.
+* Microsoft .NET Framework 4.0: the WCF Data Services framework built into .NET 4.0 (in release candidate as of this writing).
+* Silverlight 3: the Data Services client library for Silverlight is available for download.
+* Java: the Restlet 2.0 library for Java (including Java on your Android phone) supports the OData protocol.
+* Java: Use a library like OData4J for Java based access, or any Rest based framework
+* JavaScript: the XMLHttpRequest object is standard in modern browsers or you can use jQuery, which comes out of the box with .NET 4.0 or is available for download.
+* PHP: the Toolkit for PHPprovides OData support for PHP clients.
+* AJAX: if you’re using AJAX for ASP.NET, Microsoft provides the ASP.NET Ajax Library for getting to OData.
+* Excel 2010 PowerPivot: PowerPivot comes with OData support built right in.
+* Windows Desktop: LINQPad is a wonderful tool for building OData queries interactively.
+* Shell Scripts: use CURL tool
+
+== OData Metadata
+
+OData defines its schema using Conceptual Schema Definition Language (CSDL). Every VDB, that is deployed in an ACTIVE state in Teiid server exposes its metadata in CSDL format. For example if you want retrieve metadata for your vdb _northwind_, you need to issue a query like
+
+[source,xml]
+----
+http://localhost:8080/odata/northwind/NW/$metadata
+----
+
+Since OData schema model is not a relational schema model, Teiid uses the following semantics to map its relational schema model to OData schema model.
+
+|===
+|Relational Entity |Mapped OData Entity
+
+|Model Name
+|Schema Namespace, EntityContainer Name
+
+|Table/View
+|EntityType, EntitySet
+
+|Table Columns
+|EntityType’s Properties
+
+|Primary Key
+|EntityType’s Key Properties
+
+|Foreign Key
+|Navigation Property on EntityType, Association, AssosiationSet
+
+|Procedure
+|FunctionImport
+
+|Procedure’s Table Return
+|ComplexType
+|===
+
+Teiid by design does not define any "embedded" ComplexType in the EntityType.
+
+Teiid does not define any one EntityContainer that resulted from different vdb models as a default container, so all entities must be accessed using full path to them.
+
+Since OData access is more key oriented, it is * MANDATORY* that every table Teiid exposes through OData must have a PK or at least one UNIQUE key. Note that Teiid does support composite PRIMARY KEYs.

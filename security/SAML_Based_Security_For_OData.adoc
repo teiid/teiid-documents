@@ -52,7 +52,7 @@ Now change the OData transport in the Teiid subsystem to use the security domain
 
 == Modify the OData WAR File to use SAML based authentication
 
-* Extract the "teiid-olingo-$\{version}-odata4.war" file from "<JBossAS>/modules/system/base/dv/org/jboss/teiid/main/deployments" to temporary location. The WAR file is simple ZIP file so you can "jar -x teiid-olingo-$\{version}-odata4.war /temp"
+* Extract the "teiid-olingo-odata4.war" file from "modules/system/base/dv/org/jboss/teiid/main/deployments" to another location. The WAR file is simple ZIP file so you can "jar -x teiid-olingo-odata4.war /modified"
 
 * Edit "WEB-INF/jboss-web.xml" file, and it should look like
 
@@ -190,12 +190,10 @@ NOTE: \{CERTIFICATE-ALIAS} is typically something like "idp.example.com" for whi
 </EntitiesDescriptor>
 ----
 
-* Create the WAR file again based on the modified contents of the files.
+* Create a {{ book.asDocRoot }}/Deployment+Overlays[deployment-overlay] using the cli with the modified contents:
 
+[source]
 ----
-jar -cvf teiid-olingo-$\{version\}\-odata4.war /temp/*
+deployment-overlay add --name=myOverlay --content=/WEB-INF/web.xml=/modified/web.xml,/WEB-INF/jboss-web.xml=/modified/jboss-web.xml --deployments=teiid-odata-odata4.war --redeploy-affected
 ----
 
-* Copy the newly created WAR file into "<JBossAS>/modules/system/base/dv/org/jboss/teiid/main/deployments" directory
-
-* Start the Teiid Server, and access the OData URL, you will be redirected to SSO based authentication.

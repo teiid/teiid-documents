@@ -75,3 +75,15 @@ There were extensive changes in dependency management for how the project is bui
 === Legacy Drivers
 
 The drivers for JRE 1.4/1.5 systems have been discontinued. If you still need a client for those platforms, you should use the appropriate 8.x driver.
+
+=== OData
+
+The OData v2 war based upon odata4j has been deprecated.  You should utilize the OData v4 war service instead.
+
+The names of the wars have been changed to strip version information - this makes it easier to capture a deployment-overlay in the configuration such that it won't be changed from one Teiid version to the next.
+
+teiid-odata-odata2.war has become teiid-odata.war
+teiid-olingo-odata4.war has become teiid-olingo-odata4.war
+
+To change properties in an web.xml file or add other files to the default odata war, you should use a {{ book.asDocRoot }}/Deployment+Overlays[deployment overlay] instead.
+
