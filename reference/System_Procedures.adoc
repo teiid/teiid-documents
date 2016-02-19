@@ -164,5 +164,6 @@ CALL SYSADMIN.setProperty(uid=>(SELECT uid FROM TABLES WHERE name='tab'), name=>
 
 This will set the property `some name'=’some value’ on table tab.
 
-The use of this procedure will not trigger replanning of associated prepared plans.
+NOTE: The use of this procedure will not trigger replanning of associated prepared plans.
 
+Properties from built-in teiid_* namespaces can be set using the the short form - namespace:key form.
