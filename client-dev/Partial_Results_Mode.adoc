@@ -13,6 +13,8 @@ For each source that is excluded from the query, a warning will be generated des
 
 NOTE: Since Teiid supports cursoring before the entire result is formed, it is possible that a data source failure will not be determined until after the first batch of results have been returned to the client. This can happen in the case of unions, but not joins. To ensure that all warnings have been accumulated, the statement should be checked after the entire result set has been read.
 
+NOTE: If other warnings are returned by execution, then the partial results warnings may occur after the first warning in the warning chain. 
+
 Partial results mode is off by default but can be turned on for all queries in a Connection with either setPartialResultsMode("true") on a DataSource or partialResultsMode=true on a JDBC URL. In either case, partial results mode may be toggled later with a link:SET_Statement.adoc[SET Statement].
 
 [source,java]
@@ -30,16 +32,19 @@ ResultSet results = statement.executeQuery("SELECT Name FROM Accounts");
 while (results.next()) {
   ... //process the result set
 } 
-SQLWarning warning = statement.getWarnings(); 
-if(warning instanceof PartialResultsWarning) { 
-  PartialResultsWarning partialWarning = (PartialResultsWarning)warning; 
-  Collection failedConnectors = partialWarning.getFailedConnectors(); 
-  Iterator iter = failedConnectors.iterator(); 
-  while(iter.hasNext()) { 
-    String connectorName = (String) iter.next(); 
-    SQLException connectorException = partialWarning.getConnectorException(connectorName); 
-    System.out.println(connectorName + ": " + connectorException.getMessage());
+SQLWarning warning = statement.getWarnings();
+while(warning != null) {
+  if (warning instanceof PartialResultsWarning) { 
+    PartialResultsWarning partialWarning = (PartialResultsWarning)warning; 
+    Collection failedConnectors = partialWarning.getFailedConnectors(); 
+    Iterator iter = failedConnectors.iterator(); 
+    while(iter.hasNext()) { 
+      String connectorName = (String) iter.next(); 
+      SQLException connectorException = partialWarning.getConnectorException(connectorName); 
+      System.out.println(connectorName + ": " + connectorException.getMessage());
+    }
   }
+  warning = warning.getNextWarning();
 }
 ----
 
