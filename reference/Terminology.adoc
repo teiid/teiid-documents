@@ -3,7 +3,7 @@
 
 * VM or Process – a JBossAS instance running Teiid.  
 
-* Host – a machine that is ``hosting'' one or more VMs.
+* Host – a machine that is "hosting" one or more VMs.
 
 * Service – a subsystem running in a VM (often in many VMs) and providing a  related set of functionality. In addition to these main components, the service platform provides a core set of services available to applications built on top of the service platform.  These services are:
 
