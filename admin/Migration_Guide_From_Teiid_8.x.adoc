@@ -54,6 +54,10 @@ In addition there is a new property trust-all-local that defaults to true and al
 
 The RoleBasedCredentialMapIdentityLoginModule class has been removed.  Consider alternative login modules with roles assignments to restrict access to the VDB.
 
+==== System Metadata
+
+With data roles enabled system tables (SYS, SYSADMIN, and pg_catalog) will only expose tables, columns, procedures, etc. for which the user is entitled to access.  A READ permission is expected for tables/columns, while an EXECUTE permission is expected for functions/procedures.  All non-hidden schemas will still be visible though.
+
 === Local Transport
 
 The embedded transport was renamed to local to avoid confusion with Teiid embedded.
@@ -65,6 +69,10 @@ The embedded transport was renamed to local to avoid confusion with Teiid embedd
 The resolver’s default behavior was to widen comparisons to string, but 9.0 now defaults org.teiid.widenComparisonToString to false. For example with this setting as false a comparison such as "timestamp_col < 'a'" will produce an exception whereas when set to true it would effectively evaluate "cast(timestamp_col as string) < 'a'". If you experience resolving errors when a vdb is deployed you should update the vdb if possible before reverting to the old resolving behavior.
 
 == Kitting/Build Changes
+
+=== API Changes
+
+The AuthorizationValidator and PolicyDecider interfaces had minor changes.  AuthorizationValidator has an additional method to determine metadata filtering, and PolicyDecider had isTempAccessable corrected to isTempAccessible.
 
 === Embedded Kit
 
