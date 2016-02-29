@@ -12,7 +12,7 @@ bean as they out of scope for this document.
 [source,java]
 .*EventDistributor Code Example
 ----
-public class ChanageDataCapture {
+public class ChangeDataCapture {
 
     public void invalidate() {
         InitialContext ic = new InitialContext();
