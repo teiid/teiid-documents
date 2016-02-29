@@ -1,2 +1,33 @@
 
-= Architecture
+== Teiid Components
+
+image:images/teiid-components.png[images/teiid-components.png]
+
+* **Designer Plugin** - Eclipse Plugin based Teiid Design time, used to connect/federate/transform datasources in design time, the result will produce a `.vdb` file.
+* **JVM** - Teiid is pure java Data Virtualization Platform, it run on JVM.
+* **JBoss/WildFly** - Teiid use a plugable installation which need a JBoss/WildFly Server installed, alternatively, a full installed JBoss/Wildfly kit be distributed.
+* **Subsystem** - Due to JBoos/WildFly's Modular and Pluggable Architecture(a series of Management commands compose of a subsystem, a series of subsystems compose of the whole server), Teiid implement WildFly's Controller/Management API developed a `teiid` subsystem and reuse lots of other subsystems like `resource-adapter`, `infinispan`, `security`, `logging`, `datasource`.
+* **odata.war** - Teiid support OData via odata.war, more details refer to link:../client-dev/OData_Support.adoc[OData Support] 
+* **dashboard.war** - A dashboard for generating analytical diagram
+* **teiid-console** - A web based administrative and monitoring tool for Teiid, more details refer to link:../admin/Teiid_Console.adoc[Teiid Console]
+* **JDBC Driver** - JDBC Driver to connect to Teiid Server
+* **adminshell** - A scripting based Monitor/Management Tools, more details refer to link:../admin/AdminShell.adoc[AdminShell]
+* **quickstarts** - A quickstart use to quick start Teiid.
+
+== Teiid Architecture
+
+image:images/teiid-architecture.png[images/teiid-architecture.png]
+
+* **Client** - link:../client-dev/Client_Developers_Guide.adoc[Client Develop Guide]
+* **Transport** - The Transport mainly management the client connection, security authentication, encryption, etc.
+* **Query Engine** - Query Engine can be separate to 2 parts: Request Process and Source Query. Request Process mainly contains the following aspects functionality
+
+1. SQL to Processor Plan convert, once query engine receives an incoming SQL, it first be `Parsing` to a internal command, the command be convert to a logical plan via `Resolving`, `Validating`, `Rewriting`, then rule-based Optimization convert logical plan to a final Processor plan. More details refer to link:Federated_Planning.adoc[Federated Planning].
+2. Batch Collect, asyn Query the Source, Compile results once the asyn futureTask has return.
+3. Buffer Management, which controls the bulk of the and off heap memory that Teiid is using, prevents consuming too much memory that exceed the vm size.
+4. Transaction Manager.
+
+Source Query mainly contains 2 layer, Data Tier layer interact with Query Processor, Connector layer connect to Translator/Resource Adapter.
+ 
+* **Connector** - Teiid has developed a series of Translators, more details refer to link:Translators.adoc[Translators]. Each Translator reference with a Resource Adapter, more details refer to link:../dev/Developing_JEE_Connectors.adoc[Developing JEE Connectors].
+* **Data** - Data including multiple, heterogeneous data stores, like Databases/Data warehouse, NoSQL, Hadoop, Data Grid/Cache, File, SaaS, etc.
