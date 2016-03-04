@@ -54,10 +54,6 @@ In addition there is a new property trust-all-local that defaults to true and al
 
 The RoleBasedCredentialMapIdentityLoginModule class has been removed.  Consider alternative login modules with roles assignments to restrict access to the VDB.
 
-==== System Metadata
-
-With data roles enabled system tables (SYS, SYSADMIN, and pg_catalog) will only expose tables, columns, procedures, etc. for which the user is entitled to access.  A READ permission is expected for tables/columns, while an EXECUTE permission is expected for functions/procedures.  All non-hidden schemas will still be visible though.
-
 === Local Transport
 
 The embedded transport was renamed to local to avoid confusion with Teiid embedded.
@@ -67,6 +63,18 @@ The embedded transport was renamed to local to avoid confusion with Teiid embedd
 ==== widenComparisonToString
 
 The resolver’s default behavior was to widen comparisons to string, but 9.0 now defaults org.teiid.widenComparisonToString to false. For example with this setting as false a comparison such as "timestamp_col < 'a'" will produce an exception whereas when set to true it would effectively evaluate "cast(timestamp_col as string) < 'a'". If you experience resolving errors when a vdb is deployed you should update the vdb if possible before reverting to the old resolving behavior.
+
+==== reportAsViews
+
+The JDBC client will report Teiid views in the metadata as table type VIEW rather than TABLE by default.  Use the connection property reportAsViews=false to use pre-9.0 behavior.
+
+== Compatibility Changes
+
+=== System Metadata
+
+With data roles enabled system tables (SYS, SYSADMIN, and pg_catalog) will only expose tables, columns, procedures, etc. for which the user is entitled to access.  A READ permission is expected for tables/columns, while an EXECUTE permission is expected for functions/procedures.  All non-hidden schemas will still be visible though.
+
+The OID columns has been removed.  The UID column should be used instead or the corresponding pg_catalog table will contain an OID values.
 
 == Kitting/Build Changes
 

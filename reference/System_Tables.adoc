@@ -56,10 +56,6 @@ This table supplies information about all the schemas in the virtual database, i
 |string
 |Unique ID
 
-|OID
-|integer
-|Unique ID (see note below)
-
 |Description
 |string
 |Description
@@ -87,10 +83,6 @@ This table supplies user-defined properties on all objects based on metamodel ex
 |UID
 |string
 |Key unique ID
-
-|OID
-|integer
-|Unique ID (see note below)
 
 |ClobValue
 |clob
@@ -137,10 +129,6 @@ This table supplies information about all the groups (tables, views, documents, 
 |UID
 |string
 |Group unique ID
-
-|OID
-|integer
-|Unique ID (see note below)
 
 |Cardinality
 |integer
@@ -286,10 +274,6 @@ This table supplies information about all the elements (columns, tags, attribute
 |string
 |Element unique ID
 
-|OID
-|integer
-|Unique ID (see note below)
-
 |Description
 |string
 |Description
@@ -342,11 +326,6 @@ This table supplies information about primary, foreign, and unique keys.
 |string
 |Key unique ID
 
-|OID
-|integer
-|Unique ID (see note below)
-|===
-
 == SYS.KeyColumns
 
 This table supplies information about the columns referenced by a key.
@@ -385,10 +364,6 @@ This table supplies information about the columns referenced by a key.
 |UID
 |string
 |Key UID
-
-|OID
-|integer
-|Unique ID (see note below)
 
 |Position
 |integer
@@ -653,10 +628,6 @@ This table supplies information about the procedures in the virtual database.
 |UID
 |string
 |Procedure UID
-
-|OID
-|integer
-|Unique ID (see note below)
 
 |Description
 |string
@@ -924,10 +895,6 @@ This table supplies information on datatypes.
 |string
 |Data type unique ID
 
-|OID
-|integer
-|Unique ID (see note below)
-
 |RuntimeType
 |string
 |Teiid runtime data type name
@@ -940,6 +907,4 @@ This table supplies information on datatypes.
 |string
 |Description of type
 |===
-
-NOTE: The OID column is no longer used on system tables.  You should use UIDs instead.
 
