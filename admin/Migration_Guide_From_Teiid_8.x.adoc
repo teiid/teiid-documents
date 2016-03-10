@@ -76,6 +76,8 @@ With data roles enabled system tables (SYS, SYSADMIN, and pg_catalog) will only 
 
 The OID columns has been removed.  The UID column should be used instead or the corresponding pg_catalog table will contain an OID values.
 
+Parent uid columns have been added to the SYS Tables, Procedures, KeyColumns, and Columns tables.
+
 == Kitting/Build Changes
 
 === API Changes

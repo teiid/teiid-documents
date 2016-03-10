@@ -141,6 +141,10 @@ This table supplies information about all the groups (tables, views, documents, 
 |IsSystem
 |boolean
 |True if in system table
+
+|SchemaUID
+|string
+|Parent Schema unique ID
 |===
 
 == SYS.Columns
@@ -277,6 +281,10 @@ This table supplies information about all the elements (columns, tags, attribute
 |Description
 |string
 |Description
+
+|TableUID
+|string
+|Parent Table unique ID
 |===
 
 == SYS.Keys
@@ -368,6 +376,10 @@ This table supplies information about the columns referenced by a key.
 |Position
 |integer
 |Position in key
+
+|TableUID
+|string
+|Parent Table unique ID
 |===
 
 == SYSADMIN.Triggers
@@ -632,6 +644,10 @@ This table supplies information about the procedures in the virtual database.
 |Description
 |string
 |Description
+
+|SchemaUID
+|string
+|Parent Schema unique ID
 |===
 
 == SYS.ProcedureParams
