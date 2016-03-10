@@ -9,16 +9,10 @@ Google JCA connector is named teiid-connector-google.rar. The examples include a
 |Config property |Description
 
 |AuthMethod
-|Method to access Google. This property can be set to one of: ClientLogin, OAuth2. If the setting is ClientLogin it is necessary to provide additional two config properties Username, Password. If the setting is OAuth2 it is necessary to provide RefreshToken.
+|Method to access Google. This property can only be OAuth2.
 
 |RefreshToken
-|Use guide below to retrieve RefreshToken. Request access to Google Drive and Spreadsheet API. Applicable only if AuthMethod=OAuth2
-
-|Username
-|Username to Google account. Applicable only if AuthMethod=ClientLogin
-
-|Password
-|Password to Google account. Applicable only if AuthMethod=ClientLogin
+|Use guide below to retrieve RefreshToken. Request access to Google Drive and Spreadsheet API.
 
 |SpreadsheetName
 |Required property with name of the Spreadsheet that is datasource for this connector.
