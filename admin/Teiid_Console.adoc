@@ -1,7 +1,7 @@
 
 = Teiid Console
 
-Teiid Console is a web based administrative and monitoring tool for Teiid. Teiid Console is extension of JBoss AS7 console that is built using GWT based technologies. The Teiid kit does not include files for Teiid Console. This is separate download you can download from http://www.jboss.org/teiid/downloads[Teiid Downloads]
+Teiid Console is a web based administrative and monitoring tool for Teiid. Teiid Console is extension of WildFly console that is built using GWT based technologies. The Teiid kit does not include files for Teiid Console. This is separate download you can download from http://www.jboss.org/teiid/downloads[Teiid Downloads].
 
 == Installation
 
@@ -81,15 +81,21 @@ This panel shows all the active sessions that are connected to the selected VDB.
 
 == FAQ
 
-* How to deploy a VDB in standalone mode? 
-In the "Deployments" view, click "add" and select the VDB to deploy. Also make sure you "enable" the VDB once it is deployed.
+* _How to deploy a VDB in standalone mode?_ 
 
-* How to create Data source? 
-In the "Configuration" view, go to "Subsystem -> Datasources -> XA/Non-XA", click "add" and follow the wizard to create JDBC data source. If you trying to create connection to Teiid based File, Salesforce or WS based connections, select "Subsystem -> Resource Adaptors" and click "add"
+In the `Deployments` view, click `add` and select the VDB to deploy. Also make sure you `enable` the VDB once it is deployed.
 
-* How to add COMMAND Logging? 
-In the "Configuration" view, go to "Subsystem -> Logging", on "Log Categories" tab, click add "org.teiid.COMMAND_LOG" in "DEBUG" mode. The default log will be in the FILE handler. You can even add other handler if choose to do so.
+* _How to create Data source?_ 
 
-* Change Teiid JDBC Port in standalone mode? 
-In the "Configuration" view, go to "Socket Binding" click "View", view the "standard-sockets" select "teiid-jdbc" and edit.
+In the `Configuration` view, go to `Subsystem` -> `Datasources` -> `XA/Non-XA`, click `add` and follow the wizard to create JDBC data source. 
+
+If you trying to create connection to Teiid based File, Salesforce or WS based connections, select `Subsystem` -> `Resource Adaptors` and click `add`.
+
+* _How to add COMMAND Logging?_ 
+
+In the `Configuration` view, go to `Subsystem` -> `Logging`, click view, on `Log Categories` tab, click add `org.teiid.COMMAND_LOG` in `DEBUG` mode. The default log will be in the FILE handler. You can even add other handler if choose to do so.
+
+* _Change Teiid JDBC Port in standalone mode?_ 
+
+In the `Configuration` view, go to `Socket Binding` click `View`, view the `standard-sockets` select `teiid-jdbc` and edit.
 
