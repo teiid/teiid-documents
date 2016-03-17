@@ -10,6 +10,9 @@ Use the following URL format for JDBC connections:
 jdbc:teiid:<vdb-name>@mm[s]://<host>:<port>;[prop-name=prop-value;]*
 ----
 
+NOTE: The JDBC client will have both JRE and server compatibility considerations.  Unless otherwise stated a client jar will typically be forward and backwards compatible with one major version of the server.
+You should attempt to keep the client up-to-date though as fixes and features are made on to the client.
+
 URL Components
 
 1.  <vdb-name> - Name of the VDB you are connecting to. Optionally VDB name can also contain version information inside it. For example: "myvdb.2", this is equivalent to supplying the "version=2" connection property defined below. However, use of vdb name in this format and the "version" property at the same time is not allowed.
