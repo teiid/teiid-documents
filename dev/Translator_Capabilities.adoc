@@ -377,3 +377,7 @@ The method `ExecutionFactory.getRequiredLikeEscape()` specifies the required lik
 |True indicates a source connection is required for fetching the metadata of the source.
 |SourceRequired
 |===
+
+== Transaction Behavior
+
+ExecutionFactory.get/setTransactionSupport specifies the highest level of transaction supported by connections to the source.  This is used as a hint to the engine for deciding when to start a transaction in the autoCommitTxn=DETECT mode.  Defaults to XA.
