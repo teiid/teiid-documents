@@ -50,7 +50,7 @@ CREATE TABLE status
 );
 ----
 
-NOTE: MariaDB have Silent Column Changes function, according to https://mariadb.com/kb/en/mariadb/silent-column-changes/[MariaDB document], `long' type will silently change to `MEDIUMTEXT' , so If execute above schema in MariaDB, `Cardinality' and `LoadNumber' column should change to `bigint' type.
+NOTE: MariaDB have Silent Column Changes function, according to https://mariadb.com/kb/en/mariadb/silent-column-changes/[MariaDB document], 'long' type will silently change to 'MEDIUMTEXT' , so If execute above schema in MariaDB, 'Cardinality' and 'LoadNumber' column should change to 'bigint' type.
 
 * Create Views and corresponding physical materialized target tables in Designer or using DDL in Dynamic VDB. This can be done through setting the materialized and target table manually, or by selecting the desired views, right clicking, then selecting Modeling->"Create Materialized Views" in the Designer.
 * Define the following extension properties on the view.
@@ -178,9 +178,9 @@ With Dynamic VDB and above table extension properties, we can set up External Ma
 
 === Usage Steps
 
-1. Create MATERIALIZED_TABLE, MATVIEW_STATUS_TABLE and MATERIALIZED_STAGE_TABLE
+**1. Create MATERIALIZED_TABLE, MATVIEW_STATUS_TABLE and MATERIALIZED_STAGE_TABLE**
 
-MATERIALIZED_TABLE is necessary, it can be any name, but it’s structure should match to materialization view.  MATVIEW_STATUS_TABLE is necessary, it should be named as `status', it’s structure like the below schema
+MATERIALIZED_TABLE is necessary, it can be any name, but it’s structure should match to materialization view.  MATVIEW_STATUS_TABLE is necessary, it should be named as 'status', it’s structure like the below schema
 
 [source,sql]
 ----
@@ -203,11 +203,11 @@ CREATE TABLE status
 
 If 'teiid_rel:MATVIEW_LOAD_SCRIPT' MATERIALIZED_STAGE_TABLE is necessary, it can be any name, but it’s structure should match to materialization view.
 
-2. Create Materialization Views
+**2. Create Materialization Views**
 
 Create Materialization Views and corresponding physical materialized target table, staging table, status table, it should be manually created in a model of Dynamic VDB, the model type should be 'VIRTUAL'.
 
-3. Set up Embedded Server
+**3. Set up Embedded Server**
 
 Excepting add ConnectionFactory and Translator to Embedded Server, TransactionManager also is necessay, the set up code snipets snippet like
 
@@ -218,114 +218,11 @@ EmbeddedServer server = new EmbeddedServer();
 server.addConnectionFactory("name", Object); 
 … 
 server.addTranslator("name", ExecutionFactory); 
-… 
 EmbeddedConfiguration config = new EmbeddedConfiguration(); 
 config.setTransactionManager(EmbeddedHelper.getTransactionManager()); 
 server.start(config); 
-… 
 server.deployVDB("matView-vdb.xml");
 ----
 
-=== Usage Example
+https://raw.githubusercontent.com/teiid/teiid-embedded-examples/master/embedded-caching/src/main/java/org/teiid/example/ExternalMaterializationExample.java[An Usage Example]
 
-The following steps show a sample Dynamic VDB with Materialization view in Embedded Server
-
-1. Run below schema script against a H2 Database before deploy Dynamic VDB
-
-[source,sql]
-----
-CREATE TABLE status( 
-  VDBName varchar(50) not null, 
-  VDBVersion integer not null, 
-  SchemaName varchar(50) not null, 
-  Name varchar(256) not null, 
-  TargetSchemaName varchar(50), 
-  TargetName varchar(256) not null, 
-  Valid boolean not null, 
-  LoadState varchar(25) not null, 
-  Cardinality long, 
-  Updated timestamp not null, 
-  LoadNumber long not null, 
-  PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name) 
-);
-
-CREATE TABLE h2_test_mat( 
-   product_id integer, 
-   SYMBOL varchar(16) 
-);
-
-CREATE TABLE mat_test_staging( 
-   product_id integer, 
-   SYMBOL varchar(16) 
-);
-
-CREATE TABLE  PRODUCT ( 
-   ID integer, 
-   SYMBOL varchar(16), 
-   COMPANY_NAME varchar(256), 
-   CONSTRAINT PRODUCT_PK PRIMARY KEY(ID) 
-);
-
-INSERT INTO PRODUCT (ID,SYMBOL,COMPANY_NAME) VALUES(100,’IBM’,’International Business Machines Corporation’); 
-INSERT INTO PRODUCT (ID,SYMBOL,COMPANY_NAME) VALUES(101,’DELL’,’Dell Computer Corporation’); 
-INSERT INTO PRODUCT (ID,SYMBOL,COMPANY_NAME) VALUES(102,’HPQ’,’Hewlett-Packard Company’); 
-INSERT INTO PRODUCT (ID,SYMBOL,COMPANY_NAME) VALUES(103,’GE’,’General Electric Company’); 
-INSERT INTO PRODUCT (ID,SYMBOL,COMPANY_NAME) VALUES(104,’SAP’,’SAP AG’); 
-INSERT INTO PRODUCT (ID,SYMBOL,COMPANY_NAME) VALUES(105,’TM’,’Toyota Motor Corporation’);
-----
-
-2. Create Dynamic VDB with DDL content as below
-
-[source,xml]
-----
-        <metadata type="DDL"><![CDATA[ 
-        CREATE VIEW MatView     ( 
-            product_id integer, 
-            symbol string 
-        )OPTIONS (MATERIALIZED `TRUE', UPDATABLE `TRUE',          
-               MATERIALIZED_TABLE `Accounts.h2_test_mat', 
-               "teiid_rel:MATVIEW_TTL" 20000, 
-               "teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT" `execute
-accounts.native('`truncate table mat_test_staging'`);', 
-               "teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT"  `execute
-accounts.native('`ALTER TABLE h2_test_mat RENAME TO
-h2_test_mat_temp'`);execute accounts.native('`ALTER TABLE
-mat_test_staging RENAME TO h2_test_mat'`);execute
-accounts.native('`ALTER TABLE h2_test_mat_temp RENAME TO
-mat_test_staging'`);', 
-               "teiid_rel:ON_VDB_DROP_SCRIPT" `DELETE FROM
-Accounts.status WHERE Name='`MatView'`AND schemaname ='`Stocks'’’, 
-               "teiid_rel:MATERIALIZED_STAGE_TABLE"
-`Accounts.mat_test_staging', 
-               "teiid_rel:ALLOW_MATVIEW_MANAGEMENT" `true', 
-               "teiid_rel:MATVIEW_STATUS_TABLE" `status', 
-               "teiid_rel:MATVIEW_SHARE_SCOPE" `NONE', 
-               "teiid_rel:MATVIEW_ONERROR_ACTION" `THROW_EXCEPTION') 
-        AS 
-    SELECT  A.ID, A.symbol FROM  Accounts.PRODUCT AS A; 
-        ]]> </metadata> 
-    </model>
-----
-
-3. Run Test
-
-Deploy Dynamic VDB to Embedded Server, run below code
-
-[source,java]
-----
-Thread.currentThread().sleep(10 * 1000); // wait loadMatView finish 
-executeQuery(conn, "select * from MatView"); 
-executeUpdate(conn, "INSERT INTO PRODUCT (ID,SYMBOL,COMPANY_NAME)
-VALUES(2000,’RHT’,’Red Hat Inc’)");
-
-Thread.currentThread().sleep(30 * 1000); // make sure MatView be updated
-
-executeQuery(conn, "select * from MatView"); 
-executeUpdate(conn, "DELETE FROM PRODUCT  WHERE ID = 2000");
-
-Thread.currentThread().sleep(30 * 1000); // make sure MatView be updated
-
-executeQuery(conn, "select * from MatView");
----
-
-The test result is the MatView can catch the updated of underlying source table `PRODUCT'.
