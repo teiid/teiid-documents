@@ -84,6 +84,8 @@ CAUTION: SSLv3 is not recommended due to the POODLE security vulnerability.
 
 * truststore/password - password for the truststore. Required if the truststore has a password.
 
+* truststore/check-expired - Whether to check for expired client certificates.  Default false.
+
 * enabled-cipher-suites - A comma separated list of cipher suites allowed for encryption between server and client. The values must be valid supported cipher suites otherwise SSL connections will fail. Optional - defaults to all supported cipher suites for the vm.
 
 Alternatively, you can use the CLI to add or modify the transport configuration

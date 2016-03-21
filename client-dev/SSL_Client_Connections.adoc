@@ -120,6 +120,19 @@ org.teiid.ssl.protocol=TLSv1
 org.teiid.ssl.allowAnon=true
 ----
 
+#
+# Whether to allow trust all server certificates
+# defaults to false
+#
+
+#org.teiid.ssl.trustAll=false
+
+#
+# Whether to check for expired server certificates (no affect in anonymous mode or with trustAll=true)
+# defaults to false
+#
+
+#org.teiid.ssl.checkExpired=false
 
 [source,java]
 .*1-way SSL*
