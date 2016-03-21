@@ -12,7 +12,7 @@ A query cache hint can be used to:
 /*+ cache[([pref_mem] [ttl:n] [updatable] [scope:session|user|vdb])]*/ sql ...
 ----
 
-* The cache hint should appear at the beginning of the SQL. It will not have any affect on INSERT/UPDATE/DELETE statements or INSTEAD OF TRIGGERS.
+* The cache hint should appear at the beginning of the SQL.  It can be appear as any one of the leading comments. It will not have any affect on INSERT/UPDATE/DELETE statements or INSTEAD OF TRIGGERS.
 * _pref_mem_- if present indicates that the cached results should prefer to remain in memory. The results may still be paged out based upon memory pressure.
 
 NOTE: Care should be taken to not over use the pref_mem option. The memory preference is implemented with Java soft references. While soft references are effective at preventing out of memory conditions. Too much memory held by soft references can limit the effective working memory. Consult your JVM options for clearing soft references if you need to tune their behavior.
