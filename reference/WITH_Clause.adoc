@@ -7,7 +7,7 @@ Usage:
 
 [source,sql]
 ----
-WITH name [(column, ...)] AS (query expression) ...
+WITH name [(column, ...)] AS [/*+ no_inline*/] (query expression) ...
 ----
 
 Syntax Rules:
@@ -15,8 +15,21 @@ Syntax Rules:
 * All of the projected column names must be unique. If they are not unique, then the column name list must be provided.
 * If the columns of the WITH clause item are declared, then they must match the number of columns projected by the query expression.
 * Each with clause item must have a unique name.
+* The optional no_inline hint indicates to the optimizer that the query expression should not be substituted inline where referenced.
 
 NOTE: The WITH clause is also subject to optimization and it’s entries may not be processed if they are not needed in the subsequent query.
+
+Examples:
+
+[source,sql]
+----
+WITH n (x) AS (select col from tbl) select x from n, n as n1
+----
+
+[source,sql]
+----
+WITH n (x) AS /*+ no_inline */ (select col from tbl) select x from n, n as n1
+----
 
 == Recursive Common Table Expressions
 
