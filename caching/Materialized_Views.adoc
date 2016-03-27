@@ -23,7 +23,7 @@ Reasons to use external materialization
 
 * The cached data needs to be fully durable. Internal materialization does not survive a cluster restart.
 * Full control is needed of loading and refresh. Internal materialization does offer several system supported methods for refreshing, but does not give full access to the materialized table.
-* Control is needed over the materialized table definition. Internal materialization does support link:Materialized_Views.adoc[Secondary Indexes], but they cannot be directly controlled. Constraints or other database features cannot be added to internal materialization tables.
+* Control is needed over the materialized table definition. Internal materialization does support link:Internal_Materialization.adoc#_secondary_indexes[Secondary Indexes], but they cannot be directly controlled. Constraints or other database features cannot be added to internal materialization tables.
 * The data volume is large. Internal materialization (and temp tables in general) have memory overhead for each page. A rough guideline is that there can be 100 million rows in all materialized tables across all VDBs for every gigabyte of heap.
 
 IMPORTANT: Materialized view tables default to the VDB scope. By default if a materialized view definition directly or transitively contains a non-deterministic function call, such as random or hasRole, the
