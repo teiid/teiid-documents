@@ -3,3 +3,9 @@
 
 The built-in SYS and SYSADMIN schemas provide metadata tables and procedures against the current VDB.
 
+== Metadata Visibility
+
+The SYSTEM schema tables and procedures are always visible/accessible.
+
+When link:Data_Roles.adoc[Data Roles] are in use table/views, columns, and procedure metadata entries will not be visible if the 
+user is not entitled to use the object.  Tables/views/columns require the READ permission and procedures require the EXECUTE permission.
