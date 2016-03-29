@@ -79,7 +79,7 @@ text is a clob, srid is an optional integer. Return value is a geometry.
 
 [source,sql]
 ----
-ST_GeomAsText(geom)
+ST_AsText(geom)
 ----
 
 geom is a geometry. Return value is clob in WKT format.
@@ -88,7 +88,7 @@ geom is a geometry. Return value is clob in WKT format.
 
 [source,sql]
 ----
-ST_GeomAsBinary(geom)
+ST_AsBinary(geom)
 ----
 
 geom is a geometry. Return value is a blob in WKB format.
@@ -97,7 +97,7 @@ geom is a geometry. Return value is a blob in WKB format.
 
 [source,sql]
 ----
-ST_GeomAsEWKB(geom)
+ST_AsEWKB(geom)
 ----
 
 geom is a geometry. Return value is blob in EWKB format.
@@ -106,7 +106,7 @@ geom is a geometry. Return value is blob in EWKB format.
 
 [source,sql]
 ----
-ST_GeomAsGeoJSON(geom)
+ST_AsGeoJSON(geom)
 ----
 
 geom is a geometry. Return value is a clob with the GeoJSON value.
@@ -115,7 +115,7 @@ geom is a geometry. Return value is a clob with the GeoJSON value.
 
 [source,sql]
 ----
-ST_GeomAsGML(geom)
+ST_AsGML(geom)
 ----
 
 geom is a geometry. Return value is a clob with the GML2 value.
