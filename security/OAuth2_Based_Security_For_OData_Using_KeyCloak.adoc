@@ -189,7 +189,7 @@ Using the browser issue a query  (the use of browser is needed because, this pro
 
 [source]
 ----
-http://localhost:8180/odata4/auth
+http://localhost:8180/odata4/kerberos/auth
 ----
 
 then you should see a message like "Congratulations!!! Login successful..". What this process is doing is negotiating a "access-token" from the Keycloak authentication server and places this in the client's web-session, such that subsequent calls to the service use this token for access.
