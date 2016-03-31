@@ -225,3 +225,12 @@ Create a DSN for the VDB on the client machine to the VDB that you would like to
 
 No additional configuration is needed as part of this, except that your workstation where the ODBC DSN exists must have been authenticated using GSS API against Active Directory or other Enterprise directory server. See this website http://spnego.sourceforge.net[http://spnego.sourceforge.net] on instructions as to how to verify your system is authenticated into enterprise directory server. Contact your company’s operations team if you have any questions.
 
+=== OData Client
+
+The default OData client is configured with HTTP Basic authentication, to convert this authentication method into kerberos, clone or copy the maven project from https://github.com/teiid/teiid-web-security and then edit the web.xml and jboss-web.xml files and then replace MY_RELAM property with the property of security domain created above. Once the properties are updated, create a WAR file by running 
+
+----
+mvn clean install
+----
+
+Then copy the WAR file from "odata-kerberos/target" directory to replace the original OData WAR file with same name. For example testing see https://developer.jboss.org/wiki/HowToImplementKerberosAuthenticationWithASimpleRESTWebApp 
