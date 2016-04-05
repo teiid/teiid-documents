@@ -168,6 +168,7 @@
 .... link:reference/WITH_Clause.adoc[WITH Clause]
 .... link:reference/SELECT_Clause.adoc[SELECT Clause]
 .... link:reference/FROM_Clause.adoc[FROM Clause]
+..... link:reference/XMLTABLE.adoc[XMLTABLE]
 ..... link:reference/ARRAYTABLE.adoc[ARRAYTABLE]
 ..... link:reference/OBJECTTABLE.adoc[OBJECTTABLE]
 ..... link:reference/TEXTTABLE.adoc[TEXTTABLE]

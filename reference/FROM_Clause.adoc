@@ -28,7 +28,7 @@ Example Syntax:
 
 * FROM link:TEXTTABLE.adoc[TEXTTABLE…]
 
-* FROM link:FROM_Clause.adoc#_xmltable[XMLTABLE…]
+* FROM link:XMLTABLE.adoc[XMLTABLE…]
 
 * FROM link:ARRAYTABLE.adoc[ARRAYTABLE…]
 
@@ -94,81 +94,3 @@ select * from TABLE(call proc(t1.x)) t2, t1
 ----
 
 NOTE: *Multiple Execution* - The usage of a correlated nested table may result in multiple executions of the table expression - once for each correlated row.
-
-== XMLTABLE
-
-The XMLTABLE function uses XQuery to produce tabular ouput. The XMLTABLE function is implicitly a nested table and may be correlated to preceding FROM clause entries. XMLTABLE is part of the SQL/XML 2006 specification.
-
-Usage:
-
-[source,sql]
-----
-XMLTABLE([<NSP>,] xquery-expression [<PASSING>] [COLUMNS <COLUMN>, ... )] AS name
-----
-
-[source,sql]
-----
-COLUMN := name (FOR ORDINALITY | (datatype [DEFAULT expression] [PATH string]))
-----
-
-See link:XML_Functions.adoc#_xmlelement[XMLELEMENT] for the definition of NSP - XMLNAMESPACES.
-
-See link:XML_Functions.adoc#_xmlquery[XMLQUERY] for the definition of PASSING.
-
-See also link:XML_Functions.adoc#_xmlquery[XMLQUERY]
-
-NOTE: See also link:XQuery_Optimization.adoc[XQuery Optimization]
-
-Parameters
-
-* The optional XMLNAMESPACES clause specifies the namepaces for use in the XQuery and COLUMN path expressions.
-
-* The xquery-expression should be a valid XQuery. Each sequence item returned by the xquery will be used to create a row of values as defined by the COLUMNS clause.
-
-* If COLUMNS is not specified, then that is the same as having the COLUMNS clause: "COLUMNS OBJECT_VALUE XML PATH '."', which returns the entire item as an XML value.
-
-* A FOR ORDINALITY column is typed as integer and will return the 1-based item number as its value.
-
-* Each non-ordinality column specifies a type and optionally a PATH and a DEFAULT expression.
-
-* If PATH is not specified, then the path will be the same as the column name. 
-
-Syntax Rules:
-
-* Only 1 FOR ORDINALITY column may be specified.
-
-* The columns names must not contain duplicates.
-
-* The blob datatype is supported, but there is only built-in support for xs:hexBinary values.  For xs:base64Binary, use a workaround of a PATH that uses the explicit value constructor "xs:base64Binary(<path>)".
-
-* The column expression must evaluate to a single value if a non-array type is expected.
-
-Examples
-
-Use of passing, returns 1 row [1]:
-
-[source,sql]
-----
-select * from xmltable('/a' PASSING xmlparse(document '<a id="1"/>') COLUMNS id integer PATH '@id') x
-----
-
-As a nested table:
-
-[source,sql]
-----
-select x.* from t, xmltable('/x/y' PASSING t.doc COLUMNS first string, second FOR ORDINALITY) x
-----
-
-Invalid multi-value:
-
-[source,sql]
-----
-select * from xmltable('/a' PASSING xmlparse(document '<a><b id="1"/><b id="2"/></a>') COLUMNS id integer PATH 'b/@id') x
-----
-
-Array multi-value:
-
-[source,sql]
-----
-select * from xmltable('/a' PASSING xmlparse(document '<a><b id="1"/><b id="2"/></a>') COLUMNS id integer[] PATH 'b/@id') x
-----
