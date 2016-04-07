@@ -333,6 +333,7 @@ This table supplies information about primary, foreign, and unique keys.
 |UID
 |string
 |Key unique ID
+|===
 
 == SYS.KeyColumns
 
