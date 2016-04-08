@@ -1,0 +1,406 @@
+
+**SYSADMIN Schema provide pre build-in** 
+
+1. <<Foreign Tables, Foreign Tables>> - <<SYSADMIN.Usage, SYSADMIN.Usage>>, <<SYSADMIN.MatViews, SYSADMIN.MatViews>>, <<SYSADMIN.VDBResources, SYSADMIN.VDBResources>>, <<SYSADMIN.Triggers, SYSADMIN.Triggers>>, <<SYSADMIN.Views, SYSADMIN.Views>>, <<SYSADMIN.StoredProcedures, SYSADMIN.StoredProcedures>>
+2. <<Foreign Procedures, Foreign Procedures>> - <<SYSADMIN.isLoggable, SYSADMIN.isLoggable>>, <<SYSADMIN.logMsg, SYSADMIN.logMsg>>, <<SYSADMIN.refreshMatView, SYSADMIN.refreshMatView>>,<<SYSADMIN.refreshMatViewRow, SYSADMIN.refreshMatViewRow>>, <<SYSADMIN.refreshMatViewRows, SYSADMIN.refreshMatViewRows>>,  <<SYSADMIN.setColumnStats, SYSADMIN.setColumnStats>>, <<SYSADMIN.setProperty, SYSADMIN.setProperty>>, <<SYSADMIN.setTableStats, SYSADMIN.setTableStats>>
+3. <<Virtual Procedures, Virtual Procedures>> - <<SYSADMIN.matViewStatus, SYSADMIN.matViewStatus>>, <<SYSADMIN.loadMatView, SYSADMIN.loadMatView>>, <<SYSADMIN.updateMatView, SYSADMIN.updateMatView>>
+
+== Foreign Tables
+
+=== SYSADMIN.Usage
+
+This table supplies information about how views / procedures are defined.
+
+|===
+|Column Name |Type |Description
+
+|VDBName
+|string
+|VDB name
+
+|UID
+|string
+|Object UID
+
+|object_type
+|string
+|Type of object (StoredProcedure, View, etc.)
+
+|Name
+|string
+|Object Name or parent name if ElementName is not null
+
+|ElementName
+|string
+|Name of column or parameter
+
+|Uses_UID
+|string
+|Used object UID
+
+|Uses_object_type
+|string
+|Used object type
+
+|Uses_SchemaName
+|string
+|Used object schema
+
+|Uses_Name
+|string
+|Used object name or parent name if Uses_ElementName is not null
+
+|Uses_ElementName
+|string
+|Used column or parameter name
+|===
+
+[source,sql]
+.*Example SYSADMIN.Usage*
+----
+SELECT * FROM SYSADMIN.Usage
+----
+
+=== SYSADMIN.MatViews
+
+This table supplies information about all the materailized views in the virtual database.
+
+|===
+|Column Name |Type |Description
+
+|VDBName
+|string
+|VDB name
+
+|SchemaName
+|string
+|Schema Name
+
+|Name
+|string
+|Short group name
+
+|TargetSchemaName
+|string
+|Name of the materialized table schema
+
+|TargetName
+|string
+|Name of the materialized table
+
+|Valid
+|boolean
+|True if materialized table is currently valid.
+
+|LoadState
+|boolean
+|The load state, can be one of NEEDS_LOADING, LOADING, LOADED, FAILED_LOAD
+
+|Updated
+|timestamp
+|The timestamp of the last full refresh.
+
+|Cardinality
+|integer
+|The number of rows in the materialized view table.
+|===
+
+[source,sql]
+.*Example SYSADMIN.MatViews*
+----
+SELECT * FROM SYSADMIN.MatViews
+----
+
+=== SYSADMIN.VDBResources
+
+This table provides the current VDB contents.
+
+|===
+|Column Name |Type |Description
+
+|resourcePath
+|string
+|The path to the contents.
+
+|contents
+|blob
+|The contents as a blob.
+|===
+
+[source,sql]
+.*Example SYSADMIN.VDBResources*
+----
+SELECT * FROM SYSADMIN.VDBResources
+----
+
+=== SYSADMIN.Triggers
+
+This table provides the Triggers in the virtual database.
+
+|===
+|Column Name |Type |Description
+
+|VDBName
+|string
+|VDB name
+
+|SchemaName
+|string
+|Schema Name
+
+|TableName
+|string
+|Table name
+
+|Name
+|string
+|Trigger name
+
+|TriggerType
+|string
+|Trigger Type
+
+|TriggerEvent
+|string
+|Triggering Event
+
+|Status
+|string
+|Is Enabled
+
+|Body
+|clob
+|Trigger Action (FOR EACH ROW …)
+
+|TableUID
+|string
+|Table Unique ID
+|===
+
+[source,sql]
+.*Example SYSADMIN.Triggers*
+----
+SELECT * FROM SYSADMIN.Triggers
+----
+
+=== SYSADMIN.Views
+
+This table provides the Views in the virtual database.
+
+|===
+|Column Name |Type |Description
+
+|VDBName
+|string
+|VDB name
+
+|SchemaName
+|string
+|Schema Name
+
+|Name
+|string
+|View name
+
+|Body
+|clob
+|View Definition Body (SELECT …)
+
+|UID
+|string
+|Table Unique ID
+|===
+
+[source,sql]
+.*Example SYSADMIN.Views*
+----
+SELECT * FROM SYSADMIN.Views
+----
+
+=== SYSADMIN.StoredProcedures
+
+This table provides the StoredProcedures in the virtual database.
+
+|===
+|Column Name |Type |Description
+
+|VDBName
+|string
+|VDB name
+
+|SchemaName
+|string
+|Schema Name
+
+|Name
+|string
+|Procedure name
+
+|Body
+|clob
+|Procedure Definition Body (BEGIN …)
+
+|UID
+|string
+|Unique ID
+|===
+
+[source,sql]
+.*Example SYSADMIN.StoredProcedures*
+----
+SELECT * FROM SYSADMIN.StoredProcedures
+----
+
+== Foreign Procedures
+
+=== SYSADMIN.isLoggable
+
+Tests if logging is enabled at the given level and context.
+
+[source,sql]
+----
+SYSADMIN.isLoggable(OUT loggable boolean NOT NULL RESULT, IN level string NOT NULL DEFAULT 'DEBUG', IN context string NOT NULL DEFAULT 'org.teiid.PROCESSOR')
+----
+
+Returns true if logging is enabled. level can be one of the log4j levels: OFF, FATAL, ERROR, WARN, INFO, DEBUG, TRACE. level defaults to 'DEBUG' and context defaults to 'org.teiid.PROCESSOR'
+
+[source,sql]
+.*Example isLoggable*
+----
+IF ((CALL SYSADMIN.isLoggable(context=>'org.something'))
+BEGIN
+   DECLARE STRING msg;
+   // logic to build the message ...
+   CALL SYSADMIN.logMsg(msg=>msg, context=>'org.something')
+END
+----
+
+=== SYSADMIN.logMsg
+
+Log a message to the underlying logging system.
+
+[source,sql]
+----
+SYSADMIN.logMsg(OUT logged boolean NOT NULL RESULT, IN level string NOT NULL DEFAULT 'DEBUG', IN context string NOT NULL DEFAULT 'org.teiid.PROCESSOR', IN msg object NOT NULL)
+----
+
+Returns true if the message was logged. level can be one of the log4j levels: OFF, FATAL, ERROR, WARN, INFO, DEBUG, TRACE. level defaults to 'DEBUG' and context defaults to 'org.teiid.PROCESSOR'
+
+[source,sql]
+.*Example logMsg*
+----
+CALL SYSADMIN.logMsg(msg=>'some debug', context=>'org.something')
+----
+
+This will log the message 'some debug' at the default level DEBUG to the context org.something.
+
+=== SYSADMIN.refreshMatView
+
+Returns integer RowsUpdated. -1 indicates a load is in progress, otherwise the cardinality of the table is returned. See the link:../caching/Caching_Guide.adoc[Caching Guide] for more.
+
+[source,sql]
+----
+SYSADMIN.refreshMatView(OUT RowsUpdated integer NOT NULL RESULT, IN ViewName string NOT NULL, IN Invalidate boolean NOT NULL DEFAULT 'false')
+----
+
+=== SYSADMIN.refreshMatViewRow
+
+Refreshes a row in an internal materialized view.
+
+Returns integer RowsUpdated. -1 indicates the materialized table is currently invalid. 0 indicates that the specified row did not exist in the live data query or in the materialized table. See the Caching Guide for more.
+
+[source,sql]
+----
+SYSADMIN.refreshMatViewRow(OUT RowsUpdated integer NOT NULL RESULT, IN ViewName string NOT NULL, VARIADIC Key object NOT NULL)
+----
+
+=== SYSADMIN.refreshMatViewRows
+
+Refreshes rows in an internal materialized view.
+
+Returns integer RowsUpdated. -1 indicates the materialized table is currently invalid. Any row that does not exist in the live data query or in the materialized table will not count toward the RowsUpdated. See the Caching Guide for more.
+
+[source,sql]
+----
+SYSADMIN.refreshMatViewRows(OUT RowsUpdated integer NOT NULL RESULT, IN ViewName string NOT NULL, VARIADIC Key object[] NOT NULL)
+----
+
+=== SYSADMIN.setColumnStats
+
+Set statistics for the given column.
+
+[source,sql]
+----
+SYSADMIN.setColumnStats(IN tableName string NOT NULL, IN columnName string NOT NULL, IN distinctCount long, IN nullCount long, IN max string, IN min string)
+----
+
+All stat values are nullable. Passing a null stat value will leave corresponding metadata value unchanged.
+
+=== SYSADMIN.setProperty
+
+Set an extension metadata property for the given record. Extension metadata is typically used by link:Translators.html[Translators].
+
+[source,sql]
+----
+SYSADMIN.setProperty(OUT OldValue clob NOT NULL RESULT, IN UID string NOT NULL, IN Name string NOT NULL, IN "Value" clob)
+----
+
+Setting a value to null will remove the property.
+
+[source,sql]
+.*Example Property Set*
+----
+CALL SYSADMIN.setProperty(uid=>(SELECT uid FROM TABLES WHERE name='tab'), name=>'some name', value=>'some value')
+----
+
+This will set the property 'some name'='some value' on table tab.
+
+NOTE: The use of this procedure will not trigger replanning of associated prepared plans.
+
+Properties from built-in teiid_* namespaces can be set using the the short form - namespace:key form.
+
+=== SYSADMIN.setTableStats
+
+Set statistics for the given table.
+
+[source,sql]
+----
+SYSADMIN.setTableStats(IN tableName string NOT NULL, IN cardinality long NOT NULL)
+----
+
+NOTE: <<SYSADMIN.setColumnStats, SYSADMIN.setColumnStats>>, <<SYSADMIN.setProperty, SYSADMIN.setProperty>>, <<SYSADMIN.setTableStats, SYSADMIN.setTableStats>> are Metadata Procedures. A MetadataRepository must be configured to make a non-temporary metadata update persistent. See the link:../dev/Developers_Guide.adoc[Developer’s Guide] Runtime Metadata Updates section for more.
+
+== Virtual Procedures
+
+=== SYSADMIN.matViewStatus
+
+matViewStatus is used to retrieve Materialized views' status via schemaName and viewName.
+
+Returns tables which contains TargetSchemaName, TargetName, Valid, LoadState, Updated, Cardinality, LoadNumber, OnErrorAction.
+
+[source,sql]
+----
+SYSADMIN.matViewStatus(IN schemaName string NOT NULL, IN viewName string NOT NULL) RETURNS TABLE (TargetSchemaName varchar(50), TargetName varchar(50), Valid boolean, LoadState varchar(25), Updated timestamp, Cardinality long, LoadNumber long, OnErrorAction varchar(25))
+----
+
+=== SYSADMIN.loadMatView
+
+loadMatView is used to perform a complete refresh of an external materialized table.
+
+Returns integer RowsInserted. -1 indicates the materialized table is currently invalid. And -3 indicates there was an exception when performing the load. See the Caching Guide for more.
+
+[source,sql]
+----
+SYSADMIN.loadMatView(IN schemaName string NOT NULL, IN viewName string NOT NULL, IN invalidate boolean NOT NULL DEFAULT 'false') RETURNS integer
+----
+
+=== SYSADMIN.updateMatView
+
+The updateMatView procedure is used to update a subset of an external materialized table based on the refresh criteria.
+
+Returns integer RowsUpdated. -1 indicates the materialized table is currently invalid. And-3 indicates there was an exception when performing the update. See the Caching Guide for more.
+
+[source,sql]
+----
+SYSADMIN.updateMatView(IN schemaName string NOT NULL, IN viewName string NOT NULL, IN refreshCriteria string) RETURNS integer
+----
