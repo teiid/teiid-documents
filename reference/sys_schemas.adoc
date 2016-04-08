@@ -1,0 +1,816 @@
+
+**SYS Schema provide pre build-in**
+
+1. <<Foreign Tables, Foreign Tables>> - <<SYS.Columns, SYS.Columns>>, <<SYS.DataTypes, SYS.DataTypes>>, <<SYS.KeyColumns, SYS.KeyColumns>>, <<SYS.Keys, SYS.Keys>>, <<SYS.ProcedureParams, SYS.ProcedureParams>>, <<SYS.Procedures, SYS.Procedures>>, <<SYS.FunctionParams, SYS.FunctionParams>>, <<SYS.Functions, SYS.Functions>>, <<SYS.Properties, SYS.Properties>>, <<SYS.ReferenceKeyColumns, SYS.ReferenceKeyColumns>>, <<SYS.Schemas, SYS.Schemas>>, <<SYS.Tables, SYS.Tables>>, <<SYS.VirtualDatabases, SYS.VirtualDatabases>>
+2. <<Foreign Procedures, Foreign Procedures>> - <<SYS.getXMLSchemas, SYS.getXMLSchemas>>, <<SYS.ArrayIterate, SYS.ArrayIterate>> 
+3. <<Views, Views>> - <<SYS.spatial_sys_ref, SYS.spatial_sys_ref>>, <<SYS.GEOMETRY_COLUMNS, SYS.GEOMETRY_COLUMNS>>
+
+== Foreign Tables
+
+=== SYS.Columns
+
+This table supplies information about all the elements (columns, tags, attributes, etc) in the virtual database.
+
+|===
+|Column Name |Type |Description
+
+|VDBName
+|string
+|VDB name
+
+|SchemaName
+|string
+|Schema Name
+
+|TableName
+|string
+|Table name
+
+|Name
+|string
+|Element name (not qualified)
+
+|Position
+|integer
+|Position in group (1-based)
+
+|NameInSource
+|string
+|Name of element in source
+
+|DataType
+|string
+|Teiid runtime data type name
+
+|Scale
+|integer
+|Number of digits after the decimal point
+
+|ElementLength
+|integer
+|Element length (mostly used for strings)
+
+|sLengthFixed
+|boolean
+|Whether the length is fixed or variable
+
+|SupportsSelect
+|boolean
+|Element can be used in SELECT
+
+|SupportsUpdates
+|boolean
+|Values can be inserted or updated in the element
+
+|IsCaseSensitive
+|boolean
+|Element is case-sensitive
+
+|IsSigned
+|boolean
+|Element is signed numeric value
+
+|IsCurrency
+|boolean
+|Element represents monetary value
+
+|IsAutoIncremented
+|boolean
+|Element is auto-incremented in the source
+
+|NullType
+|string
+|Nullability: "Nullable", "No Nulls", "Unknown"
+
+|MinRange
+|string
+|Minimum value
+
+|MaxRange
+|string
+|Maximum value
+
+|DistinctCount
+|integer
+|Distinct value count, -1 can indicate unknown
+
+|NullCount
+|integer
+|Null value count, -1 can indicate unknown
+
+|SearchType
+|string
+|Searchability: "Searchable", "All Except Like", "Like Only", Unsearchable"
+
+|Format
+|string
+|Format of string value
+
+|DefaultValue
+|string
+|Default value
+
+|JavaClass
+|string
+|Java class that will be returned
+
+|Precision
+|integer
+|Number of digits in numeric value
+
+|CharOctetLength
+|integer
+|Measure of return value size
+
+|Radix
+|integer
+|Radix for numeric values
+
+|GroupUpperName
+|string
+|Upper-case full group name
+
+|UpperName
+|string
+|Upper-case element name
+
+|UID
+|string
+|Element unique ID
+
+|Description
+|string
+|Description
+
+|TableUID
+|string
+|Parent Table unique ID
+|===
+
+=== SYS.DataTypes
+
+This table supplies information on datatypes.
+
+|===
+|Column Name |Type |Description
+
+|Name
+|string
+|Teiid design-time type name
+
+|IsStandard
+|boolean
+|Always false
+
+|IsPhysical
+|boolean
+|Always false
+
+|TypeName
+|string
+|Design-time type name (same as Name)
+
+|JavaClass
+|string
+|Java class returned for this type
+
+|Scale
+|integer
+|Max scale of this type
+
+|TypeLength
+|integer
+|Max length of this type
+
+|NullType
+|string
+|Nullability: "Nullable", "No Nulls", "Unknown"
+
+|IsSigned
+|boolean
+|Is signed numeric?
+
+|IsAutoIncremented
+|boolean
+|Is auto-incremented?
+
+|IsCaseSensitive
+|boolean
+|Is case-sensitive?
+
+|Precision
+|integer
+|Max precision of this type
+
+|Radix
+|integer
+|Radix of this type
+
+|SearchType
+|string
+|Searchability: "Searchable", "All Except Like", "Like Only", "Unsearchable"
+
+|UID
+|string
+|Data type unique ID
+
+|RuntimeType
+|string
+|Teiid runtime data type name
+
+|BaseType
+|string
+|Base type
+
+|Description
+|string
+|Description of type
+|===
+
+=== SYS.KeyColumns
+
+This table supplies information about the columns referenced by a key.
+
+|===
+|Column Name |Type |Description
+
+|VDBName
+|string
+|VDB name
+
+|SchemaName
+|string
+|Schema Name
+
+|TableName
+|string
+|Table name
+
+|Name
+|string
+|Element name
+
+|KeyName
+|string
+|Key name
+
+|KeyType
+|string
+|Key type: "Primary", "Foreign", "Unique", etc
+
+|RefKeyUID
+|string
+|Referenced key UID
+
+|UID
+|string
+|Key UID
+
+|Position
+|integer
+|Position in key
+
+|TableUID
+|string
+|Parent Table unique ID
+|===
+
+=== SYS.Keys
+
+This table supplies information about primary, foreign, and unique keys.
+
+|===
+|Column Name |Type |Description
+
+|VDBName
+|string
+|VDB name
+
+|SchemaName
+|string
+|Schema Name
+
+|Table Name
+|string
+|Table name
+
+|Name
+|string
+|Key name
+
+|Description
+|string
+|Description
+
+|NameInSource
+|string
+|Name of key in source system
+
+|Type
+|string
+|Type of key: "Primary", "Foreign", "Unique", etc
+
+|IsIndexed
+|boolean
+|True if key is indexed
+
+|RefKeyUID
+|string
+|Referenced key UID (if foreign key)
+
+|UID
+|string
+|Key unique ID
+|===
+
+=== SYS.ProcedureParams
+
+This supplies information on procedure parameters.
+
+|===
+|Column Name |Type |Description
+
+|VDBName
+|string
+|VDB name
+
+|SchemaName
+|string
+|Schema Name
+
+|ProcedureName
+|string
+|Procedure name
+
+|Name
+|string
+|Parameter name
+
+|DataType
+|string
+|Teiid runtime data type name
+
+|Position
+|integer
+|Position in procedure args
+
+|Type
+|string
+|Parameter direction: "In", "Out", "InOut", "ResultSet", "ReturnValue"
+
+|Optional
+|boolean
+|Parameter is optional
+
+|Precision
+|integer
+|Precision of parameter
+
+|TypeLength
+|integer
+|Length of parameter value
+
+|Scale
+|integer
+|Scale of parameter
+
+|Radix
+|integer
+|Radix of parameter
+
+|NullType
+|string
+|Nullability: "Nullable", "No Nulls", "Unknown"
+
+|Description
+|string
+|Description of parameter
+|===
+
+=== SYS.Procedures
+
+This table supplies information about the procedures in the virtual database.
+
+|===
+|Column Name |Type |Description
+
+|VDBName
+|string
+|VDB name
+
+|SchemaName
+|string
+|Schema Name
+
+|Name
+|string
+|Procedure name
+
+|NameInSource
+|string
+|Procedure name in source system
+
+|ReturnsResults
+|boolean
+|Returns a result set
+
+|UID
+|string
+|Procedure UID
+
+|Description
+|string
+|Description
+
+|SchemaUID
+|string
+|Parent Schema unique ID
+|===
+
+
+=== SYS.FunctionParams
+
+This supplies information on function parameters.
+
+|===
+|Column Name |Type |Description
+
+|VDBName
+|string
+|VDB name
+
+|SchemaName
+|string
+|Schema Name
+
+|FunctionName
+|string
+|Function name
+
+|FunctionUID
+|string
+|Function UID
+
+|Name
+|string
+|Parameter name
+
+|DataType
+|string
+|Teiid runtime data type name
+
+|Position
+|integer
+|Position in procedure args
+
+|Type
+|string
+|Parameter direction: "In", "Out", "InOut", "ResultSet", "ReturnValue"
+
+|Precision
+|integer
+|Precision of parameter
+
+|TypeLength
+|integer
+|Length of parameter value
+
+|Scale
+|integer
+|Scale of parameter
+
+|Radix
+|integer
+|Radix of parameter
+
+|NullType
+|string
+|Nullability: "Nullable", "No Nulls", "Unknown"
+
+|Description
+|string
+|Description of parameter
+|===
+
+=== SYS.Functions
+
+This table supplies information about the functions in the virtual database.
+
+|===
+|Column Name |Type |Description
+
+|VDBName
+|string
+|VDB name
+
+|SchemaName
+|string
+|Schema Name
+
+|Name
+|string
+|Function name
+
+|NameInSource
+|string
+|Function name in source system
+
+|UID
+|string
+|Function UID
+
+|Description
+|string
+|Description
+
+|IsVarArgs
+|boolean
+|Does the function accept variable arguments
+|===
+
+=== SYS.Properties
+
+This table supplies user-defined properties on all objects based on metamodel extensions. Normally, this table is empty if no metamodel extensions are being used.
+
+|===
+|Column Name |Type |Description
+
+|Name
+|string
+|Extension property name
+
+|Value
+|string
+|Extension property value
+
+|UID
+|string
+|Key unique ID
+
+|ClobValue
+|clob
+|Clob Value
+|===
+
+=== SYS.ReferenceKeyColumns
+
+This table supplies informaton about column's key reference.
+
+|===
+|Column Name |Type |Description
+
+|PKTABLE_CAT
+|string
+|VDB Name
+
+|PKTABLE_SCHEM
+|string
+|Schema Name
+
+|PKTABLE_NAME
+|string
+|Table/View Name
+
+|PKCOLUMN_NAME
+|string
+|Column Name
+
+|FKTABLE_CAT
+|string
+|VDB Name
+
+|FKTABLE_SCHEM
+|string
+|Schema Name
+
+|FKTABLE_NAME
+|string
+|Table/View Name
+
+|FKCOLUMN_NAME
+|string
+|Column Name
+
+|KEY_SEQ
+|short
+|Key Sequence
+
+|UPDATE_RULE
+|integer
+|Update Rule
+
+|DELETE_RULE
+|integer
+|Delete Rule
+
+|FK_NAME
+|string
+|FK Name
+
+|PK_NAME
+|string
+|PK Nmae
+
+|DEFERRABILITY
+|integer
+|
+
+|===
+
+=== SYS.Schemas
+
+This table supplies information about all the schemas in the virtual database, including the system schema itself (System).
+
+|===
+|Column Name |Type |Description
+
+|VDBName
+|string
+|VDB name
+
+|Name
+|string
+|Schema name
+
+|IsPhysical
+|boolean
+|True if this represents a source
+
+|UID
+|string
+|Unique ID
+
+|Description
+|string
+|Description
+
+|PrimaryMetamodelURI
+|string
+|URI for the primary metamodel describing the model used for this schema
+|===
+
+=== SYS.Tables
+
+This table supplies information about all the groups (tables, views, documents, etc) in the virtual database.
+
+|===
+|Column Name |Type |Description
+
+|VDBName
+|string
+|VDB name
+
+|SchemaName
+|string
+|Schema Name
+
+|Name
+|string
+|Short group name
+
+|Type
+|string
+|Table type (Table, View, Document, …)
+
+|NameInSource
+|string
+|Name of this group in the source
+
+|IsPhysical
+|boolean
+|True if this is a source table
+
+|SupportsUpdates
+|boolean
+|True if group can be updated
+
+|UID
+|string
+|Group unique ID
+
+|Cardinality
+|integer
+|Approximate number of rows in the group
+
+|Description
+|string
+|Description
+
+|IsSystem
+|boolean
+|True if in system table
+
+|SchemaUID
+|string
+|Parent Schema unique ID
+|===
+
+=== SYS.VirtualDatabases
+
+This table supplies information about the currently connected virtual database, of which there is always exactly one (in the context of a connection).
+
+|===
+|Column Name |Type |Description
+
+|Name
+|string
+|The name of the VDB
+
+|Version
+|string
+|The version of the VDB
+|===
+
+== Foreign Procedures
+
+=== SYS.getXMLSchemas
+
+Returns a resultset with a single column, schema, containing the schemas as xml.
+
+[source,sql]
+----
+SYS.getXMLSchemas(IN document string NOT NULL) RETURNS TABLE (schema xml)
+----
+
+=== SYS.ArrayIterate
+
+Returns a resultset with a single column with a row for each value in the array.
+
+[source,sql]
+----
+SYS.ArrayIterate(IN val object[]) RETURNS TABLE (col object)
+----
+
+[source,sql]
+.*Example ArrayIterate*
+----
+select array_get(cast(x.col as string[]), 2) from (exec arrayiterate((('a', 'b'),('c','d')))) x
+----
+
+This will produce two rows - 'b', and 'd'.
+
+== Views
+
+=== SYS.spatial_sys_ref
+
+See also the http://postgis.net/docs/using_postgis_dbmanagement.html#spatial_ref_sys[PostGIS Documentation]
+
+|===
+|Column Name |Type |Description
+
+|srid
+|integer
+|Spatial Reference Identifier
+
+|auth_name
+|string
+|Name of the standard or standards body
+
+|auth_srid
+|integer
+|SRID for the auth_name authority
+
+|srtext
+|string
+|Well-Known Text representation
+
+|proj4text
+|string
+|For use with the Proj4 library
+|===
+
+=== SYS.GEOMETRY_COLUMNS
+
+See also the http://postgis.net/docs/using_postgis_dbmanagement.html#geometry_columns[PostGIS Documentation]
+
+|===
+|Column Name |Type |Description
+
+|F_TABLE_CATALOG
+|string
+|catalog name
+
+|F_TABLE_SCHEMA
+|string
+|schema name
+
+|F_TABLE_NAME
+|string
+|table name
+
+|F_GEOMETRY_COLUMN
+|string
+|column name
+
+|COORD_DIMENSION
+|integer
+|Number of coordinate dimensions
+
+|SRID
+|integer
+|Spatial Reference Identifier
+
+|TYPE
+|string
+|Geometry type name
+|===
