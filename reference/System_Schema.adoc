@@ -3,6 +3,8 @@
 
 The built-in SYS and SYSADMIN schemas provide metadata tables and procedures against the current VDB.
 
+By default a system schema for ODBC metadata pg_catalog is also exposed - however that should be considered for general use.
+
 == Metadata Visibility
 
 The SYS system schema tables and procedures are always visible/accessible.

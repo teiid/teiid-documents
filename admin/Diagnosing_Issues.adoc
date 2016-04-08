@@ -81,7 +81,7 @@ In addition to the execution stats, note there are also cost estimates.  The val
 Unlike systems that own the data, we are not attempting to build histograms or other in-depth models of the data.  Theses values are meant to be approximations with nominally distribution assumptions.
 The costing information from the metadata only matters for physical entities as we'll recompute the higher values in planning after merge virtual and other plan modifications.  
 If you see that join is being implemented inefficiently, then first make sure reasonable costing values are being set on the tables involved.  Statistics can be gathered for some sources at design time or deploy time.  
-In environments that fluctuate rapidly, you may need to issue runtime costing updates via link:../reference/sysadmin_schemas.adoc#_foreign_procedures[system procedures].
+In environments that fluctuate rapidly, you may need to issue runtime costing updates via link:../reference/sysadmin_schema.adoc#_foreign_procedures[system procedures].
 
 === Pushdown Inhibited
 

@@ -1,11 +1,11 @@
 
-**SYSADMIN Schema provide pre build-in** 
+= SYSADMIN Schema
+:toc: manual
+:toc-placement: preamble
 
-1. <<Foreign Tables, Foreign Tables>> - <<SYSADMIN.Usage, SYSADMIN.Usage>>, <<SYSADMIN.MatViews, SYSADMIN.MatViews>>, <<SYSADMIN.VDBResources, SYSADMIN.VDBResources>>, <<SYSADMIN.Triggers, SYSADMIN.Triggers>>, <<SYSADMIN.Views, SYSADMIN.Views>>, <<SYSADMIN.StoredProcedures, SYSADMIN.StoredProcedures>>
-2. <<Foreign Procedures, Foreign Procedures>> - <<SYSADMIN.isLoggable, SYSADMIN.isLoggable>>, <<SYSADMIN.logMsg, SYSADMIN.logMsg>>, <<SYSADMIN.refreshMatView, SYSADMIN.refreshMatView>>,<<SYSADMIN.refreshMatViewRow, SYSADMIN.refreshMatViewRow>>, <<SYSADMIN.refreshMatViewRows, SYSADMIN.refreshMatViewRows>>,  <<SYSADMIN.setColumnStats, SYSADMIN.setColumnStats>>, <<SYSADMIN.setProperty, SYSADMIN.setProperty>>, <<SYSADMIN.setTableStats, SYSADMIN.setTableStats>>
-3. <<Virtual Procedures, Virtual Procedures>> - <<SYSADMIN.matViewStatus, SYSADMIN.matViewStatus>>, <<SYSADMIN.loadMatView, SYSADMIN.loadMatView>>, <<SYSADMIN.updateMatView, SYSADMIN.updateMatView>>
+System schema for administrative information and actions.
 
-== Foreign Tables
+== Tables/Views
 
 === SYSADMIN.Usage
 
@@ -251,7 +251,7 @@ This table provides the StoredProcedures in the virtual database.
 SELECT * FROM SYSADMIN.StoredProcedures
 ----
 
-== Foreign Procedures
+== Procedures
 
 === SYSADMIN.isLoggable
 
@@ -369,8 +369,6 @@ SYSADMIN.setTableStats(IN tableName string NOT NULL, IN cardinality long NOT NUL
 ----
 
 NOTE: <<SYSADMIN.setColumnStats, SYSADMIN.setColumnStats>>, <<SYSADMIN.setProperty, SYSADMIN.setProperty>>, <<SYSADMIN.setTableStats, SYSADMIN.setTableStats>> are Metadata Procedures. A MetadataRepository must be configured to make a non-temporary metadata update persistent. See the link:../dev/Developers_Guide.adoc[Developer’s Guide] Runtime Metadata Updates section for more.
-
-== Virtual Procedures
 
 === SYSADMIN.matViewStatus
 

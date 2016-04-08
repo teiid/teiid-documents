@@ -1,11 +1,11 @@
 
-**SYS Schema provide pre build-in**
+= SYS Schema
+:toc: manual
+:toc-placement: preamble
 
-1. <<Foreign Tables, Foreign Tables>> - <<SYS.Columns, SYS.Columns>>, <<SYS.DataTypes, SYS.DataTypes>>, <<SYS.KeyColumns, SYS.KeyColumns>>, <<SYS.Keys, SYS.Keys>>, <<SYS.ProcedureParams, SYS.ProcedureParams>>, <<SYS.Procedures, SYS.Procedures>>, <<SYS.FunctionParams, SYS.FunctionParams>>, <<SYS.Functions, SYS.Functions>>, <<SYS.Properties, SYS.Properties>>, <<SYS.ReferenceKeyColumns, SYS.ReferenceKeyColumns>>, <<SYS.Schemas, SYS.Schemas>>, <<SYS.Tables, SYS.Tables>>, <<SYS.VirtualDatabases, SYS.VirtualDatabases>>
-2. <<Foreign Procedures, Foreign Procedures>> - <<SYS.getXMLSchemas, SYS.getXMLSchemas>>, <<SYS.ArrayIterate, SYS.ArrayIterate>> 
-3. <<Views, Views>> - <<SYS.spatial_sys_ref, SYS.spatial_sys_ref>>, <<SYS.GEOMETRY_COLUMNS, SYS.GEOMETRY_COLUMNS>>
+System schema for public information and actions.
 
-== Foreign Tables
+== Tables/Views
 
 === SYS.Columns
 
@@ -721,36 +721,6 @@ This table supplies information about the currently connected virtual database, 
 |The version of the VDB
 |===
 
-== Foreign Procedures
-
-=== SYS.getXMLSchemas
-
-Returns a resultset with a single column, schema, containing the schemas as xml.
-
-[source,sql]
-----
-SYS.getXMLSchemas(IN document string NOT NULL) RETURNS TABLE (schema xml)
-----
-
-=== SYS.ArrayIterate
-
-Returns a resultset with a single column with a row for each value in the array.
-
-[source,sql]
-----
-SYS.ArrayIterate(IN val object[]) RETURNS TABLE (col object)
-----
-
-[source,sql]
-.*Example ArrayIterate*
-----
-select array_get(cast(x.col as string[]), 2) from (exec arrayiterate((('a', 'b'),('c','d')))) x
-----
-
-This will produce two rows - 'b', and 'd'.
-
-== Views
-
 === SYS.spatial_sys_ref
 
 See also the http://postgis.net/docs/using_postgis_dbmanagement.html#spatial_ref_sys[PostGIS Documentation]
@@ -814,3 +784,32 @@ See also the http://postgis.net/docs/using_postgis_dbmanagement.html#geometry_co
 |string
 |Geometry type name
 |===
+
+
+== Procedures
+
+=== SYS.getXMLSchemas
+
+Returns a resultset with a single column, schema, containing the schemas as xml.
+
+[source,sql]
+----
+SYS.getXMLSchemas(IN document string NOT NULL) RETURNS TABLE (schema xml)
+----
+
+=== SYS.ArrayIterate
+
+Returns a resultset with a single column with a row for each value in the array.
+
+[source,sql]
+----
+SYS.ArrayIterate(IN val object[]) RETURNS TABLE (col object)
+----
+
+[source,sql]
+.*Example ArrayIterate*
+----
+select array_get(cast(x.col as string[]), 2) from (exec arrayiterate((('a', 'b'),('c','d')))) x
+----
+
+This will produce two rows - 'b', and 'd'.
