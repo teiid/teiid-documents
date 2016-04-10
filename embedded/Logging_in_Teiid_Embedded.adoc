@@ -1,4 +1,6 @@
 
+= Logging in Teiid Embedded
+
 Teiid’s LogManager is an interface to a single logging framework that is easily accessible by any component. Using the LogManager, a component can quickly submit a log message, and can rely upon the LogManager to determine
 
 * whether that message is to be recorded or discarded
@@ -75,5 +77,5 @@ formatter.COLOR-PATTERN.pattern=%K{level}%d{HH\:mm\:ss,SSS} %-5p \[%c\] (%t) %s%
 
 To bridge JBoss Logging with Log4j, the only need to do is have a 1.x log4j jar in your class path.
 
-If your system use Log4j as logging framework, with above JBoss LogManager bridge Log4j functionality and steps in *Bridging with JBoss logging*, it’s easy to set up logging framework consistent between Teiid Embedded and your system.
+If your system use Log4j as logging framework, with above JBoss LogManager bridge Log4j functionality and steps in <<Bridging with JBoss Logging, Bridging with JBoss Logging>>, it’s easy to set up logging framework consistent between Teiid Embedded and your system.
 

@@ -1,6 +1,8 @@
 
 
 = Embedded Guide
+:toc: manual
+:toc-placement: preamble
 
 Embedded is a light-weight version of Teiid for use in any Java 7+ JRE. JBoss AS nor any application server is not required. This feature/kit are still evolving. Please consult the source examples and even unit tests utilizing the EmbeddedServer for a more complete guide as to its use.
 
