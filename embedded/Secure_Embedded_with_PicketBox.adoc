@@ -1,4 +1,12 @@
 
+= Secure Embedded with PicketBox
+:toc: manual
+:toc-placement: preamble
+
+Secure Embedded with PicketBox.
+
+== Steps of implement a JAAS authentication
+
 PicketBox is a Java Security Framework that build on top of JAAS. PicketBox is configured via a schema formatted Security Configuration File(https://raw.githubusercontent.com/picketbox/picketbox/master/security-jboss-sx/jbosssx/src/main/resources/schema/security-config_5_0.xsd[security-config_5_0.xsd]) and provides various LoginModule Implementations (UsersRolesLoginModule, LdapExtLoginModule, DatabaseServerLoginModule, etc). The following are 5 key steps to execute a authentication:
 
 [source,java]
@@ -40,7 +48,7 @@ Add ’teiid-engine-VERSION.jar’to classpath is necessary. If you are using th
 </dependency>
 ----
 
-The key to develop a SecurityHelper is implement the authenticate() method. PicketBox’s 5 key steps to execute an authentication is shown in the example below:
+The key to develop a SecurityHelper is implement the authenticate() method. PicketBox’s 5 key steps to execute an authentication which depicted in <<Steps of implement a JAAS authentication, Steps of implement a JAAS authentication>> is shown in the example below:
 
 [source,java]
 ----
