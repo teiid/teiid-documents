@@ -1,5 +1,11 @@
 
 = DDL Metadata
+:toc: manual
+:toc-placement: preamble
+
+DDL Metadata.
+
+== DDL Metadata in VDB Models
 
 Starting with Teiid 8.0, a VDB can define models/schemas using DDL. Here is small example of how one can define a View inside the "-vdb.xml" file. See the <metadata> element under <model>.
 
