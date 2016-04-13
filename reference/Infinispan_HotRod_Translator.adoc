@@ -1,0 +1,228 @@
+
+= Infinispan HotRod Translator
+
+The Infinispan HotRod Translator, known by the type *ispn-hotrod*, can read the java objects from a remote Infinispan Cache via the Hot Rod client using the Google Protobuf for serialization.  This will enable Teiid to query the remote cache using JDG DSL.   If you are using JDG in library mode, see the [Infinispan Library Mode Translator] for this type of configuration.
+
+
+== *Usage*
+
+*  Retrieve objects from a cache and transform into rows and columns.
+*  Supports performing writes to the cache
+*  Use for external materialization to improve query performance
+
+=== *Supported Capabilities*
+
+The following are the connector capabilities:
+
+* Compare Criteria - EQ
+* Compare Criteria Ordered - LT, GT, LE, GE - if the supportsCompareCriteriaOrdered translator override is set to true. It defaults to false due to an https://issues.jboss.org/browse/TEIID-3627[issue with JDG].
+* And/Or Criteria
+* In Criteria
+* Like Criteria
+* Order By
+* INSERT, UPDATE, DELETE (non-transactional)
+
+The following will not be pushed down to JDG for processing, but will be done within Teiid:
+
+* Not (NE, <>)
+* IsNull
+
+Limitations:
+
+* support for 'Not' has been disabled, because JDG considers <column when null> <> 1 to be true and SQL does not.  
+* boolean data type:  JDG will throw an exception if no value is specified on the insert or when no default value is defined in the protobuf definition file.
+* char data type:  is not a supported type in theProtobuf data types (https://developers.google.com/protocol-buffers/docs/proto#scalar).  Would either have to handle conversion in the protobuf marshaller or create a Teiid view with the data type as char.
+* 1-to-Many, currently only supports Collection or Array, not Map's'
+* Write transactions not supported by JDG when using Hot Rod client 
+
+To be done:
+
+*  support deleting containing class(s) (i.e., person --> phones, delete a phone)
+*  support updating containing class(s)
+
+
+
+
+== *Installation*
+
+The *ispn-hotrod* translator is not configured, out-of-the-box, in the standalone-teiid.xml configuration. To configure the translator, run the https://github.com/teiid/teiid/blob/master/build/kits/jboss-as7/docs/teiid/datasources/infinispan/add-infinispan-hotrod-translator.cli[add-infinispan-hotrod-translator.cli] script. This script can also be found in the teiid-jboss-dist.zip kit, under docs/teiid/datasources/infinispan. See the https://docs.jboss.org/author/display/teiidexamples/JBoss+Data+Grid+Remote+Cache+as+a+Data+Source[jdg-remote-cache] quick start for an example. Note, this assumes you will be installing a separate JDG server, which will be accessed via the Hot Rod Client installed into the Teiid server.
+
+
+=== Configuring Pojo class
+The pojo class is the object that will be used to store the data in the cache.  It should be built accordingly:
+
+*  To take advantage of the cache being indexed enabled, should annotate the class.  See JDG Indexing With Protobuf Annotations at https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_Data_Grid/6.6/html-single/Infinispan_Query_Guide/index.html#Custom_Fields_Indexing_with_Protobuf
+*  The class should be packaged into a jar so that it can be deployed as a module 
+
+Example class:
+[source,java]
+----
+public class Person {
+
+   @ProtoField(number = 2, required = true)
+   public String name;
+   @ProtoField(number = 1, required = true)
+   public int id;
+   @ProtoField(number = 3)
+   public String email;
+   private List<PhoneNumber> phones;
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public int getId() {
+      return id;
+   }
+
+   public void setId(int id) {
+      this.id = id;
+   }
+
+   public String getEmail() {
+      return email;
+   }
+
+   public void setEmail(String email) {
+      this.email = email;
+   }
+
+   public List<PhoneNumber> getPhones() {
+      return phones;
+   }
+
+   public void setPhones(List<PhoneNumber> phones) {
+      this.phones = phones;
+   }
+}
+----
+
+To configure the use of the pojo, do the following:
+
+*  Deploy the pojo jar as a module in the jboss-as server.   Then define the "lib" property in the -vdb.xml and assign the correct module name.   This can be done using the following template:
+[source,xml]
+---- 
+     <property name ="lib" value ="{pojo_module_name}"></property>
+----
+ 
+
+== *Metadata*
+
+=== *Options for Defining*
+
+There are several options to defining the metadata representing your object in the cache.  
+
+* "Recommended" Use the Teiid Connection Importer in Teiid Designer to create the physical source model based on your object cache.
+
+* Use Teiid Designer to manually create the physical source model based on your object cache using the below *Definition Requirements*.
+
+* Use dynamic VDB that only defines the data source to use.  Example:
+
+[source,xml]
+----
+    <model name="People" type="Physical">
+        <property name="importer.useFullSchemaName" value="false"/>
+           
+        <source name="infinispan-hotrod-connector" translator-name="ispn-hotrod" connection-jndi-name="java:/infinispanRemoteDSL" />
+    </model>
+----
+
+The metadata will be resolved by reverse engineering the defined object in the cache.  This can be useful when using the Teiid Designer Teiid Connection Importer for building the physical source model(s).
+
+* Use dynamic VDB, but you define the metadata using DDL.
+
+Note, this also shows a container class, PhoneNumber, as an example of the foreign key that's defines the relationship.
+
+[source,xml]
+----
+<vdb name="PeopleVDB" version="1">
+    <model name="People" visible="true">
+        <property name="importer.useFullSchemaName" value="false"/>
+       
+        <source name="infinispan-cache-dsl-connector" translator-name="ispn-hotrod" connection-jndi-name="java:/infinispanRemote" />
+
+        <metadata type="DDL"><![CDATA[
+
+ CREATE FOREIGN TABLE Person (
+	PersonObject object OPTIONS (NAMEINSOURCE 'this', UPDATABLE FALSE, SEARCHABLE 'Unsearchable', NATIVE_TYPE 'java.lang.Object'),
+	id integer NOT NULL OPTIONS (SEARCHABLE 'Searchable', NATIVE_TYPE 'int'),
+	name string OPTIONS (SEARCHABLE 'Searchable', NATIVE_TYPE 'java.lang.String'),
+	email string OPTIONS (SEARCHABLE 'Searchable', NATIVE_TYPE 'java.lang.String'),
+	CONSTRAINT PK_ID PRIMARY KEY(id)
+) OPTIONS (NAMEINSOURCE 'PersonsCache', UPDATABLE TRUE);
+
+CREATE FOREIGN TABLE PhoneNumber (
+	number string OPTIONS (NAMEINSOURCE 'phone.number', SEARCHABLE 'Searchable', NATIVE_TYPE 'java.lang.String'),
+	type string OPTIONS (NAMEINSOURCE 'phone.type', SEARCHABLE 'Searchable', NATIVE_TYPE 'java.lang.String'),
+	id integer NOT NULL OPTIONS (SELECTABLE FALSE, UPDATABLE FALSE, SEARCHABLE 'Searchable', NATIVE_TYPE 'int'),
+	CONSTRAINT FK_PERSON FOREIGN KEY(id) REFERENCES Person (id) OPTIONS (NAMEINSOURCE 'phones')
+) OPTIONS (NAMEINSOURCE 'PersonsCache', UPDATABLE TRUE);
+
+         ]]> </metadata>
+    </model>
+
+</vdb>
+----
+
+
+=== *Definition Requirements*
+
+* Each google registered class in the cache will have a corresponding table created.
+* The table for the root class, must have a primary key defined, which must map to an attribute in the class.
+
+NOTE: The data type for the attribute in the class must match the JDG cache key data type.
+
+* The table "name in source" (NIS) will be the name of the JDG cache this table/class is stored
+* The table columns will be created from the google protobuf definition, that corresponds to a registered class.
+* Columns will be identified as SEARCHABLE if either the protobuf definition for a column indicates its indexed or the pojo class has the attribute/method annotated.
+* Attributes defined as repeatable (i.e., collections, arrays, etc.) or a container class, will be supported as 1-to-* relationships, and will have corresponding registered class (if they are to be searched).
+* A 1-to-* relationship class must have a foreign key to map to the root class/table, where the name in source for the foreign key is the name of the root class method to access those child objects. Note, this is the class method, not a reference in the google protobuf definition.
+* A container/child class will have attributes where the NIS contain a period. Example: phone.number. This is because this maps to to google protobuf definition and what is expected to be used in the DSL query.
+
+== *External Materialization*
+
+This translator supports using the cache for external materialization.   However, there are specific configuration changes that are required at the [Infinispan-HotRod resource-adapter] and at the translator.   
+
+
+=== *Native Queries*
+
+External materialization is enabled by the use of native queries in the BEFORE_LOAD_SCRIPT and AFTER_LOAD_SCRIPT.  A translator override will need to be set to enable native queries:  SupportsNativeQueries=true
+
+The following materialization properties must be defined:
+|===
+|Script |Native query |Description
+
+| teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT  | truncate cache | To truncate the cache identified as the staging cache
+| teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT   | swap cache names | To swap the aliases for the caches, so that the primary cache points to the recently loaded cache
+|===
+
+
+The following is an example of for defining the load scripts in a Dynamic VDB:
+[source]
+----
+..
+"teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT" 'execute StockMatCache.native(''truncate cache'');',
+"teiid_rel:MATVIEW_LOAD_SCRIPT" 'insert into StockMatCache.Stock (productId, symbol, price, companyName) SELECT  A.ID, S.symbol, S.price, A.COMPANY_NAME FROM Stocks.StockPrices AS S, Accounts.PRODUCT AS A WHERE S.symbol = A.SYMBOL',
+"teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT"  'execute StockMatCache.native(''swap cache names'');', 
+----
+
+Native queries are used to simulate how its done using RDBMS and renaming tables, because Infinispan doesn't currently support renaming a cache.  So the native queries will trigger the clearing of the "staging" cache, and the swapping of the cache aliases. 
+
+
+=== *Direct Query Procedure*
+
+Additionally, the execution of native queries is done thru the support of direct query procedures.  The procedure to be executed is called *native*.    
+ 
+{warning}
+This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, override the execution property [Override Execution Properties] called *SupportsDirectQueryProcedure* to true.
+{warning}
+
+
+== *JCA Resource Adapter*
+
+See the Infinispan-HotRod resource adapter for this translator. It can be configured to lookup the cache container via JNDI, server list, or hot rod properties. 
+

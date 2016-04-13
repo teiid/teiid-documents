@@ -57,8 +57,8 @@ Teiid provides the means (i.e., link:Translators.adoc[Translators] and link:../a
 * link:Teiid_Translator.adoc[Teiid]
 
 6.  Object Sources
-* link:Infinispan_Cache_Translator.adoc[JDG / Infinispan Library Mode]
-* link:Infinispan_Cache_DSL_Translator.adoc[JDG / Infinispan Remote Cache Mode]
+* link:Infinispan_LibMode_Translator.adoc[JDG / Infinispan Library Mode]
+* link:Infinispan_HotRod_Translator.adoc[JDG / Infinispan HotRod Mode]
 * link:Intersystems_Cache_Translator.adoc[Intersystems Cache Object Database]
 * link:JPA_Translator.adoc[JPA] sources
 

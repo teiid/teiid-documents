@@ -1,0 +1,256 @@
+
+= Infinispan Library Mode Translator
+
+The Infinispan Library Mode translator, known by the name of *ispn-lib-mode*, is a bridge for reading and writing java objects to/from an Infinispan/JDG Cache.  This translator extends the [Object Translator] and uses it for the core processing of reading and writing objects.   The Infinispan Library Mode Translator is written so that it can control how the cache is searched and any capabilities that are needed to control that behavior. 
+
+It is assumed that you will be installing the *JDG Library Mode EAP Modules Kit*, which can be obtained on the Red Hat's Customer Portal at https://access.redhat.com/jbossnetwork/restricted/listSoftware.html.
+
+If you are using JDG to access a remote cache, see the [Infinispan HotRod Translator] for this type of configuration.
+
+
+== *Usage*
+
+*  Retrieve objects from a cache and transform into rows and columns.
+*  Perform writes to the cache
+*  Use for external materialization to improve query performance
+
+=== *Searching Options*
+
+Supports the following options for searching:
+
+* DSL searching (JDG 6.3+)
+* Hibernate/Lucene searching (now deprecated)
+* Key searching (when no indexing is used). 
+
+See the https://docs.jboss.org/author/display/teiidexamples/JBoss+Data+Grid+%28JDG%29+running+in+Library+Mode+as+a+Data+Source+Example[jdg-local-cache] quick start for an example.
+
+=== *Supported Capabilities*
+
+The following are the connector capabilities when Key Searching is used:
+
+* SELECT command
+* CompareCriteria - only EQ
+* InCriteria
+
+
+The following are the connector capabilities when DSL Searching is enabled:
+
+* SELECT command
+* CompareCriteria - EQ, NE
+* CompareCriteria - GT, LT, GE, and LE can be enabled, see Execution Properties
+* And/Or Criteria
+* In Criteria
+* Like Criteria
+* Or Criteria
+* IsNull check -  see Execution Properties
+* Not (negation) - example:  Not In, Not Like
+* INSERT, UPDATE, DELETE
+
+
+== *Installation*
+
+The *ispn-lib-mode* translator is not configured, out-of-the-box, in the standalone-teiid.xml configuration. To configure the translator, run the https://github.com/teiid/teiid/blob/master/build/kits/jboss-as7/docs/teiid/datasources/infinispan/add-infinispan-libmode-translator.cli[add-infinispan-libmode-translator.cli] script. This script can also be found in the teiid-jboss-dist.zip kit, under docs/teiid/datasources/infinispan.
+
+=== *Execution Properties*
+
+|===
+|Name |Description |Required |Default
+
+|SupportsLuceneSearching (Deprecated)
+|Setting to true assumes your objects are annotated and Hibernate/Lucene will be used to search the cache
+|No
+|false
+
+|SupportsDSLSearching
+|Setting to true assumes your are using JDG v6.3 or better and your cache has indexing enabled
+|No
+|true
+
+|SupportsIsNullCriteria
+|Setting to true assumes https://issues.jboss.org/browse/TEIID-3539[https://issues.jboss.org/browse/TEIID-3539] has been resolved
+|No
+|false
+
+|SupportsCompareCriteriaOrdered
+|Setting to true assumes https://issues.jboss.org/browse/TEIID-3627[https://issues.jboss.org/browse/TEIID-3627] has been resolved
+|No
+|false
+
+|SupportsNotCriteria
+|Setting to true assumes https://issues.jboss.org/browse/TEIID-3573[https://issues.jboss.org/browse/TEIID-3573] has been resolved
+|No
+|false
+|===
+
+*SupportsNotCriteria* defaults to false because the testing of _colum
+----n_ <> 1 returns true when the _column_ is null, which isn’t correct by SQL standards - see https://issues.jboss.org/browse/TEIID-3573[https://issues.jboss.org/browse/TEIID-3573]. There is an enhancement coming that will enable adding "_column_ IS NOT NULL" when _column_ <> 1 type criteria is detected.
+
+*SupportsIsNullCriteria* defaults to false because Infinispan/JDG has an issue with issuing a IS NULL check on a numeric type attribute - see https://issues.jboss.org/browse/TEIID-3539[https://issues.jboss.org/browse/TEIID-3539]. Set this to true if you need this check and can control which non-numeric columns that this will be issued against.
+
+*SupportsCompareCriteria* Ordered defaults to false because the Infinispan/JDG has an issue with string comparisons - see https://issues.jboss.org/browse/TEIID-3627[https://issues.jboss.org/browse/TEIID-3627].
+
+
+=== *Configuring Pojo class*
+
+The pojo class is the object that will be used to store the data in the cache.  It should be built accordingly:
+----
+
+*  To take advantage of the cache being indexed enabled, should annotate the class.  See JDG documentation at https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_Data_Grid/6.6/html-single/Infinispan_Query_Guide/index.html#chap-Annotating_Objects_and_Querying
+*  The class should be packaged into a jar so that it can be deployed as a module 
+
+Example class:
+[source,java]
+----
+@Indexed
+public class Stock {
+
+        @NumericField @Field(index=Index.YES, store=Store.YES, analyze=Analyze.NO)
+        public int productId;
+	@Field(index=Index.YES, store=Store.YES, analyze=Analyze.NO)
+	public  BigDecimal price;
+	@Field(index=Index.YES, store=Store.YES, analyze=Analyze.NO)
+	public  String symbol;
+	@Field(index=Index.YES, store=Store.YES, analyze=Analyze.NO)
+	public  String companyName;
+
+	public int getProductId() {
+		return this.productId;
+	}
+
+	public void setProductId(int id) {
+		this.productId = id;
+	}
+
+	public BigDecimal getPrice() {
+		return this.price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+	public void setPrice(double price) {
+		this.price = new BigDecimal(price);
+	}
+
+	public String getSymbol() {
+		return this.symbol;
+	}
+
+	public void setSymbol(String symbol) {
+		this.symbol = symbol;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String name) {
+		this.companyName = name;
+	}
+}
+----
+
+To configure the use of the pojo, do the following:
+
+*  Deploy the pojo jar as a module in the jboss-as server.   Then define the "lib" property in the -vdb.xml and assign the correct module name.   This can be done using the following template:
+[source,xml]
+----
+      <property name ="lib" value ="{pojo_module_name}"></property>
+----
+
+*  The JDG commons module, org.infinispan.commons, slot="jdg-6.6" or slot for version installed, needs to have the pojo dependency added:
+[source,xml]
+----
+      <module name="{pojo_module_name}"   export="true" />
+----
+ 
+
+
+== *Metadata*
+
+=== *Options for Defining*
+
+There are couple options to defining the metadata representing your object in the cache.  
+
+* "Recommended" Use the Teiid Connection Importer in Teiid Designer to create the physical source model based on your object cache.
+
+* Use dynamic VDB that only defines the data source to use.
+
+The following is the dynamic VDB example similar to quick start (see github at https://github.com/teiid/teiid-quickstarts/tree/master/jdg-local-cache).  It defines the physical source and will use the translator native importer logic to have the metadata reverse engineered from the Stock class, see above, to be exposed as the source table. 
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<vdb name="Stocks" version="1">
+
+    <description>Shows how to call an Infinispan local cache</description>
+    
+    <property name="UseConnectorMetadata" value="cached" />
+    <property name ="lib" value ="com.client.quickstart.pojos"></property>
+   
+    <model name="StockCache" type="Physical">
+        <property name="importer.useFullSchemaName" value="false"/>
+           
+       <source name="StockSource" translator-name="infinispan1" connection-jndi-name="java:/infinispanLocal" />
+       
+    </model>
+  
+    <translator name="infinispan1" type="ispn-lib-mode">
+        <property name="SupportsDSLSearching" value="true"/>
+    </translator>
+</vdb>
+----
+
+=== *Definition Requirements*
+
+*  The table for the root class, must have a primary key defined, which must map to an attribute in the class.
+*  The table "name in source" (NIS) will be the name of the cache this table/class is stored
+*  The primary object that represents the cached object should have a name in source of 'this'.&nbsp; All other columns will have their name in source (which defaults to the column name) interpreted as the path to the column value from the primary object.
+*  All columns that are not the primary key nor covered by a lucene index should be marked as SEARCHABLE 'Unsearchable'.
+*  Attributes defined as repeatable (i.e., collections, arrays, etc.) or a container class, will be supported as 1-to-* relationships, and will have corresponding registered class (if they are to be searched).
+*  A 1-to-* relationship class must have a foreign key to map to the root class/table, where the name in source for the foreign key is the name of the root class method to access those child objects.  Note, this is the class method, not a reference in the google protobuf definition.
+*  Dynamic VDBs using metadata import will automatically build the physical table for the root object and will have each top level member represented as a column. 
+
+
+== *External Materialization*
+
+This translator supports using the cache for external materialization.   However, there are specific configuration changes that are required at the Infinispan Data Sources resource-adapter and at the translator.  For an example, see the https://github.com/teiid/teiid-quickstarts/tree/master/jdg-local-cache-materialization[jdg local quick start].
+
+=== *Native Queries*
+
+External materialization is enabled by the use of native queries in the BEFORE_LOAD_SCRIPT and AFTER_LOAD_SCRIPT.  A translator override will need to be set to enable native queries:  SupportsNativeQueries=true
+
+The following materialization properties must be defined:
+|===
+|Script |Native query |Description
+
+| teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT  | truncate cache | To truncate the cache identified as the staging cache
+| teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT   | swap cache names | To swap the aliases for the caches, so that the primary cache points to the recently loaded cache
+|===
+
+
+The following is an example of defining the materialization load scripts in a Dynamic VDB:
+[source]
+----
+..
+"teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT" 'execute StockMatCache.native(''truncate cache'');',
+"teiid_rel:MATVIEW_LOAD_SCRIPT" 'insert into StockMatCache.Stock (productId, symbol, price, companyName) SELECT  A.ID, S.symbol, S.price, A.COMPANY_NAME FROM Stocks.StockPrices AS S, Accounts.PRODUCT AS A WHERE S.symbol = A.SYMBOL',
+"teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT"  'execute StockMatCache.native(''swap cache names'');', 
+----
+
+Native queries are used to simulate how its done using RDBMS and renaming tables, because Infinispan doesn't currently support renaming a cache.  So the native queries will trigger the clearing of the "staging" cache, and the swapping of the cache aliases. 
+
+=== *Direct Query Procedure*
+
+Additionally, the execution of native queries is done thru the support of direct query procedures.  The procedure to be executed is called *native*. 
+ 
+{warning}
+This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, [override the execution property|Translators#Override Execution Properties] called *SupportsDirectQueryProcedure* to true.
+{warning}
+
+
+
+== *JCA Resource Adapter*
+
+See the Infinispan Datasources resource adapter for this translator. It can be configured to lookup the cache container via JNDI or created (i.e., ConfigurationFileName). 
+
