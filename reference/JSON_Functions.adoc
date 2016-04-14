@@ -1,5 +1,7 @@
 
 = JSON Functions
+:toc: manual
+:toc-placement: preamble
 
 JSON functions provide functionality for working with http://www.json.org/[JSON] (JavaScript Object Notation) data.
 

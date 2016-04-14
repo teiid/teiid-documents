@@ -305,7 +305,7 @@ Subqueries can be used to produce a single scalar value in the SELECT, WHERE, or
 
 Parameters are specified using a '?' symbol. Parameters may only be used with PreparedStatement or CallableStatements in JDBC. Each parameter is linked to a value specified by 1-based index in the JDBC API.
 
-== Array
+== Arrays
 
 Array values may be constructed using parenthesis around an expression list with an optional trailing comma.
 

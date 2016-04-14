@@ -1,5 +1,7 @@
 
 = Procedure Language
+:toc: manual
+:toc-placement: preamble
 
 Teiid supports a procedural language for defining link:Virtual_Procedures.adoc[Virtual Procedures]. These are similar to stored procedures in relational database management systems. You can use this language to define the transformation logic for decomposing INSERT, UPDATE, and DELETE commands against views; these are known as link:Update_Procedures_Triggers.adoc[Update Procedures (Triggers)].
 
