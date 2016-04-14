@@ -1,5 +1,7 @@
 
 = XML Functions
+:toc: manual
+:toc-placement: preamble
 
 XML functions provide functionality for working with XML data. See also the link:JSON_Functions.adoc[JSONTOXML function].
 
@@ -84,7 +86,7 @@ Content is xml. Return value is xml.
 If a value is null, it will be ignored. If all values are null, null is returned.
 
 [source,sql]
-.*"Concatenate two or more XML fragments"*
+.*Concatenate two or more XML fragments*
 ----
 SELECT XMLCONCAT(
          XMLELEMENT("name", CustomerName), 
@@ -119,7 +121,7 @@ If a attribute name is not supplied, the expression must be a column reference, 
 Name, prefix are identifiers. uri is a string literal. content can be any type. Return value is xml. The return value is valid for use in places where a document is expected.
 
 [source,sql]
-.*"Simple Example"*
+.*Simple Example*
 ----
 SELECT XMLELEMENT("name", CustomerName)
 FROM   Customer c
@@ -130,7 +132,7 @@ WHERE  c.CustomerID = 87;
 ----
 
 [source,sql]
-.*"Multiple Columns"*
+.*Multiple Columns*
 ----
 SELECT XMLELEMENT("customer", 
           XMLELEMENT("name", c.CustomerName),
@@ -143,7 +145,7 @@ WHERE  c.CustomerID = 87;
 ----
 
 [source,sql]
-.*"Columns as Attributes"*
+.*Columns as Attributes*
 ----
 SELECT XMLELEMENT("customer", 
           XMLELEMENT("name", c.CustomerName,
@@ -178,7 +180,7 @@ If a name is not supplied for a content item, the expression must be a column re
 You can use XMLFORREST to simplify the declaration of multiple XMLELEMENTS, XMLFOREST function allows you to process multiple columns at once
 
 [source,sql]
-.*"Example"*
+.*Example*
 ----
 SELECT XMLELEMENT("customer", 
           XMLFOREST(
@@ -204,7 +206,7 @@ XMLAGG(xml)
 From above example in XMLElement, each row in the Customer table table will generate row of XML if there are multiple rows matching the criteria. That will generate a valid XML, but it will not be well formed, because it lacks the root element. XMLAGG can used to correct that
 
 [source,sql]
-.*"Example"*
+.*Example*
 ----
 SELECT XMLELEMENT("customers",
          XMLAGG(

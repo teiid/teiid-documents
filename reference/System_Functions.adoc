@@ -1,5 +1,7 @@
 
 = System Functions
+:toc: manual
+:toc-placement: preamble
 
 System functions provide access to information in the Teiid system from within a query.
 

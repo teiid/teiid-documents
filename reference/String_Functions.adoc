@@ -207,7 +207,7 @@ The flags argument can be any concatenation of any of the valid flags with the f
 
 Usage:
 
-The following will return ``xxbye Wxx'' using the global and case insensitive options.
+The following will return "xxbye Wxx" using the global and case insensitive options.
 
 [source,sql]
 .*Example regexp_replace*
