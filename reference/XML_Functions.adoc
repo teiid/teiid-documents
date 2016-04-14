@@ -5,6 +5,8 @@
 
 XML functions provide functionality for working with XML data. See also the link:JSON_Functions.adoc[JSONTOXML function].
 
+== Sample Data For Examples
+
 Examples provided with XML functions use the following table structure
 
 [source,sql]
