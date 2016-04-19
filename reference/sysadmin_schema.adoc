@@ -82,7 +82,7 @@ This table supplies information about all the materailized views in the virtual 
 
 |TargetSchemaName
 |string
-|Name of the materialized table schema
+|Name of the materialized table schema.  Will be null for internal materialization.
 
 |TargetName
 |string
@@ -90,20 +90,22 @@ This table supplies information about all the materailized views in the virtual 
 
 |Valid
 |boolean
-|True if materialized table is currently valid.
+|True if materialized table is currently valid.  Will be null for external materialization.
 
 |LoadState
 |boolean
-|The load state, can be one of NEEDS_LOADING, LOADING, LOADED, FAILED_LOAD
+|The load state, can be one of NEEDS_LOADING, LOADING, LOADED, FAILED_LOAD.  Will be null for external materialization.
 
 |Updated
 |timestamp
-|The timestamp of the last full refresh.
+|The timestamp of the last full refresh.  Will be null for external materialization.
 
 |Cardinality
 |integer
-|The number of rows in the materialized view table.
+|The number of rows in the materialized view table.  Will be null for external materialization.
 |===
+
+Valid, LoadState, Updated, and Cardinality may be checked for external materialized views with the SYSADMIN.matViewStatus procedure.
 
 [source,sql]
 .*Example SYSADMIN.MatViews*
@@ -296,7 +298,9 @@ This will log the message 'some debug' at the default level DEBUG to the context
 
 === SYSADMIN.refreshMatView
 
-Returns integer RowsUpdated. -1 indicates a load is in progress, otherwise the cardinality of the table is returned. See the link:../caching/Caching_Guide.adoc[Caching Guide] for more.
+Full refresh/load of an internal materialized view.  Returns integer RowsUpdated. -1 indicates a load is in progress, otherwise the cardinality of the table is returned. See the link:../caching/Caching_Guide.adoc[Caching Guide] for more.
+
+See also SYSADMIN.loadMatView
 
 [source,sql]
 ----
@@ -383,7 +387,7 @@ SYSADMIN.matViewStatus(IN schemaName string NOT NULL, IN viewName string NOT NUL
 
 === SYSADMIN.loadMatView
 
-loadMatView is used to perform a complete refresh of an external materialized table.
+loadMatView is used to perform a complete refresh of an internal or external materialized table.
 
 Returns integer RowsInserted. -1 indicates the materialized table is currently invalid. And -3 indicates there was an exception when performing the load. See the Caching Guide for more.
 
