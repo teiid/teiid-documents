@@ -3,7 +3,7 @@
 :toc: manual
 :toc-placement: preamble
 
-DDL Metadata.
+DDL Metadata can be used instead of or in addition to metadata defined by Teiid Designer.
 
 == DDL Metadata in VDB Models
 
