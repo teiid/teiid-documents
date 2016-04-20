@@ -19,7 +19,7 @@ The materialized option must be set for the view to be materialized. The link:Hi
 |true
 
 |UPDATABLE
-|Allow updating Materialized View via DDL `UPDATE`
+|Allow updating Materialized View via DML `UPDATE`
 |true
 |false
 
