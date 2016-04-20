@@ -1,9 +1,9 @@
 
-= Dynamic VDBs
+= VDBs Without Tooling
 
-Teiid integration is available via a "Dynamic VDB" without the need for Teiid Designer tooling. See the kit’s "teiid-example/dynamicvdb-*" for working examples.
+Teiid integration is available via a VDB without the need for Teiid Designer tooling.
 
-Dynamic VDBs take two forms - a simple xml deployment and a full zip file.
+VDBs take two forms - a simple xml deployment and a full zip file.
 
 == XML Deployment
 

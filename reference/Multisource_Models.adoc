@@ -5,7 +5,7 @@ Multisource models can be used to quickly access data in multiple sources with h
 
 == Configuration
 
-To mark a model as multisource, the model property _multisource_ can be set to true or more than one source can be listed for the model in the "vdb.xml" file. Here is a code example showing dynamic vdb with single model with multiple sources defined.
+To mark a model as multisource, the model property _multisource_ can be set to true or more than one source can be listed for the model in the "vdb.xml" file. Here is a code example showing a vdb with single model with multiple sources defined.
 
 [source,xml]
 ----
@@ -48,7 +48,7 @@ insert into table (column, SOURCE_NAME) VALUES ('value', 'newyork')
 
 The pseudo column is by default not present in your actual metadata; it is not added on source tables/procedures when you import the metadata.  If you would like to use the multisource column in your transformations to control which sources are accessed or updated and/or want the column reported via metadata facilities, there are several options: 
 
-* If using Dynamic VDBs, the pseduo-column will already be available to transformations, but will not be present in your System metadata by default.  If using DDL and want to be selective (rather than using the *multisource.addColumn* property), you can manually add the column via DDL. 
+* If directly using DDL, the pseduo-column will already be available to transformations, but will not be present in your System metadata by default.  If using DDL and want to be selective (rather than using the *multisource.addColumn* property), you can manually add the column via DDL. 
 * With either VDB type to make the multisource column present in the system metadata, you may set the model property *multisource.addColumn* to true on a multisource model. If the table has a column or the procedure has a parameter already with a matching name, then an additional column will not be added. A variadic procedure can still have a source parameter added, but it can only be specified when using named parameters. Care should be taken though when using this property in Designer as any transformation logic (views/procedures) that you have defined will not have been aware of the multisource column and may fail validation upon server deployment.
 * If using Designer, you can manually add the multisource column. 
 

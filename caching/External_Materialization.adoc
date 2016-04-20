@@ -51,7 +51,7 @@ CREATE TABLE status
 
 NOTE: MariaDB have Silent Column Changes function, according to https://mariadb.com/kb/en/mariadb/silent-column-changes/[MariaDB document], 'long' type will silently change to 'MEDIUMTEXT' , so If execute above schema in MariaDB, 'Cardinality' and 'LoadNumber' column should change to 'bigint' type.
 
-* Create Views and corresponding physical materialized target tables in Designer or using DDL in Dynamic VDB. This can be done through setting the materialized and target table manually, or by selecting the desired views, right clicking, then selecting Modeling->"Create Materialized Views" in the Designer.
+* Create Views and corresponding physical materialized target tables in Designer or using DDL. This can be done through setting the materialized and target table manually, or by selecting the desired views, right clicking, then selecting Modeling->"Create Materialized Views" in the Designer.
 * Define the following extension properties on the view.
 
 |===
@@ -131,7 +131,7 @@ TIP: The start/stop scripts are not cluster aware - that is they will run on eac
 
 User can any time run SYSADMIN.updateMatView procedure to partially update the cache contents rather than complete refresh of contents with SYSADMIN.loadMatview procedure. When partial update is run the cache expiration time is renewed for new term based on Cache Hint again.
 
-A sample Dynamic VDB with these properties can be defined as below
+A sample VDB with these properties can be defined as below
 
 [source,xml]
 ----
@@ -173,7 +173,7 @@ A sample Dynamic VDB with these properties can be defined as below
 
 == Materialization with Embedded Server
 
-With Dynamic VDB and above table extension properties, we can set up External Materialization to Embedded Server.
+With this VDB and the above table extension properties, we can set up External Materialization to Embedded Server.
 
 === Usage Steps
 
@@ -204,7 +204,7 @@ If 'teiid_rel:MATVIEW_LOAD_SCRIPT' MATERIALIZED_STAGE_TABLE is necessary, it can
 
 **2. Create Materialization Views**
 
-Create Materialization Views and corresponding physical materialized target table, staging table, status table, it should be manually created in a model of Dynamic VDB, the model type should be 'VIRTUAL'.
+Create Materialization Views and corresponding physical materialized target table, staging table, status table, it should be manually created in a model of the VDB - and the model type should be 'VIRTUAL'.
 
 **3. Set up Embedded Server**
 

@@ -35,7 +35,7 @@ Since all attributes are by default are considered as string data types, columns
 
 NOTE: If you did modify data type be other than string based, be cautioned and do not use those columns in comparison queries, as SimpleDB does only lexicographical matching. To avoid it, set the "SearchType" on that column to "UnSearchable".
 
-An Example Dynamic VDB that shows SimpleDB translator can be defined as
+An Example VDB that shows SimpleDB translator can be defined as
 
 [source,xml]
 ----

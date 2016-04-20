@@ -171,11 +171,11 @@ To configure the use of the pojo, do the following:
 
 There are couple options to defining the metadata representing your object in the cache.  
 
-* "Recommended" Use the Teiid Connection Importer in Teiid Designer to create the physical source model based on your object cache.
+* Use the Teiid Connection Importer in Teiid Designer to create the physical source model based on your object cache.
 
-* Use dynamic VDB that only defines the data source to use.
+* Directly define the VDB
 
-The following is the dynamic VDB example similar to quick start (see github at https://github.com/teiid/teiid-quickstarts/tree/master/jdg-local-cache).  It defines the physical source and will use the translator native importer logic to have the metadata reverse engineered from the Stock class, see above, to be exposed as the source table. 
+The following is a VDB example similar to quick start (see github at https://github.com/teiid/teiid-quickstarts/tree/master/jdg-local-cache).  It defines the physical source and will use the translator native importer logic to have the metadata reverse engineered from the Stock class, see above, to be exposed as the source table. 
 
 [source,xml]
 ----
@@ -208,7 +208,7 @@ The following is the dynamic VDB example similar to quick start (see github at h
 *  All columns that are not the primary key nor covered by a lucene index should be marked as SEARCHABLE 'Unsearchable'.
 *  Attributes defined as repeatable (i.e., collections, arrays, etc.) or a container class, will be supported as 1-to-* relationships, and will have corresponding registered class (if they are to be searched).
 *  A 1-to-* relationship class must have a foreign key to map to the root class/table, where the name in source for the foreign key is the name of the root class method to access those child objects.  Note, this is the class method, not a reference in the google protobuf definition.
-*  Dynamic VDBs using metadata import will automatically build the physical table for the root object and will have each top level member represented as a column. 
+*  VDBs using native metadata import will automatically build the physical table for the root object and will have each top level member represented as a column. 
 
 
 == External Materialization
@@ -229,7 +229,7 @@ The following materialization properties must be defined:
 |===
 
 
-The following is an example of defining the materialization load scripts in a Dynamic VDB:
+The following is an example of defining the materialization load scripts in DDL:
 
 [source]
 ----

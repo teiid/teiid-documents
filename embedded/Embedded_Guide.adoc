@@ -74,7 +74,7 @@ Similar to a server based -vdb.xml deployment an `InputStream` may be given to a
 
 *Zip Deployment*
 
-Similar to a server based .vdb deployment a `URL` may be given to a zip file - see the `EmbeddedServer.deployVDBZip` method. The use of the zip lib for dependency loading is not enabled in Embedded. See link:../reference/Dynamic_VDBs[Dynamic VDBs] and link:../reference/Metadata_Repositories.adoc[Metadata Repositories] for more on a typical vdb zip structure. Teiid Designer 7 and later VDBs are also supported via this method, but are subject to all of the limitations/differences highlighted in this guide.
+Similar to a server based .vdb deployment a `URL` may be given to a zip file - see the `EmbeddedServer.deployVDBZip` method. The use of the zip lib for dependency loading is not enabled in Embedded. See link:../reference/VDBs_Without_Tooling[VDBs Without Tooling] and link:../reference/Metadata_Repositories.adoc[Metadata Repositories] for more on a typical vdb zip structure. Teiid Designer 7 and later VDBs are also supported via this method, but are subject to all of the limitations/differences highlighted in this guide.
 
 *Translators*
 

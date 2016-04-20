@@ -1,7 +1,7 @@
 
 = Deploying VDBs
 
-A http://www.jboss.org/teiid/basics/virtualdatabases.html[VDB] is the primary means to define a Virtual Database in Teiid. A user can create a VDB using Teiid Designer - http://www.jboss.org/teiiddesigner/[http://www.jboss.org/teiiddesigner/] - or follow the instructions in the Reference Guide to create a "Dynamic VDB" without Teiid Designer.
+A http://www.jboss.org/teiid/basics/virtualdatabases.html[VDB] is the primary means to define a Virtual Database in Teiid. A user can create a VDB using Teiid Designer - http://www.jboss.org/teiiddesigner/[http://www.jboss.org/teiiddesigner/] - or follow the instructions in the Reference Guide to create a VDB without Teiid Designer.
 
 Once you have a "VDB" built it can be deployed/undeployed in Teiid runtime in different ways.
 

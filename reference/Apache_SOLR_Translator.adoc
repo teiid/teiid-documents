@@ -23,7 +23,7 @@ Once this table is exposed through VDB in a Teiid database, and link:../admin/So
 
 The Solr Translator supports SELECT statements with a restrictive set of capabilities including: comparison predicates, IN predicates, LIMIT and Order By.
 
-An Example Dynamic VDB that shows Solr translator can be defined as
+An Example VDB that shows Solr translator can be defined as
 
 [source,xml]
 ----

@@ -27,9 +27,9 @@ The below table describes how Excel translator interprets the data in Excel docu
 
 Excel translator supports "source metadata" feature, where given Excel workbook, it can introspect and build the schema based on the Sheets defined inside it. There are options available for you guide, to be able to detect header columns and data columns in a work sheet to define the correct metadata of a table.
 
-== Dynamic VDB
+== VDB Example
 
-The below shows example of Dynamic VDB, that shows a exposing a Excel Document.
+The below shows an example of a VDB, that shows a exposing a Excel Document.
 
 [source,xml]
 ----
@@ -57,7 +57,7 @@ NOTE: *"Headers in Document?"* - If you have headers in the Excel document, you 
 
 === Import Properties
 
-Import properties guide the schema generation part during the deployment of the VDB. This can be used in Dynamic VDBs or while using "Teiid Connection >> Source Model" in Teiid Designer.
+Import properties guide the schema generation part during the deployment of the VDB. This can be used in a native import or while using "Teiid Connection >> Source Model" in Teiid Designer.
 
 |=== 
 |Property Name |Description |Default

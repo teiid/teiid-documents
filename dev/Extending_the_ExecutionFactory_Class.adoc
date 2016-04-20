@@ -74,7 +74,7 @@ Based on types of executions you are supporting, the following methods need to b
 
 == Metadata
 
-Override and implement the method `getMetadataProcessor()`, if you want to expose the metadata about the source for use in Dynamic VDBs. This defines the tables, column names, procedures, parameters, etc. for use in the query engine. This method is used by Designer tooling when the Teiid Connection importer is used. A sample MetadataProcessor may look like
+Override and implement the method `getMetadataProcessor()`, if you want to expose the metadata about the source for use in VDBs. This defines the tables, column names, procedures, parameters, etc. for use in the query engine. This method is used by Designer tooling when the Teiid Connection importer is used. A sample MetadataProcessor may look like
 
 [source,java]
 ----
