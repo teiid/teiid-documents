@@ -13,7 +13,10 @@ The vdb version is set in either the vdb.xml, which is useful for dynamic vdbs, 
 
 If a simple integer version is not sufficient, then semantic versioning can be used instead. Semantic version are used instead of the version property and appear as part of the VDB name.
 
-Setting the version can either be done in the vdb.xml, which is useful for dynamic vdbs, or through a naming convention of the deployment name - vdbname.vX.X.X.vdb, e.g. marketdata.v1.2.1.vdb. The deployer is responsible for choosing an appropriate version. If there is already a VDB name/version that matches the current deployment, then connections to the previous VDB will be terminated and its cache entries will be flushed. Any new connections will then be made to the new VDB. JDBC and ODBC clients may use a shorthand version - vdbname.vX or vdbname.vX.X - which is equivalent to having 0 specified for the missing version parts. Alternatively JDBC and ODBC clients may use a version restriction - -vdbname.vX. or vdbname.vX.X. - which means a VDB that must match the partial version specified. For example vdbname.v1.2. could match any 1.2 version, but would not allow 1.3+ or 1.1 and earlier.
+Setting the version can either be done in the vdb.xml, which is useful for dynamic vdbs, or through a naming convention of the deployment name - vdbname.X.X.X.vdb, e.g. marketdata.1.2.1.vdb. 
+The deployer is responsible for choosing an appropriate version. If there is already a VDB name/version that matches the current deployment, then connections to the previous VDB will be terminated and its cache entries will be flushed. 
+Any new connections will then be made to the new VDB. JDBC and ODBC clients may use a shorthand version - vdbname.X or vdbname.X.X - which is equivalent to having 0 specified for the missing version parts. 
+Alternatively JDBC and ODBC clients may use a version restriction - -vdbname.X. or vdbname.X.X. - note the trailing '.' which means a VDB that must match the partial version specified. For example vdbname.1.2. could match any 1.2.X version, but would not allow 1.3+ or 1.1 and earlier.
 
 == Connection Type
 
