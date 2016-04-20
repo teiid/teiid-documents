@@ -35,7 +35,7 @@ NOTE: The Designer tooling for this feature is lacking at this moment but this w
 CREATE TABLE status
 (
   VDBName varchar(50) not null,
-  VDBVersion integer not null,
+  VDBVersion varchar(50) not null,
   SchemaName varchar(50) not null,
   Name varchar(256) not null,
   TargetSchemaName varchar(50),
@@ -186,7 +186,7 @@ MATERIALIZED_TABLE is necessary, it can be any name, but it’s structure should
 CREATE TABLE status 
 ( 
   VDBName varchar(50) not null, 
-  VDBVersion integer not null, 
+  VDBVersion varchar(50) not null, 
   SchemaName varchar(50) not null, 
   Name varchar(256) not null, 
   TargetSchemaName varchar(50), 

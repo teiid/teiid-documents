@@ -42,10 +42,10 @@ See the Reference for the system procedures `SYSADMIN.setColumnStats` and `SYSAD
 
 [source,java]
 ----
-TableStats getTableStats(String vdbName, int vdbVersion, Table table);
-void setTableStats(String vdbName, int vdbVersion, Table table, TableStats tableStats);
-ColumnStats getColumnStats(String vdbName, int vdbVersion, Column column);
-void setColumnStats(String vdbName, int vdbVersion, Column column, ColumnStats columnStats);
+TableStats getTableStats(String vdbName, String vdbVersion, Table table);
+void setTableStats(String vdbName, String vdbVersion, Table table, TableStats tableStats);
+ColumnStats getColumnStats(String vdbName, String vdbVersion, Column column);
+void setColumnStats(String vdbName, String vdbVersion, Column column, ColumnStats columnStats);
 ----
 
 === Schema Updates
@@ -54,15 +54,15 @@ See the Reference for supported DDL statements. To make schema updates persisten
 
 [source,java]
 ----
-String getViewDefinition(String vdbName, int vdbVersion, Table table);
-void setViewDefinition(String vdbName, int vdbVersion, Table table, String viewDefinition);
-String getInsteadOfTriggerDefinition(String vdbName, int vdbVersion, Table table, Table.TriggerEvent triggerOperation);
-void setInsteadOfTriggerDefinition(String vdbName, int vdbVersion, Table table, Table.TriggerEvent triggerOperation, String triggerDefinition);
-boolean isInsteadOfTriggerEnabled(String vdbName, int vdbVersion, Table table, Table.TriggerEvent triggerOperation);
-void setInsteadOfTriggerEnabled(String vdbName, int vdbVersion, Table table, Table.TriggerEvent triggerOperation, boolean enabled);
-String getProcedureDefinition(String vdbName, int vdbVersion, Procedure procedure);
-void setProcedureDefinition(String vdbName, int vdbVersion, Procedure procedure, String procedureDefinition);           
-LinkedHashMap<String, String> getProperties(String vdbName, int vdbVersion, AbstractMetadataRecord record);
-void setProperty(String vdbName, int vdbVersion, AbstractMetadataRecord record, String name, String value);
+String getViewDefinition(String vdbName, String vdbVersion, Table table);
+void setViewDefinition(String vdbName, String vdbVersion, Table table, String viewDefinition);
+String getInsteadOfTriggerDefinition(String vdbName, String vdbVersion, Table table, Table.TriggerEvent triggerOperation);
+void setInsteadOfTriggerDefinition(String vdbName, String vdbVersion, Table table, Table.TriggerEvent triggerOperation, String triggerDefinition);
+boolean isInsteadOfTriggerEnabled(String vdbName, String vdbVersion, Table table, Table.TriggerEvent triggerOperation);
+void setInsteadOfTriggerEnabled(String vdbName, String vdbVersion, Table table, Table.TriggerEvent triggerOperation, boolean enabled);
+String getProcedureDefinition(String vdbName, String vdbVersion, Procedure procedure);
+void setProcedureDefinition(String vdbName, String vdbVersion, Procedure procedure, String procedureDefinition);           
+LinkedHashMap<String, String> getProperties(String vdbName, String vdbVersion, AbstractMetadataRecord record);
+void setProperty(String vdbName, String vdbVersion, AbstractMetadataRecord record, String name, String value);
 ----
 
