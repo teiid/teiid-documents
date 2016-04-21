@@ -34,9 +34,9 @@ If you source handing of the function can be described by simple parameter subst
 
 If you are designing your VDB using the Designer, you can define a function on any "source" model, and that function is automatically added as pushdown function when the VDB is deployed. There is no additional need for adding Java code.
 
-== When Using Dynamic VDB
+== Without Designer
 
-If you are using the Dynamic VDB, and defining the metadata link:../reference/DDL_Metadata.adoc[using DDL], you can define your source function in the VDB as
+If you are not using Designer, see defining the metadata link:../reference/DDL_Metadata.adoc[using DDL], you can define your source function in the VDB as
 
 [source,xml]
 ----
@@ -52,7 +52,7 @@ If you are using the Dynamic VDB, and defining the metadata link:../reference/DD
 </vdb>
 ----
 
-By default, in the Dynamic VDBs, metadata for the _Source_ models is automatically retrieved from the source if they were JDBC, File, WebService. The File and WebService sources are static, so one can not add additional metadata on them. However on the JDBC sources you can retrieve the metadata from source and then user can append additional metadata on top of them. For example
+By default when a source can provide metadata, the _Source_ model's metadata is automatically retrieved from the source if they were JDBC, File, WebService. The File and WebService sources are static, so one can not add additional metadata on them. However on the JDBC sources you can retrieve the metadata from source and then user can append additional metadata on top of them. For example
 
 [source,xml]
 ----

@@ -19,7 +19,7 @@ The materialized option must be set for the view to be materialized. The link:Hi
 |true
 
 |UPDATABLE
-|Allow updating Materialized View via DDL `UPDATE`
+|Allow updating Materialized View via DML `UPDATE`
 |true
 |false
 
@@ -54,7 +54,7 @@ The pref_mem option also applies to internal materialized views. Internal table 
 All internal materialized view refresh and updates happen atomically. Internal materialized views support READ_COMMITTED (used also for READ_UNCOMMITED) and SERIALIZABLE (used also for REPEATABLE_READ) transaction isolation levels.
 
 [source,xml]
-.*A sample Dynamic VDB defining an internal materialization*
+.*A sample VDB defining an internal materialization*
 ----
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <vdb name="sakila" version="1">

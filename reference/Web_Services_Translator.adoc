@@ -26,7 +26,7 @@ The Web Services translator, known by the type name _ws_, exposes stored proced
 
 NOTE: Setting the proper binding value on the translator is recommended as it removes the need for callers to pass an explicit value. If your service is actually uses SOAP11, but the binding used SOAP12 you will receive execution failures.
 
-There are no ws importer settings, but it does provide metadata for dynamic VDBs.  If the connection is configured to point at a specific WSDL, the translator will import all SOAP operations under the specified service and port as procedures.
+There are no ws importer settings, but it can provide metadata for VDBs.  If the connection is configured to point at a specific WSDL, the translator will import all SOAP operations under the specified service and port as procedures.
 
 == Importer Properties
 
@@ -102,7 +102,7 @@ Recommendations for setting headers parameter:
 
 == WSDL based Procedures
 
-The procedures above give you anonymous way to execute any web service methods by supplying an endpoint, with this mechanism you can alter the endpoint defined in WSDL with a different endpoint. However, if you have access to the WSDL, then you can configure the WSDL URL in the web-service resource-adapter’s connection configuration, Web Service translator can parse the WSDL and provide the methods under configured port as pre-built procedures as its metadata. If you are using Dynamic VDB’s you will see the procedures in your web service’s source model.
+The procedures above give you anonymous way to execute any web service methods by supplying an endpoint, with this mechanism you can alter the endpoint defined in WSDL with a different endpoint. However, if you have access to the WSDL, then you can configure the WSDL URL in the web-service resource-adapter’s connection configuration, Web Service translator can parse the WSDL and provide the methods under configured port as pre-built procedures as its metadata. If you are using the default native metadata import, you will see the procedures in your web service’s source model.
 
 NOTE: *Native queries* - Native queries or a direct query execution procedure is not supported on the Web Services Translator.
 

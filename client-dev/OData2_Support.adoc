@@ -291,3 +291,7 @@ Since OData schema model is not a relational schema model, Teiid uses the follow
 Teiid by design does not define any "embedded" ComplexType in the EntityType.
 
 Teiid does not define any one EntityContainer that resulted from different vdb models as a default container, so all entities must be accessed using full path to them.
+
+== OData Version 3.0
+
+Teiid does not provide ...

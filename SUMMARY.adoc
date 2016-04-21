@@ -215,7 +215,7 @@
 ... link:reference/sysadmin_schema.adoc[SYSADMIN]
 .. link:reference/VDBs.adoc[VDBs]
 ... link:reference/VDB_Definition.adoc[VDB Definition]
-... link:reference/Dynamic_VDBs.adoc[Dynamic VDBs]
+... link:reference/VDBs_Without_Tooling.adoc[VDBs Without Tooling]
 ... link:reference/Multisource_Models.adoc[Multisource Models]
 ... link:reference/DDL_Metadata.adoc[DDL Metadata]
 ... link:reference/VDB_Reuse.adoc[VDB Reuse]

@@ -120,7 +120,7 @@ There are several options to defining the metadata representing your object in t
 
 * Use Teiid Designer to manually create the physical source model based on your object cache using the below *Definition Requirements*.
 
-* Use dynamic VDB that only defines the data source to use.  Example:
+* A simple VDB that only defines the data source to use.  Example:
 
 [source,xml]
 ----
@@ -133,7 +133,7 @@ There are several options to defining the metadata representing your object in t
 
 The metadata will be resolved by reverse engineering the defined object in the cache.  This can be useful when using the Teiid Designer Teiid Connection Importer for building the physical source model(s).
 
-* Use dynamic VDB, but you define the metadata using DDL.
+* You can also define the metadata using DDL.
 
 Note, this also shows a container class, PhoneNumber, as an example of the foreign key that's defines the relationship.
 
@@ -201,7 +201,7 @@ The following materialization properties must be defined:
 |===
 
 
-The following is an example of for defining the load scripts in a Dynamic VDB:
+The following is an example of for defining the load scripts in DDL:
 [source]
 ----
 ..

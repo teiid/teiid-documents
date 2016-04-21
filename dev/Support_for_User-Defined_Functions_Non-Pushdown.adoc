@@ -1,15 +1,15 @@
 
 = Support for User-Defined Functions (Non-Pushdown)
 
-To define a non-pushdown function, a Java function must be provided that matches the metadata supplied either in the Designer or Dynamic VDB defined metadata.  User Defined Function (or UDF) and User Defined Aggregate Function (or UDAF) may be called at runtime just like any other function or aggregate function respectively.
+To define a non-pushdown function, a Java function must be provided that matches the VDB defined metadata.  User Defined Function (or UDF) and User Defined Aggregate Function (or UDAF) may be called at runtime just like any other function or aggregate function respectively.
 
 == Metadata in Designer
 
 A user defined function created on any VDB on view model by creating a Function just as a base table. You would require all the information defined on link:User_Defined_Functions.adoc[User Defined Functions] to create a UDF. Make sure you provide the JAVA code implementation details in the properties dialog for the UDF.
 
-== Metadata for Dynamic VDBs
+== Metadata without Designer
 
-When defining the metadata using DDL in the Dynamic VDBs, user can define a UDF or UDAF (User Defined Aggregate Function) as shown below.
+When defining the metadata without Designer, you can define a UDF or UDAF (User Defined Aggregate Function) as shown below.
 
 [source,xml]
 ----
@@ -28,7 +28,7 @@ See link:../reference/DDL_Metadata.adoc[DDL Metadata] for all possible options r
 
 === Writing the Java Code required by the UDF
 
-The number of input arguments and types must match the function metadata defined in Designer or on Dynamic VDB metadata.
+The number of input arguments and types must match the function metadata defined in the VDB metadata.
 
 Code Requirements For UDFs
 

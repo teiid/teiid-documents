@@ -8,7 +8,7 @@ Java client applications connecting to a Teiid Server will need to use Java 1.6 
 Before you can connect to the Teiid Server using the Teiid JDBC API, please do following tasks first.
 
 1.  Install the Teiid Server. See the "Admin Guide" for instructions.
-2.  Build a Virtual Database (VDB). You can either build a "Dynamic VDB" (Designer not required), or you can use the Eclipse based GUI tool http://www.jboss.org/teiiddesigner.html[Designer]. Check the "Reference
+2.  Build a Virtual Database (VDB). You can build a VDB without a Designer, or you can use the Eclipse based GUI tool http://www.jboss.org/teiiddesigner.html[Designer]. Check the "Reference
 Guide" for instructions on how to build a VDB. If you do not know what VDB is, then start with this http://www.jboss.org/teiid/basics/virtualdatabases.html[document].
 3.  Deploy the VDB into Teiid Server. Check link:../admin/Administrators_Guide.adoc[Administrator’s Guide] for instructions.
 4.  Start the Teiid Server (JBoss AS), if it is not already running.

@@ -28,7 +28,7 @@ Once this schema is defined and exposed through VDB in a Teiid database, and lin
 
 By default, Accumulo table structure is flat can not define relationships among tables. So, a SQL JOIN is performed in Teiid layer rather than pushed to source even if both tables on either side of the JOIN reside in the Accumulo. Currently any criteria based on EQUALITY and/or COMPARISON using complex AND/OR clauses are handled by Accumulo translator and will be properly executed at source.
 
-An Example Dynamic VDB that shows Accumulo translator can be defined as
+An Example VDB that shows Accumulo translator can be defined as
 
 [source,xml]
 ----
@@ -111,7 +111,7 @@ root@teiid User> scan
   3 name:lastname []    Davis
 ----
 
-If you used the default importer from the Accumulo translator(like Dynamic VDB defined above), the table generated will be like below
+If you used the default importer from the Accumulo translator (like the VDB defined above), the table generated will be like below
 
 [source,sql]
 ----
@@ -139,7 +139,7 @@ CREATE FOREIGN TABLE "User" (
 
 respectively if the column name is defined by Column Family, you can use "ColumnNamePattern" as "\{CF}", and if the value for that column exists in the Column Qualifier then you can use "ValueIn" as "\{CQ}". Using import properties you can dictate how the table should be modeled.
 
-If you did not use built in import (not using Teiid Designer’s Teiid Connection >> Source Model or Dynamic VDB), and would like to manually design the table in Designer like below
+If you did not use built in import, and would like to manually design the table in Designer like below
 
 image:images/user.png[user.png]
 

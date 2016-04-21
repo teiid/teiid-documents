@@ -3,7 +3,7 @@
 
 The Sybase Translator, known by the type name *_sybase_*, is for use with Sybase version 12.5 or later.
 
-If used in a dynamic vdb and no import properties are specified (not recommended, see import properties below), then exceptions can be thrown retrieving system table information. You should specify a schemaPattern or use excludeTables to exclude system tables if this occurs.
+If using the the default native import and no import properties are specified (not recommended, see import properties below), then exceptions can be thrown retrieving system table information. You should specify a schemaPattern or use excludeTables to exclude system tables if this occurs.
 
 If the name in source metadata contains quoted identifiers (such as required by reserved words or words containing characters that would not otherwise be allowed) and you are using a jconnect Sybase driver, you must first configure the connection pool to enable *quoted_identifier*:
 

@@ -31,11 +31,11 @@ The following are the connector capabilities when Key Searching is used:
 * All columns that are not the primary key nor covered by a lucene index should be marked as SEARCHABLE 'Unsearchable'.
 * Attributes defined as repeatable (i.e., collections, arrays, etc.) or a container class, will be supported as 1-to-* relationships, and will have corresponding registered class (if they are to be searched).
 * A 1-to-* relationship class must have a foreign key to map to the root class/table, where the name in source for the foreign key is the name of the root class method to access those child objects. Note, this is the class method, not a reference in the google protobuf definition.
-* Dynamic VDBs using metadata import will automatically determine a phsyical table for each root object and will have each top level member represented as a column.
+* Using native metadata import will automatically determine a phsyical table for each root object and will have each top level member represented as a column.
 
 === Options for Defining
 
-The following is an example of a key search and a view that associated player names with their team. It uses a dynamic vdb to define the physical source and views using DDL.   It uses a TeamObject class, shown below, with a teamName field that is used as its cache key and a String list of players. 
+The following is an example of a key search and a view that associated player names with their team. The vdb defines the physical source and views using DDL.   It uses a TeamObject class, shown below, with a teamName field that is used as its cache key and a String list of players. 
 
 [source,java]
 ----
@@ -59,7 +59,7 @@ public class TeamObject {
 }
 ----
 
-Note that by just using a dynamic vdb, the native import logic will provide you with a TeamObject physical table that can be queried. An equivalent Team table is shown here for demonstration purposes.
+The native import logic will provide you with a TeamObject physical table that can be queried. An equivalent Team table is shown here for demonstration purposes.
 
 [source,xml]
 ----
