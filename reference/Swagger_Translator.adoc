@@ -56,8 +56,7 @@ Execution properties extend/limit the functionality of the translator based on t
 
 *Execution Properties*
 
-|===
-|Name |Description |Default
+none
 
 
 === Importer Properties
