@@ -1,0 +1,109 @@
+
+= Swagger Translator
+
+The Swagger translator, known by the type name _"swagger"_ exposes the Swagger data sources in realational concepts and uses the Teiid WS resource adapter for making web service calls.
+
+NOTE: *What is Swagger* - http://swagger.io/ [OpenAPI Specification (Swagger)] Swagger is a simple yet powerful representation of your RESTful API. With the largest ecosystem of API tooling on the planet, thousands of developers are supporting Swagger in almost every modern programming language and deployment environment. With a Swagger-enabled API, you get interactive documentation, client SDK generation and discoverability.
+
+Starting January 1st 2016 the Swagger Specification has been donated to the Open API Initiative (OAI) and has been renamed to the OpenAPI Specification.
+
+== Usage
+
+Usage of a Swagger source is similar any other translator in Teiid. The metadata import is supported through the translator, the metadata is imported from source system's swagger.json file and then API from this file is exposed as stored procedures in Teiid, then source system can be queried by executing these stored procedures in Teiid system.
+
+The below is sample VDB that can read metadata from Petstore reference service on http://petstore.swagger.io/ site.
+
+[source,xml]
+----
+<vdb name="petstore" version="1">
+    <model visible="true" name="m">
+        <source name="s" translator-name="swagger" connection-jndi-name="java:/swagger"/> 
+    </model>
+</vdb>
+----
+
+The required resource-adapter configuration will look like
+
+[source,xml]
+----
+<resource-adapter id="swagger">
+    <module slot="main" id="org.jboss.teiid.resource-adapter.webservice"/>
+    <transaction-support>NoTransaction</transaction-support>
+    <connection-definitions>
+        <connection-definition class-name="org.teiid.resource.adapter.ws.WSManagedConnectionFactory" jndi-name="java:/swagger" enabled="true" use-java-context="true" pool-name="teiid-swagger-ds">
+            <config-property name="EndPoint">
+                http://petstore.swagger.io/v2
+            </config-property>
+        </connection-definition>
+    </connection-definitions>
+</resource-adapter>
+----
+
+Once you configure above resource-adapter and deploy the VDB successfully, then you can connect to the VDB deployed using Teiid JDBC driver and issue SQL statements like
+
+[source,sql]
+----
+EXEC findPetsByStatus(('sold',))
+EXEC getPetById(1461159803)
+EXEC deletePet('', 1461159803)
+----
+
+== Configuration of Translator
+
+=== Execution Properties
+
+Execution properties extend/limit the functionality of the translator based on the physical source capabilities. Sometimes default properties need to adjusted for proper execution of the translator.
+
+*Execution Properties*
+
+|===
+|Name |Description |Default
+
+
+=== Importer Properties
+
+Importer properties define the behavior of the translator during the metadata import from the physical source.
+
+*Importer Properties*
+
+|===
+|Name |Description |Default
+
+|useDefaultHost
+|Use default host specified in the Swagger file; Defaults to true, when false uses the endpoint in the resource-adapter
+|true
+
+|preferredScheme
+|Preferred Scheme to use when Swagger file supports multiple invocation schemes like http, https
+|null
+
+|preferredProduces
+|Preferred Accept MIME type header, this should be one of the Swagger 'produces' types;
+|application/json
+
+|preferredConsumes
+|Preferred Content-Type MIME type header, this should be one of the Swagger 'consumer' types;
+|application/json
+
+|===
+
+Example importer settings to avoid calling host defined on the swagger.json file
+
+[source,xml]
+----
+<property name="importer.useDefaultHost" value="false"/>
+----
+
+=== JCA Resource Adapter
+
+The resource adapter for this translator is a link:../admin/Web_Service_Data_Sources.adoc[Web Service Data Source].
+
+NOTE: *Native Queries* - Native or direct query execution is not supported through Swagger translator. However, user can use Web Services Translator’s _invokehttp_ method directly to issue a Rest based call and parse results using SQLXML.
+
+=== Limitations
+- "application/xml" mime type in both "Accept" and "Content-Type" is currently not supported
+- File, Map proeprties are currently not supported, thus any multi-part payloads are not supported
+- Security metadata is currently not supported
+- Custom properties that start with "x-" are not supported.
+- Schema with "allof", "multipleof", "items" from JSON schema are not supported
+
