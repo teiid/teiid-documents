@@ -14,6 +14,7 @@ Known Limitations:
 * Updateable cursors are not supported. You will receive parsing errors containing the pg system column ctid if this feature is not disabled.
 * LO support is not available. LOBs will be returned as string or bytea as appropriate using the transport max lob size setting.
 * The Teiid object type will map to the PostgreSQL UNKNOWN type, which cannot be serialized by the ODBC layer. Cast/Convert should be used to provide a type hint when appropriate - for example teiid_session_set returns an object value. "SELECT teiid_session_set('x', 'y')" will fail, but "SELECT cast(teiid_session_set('x', 'y') as string)" will succeed.
+* Multi-dimensional arrays are not supported.
 
 Before an application can use ODBC, you must first install the ODBC
 driver on same machine that the application is running on and then
