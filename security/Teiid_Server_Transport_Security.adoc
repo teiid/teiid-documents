@@ -23,7 +23,10 @@ Teiid supports a couple different encryption modes based on the _mode_ attribute
 
 == SSL Authentication Modes
 
-* *anonymous* – No certificates are required, but all communications are still encrypted using the TLS_DH_anon_WITH_AES_128_CBC_SHA SSL cipher suite. In most secure intranet environments, anonymous is suitable to just bulk encrypt traffic without the need to setup SSL certificates. No certificates are exchanged, settings are not needed for the keystore and truststore properties. JDBC Clients must have `org.teiid.ssl.allowAnon` set to true (the default) to connect to an anonymous server.  ODBC clients may not have the TLS_DH_anon_WITH_AES_128_CBC_SHA cipher suite available.  For ODBC consider using 1-way with a self-signed certificate and do not require the clients to validate the server certificate. 
+* *anonymous* – No certificates are required, but all communications are still encrypted using the TLS_DH_anon_WITH_AES_128_CBC_SHA SSL cipher suite. In most secure intranet environments, anonymous is suitable to just bulk encrypt traffic without the need to setup SSL certificates. No certificates are exchanged, and settings are not needed for the keystore and truststore properties. JDBC Clients must have 'org.teiid.ssl.allowAnon' set to true (the default) to connect to an anonymous server.  
+
+NOTE: ODBC clients and some VMs, such as IBM, may not have the TLS_DH_anon_WITH_AES_128_CBC_SHA cipher suite available.  
+When the client or server lack the anonymous cipher suite, consider using 1-way with a self-signed certificate.  ODBC clients typically do not require server certificate validation.  Teiid JDBC clients by default validate the server certificate, but can use the org.teiid.ssl.trustAll property to accept any server certificate. 
 
 * *1-way* – The default.  Only authenticates the server to the client. Requires a private key keystore to be created for the server.  If the client is configured to validate the server certificate, the client will need an appropriate truststore configured.
 
