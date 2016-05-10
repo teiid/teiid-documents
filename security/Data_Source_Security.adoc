@@ -112,7 +112,12 @@ In the datasource configuration, instead of supplying the userid/pasword you nee
 </datasource>
 ----
 
-NOTE: This security domain only should be used as data source security domains, not as generic purpose security domain.
+NOTE: This security domain only should be used as data source security domains in pass-through scenarios, not as generic purpose security domain.
+
+TIP: When working with Kerberos/GSS security token (GssCredential), some JDBC drivers (MS-SQLServer) upon close of the connection they invalidate the GssCredential security token, to avoid accidental invalidation, add an option to above security-domain's login-module configuration to wrap the passed in security token by adding below configuration
+----
+<module-option name="wrapGSSCredential" value="true"/>
+----
 
 
 == Translator Customization
