@@ -12,3 +12,5 @@ The HBase Translator doesn’t support Joins. Phoenix uses the HBase Table Row I
 NOTE: The translator implements INSERT/UPDATE through the Phoenix UPSERT operation. This means you can see different behavior than with standard INSERT/UPDATE - such as repeated inserts will not throw a duplicate key exception, but will instead update the row in question.
 
 NOTE: Due to Phoenix driver limitations the importer will not look for unique constraints and defaults to not importing foreign keys.
+
+WARNING: The Phoenix driver does not have robust handling of time values.  If your time values are normalized to use a date component of 1970-01-01, then the default handling will work correctly.  If not, then the time column should be modeled as timestamp instead.

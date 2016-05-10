@@ -8,12 +8,20 @@ Materialized views are appropriate when the underlying data does not change rapi
 == Support Summary
 
 * Caching of relational table or view records (pre-computing all transformations)
-* Model-based definition of virtual groups to cache (requires Teiid Designer)
+* Model-based definition of virtual groups to cache
 * User ability to override use of materialized view cache for specific queries through link:Hints_and_Options.adoc[Hints and Options]
+
+== Approach
+
+The overall strategy toward materialization should be to work on the integration model first, then optimize as needed from the top down.  
+
+Result set caching, ideally hint driven, should be used if there lots of repeated user queries.  If result set caching is insufficient, then move onto internal materialization for views that are closest to consumers (minimally or not layered) that are introducing performance issues.  Keep in mind that the use of materialization inlines access to the materialization table rather than the view so scenarios that integrate on top of the materialization may suffer if they were relying on pushing/optimizing the work of the view with surrounding constructs.
+
+Based upon the limitations of internal materialization, then switch to external materialization as needed.
 
 == Materialized View Definition
 
-Materialized views are defined in Teiid Designer by setting the materialized property on a table or view in a virtual (view) relational model. Setting this property’s value to true (the default is false) allows the data generated for this virtual table to be treated as a materialized view.
+Materialized views are defined in by setting the materialized property on a table or view in a virtual (view) relational model. Setting this property’s value to true (the default is false) allows the data generated for this virtual table to be treated as a materialized view.
 
 IMPORTANT: It is important to ensure that all key/index information is present as these will be used by the materialization process to enhance the performance of the materialized table.
 

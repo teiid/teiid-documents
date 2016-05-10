@@ -84,6 +84,20 @@ Parent uid columns have been added to the SYS Tables, Procedures, KeyColumns, an
 
 The AuthorizationValidator and PolicyDecider interfaces had minor changes.  AuthorizationValidator has an additional method to determine metadata filtering, and PolicyDecider had isTempAccessable corrected to isTempAccessible.
 
+Semantic versioning required the change of the VDB version field from an integer to a string.  This affected the following public classes: 
+
+VDB
+Session
+EventListener
+VDBImport
+ExecutionContext
+MetadataRepository
+
+There are also duplicate/deprecated methods on:
+
+EventDistributor
+Admin
+
 === Embedded Kit
 
 The Embedded Kit has been removed.  You should follow the https://github.com/teiid/teiid-embedded-examples[Embedded Examples] to use maven to pull the dependencies you need for your project.
@@ -109,3 +123,6 @@ teiid-olingo-odata4.war has become teiid-olingo-odata4.war
 
 To change properties in an web.xml file or add other files to the default odata war, you should use a {{ book.asDocRoot }}/Deployment+Overlays[deployment overlay] instead.
 
+==== Materialization
+
+The semantic versioning change requires the materialization status tables to change their version column from an integer to string.  Both the source and the source model will need to be updated with the column type change.

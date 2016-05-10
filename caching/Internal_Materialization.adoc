@@ -158,11 +158,11 @@ incremental updates are needed. Even when performing row updates, full snapshot 
 
 The `EventDistributor` also exposes the updateMatViewRow as a lower level API for link:Programmatic_Control.adoc[Programmatic Control] - care should be taken when using this update method.
 
-== Secondary Indexes
+== Indexes
 
-Internal materialized view tables will automatically create non-unique indexes for each unique constraint and index defined on the materialized view. These indexes are created as non-unique even for unique constraints since the materialized table is not intended as an enforcement point for data integrity and when updatable the table may not be consistent with underlying values and thus unable to satisfy constraints. The primary key (if it exists) of the view will automatically be part of the covered columns for the index.
+Internal materialized view tables will automatically create a unique index for each unique constraint and a non-unique index for each index defined on the materialized view. The primary key (if it exists) of the view will automatically be part of a clustered index.
 
-The secondary indexes are always created as trees - bitmap or hash indexes are not supported. Teiid’s metadata for indexes is currently limited. We are not currently able to capture additional information, sort direction, additional columns to cover, etc. You may workaround some of these limitations though.
+The secondary indexes are always created as ordered trees - bitmap or hash indexes are not supported. Teiid’s metadata for indexes is currently limited. We are not currently able to capture additional information, sort direction, additional columns to cover, etc. You may workaround some of these limitations though.
 
 * Function based index are supported, but can only be specified through DDL metadata.  If you are not using DDL metadata, consider adding another column to the view that projects the function expression, then place an index on that new column. Queries to the view will need to be modified as appropriate though to make use of the new column/index.
 * If additional covered columns are needed, they may simply be added to the index columns. This however is only applicable to comparable types. Adding additional columns will increase the amount of space used by the index, but may allow its usage to result in higher performance when only the covered columns are used and the main table is not consulted.
