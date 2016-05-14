@@ -80,6 +80,10 @@ Parent uid columns have been added to the SYS Tables, Procedures, KeyColumns, an
 
 == Kitting/Build Changes
 
+=== Admin JAR
+
+For 8.13 the entry point for creating remote admin connection, AdminFactory, was moved into the teiid-jboss-admin jar rather than being located in teiid-admin.
+
 === API Changes
 
 The AuthorizationValidator and PolicyDecider interfaces had minor changes.  AuthorizationValidator has an additional method to determine metadata filtering, and PolicyDecider had isTempAccessable corrected to isTempAccessible.
