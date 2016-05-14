@@ -3,7 +3,7 @@
 :toc: manual
 :toc-placement: preamble
 
-Spatial functions provide functionality for working with http://www.opengeospatial.org/[geospatial] data. Teiid relies on the http://www.vividsolutions.com/jts/JTSHome.htm[JTS Topology Suite] to provide partial support for the OpenGIS Simple Features Specification For SQL Revision 1.1. Please refer to the https://portal.opengeospatial.org/files/?artifact_id=829[specification] for more details about particular functions.
+Spatial functions provide functionality for working with http://www.opengeospatial.org/[geospatial] data. Teiid relies on the http://www.vividsolutions.com/jts/JTSHome.htm[JTS Topology Suite] to provide partial support for the OpenGIS Simple Features Specification For SQL Revision 1.1. Please refer to the https://portal.opengeospatial.org/files/?artifact_id=829[specification] or to http://postgis.net/docs/manual-2.0/[PostGIS] for more details about particular functions.
 
 Most Geometry support is limited to two dimensions due to the WKB and WKT formats.
 
