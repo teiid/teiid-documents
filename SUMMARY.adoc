@@ -73,6 +73,7 @@
 ... link:client-dev/Installing_the_ODBC_Driver_Client.adoc[Installing the ODBC Driver Client]
 ... link:client-dev/Configuring_the_Data_Source_Name_DSN.adoc[Configuring the Data Source Name (DSN)]
 ... link:client-dev/DSN_Less_Connection.adoc[DSN Less Connection]
+... link:client-dev/ODBC_Connection_Properties.adoc[ODBC Connection Properties]
 .. link:client-dev/JDBC_Support.adoc[JDBC Support]
 ... link:client-dev/Connecting_to_a_Teiid_Server.adoc[Connecting to a Teiid Server]
 .... link:client-dev/Driver_Connection.adoc[Driver Connection]
