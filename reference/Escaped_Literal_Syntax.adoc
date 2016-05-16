@@ -7,12 +7,12 @@ Rather than relying on implicit conversion, datatype values may be expressed dir
 |Datatype |Escaped Syntax
 
 |DATE
-|\{d `yyyy-mm-dd'}
+|\{d 'yyyy-mm-dd'}
 
 |TIME
-|\{t `hh-mm-ss'}
+|\{t 'hh-mm-ss'}
 
 |TIMESTAMP
-|\{ts `yyyy-mm-dd[ hh:mm:ss.[fff…]]'}
+|\{ts 'yyyy-mm-dd[ hh:mm:ss.[fff…]]'}
 |===
 
