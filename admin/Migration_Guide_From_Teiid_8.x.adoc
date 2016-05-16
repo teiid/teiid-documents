@@ -102,6 +102,8 @@ There are also duplicate/deprecated methods on:
 EventDistributor
 Admin
 
+Using the TranslatorProperty annotation without a setter now requires that readOnly=true be set on the annotation. 
+
 === Embedded Kit
 
 The Embedded Kit has been removed.  You should follow the https://github.com/teiid/teiid-embedded-examples[Embedded Examples] to use maven to pull the dependencies you need for your project.
