@@ -1,0 +1,23 @@
+= Configuring Connection Properties with ODBC
+
+When working with ODBC connection, user can set the connection properties link:Driver_Connection.adoc[Driver Connection#URL Connection Properties] 
+that are available in Teiid by executing the command like below.
+
+----
+SET <property-name> TO <property-value>
+----  
+
+for example to turn on the result set caching you can issue
+
+----
+SET resultSetCacheMode TO 'true'
+----
+
+Another option is to set this as VDB property in vdb.xml file as 
+
+----
+<vdb name="...">
+    <property name="connection.resultSetCacheMode" value="true"/>
+    ...
+</vdb>
+----
