@@ -7,7 +7,7 @@ Teiid automatically converts string literals within a SQL statement to their imp
 
 [source,sql]
 ----
-SELECT * FROM my.table WHERE created_by = ‘2003-01-02’
+SELECT * FROM my.table WHERE created_by = '2016-01-02'
 ----
 
 Here if the created_by column has the datatype of date, Teiid automatically converts the string literal to a date datatype as well.
@@ -24,7 +24,7 @@ Teiid can automatically convert literal strings and numeric type values to Boole
 |false
 
 | 
-|`unknown'
+|'unknown'
 |null
 
 | 

@@ -32,7 +32,7 @@ WARNING: The Teiid conversions of float/double/bigdecimal/timestamp to string re
 
 |string
 |clob
-|char, boolean, byte, short, integer, long, biginteger, float, double, bigdecimal, xml [a]
+|char, boolean, byte, short, integer, long, biginteger, float, double, bigdecimal, xml [1]
 
 |char
 |string
@@ -92,9 +92,11 @@ WARNING: The Teiid conversions of float/double/bigdecimal/timestamp to string re
 
 |xml
 |
-|string [b]
+|string [2]
 |===
 
-[a] string to xml is equivalent to XMLPARSE(DOCUMENT exp) - See also link:XML_Functions.adoc#_xmlparse[XML Functions#XMLPARSE]
-[b] xml to string is equivalent to XMLSERIALIZE(exp AS STRING) - see also link:XML_Functions.adoc#_xmlserialize[XML Functions#XMLSERIALIZE]
+**Reference Link**
+
+1. string to xml is equivalent to XMLPARSE(DOCUMENT exp) - See also link:XML_Functions.adoc#_xmlparse[XML Functions#XMLPARSE]
+2. xml to string is equivalent to XMLSERIALIZE(exp AS STRING) - see also link:XML_Functions.adoc#_xmlserialize[XML Functions#XMLSERIALIZE]
 

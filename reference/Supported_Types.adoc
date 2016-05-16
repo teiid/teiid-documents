@@ -15,7 +15,7 @@ Teiid supports a core set of runtime types. Runtime types can be different than 
 
 |varbinary
 |variable length binary string with a nominal maximum length of 8192.
-|byte[] [a]
+|byte[] [1]
 |VARBINARY
 |VARBINARY
 
@@ -105,36 +105,38 @@ Teiid supports a core set of runtime types. Runtime types can be different than 
 
 |blob
 |binary large object, representing a stream of bytes
-|java.sql.Blob [b]
+|java.sql.Blob [2]
 |BLOB
 |VARCHAR
 
 |clob
 |character large object, representing a stream of characters
-|java.sql.Clob [c]
+|java.sql.Clob [3]
 |CLOB
 |VARCHAR
 
 |xml
 |XML document
-|java.sql.SQLXML [d]
+|java.sql.SQLXML[4]
 |JAVA_OBJECT
 |VARCHAR
 
 |geometry
 |Geospatial Object
-|java.sql.Blob [e]
+|java.sql.Blob [5]
 |BLOB
 |BLOB
 |===
 
 NOTE: Even if a type is declared with a length, precision, or scale argument, those restrictions are effectively ignored by the runtime system.
 
-[a] The runtime type is org.teiid.core.types.BinaryType. Translators will need to explicitly handle BinaryType values. UDFs will instead have a byte[] value passed. 
-[b] The concrete type is expected to be org.teiid.core.types.BlobType 
-[c] The concrete type is expected to be org.teiid.core.types.ClobType 
-[d] The concrete type is expected to be org.teiid.core.types.XMLType 
-[e] The concrete type is expected to be org.teiid.core.types.GeometryType
+**Reference Link**
+
+1. The runtime type is org.teiid.core.types.BinaryType. Translators will need to explicitly handle BinaryType values. UDFs will instead have a byte[] value passed. 
+2. The concrete type is expected to be org.teiid.core.types.BlobType 
+3. The concrete type is expected to be org.teiid.core.types.ClobType 
+4. The concrete type is expected to be org.teiid.core.types.XMLType 
+5. The concrete type is expected to be org.teiid.core.types.GeometryType
 
 == Arrays
 
