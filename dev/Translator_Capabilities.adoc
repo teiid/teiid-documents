@@ -55,6 +55,14 @@ The following table lists the capabilities that can be specified in the `Executi
 |Base join and criteria support
 |Translator supports full dependent join pushdown. See link:Dependent_Join_Pushdown.adoc[Dependent Join Pushdown]. When set the MaxDependentInPredicates and MaxInCriteriaSize values are not used by the engine, rather the entire independent dataset is made available to the pushdown command.
 
+|LateralJoin
+|
+|Translator supports lateral join pushdown with sideways correlation.
+
+|LateralJoinCondition
+|LateralJoin
+|Translator supports lateral join pushdown with a join condition.
+
 |SubqueryInOn
 |Join and base subquery support, such as ExistsCriteria
 |Translator can support subqueries in the ON clause. Defaults to true.
@@ -63,21 +71,25 @@ The following table lists the capabilities that can be specified in the `Executi
 |AliasedTable
 |Translator can support a named subquery in the FROM clause.
 
+|ProcedureTable
+|
+|Translator can support a table that returns a table in the FROM clause.
+
 |BetweenCriteria
 |
 |Not currently used - between criteria is rewriten as compound comparisions.
 
 |CompareCriteriaEquals
 |
-|Translator can support comparison criteria with the operator ``=''.
+|Translator can support comparison criteria with the operator `=`.
 
 |CompareCriteriaOrdered
 |
-|Translator can support comparison criteria with the operator ``=>'' or ``<=''.
+|Translator can support comparison criteria with the operator `=>` or `<=`.
 
 |CompareCriteriaOrderedExclusive
 |
-|Translator can support comparison criteria with the operator ``>'' or ``<''. Defaults to CompareCriteriaOrdered
+|Translator can support comparison criteria with the operator `>` or `<`. Defaults to CompareCriteriaOrdered
 
 |LikeCriteria
 |
@@ -113,7 +125,7 @@ The following table lists the capabilities that can be specified in the `Executi
 
 |NotCriteria
 |
-|Translator can support the NOT logical criteria. IMPORTANT: This capability also applies to negation of predicates, such as specifying IS NOT NULL, ``<'' (not ``=>''), ``>'' (not ``<=''), etc.
+|Translator can support the NOT logical criteria. IMPORTANT: This capability also applies to negation of predicates, such as specifying IS NOT NULL, `<` (not `=>`), `>` (not `<=`), etc.
 
 |ExistsCriteria
 |
@@ -217,7 +229,7 @@ The following table lists the capabilities that can be specified in the `Executi
 
 |SearchedCaseExpressions
 |
-|Translator can support ``searched'' CASE expressions anywhere that expressions are accepted.
+|Translator can support `searched` CASE expressions anywhere that expressions are accepted.
 
 |Unions
 |
@@ -310,7 +322,7 @@ Note that any pushdown subquery must itself be compliant with the Translator cap
 
 The method `ExecutionFactory.useAnsiJoin()` should return true if the Translator prefers the use of ANSI style join structure for join trees that contain only INNER and CROSS joins.
 
-The method `ExecutionFactory.requiresCriteria()` should return true if the Translator requires criteria for any Query, Update, or Delete. This is a replacement for the model support property ``Where All''.
+The method `ExecutionFactory.requiresCriteria()` should return true if the Translator requires criteria for any Query, Update, or Delete. This is a replacement for the model support property `Where All`.
 
 == Scalar Functions
 
