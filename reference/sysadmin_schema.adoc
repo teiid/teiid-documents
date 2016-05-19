@@ -320,31 +320,22 @@ SYSADMIN.CREATE FOREIGN PROCEDURE refreshMatViewRow(OUT RowsUpdated integer NOT 
 
 **Example of SYSADMIN.refreshMatViewRow**
 
-Assuming materialized view `SAMPLEMATVIEW` has 3 rows under the `TestInterMat` Model, the primary key only have one column, id is the primary key:
+The materialized view `SAMPLEMATVIEW` has 3 rows under the `TestMat` Model as below:
+
+image:images/refresh_matview_rows_example.png[images/refresh_matview_rows_example.png]
+
+Assuming the primary key only comtain one column, id is primary key, update the second row:
 
 [source,sql]
 ----
-+-----+----+----+----+
-| id  | a  | b  | c  |
-+-----+----+----+----+
-| 100 | a0 | b0 | c0 |
-| 101 | a1 | b1 | c1 |
-| 102 | a2 | b2 | c2 |
-+-----+----+----+----+
+EXEC SYSADMIN.refreshMatViewRow('TestMat.SAMPLEMATVIEW', '101')
 ----
 
-If the primary key only comtain one column, id is the primary key, update the second row:
+Assuming the primary key comtain more columns, id, a and b compose of the primary key, update the second row:
 
 [source,sql]
 ----
-EXEC SYSADMIN.refreshMatViewRow('TestInterMat.SAMPLEMATVIEW', '101')
-----
-
-If the primary key comtain more columns, id, a and b compose of the primary key, update the second row:
-
-[source,sql]
-----
-EXEC SYSADMIN.refreshMatViewRow('TestInterMat.SAMPLEMATVIEW', '101', 'a1', 'b1')
+EXEC SYSADMIN.refreshMatViewRow('TestMat.SAMPLEMATVIEW', '101', 'a1', 'b1')
 ----
 
 === SYSADMIN.refreshMatViewRows
@@ -360,18 +351,18 @@ SYSADMIN.refreshMatViewRows(OUT RowsUpdated integer NOT NULL RESULT, IN ViewName
 
 **Example of SYSADMIN.refreshMatViewRows**
 
-Continuing use the `SAMPLEMATVIEW` in Example of <<SYSADMIN.refreshMatViewRow, SYSADMIN.refreshMatViewRow>>, if the primary key only comtain one column, id is the primary key, update all rows:
+Continuing use the `SAMPLEMATVIEW` in Example of <<SYSADMIN.refreshMatViewRow, SYSADMIN.refreshMatViewRow>>. Assuming the primary key only comtain one column, id is primary key, update all rows:
 
 [source,sql]
 ----
-EXEC SYSADMIN.refreshMatViewRows('TestInterMat.SAMPLEMATVIEW', ('100',), ('101',), ('102',))
+EXEC SYSADMIN.refreshMatViewRows('TestMat.SAMPLEMATVIEW', ('100',), ('101',), ('102',))
 ---- 
 
-If the primary key comtain more columns, id, a and b compose of the primary key, update all rows:
+Assuming the primary key comtain more columns, id, a and b compose of the primary key, update all rows:
 
 [source,sql]
 ----
-EXEC SYSADMIN.refreshMatViewRows('TestInterMat.SAMPLEMATVIEW', ('100', 'a0', 'b0'), ('101', 'a1', 'b1'), ('102', 'a2', 'b2'))
+EXEC SYSADMIN.refreshMatViewRows('TestMat.SAMPLEMATVIEW', ('100', 'a0', 'b0'), ('101', 'a1', 'b1'), ('102', 'a2', 'b2'))
 ----
 
 === SYSADMIN.setColumnStats
