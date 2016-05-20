@@ -50,6 +50,7 @@ NOTE: These affect Teiid globally, and not just through the ODBC transport.
 
 * _org.teiid.backslashDefaultMatchEscape_ - defaults to false. Set to true to use '\' as the default escape character for LIKE and SIMILAR TO predicates when no escape is specified. Otherwise Teiid assumes the SQL specification compliant behavior of treating each non-wildcard character as an exact match character.
 * _org.teiid.addPGMetadata_ - defaults to true. When set to false, the VDB will not include Postgresql based system metadata.
+* _org.teiid.honorDeclareFetchTxn_ - defaults to false.  When false the wrapping begin/commit of a UseDeclareFetch cursor will be ignored as Teiid does not require a transaction.
 
 *Client*
 
