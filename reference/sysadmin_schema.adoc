@@ -324,14 +324,14 @@ The materialized view `SAMPLEMATVIEW` has 3 rows under the `TestMat` Model as be
 
 image:images/refresh_matview_rows_example.png[images/refresh_matview_rows_example.png]
 
-Assuming the primary key only comtain one column, id is primary key, update the second row:
+Assuming the primary key only contains one column, id, update the second row:
 
 [source,sql]
 ----
 EXEC SYSADMIN.refreshMatViewRow('TestMat.SAMPLEMATVIEW', '101')
 ----
 
-Assuming the primary key comtain more columns, id, a and b compose of the primary key, update the second row:
+Assuming the primary key contains more columns, a and b, update the second row:
 
 [source,sql]
 ----
@@ -351,7 +351,7 @@ SYSADMIN.refreshMatViewRows(OUT RowsUpdated integer NOT NULL RESULT, IN ViewName
 
 **Example of SYSADMIN.refreshMatViewRows**
 
-Continuing use the `SAMPLEMATVIEW` in Example of <<SYSADMIN.refreshMatViewRow, SYSADMIN.refreshMatViewRow>>. Assuming the primary key only comtain one column, id is primary key, update all rows:
+Continuing use the `SAMPLEMATVIEW` in Example of <<SYSADMIN.refreshMatViewRow, SYSADMIN.refreshMatViewRow>>. Assuming the primary key only contains one column, id, update all rows:
 
 [source,sql]
 ----
