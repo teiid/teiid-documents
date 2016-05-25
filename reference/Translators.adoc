@@ -72,7 +72,7 @@ The execution properties for a translator typically have reasonable defaults. Fo
 |false
 
 |TransactionSupport
-|The highest level of transaction support. Used by the engine as a hint to determine if a transaction is needed for autoCommitTxn=DETECT mode.  Can be one of XA, NONE, or LOCAL.
+|The highest level of transaction support. Used by the engine as a hint to determine if a transaction is needed for autoCommitTxn=DETECT mode.  Can be one of XA, NONE, or LOCAL.  If XA, then access under a transaction will be serialized.
 |XA
 |===
 
