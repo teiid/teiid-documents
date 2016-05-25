@@ -1,61 +1,32 @@
 
+:toc:
+:toc-placement: preamble
+
 = External Materialization
 
 External materialized views cache their data in an external database system. External materialized views give the administrator full control over the loading and refresh strategies.
 
 Starting from Teiid version 8.5, Teiid gives the option to configure metadata on the view to control the simple load and refresh policies. Administrators of Teiid system are free to manage their external materialization table through other means based on their needs.
 
-== User Managed Materialization Management
-
-*Typical Usage Steps*
-
-* Create materialized views and corresponding physical materialized target tables in Designer. This can be done through setting the materialized and target table manually, or by selecting the desired views, right clicking, then selecting Modeling->"Create Materialized Views"
-* Generate the DDL for your physical model materialization target tables. This can be done by selecting the model, right clicking, then choosing Export->"Metadata Modeling"->"Data Definition Language (DDL) File". This script can be used to create the desired schema for your materialization target on whatever source you choose.
-* Determine a load and refresh strategy. With the schema created the most simplistic approach is to just load the data. The load can even be done through Teiid with
-
-[source,sql]
-----
-insert into target_table select * from matview option nocache matview
-----
-
-That however may be too simplistic because your index creation may be more performant if deferred until after the table has been created. Also full snapshot refreshes are best done to a staging table then swapping it for the existing physical table to ensure that the refresh does not impact user queries and to ensure that the table is valid prior to use.
-
-== Metadata Based Materialization Management
-
-Users when they are designing their views, they can define additional metadata on their views to control the loading and refreshing of external materialization cache. This option provides a limited but a powerful way to manage the materialization views. For this purpose, link:../reference/sysadmin_schema.adoc#_virtual_procedures[SYSADMIN Schema] model in your VDB defines three stored procedures (link:../reference/sysadmin_schema.adoc#_sysadmin_loadmatview[loadMatView], link:../reference/sysadmin_schema.adoc#_sysadmin_updatematview[updateMatView], link:../reference/sysadmin_schema.adoc#_sysadmin_matviewstatus[matViewStatus]) in its schema. Based on the defined metadata on the view, and these Procedures use a simple scheduler automatically starts during the VDB deployment and loads and keeps the cache fresh.
-
-NOTE: The Designer tooling for this feature is lacking at this moment but this will be added in coming releases.
-
-*Usage Steps*
-
-* To manage and report the loading and refreshing activity of materialization view, Teiid expects the user to define "Status" table with following schema in any one of the source models. Create this table on the physical database, before you do the import of this physical source.
-
-[source,sql]
-----
-CREATE TABLE status
-(
-  VDBName varchar(50) not null,
-  VDBVersion varchar(50) not null,
-  SchemaName varchar(50) not null,
-  Name varchar(256) not null,
-  TargetSchemaName varchar(50),
-  TargetName varchar(256) not null,
-  Valid boolean not null,
-  LoadState varchar(25) not null,
-  Cardinality long,
-  Updated timestamp not null,
-  LoadNumber long not null,
-  PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
-);
-----
-
-NOTE: MariaDB have Silent Column Changes function, according to https://mariadb.com/kb/en/mariadb/silent-column-changes/[MariaDB document], 'long' type will silently change to 'MEDIUMTEXT' , so If execute above schema in MariaDB, 'Cardinality' and 'LoadNumber' column should change to 'bigint' type.
-
-* Create Views and corresponding physical materialized target tables in Designer or using DDL. This can be done through setting the materialized and target table manually, or by selecting the desired views, right clicking, then selecting Modeling->"Create Materialized Views" in the Designer.
-* Define the following extension properties on the view.
+== View Options
 
 |===
-|Property Name |Description |Optional |Default Value
+|Property Name |Description |Optional |Default
+
+|MATERIALIZED
+|Set the value to 'TRUE' for the view to be materialized
+|false
+|n/a
+
+|MATERIALIZED_TABLE
+|Define the name of target source table, this also hints the materialization is external 
+|false
+|n/a
+
+|UPDATABLE
+|Allow updating Materialized View via DML `UPDATE`
+|true
+|false
 
 |teiid_rel:ALLOW_MATVIEW_MANAGEMENT
 |Allow Teiid based management
@@ -114,8 +85,9 @@ teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
 |2^63 milliseconds - effectively the table will not refresh, but will be loaded a single time initially
 |===
 
+Set the `MATERIALIZED` to 'TRUE' and the `MATERIALIZED_TABLE` point to a target table is necessary for external materialization, `UPDATABLE` is optional, set it to 'TRUE' if want the external materialized view be updatable. 
 
-* Once the VDB with a model with above properties defined and deployed, the following sequence of events will take place
+The options start with `teiid_rel:` prefix are extension properties used in management based system procedure.  Once a View with above properties defined and deployed, the following sequence of events will take place
 
 1.  Upon the VDB deployment, teiid_rel:ON_VDB_START_SCRIPT will be run on completion of the deployment.
 2.  Based on the teiid_rel:MATVIEW_TTL defined a scheduler entry will be created to run SYSADMIN.loadMatView procedure, which loads the cache contents.
@@ -129,9 +101,58 @@ teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
 
 TIP: The start/stop scripts are not cluster aware - that is they will run on each cluster member as the VDB is deployed. When deploying into a clustered environment, the scripts should be written in such a way as to be cluster safe.
 
+== User Managed Materialization Management
+
+*Typical Usage Steps*
+
+* Create materialized views and corresponding physical materialized target tables in Designer. This can be done through setting the materialized and target table manually, or by selecting the desired views, right clicking, then selecting Modeling->"Create Materialized Views"
+* Generate the DDL for your physical model materialization target tables. This can be done by selecting the model, right clicking, then choosing Export->"Metadata Modeling"->"Data Definition Language (DDL) File". This script can be used to create the desired schema for your materialization target on whatever source you choose.
+* Determine a load and refresh strategy. With the schema created the most simplistic approach is to just load the data. The load can even be done through Teiid with
+
+[source,sql]
+----
+insert into target_table select * from matview option nocache matview
+----
+
+That however may be too simplistic because your index creation may be more performant if deferred until after the table has been created. Also full snapshot refreshes are best done to a staging table then swapping it for the existing physical table to ensure that the refresh does not impact user queries and to ensure that the table is valid prior to use.
+
+== Metadata Based Materialization Management
+
+Users when they are designing their views, they can define additional metadata on their views to control the loading and refreshing of external materialization cache. This option provides a limited but a powerful way to manage the materialization views. For this purpose, link:../reference/sysadmin_schema.adoc#_virtual_procedures[SYSADMIN Schema] model in your VDB defines three stored procedures (link:../reference/sysadmin_schema.adoc#_sysadmin_loadmatview[loadMatView], link:../reference/sysadmin_schema.adoc#_sysadmin_updatematview[updateMatView], link:../reference/sysadmin_schema.adoc#_sysadmin_matviewstatus[matViewStatus]) in its schema. Based on the defined metadata on the view, and these Procedures use a simple scheduler automatically starts during the VDB deployment and loads and keeps the cache fresh.
+
+NOTE: The Designer tooling for this feature is lacking at this moment but this will be added in coming releases.
+
+=== Typical Usage Steps
+
+* To manage and report the loading and refreshing activity of materialization view, Teiid expects the user to define "Status" table with following schema in any one of the source models. Create this table on the physical database, before you do the import of this physical source.
+
+[source,sql]
+----
+CREATE TABLE status
+(
+  VDBName varchar(50) not null,
+  VDBVersion varchar(50) not null,
+  SchemaName varchar(50) not null,
+  Name varchar(256) not null,
+  TargetSchemaName varchar(50),
+  TargetName varchar(256) not null,
+  Valid boolean not null,
+  LoadState varchar(25) not null,
+  Cardinality long,
+  Updated timestamp not null,
+  LoadNumber long not null,
+  PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
+);
+----
+
+* Create Views and corresponding physical materialized target tables in Designer or using DDL. This can be done through setting the materialized and target table manually, or by selecting the desired views, right clicking, then selecting Modeling->"Create Materialized Views" in the Designer.
+* Define the extension properties Materialization in <<View Options, View Options>> on the view.
+
+=== Loading And Refreshing
+
 User can any time run SYSADMIN.updateMatView procedure to partially update the cache contents rather than complete refresh of contents with SYSADMIN.loadMatview procedure. When partial update is run the cache expiration time is renewed for new term based on Cache Hint again.
 
-A sample VDB with these properties can be defined as below
+=== A sample VDB with external materialized view options
 
 [source,xml]
 ----

@@ -434,7 +434,7 @@ SYSADMIN.loadMatView(IN schemaName string NOT NULL, IN viewName string NOT NULL,
 
 === SYSADMIN.updateMatView
 
-The updateMatView procedure is used to update a subset of an external materialized table based on the refresh criteria.
+The updateMatView procedure is used to update a subset of an internal or external materialized table based on the refresh criteria.
 
 Returns integer RowsUpdated. -1 indicates the materialized table is currently invalid. And-3 indicates there was an exception when performing the update. See the Caching Guide for more.
 
@@ -442,3 +442,13 @@ Returns integer RowsUpdated. -1 indicates the materialized table is currently in
 ----
 SYSADMIN.updateMatView(IN schemaName string NOT NULL, IN viewName string NOT NULL, IN refreshCriteria string) RETURNS integer
 ----
+
+**SYSADMIN.updateMatView**
+
+Continuing use the `SAMPLEMATVIEW` in Example of <<SYSADMIN.refreshMatViewRow, SYSADMIN.refreshMatViewRow>>. Update view rows:
+
+[source,sql]
+----
+EXEC SYSADMIN.updateMatView('TestMat', 'SAMPLEMATVIEW', 'id = ''101'' AND a = ''a1''')
+----
+
