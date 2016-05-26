@@ -1,7 +1,9 @@
 
 = Migration Guide From Teiid 8.x
 
-Teiid strives to maintain consistency between all versions, but when necessary breaking configuration and VDB/sql changes are made - and then typically only for major releases. This guide expands upon the release notes included in the kit to cover changes since 8.x.
+Teiid strives to maintain consistency between all versions, but when necessary breaking configuration and VDB/sql changes are made - and then typically only for major releases. 
+
+You should consult the release notes for compatibility and configuration changes from each minor version that you are upgrading over.  This guide expands upon the release notes included in the kit to cover changes since 8.x.
 
 If possible you should make your migration to Teiid 9 by first using Teiid 8.13.  8.13 is a non-feature transitional release that is effectively Teiid 8.12 running on WildFly 9.0.2.  See also https://docs.jboss.org/author/display/teiid813final/Migration+Guide+From+Teiid+8.12[8.13 Migration Guide]
 

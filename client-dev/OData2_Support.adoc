@@ -233,7 +233,7 @@ The following feature limitations currently apply.
 * Blob support for media types are not supported.
 * "$value" construct to retrieve individual column value is not supported.
 * create/update/delete $links is not supported.
-* $expand is not supported.
+* $expand support is limited to a single parent/child.
 
 == Client Tools for Access
 
@@ -294,4 +294,4 @@ Teiid does not define any one EntityContainer that resulted from different vdb m
 
 == OData Version 3.0
 
-Teiid does not provide ...
+Teiid does not provide a complete OData Version 3.0 implementation.  Some OData 3.0 features are provided with the OData Version 2.0 support.
