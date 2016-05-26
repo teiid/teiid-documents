@@ -9,21 +9,61 @@ NOTE: By default, ODBC is enabled and running on on port _35432_.
 
 The pg emulation is not complete. The intention of the ODBC access is to provide non-JDBC connectivity to issue Teiid queries - not pgsql queries. While many PostgreSQL constructs are supported the default behavior for queries matches Teiid’s expectations. See link:../admin/System_Properties.adoc[System Properties] for optional properties that further emulate pgsql handling.
 
-Known Limitations:
+== Known Limitations:
 
 * Updateable cursors are not supported. You will receive parsing errors containing the pg system column ctid if this feature is not disabled.
 * LO support is not available. LOBs will be returned as string or bytea as appropriate using the transport max lob size setting.
 * The Teiid object type will map to the PostgreSQL UNKNOWN type, which cannot be serialized by the ODBC layer. Cast/Convert should be used to provide a type hint when appropriate - for example teiid_session_set returns an object value. "SELECT teiid_session_set('x', 'y')" will fail, but "SELECT cast(teiid_session_set('x', 'y') as string)" will succeed.
 * Multi-dimensional arrays are not supported.
 
+== Installation
+
 Before an application can use ODBC, you must first install the ODBC
 driver on same machine that the application is running on and then
 create a Data Source Name (DSN) that represents a connection profile for
 your Teiid VDB.
 
+For a windows client, see the link:Installing_the_ODBC_Driver_Client.adoc[Windows Installation Guide].
+
+== Configuration
+
 WARNING: By default Teiid supports plain text password authentication for ODBC. If the client/server are not configured to use SSL or GSS authentication, the password will be sent in plain text over the network. If you need secure passwords in transit and are not using SSL, then consider installing a security domain that will accept safe password values from the client (for example encrypted or hashed).
 
 See the link:../security/Security_Guide.adoc[Security Guide] for details on configuring SSL for and using Kerberos with the pg transport.
 
-Many times is is not possible to use Teiid specific connection properties when making an ODBC connection. If you find yourself in this situation and cannot use post connection SET statements, then the VDB itself may take default connection properties for ODBC. Use VDB properties of the form connection.XXX to control things like partial results mode, result set caching, etc.
+For a windows client, see the link:Configuring_the_Data_Source_Name_DSN.adoc[Configuring the Data Source Name].
 
+See also link:DSN_Less_Connection.adoc[DSN Less Connection].
+
+=== Connection Settings
+
+All the available pg driver connection options with their descriptions that can be used are defined here http://psqlodbc.projects.pgfoundry.org/docs/config.html[http://psqlodbc.projects.pgfoundry.org/docs/config.html]. When using these properties on the connection string, their property names are defined here http://psqlodbc.projects.pgfoundry.org/docs/config-opt.html[http://psqlodbc.projects.pgfoundry.org/docs/config-opt.html].
+
+However Teiid does not honor all properties, and some, such as Updatable Cursors, will cause query failures.
+
+.*Primary ODBC Settings For Teiid*
+|===
+|Name |Description
+
+|Updateable Cursors & Row Versioning
+|Should not be used.
+
+|Use serverside prepare & Parse Statements & Disallow Premature 
+|It is recommended that "Use serverside prepare" is enabled and "Parse Statements"/"Disallow Premature" are diabled
+
+|SSL mode
+|See link:../security/Security_Guide.adoc[Security Guide]
+
+|Use Declare/Fetch cursors & Fetch Max Count
+|Should be used to better manage resources when large result sets are used
+|===
+
+Logging/debug settings can be utilized as needed.  
+
+Settings that manipulate datatypes, metadata, or optimizations such as "Show SystemTables", "True is -1", "Backend enetic optimizer", "Bytea as LongVarBinary", "Bools as Char", etc. are ignored by the Teiid server and have no client side effect.  If there is a need for these or any other settings to have a defined affect, please open an issue with the product/project.
+
+Any other setting that does have a client side affect, such as "LF <-> CR/LF conversion", may be used if desired but there is currently no server side usage of the setting.
+
+==== Teiid Connection Settings
+
+Most Teiid specific connection properties do not map to ODBC client connection settings. If you find yourself in this situation and cannot use post connection SET statements, then the VDB itself may take default link:ODBC_Connection_Properties.adoc[connection properties] for ODBC. Use VDB properties of the form connection.XXX to control things like partial results mode, result set caching, etc.
