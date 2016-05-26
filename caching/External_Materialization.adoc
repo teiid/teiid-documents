@@ -4,7 +4,17 @@
 
 = External Materialization
 
-External materialized views cache their data in an external database system. External materialized views give the administrator full control over the loading and refresh strategies.
+This document including the introduction of Teiid External Materialization.
+
+== What is it
+
+In Teiid, a view is a virtual table based on the computing(loading/transforming/federating) of complex SQL statement across heterogeneous data sources. Teiid External Materialization caching the view data to an external physical database system, when a new session issue a query against this view, the request be redirect to external physical database system and resutls be return directly, rather than re-computing. 
+
+image:images/teiid-external-mat.png[External Materialization]
+
+Materialized views are just like other views, with additional options in <<View Options, View Options>>, the data are pre-computed and cached in an external database system. External materialized views give the administrator full control over the loading and refresh strategies.
+
+Materialized tables are source table for Materialized views, have the same structure with Materialized views, live on physical database system, need create manually and reference with Materialized views via `MATERIALIZED_TABLE` option in designing. The data between Materialized tables and physical tables keep synchronized by teiid system with a time interval.  
 
 Starting from Teiid version 8.5, Teiid gives the option to configure metadata on the view to control the simple load and refresh policies. Administrators of Teiid system are free to manage their external materialization table through other means based on their needs.
 
@@ -150,7 +160,12 @@ CREATE TABLE status
 
 === Loading And Refreshing
 
-User can any time run SYSADMIN.updateMatView procedure to partially update the cache contents rather than complete refresh of contents with SYSADMIN.loadMatview procedure. When partial update is run the cache expiration time is renewed for new term based on Cache Hint again.
+System Procedures are used to Loading And Refreshing Materialized view in any time:
+
+* link:../reference/sysadmin_schema.adoc#_sysadmin_loadmatview[SYSADMIN.loadMatView] - complete refresh the cache contents, reload the materialized table.
+* link:../reference/sysadmin_schema.adoc#_sysadmin_updatematview[SYSADMIN.updateMatView] - to partially update the cache contents, update a subset of the materialized table. When partial update is run the cache expiration time is renewed for new term based on Cache Hint again.
+
+In Teiid, once a VDB be started, all External Materialized Views be completely refreshed by link:../reference/sysadmin_schema.adoc#_sysadmin_loadmatview[SYSADMIN.loadMatView] periodically with a time interval. 
 
 === A sample VDB with external materialized view options
 
