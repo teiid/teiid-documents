@@ -3,7 +3,7 @@
 
 The following is an example highlighting configuring an Oracle data source. The process is nearly identical regardless of the database vendor. Typically the JDBC jar and the configuration like connection URL and user credentials change.
 
-There are configuration templates for all the data sources in the "<jboss-install>/docs/teiid/datasources" directory. A complete description how a data source can be added into WildFly is also described https://docs.jboss.org/author/display/WFLY10/DataSource+configuration[here]. The below we present two different ways to create a datasource.
+There are configuration templates for all the data sources in the "<jboss-install>/docs/teiid/datasources" directory. A complete description how a data source can be added into {{ book.asName }} is also described https://docs.jboss.org/author/display/WFLY10/DataSource+configuration[here]. The below we present two different ways to create a datasource.
 
 == Deploying a single JDBC Jar File
 

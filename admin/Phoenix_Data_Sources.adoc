@@ -3,9 +3,9 @@
 
 The following is a example for setting up Phoenix Data Sources, which is precondition for link:JDBC_Data_Sources.adoc[Apache HBase Translator]. In addition to the Data Sources set up, this article also cover mapping Phoenix table to an existing HBase table and creating a new Phoenix table.
 
-There are configuration templates for Phoenix data sources in the "<jboss-install>/docs/teiid/datasources" directory. A complete description how a data source can be added into WildFly is also described https://docs.jboss.org/author/display/WFLY10/DataSource+configuration[here].
+There are configuration templates for Phoenix data sources in the "<jboss-install>/docs/teiid/datasources" directory. A complete description how a data source can be added into {{ book.asName }} is also described https://docs.jboss.org/author/display/WFLY10/DataSource+configuration[here].
 
-== Configuring a Phoenix data source in WildFly
+== Configuring a Phoenix data source in {{ book.asName }}
 
 Configuring a Phoenix data source is nearly identical to configuring link:JDBC_Data_Sources.adoc[JDBC Data Sources]. The first step is deploying the Phoenix driver jar. Using below CLI command to deploy Phoenix driver:
 

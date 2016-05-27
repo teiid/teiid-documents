@@ -80,7 +80,7 @@ The following are optional properties:
 |===
 |Property Name |Req. |Property Template|Description
 
-| module | N | | Specify the WildFly module that contains the cache classes that need to be loaded 
+| module | N | | Specify the {{ book.asName }} module that contains the cache classes that need to be loaded 
 
 |===
 

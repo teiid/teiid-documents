@@ -5,8 +5,8 @@ image:images/teiid-components.png[images/teiid-components.png]
 
 * **Designer Plugin** - Eclipse Plugin based Teiid design environment, used to connect/federate/transform datasources to produce a `.vdb` file.
 * **JVM** - Teiid is a pure Java Data Virtualization Platform.
-* **WildFly** - Teiid use a plugable installation which need a WildFly Server installed, alternatively, a full installed Wildfly kit be distributed.
-* **Subsystem** - Due to JBoos/WildFly's Modular and Pluggable Architecture(a series of Management commands compose of a subsystem, a series of subsystems compose of the whole server), Teiid implement WildFly's Controller/Management API developed a `teiid` subsystem and reuse lots of other subsystems like `resource-adapter`, `infinispan`, `security`, `logging`, `datasource`.
+* **{{ book.asName }}** - Teiid use a plugable installation which need a {{ book.asName }} Server installed, alternatively, a full installed {{ book.asName }} kit be distributed.
+* **Subsystem** - Due to {{ book.asName }}'s Modular and Pluggable Architecture(a series of Management commands compose of a subsystem, a series of subsystems compose of the whole server), Teiid implement {{ book.asName }}'s Controller/Management API developed a `teiid` subsystem and reuse lots of other subsystems like `resource-adapter`, `infinispan`, `security`, `logging`, `datasource`.
 * **odata.war** - Teiid support OData via odata.war, more details refer to link:../client-dev/OData_Support.adoc[OData Support] 
 * **dashboard.war** - A web based dashboard generator.
 * **teiid-console** - A web based administrative and monitoring tool for Teiid, more details refer to link:../admin/Teiid_Console.adoc[Teiid Console]

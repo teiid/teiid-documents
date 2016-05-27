@@ -81,5 +81,5 @@ Alternatively, if you are using custom _MetadataRepository_ with your VDB, then 
 </vdb>
 ----
 
-In the above example, user can implement _MetadataRepository_ interface and package the implementation class along with its dependencies in a WildFly module and supply the module name in the above XML. For more information on how to write a Metadata Repository refer to link:Custom_Metadata_Repository.adoc[Custom Metadata Repository].
+In the above example, user can implement _MetadataRepository_ interface and package the implementation class along with its dependencies in a {{ book.asName }} module and supply the module name in the above XML. For more information on how to write a Metadata Repository refer to link:Custom_Metadata_Repository.adoc[Custom Metadata Repository].
 

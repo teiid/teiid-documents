@@ -9,7 +9,7 @@ We can use https://docs.jboss.org/author/display/teiid88final/Using+Teiid+with+H
 
 For the most part, interacting with Teiid VDBs (Virtual Databases) through Eclipselink is no different from working with any other type of data source. First, depending on where your Eclipselink application will reside, either in the same VM as the Teiid Runtime or on a separate VM, will determine which jar’s are used.
 
-* Running in same VM in the WildFly server, the teiid-client-\{version}.jar and teiid-eclipselink-platform-\{version}.jar are needed
+* Running in same VM in the {{ book.asName }} server, the teiid-client-\{version}.jar and teiid-eclipselink-platform-\{version}.jar are needed
 * Running separate VM’s,you need the Teiid JDBC Driver JAR(http://www.jboss.org/teiid/downloads.html[Download Teiid JDBC Driver JAR]) and Teiid’s Eclipselink Platform JAR(teiid-eclipselink-platform \{version}.jar) in the Eclipselink’s classpath. 
 
 These JAR files have the _org.teiid.eclipselin.platform.TeiidPlatform_ and _org.teiid.jdbc.TeiidDriver_ classes.

@@ -180,7 +180,7 @@ Now you have accessed the file name you set during the construction of the Table
 
 == Logging
 
-Teiid provides `org.teiid.logging.LogManager` class for logging purposes. Create a logging context and use the LogManager to log your messages. These will be automatically sent to the main Teiid logs. You can edit the "jboss-log4j.xml" inside "conf" directory of the WildFly’s profile to add the custom context. Teiid uses Log4J as its underlying logging system.
+Teiid provides `org.teiid.logging.LogManager` class for logging purposes. Create a logging context and use the LogManager to log your messages. These will be automatically sent to the main Teiid logs. You can edit the "jboss-log4j.xml" inside "conf" directory of the {{ book.asName }}’s profile to add the custom context. Teiid uses Log4J as its underlying logging system.
 
 == Exceptions
 

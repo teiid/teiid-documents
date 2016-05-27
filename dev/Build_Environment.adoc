@@ -1,7 +1,7 @@
 
 = Build Environment
 
-For Eclipse users (without maven integration), create a java project and add dependencies to ``teiid-common-core'', ``teiid-api'' and JEE ``connector-api'' jars.
+For Eclipse users (without maven integration), create a java project and add dependencies to `teiid-common-core`, `teiid-api` and JEE `connector-api` jars.
 
 For maven users add the following as your dependencies:
 

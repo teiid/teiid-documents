@@ -1,9 +1,9 @@
 
 = Deploying the Adapter
 
-Once the RAR file is built, deploy it by copying the RAR file into "deploy" directory of WildFLy’s chosen profile. Typically the server does not need to be restarted when a new RAR file is being added. Alternatively, you can also use ""admin-console", a web based monitoring and configuration tool, to deploy this file into the container.
+Once the RAR file is built, deploy it by copying the RAR file into "deploy" directory of {{ book.asName }}’s chosen profile. Typically the server does not need to be restarted when a new RAR file is being added. Alternatively, you can also use "admin-console", a web based monitoring and configuration tool, to deploy this file into the container.
 
-Once the Connector’s RAR file is deployed into the WildFly container, now you can create an instance of this connector to be used with your Translator. Creating an instance of this Connector is no different than creating a ""Connection Factory" in WildFly. Again, you have two ways to create a ""ConnectionFactory".
+Once the Connector’s RAR file is deployed into the {{ book.asName }} container, now you can create an instance of this connector to be used with your Translator. Creating an instance of this Connector is no different than creating a "Connection Factory" in {{ book.asName }}. Again, you have two ways to create a ""ConnectionFactory".
 
 Edit standalone.xml or domain.xml file, and add following XML in the "resource-adapters" subystem.
 
@@ -29,7 +29,7 @@ Edit standalone.xml or domain.xml file, and add following XML in the "resource-a
 </subsystem>
 ----
 
-There are lot more properties that you can define for pooling, transactions, security, etc., in this file. Check WildFly documentation for all the available properties.
+There are lot more properties that you can define for pooling, transactions, security, etc., in this file. Check the {{ book.asName }} documentation for all the available properties.
 
 Alternatively, you can use the web based ""admin-console" configuration and monitoring program, to create a new Connection Factory. Have your RAR file name and needed configuration properties handy and fill out web form to create the ConnectionFactory.
 

@@ -36,7 +36,7 @@ More details for this can be found in the Admin Console VDB deployment section. 
 == CLI based Deployment
 ~~~~~~~~~~~~~~~~~~~~
 
-WildFly provides command line interface (CLI) for doing any kind of administrative task. Execute
+{{ book.asVersionNumber }} provides command line interface (CLI) for doing any kind of administrative task. Execute
 
 ----
 bin/jboss-cli.sh --connect

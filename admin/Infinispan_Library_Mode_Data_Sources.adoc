@@ -52,7 +52,7 @@ The following are the property options for defining how the CacheManager will be
 
 |module
 |N
-|Specify the WildFly module that contains the cache classes that were defined in CacheTypeMap
+|Specify the {{ book.asName }} module that contains the cache classes that were defined in CacheTypeMap
 
 |CacheJndiName
 |N

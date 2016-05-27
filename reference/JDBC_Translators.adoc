@@ -204,5 +204,5 @@ SELECT x.* FROM (call jdbc_source.native('delete from g1 where e1 = ?', 112)) w,
 
 == JCA Resource Adapter
 
-The resource adapter for this translator provided through data source in WildFly, See to Admin Guide section link:../client-dev/WildFly_DataSource.adoc[WildFly Data Sources] for configuration.
+The resource adapter for this translator provided through data source in {{ book.asName }}, See to Admin Guide section link:../client-dev/WildFly_DataSource.adoc[{{ book.asName }} Data Sources] for configuration.
 

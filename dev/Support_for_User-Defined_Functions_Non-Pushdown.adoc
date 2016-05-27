@@ -136,7 +136,7 @@ The JAR file may be placed in your VDB under the "/lib" directory. It will autom
 
 === AS Module
 
-Create a WildFly module with the JAR file under _<jboss-as>/modules_ directory and define the module on the -vdb.xml file as shown below example
+Create a {{ book.asName }} module with the JAR file under _<jboss-as>/modules_ directory and define the module on the -vdb.xml file as shown below example
 
 [source,xml]
 ----

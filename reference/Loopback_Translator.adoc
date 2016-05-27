@@ -21,7 +21,7 @@ The Loopback translator, known by the type name _loopback_, provides a quick te
 |0
 
 |PollIntervalInMilli
-|if positive results will be ``asynchronously'' returned - that is a DataNotAvailableException will be thrown initially and the engine will wait the poll interval before polling for the results.
+|if positive results will be `asynchronously` returned - that is a DataNotAvailableException will be thrown initially and the engine will wait the poll interval before polling for the results.
 |-1
 
 |DelegateName

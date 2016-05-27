@@ -1,7 +1,7 @@
 
 = SAML Based Security For OData
 
-By default the OData access to a Virtual Database (VDB) in WildFly is restricted to authentication using the HTTP Basic. However, it possible with below instructions one can configure OData access to participate in a Single-Sign-On (SSO) based security using SAML2. The below instructions are based on JBoss EAP platform using Picketlink security framework.
+By default the OData access to a Virtual Database (VDB) in {{ book.asName }} is restricted to authentication using the HTTP Basic. However, it possible with below instructions one can configure OData access to participate in a Single-Sign-On (SSO) based security using SAML2. The below instructions are based on JBoss EAP platform using Picketlink security framework.
 
 In SAML based authentication there are Identity Providers (IDP) who provide authentication services and Service Providers (SP), a end user service like odata and user (you). It is expected that you already have
 IDP, configured and working with security domain of your choice like LDAP or Kerberoes etc. The SP in this case is the OData WAR file that is supplied with Teiid distribution along with Picketlink based framework. Picketlink framework does not explicitly mention the interoperability with other third party external vendors supplied IDP, but Teiid team has tested successfully with

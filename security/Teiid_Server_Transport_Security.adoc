@@ -108,7 +108,7 @@ Alternatively, you can use the CLI to add or modify the transport configuration
 /subsystem=teiid/transport=jdbc:write-attribute(name=truststore-password,value=redhat)
 ----
 
-NOTE: If you do not like to leave clear text passwords in the configuration file, then you can use WildFly vault mechanism for storing the keystore and truststore passwords. Use the directions defined here https://community.jboss.org/docs/DOC-17248[https://community.jboss.org/docs/DOC-17248]
+NOTE: If you do not like to leave clear text passwords in the configuration file, then you can use {{ book.asName }} vault mechanism for storing the keystore and truststore passwords. Use the directions defined here https://community.jboss.org/docs/DOC-17248[https://community.jboss.org/docs/DOC-17248]
 
 == Encryption Strength
 

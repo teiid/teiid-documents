@@ -46,11 +46,11 @@ As mentioned above, for every Translator that needs to gather data from external
 
 The following are some of resource adapters that are available to Teiid:
 
-* _DataSource:_ This is provided by the WildFly container. This is used by the JDBC Translator.
+* _DataSource:_ This is provided by the {{ book.asName }} container. This is used by the JDBC Translator.
 
 * _File:_ Provides a JEE JCA based Connector to access defined directory on the file system. This is used by the File Translator
 
-* _WS:_ Provides JEE JCA Connector to invoke Web Services using WildFly Web services stack. This is used by the WS Translator
+* _WS:_ Provides JEE JCA Connector to invoke Web Services using {{ book.asName }} Web services stack. This is used by the WS Translator
 
 * _LDAP:_ Provides JEE JCA connector to access LDAP; Used by the LDAP Translator.
 

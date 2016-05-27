@@ -1,11 +1,11 @@
 
-= WildFly DataSource
+= {{ book.asName }} DataSource
 
-Teiid can be configured as a JDBC data source in a WildFly Server (EAP/WildFly) to be accessed from JNDI or injected into your JEE applications. Deploying Teiid as data source in WildFly is exactly same as deploying any other RDBMS resources like Oracle or DB2.
+Teiid can be configured as a JDBC data source in a {{ book.asName }} Server to be accessed from JNDI or injected into your JEE applications. Deploying Teiid as data source in {{ book.asName }} is exactly same as deploying any other RDBMS resources like Oracle or DB2.
 
-Defining as data source is not limited to WildFly, you can also deploy as data source in Glassfish, Tomcat, Websphere, Weblogic etc servers, however their configuration files are different than WildFly. Consult the respective documentation of the environment in which you are deploying.
+Defining as data source is not limited to {{ book.asName }}, you can also deploy as data source in Glassfish, Tomcat, Websphere, Weblogic etc servers, however their configuration files are different than {{ book.asName }}. Consult the respective documentation of the environment in which you are deploying.
 
-A special case exists if the Teiid instance you are connecting to is in the same VM as the WildFly instance. If that matches you deployment, then follow the <<Local JDBC Connection, Local JDBC Connection>> instructions
+A special case exists if the Teiid instance you are connecting to is in the same VM as the {{ book.asName }} instance. If that matches you deployment, then follow the <<Local JDBC Connection, Local JDBC Connection>> instructions
 
 Installation Steps
 
@@ -37,7 +37,7 @@ Based on the type of deployment (XA, driver, or local), the contents of this wil
 Make sure you know the correct DatabaseName, ServerName, Port number and credentials that are specific to your deployment environment.
 
 [source,xml]
-.*Sample XADataSource in the WildFly using the Teiid DataSource class org.teiid.jdbc.TeiidDataSource*
+.*Sample XADataSource in the {{ book.asName }} using the Teiid DataSource class org.teiid.jdbc.TeiidDataSource*
 ----
 <datasources>
         <xa-datasource jndi-name="java:/teiidDS" pool-name="teiidDS" enabled="true" use-java-context="true" use-ccm="true">
@@ -101,7 +101,7 @@ You can also use Teiid’s JDBC driver class `org.teiid.jdbc.TeiidDriver` to cre
 
 == Local JDBC Connection
 
-If you are deploying your client application on the same WildFly instance as the Teiid runtime is installed, then you will want to configure the connection to by-pass making a socket based JDBC connection. By using a slightly different data source configuration to make a "local" connection, the JDBC API will lookup a local Teiid runtime in the same VM.
+If you are deploying your client application on the same {{ book.asName }} instance as the Teiid runtime is installed, then you will want to configure the connection to by-pass making a socket based JDBC connection. By using a slightly different data source configuration to make a "local" connection, the JDBC API will lookup a local Teiid runtime in the same VM.
 
 WARNING: Since DataSources start before Teiid VDBs are deployed, leave the min pool size of 0 for local connections. Otherwise errors may occur on the startup of the Teiid DataSource.  Also note that local connections specifying a VDB version will wait for their VDB to be loaded before allowing a connection.
 

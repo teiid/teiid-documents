@@ -9,4 +9,4 @@ The extended "ExecutionFactory" must implement the `getConnection()` method to a
 
 Once the Connector Manager has obtained a connection, it will use that connection only for the lifetime of the request.  When the request has completed, the closeConnection() method called on the "ExecutionFactory". You must also override this method to properly close the connection.
 
-In cases (such as when a connection is stateful and expensive to create), connections should be pooled. If the resource adapter is JEE JCA connector based, then pooling is automatically provided by the WildFly container. If your resource adapter does not implement the JEE JCA, then connection pooling semantics are left to the user to define on their own.
+In cases (such as when a connection is stateful and expensive to create), connections should be pooled. If the resource adapter is JEE JCA connector based, then pooling is automatically provided by the {{ book.asName }} container. If your resource adapter does not implement the JEE JCA, then connection pooling semantics are left to the user to define on their own.
