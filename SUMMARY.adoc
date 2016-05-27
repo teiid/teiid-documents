@@ -79,7 +79,7 @@
 .... link:client-dev/Driver_Connection.adoc[Driver Connection]
 .... link:client-dev/DataSource_Connection.adoc[DataSource Connection]
 .... link:client-dev/Standalone_Application.adoc[Standalone Application]
-.... link:client-dev/JBoss_AS_DataSource.adoc[JBoss AS DataSource]
+.... link:client-dev/WildFly_DataSource.adoc[WildFly DataSource]
 .... link:client-dev/Using_Multiple_Hosts.adoc[Using Multiple Hosts]
 .... link:client-dev/SSL_Client_Connections.adoc[SSL Client Connections]
 .... link:client-dev/Additional_Socket_Client_Settings.adoc[Additional Socket Client Settings]

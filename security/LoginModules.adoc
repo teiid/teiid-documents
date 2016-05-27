@@ -1,7 +1,7 @@
 
 == LoginModules
 
-LoginModules are an essential part of the JAAS security framework and provide Teiid customizable user authentication and the ability to reuse existing LoginModules defined for JBossAS. Refer to the JBoss Application Server security documentation for information about configuring security in JBoss Application Server, http://docs.jboss.org/jbossas/admindevel326/html/ch8.chapter.html[http://docs.jboss.org/jbossas/admindevel326/html/ch8.chapter.html].
+LoginModules are an essential part of the JAAS security framework and provide Teiid customizable user authentication and the ability to reuse existing LoginModules defined for WildFly. Refer to the WildFly security documentation for information about configuring security in WildFly, http://docs.jboss.org/jbossas/admindevel326/html/ch8.chapter.html[http://docs.jboss.org/jbossas/admindevel326/html/ch8.chapter.html].
 
 Teiid can be configured with multiple named application policies that group together relevant LoginModules. These security-domain names can be referenced on a per vdb.
 

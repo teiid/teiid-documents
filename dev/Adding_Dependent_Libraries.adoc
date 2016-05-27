@@ -8,4 +8,4 @@ Add MANIFEST.MF file in the META-INF directory, and the following line to add th
 Dependencies: org.jboss.teiid.common-core,org.jboss.teiid.api,javax.api
 ----
 
-If your resource adapter depends upon any other third party jar files, .dll or .so files they can be placed at the root of the rar file. If any of these libraries are already available as modules in JBoss AS, then you can add the module name to the above MANIFEST.MF file to define as dependency.
+If your resource adapter depends upon any other third party jar files, .dll or .so files they can be placed at the root of the rar file. If any of these libraries are already available as modules in WildFly, then you can add the module name to the above MANIFEST.MF file to define as dependency.
