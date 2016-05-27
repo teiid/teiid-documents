@@ -5,7 +5,7 @@
 
 For the most part, interacting with Teiid VDBs (Virtual Databases) through Hibernate is no different from working with any other type of data source.  First, depending on where your Hibernate application will reside, either in the same VM as the Teiid Runtime or on a separate VM, will determine which jar’s are used. 
 
-* Running in same VM in the JBoss AS server, then the teiid-client-\{version}.jar and teiid-hibernate-dialect-\{version}.jar already reside in <jboss-install>/modules/org/jboss/teiid/client
+* Running in same VM in the WildFly server, then the teiid-client-\{version}.jar and teiid-hibernate-dialect-\{version}.jar already reside in <jboss-install>/modules/org/jboss/teiid/client
 * Running separate VM’s,you need the Teiid JDBC Driver JAR and Teiid’s Hibernate Dialect JAR in the Hibernate’s classpath.  The Hibernate JAR can be found in <jboss-install>/modules/org/jboss/teiid/client, teiid-hibernate-dialect-\{version}.jar and the http://www.jboss.org/teiid/downloads.html[Teiid JDBC Driver JAR] needs to be downloaded.
 
 These JAR files have the `org.teiid.dialect.TeiidDialect` and `org.teiid.jdbc.TeiidDriver` and `org.teiid.jdbc.TeiidDataSource` classes.

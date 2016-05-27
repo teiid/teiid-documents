@@ -1,7 +1,7 @@
 
 = System Properties
 
-Some of Teiid’s low-level behavior can be configured via system properties, rather than through configuration files. A typical place to set system properties for JBoss AS launches is in the <jboss-install>/bin/<mode>.conf. A property setting has the format `-Dproperty=value`.
+Some of Teiid’s low-level behavior can be configured via system properties, rather than through configuration files. A typical place to set system properties for WildFly launches is in the <jboss-install>/bin/<mode>.conf. A property setting has the format `-Dproperty=value`.
 
 *General*
 

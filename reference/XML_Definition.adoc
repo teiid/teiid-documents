@@ -59,7 +59,7 @@ For example, if a VDB defines a table "TableA" in schema "modelName" with column
 
 The above XML defined three data roles, "RoleA" which allows everything except delete on the table, "RoleB" that allows only read operation on the table, and the "admin" role with all permissions. Since Teiid uses deny by default, there is no explicit data-role entry needed for "RoleB". Note that explicit column permissions are not needed for RoleA, since the parent resource path, modelName.TableA, permissions still apply. RoleB however must explicitly disallow read to column2.
 
-The "mapped-role-name" defines the container JAAS roles that are assigned the data role. For assigning roles to your users in the JBoss AS, check out the instructions for the selected Login Module. Check the "Admin Guide" for configuring Login Modules.
+The "mapped-role-name" defines the container JAAS roles that are assigned the data role. For assigning roles to your users in the WildFly, check out the instructions for the selected Login Module. Check the "Admin Guide" for configuring Login Modules.
 
 *Additional Role Attributes*
 

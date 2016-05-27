@@ -1,7 +1,7 @@
 
 = Clustering in Teiid
 
-Since Teiid is installed in JBoss AS, there is no additional configuration needed beyond what was performed when Teiid is setup in Domain Mode. See the Domain Mode section in the Teiid link:Installation_Guide.adoc[Installation Guide]. Just make sure that you installed Teiid in every JBoss AS node and started all JBoss AS instances in the Domain mode that to be a part of the cluster.
+Since Teiid is installed in WildFly, there is no additional configuration needed beyond what was performed when Teiid is setup in Domain Mode. See the Domain Mode section in the Teiid link:Installation_Guide.adoc[Installation Guide]. Just make sure that you installed Teiid in every WildFly node and started all WildFly instances in the Domain mode that to be a part of the cluster.
 
 Typically users create clusters to improve the performance of the system through:
 

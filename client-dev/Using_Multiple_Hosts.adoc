@@ -1,7 +1,7 @@
 
 = Using Multiple Hosts
 
-A group of Teiid Servers in the same JBoss AS cluster may be connected using failover and load-balancing features. To enable theses features in their simplest form, the client needs to specify multiple host name and port number combinations on the URL connection string.
+A group of Teiid Servers in the same WildFly cluster may be connected using failover and load-balancing features. To enable theses features in their simplest form, the client needs to specify multiple host name and port number combinations on the URL connection string.
 
 [source,java]
 .*Example URL connection string*
@@ -19,7 +19,7 @@ Post connection fail over will be used, if the _autoFailover_ connection propert
 
 == Load Balancing
 
-Post connection load balancing can be utilized in one of two ways. First if you are using `TeiidDataSource` and the Connections returned by Teiid `PooledConnections` have their `close` method called, then a new server instance will be selected automatically. However when using driver based connections or even when using `TeiidDataSource` in a connection pool (such as JBoss AS), the automatic load balancing will not happen. Second you can explicitly trigger load balancing through the use of the set statement:
+Post connection load balancing can be utilized in one of two ways. First if you are using `TeiidDataSource` and the Connections returned by Teiid `PooledConnections` have their `close` method called, then a new server instance will be selected automatically. However when using driver based connections or even when using `TeiidDataSource` in a connection pool (such as WildFly), the automatic load balancing will not happen. Second you can explicitly trigger load balancing through the use of the set statement:
 
 [source,java]
 ----
@@ -29,7 +29,7 @@ SET NEWINSTANCE TRUE
 Typically you will not need want to issue this statement manually, but instead use it as the connection test query on your DataSource configuration.
 
 [source,xml]
-.*JBoss AS DataSource With Post Connection Load Balancing*
+.*WildFly DataSource With Post Connection Load Balancing*
 ----
 <datasources>
         <datasource jndi-name="java:/teiidDS" pool-name="teiidDS">
