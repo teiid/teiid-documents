@@ -38,7 +38,7 @@ Run the following CLI to add Keycloak specific modules to the server
 ---- 
 /extension=org.keycloak.keycloak-saml-adapter-subsystem:add(module=org.keycloak.keycloak-saml-adapter-subsystem) 
 /extension=org.keycloak.keycloak-adapter-subsystem:add(module=org.keycloak.keycloak-adapter-subsystem) 
------ 
+---- 
 
 above commands will result in XML in standalone.xml or domain.xml file like 
 
