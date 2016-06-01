@@ -12,11 +12,15 @@ In Teiid, a view is a virtual table based on the computing(loading/transforming/
 
 image:images/teiid-external-mat.png[External Materialization]
 
-Materialized views are just like other views, with additional options in <<View Options, View Options>>, the data are pre-computed and cached in an external database system. External materialized views give the administrator full control over the loading and refresh strategies.
+**Materialized View** - Materialized views are just like other views, with additional options in <<View Options, View Options>>, to enable pre-computing and caching data to an external database system. 
 
-Materialized tables are source table for Materialized views, have the same structure with Materialized views, live on physical database system, need create manually and reference with Materialized views via `MATERIALIZED_TABLE` option in designing. The data between Materialized tables and physical tables keep synchronized by teiid system with a time interval.  
+**Materialized Table** - Materialized tables are target table for Materialized views, have the same structure with Materialized views, live on physical database system, need to create manually and referenced with the Materialized views via `MATERIALIZED_TABLE` option in designing. The data between Materialized tables and physical tables keep synchronized by teiid system with a time interval.
 
-Starting from Teiid version 8.5, Teiid gives the option to configure metadata on the view to control the simple load and refresh policies. Administrators of Teiid system are free to manage their external materialization table through other means based on their needs.
+**MatView Status Table** - Each Materialized view have to reference with a status table, used to save the Materialized views' status, the status table usually live on the same physical source with the `Materialized Table`, need to create manually and referenced with the Materialized views via `teiid_rel:MATVIEW_STATUS_TABLE` in designing. 
+
+**Materialized Stage Table** - Each Materialized view can have a stage table, it has the same structure with `Materialized View` and `Materialized Table`, need to create manually and referenced with the Materialized views via `teiid_rel:MATERIALIZED_STAGE_TABLE` in designing. Primary purpose of stage table is for better management, if stage table defined, the source data first be populated to stage table, then stage table be renamed to `Materialized Table`.
+
+External materialized views give the administrator full control over the loading and refresh strategies. Refer to <<Materialization Management, Materialization Management>> for details.
 
 == View Options
 
@@ -40,7 +44,7 @@ Starting from Teiid version 8.5, Teiid gives the option to configure metadata on
 
 |teiid_rel:ALLOW_MATVIEW_MANAGEMENT
 |Allow Teiid based management
-|false
+|true
 |false
 
 |teiid_rel:MATVIEW_STATUS_TABLE
@@ -71,7 +75,7 @@ teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
 
 |teiid_rel:MATERIALIZED_STAGE_TABLE
 |When MATVIEW_LOAD_SCRIPT property not defined, Teiid loads the cache contents into this table. Required when MATVIEW_LOAD_SCRIPT not defined
-|false
+|true
 |n/a
 
 |teiid_rel:ON_VDB_START_SCRIPT
@@ -99,42 +103,36 @@ Set the `MATERIALIZED` to 'TRUE' and the `MATERIALIZED_TABLE` point to a target 
 
 The options start with `teiid_rel:` prefix are extension properties used in management based system procedure.  Once a View with above properties defined and deployed, the following sequence of events will take place
 
-1.  Upon the VDB deployment, teiid_rel:ON_VDB_START_SCRIPT will be run on completion of the deployment.
-2.  Based on the teiid_rel:MATVIEW_TTL defined a scheduler entry will be created to run SYSADMIN.loadMatView procedure, which loads the cache contents.
-3.  This procedure, first inserts/updates a entry in teiid_rel:MATVIEW_STATUS_TABLE, which indicates that the cache is being loaded.
-4.  In same procedure, then teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT will be run if defined
-5.  In same procedure, then teiid_rel:MATVIEW_LOAD_SCRIPT will be run if defined, otherwise one will be automatically created based on the view’s transformation logic.
-6.  Then, teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT will be run, to close out and create any indexes on the mat view table.
-7.  The procedure, then will set teiid_rel:MATVIEW_STATUS_TABLE entry to "LOADED" and valid.
-8.  Based on the teiid_rel:MATVIEW_TTL, the SYSADMIN.matViewStatus is ran by the Scheduler, to queue further cache re-loads.
-9.  When VDB is un-deployed (not when server is restarted) the teiid_rel:ON_VDB_DROP_SCRIPT script will be run.
+1. Upon the VDB deployment, `teiid_rel:ON_VDB_START_SCRIPT` will be run on completion of the deployment.
+2. Based on the `teiid_rel:MATVIEW_TTL` defined ttl, a Scheduler run/queue JobTask be created, which keeps the cache contents synchronized with source table. JobTask will first run link:../reference/sysadmin_schema.adoc#_sysadmin_matviewstatus[SYSADMIN.matViewStatus] procedure, refine the next JobTask's deplay by retrived Materialized view status and the ttl, then run link:../reference/sysadmin_schema.adoc#_sysadmin_loadmatview[SYSADMIN.loadMatView] procedure, which loads the cache contents. More details refer to <<Materialization View Loading, Materialization View Loading>>.
+3. When VDB is un-deployed (not when server is restarted) the `teiid_rel:ON_VDB_DROP_SCRIPT` script will be run.
 
 TIP: The start/stop scripts are not cluster aware - that is they will run on each cluster member as the VDB is deployed. When deploying into a clustered environment, the scripts should be written in such a way as to be cluster safe.
 
-== User Managed Materialization Management
+=== Materialization View Loading
 
-*Typical Usage Steps*
+link:../reference/sysadmin_schema.adoc#_sysadmin_loadmatview[SYSADMIN.loadMatView] used to perform a complete refresh of materialized table, it's base on extension properties in <<View Options, View Options>>:
 
-* Create materialized views and corresponding physical materialized target tables in Designer. This can be done through setting the materialized and target table manually, or by selecting the desired views, right clicking, then selecting Modeling->"Create Materialized Views"
-* Generate the DDL for your physical model materialization target tables. This can be done by selecting the model, right clicking, then choosing Export->"Metadata Modeling"->"Data Definition Language (DDL) File". This script can be used to create the desired schema for your materialization target on whatever source you choose.
-* Determine a load and refresh strategy. With the schema created the most simplistic approach is to just load the data. The load can even be done through Teiid with
+1. Inserts/updates a entry in `teiid_rel:MATVIEW_STATUS_TABLE`, which indicates that the cache is being loaded.
+2. Initializes `teiid_rel:MATVIEW_LOAD_SCRIPT` to `insert into stage_table select * from matview option nocache matview` if not defined.
+3. Executes `teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT` if defined.
+4. Executes `teiid_rel:MATVIEW_LOAD_SCRIPT`.
+5. Executes `teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT` if defined.
+6. Updates `teiid_rel:MATVIEW_STATUS_TABLE` entry to set materialized view status status to "LOADED" and valid.
 
-[source,sql]
-----
-insert into target_table select * from matview option nocache matview
-----
+== Materialization Management
 
-That however may be too simplistic because your index creation may be more performant if deferred until after the table has been created. Also full snapshot refreshes are best done to a staging table then swapping it for the existing physical table to ensure that the refresh does not impact user queries and to ensure that the table is valid prior to use.
+Users when they are designing their views, they can define additional metadata and extension properties(refer to above section) on their views to control the loading and refreshing of external materialization cache. This option provides a limited but a powerful way to manage the materialization views. For this purpose, link:../reference/sysadmin_schema.adoc#_virtual_procedures[SYSADMIN Schema] defines three procedures (link:../reference/sysadmin_schema.adoc#_sysadmin_loadmatview[loadMatView], link:../reference/sysadmin_schema.adoc#_sysadmin_updatematview[updateMatView], link:../reference/sysadmin_schema.adoc#_sysadmin_matviewstatus[matViewStatus]) to cooperate with the Materialization Management. 
 
-== Metadata Based Materialization Management
-
-Users when they are designing their views, they can define additional metadata on their views to control the loading and refreshing of external materialization cache. This option provides a limited but a powerful way to manage the materialization views. For this purpose, link:../reference/sysadmin_schema.adoc#_virtual_procedures[SYSADMIN Schema] model in your VDB defines three stored procedures (link:../reference/sysadmin_schema.adoc#_sysadmin_loadmatview[loadMatView], link:../reference/sysadmin_schema.adoc#_sysadmin_updatematview[updateMatView], link:../reference/sysadmin_schema.adoc#_sysadmin_matviewstatus[matViewStatus]) in its schema. Based on the defined metadata on the view, and these Procedures use a simple scheduler automatically starts during the VDB deployment and loads and keeps the cache fresh.
-
-NOTE: The Designer tooling for this feature is lacking at this moment but this will be added in coming releases.
+Based on the defined metadata, extension properties(refer to above section)on the view, and management system procedures, a Scheduler automatically starts during the VDB deployment and loads and keeps the cache fresh.
 
 === Typical Usage Steps
 
-* To manage and report the loading and refreshing activity of materialization view, Teiid expects the user to define "Status" table with following schema in any one of the source models. Create this table on the physical database, before you do the import of this physical source.
+==== 1. Create Tables
+
+To manage and report the loading and refreshing activity of materialization view, a `Materialized Table`, a `MatView Status Table` and  a `Materialized Stage Table` need be be defined in any one of the source models. Create these tables on the physical database, before you start designing `Materialized View`.
+
+The `Materialized Table` and `MatView Status Table` is necessary, `Materialized Stage Table` is optional. The `Materialized Table` and `Materialized Stage Table` should have the same structure with the `Materialized View`. The `MatView Status Table` must create with below schema:
 
 [source,sql]
 ----
@@ -155,8 +153,44 @@ CREATE TABLE status
 );
 ----
 
-* Create Views and corresponding physical materialized target tables in Designer or using DDL. This can be done through setting the materialized and target table manually, or by selecting the desired views, right clicking, then selecting Modeling->"Create Materialized Views" in the Designer.
-* Define the extension properties Materialization in <<View Options, View Options>> on the view.
+<<Appendix-1: DDL for creating MatView Status Table, Appendix-1: DDL for creating MatView Status Table>> contains a series of verified schema against diverse physic source.
+
+==== 2. Create Materialized View
+
+To better management and control the loading and refreshing strategies of materialized view, the extension properties in <<View Options, View Options>>, this can be done either through Designer, or edit the DDL. Refer to <<Define Materialized View in Designer, Define Materialized View in Designer>> if through Designer.
+
+The loading and refreshing strategies controled by load scripts, there are two kinds of load scripts:
+
+* VDB Scope Scripts - VDB start script and VDB stop script which defined by `teiid_rel:ON_VDB_START_SCRIPT` and `teiid_rel:ON_VDB_DROP_SCRIPT` correspondently, its executed in VDB deploying and removing.
+* Procedure Scope Scripts - before load script, load script and after load script which defined by `teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT`, `teiid_rel:MATVIEW_LOAD_SCRIPT` and `teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT` correspondently, these scripts be executed in a sequence by link:../reference/sysadmin_schema.adoc#_sysadmin_loadmatview[SYSADMIN.loadMatView], refer to <<Materialization View Loading, Materialization View Loading>> for details. 
+
+To refresh/load the materialized view, the basic principles to define load script is:
+ 
+* Define truncate target/staging table sql in `teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT`
+* Define insert into target/staging table sql in `teiid_rel:MATVIEW_LOAD_SCRIPT`
+* Define alter stage table to target table logic in `teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT`.
+
+If stage table is defined, you can define truncate staging table in before load script, define insert staging table in load script(if not defined, `insert into stageTable select * from matview option nocache matview` will be set in runtime), define alter staging table to materialized table in after load script:
+
+[source,sql]
+----
+"teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT" 'execute accounts.native(''truncate table stageTable'');',
+"teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT"  'execute accounts.native(''ALTER TABLE matTable RENAME TO matTable_temp'');execute accounts.native(''ALTER TABLE stageTable RENAME TO matTable'');execute accounts.native(''ALTER TABLE matTable_temp RENAME TO stageTable'');', 
+----  
+
+If stage table is not defined, you can define truncate target table in before load script and define insert target table in load script:
+
+[source,sql]
+----
+"teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT" 'execute accounts.native(''truncate table matTable'');',
+"teiid_rel:MATVIEW_LOAD_SCRIPT" 'insert into matTable select * from matview option nocache matview',
+---- 
+
+NOTE: That however may be too simplistic because your index creation may be more performant if deferred until after the table has been created. Also full snapshot refreshes are best done to a staging table then swapping it for the existing physical table to ensure that the refresh does not impact user queries and to ensure that the table is valid prior to use.
+
+==== 3. Use Materialized View
+
+Once Materialized View defined completed, deploy it to a Teiid Server, create a new session query against Materialized View, you will find it's time-saving and cpu-saving if your query sentences are complex and across multiple, heterogeneous data stores.
 
 === Loading And Refreshing
 
@@ -169,82 +203,33 @@ In Teiid, once a VDB be started, all External Materialized Views be completely r
 
 === A sample VDB with external materialized view options
 
-[source,xml]
-----
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<vdb name="sakila" version="1">
-    <description>Shows how to call JPA entities</description>
+https://raw.githubusercontent.com/teiid/teiid-embedded-examples/master/embedded-caching/src/main/resources/teiid-mat-example-vdb.xml[teiid-mat-example-vdb.xml] is a sample VDB definition which contains six materialized view:
 
-    <model name="pg">
-        <source name="pg" translator-name="postgresql-override" connection-jndi-name="java:/sakila-ds"/>
-    </model>
+* Model_A.VIEW_A - demonstrates `MATVIEW_BEFORE_LOAD_SCRIPT`, `MATVIEW_AFTER_LOAD_SCRIPT` with `MATERIALIZED_STAGE_TABLE`
+* Model_B.VIEW_B - demonstrates `MATVIEW_LOAD_SCRIPT` with `MATERIALIZED_STAGE_TABLE`
+* Model_C.VIEW_C - demonstrates `MATVIEW_BEFORE_LOAD_SCRIPT`, `MATVIEW_LOAD_SCRIPT` without `MATERIALIZED_STAGE_TABLE`
+* Model_D.VIEW_D - demonstrates `MATVIEW_AFTER_LOAD_SCRIPT` with `MATERIALIZED_STAGE_TABLE`
+* Model_E.VIEW_E - demonstrates a minmum options in materialized view
+* Model_F.VIEW_F - demonstrates a maxmum options in materialized view
 
-    <model name="sakila" type="VIRTUAL">
-    <metadata type="DDL"><![CDATA[
-        CREATE VIEW actor (
-           actor_id integer,
-           first_name varchar(45) NOT NULL,
-           last_name varchar(45) NOT NULL,
-           last_update timestamp NOT NULL
-        ) OPTIONS (MATERIALIZED 'TRUE', UPDATABLE 'TRUE',
-                MATERIALIZED_TABLE 'pg.public.mat_actor',
-                "teiid_rel:MATERIALIZED_STAGE_TABLE" 'pg.public.mat_actor_staging',
-                "teiid_rel:ALLOW_MATVIEW_MANAGEMENT" 'true',
-                "teiid_rel:MATVIEW_STATUS_TABLE" 'pg.public.status',
-                "teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT" 'execute pg.native("truncate table mat_actor_staging");',
-                "teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT" 'execute pg.native("ALTER TABLE mat_actor RENAME TO mat_actor_temp");execute pg.native("ALTER TABLE mat_actor_staging RENAME TO mat_actor");execute pg.native("ALTER TABLE mat_actor_temp RENAME TO mat_actor_staging;")',
-                "teiid_rel:MATVIEW_SHARE_SCOPE" 'NONE',
-                "teiid_rel:MATVIEW_ONERROR_ACTION" 'THROW_EXCEPTION',
-                "teiid_rel:MATVIEW_TTL" 300000,
-                "teiid_rel:ON_VDB_DROP_SCRIPT" 'DELETE FROM pg.public.status WHERE Name="actor" AND schemaname = "sakila"')
-            AS SELECT actor_id, first_name, last_name, last_update from pg."public".actor;
-     ]]>
-    </metadata>
-    </model>
-    <translator name="postgresql-override" type="postgresql">
-        <property name="SupportsNativeQueries" value="true"/>
-    </translator>
-</vdb>
-----
+== Define Materialized View in Designer
 
-== Materialization with Embedded Server
+*Typical Usage Steps*
 
-With this VDB and the above table extension properties, we can set up External Materialization to Embedded Server.
-
-=== Usage Steps
-
-**1. Create MATERIALIZED_TABLE, MATVIEW_STATUS_TABLE and MATERIALIZED_STAGE_TABLE**
-
-MATERIALIZED_TABLE is necessary, it can be any name, but it’s structure should match to materialization view.  MATVIEW_STATUS_TABLE is necessary, it should be named as 'status', it’s structure like the below schema
+* Create materialized views and corresponding physical materialized target tables in Designer. This can be done through setting the materialized and target table manually, or by selecting the desired views, right clicking, then selecting Modeling->"Create Materialized Views"
+* Generate the DDL for your physical model materialization target tables. This can be done by selecting the model, right clicking, then choosing Export->"Metadata Modeling"->"Data Definition Language (DDL) File". This script can be used to create the desired schema for your materialization target on whatever source you choose.
+* Determine a load and refresh strategy. With the schema created the most simplistic approach is to just load the data. The load can even be done through Teiid with
 
 [source,sql]
 ----
-CREATE TABLE status 
-( 
-  VDBName varchar(50) not null, 
-  VDBVersion varchar(50) not null, 
-  SchemaName varchar(50) not null, 
-  Name varchar(256) not null, 
-  TargetSchemaName varchar(50), 
-  TargetName varchar(256) not null, 
-  Valid boolean not null, 
-  LoadState varchar(25) not null, 
-  Cardinality long, 
-  Updated timestamp not null, 
-  LoadNumber long not null, 
-  PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name) 
-);
+insert into target_table select * from matview option nocache matview
 ----
 
-If 'teiid_rel:MATVIEW_LOAD_SCRIPT' MATERIALIZED_STAGE_TABLE is necessary, it can be any name, but it’s structure should match to materialization view.
+NOTE: The Designer tooling for this feature is lacking at this moment but this will be added in coming releases.
 
-**2. Create Materialization Views**
+== Materialization with Embedded Server
 
-Create Materialization Views and corresponding physical materialized target table, staging table, status table, it should be manually created in a model of the VDB - and the model type should be 'VIRTUAL'.
-
-**3. Set up Embedded Server**
-
-Excepting add ConnectionFactory and Translator to Embedded Server, TransactionManager also is necessay, the set up code snipets snippet like
+Views with extension properties in <<View Options, View Options>> and load scripts in <<Materialization Management, Materialization Management>> defined, you can set up External Materialization with Embedded Server as below 
 
 [source,java]
 ----
@@ -260,4 +245,47 @@ server.deployVDB("matView-vdb.xml");
 ----
 
 https://raw.githubusercontent.com/teiid/teiid-embedded-examples/master/embedded-caching/src/main/java/org/teiid/example/ExternalMaterializationExample.java[An Usage Example]
+
+
+== Appendix-1: DDL for creating MatView Status Table
+
+[source,sql]
+.*h2*
+----
+CREATE TABLE status
+(
+  VDBName varchar(50) not null,
+  VDBVersion varchar(50) not null,
+  SchemaName varchar(50) not null,
+  Name varchar(256) not null,
+  TargetSchemaName varchar(50),
+  TargetName varchar(256) not null,
+  Valid boolean not null,
+  LoadState varchar(25) not null,
+  Cardinality long,
+  Updated timestamp not null,
+  LoadNumber long not null,
+  PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
+);
+----
+
+[source,sql]
+.*MariaDB*
+----
+CREATE TABLE status
+(
+  VDBName varchar(50) not null,
+  VDBVersion integer not null,
+  SchemaName varchar(50) not null,
+  Name varchar(256) not null,
+  TargetSchemaName varchar(50),
+  TargetName varchar(256) not null,
+  Valid boolean not null,
+  LoadState varchar(25) not null,
+  Cardinality bigint,
+  Updated timestamp not null,
+  LoadNumber bigint not null,
+  PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
+);
+----
 
