@@ -139,7 +139,7 @@ Support for the two functions being registered ("abs" and "concat") must be decl
 
 == Installing Extensions
 
-Once you have developed an extension to the JDBC translator, you must install it into the Teiid Server. The process of packaging or deploying the extended JDBC translators is exactly as any other other translator. Since the RDMS is accessible already through its JDBC driver, there is no need to develop a resource adapter for this source as JBoss AS provides a wrapper JCA connector (DataSource) for any JDBC driver.
+Once you have developed an extension to the JDBC translator, you must install it into the Teiid Server. The process of packaging or deploying the extended JDBC translators is exactly as any other other translator. Since the RDMS is accessible already through its JDBC driver, there is no need to develop a resource adapter for this source as {{ book.asName }} provides a wrapper JCA connector (DataSource) for any JDBC driver.
 
 Refer to link:Packaging.html[Packaging] and link:Deployment.adoc[Deployment] for more details.
 

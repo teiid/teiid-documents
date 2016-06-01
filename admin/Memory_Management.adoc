@@ -1,7 +1,9 @@
 
 = Memory Management
 
-The _BufferManager_ is responsible for tracking both memory and disk usage by Teiid. Configuring the _BufferManager_ properly is one of the most important parts of ensuring high performance. In most instances though the default settings are sufficient as they will scale with the JVM and consider other properties such as the setting for max active plans. Execute following command on CLI to find all possible settings on _BufferManager_:
+The _BufferManager_ is responsible for tracking both memory and disk usage by Teiid. Configuring the _BufferManager_ properly along with data sources and threading ensures high performance. In most instances though the default settings are sufficient as they will scale with the JVM and consider other properties such as the setting for max active plans. 
+
+Execute following command on CLI to find all possible settings on _BufferManager_:
 
 [source,java]
 ----
@@ -58,24 +60,32 @@ NOTE: When left at the default setting the calculated memory buffer space will b
 
 *memory-buffer-off-heap* (default false) - Take advantage of the _BufferManager_ memory buffer to access system memory without allocating it to the heap. Setting _memory-buffer-off-heap_ to "true" will allocate the Teiid memory buffer off heap. Depending on whether your installation is dedicated to Teiid and the amount of system memory available, this may be preferable to on-heap allocation. The primary benefit is additional memory usage for Teiid without additional garbage collection tuning. This becomes especially important in situations where more than 32GB of memory is desired for the VM. Note that when using off-heap allocation, the memory must still be available to the java process and that setting the value of _memory-buffer-space_ too high may cause the VM to swap rather than reside in memory. With large off-heap buffer sizes (greater than several gigabytes) you may also need to adjust VM settings.
 
-NOTE: *Sun VM* - For Sun VMs the relevant VM settings are MaxDirectMemorySize and UseLargePages. For example adding: `-XX:MaxDirectMemorySize=12g -XX:+UseLargePages` to the VM process arguments would allow for an effective allocation of approximately an 11GB Teiid memory buffer (the *memory-buffer-space* setting) accounting for any additional direct memory that may be needed by the AS or applications running in the AS.
+NOTE: *Oracle/Sun VM* - the relevant VM settings are MaxDirectMemorySize and UseLargePages. For example adding: '-XX:MaxDirectMemorySize=12g -XX:+UseLargePages' to the VM process arguments would allow for an effective allocation of approximately an 11GB Teiid memory buffer (the *memory-buffer-space* setting) accounting for any additional direct memory that may be needed by the AS or applications running in the AS.
 
 == Disk Usage
 
-*max-buffer-space* (default -1) - For table page and result batches the buffer manager will have a limited number of files that are dedicated to a particular storage size. However, as mentioned in the installation, creation of Teiid lob values (for example through SQL/XML) will typically create one file per lob once the lob exceeds the allowable in memory size of 8KB. In heavy usage scenarios, consider pointing the buffer directory on a partition that is routinely defragmented. By default Teiid will use up to 50GB of disk space. This is tracked in terms of the number of bytes written by Teiid. For large data sets, you may need to increase the _max-buffer-space_ setting.
+*max-buffer-space* (default -1) - For table page and result batches the buffer manager will have a limited number of files that are dedicated to a particular storage size. However, as mentioned in the installation, creation of Teiid lob values (for example through SQL/XML) will typically create one file per lob once the lob exceeds the allowable in memory size of 32KB. In heavy usage scenarios, consider pointing the buffer directory on a partition that is routinely defragmented. 
+By default Teiid will use up to 50GB of disk space. This is tracked in terms of the number of bytes written by Teiid. For large data sets, you may need to increase the _max-buffer-space_ setting.
 
 == Limitations
 
 It’s also important to keep in mind that Teiid has memory and other hard limits which breaks down along several lines in terms of # of storage objects tracked, disk storage, streaming data size/row limits, etc.
 
 1.  The buffer manager has a max addressable space of 16 terabytes - but due to fragmentation you’d expect that the max usable would be less. This is the maximum amount of storage available to Teiid for all temporary lobs, internal tables, intermediate results, etc.
-2.  The max size of an object (batch or table page) that can be serialized by the buffer manager is 32 GB - but you should not get near that (the default limit is 8 MB). A batch is set or rows that are flowing through Teiid engine.
+2.  The max size of an object (batch or table page) that can be serialized by the buffer manager is 32 GB - but you should approach that limit (the default limit is 8 MB). A batch/page is set or rows that are flowing through Teiid engine and is dynamically scaled based upon the estimated data width so that the expected memory size is consistent.
+3.  The max-processing-kb and max-reserve-kb are based upon memory footprint estimations and not exact sizes - actual memory usage and garbage collection cycles are influenced by a lot of other factors.
 
-However handling a source that has tera/petabytes of data doesn’t by itself impact Teiid in any way. What matters is the processing operations that are being performed and/or how much of that data do we need to store on a temporary basis in Teiid. With a simple forward-only query, as long as the result row count is less than 2^31, Teiid be perfectly happy to return a petabyte of data.
+Handling a source that has tera/petabytes of data doesn't by itself impact Teiid in any way. What matters is the processing operations that are being performed and/or how much of that data do we need to store on a temporary basis in Teiid. With a simple forward-only query, Teiid will return a petabytes of data with minimal memory usage.
 
 === Other Considerations for Sizing
 
 Each batch/table page requires an in memory cache entry of approximately ~ 128 bytes - thus the total tracked max batches are limited by the heap and is also why we recommend to increase the processing batch size on larger memory or scenarios making use of large internal materializations. The actual batch/table itself is managed by buffer manager, which has layered memory buffer structure with spill over facility to disk.
 
-Using internal materialization is based on the buffermanager. Buffermanager settings may need to be updated based upon the desired amount of internal materialization performed by deployed vdbs.
+Using internal materialization is based on the BufferManager. BufferManager settings may need to be updated based upon the desired amount of internal materialization performed by deployed vdbs.
 
+If an out of memory error occurs it is best to first capture a heap dump to determine where memory is being held - tweaking the BufferManager settings may not be necessary depending upon the cause.
+
+== Common Configuration Scenarios
+
+In addition to scenarios outlined above, a common scenario would be to minimize the amount of on heap space consumed by Teiid.  This can be done by moving the memory buffer to off heap with the memory-buffer-off-heap setting or by restricting the max-reserve-kb setting.  
+Reducing the max-processing-kb setting should generally not be necessary, unless there is a need to severly restrict the heap usage beyond the max-reserve-kb setting.

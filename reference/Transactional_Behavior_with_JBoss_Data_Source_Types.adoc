@@ -1,7 +1,7 @@
 
-= Transactional Behavior with JBoss Data Source Types
+= Transactional Behavior with {{ book.asName }} Data Source Types
 
-JBoss AS allows creation of different types of data sources, based on their transactional capabilities. The type of data source you create for your VDB’s sources also dictates if that data source will be participating the distributed transaction or not, irrespective of the transaction scope you selected from above. Here are different types of data sources
+{{ book.asName }} allows creation of different types of data sources, based on their transactional capabilities. The type of data source you create for your VDB’s sources also dictates if that data source will be participating the distributed transaction or not, irrespective of the transaction scope you selected from above. Here are different types of data sources
 
 * xa-datasource: Capable of participating in the distributed transaction using XA. This is recommended type be used with any Teiid sources.
 
@@ -21,7 +21,7 @@ JBoss AS allows creation of different types of data sources, based on their tran
 
 * A-no-tx, B-no-tx, C-no-tx : Can participate in all transaction scopes, but none of the sources will be bound by transactional terms. This is equivalent to not using transactions or setting Command mode with "autoCommitTxn=OFF".
 
-NOTE: Teiid Designer creates "local" data source by default which is not optimal for the XA transactions. Teiid would like this to be creating a XA data sources, however with current limitations with DTP that feature is currently not available. To create XA data source, look in JBoss AS "doc" directory for example templates, or use the "admin-console" to create the XA data sources.
+NOTE: Teiid Designer creates "local" data source by default which is not optimal for the XA transactions. Teiid would like this to be creating a XA data sources, however with current limitations with DTP that feature is currently not available. To create XA data source, look in the {{ book.asName }} "doc" directory for example templates, or use the "admin-console" to create the XA data sources.
 
 If your datasource is not XA, and not the only local source and can not use "no-tx", then you can look into extending the source to implement the compensating XA implementation. i.e. define your own resource manager for your source and manage the transaction the way you want it to behave. Note that this could be complicated if not impossible if your source natively does not support distributed XA protocol. In summay
 
@@ -35,10 +35,9 @@ If your datasource is not XA, and not the only local source and can not use "no-
 
 .*Teiid Transaction Participation*
 |===
-|Teiid-Tx-Scope |XA source |Local Source
+|Teiid-Tx-Scope |XA source |Local Source |No-Tx Source
 
-|No-Tx SOurce
-|Local
+|Local (Auto-commit=false)
 |always
 |Only If Single Source
 |never
@@ -48,7 +47,7 @@ If your datasource is not XA, and not the only local source and can not use "no-
 |Only If Single Source
 |never
 
-|Auto-commit=true, AutoCommitTxn=ON
+|Auto-commit=true, AutoCommitTxn=ON, or DETECT and txn started
 |always
 |Only If Single Source
 |never
@@ -56,10 +55,5 @@ If your datasource is not XA, and not the only local source and can not use "no-
 |Auto-commit=true, AutoCommitTxn=OFF
 |never
 |never
-|never
-
-|Auto-commit=true, AutoCommitTxn=DETECT
-|always
-|Only If Single Source
 |never
 |===

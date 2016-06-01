@@ -1,6 +1,8 @@
 
 = Configuring the Data Source Name (DSN)
 
+See link:ODBC_Support.adoc#_connection_settings[Teiid supported options] for a description of the client configuration.
+
 == Windows Installation
 
 Once you have installed the ODBC Driver Client software on your workstation, you have to configure it to connect to a Teiid Runtime. Note that the following instructions are specific to the Microsoft Windows Platform.
@@ -72,12 +74,9 @@ That should show you all the ODBC drivers installed in your system. Now it is ti
   ServerType = Postgres
   ConnSettings = 
   UseServerSidePrepare=1
-  ByteaAsLongVarBinary=1
-  Optimizer=0
-  Ksqo=0
   Debug=0
   Fetch = 10000
-  # enable below when dealing large resultsets to enable cursoring(note prepared stmts will not work)
+  # enable below when dealing large resultsets to enable cursoring
   #UseDeclareFetch=1                
 ----
 

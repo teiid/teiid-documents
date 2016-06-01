@@ -28,7 +28,7 @@ Then build a JAR archive with above implementation class and create file a named
 com.something.CustomMetadataRepository
 ----
 
-Once the JAR file has been built, it needs to be deployed in the JBoss AS as a module under _<jboss-as>/modules_ directory. Follow the below steps to create a module.
+Once the JAR file has been built, it needs to be deployed in the {{ book.asName }} as a module under _<jboss-as>/modules_ directory. Follow the below steps to create a module.
 
 * Create a directory _<jboss-as>/modules/com/something/main_
 

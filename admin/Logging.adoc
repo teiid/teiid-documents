@@ -1,7 +1,7 @@
 
 = Logging
 
-The Teiid system provides a wealth of information via logging. To control logging level, contexts, and log locations, you should be familiar with http://logging.apache.org/log4j/[log4j] and the container’s _standalone-teiid.xml_ or _domain-teiid.xml_ configuration files depending upon the start up mode of WildFly.
+The Teiid system provides a wealth of information via logging. To control logging level, contexts, and log locations, you should be familiar with http://logging.apache.org/log4j/[log4j] and the container’s _standalone-teiid.xml_ or _domain-teiid.xml_ configuration files depending upon the start up mode of {{ book.asName }}.
 
 All the logs produced by Teiid are prefixed by "org.teiid". This makes it extremely easy to control of of Teiid logging from a single context. Note however that changes to the log configuration file manually require a restart to take affect. CLI based log context modifications are possible, however details are beyond the scope of this document.
 

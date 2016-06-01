@@ -56,7 +56,7 @@ A VDB or virtual database definition is contained in an XML file. For .vdb archi
 </vdb>
 ----
 
-NOTE: *Property Substitution* - If a -vdb.xml file has defined property values like $\{my.property.name.value}, these can be replaced by actual values that are defined through JAVA system properties. To define system properties on a JBoss AS server, please consult JBoss AS documentation.
+NOTE: *Property Substitution* - If a -vdb.xml file has defined property values like $\{my.property.name.value}, these can be replaced by actual values that are defined through JAVA system properties. To define system properties on a {{ book.asName }} server, please consult {{ book.asName }} documentation.
 
 WARNING: You may choose to locally name vdb artifacts as you wish, but the runtime names of deployed VDB artifacts must either be *.vdb for a zip file or *-vdb.xml for an xml file. Failure to name the deployment properly will result in a deployment failure as the Teiid subsystem will not know how to properly handle the artifact.
 

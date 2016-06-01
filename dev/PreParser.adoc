@@ -27,11 +27,11 @@ Then build a JAR archive with above implementation class and create a file named
 com.something.CustomPreParser
 ----
 
-The the jar has been built, this needs to be deployed in the JBoss AS as a module under _<jboss-as>/modules_ directory. Follow the below steps to create a module.
+The the jar has been built, this needs to be deployed in the {{ book.asName }} as a module under _<jboss-as>/modules_ directory. Follow the below steps to create a module.
 
 * Create a directory _<jboss-as>/modules/com/something/main_
 
-* Under this directory create a ``module.xml'' file that looks like
+* Under this directory create a `module.xml` file that looks like
 
 [source,xml]
 .*Sample module.xml file*

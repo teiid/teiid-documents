@@ -1,6 +1,6 @@
 == Security at the Data Source Level
 
-In some use cases, the user might need to pass-in different credentials to their data sources based on the logged in user rather than using the shared credentials for all the logged users. To support this feature, JBoss AS and Teiid provide multiple different login modules to be used in conjunction with Teiid’s main security domain. See this http://community.jboss.org/docs/DOC-9350[document] for details on configuration. Note that the below directions need to be used in conjunction with this document.
+In some use cases, the user might need to pass-in different credentials to their data sources based on the logged in user rather than using the shared credentials for all the logged users. To support this feature, {{ book.asName }} and Teiid provide multiple different login modules to be used in conjunction with Teiid’s main security domain. See this http://community.jboss.org/docs/DOC-9350[document] for details on configuration. Note that the below directions need to be used in conjunction with this document.
 
 == CallerIdentity
 
@@ -74,7 +74,7 @@ NOTE: This security domain only should be used as data source security domains, 
 
 In the above configuration example, in the primary login module “UsersRoles” is setup to hold the passwords in the file, and when user logs in with password, the *same* userid and password will be also set on the logged in Subject after authentication. These credentials can be extracted by the data source by asking for Subject’s private credentials.
 
-Please note that encoding and decoding of this object is strictly up to the user as JBoss AS and Teiid will only act as a carrier of the information from login module to connection factory. Using this CallerIdentity module, the connection pool for data source is segmented by Subject.
+Please note that encoding and decoding of this object is strictly up to the user as {{ book.asName }} and Teiid will only act as a carrier of the information from login module to connection factory. Using this CallerIdentity module, the connection pool for data source is segmented by Subject.
 
 == Pass Through Identity
 

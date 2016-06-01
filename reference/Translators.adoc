@@ -105,5 +105,5 @@ See also link:VDB_Definition.adoc[VDB Definition].
 
 In some situations the teiid_rel:native-query property and native procedures accept parameterizable strings that can positionally reference IN parameters. A parameter reference has the form $integer, i.e. $1 Note that 1 based indexing is used and that only IN parameters may be referenced. Dollar-sign integer is therefore reserved, but may be escaped with another $, i.e. $$1. The value will be bound as a prepared value or a literal is a source specific manner. The native query must return a result set that matches the expectation of the calling procedure.
 
-For example the native-query ``select c from g where c1 = $1 and c2 = `$$1''' results in a JDBC source query of ``select c from g where c1 = ? and c2 = `$1''', where ? will be replaced with the actual value bound to parameter 1.
+For example the native-query `select c from g where c1 = $1 and c2 = '$$1'` results in a JDBC source query of `select c from g where c1 = ? and c2 = '$1'`, where ? will be replaced with the actual value bound to parameter 1.
 

@@ -13,7 +13,7 @@ WildFly 9+ is expected to use Java 1.7 or later. Both the server kit and usage o
 
 == Configuration Changes
 
-You will need to apply your Teiid and other configuration changes starting with a new base configuration for WildFly, such as the standalone-teiid.xml included in the kit.  Note that 9999 port has been removed by default.  Admin connections are expected to use either 9990 (http) or 9993 (https).
+You will need to apply your Teiid and other configuration changes starting with a new base configuration for {{ book.asName }}, such as the standalone-teiid.xml included in the kit.  Note that 9999 port has been removed by default.  Admin connections are expected to use either 9990 (http) or 9993 (https).
 
 === Security Related
 

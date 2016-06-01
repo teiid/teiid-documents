@@ -3,10 +3,9 @@
 
 Teiid exposes a bean that implements the _org.teiid.events.EventDistributor_ interface. It can be looked up in JNDI under the name _teiid/event-distributor-factory_. The `EventDistributor` exposes methods like _dataModification_ (which affects result set caching) or _updateMatViewRow_ (which affects internal materialization) to alert the Teiid engine that the underlying source data has been modified. These operations, which work cluster wide will invalidate the cache entries appropriately and reload the new cache contents.
 
-NOTE: *Change Data Capture* - If your source system has any built-in change data capture facilities that can scrape logs, install triggers, etc. to capture data change events, they can captured and can be propagated to Teiid engine through a pojo bean/MDB/Session Bean deployed in JBoss AS engine.
+NOTE: *Change Data Capture* - If your source system has any built-in change data capture facilities that can scrape logs, install triggers, etc. to capture data change events, they can captured and can be propagated to Teiid engine through a pojo bean/MDB/Session Bean deployed in {{ book.asName }} engine.
 
-The below shows a code example as how user can use `EventDistributor` interface in their own code that is deployed in the same JBoss AS VM using a Pojo/MDB/Session Bean. Consult JBoss AS documents deploying as
-bean as they out of scope for this document.
+The below shows a code example as how user can use `EventDistributor` interface in their own code that is deployed in the same {{ book.asName }} VM using a Pojo/MDB/Session Bean. Consult {{ book.asName }} documents deploying as bean as they out of scope for this document.
 
 
 [source,java]

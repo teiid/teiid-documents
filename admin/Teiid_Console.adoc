@@ -1,11 +1,11 @@
 
 = Teiid Console
 
-Teiid Console is a web based administrative and monitoring tool for Teiid. Teiid Console is extension of WildFly console that is built using GWT based technologies. The Teiid kit does not include files for Teiid Console. This is separate download you can download from http://www.jboss.org/teiid/downloads[Teiid Downloads].
+Teiid Console is a web based administrative and monitoring tool for Teiid. Teiid Console is extension of {{ book.asName }} console that is built using GWT based technologies. The Teiid kit does not include files for Teiid Console. This is separate download you can download from http://www.jboss.org/teiid/downloads[Teiid Downloads].
 
 == Installation
 
-Once you download the Teiid Console, unzip the contents over the WildFly/JBoss AS7 root directory and all the required files will be overlayed correctly to install Teiid Console. The Teiid Console, by default is secured, so you would need a management realm user id and password to log in. In the <JBOSS_HOME>/bin directory, use
+Once you download the Teiid Console, unzip the contents over the {{ book.asName }} root directory and all the required files will be overlayed correctly to install Teiid Console. The Teiid Console, by default is secured, so you would need a management realm user id and password to log in. In the <install>/bin directory, use
 
 .*Adding a management user in linux*
 ----
@@ -17,7 +17,7 @@ Once you download the Teiid Console, unzip the contents over the WildFly/JBoss A
 add-user.bat
 ----
 
-then follow the prompts to create Management Realm user. Once you have created a management user, you need to use these credentials to log in to the Teiid Console. If you have started your WildFly/JBoss AS7 in default mode, then you can access the Teiid Console at http://localhost:9990/console/App.html[http://localhost:9990/console/App.html]. If you have altered the binding or port numbers then modify the address accordingly.
+then follow the prompts to create Management Realm user. Once you have created a management user, you need to use these credentials to log in to the Teiid Console. If you have started your {{ book.asName }} in default mode, then you can access the Teiid Console at http://localhost:9990/console/App.html[http://localhost:9990/console/App.html]. If you have altered the binding or port numbers then modify the address accordingly.
 
 == Profile View
 
