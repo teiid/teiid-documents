@@ -6,15 +6,28 @@ Teiid supports kerberos authentication using GSSAPI for single sign-on applicati
 
 == LocalConnection
 
-Set the JDBC URL property _PassthroughAuthentication_ as true and use http://community.jboss.org/docs/DOC-10680[JBoss Negotiation] for authentication of your web-application with kerberos. When the web application authenticates with the provided kerberos token, the same subject authenticated will be used in Teiid. For details about configuration, check the JBoss Negotiation documentation.
+Set the JDBC URL property _PassthroughAuthentication_ as true and use JBoss Negotiation for authentication of your web-application with kerberos. When the web application authenticates with the provided kerberos token, the same subject authenticated will be used in Teiid. For details about configuration, check the configuring the https://access.redhat.com/documentation/en/red-hat-jboss-enterprise-application-platform/7.0/how-to-set-up-sso-with-kerberos/how-to-set-up-sso-with-kerberos[SSO with Kerberos in EAP] 
 
-== Remote Connections (JDBC/ODBC)
 
-On the server, edit the `<jboss-install>/standalone/configuration/standalone-teiid.xml` under "security-domains" subsystem add the following. Make necessary changesrelated to your configuration in terms of key tab locations, service principal etc. You need to configure two separate security domains.
+== Server configuration for Remote JDBC/ODBC Connections 
 
-=== Configure one security domain to represent the identity of the server.
+To support kerberos SSO on remote JDBC and ODBC connections, both client side and server side configurations need to be modified. On the server side, EAP needs to be configured with two different login modules. The below CLI script shows examples of it. Make necessary changes related to your configuration in terms of key tab locations, service principal etc.
+ 
+=== Configure security domain to represent the identity of the server.
 
 The first security domain authenticates the container itself to the directory service. It needs to use a login module which accepts some type of static login mechanism, because a real user is not involved. This example uses a static principal and references a keytab file which contains the credential.
+
+[source,CLI]
+---- 
+/subsystem=security/security-domain=host:add(cache-type=default) 
+/subsystem=security/security-domain=host/authentication=classic:add 
+/subsystem=security/security-domain=host/authentication=classic/login-module=Kerberos:add(code=Kerberos, flag=required, 
+module-options=[storeKey=true, refreshKrb5Config=true, useKeyTab=true, 
+principal=host/testserver@MY_REALM, keyTab=/path/to/service.keytab, doNotPrompt=true, debug=false]) 
+reload 
+---- 
+
+The above command will generate resulting XML in the standalone.xml file or domain.xml file.
 
 [source,xml]
 .standalone-teiid.xml
@@ -28,14 +41,28 @@ The first security domain authenticates the container itself to the directory se
          <module-option name="keyTab" value="/path/to/service.keytab"/>
          <module-option name="doNotPrompt" value="true"/>
          <module-option name="debug" value="false"/>
+         <module-option name="refreshKrb5Config" value = "true"/> 
       </login-module>
    </authentication>
 </security-domain>    
 ----
 
-=== Configure a second security domain to secure the Teiid application.
+=== Configure security domain to secure the Teiid application.
 
-The second security domain is used to authenticate the individual user to the Kerberos server. You need at least one login module to authenticate the user, and another to search for the roles to apply to the user. The following XML code shows an example SPNEGO security domain. It includes an authorization module to map roles to individual users. You can also use a module which searches for the roles on the authentication server itself. Note the name of security-domain MUST match realm
+The second security domain is used to authenticate the individual user to the Kerberos server. You need at least one login module to authenticate the user, and another to search for the roles to apply to the user. The following XML code shows an example SPNEGO security domain. It includes an authorization module to map roles to individual users. You can also use a module which searches for the roles on the authentication server itself. Note the name of security-domain MUST match realm. The following CLI script shows example of creating the login module 
+
+[source,CLI]
+---- 
+/subsystem=security/security-domain=MY_REALM:add(cache-type=default) 
+/subsystem=security/security-domain=MY_REALM/authentication=classic:add 
+/subsystem=security/security-domain=MY_REALM/authentication=classic/login-module=SPNEGO:add(code=SPNEGO, flag=requisite, 
+module-options=[serverSecurityDomain=host,password-stacking=useFirstPass]) 
+/subsystem=security/security-domain=MY_REALM/authentication=classic/login-module=UserRoles:add(code=SPNEGO, flag=requisite, 
+module-options=[usersProperties=spnego-users.properties,rolesProperties=spnego-roles.properties]) 
+reload 
+---- 
+
+The above CLI will result in following result XML in standalone.xml or domain.xml depending upon configuration 
 
 [source,xml]
 .standalone-teiid.xml
@@ -58,26 +85,66 @@ The second security domain is used to authenticate the individual user to the Ke
 ----
 
 NOTE: *"User Roles/Groups associations"* Kerberos does not assign any user roles to the authenticated subject, that is reason you need to configure a separate role mapping module to assign roles. As an example in the above, "UserRoles" login-module is added. User need to edit `"spnego-roles.properties" file and add groups
-in the format of `user@MY_REALM=my-group`. Check JBoss EAP documentation, as to all the available mapping modules available.
+in the format of `user@MY_REALM=my-group`. Check JBoss EAP documentation, as to all the available mapping modules that are available.
 
 SPENGO security-domain delegates the calls relating to Kerberos to Kerberos server based on "serverSecurityDomain" property. If you would like configure the choice of authenticating using Kerberos or some other
-security domain on the same JDBC/ODBC transport, then you need to supply property
+additional security domain on the same JDBC/ODBC transport, then you need to supply an additional module option (this can also be viewed as fallback authentication model)
 
 [source,xml]
 ----
 <module-option name="usernamePasswordDomain" value="{user-name-based-auth}"/>
 ----
 
-under SPENGO security-domain. The process of selecting "kerberos" or "\{user-name-based-auth}" domain for authentication is defined below.
+the resulting xml will look like below where \{user-name-based-auth} replaced with a JAAS based simple username/password login module "app-fallback" 
 
-The above configuration defined security-domains, before you can use these domains for logging into Teiid, they need to be associated with Teiid’s transport configuration or VDB configuration. Paragraphs below offer both solutions.
+[source,xml]
+.standalone-teiid.xml
+----
+<security-domain name="MY_REALM"> 
+	<authentication> 
+		<!-- Check the username and password --> 
+		<login-module code="SPNEGO" flag="requisite"> 
+			<module-option name="password-stacking" value="useFirstPass"/> 
+			<module-option name="serverSecurityDomain" value="host"/> 
+			<module-option name="usernamePasswordDomain" value="app-fallback"/> 
+		</login-module> 
+		<!-- Search for roles --> 
+		<login-module code="UserRoles" flag="requisite"> 
+			<module-option name="password-stacking" value="useFirstPass" /> 
+			<module-option name="usersProperties" value="spnego-users.properties" /> 
+			<module-option name="rolesProperties" value="spnego-roles.properties" /> 
+		</login-module> 
+	</authentication> 
+</security-domain> 
 
-=== Defining a "default" authentication based on Teiid Transport
+<security-domain name="app-fallback" cache-type="default"> 
+	<authentication> 
+		<login-module code="UsersRoles" flag="required"> 
+			<module-option name="usersProperties" value="file:${jboss.server.config.dir}/fallback-users.properties"/> 
+			<module-option name="rolesProperties" value="file:${jboss.server.config.dir}/fallback-roles.properties"/> 
+		</login-module> 
+	</authentication> 
+</security-domain> 
+---- 
+
+=== Server Transport Configuration 
+
+The above configuration defined security-domains, before you can use these domains for login into Teiid, they need to be associated with Teiid's transport configuration or VDB configuration. Paragraphs below offer both solutions. 
+
+==== Defining a "default" authentication based on Teiid Transport
 
 User can define a "default" authentication per transport as below that can be used for all the VDBs system wide.
 
 [source,xml]
 .For JDBC:
+
+Use below CLI commands to edit the configuration 
+---- 
+/subsystem=teiid/transport=jdbc:write-attribute(name=authentication-security-domain, value=MY_REALM) 
+/subsystem=teiid/transport=jdbc:write-attribute(name=authentication-type, value=GSS) 
+---- 
+
+Will result in following changes (or you can edit the standalone-teiid.xml file directly) 
 ----
 <transport name="jdbc" protocol="teiid" socket-binding="teiid-jdbc"/>
         <authentication security-domain="MY_REALM" type="GSS"/>
@@ -86,9 +153,16 @@ User can define a "default" authentication per transport as below that can be us
 
 [source,xml]
 .For ODBC:
+
+Use below CLI commands to edit the configuration 
+---- 
+/subsystem=teiid/transport=odbc:write-attribute(name=authentication-security-domain, value=MY_REALM) 
+/subsystem=teiid/transport=odbc:write-attribute(name=authentication-type, value=GSS) 
+---- 
+
 ----
 <transport name="odbc" protocol="pg" socket-binding="teiid-odbc"/>
-        <authentication security-domain="MY_REALM" type="GSS"/>
+    <authentication security-domain="MY_REALM" type="GSS"/>
 </transport>
 ----
 
@@ -138,7 +212,9 @@ and if the user name is like "mike-simple", then that user will be subjected to 
 
 === Required System Properties on Server
 
-Edit the "standalone.conf" file in the "$\{jboss-as}/bin" directory and add the following JVM options (changing the realm and KDC settings according to your environment)
+JBoss EAP offers the ability to configure system properties related to connecting to Kerberos servers. Depending on the KDC, Kerberos Domain, and network configuration, the below system properties may or may not be required. 
+
+Edit the "standalone.conf" or domain.conf file in the "${jboss-as}/bin" directory and add the following JVM options \(changing the realm and KDC settings according to your environment) 
 
 ----
 JAVA_OPTS = "$JAVA_OPTS -Djava.security.krb5.realm=EXAMPLE.COM -Djava.security.krb5.kdc=kerberos.example.com -Djavax.security.auth.useSubjectCredsOnly=false"
@@ -233,4 +309,26 @@ The default OData client is configured with HTTP Basic authentication, to conver
 mvn clean install
 ----
 
-Then copy the WAR file from "odata-kerberos/target" directory to replace the original OData WAR file with same name. For example testing see https://developer.jboss.org/wiki/HowToImplementKerberosAuthenticationWithASimpleRESTWebApp 
+This will generate a new WAR file in "odata-kerberos/target" directory. Follow the below deployment direction based on your server 
+
+==== Community Teiid Server based on WildFly
+
+Replace the <wildfly>/modules/system/layers/dv/org/jboss/teiid/main/deployments/teiid-olingo-odata4.war" file with new WAR file, by executing a command similar to 
+
+{code} 
+cp teiid-web-security/odata-kerberos/target/teiid-odata-kerberos-{version}.war <wildfly>/modules/system/layers/dv/org/jboss/teiid/main/deployments/teiid-olingo-odata4.war 
+{code} 
+
+==== JDV Server 
+
+If you are working with JDV 6.3 server or greater, then run the following CLI script, you may have change the below script to adopt to the correct version of the WAR and directory names where the content is located. 
+
+---- 
+undeploy teiid-olingo-odata4.war 
+deploy teiid-web-security/odata-kerberos/target/teiid-odata-kerberos-{version}.war 
+---- 
+
+or overlay the new one using CLI script like 
+---- 
+deployment-overlay add --name=myOverlay --content=/WEB-INF/web.xml=teiid-web-security/odata-kerberos/src/main/webapp/WEB-INF/web.xml,/WEB-INF/jboss-web.xml=teiid-web-security/odata-kerberos/src/main/webapp/WEB-INF/jboss-web.xml,/META-INF/MANIFEST.MF=teiid-web-security/odata-kerberos/src/main/webapp/META-INF/MANIFEST.MF --deployments=teiid-olingo-odata4.war --redeploy-affected 
+----  
