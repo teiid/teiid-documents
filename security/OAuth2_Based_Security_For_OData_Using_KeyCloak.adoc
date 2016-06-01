@@ -41,7 +41,16 @@ image:images/database-client.png[database-client]
 * Download Keycloak SAML adapter for EAP, and unzip over the Teiid server installation. (optional but need for another exercise)
 * Edit the standalone-teiid.xml, add the following sections
 
-In extensions add
+Run the following CLI to add Keycloak specific modules to the server 
+
+[source,CLI]
+---- 
+/extension=org.keycloak.keycloak-saml-adapter-subsystem:add(module=org.keycloak.keycloak-saml-adapter-subsystem) 
+/extension=org.keycloak.keycloak-adapter-subsystem:add(module=org.keycloak.keycloak-adapter-subsystem) 
+---- 
+
+above commands will result in XML in standalone.xml or domain.xml file like 
+
 [source,xml]
 ----
     <extension module="org.keycloak.keycloak-saml-adapter-subsystem"/>
@@ -49,7 +58,15 @@ In extensions add
 ----
     
     
-Add these two subsystems any where in the file
+Add these two subsystems any where in the file, use the following the CLI script 
+
+[source,CLI]
+---- 
+/subsystem=keycloak:add 
+/subsystem=keycloak-saml:add 
+---- 
+
+above commands will result in XML in standalone.xml or domain.xml file like 
 
 [source,xml]
 ----
@@ -57,7 +74,22 @@ Add these two subsystems any where in the file
         <subsystem xmlns="urn:jboss:domain:keycloak:1.1"/>
 ----    
 
-In security-domains add following security domains
+In security-domains add following security domains using the following CLI 
+
+[souce,CLI]
+---- 
+/subsystem=security/security-domain=oauth:add(cache-type=default) 
+/subsystem=security/security-domain=oauth/authentication=classic:add 
+/subsystem=security/security-domain=oauth/authentication=classic/login-module=oauth:add(code=org.teiid.jboss.PassthroughIdentityLoginModule, flag=required, module=org.jboss.teiid) 
+
+/subsystem=security/security-domain=keycloak:add(cache-type=default) 
+/subsystem=security/security-domain=keycloak/authentication=classic:add 
+/subsystem=security/security-domain=keycloak/authentication=classic/login-module=keycloak:add(code=org.keycloak.adapters.jboss.KeycloakLoginModule, flag=required) 
+
+reload 
+---- 
+
+above commands will result in XML in standalone.xml or domain.xml file like (you can also edit standalone.xml directly) 
 
 [source,xml]
 ----
@@ -76,21 +108,28 @@ In security-domains add following security domains
 
 Under Teiid subsystem, change the "security-domain" of the "odata" transport, to 
 
+[source,CLI]
+---- 
+/subsystem=teiid/transport=odata:write-attribute(name=authentication-security-domain, value=oauth) 
+---- 
+
+results in XML 
+
 [source,xml]
 ----
     <transport name="odata">
         <authentication security-domain="oauth"/>
     </transport>
 ----
+This finishes all the server side changes that are required to make OAuth authentication using Keycloak.
 
+== OData Application WAR 
 
-=== Remove the default OData WAR file. 
-
-By default Teiid installation comes with OData web service WAR file configured with "HTTP Basic" authentication. Before we can replace it with new OAuth security based WAR file, this file needs to be removed. You can find this in "<eap>/modules/system/layers/dv/org/jboss/teiid/deployments" directory with "-odata4" post fix. Move this file to a different location from installation directory.
+In order to use OAuth authentication, the OData WAR needs to be updated to make use of the OAuth based security domain. By default Teiid installation comes with OData web service WAR file configured with "HTTP Basic" authentication. This WAR needs to either replaced or updated.
 
 === Build the new OData WAR file that supports OAuth.
 
-To build OAuth based OData WAR file, Teiid provides a template maven project, that you (the developer) need to download, and update some configuration and build the WAR file. To download the template visit URL https://github.com/teiid/teiid-web-security 
+To build OAuth based OData WAR file, Teiid provides a template maven project, either download or clone the project from https://github.com/teiid/teiid-web-security 
 
 The above link provides templates for creating two WAR files, one WAR file is to create Teiid's OData service with OAuth, the next is a sample "database-service" for this demo. Please note that "database-service" is to mimic the database service, that will be different in a real use-case, however the steps defined for the access will be same.
 
@@ -105,7 +144,31 @@ to build the WAR files running the maven command
 mvn clean package
 ----
 
-Copy the WAR files from the "target" directories of the build directory into the "<eap>/standalone/deployments" directory for deployment.
+The above command will generate a new WAR file for deployment. Follow the below directions to deploy this new WAR file. 
+
+==== Community Teiid Server on WildFly 
+
+Replace the <wildfly>/modules/system/layers/dv/org/jboss/teiid/main/deployments/teiid-olingo-odata4.war" file with new WAR file, by executing a command similar to 
+
+{code} 
+cp teiid-web-security/odata-oauth-keycloak/target/teiid-odata-oauth-keycloak-{version}.war <wildfly>/modules/system/layers/dv/org/jboss/teiid/main/deployments/teiid-olingo-odata4.war 
+{code} 
+
+h4. JDV Server 
+
+If you are working with JDV 6.3 server or greater, then run the following CLI script, you may have change the below script to adopt to the correct version of the WAR and directory names where the content is located. 
+
+[source,CLI]
+---- 
+undeploy teiid-olingo-odata4.war 
+deploy teiid-web-security/odata-oauth-keycloak/target/teiid-odata-oauth-keycloak-{version}.war 
+---- 
+
+or overlay the new one using CLI script like
+[source,CLI] 
+---- 
+deployment-overlay add --name=myOverlay --content=/WEB-INF/web.xml=teiid-web-security/odata-oauth-keycloak/src/main/webapp/WEB-INF/web.xml,/WEB-INF/jboss-web.xml=teiid-web-security/odata-oauth-keycloak/src/main/webapp/WEB-INF/jboss-web.xml,/META-INF/MANIFEST.MF=teiid-web-security/odata-oauth-keycloak/src/main/webapp/META-INF/MANIFEST.MF,/WEB-INF/keycloak.json=teiid-web-security/odata-oauth-keycloak/src/main/webapp/WEB-INF/keycloak.json /WEB-INF/lib/teiid-odata-oauth-keycloak-{version}.jar=teiid-web-security/odata-oauth-keycloak/src/main/webapp/WEB-INF/lib/teiid-odata-oauth-keycloak-{version}.jar --deployments=teiid-olingo-odata4.war --redeploy-affected 
+----
 
 
 === Working with example VDB
