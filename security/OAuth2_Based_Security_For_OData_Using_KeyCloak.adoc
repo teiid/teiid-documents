@@ -146,7 +146,7 @@ mvn clean package
 
 The above command will generate a new WAR file for deployment. Follow the below directions to deploy this new WAR file. 
 
-==== Community Teiid Server on WildFly 
+==== Teiid Server on WildFly 
 
 Replace the <wildfly>/modules/system/layers/dv/org/jboss/teiid/main/deployments/teiid-olingo-odata4.war" file with new WAR file, by executing a command similar to 
 
@@ -154,18 +154,17 @@ Replace the <wildfly>/modules/system/layers/dv/org/jboss/teiid/main/deployments/
 cp teiid-web-security/odata-oauth-keycloak/target/teiid-odata-oauth-keycloak-{version}.war <wildfly>/modules/system/layers/dv/org/jboss/teiid/main/deployments/teiid-olingo-odata4.war 
 {code} 
 
-h4. JDV Server 
+==== JDV Server 
 
 If you are working with JDV 6.3 server or greater, then run the following CLI script, you may have change the below script to adopt to the correct version of the WAR and directory names where the content is located. 
 
-[source,CLI]
 ---- 
 undeploy teiid-olingo-odata4.war 
 deploy teiid-web-security/odata-oauth-keycloak/target/teiid-odata-oauth-keycloak-{version}.war 
 ---- 
 
 or overlay the new one using CLI script like
-[source,CLI] 
+
 ---- 
 deployment-overlay add --name=myOverlay --content=/WEB-INF/web.xml=teiid-web-security/odata-oauth-keycloak/src/main/webapp/WEB-INF/web.xml,/WEB-INF/jboss-web.xml=teiid-web-security/odata-oauth-keycloak/src/main/webapp/WEB-INF/jboss-web.xml,/META-INF/MANIFEST.MF=teiid-web-security/odata-oauth-keycloak/src/main/webapp/META-INF/MANIFEST.MF,/WEB-INF/keycloak.json=teiid-web-security/odata-oauth-keycloak/src/main/webapp/WEB-INF/keycloak.json /WEB-INF/lib/teiid-odata-oauth-keycloak-{version}.jar=teiid-web-security/odata-oauth-keycloak/src/main/webapp/WEB-INF/lib/teiid-odata-oauth-keycloak-{version}.jar --deployments=teiid-olingo-odata4.war --redeploy-affected 
 ----
@@ -199,6 +198,7 @@ Edit the standalone-teiid.xml and under resource-adapters subsystem, add the fol
 ----
 
 Add a VDB with following contents (oauthdemo-vdb.xml)
+
 [source,xml]
 ----
 <vdb name="oauthdemo" version="1">
@@ -235,7 +235,6 @@ Add a VDB with following contents (oauthdemo-vdb.xml)
 
 Start both Keycloak and Teiid Servers. If both of these servers are in the same machine, then we need to offset the ports of Teiid server such that they will not conflict with that of the Keycloak server. For this example, I started the Teiid server as
 
-[source]
 ----
 ./standalone.sh -c standalone-teiid.xml -Djboss.socket.binding.port-offset=100
 ----
@@ -250,7 +249,6 @@ There are two different mechanisms for testing this example. One is purely for t
 
 Using the browser issue a query  (the use of browser is needed because, this process does few redirects only browsers can automatically follow)
 
-[source]
 ----
 http://localhost:8180/odata4/kerberos/auth
 ----
