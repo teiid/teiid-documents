@@ -53,17 +53,17 @@ External materialized views give the administrator full control over the loading
 |n/a
 
 |teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT
-|semi-colon(;) separated DDL/DML commands to run before the actual load of the cache, typically used to truncate staging table
+|DDL/DML command to run before the actual load of the cache, typically used to truncate staging table
 |true
 |When not defined, no script will be run
 
 |teiid_rel:MATVIEW_LOAD_SCRIPT
-|semi-colon(;) separated DDL/DML commands to run for loading of the cache
+|command to run for loading of the cache
 |true
 |will be determined based on view transformation
 
 |teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT
-|semi-colon(;) separated DDL/DML commands to run after the actual load of the cache. Typically used to rename staging table to actual cache table. Required when MATVIEW_LOAD_SCRIPT not defined to copy data from
+|DDL/DML command to run after the actual load of the cache. Typically used to rename staging table to actual cache table. Required when MATVIEW_LOAD_SCRIPT not defined to copy data from
 teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
 |true
 |When not defined, no script will be run
@@ -79,12 +79,12 @@ teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
 |n/a
 
 |teiid_rel:ON_VDB_START_SCRIPT
-|DML commands to run start of vdb
+|DDL/DML command to run start of vdb
 |true
 |n/a
 
 |teiid_rel:ON_VDB_DROP_SCRIPT
-|DML commands to run at VDB un-deploy; typically used for cleaning thecache/status tables
+|DDL/DML command to run at VDB un-deploy; typically used for cleaning the cache/status tables
 |true
 |n/a
 
@@ -98,6 +98,8 @@ teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
 |true
 |2^63 milliseconds - effectively the table will not refresh, but will be loaded a single time initially
 |===
+
+TIP: for scripts that need more than one statement executed, use a procedure block BEGIN statement; statement; ... END
 
 Set the `MATERIALIZED` to 'TRUE' and the `MATERIALIZED_TABLE` point to a target table is necessary for external materialization, `UPDATABLE` is optional, set it to 'TRUE' if want the external materialized view be updatable. 
 
@@ -175,7 +177,7 @@ If stage table is defined, you can define truncate staging table in before load 
 [source,sql]
 ----
 "teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT" 'execute accounts.native(''truncate table stageTable'');',
-"teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT"  'execute accounts.native(''ALTER TABLE matTable RENAME TO matTable_temp'');execute accounts.native(''ALTER TABLE stageTable RENAME TO matTable'');execute accounts.native(''ALTER TABLE matTable_temp RENAME TO stageTable'');', 
+"teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT"  'begin execute accounts.native(''ALTER TABLE matTable RENAME TO matTable_temp'');execute accounts.native(''ALTER TABLE stageTable RENAME TO matTable'');execute accounts.native(''ALTER TABLE matTable_temp RENAME TO stageTable''); end', 
 ----  
 
 If stage table is not defined, you can define truncate target table in before load script and define insert target table in load script:
