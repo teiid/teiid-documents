@@ -9,7 +9,7 @@ Teiid strives to be compliant with the OData specification.  The rest of this ch
 
 For example, if you have a vdb by name _northwind_ deployed that has a _customers_ table in a _NW_ model, then you can access that table with an HTTP GET via the URL:
 
-[source,xml]
+[source]
 ----
 http://localhost:8080/odata/northwind.1/NW.customers
 ----

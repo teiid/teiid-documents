@@ -13,7 +13,21 @@ Guide" for instructions on how to build a VDB. If you do not know what VDB is, t
 3.  Deploy the VDB into Teiid Server. Check link:../admin/Administrators_Guide.adoc[Administrator’s Guide] for instructions.
 4.  Start the Teiid Server ({{ book.asName }}), if it is not already running.
 
-Now that you have the VDB deployed in the Teiid Server, client applications can connect to the Teiid Server and issue SQL queries against deployed VDB using JDBC API. If you are new to JDBC, see Java’s documentation about http://java.sun.com/docs/books/tutorial/jdbc/index.html[JDBC]. Teiid ships with teiid-{{ book.fullVersionNumber }}-jdbc.jar that can be found in the http://www.jboss.org/teiid/downloads.html[downloads].
+Now that you have the VDB deployed in the Teiid Server, client applications can connect to the Teiid Server and issue SQL queries against deployed VDB using JDBC API. If you are new to JDBC, see Java’s documentation about http://docs.oracle.com/javase/tutorial/jdbc/index.html[JDBC]. Teiid ships with teiid-{{ book.fullVersionNumber }}-jdbc.jar that can be found in the http://www.jboss.org/teiid/downloads.html[downloads].
+
+You can also obtain the Teiid JDBC from the JBoss Public Maven Repository http://repository.jboss.org/nexus/content/groups/public/ using the coordinates:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.jboss.teiid</groupId>
+  <artifactId>teiid</artifactId>
+  <classifier>jdbc</classifier>
+  <version>{{ book.fullVersionNumber }}</version>
+</dependency>
+----
+
+Against 
 
 Main classes in the client JAR:
 
