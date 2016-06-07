@@ -120,6 +120,7 @@ jdbc:teiid:<vdb>:mms://<host>:31000
 ----
  
 note "mm[s]" to represent [s] for secure. You also need to add the following system properties to your client for 
+
 ==== 1-WAY SSL
 ----
 -Djavax.net.ssl.trustStore=/path/to/teiid.keystore  
@@ -142,6 +143,7 @@ The start your client application normally, that should make sure the SSL certif
 == Configuring ODBC client to use SSL (Windows)
  
 * Install the Postgresql ODBC driver in your Windows machine. You can download the driver from http://www.postgresql.org/ftp/odbc/versions/
+
 ==== 1-WAY SSL
 * Copy the "_rootCA.crt_" and "_rootCA_trust.cer_" files into your Windows machine into directory _c:\Users\<yourname>\AppData\Roaming\postgresql_. Note this directory may be hidden or non existent, if non-existent create a new folder. Note that if you are dealing with CA signed certificate, you do not have to share your private certificate "rootCA.crt". However since we are using self signed this will become the root certificate.
 * Rename "_rootCA.crt_" to "_root.crt_"
