@@ -1,7 +1,7 @@
 {
     "variables" : {
-        "versionNumber" : "9.0",
-        "fullVersionNumber": "9.0.0.Final",
+        "versionNumber" : "9.1",
+        "fullVersionNumber": "9.1.0.Final",
         "asVersionNumber" :  "WildFly 9.0.2",
         "asName" :  "WildFly",
         "copyrightYear" :  "2016",
