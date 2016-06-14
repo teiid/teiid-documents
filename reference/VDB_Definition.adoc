@@ -7,6 +7,12 @@ A VDB or virtual database definition is contained in an XML file. For .vdb archi
 .*Example VDB XML*
 ----
 <vdb name="${vdb-name}" version="${vdb-version}">
+    
+    <!-- Optional description -->
+    <description>...</description>
+    
+    <!-- Optional connection-type -->
+    <connection-type>...</connection-type>
 
     <!-- VDB properties -->
     <property name="${property-name}" value="${property-value}" />
@@ -70,7 +76,15 @@ The name of the VDB. The VDB name referenced through the driver or datasource du
 
 * _version_ 
 
-The version of the VDB (should be an positive integer). This determines the deployed directory location (see Name), and provides an explicit versioning mechanism to the VDB name.
+The version of the VDB. Provides an explicit versioning mechanism to the VDB name - see link:../admin/VDB_Versioning.adoc[VDB Versioning].
+
+*Description Element*
+
+Optional text element to describe the VDB.
+
+*Connection Type Element*
+
+Determines how clients can connect to the VDB.  Can be one of BY_VERSION, ANY, or NONE.  Defaults to BY_VERSION.  See link:../admin/VDB_Versioning.adoc[VDB Versioning].
 
 *Property Elements*
 
