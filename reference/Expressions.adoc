@@ -142,7 +142,8 @@ Teiid supports the following aggregate functions:
 * VAR_SAMP(x) – sample variance (excluding null) logically equals(sum(x^2) - sum(x)^2/count(x))/(count(x) - 1); returns a double; null if count < 2
 * STDDEV_POP(x) – standard deviation (excluding null) logically equals SQRT(VAR_POP(x))
 * STDDEV_SAMP(x) – sample standard deviation (excluding null) logically equals SQRT(VAR_SAMP(x))
-* TEXTAGG(expression [as name], … [DELIMITER char] [QUOTE char] [HEADER] [ENCODING id] [link:ORDER_BY_Clause.html[ORDER BY …]]) – CSV text aggregation of all expressions in each row of a group. When DELIMITER is not specified, by default comma(,) is used as delimiter. Double quotes(") is the default quote character. Use QUOTE to specify a different value. All non-null values will be quoted. If HEADER is specified, the result contains the header row as the first line - the header line will be present even if there are no rows in a group. This aggregation returns a blob.
+* TEXTAGG(expression [as name], … [DELIMITER char] [QUOTE char | NO QUOTE] [HEADER] [ENCODING id] [link:ORDER_BY_Clause.html[ORDER BY …]]) – CSV text aggregation of all expressions in each row of a group. When DELIMITER is not specified, by default comma(,) is used as delimiter. 
+All non-null values will be quoted. Double quotes(") is the default quote character. Use QUOTE to specify a different value, or NO QUOTE for no value quoting. If HEADER is specified, the result contains the header row as the first line - the header line will be present even if there are no rows in a group. This aggregation returns a blob.
 
 [source,sql]
 ----
