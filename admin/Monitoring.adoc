@@ -34,7 +34,7 @@ There are administrative options for terminating sessions, queries, and transact
 |Session Count
 |sessionCount
 |Indicates the number of user connections currently active
-|To ensure number of sessions are not restricted at peak times, check _max-sessions-allowed_ (default 5000) is set accordingly and review _sessions-expiration-timelimit_
+|To ensure number of sessions are not restricted at peak times, check _max-sessions-allowed_ (default 10000) is set accordingly and review _sessions-expiration-timelimit_
 
 |Query Count
 |queryCount
