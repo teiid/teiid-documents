@@ -117,7 +117,7 @@ SELECT EH.Name, BT."Time", BT."Number of Computers", BT."Temperature"
     WHERE EH.ElementID IN (SELECT ElementID FROM Sample.Asset.ElementHierarchy WHERE Path='\Data Center\')
 {code} 
 
-Note: ANSI SQL semantics require a ON clause, but CROSS APPLY or OUTER APPLY do no have a ON clause, so for this
+NOTE: ANSI SQL semantics require a ON clause, but CROSS APPLY or OUTER APPLY do no have a ON clause, so for this
 reason user need to pass in a dummy ON clause like ON (1 = 1), which will be ignored when converted to APPLY clause which
 will be pushed down.
 
