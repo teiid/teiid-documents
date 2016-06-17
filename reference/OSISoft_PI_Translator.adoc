@@ -3,5 +3,128 @@
 
 Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
 
-The OSISoft Translator, known by the type name *_osisoft-pi_*, is for use with OSIsoft PI.
+The OSISoft Translator, known by the type name *_osisoft-pi_*, is for use with OSIsoft PI OLEDB Enterprise. 
+This translator uses the JDBC driver provided by the OSISoft. The driver is not provided with Teiid install, this needs
+be downloaded from OSISoft and installed correctly on Teiid server according to OSISoft documentation 
+_PI-JDBC-2016-Administrator-Guide.pdf_ or latest document.
+
+
+=== Install on Linux
+
+Make sure you have OpenSSL libraries installed, and you have following "export" added correctly in your shell environment
+variables. Otherwise you can also add in _<WildFly>/bin/standalone.sh_ file or _<WildFly>/bin/domain.sh_ file.  
+
+----
+export PI_RDSA_LIB=/<path>/pipc/jdbc/lib/libRdsaWrapper-1.5b.so
+export PI_RDSA_LIB64=/<path>/pipc/jdbc/lib/libRdsaWrapper64-1.5b.so
+----
+
+Please also note to execute from Linux, you also need install 'gSoap' library, as PI JDBC driver uses SOAP over HTTPS 
+to communicate with PI server.
+
+
+=== Install on Windows
+
+Follow the installation program provided by OSISoft for installing the JDBC drivers. Make sure you have the following environment
+variables configured.
+
+----
+PI_RDSA_LIB     C:\Program Files (x86)\PIPC\JDBC\RDSAWrapper.dll
+PI_RDSA_LIB64   C:\Program Files\PIPC\JDBC\RDSAWrapper64.dll
+----
+
+=== Installing the JDBC driver for Teiid (same for both Linux and Windows)
+
+Then copy the module directory from _<WildFly>/teiid/datasources/osisoft-pi/modules directory into _<WilfFly>/modules_ 
+directory. Then find the "PIJDBCDriver.jar" file from the installation directory, and copy it to 
+_<WildFly>/module/system/layers/dv/com/osisoft/main" directory. Then add the driver definition to the standalone.xml
+file by editing the file and adding something similar to below 
+
+----
+    <drivers>
+       <driver name="osisoft-pi" module="com.osisoft">
+           <driver-class>com.osisoft.jdbc.Driver</driver-class>
+       </driver>    
+    </drivers> 
+----
+
+That completes the configuration of the PI driver in the Teiid. We still have not created a connection to the PI server.
+you can start the server now.
+
+=== Creating a Data Source  to PI
+
+You can execute following similar CLI script to create a datasource
+
+----
+/subsystem=datasources/data-source=pi-ds:add(jndi-name=java:/pi-ds,  driver-name=osisoft-pi, connection-url=jdbc:pioledbent://<DAC Server>/Data Source=<AF Server>; Integrated Security=SSPI,user-name=user, password=mypass)
+/subsystem=datasources/data-source=pi-ds:enable
+----
+
+this will create following XML in standalone.xml or domain.xml (you can also directly edit these files and add manually)
+
+----
+<datasource jndi-name="java:/pi-ds" pool-name="pi-ds">
+    <connection-url>jdbc:pioledbent://<DAC Server>/Data Source=<AF Server>; Integrated Security=SSPI</connection-url>
+    <driver>osisoft-pi</driver>
+    <pool>
+        <prefill>false</prefill>
+        <use-strict-min>false</use-strict-min>
+        <flush-strategy>FailingConnectionOnly</flush-strategy>
+    </pool>
+    <security>
+        <user-name>user</user-name>
+        <password>mypass</password>
+    </security>
+</datasource>
+----
+
+Now you have fully configured the Teiid with PI database connection. You can create VDB that can use this connection to issue
+the queries.
+
+== Usage
+
+You can develop a VDB like follows to fetch metadata from PI and give you access to executing queries against PI.
+
+pi-vdb.xml
+----
+<vdb name="pi" version="1">
+    <model name="AF">
+        <property name="importer.importProcedures" value="true"/>
+        <source connection-jndi-name="java:/pi-ds" name="pi-connector" translator-name="osisoft-pi"/>
+    </model>
+</vdb>
+---- 
+
+Deploy this file into Teiid using CLI or using management console
+
+----
+deploy pi-vdb.xml
+----
+
+Once the metadata is loaded and VDB is active you can use Teiid JDBC/ODBC driver or OData to connect to the VDB and issue 
+queries.
+
+
+== PI Translator Capabilities
+
+PI translator is extension of _jdbc-ansi_ translator, so all the SQL ANSI queries are supported. PI translator also supports
+LATERAL join with Table Valued Functions (TVF). An example Teiid query looks like
+
+{code}
+SELECT EH.Name, BT."Time", BT."Number of Computers", BT."Temperature"
+    FROM Sample.Asset.ElementHierarchy EH
+    LEFT JOIN  LATERAL (exec "TransposeArchive_Building Template"(EH.ElementID, TIMESTAMPADD(SQL_TSI_HOUR, -1, now()), now())) BT on 1=1
+    WHERE EH.ElementID IN (SELECT ElementID FROM Sample.Asset.ElementHierarchy WHERE Path='\Data Center\')
+{code} 
+
+Note: ANSI SQL semantics require a ON clause, but CROSS APPLY or OUTER APPLY do no have a ON clause, so for this
+reason user need to pass in a dummy ON clause like ON (1 = 1), which will be ignored when converted to APPLY clause which
+will be pushed down.
+
+By default this translator turns off the "importer.ImportKeys"  to false.
+
+NOTE: The PI data type, "GUID" will need to be modeled as "String" and must define the NATIVE_TYPE on column as "guid", then Teiid
+translator will appropriately convert the data back forth with the PI datasource's native guid type with appropriate type 
+casting from string.
+
 
