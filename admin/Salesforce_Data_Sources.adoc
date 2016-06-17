@@ -63,3 +63,99 @@ If you need to connect to Salesforce using Mutual Authentication, follow the dir
 
 more information about CXF configuration file can be found at http://cxf.apache.org/docs/client-http-transport-including-ssl-support.html#ClientHTTPTransport(includingSSLsupport)-ConfiguringSSLSupport[http://cxf.apache.org/docs/client-http-transport-including-ssl-support.html#ClientHTTPTransport(includingSSLsupport)-ConfiguringSSLSupport]
 
+h== OAuth Security with "Refresh Token"
+
+The below layout the directions to use Refresh Token based OAuth Authentication with Salesforce.
+
+1) create connected app (may need to setup custom domain)
+2) add profile and/or permissions set to the connected app
+3) grab the "callback url" ( one need to set as https://localhost:443/_callback"
+4) Run through the teiid-oauth-util.sh in "<eap>/bin" directory, use client_id, client_pass, and call back from connected app
+5) use "https://login.salesforce.com/services/oauth2/authorize" authorize link
+6) use "https://login.salesforce.com/services/oauth2/token" for access token url
+7) the you get a refresh token from it 
+8) create a security-domain by executing CLI
+
+----
+/subsystem=security/security-domain=oauth2-security:add(cache-type=default)
+/subsystem=security/security-domain=oauth2-security/authentication=classic:add
+/subsystem=security/security-domain=oauth2-security/authentication=classic/login-module=Kerberos:add(code=org.teiid.jboss.oauth.OAuth20LoginModule, flag=required, module=org.jboss.teiid.security,
+   module-options=[client-id=xxxx, client-secret=xxxx, refresh-token=xxxx, 
+   access-token-uri=https://login.salesforce.com/services/oauth2/token])
+reload
+----
+
+this will generate following XML in the standalone.xml or domain.xml (this can also be directly added to the standalone.xml or domain.xml files instead of executing the CLI)
+ 
+[source,xml]
+.standalone.xml
+----
+<security-domain name="oauth2-security">  
+    <authentication>  
+        <login-module code="org.teiid.jboss.oauth.OAuth20LoginModule" flag="required" module="org.jboss.teiid.security">  
+            <module-option name="client-id" value="xxxx"/>  
+            <module-option name="client-secret" value="xxxx"/>  
+            <module-option name="refresh-token" value="xxxx"/>  
+            <module-option name="access-token-uri" value="https://login.salesforce.com/services/oauth2/token"/>  
+        </login-module>  
+    </authentication>  
+</security-domain>
+----
+
+9) Then to use the above security domain in the sales force data source configuration, add "<security-domain>oauth2-security</security-domain>"
+
+
+== OAuth Security with "JWT Token" based Steps
+
+The below layout the directions to use JWT token based OAuth Authentication with Salesforce.
+
+
+1) Create a Self-Signed certificate locally or on Sales Force. (user->setup->security-controls->Certificate and Key Management)
+2) Download the certificate and also put in keystore and download keystore. Keystore is needed for Teiid, certificate for the salesforce setup
+3) Create connected app and select OAuth, and select all the scopes (some posts say refresh-token offline is must)
+4) create a profile and/or permission set assign to the connected app. I believe before you can create a connected app you need to set up custom domain
+5) When you creating connected app make sure you add the certificate in "Digital Certificate"
+6) Now in Teiid create security-domain by executing CLI
+
+----
+/subsystem=security/security-domain=oauth2-jwt-security:add(cache-type=default)
+/subsystem=security/security-domain=oauth2-jwt-security/authentication=classic:add
+/subsystem=security/security-domain=oauth2-jwt-security/authentication=classic/login-module=oauth:add(code=org.teiid.jboss.oauth.OAuth20LoginModule, flag=required, module=org.jboss.teiid.security,
+   module-options=[client-id=xxxx, client-secret=xxxx, access-token-uri=https://login.salesforce.com/services/oauth2/token, jwt-audience=https://login.salesforce.com, jwt-subject=your@sf-login.com,
+    keystore-type=JKS, keystore-password=changeme, keystore-url=${jboss.server.config.dir}/salesforce.jks, certificate-alias=teiidtest, signature-algorithm-name=SHA256withRSA])
+reload
+----
+
+this will generate following XML in the standalone.xml or domain.xml (this can also be directly added to the standalone.xml or domain.xml files instead of executing the CLI)
+
+[source,xml]
+.standalone.xml
+----
+<security-domain name="oauth2-jwt-security">
+    <authentication>
+        <login-module code="org.teiid.jboss.oauth.JWTBearerTokenLoginModule" flag="required" module="org.jboss.teiid.security">
+            <module-option name="client-id" value="xxxxx"/>
+            <module-option name="client-secret" value="xxxx"/>
+            <module-option name="access-token-uri" value="https://login.salesforce.com/services/oauth2/token"/>
+            <module-option name="jwt-audience" value="https://login.salesforce.com"/>                            
+            <module-option name="jwt-subject" value="your@sf-login.com"/>                            
+            
+            <module-option name="keystore-type" value="JKS"/>
+            <module-option name="keystore-password" value="changeme"/>
+            <module-option name="keystore-url" value="${jboss.server.config.dir}/salesforce.jks"/>
+            <module-option name="certificate-alias" value="teiidtest"/>                                                                                    
+            <module-option name="signature-algorithm-name" value="SHA256withRSA"/>                            
+        </login-module>
+    </authentication>
+</security-domain>
+----
+
+7) Then to use the above security domain in the sales force data source configuration, add "<security-domain>oauth2-jwt-security</security-domain>"
+
+More helpful links
+
+https://developer.salesforce.com/blogs/developer-relations/2011/03/oauth-and-the-soap-api.html
+https://help.salesforce.com/apex/HTViewHelpDoc?id=remoteaccess_oauth_jwt_flow.htm&language=en_US#create_token
+http://salesforce.stackexchange.com/questions/31904/how-and-when-does-a-salesforce-saml-oauth2-user-give-permission-to-use-a-conne
+http://salesforce.stackexchange.com/questions/30596/oauth-2-0-jwt-bearer-token-flow
+http://salesforce.stackexchange.com/questions/88396/invalid-assertion-error-in-jwt-bearer-token-flow

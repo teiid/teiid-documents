@@ -119,6 +119,122 @@ TIP: When working with Kerberos/GSS security token (GssCredential), some JDBC dr
 <module-option name="wrapGSSCredential" value="true"/>
 ----
 
+== OAuth Authentication
+
+Secured Rest services with OAuth authentication can be used in Teiid, however the data sources need to be configured with OAuth Refresh Token or Json Web Token (JWT) based security domains.
+
+=== Refresh Token 
+
+
+In order to use OAuth, one need to create application in vendors web service. A connected application is different for different vendors like Google, LinkedIn, SalesForce etc. For details about creating an application consult vendor's documentation. Once you have created connected application, then run _teiid-oauth-util.sh_ in "<eap>/bin" directory, use client_id, client_pass, and call back from source specific connected application. This
+script will provide the necessary values to plug-in below CLI script.
+
+create a security-domain by executing CLI
+
+[source,cli]
+----
+/subsystem=security/security-domain=oauth2-security:add(cache-type=default)
+/subsystem=security/security-domain=oauth2-security/authentication=classic:add
+/subsystem=security/security-domain=oauth2-security/authentication=classic/login-module=oauth:add(code=org.teiid.jboss.oauth.OAuth20LoginModule, flag=required, module=org.jboss.teiid.security,
+   module-options=[client-id=xxxx, client-secret=xxxx, refresh-token=xxxx, 
+   access-token-uri=https://login.salesforce.com/services/oauth2/token])
+reload
+----
+
+this will generate following XML in the standalone.xml or domain.xml (this can also be directly added to the standalone.xml or domain.xml files instead of executing the CLI)
+ 
+[source,xml]
+.standalone.xml
+----
+<security-domain name="oauth2-security">  
+    <authentication>  
+        <login-module code="org.teiid.jboss.oauth.OAuth20LoginModule" flag="required" module="org.jboss.teiid.security">  
+            <module-option name="client-id" value="xxxx"/>  
+            <module-option name="client-secret" value="xxxx"/>  
+            <module-option name="refresh-token" value="xxxx"/>  
+            <module-option name="access-token-uri" value="https://login.salesforce.com/services/oauth2/token"/>  
+        </login-module>  
+    </authentication>  
+</security-domain>
+----
+
+=== JSON Web Token (JWT)
+
+In order to use OAuth, one need to create application in vendors web service. A connected application is different for different vendors like Google, LinkedIn, SalesForce etc. For details about creating an application consult vendor's documentation. Once you have created connected application that uses the JWT, gather the below information client-id, client-secret, access-token-uri, jwt-audience,jwt-subject,keystore-type,keystore-password,
+keystore-url,certificate-alias,signature-algorithm-name and provide in the below CLI. (only tested with SalesForce)
+
+[source,cli]
+----
+/subsystem=security/security-domain=oauth2-jwt-security:add(cache-type=default)
+/subsystem=security/security-domain=oauth2-jwt-security/authentication=classic:add
+/subsystem=security/security-domain=oauth2-jwt-security/authentication=classic/login-module=oauth:add(code=org.teiid.jboss.oauth.OAuth20LoginModule, flag=required, module=org.jboss.teiid.security,
+   module-options=[client-id=xxxx, client-secret=xxxx, access-token-uri=https://login.salesforce.com/services/oauth2/token, jwt-audience=https://login.salesforce.com, jwt-subject=your@sf-login.com,
+    keystore-type=JKS, keystore-password=changeme, keystore-url=${jboss.server.config.dir}/salesforce.jks, certificate-alias=teiidtest, signature-algorithm-name=SHA256withRSA])
+reload
+----
+
+this will generate following XML in the standalone.xml or domain.xml (this can also be directly added to the standalone.xml or domain.xml files instead of executing the CLI)
+
+[source,xml]
+.standalone.xml
+----
+<security-domain name="oauth2-jwt-security">
+    <authentication>
+        <login-module code="org.teiid.jboss.oauth.JWTBearerTokenLoginModule" flag="required" module="org.jboss.teiid.security">
+            <module-option name="client-id" value="xxxxx"/>
+            <module-option name="client-secret" value="xxxx"/>
+            <module-option name="access-token-uri" value="https://login.salesforce.com/services/oauth2/token"/>
+            <module-option name="jwt-audience" value="https://login.salesforce.com"/>                            
+            <module-option name="jwt-subject" value="your@sf-login.com"/>                            
+            
+            <module-option name="keystore-type" value="JKS"/>
+            <module-option name="keystore-password" value="changeme"/>
+            <module-option name="keystore-url" value="${jboss.server.config.dir}/salesforce.jks"/>
+            <module-option name="certificate-alias" value="teiidtest"/>                                                                                    
+            <module-option name="signature-algorithm-name" value="SHA256withRSA"/>                            
+        </login-module>
+    </authentication>
+</security-domain>
+----
+
+=== Kerberos
+
+Kerberos can also used as data source security. The below configuration is to configure a static Kerberos ticket at data source. Please note that Kerberos can be used with RDBMS, REST web services.
+
+[source,cli]
+----
+/subsystem=security/security-domain=host:add(cache-type=default)
+/subsystem=security/security-domain=host/authentication=classic:add
+/subsystem=security/security-domain=host/authentication=classic/login-module=Kerberos:add(code=Kerberos, flag=required, 
+   module-options=[storeKey=true, refreshKrb5Config=true, useKeyTab=true, 
+   principal=host/testserver@MY_REALM, keyTab=/path/to/service.keytab, doNotPrompt=true, debug=false])
+reload
+----
+
+The above command will generate resulting XML in the standalone.xml file or domain.xml file.
+
+[source,xml]
+.standalone.xml
+----
+<security-domain name="host">
+   <authentication>
+      <login-module code="Kerberos" flag="required">
+         <module-option name="storeKey" value="true"/>
+         <module-option name="useKeyTab" value="true"/>
+         <module-option name="principal" value="host/testserver@MY_REALM"/> 
+         <module-option name="keyTab" value="/path/to/service.keytab"/>
+         <module-option name="doNotPrompt" value="true"/>
+         <module-option name="debug" value="false"/>
+         <module-option name="refreshKrb5Config" value = "true"/>
+      </login-module>
+   </authentication>
+</security-domain>  
+----
+
+=== Kerberos passthrough
+
+For using the same kerberos token at Teiid and as well as at the data source level, the token negotiated at the Teiid engine can be passed into data source. Data source explicitly needs to provide this support. Major database 
+vendors like Oracle, MS-SQLServer, DB2, HIVE, Impala support kerberos. Some also support pass through mode. To Make pass-through work, follow the directions here to setup the Kerberos at Teiid engine level [Kerberos support through GSSAPI] then for data source level create the [#Pass Through Identity]
 
 == Translator Customization
 
