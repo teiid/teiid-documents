@@ -35,7 +35,7 @@ When the client or server lack the anonymous cipher suite, consider using 1-way 
 For non-anonymous SSL, the suite is negotiated - see _enabled-cipher-suites_ below below.
 
 Depending upon the SSL mode, follow the guidelines of your organization around creating/obtaining private keys. If you have no organizational requirements, then follow this guide to create
-link:Generating_Self_Signed_Certificates.adoc[self-signed certificates] with their respective keystores and truststores. The following keystore and truststore combinations are required for different SSL modes. The names of the files can be chosen by the user. The following files are shown for example purposes only.
+link:JDBC_ODBC_SSL_SelfSigned.adoc[self-signed certificates] with their respective keystores and truststores. The following keystore and truststore combinations are required for different SSL modes. The names of the files can be chosen by the user. The following files are shown for example purposes only.
 
 _1-way_
 
