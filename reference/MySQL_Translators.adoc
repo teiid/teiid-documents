@@ -26,3 +26,4 @@ set SESSION sql_mode = 'ANSI'
 
 If you may deal with null timestamp values, then set the connection property zeroDateTimeBehavior=convertToNull. Otherwise you’ll get conversion errors in Teiid that `0000-00-00 00:00:00' cannot be converted to a timestamp.
 
+WARNING: If retrieving large result sets, you should consider setting the connection property useCursorFetch=true, otherwise MySQL will fully fetch result sets into memory on the Teiid instance.
