@@ -1,10 +1,13 @@
 
 = Teiid Management CLI
+:toc: manual
+:toc-placement: preamble
 
 The {{ book.asName }} CLI is a command line based administrative and monitoring tool for Teiid. Many snippets of CLI scripting are shown throughout the Admin Guide - especially around managing data sources. link:AdminShell.adoc[AdminShell] provides a binding into the Groovy scripting language and higher level methods that are often needed when interacting with Teiid. It is still useful to know the underlying CLI commands in many circumstances. The below is a series useful CLI commands for administering a Teiid Server. Please also refer to the AS documentation for more on interacting with the CLI - including how to navigate, list operations, etc.
 
 == VDB Operations
 
+[source,java]
 ----
 deploy adminapi-test-vdb.xml 
 undeploy adminapi-test-vdb.xml
@@ -19,8 +22,29 @@ undeploy adminapi-test-vdb.xml
 /subsystem=teiid:remove-data-role(vdb-name=AdminAPITestVDB, vdb-version=1, data-role=TestDataRole, mapped-role=test)
 ----
 
+== Authentication Operations
+
+[source,java]
+----
+/subsystem=teiid:read-attribute(name=authentication-security-domain)
+/subsystem=teiid:write-attribute(name=authentication-security-domain,value=teiid-security)
+
+/subsystem=teiid:read-attribute(name=authentication-max-sessions-allowed)
+/subsystem=teiid:write-attribute(name=authentication-max-sessions-allowed,value=1000)
+
+/subsystem=teiid:read-attribute(name=authentication-sessions-expiration-timelimit)
+/subsystem=teiid:write-attribute(name=authentication-sessions-expiration-timelimit,value=0)
+
+/subsystem=teiid:read-attribute(name=authentication-type)
+/subsystem=teiid:write-attribute(name=authentication-type,value=USERPASSWORD)
+
+/subsystem=teiid:read-attribute(name=authentication-trust-all-local)
+/subsystem=teiid:write-attribute(name=authentication-trust-all-local,value=true)
+----
+
 == Source Operations
 
+[source,java]
 ----
 /subsystem=teiid:add-source(vdb-name=AdminAPITestVDB, vdb-version=1, source-name=text-connector-test, translator-name=file, model-name=TestModel, ds-name=java:/test-file) 
 /subsystem=teiid:remove-source(vdb-name=AdminAPITestVDB, vdb-version=1, source-name=text-connector-test, model-name=TestModel) 
@@ -29,6 +53,7 @@ undeploy adminapi-test-vdb.xml
 
 == Translator Operations
 
+[source,java]
 ----
 /subsystem=teiid:list-translators() 
 /subsystem=teiid:get-translator(translator-name=file) 
@@ -38,6 +63,7 @@ undeploy adminapi-test-vdb.xml
 
 == Runtime Operations
 
+[source,java]
 ----
 /subsystem=teiid:workerpool-statistics()
 
