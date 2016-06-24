@@ -43,7 +43,7 @@ For all the available login modules refer to http://community.jboss.org/docs/DOC
 
 == Realm Based LoginModule
 
-The _RealmDirectLoginModule_ utilizes a separately configured security realm, by default ApplicationRealm, to perform authentication. The below XML fragment under `security' subsystem shows a realm based login module.
+The _RealmDirectLoginModule_ utilizes a common security realm across installed WildFly/EAP instance defined by default ApplicationRealm to perform authentication and authorization. To use this security relam add the following XML under "security" subsystem in standalone-teiid.xml or domain.xml
 
 [source,xml]
 .standalone-teiid.xml
@@ -61,9 +61,11 @@ The _RealmDirectLoginModule_ utilizes a separately configured security realm, by
 </subsystem>
 ----
 
+When using this security domain, use _<wildfly>/bin/add-user.sh_ or _<wildfly>/bin/add-user.bat_ scripts to add/update a user in "ApplicationRelam". When using this relam, the password as stored in encrypted form. This is the default security module that is used. 
+
 == Text Based LoginModule
 
-Refer to http://community.jboss.org/docs/DOC-12510[http://community.jboss.org/docs/DOC-12510]. The _UsersRolesLoginModule_ utilizes simple text files to authenticate users and to define their groups. The below XML fragment under `security' subsystem shows a Text based login module.
+The _UsersRolesLoginModule_ utilizes simple text files to authenticate users and to define their groups. To use this add the following XML under "security" subsystem in standalone-teiid.xml or domain.xml 
 
 [source,xml]
 .standalone-teiid.xml
@@ -73,8 +75,8 @@ Refer to http://community.jboss.org/docs/DOC-12510[http://community.jboss.org/do
         <security-domain name="teiid-security" cache-type="default">
             <authentication>
                 <login-module code="UsersRoles" flag="required">
-                    <module-option name="usersProperties" value="$(jboss.server.config.dir)/teiid-security-users.properties"/>
-                    <module-option name="rolesProperties" value="$(jboss.server.config.dir)/teiid-security-roles.properties"/>
+                    <module-option name="usersProperties" value="$(jboss.server.config.dir)/users.properties"/>
+                    <module-option name="rolesProperties" value="$(jboss.server.config.dir)/roles.properties"/>
                 </login-module>
             </authentication>
         </security-domain>
@@ -84,10 +86,9 @@ Refer to http://community.jboss.org/docs/DOC-12510[http://community.jboss.org/do
 
 WARNING: The _UsersRolesLoginModule_ is not recommended for production use and is strongly recommended that you replace this login module.
 
-User names and passwords are stored in the _<jboss-as>/standalone/configuration/teiid-security-users.properties_ file.
+Per above configuration, User names and passwords are stored in the _<wildfly>/standalone/configuration/users.properties_ file, an example user.properties file looks like below
 
-Example user.properties file
-
+users.properties
 ----
 # A users.properties file for use with the UsersRolesLoginModule
 # username=password
@@ -97,10 +98,9 @@ george=password
 ...
 ----
 
-JAAS role assignments are stored in the _<jboss-as>/standalone/configuration/teiid-security-roles.properties_ file.
+The role assignments are stored in the _<wildfly>/standalone/configuration/roles.properties_ file, an example roles.properties file looks like below
 
-Example user.properties file
-
+roles.properties
 ----
 # A roles.properties file for use with the UsersRolesLoginModule
 # username=role1,role2,...
@@ -111,13 +111,15 @@ data_role_2=george
 
 User and role names are entirely up to the needs of the given deployment. For example each application team can set their own security constraints for their VDBs, by mapping their VDB data roles to application specific JAAS roles, e.g. app_role_1=user1,user2,user3.
 
+NOTE: When you configure this security domain, you must provide the empty user.properties and roles.properties files at the correct path defined in the configuration, otherwise the initialization of security domain will endup in failure.
+
 NOTE: Teiid data roles names are independent of JAAS roles. VDB creators can choose whatever name they want for their data roles, which are then mapped at deployment time to JAAS roles.
 
 == LDAP Based LoginModule
 
-See http://community.jboss.org/docs/DOC-11253[LDAP LoginModule configuration] for the AS community guide. The following are streamlined installation instructions.
+For more complete information to configure a LDAP based login module consult  https://access.redhat.com/documentation/en/red-hat-jboss-enterprise-application-platform/version-6.4/red-hat-jboss-enterprise-application-platform-64-how-to-configure-identity-management/how-to-configure-identity-management[EAP documentation]
 
-Configure LDAP authentication by editing _standalone-teiid.xml_ under `security'` subsystem. Once the security-domain is defined, then edit the `security-domain` attribute for Teiid’s `transport` for which you want use this LDAP login.
+Configure LDAP authentication by editing _standalone-teiid.xml_ under 'security' subsystem. Once the security-domain is defined, then edit the 'security-domain' attribute for Teiid’s 'transport' for which you want use this LDAP login.
 
 [source,xml]
 .standalone-teiid.xml
@@ -151,15 +153,18 @@ Configure LDAP authentication by editing _standalone-teiid.xml_ under `security'
 </subsystem>
 ----
 
+
 NOTE: If using SSL to the LDAP server, ensure that the Corporate CA Certificate is added to the JRE trust store.
+
+NOTE: Sometimes role information is DN, then you will requirethe property "parseRoleNameFromDN=true".
 
 == Database LoginModule
 
-Login module that uses Database-based authentication. Refer to http://community.jboss.org/docs/DOC-9511[http://community.jboss.org/docs/DOC-9511].
+For information to configure a Database based login module consult  https://access.redhat.com/documentation/en/red-hat-jboss-enterprise-application-platform/version-6.4/red-hat-jboss-enterprise-application-platform-64-how-to-configure-identity-management/how-to-configure-identity-management[EAP documentation]
 
 == Cert LoginModule
 
-Login module that uses X509 certificate based authentication. See http://community.jboss.org/docs/DOC-9160[http://community.jboss.org/docs/DOC-9160].
+For more complete information to configure a Certificate based login module consult  https://access.redhat.com/documentation/en/red-hat-jboss-enterprise-application-platform/version-6.4/red-hat-jboss-enterprise-application-platform-64-how-to-configure-identity-management/how-to-configure-identity-management[EAP documentation]
 
 == Role Mapping LoginModule
 

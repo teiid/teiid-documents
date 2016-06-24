@@ -432,6 +432,12 @@ Returns integer RowsInserted. -1 indicates the materialized table is currently l
 SYSADMIN.loadMatView(IN schemaName string NOT NULL, IN viewName string NOT NULL, IN invalidate boolean NOT NULL DEFAULT 'false') RETURNS integer
 ----
 
+[source,sql]
+.*Example loadMatView*
+----
+exec SYSADMIN.loadMatView(schemaName=>'TestMat',viewname=>'SAMPLEMATVIEW', invalidate=>'true')
+----
+
 === SYSADMIN.updateMatView
 
 The updateMatView procedure is used to update a subset of an internal or external materialized table based on the refresh criteria.

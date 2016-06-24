@@ -21,9 +21,19 @@ Retrieve a system environment property.
 
 ENV(key)
 
-To prevent untrusted access to system properties, this function is not enabled by default. The ENV function may be enabled via the allowEnvFunction property in the file.
+To prevent untrusted access to system properties, this function is not enabled by default. The ENV function needs to be enabled via CLI
 
-key, return value are strings
+----
+/subsystem=teiid:write-attribute(name=allow-env-function,value=true)
+----
+
+or edit the standalone-teiid.xml file and add following to the "teiid" subsystem
+
+----
+<allow-env-function>true</allow-env-function>
+----
+
+then call using ENV('KEY'), which returns value as string. Ex: ENV('PATH')
 
 == NODE_ID
 
