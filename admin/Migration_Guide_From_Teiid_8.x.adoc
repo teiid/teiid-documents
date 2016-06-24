@@ -9,7 +9,9 @@ If possible you should make your migration to Teiid 9 by first using Teiid 8.13.
 
 == JRE Support
 
-WildFly 9+ is expected to use Java 1.7 or later. Both the server kit and usage of Teiid Embedded will require Java 1.7+. The client driver may still use a 1.6 runtime.
+Teiid 9.1 uses WildFly 10.0.0. Both the server kit and usage of Teiid Embedded will require Java 1.7+. The client driver may still use a 1.6 runtime.
+
+Teiid 9.0 uses WildFly 9.0.2. Both the server kit and usage of Teiid Embedded will require Java 1.8+. The client driver may still use a 1.6 runtime.
 
 == Configuration Changes
 
@@ -130,3 +132,4 @@ To change properties in an web.xml file or add other files to the default odata 
 ==== Materialization
 
 The semantic versioning change requires the materialization status tables to change their version column from an integer to string.  Both the source and the source model will need to be updated with the column type change.
+
