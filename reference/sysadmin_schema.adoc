@@ -425,7 +425,7 @@ SYSADMIN.matViewStatus(IN schemaName string NOT NULL, IN viewName string NOT NUL
 
 loadMatView is used to perform a complete refresh of an internal or external materialized table.
 
-Returns integer RowsInserted. -1 indicates the materialized table is currently invalid. And -3 indicates there was an exception when performing the load. See the Caching Guide for more.
+Returns integer RowsInserted. -1 indicates the materialized table is currently loading. And -3 indicates there was an exception when performing the load. See the Caching Guide for more.
 
 [source,sql]
 ----
