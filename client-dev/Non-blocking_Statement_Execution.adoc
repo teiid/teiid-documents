@@ -1,13 +1,12 @@
 
-= blocking Statement Execution
-----------------------------
+= Non-blocking Statement Execution
 
 JDBC query execution can indefinitely block the calling thread when a statement is executed or a resultset is being iterated. In some situations you may not wish to have your calling threads held in these blocked states. When using embedded/local connections, you may optionally use the `org.teiid.jdbc.TeiidStatement` and `org.teiid.jdbc.TeiidPreparedStatement` interfaces to execute queries with a callback `org.teiid.jdbc.StatementCallback` that will be notified of statement events, such as an available row, an exception, or completion. Your calling thread will be free to perform other work. The callback will be executed by an engine processing thread as needed. If your results processing is itself blocking and you want query processing to be concurrent with results processing, then your callback should implement onRow handling in a multi-threaded manner to allow the engine thread to continue.
 
 [source,java]
 .*Non-blocking Prepared Statement Execution*
 ----
-PreparedStatemnt stmt = connection.preparedStatement(sql);
+PreparedStatement stmt = c.prepareStatemen(sql);
 TeiidPreparedStatement tStmt = stmt.unwrap(TeiidPreparedStatement.class);
 tStmt.submitExecute(new StatementCallback() {
     @Override
