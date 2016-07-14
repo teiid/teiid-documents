@@ -1,5 +1,8 @@
 
-= Environment Setup
+= Translator Environment Setup
 
-To setup the environment for developing a custom translator, you have 2 options; 1) manually setup the build environment, structure and framework classes and resources or 2) use the Teiid Translator Archetype template to generate the initial project.
+To setup the environment for developing a custom translator, you have 2 options; 
+
+1. link:Setting_up_the_build_environment.adoc[Manually setup the build environment] - structure, framework classes, and resources. 
+2. link:Archetype_Template_Translator_Project.adoc[Use the Teiid Translator Archetype] template to generate the initial project.
 
