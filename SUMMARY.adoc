@@ -132,6 +132,7 @@
 .. link:dev/User_Defined_Functions.adoc[User Defined Functions]
 ... link:dev/Source_Supported_Functions.adoc[Source Supported Functions]
 ... link:dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[Support for User-Defined Functions(Non-Pushdown)]
+.... link:dev/Archetype_Template_UDF_Project.adoc[Archethype Template UDF Project]
 .. link:dev/AdminAPI.adoc[AdminAPI]
 .. link:dev/Custom_Logging.adoc[Custom Logging]
 .. link:dev/Runtime_Updates.adoc[Runtime Updates]

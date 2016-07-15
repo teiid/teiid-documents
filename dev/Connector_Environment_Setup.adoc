@@ -3,5 +3,7 @@
 
 To setup the environment for developing a custom connector, you have 2 options:
 
-1. Manually setup the environment - structure, framework classes, and resources. 
-2. use the Teiid Connector Archetype template to generate the initial project.
+1. link:Build_Environment.adoc[Manually setup the build environment] - structure, framework classes, and resources. 
+2. link:Archetype_Template_Connector_Project.adoc[Use the Teiid Connector Archetype] template to generate the initial project.
+  
+
