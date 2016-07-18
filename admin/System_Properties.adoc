@@ -35,6 +35,7 @@ NOTE: Strings are always fully held in memory. Do not set this value too high as
 * _org.teiid.defaultNullOrder_ - defaults to LOW. Can be one of LOW, FIRST, HIGH, LAST. Sets the default null order for the Teiid engine. This will not be used for source ordering unless org.teiid.pushdownDefaultNullOrder is also set.
 * _org.teiid.iso8601Week_ - defaults to true. Set to true to use ISO 8601 rules for week calculations regardless of the locale. When true the week function will require that week 1 of a year contains the year’s first Thursday. Pushdown week values will be calculated as ISO regardless of this setting.
 * _org.teiid.widenComparisonToString_ - defaults to false. Set to true to enable widening of values to string in comparisons, which was the default behavior prior to Teiid 9. For example with this setting as false timestamp_col < 'a' will produce an exception whereas when set to true it would effectively evaluate cast(timestamp_col as string) < `a'.
+* _org.teiid.aggressiveJoinGrouping_ - defaults to true.  Set to false to not aggressively group joins (typically allowed if there exists an explicit relationship) against the same source for pushdown and rely more upon a cost based ordering.  
 
 *Security*
 
