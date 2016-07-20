@@ -250,7 +250,6 @@
 .... link:reference/JDBC_Simple_Translator.adoc[JDBC Simple Translator]
 .... link:reference/MetaMatrix_Translator.adoc[MetaMatrix Translator]
 .... link:reference/Microsoft_Access_Translators.adoc[Microsoft Access Translators]
-.... link:reference/Microsoft_Excel-ODBC_Translator.adoc[Microsoft Excel-ODBC Translator]
 .... link:reference/Microsoft_SQL_Server_Translator.adoc[Microsoft SQL Server Translator]
 .... link:reference/ModeShape_Translator.adoc[ModeShape Translator]
 .... link:reference/MySQL_Translators.adoc[MySQL Translators]

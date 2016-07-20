@@ -1,9 +1,0 @@
-
-= Microsoft Excel-ODBC Translator (excel-odbc)
-
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
-
-The Excel-ODBC Translator, known by the type name *_excel_odbc_*, is for use with Excel 2003 or later via the JDBC-ODBC bridge.
-
-This translator is deprecated as the JDBC-ODBC bridge has been removed from Java 1.8.
-
