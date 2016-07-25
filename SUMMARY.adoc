@@ -138,6 +138,7 @@
 .. link:dev/Runtime_Updates.adoc[Runtime Updates]
 .. link:dev/Custom_Metadata_Repository.adoc[Custom Metadata Repository]
 .. link:dev/PreParser.adoc[PreParser]
+... link:dev/Archetype_Template_PreParser_Project.adoc[Archethype Template PreParser Project]
 
 . link:embedded/Embedded_Guide.adoc[Embedded Guide]
 .. link:embedded/Logging_in_Teiid_Embedded.adoc[Logging in Teiid Embedded]
