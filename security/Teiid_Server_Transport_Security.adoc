@@ -5,7 +5,7 @@ There are two types of remote transports, each with it’s own encryption config
 * "teiid" - Defaults to only encrypt login traffic, in which none of the other configuration properties are used.
 * "pg" - Defaults to no SSL
 
-NOTE: The pg transport for ODBC access defaults to clear text username password authentication.
+WARNING: The pg transport for ODBC access defaults to clear text username password authentication.  You should consider using a security domain that utilizes non-plaintext passwords, kerberos, or SSL.
 
 SSL configuration is part of the _transport_ configuration in the Teiid subsystem.
 

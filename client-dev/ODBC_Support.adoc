@@ -49,7 +49,7 @@ However Teiid does not honor all properties, and some, such as Updatable Cursors
 |Should not be used.
 
 |Use serverside prepare & Parse Statements & Disallow Premature 
-|It is recommended that "Use serverside prepare" is enabled and "Parse Statements"/"Disallow Premature" are diabled
+|It is recommended that "Use serverside prepare" is enabled and "Parse Statements"/"Disallow Premature" are disabled
 
 |SSL mode
 |See link:../security/Security_Guide.adoc[Security Guide]
@@ -60,7 +60,7 @@ However Teiid does not honor all properties, and some, such as Updatable Cursors
 
 Logging/debug settings can be utilized as needed.  
 
-Settings that manipulate datatypes, metadata, or optimizations such as "Show SystemTables", "True is -1", "Backend enetic optimizer", "Bytea as LongVarBinary", "Bools as Char", etc. are ignored by the Teiid server and have no client side effect.  If there is a need for these or any other settings to have a defined affect, please open an issue with the product/project.
+Settings that manipulate datatypes, metadata, or optimizations such as "Show SystemTables", "True is -1", "Backend genetic optimizer", "Bytea as LongVarBinary", "Bools as Char", etc. are ignored by the Teiid server and have no client side effect.  If there is a need for these or any other settings to have a defined affect, please open an issue with the product/project.
 
 Any other setting that does have a client side affect, such as "LF <-> CR/LF conversion", may be used if desired but there is currently no server side usage of the setting.
 
