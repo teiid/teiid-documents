@@ -1,7 +1,7 @@
 
 = Object Translator
 
-The Object translator, known by the name of _map-cache_, is a bridge for reading and writing java objects from external sources (i.e., Map cache) and delivering them to the engine for processing.  And to assist in providing that bridge, the ﻿link:OBJECTTABLE.adoc[OBJECTTABLE] function can be used to transform complex java objects into rows and columns.   
+The Object translator, known by the name of _map-cache_, is a bridge for reading and writing java objects from external sources (i.e., Map cache) and delivering them to the engine for processing.  And to assist in providing that bridge, the ﻿link:OBJECTTABLE.adoc[OBJECTTABLE] function is an alternaitive means for transforming complex java objects into rows and columns.   
 
 == Search Capabilities
 
@@ -19,81 +19,152 @@ The following are the connector capabilities when Key Searching is used:
 == Usage
 
 * Retrieve objects from a cache and transform into rows and columns.
-* Perform writes to the cache
+* Perform inserts, updates and deletes to the cache
+
+
+== Properties
+
+Object translator is capable of returning to the client application the java object stored in the cache.  To enable the translator to automatically include the object as a column in the metadata, use the following Import Properties.
+
+
+=== Import Properties
+
+|===
+|Property Name |Description |Required |Default
+
+|ClassObjectColumn
+|If true, and when the translator provides the metadata, a column of object data type will be created that represents the stored object in the cache
+|false
+|false
+|===
+
 
 == Metadata
 
-=== Definition Requirements
+=== Requirements for Defining Root Class
 
 * The table for the root class, must have a primary key defined, which must map to an attribute in the class.
-* The table "name in source" (NIS) will be the name of the cache this table/class is stored
-* The primary object that represents the cached object should have a name in source of 'this'.  All other columns will have their name in source (which defaults to the column name) interpreted as the path to the column value from the primary object.
+* The class object column that represents the cached object should have a name in source of 'this'.  All other columns will have their name in source (which defaults to the column name) interpreted as the path to the column value from the primary object.
 * All columns that are not the primary key nor covered by a lucene index should be marked as SEARCHABLE 'Unsearchable'.
-* Attributes defined as repeatable (i.e., collections, arrays, etc.) or a container class, will be supported as 1-to-* relationships, and will have corresponding registered class (if they are to be searched).
-* A 1-to-* relationship class must have a foreign key to map to the root class/table, where the name in source for the foreign key is the name of the root class method to access those child objects. Note, this is the class method, not a reference in the google protobuf definition.
-* Using native metadata import will automatically determine a phsyical table for each root object and will have each top level member represented as a column.
+* Attributes defined as repeatable (i.e., collections, arrays, or map) or a container class, will be supported as 1-to-* relationship, and will have corresponding registered class (if they are to be searched).
 
-=== Options for Defining
+==== Requirements for Defining Relationships
 
-The following is an example of a key search and a view that associated player names with their team. The vdb defines the physical source and views using DDL.   It uses a TeamObject class, shown below, with a teamName field that is used as its cache key and a String list of players. 
+A relationship needs to be defined if the primary class contains a complex object type that you want to query. 
+
+===== Supported relationships
+
+*  1-to-1 -  must have getter/setter for a single object
+*  1-to-many  - must have getter/setter for a Collection, Map or Array type.
+
+===== Defining the relationship
+
+* A 1-to-* relationship class must have a foreign key that maps to the root class/table
+* The name in source for the foreign key is the name of the root class method to access the child objects. Note, this is the class method, not a reference in the google protobuf definition.
+
+
+=== Example for Defining
+
+The following is an example of a Person that can have Phones.  This demonstrates how to define the primary class and a relationship using DDL. 
+
 
 [source,java]
 ----
-public class TeamObject {
+public class Person {
 
-   private String teamName;
-   private List<String> players = new ArrayList<String>();
+   public String name;
+   public int id;
+   public String email;
 
-   public String getTeamName() {
-      return teamName;
+   public List<PhoneNumber> phones;
+
+   public String getName() {
+      return name;
    }
 
-   public void setTeamName(String teamName) {
-       this.teamName = teamName;
+   public void setName(String name) {
+      this.name = name;
    }
 
-   public List<String> getPlayers() {
-       return players;
+   public int getId() {
+      return id;
+   }
+
+   public void setId(int id) {
+      this.id = id;
+   }
+
+   public String getEmail() {
+      return email;
+   }
+
+   public void setEmail(String email) {
+      this.email = email;
+   }
+
+   public List<PhoneNumber> getPhones() {
+      return phones;
+   }
+
+   public void setPhones(List<PhoneNumber> phones) {
+      this.phones = phones;
    }
 
 }
+
+public class PhoneNumber {
+
+   private String number;
+   private String type;
+   
+   public String getNumber() {
+      return number;
+   }
+
+   public void setNumber(String number) {
+      this.number = number;
+   }
+
+   public String getType() {
+      return type;
+   }
+
+   public void setType(String type) {
+      this.type = type;
+   }
+}
 ----
 
-The native import logic will provide you with a TeamObject physical table that can be queried. An equivalent Team table is shown here for demonstration purposes.
 
 [source,xml]
 ----
-<vdb name="team" version="1">
-    <model name="Team" visible="false">
+<vdb name="PersonVDB" version="1">
+    <model name="PersonModel" visible="false">
         <source name="objsource" translator-name="map-cache" connection-jndi-name="java:cache-jndi"/>
         <metadata type="DDL"><![CDATA[
 
-            CREATE FOREIGN TABLE Team (
-                TeamObject Object OPTIONS (NAMEINSOURCE 'this', SEARCHABLE 'Unsearchable'),
-                teamName varchar(255) PRIMARY KEY)
-              OPTIONS (NAMEINSOURCE 'teams');
+                CREATE FOREIGN TABLE Person (
+	                PersonObject object OPTIONS (NAMEINSOURCE 'this', SELECTABLE FALSE, UPDATABLE FALSE, SEARCHABLE 'Unsearchable', NATIVE_TYPE 'org.jboss.as.quickstarts.datagrid.hotrod.query.domain.Person'),
+	                id integer NOT NULL OPTIONS (NAMEINSOURCE 'id', SEARCHABLE 'Searchable', NATIVE_TYPE 'int'),
+	                name string OPTIONS (NAMEINSOURCE 'name', SEARCHABLE 'Searchable', NATIVE_TYPE 'java.lang.String'),
+	                email string OPTIONS (NAMEINSOURCE 'email', SEARCHABLE 'Searchable', NATIVE_TYPE 'java.lang.String'),
+	                CONSTRAINT PK_ID PRIMARY KEY(id)
+                ) OPTIONS (UPDATABLE TRUE);
+
+                CREATE FOREIGN TABLE PhoneNumber (
+	                id integer NOT NULL OPTIONS (NAMEINSOURCE 'id', SELECTABLE FALSE, UPDATABLE FALSE, SEARCHABLE 'Searchable', NATIVE_TYPE 'int'),
+	                number string OPTIONS (NAMEINSOURCE 'phone.number', SEARCHABLE 'Searchable', NATIVE_TYPE 'java.lang.String'),
+	                type string OPTIONS (NAMEINSOURCE 'phone.type', SEARCHABLE 'Unsearchable', NATIVE_TYPE 'java.lang.Enum'),
+	                CONSTRAINT FK_PERSON FOREIGN KEY(id) REFERENCES Person (id) OPTIONS (NAMEINSOURCE 'phones')
+                ) OPTIONS (UPDATABLE TRUE);
 
          ]]> </metadata>
-    </model>
-    <model name="TeamView" type="VIRTUAL">
-         <metadata type="DDL"><![CDATA[
-             CREATE VIEW Players (
-                  TeamName varchar(255) PRIMARY KEY,
-                  PlayerName varchar(255)
-             )
-             AS
-             SELECT t.TeamName, y.Name FROM Team as T,
-                   OBJECTTABLE('m.players' PASSING T.TeamObject as m COLUMNS Name string 'teiid_row') as y;
-
-        ]]> </metadata>
     </model>
 
 </vdb>
 ----
 
-Notice the use of the [OBJECTABLE] function to parse the object from Team and transform into rows and column. This is only for demonstration purposes, and is not required in order to parse the object into rows and columns.
-
-This metadata could also be defined by using the Teiid Designer Teiid Connection Importer.
+This metadata could also be defined by using the Teiid Designer.
 
 == JCA Resource Adapter
 
