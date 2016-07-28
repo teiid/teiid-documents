@@ -16,6 +16,5 @@ OData support is currently not available in the Teiid Embedded profile.
 
 OData support is implemented and deployed through WAR file(s). Access is similar to accessing to any web resources deployed on the container. The war file(s) are located at <container root>/modules/org/jboss/teiid/deployments/*.war.
 
-Teiid provides link:OData2_Support.adoc[OData Version 2.0] and link:OData4_Support.adoc[OData Version 4.0] support.  
+Teiid provides link:OData4_Support.adoc[OData Version 4.0] support.  Legacy OData Version 2.0 support has been removed, but could be maintained as it's own project - please contact the community if you still need this feature and want to maintain it.  
 
-IMPORTANT: OData Version 2.0 support is deprecated.

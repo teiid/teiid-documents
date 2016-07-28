@@ -151,7 +151,7 @@ By default OData access is secured using HTTPBasic authentication. The user will
 
 However, if you wish to change the security domain use a deployment-overlay to override the _web.xml_ file in the odata4 file in the _<modules>/org/jboss/teiid/main/deployments_ directory. 
 
-OData WAR can also support Kerberos, SAML and OAuth2 authentications, for configuring the these security schemes please see ../security/Security_Guide.adoc[Security Guide]
+OData WAR can also support Kerberos, SAML and OAuth2 authentications, for configuring the these security schemes please see link:../security/Security_Guide.adoc[Security Guide]
 
 == Configuration
 

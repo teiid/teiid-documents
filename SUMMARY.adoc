@@ -95,7 +95,6 @@
 .... link:client-dev/Unsupported_Classes_and_Methods_in_java.sql.adoc[Unsupported Classes and Methods in "java.sql"]
 .... link:client-dev/Unsupported_Classes_and_Methods_in_javax.sql.adoc[Unsupported Classes and Methods in "javax.sql"]
 .. link:client-dev/OData_Support.adoc[OData Support]
-... link:client-dev/OData2_Support.adoc[OData Version 2.0 Support]
 ... link:client-dev/OData4_Support.adoc[OData Version 4.0 Support]
 .. link:client-dev/Using_Teiid_with_Hibernate.adoc[Using Teiid with Hibernate]
 .. link:client-dev/Using_Teiid_with_EclipseLink.adoc[Using Teiid with EclipseLink]
