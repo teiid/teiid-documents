@@ -3,7 +3,7 @@
 
 The Object translator, known by the name of _map-cache_, is a bridge for reading and writing java objects from external sources (i.e., Map cache) and delivering them to the engine for processing.  And to assist in providing that bridge, the ﻿link:OBJECTTABLE.adoc[OBJECTTABLE] function is an alternaitive means for transforming complex java objects into rows and columns.   
 
-== Search Capabilities
+== *Search Capabilities*
 
 Supports a local cache that is of type Map and it uses _key_ searching on the map to find objects.
 
@@ -16,13 +16,13 @@ The following are the connector capabilities when Key Searching is used:
 * InCriteria
 * Insert, Update and Delete
 
-== Usage
+== *Usage*
 
 * Retrieve objects from a cache and transform into rows and columns.
 * Perform inserts, updates and deletes to the cache
 
 
-== Properties
+== *Properties*
 
 Object translator is capable of returning to the client application the java object stored in the cache.  To enable the translator to automatically include the object as a column in the metadata, use the following Import Properties.
 
@@ -39,31 +39,40 @@ Object translator is capable of returning to the client application the java obj
 |===
 
 
-== Metadata
+== *Metadata*
 
-=== Requirements for Defining Root Class
+=== Requirements for Defining Table for Root Class
+
+==== Table level requirements
 
 * The table for the root class, must have a primary key defined, which must map to an attribute in the class.
+* The table name (or the name in source) must match the name of the Pojo class name.  This is how the table is matched to the registered class in the cache.
+
+NOTE: The primary key data type for the attribute in the class must match the cache key data type.
+
+==== Column level requirements
+
 * The class object column that represents the cached object should have a name in source of 'this'.  All other columns will have their name in source (which defaults to the column name) interpreted as the path to the column value from the primary object.
 * All columns that are not the primary key nor covered by a lucene index should be marked as SEARCHABLE 'Unsearchable'.
-* Attributes defined as repeatable (i.e., collections, arrays, or map) or a container class, will be supported as 1-to-* relationship, and will have corresponding registered class (if they are to be searched).
+* Attributes defined as repeatable (i.e., collections, arrays, or map) or a container class, can be supported as 1-to-* relationship, and will have corresponding registered class (if they are to be searched).
 
-==== Requirements for Defining Relationships
+=== Requirements for Defining Child Table in a Relationship
 
 A relationship needs to be defined if the primary class contains a complex object type that you want to query. 
 
-===== Supported relationships
+==== Supported relationships
 
 *  1-to-1 -  must have getter/setter for a single object
 *  1-to-many  - must have getter/setter for a Collection, Map or Array type.
 
-===== Defining the relationship
+==== Table level requirements
 
-* A 1-to-* relationship class must have a foreign key that maps to the root class/table
-* The name in source for the foreign key is the name of the root class method to access the child objects. Note, this is the class method, not a reference in the google protobuf definition.
+* The table name (or the name in source) must match the name of the Pojo class storing the child information.  This is how the table is matched to the registered class(s) in the cache.
+* The child table must have a foreign key that maps to the parent table primary key.
+* The name in source for the foreign key is the name of the parent class method to access the child objects. 
 
 
-=== Example for Defining
+=== Example for Defining Metadata
 
 The following is an example of a Person that can have Phones.  This demonstrates how to define the primary class and a relationship using DDL. 
 
@@ -135,6 +144,8 @@ public class PhoneNumber {
 }
 ----
 
+
+Note, this also shows a container class, PhoneNumber, as an example of the foreign key that's defines the relationship.
 
 [source,xml]
 ----
