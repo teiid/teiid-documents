@@ -172,6 +172,8 @@ CREATE TABLE status
 
 <<Appendix-1: DDL for creating MatView Status Table, Appendix-1: DDL for creating MatView Status Table>> contains a series of verified schemas against diverse physical sources.
 
+WARNING: Some databases, such as MySQL with the InnoDB backend, may not allow a large primary key such as the one for the status table.  If you experience this, you should consider making the fields shorter (such as the table name), using a different database to hold the status, or using a smaller index (for example just over vdbname and vdbversion).
+
 ==== 2. Create Materialized View
 
 For better management and control of the loading and refreshing strategies of the materialized view, the extension properties in <<View Options, View Options>>, this can be done either through Designer, or edit the DDL. Refer to <<Define Materialized View in Designer, Define Materialized View in Designer>> if through Designer.
