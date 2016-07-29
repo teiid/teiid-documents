@@ -1,8 +1,11 @@
 
 = Infinispan HotRod Translator
 
-The Infinispan HotRod Translator, known by the type *ispn-hotrod*, can read the java objects from a remote Infinispan Cache via the Hot Rod client using the Google Protobuf for serialization.  This will enable Teiid to query the remote cache using JDG DSL.   If you are using JDG in library mode, see the [Infinispan Library Mode Translator] for this type of configuration.
+The Infinispan HotRod Translator, known by the type *ispn-hotrod*, can read the java objects from a remote Infinispan Cache via the Hot Rod client using the Google Protobuf for serialization.  This will enable Teiid to query the remote cache using JDG DSL.  This translator extends the link:Object_Translator.adoc[Object Translator] and uses it for the core processing of reading and writing objects.
 
+It is assumed that you will be installing the *JDG Hotrod Client EAP Modules Kit*, which can be obtained on the Red Hat's Customer Portal at https://access.redhat.com/jbossnetwork/restricted/listSoftware.html.
+
+If you are using JDG in library mode, see the link:Infinispan_LibMode_Translator.adoc[Infinispan Library Mode Translator] for this type of configuration.
 
 == *Usage*
 
@@ -116,7 +119,7 @@ To configure the use of the pojo, do the following:
 
 There are several options to defining the metadata representing your object in the cache.  
 
-* "Recommended" Use the Teiid Connection Importer in Teiid Designer to create the physical source model based on your object cache.
+* "Recommended" Use the Teiid Connection Importer in Teiid Designer to create the physical source model based on your object cache.  The table columns will be created from the google protobuf definition, that corresponds to a registered class.
 
 * Use Teiid Designer to manually create the physical source model based on your object cache using the below *Definition Requirements*.
 
@@ -133,53 +136,14 @@ There are several options to defining the metadata representing your object in t
 
 The metadata will be resolved by reverse engineering the defined object in the cache.  This can be useful when using the Teiid Designer Teiid Connection Importer for building the physical source model(s).
 
-* You can also define the metadata using DDL.
-
-Note, this also shows a container class, PhoneNumber, as an example of the foreign key that's defines the relationship.
-
-[source,xml]
-----
-<vdb name="PeopleVDB" version="1">
-    <model name="People" visible="true">
-        <property name="importer.useFullSchemaName" value="false"/>
-       
-        <source name="infinispan-cache-dsl-connector" translator-name="ispn-hotrod" connection-jndi-name="java:/infinispanRemote" />
-
-        <metadata type="DDL"><![CDATA[
-
- CREATE FOREIGN TABLE Person (
-	PersonObject object OPTIONS (NAMEINSOURCE 'this', UPDATABLE FALSE, SEARCHABLE 'Unsearchable', NATIVE_TYPE 'java.lang.Object'),
-	id integer NOT NULL OPTIONS (SEARCHABLE 'Searchable', NATIVE_TYPE 'int'),
-	name string OPTIONS (SEARCHABLE 'Searchable', NATIVE_TYPE 'java.lang.String'),
-	email string OPTIONS (SEARCHABLE 'Searchable', NATIVE_TYPE 'java.lang.String'),
-	CONSTRAINT PK_ID PRIMARY KEY(id)
-) OPTIONS (NAMEINSOURCE 'PersonsCache', UPDATABLE TRUE);
-
-CREATE FOREIGN TABLE PhoneNumber (
-	number string OPTIONS (NAMEINSOURCE 'phone.number', SEARCHABLE 'Searchable', NATIVE_TYPE 'java.lang.String'),
-	type string OPTIONS (NAMEINSOURCE 'phone.type', SEARCHABLE 'Searchable', NATIVE_TYPE 'java.lang.String'),
-	id integer NOT NULL OPTIONS (SELECTABLE FALSE, UPDATABLE FALSE, SEARCHABLE 'Searchable', NATIVE_TYPE 'int'),
-	CONSTRAINT FK_PERSON FOREIGN KEY(id) REFERENCES Person (id) OPTIONS (NAMEINSOURCE 'phones')
-) OPTIONS (NAMEINSOURCE 'PersonsCache', UPDATABLE TRUE);
-
-         ]]> </metadata>
-    </model>
-
-</vdb>
-----
+* You can also define the metadata using DDL. See ﻿link:Object_Translator.adoc[Object Translator] for an example.
 
 
 === *Definition Requirements*
 
-* Each google registered class in the cache will have a corresponding table created.
-* The table for the root class, must have a primary key defined, which must map to an attribute in the class.
+* see link:Object_Translator.adoc[Object Translator] Metadata section for base definition requirements.
 
-NOTE: The data type for the attribute in the class must match the JDG cache key data type.
-
-* The table "name in source" (NIS) will be the name of the JDG cache this table/class is stored
-* The table columns will be created from the google protobuf definition, that corresponds to a registered class.
 * Columns will be identified as SEARCHABLE if either the protobuf definition for a column indicates its indexed or the pojo class has the attribute/method annotated.
-* Attributes defined as repeatable (i.e., collections, arrays, etc.) or a container class, will be supported as 1-to-* relationships, and will have corresponding registered class (if they are to be searched).
 * A 1-to-* relationship class must have a foreign key to map to the root class/table, where the name in source for the foreign key is the name of the root class method to access those child objects. Note, this is the class method, not a reference in the google protobuf definition.
 * A container/child class will have attributes where the NIS contain a period. Example: phone.number. This is because this maps to to google protobuf definition and what is expected to be used in the DSL query.
 
@@ -217,12 +181,28 @@ Native queries are used to simulate how its done using RDBMS and renaming tables
 
 Additionally, the execution of native queries is done thru the support of direct query procedures.  The procedure to be executed is called *native*.    
  
-{warning}
-This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, override the execution property [Override Execution Properties] called *SupportsDirectQueryProcedure* to true.
-{warning}
+WARNING: This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, override the execution property [Override Execution Properties] called *SupportsDirectQueryProcedure* to true.
 
+=== *Metadata Requirements*
+
+If you manually model the cache table in Teiid Designer, then you will need to add the property extension for defining the property "primary_table".  The following is a DDL example:
+
+[source]
+----
+SET NAMESPACE 'http://www.teiid.org/translator/object/2016' AS n0;
+
+CREATE FOREIGN TABLE Trade (
+         ....
+	CONSTRAINT PK_TRADEID PRIMARY KEY(tradeId)
+) OPTIONS (UPDATABLE TRUE);
+
+CREATE FOREIGN TABLE ST_Trade (
+        ....
+) OPTIONS (NAMEINSOURCE 'Trade', UPDATABLE TRUE, "n0:primary_table" 'ObjectSchema.Trade');
+----
+ 
 
 == *JCA Resource Adapter*
 
-See the Infinispan-HotRod resource adapter for this translator. It can be configured to lookup the cache container via JNDI, server list, or hot rod properties. 
+See link:../admin/Infinispan_HotRod_Data_Sources.adoc[Infinispan HotRod Data Sources] resource adapter for this translator. It can be configured to lookup the cache container via JNDI, server list, or hot rod properties. 
 
