@@ -77,17 +77,17 @@ If you are issuing queries with a group by clause and receive an error for sales
 
 [source,sql]
 ----
-SELECT sum(Reports) FROM Supervisor where Division = 'customer support';
+SELECT array_agg(Reports) FROM Supervisor where Division = 'customer support';
 ----
 
-Neither Salesforce nor the Salesforce Connector support the sum() scalar function, but they do support CompareCriteriaEquals, so the query that is passed to Salesforce by the connector will be transformed to this query.
+Neither Salesforce nor the Salesforce Connector support the array_agg() scalar, but they do support CompareCriteriaEquals, so the query that is passed to Salesforce by the connector will be transformed to this query.
 
 [source,sql]
 ----
 SELECT Reports FROM Supervisor where Division = 'customer support';
 ----
 
-The sum() scalar function will be applied by the Teiid Query Engine to the result set returned by the connector.
+The array_agg() function will be applied by the Teiid Query Engine to the result set returned by the connector.
 
 In some cases multiple calls to the Salesforce application will be made to support the SQL passed to the connector.
 
@@ -235,22 +235,39 @@ See the description of the http://www.salesforce.com/us/developer/docs/api/index
 
 SalesForce translator also supports bulk insert statements using JDBC batch semantics or SELECT INTO semantics. The batch size is determined by the execution property _MaxBulkInsertBatchSize_, which can be overridden in the vdb.xml file. The default value of the batch is 2048. The bulk insert feature uses the async REST based API exposed by Salesforce for execution for better performance.
 
+=== Bulk Selects
+
+When quering large tables (typically over 10,000,000) records or experience timeouts with just result batching, Teiid can issue queries to Salesforce using the bulk API with PK chunking enabled.
+
+The use of the bulk api requires a source hint in the query:
+
+[source,sql]
+----
+SELECT /*+ sh salesforce:'bulk' */ Name ... FROM Account
+----
+
+Where salesforce is the source name of the target source.
+
+The default chunk size of 100,000 records will be used. 
+
+
 == Supported Capabilities
 
-The following are the the connector capabilities supported by the Salesforce Connector. These SQL constructs will be pushed down to Salesforce.
+The following are the capabilities supported by the Salesforce Connector. These SQL constructs will be pushed down to Salesforce.
 
 * SELECT command
 * INSERT Command
 * UPDATE Command
 * DELETE Command
+* NotCriteria
+* OrCriteria
 * CompareCriteriaEquals
+* CompareCriteriaOrdered
+* IsNullCritiera
 * InCriteria
 * LikeCriteria - Supported for String fields only.
 * RowLimit
-* AggregatesCountStar
-* NotCriteria
-* OrCriteria
-* CompareCriteriaOrdered
+* Basic Aggregates
 * OuterJoins with join criteria KEY
 
 == Native Queries
