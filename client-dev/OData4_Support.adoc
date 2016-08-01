@@ -29,8 +29,10 @@ Users can submit predicates with along their query to filter the results:
 
 [source,xml]
 ----
-http://localhost:8080/odata/northwind/NW/customers?$filter=name+eq+'bob'
+http://localhost:8080/odata/northwind/NW/customers?$filter=name eq 'bob'
 ----
+
+NOTE: Spaces around 'eq' are for readability of the example only; in real URLs they must be percent-encoded as %20. OData mandates percent encoding for all spaces in URLs. http://docs.oasis-open.org/odata/odata/v4.0/odata-v4.0-part2-url-conventions.html
 
 this would be similar to making a JDBC/ODBC connection and issuing the SQL
 
@@ -50,7 +52,7 @@ Query options can be combined as needed. For example format with a filter:
 
 [source,xml]
 ----
-http://localhost:8080/odata/northwind/NW/customers?$filter=name+eq+'bob'&$format=xml
+http://localhost:8080/odata/northwind/NW/customers?$filter=name eq 'bob'&$format=xml
 ----
 
 OData allows for querying navigations from one entity to another. A navigation is similar to the foreign key relationships in relational databases. 
@@ -59,7 +61,7 @@ For example, if the _customers_ table has an exported key to the _orders_ table 
 
 [source,xml]
 ----
-http://localhost:8080/odata/northwind/NW/customers(1234)/customer_fk?$filter=orderdate+gt+datetime'2012-12-31T21:23:38Z'
+http://localhost:8080/odata/northwind/NW/customers(1234)/customer_fk?$filter=orderdate gt datetime'2012-12-31T21:23:38Z'
 ----
 
 this would be akin to making a JDBC/ODBC connection and issuing the SQL:

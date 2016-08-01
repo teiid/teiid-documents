@@ -1,7 +1,7 @@
 
 = Infinispan Library Mode Translator
 
-The Infinispan Library Mode translator, known by the name of *ispn-lib-mode*, is a bridge for reading and writing java objects to/from an Infinispan/JDG Cache.  This translator extends the link:Object_Translator.adoc[Object Translator] and uses it for the core processing of reading and writing objects. The Infinispan Library Mode Translator is written so that it can control how the cache is searched and any capabilities that are needed to control that behavior. 
+The Infinispan Library Mode translator, known by the name of *ispn-lib-mode*, is a bridge for reading and writing java objects to/from an Infinispan/JDG Cache running in library mode.  This translator extends the link:Object_Translator.adoc[Object Translator] and uses it for the core processing of reading and writing objects. The Infinispan Library Mode Translator is written so that it can control how the cache is searched and any capabilities that are needed to control that behavior. 
 
 It is assumed that you will be installing the *JDG Library Mode EAP Modules Kit*, which can be obtained on the Red Hat's Customer Portal at https://access.redhat.com/jbossnetwork/restricted/listSoftware.html.
 
@@ -171,9 +171,9 @@ To configure the use of the pojo, do the following:
 
 There are couple options to defining the metadata representing your object in the cache.  
 
-* Use the Teiid Connection Importer in Teiid Designer to create the physical source model based on your object cache.
+* "Recommended" Use the Teiid Connection Importer in Teiid Designer to create the physical source model based on your object cache.  The table columns will be created from the google protobuf definition, that corresponds to a registered class.
 
-* Directly define the VDB
+* Use Teiid Designer to manually create the physical source model based on your object cache using the below *Definition Requirements*.
 
 The following is a VDB example similar to quick start (see github at https://github.com/teiid/teiid-quickstarts/tree/master/jdg-local-cache).  It defines the physical source and will use the translator native importer logic to have the metadata reverse engineered from the Stock class, see above, to be exposed as the source table. 
 
@@ -200,16 +200,16 @@ The following is a VDB example similar to quick start (see github at https://git
 </vdb>
 ----
 
+The metadata will be resolved by reverse engineering the defined object in the cache.  This can be useful when using the Teiid Designer Teiid Connection Importer for building the physical source model(s).
+
+* You can also define the metadata using DDL. See ﻿link:Object_Translator.adoc[Object Translator] for an example.
+
+
 === Definition Requirements
 
-*  The table for the root class, must have a primary key defined, which must map to an attribute in the class.
-*  The table "name in source" (NIS) will be the name of the cache this table/class is stored
-*  The primary object that represents the cached object should have a name in source of 'this'.&nbsp; All other columns will have their name in source (which defaults to the column name) interpreted as the path to the column value from the primary object.
-*  All columns that are not the primary key nor covered by a lucene index should be marked as SEARCHABLE 'Unsearchable'.
-*  Attributes defined as repeatable (i.e., collections, arrays, etc.) or a container class, will be supported as 1-to-* relationships, and will have corresponding registered class (if they are to be searched).
-*  A 1-to-* relationship class must have a foreign key to map to the root class/table, where the name in source for the foreign key is the name of the root class method to access those child objects.  Note, this is the class method, not a reference in the google protobuf definition.
-*  VDBs using native metadata import will automatically build the physical table for the root object and will have each top level member represented as a column. 
+* see link:Object_Translator.adoc[Object Translator] Metadata section for base definition requirements.
 
+*  All columns that are not the primary key nor covered by a lucene index should be marked as SEARCHABLE 'Unsearchable'.
 
 == External Materialization
 
@@ -247,7 +247,25 @@ Additionally, the execution of native queries is done thru the support of direct
  
 WARNING: This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, [override the execution property|Translators#Override Execution Properties] called *SupportsDirectQueryProcedure* to true.
 
+=== Metadata Requirements
+
+If you manually model the cache table in Teiid Designer, then you will need to add the property extension for defining the property "primary_table".  The following is a DDL example:
+
+[source]
+----
+SET NAMESPACE 'http://www.teiid.org/translator/object/2016' AS n0;
+
+CREATE FOREIGN TABLE Trade (
+         ....
+	CONSTRAINT PK_TRADEID PRIMARY KEY(tradeId)
+) OPTIONS (UPDATABLE TRUE);
+
+CREATE FOREIGN TABLE ST_Trade (
+        ....
+) OPTIONS (NAMEINSOURCE 'Trade', UPDATABLE TRUE, "n0:primary_table" 'ObjectSchema.Trade');
+----
+
 == JCA Resource Adapter
 
-See the Infinispan Datasources resource adapter for this translator. It can be configured to lookup the cache container via JNDI or created (i.e., ConfigurationFileName). 
+See link:../admin/Infinispan_Library_Mode_Data_Sources.adoc[Infinispan Library Mode Data Sources]  resource adapter for this translator. It can be configured to lookup the cache container via JNDI or created (i.e., ConfigurationFileName). 
 
