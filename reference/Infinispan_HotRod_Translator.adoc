@@ -18,7 +18,7 @@ If you are using JDG in library mode, see the link:Infinispan_LibMode_Translator
 The following are the connector capabilities:
 
 * Compare Criteria - EQ
-* Compare Criteria Ordered - LT, GT, LE, GE - if the supportsCompareCriteriaOrdered translator override is set to true. It defaults to false due to an https://issues.jboss.org/browse/TEIID-3627[issue with JDG].
+* Compare Criteria Ordered - LT, GT, LE, GE - support for SupportsComapareCriteriaOrdered will be controlled by the version of JDG being accessed.  Any JDG version 6.5 and prior will have this set to false due to an https://issues.jboss.org/browse/TEIID-3627[issue with JDG].
 * And/Or Criteria
 * In Criteria
 * Like Criteria
