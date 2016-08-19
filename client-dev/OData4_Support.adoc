@@ -214,9 +214,10 @@ Teiid OData server, implements cursoring logic when the result rows exceed the c
 
 The following feature limitations currently apply.
 
+* search is not supported
 * delta processing is not supported
 * data-aggregation extension to specification is not supported.
-* $expand is minimally supported, where only one navigation can be expanded.
+* $it usage is limited to only primitive collection properties
 
 == Client Tools for Access
 
