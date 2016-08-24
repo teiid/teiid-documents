@@ -171,6 +171,10 @@ The following table lists the capabilities that can be specified in the `Executi
 |GroupBy
 |Translator can support GROUP BY (currently a single) ROLLUP.
 
+|GroupByMultipleDistinctAggregates
+|GroupBy
+|Translator can support GROUP BY to create multiple distinct aggregates (See IMPALA-110).  
+
 |Having
 |GroupBy
 |Translator can support the HAVING clause.

@@ -10,7 +10,7 @@ Unless specified, all of the arguments and return types in the following table a
 
 |x \|\| y
 |Concatenation operator
-|x,y in \{string}, return type is string
+|x,y in \{string, clob}, return type is string or clob
 
 |ASCII(x)
 |Provide ASCII value of the left most character in x. The empty string will as input will return null.

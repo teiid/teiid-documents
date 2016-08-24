@@ -82,6 +82,10 @@ The OID columns has been removed.  The UID column should be used instead or the 
 
 Parent uid columns have been added to the SYS Tables, Procedures, KeyColumns, and Columns tables.
 
+=== XML Document Model
+
+The XML Document Model has been deprecated.  Please consider migrating to OData or utilizing SQL/XML functions for constructing documents.
+
 == Kitting/Build Changes
 
 === Admin JAR
@@ -120,7 +124,7 @@ The drivers for JRE 1.4/1.5 systems have been discontinued. If you still need a 
 
 === OData
 
-The OData v2 war based upon odata4j has been deprecated.  You should utilize the OData v4 war service instead.
+The OData v2 war based upon odata4j has been removed.  You should utilize the OData v4 war service instead.
 
 The names of the wars have been changed to strip version information - this makes it easier to capture a deployment-overlay in the configuration such that it won't be changed from one Teiid version to the next.
 
@@ -129,7 +133,6 @@ teiid-olingo-odata4.war has become teiid-olingo-odata4.war
 
 To change properties in an web.xml file or add other files to the default odata war, you should use a {{ book.asDocRoot }}/Deployment+Overlays[deployment overlay] instead.
 
-==== Materialization
+=== Materialization
 
 The semantic versioning change requires the materialization status tables to change their version column from an integer to string.  Both the source and the source model will need to be updated with the column type change.
-
