@@ -105,7 +105,7 @@ Define a "ra.xml" file in "META-INF" directory of your RAR file. An example file
 
 For every attribute defined inside the your ManagedConnectionFactory
 class, define the following XML configuration for that attribute inside
-the "ra.xml" file. These properties are used by user to configure instance of this Connector inside a Container. Also, during the startup the Container reads these properties from this file and knows how to inject provided values in the "-ds.xml" file into a instance of "ManagedConnectionFactory" to create the Connection. Refer to link:Developing_JEE_Connectors.adoc[Developing JEE Connectors#Define Managed Connection Factory].
+the "ra.xml" file. These properties are used by user to configure instance of this Connector inside a Container. Also, during the startup the Container reads these properties from this file and knows how to inject provided values in the datasource definition into an instance of "ManagedConnectionFactory" to create the Connection. Refer to link:Developing_JEE_Connectors.adoc[Developing JEE Connectors#Define Managed Connection Factory].
 
 [source,xml]
 ----

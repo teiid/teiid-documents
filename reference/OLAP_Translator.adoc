@@ -38,5 +38,5 @@ The invokeMdx procedure is the direct query procedure for the OLAP translator. I
 
 == JCA Resource Adapter
 
-The resource adapter for this translator provided through data source in {{ book.asName }}, Refer to Admin Guide for "JDBC Data Sources" configuration section. Two sample -ds.xml files provided for accessing OLAP servers in teiid-examples section. One is Mondrian specific, when Mondrian server is deployed in the same {{ book.asName }} as Teiid (mondrian-ds.xml). To access any other OLAP servers using XMLA interface, the data source for them can be created using them example template olap-xmla-ds.xml
+The resource adapter for this translator provided through data source in {{ book.asName }}, Refer to Admin Guide for "JDBC Data Sources" configuration section. Two sample xml files are provided for accessing OLAP servers in the teiid-examples section. One is Mondrian specific, when Mondrian server is deployed in the same {{ book.asName }} as Teiid (mondrian-ds.xml). To access any other OLAP servers using XMLA interface, the data source for them can be created using them example template olap-xmla-ds.xml
 
