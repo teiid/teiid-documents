@@ -34,7 +34,6 @@ http://<host>:<port>/console
 More details for this can be found in the Admin Console VDB deployment section. This is the easiest way to deploy a VDB to a remote server.
 
 == CLI based Deployment
-~~~~~~~~~~~~~~~~~~~~
 
 {{ book.asVersionNumber }} provides command line interface (CLI) for doing any kind of administrative task. Execute
 

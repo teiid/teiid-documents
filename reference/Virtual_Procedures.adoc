@@ -45,9 +45,7 @@ END
 
 If an INOUT parameter is not assigned any value in a procedure it will remain the value it was assigned for input. Any OUT/RETURN parameter not assigned a value will remain the as the default NULL value. The INOUT/OUT/RETURN output values are validated against the NOT NULL metadata of the parameter.
 
-[[]]
-Example Virtual Procedures
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Example Virtual Procedures
 
 This example is a LOOP that walks through a cursored table and uses CONTINUE and BREAK.
 
