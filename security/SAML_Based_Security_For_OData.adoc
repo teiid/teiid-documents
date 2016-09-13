@@ -22,32 +22,26 @@ NOTE: *"DNS Names"* - Do not try to use IP address or localhost except for the t
 
 == Configure for SAML based authentication the OData
 
-* Open standalone-teiid.xml file and add the following configurations
+In security-domains add following login module using the following CLI 
 
-Now configure the Security domains to be used by the SP.
+---- 
+/subsystem=security/security-domain=teiid-security/authentication=classic/login-module=saml2:add(code=org.picketlink.identity.federation.bindings.jboss.auth.SAML2LoginModule, flag=sufficient) 
+reload 
+---- 
 
-[source,xml]
-.*"Security-Domain for SP"*
-----
-<subsystem xmlns="urn:jboss:domain:security:1.2">
-    <security-domains>
-        <security-domain name="sp" cache-type="default">
-            <authentication>
-                <login-module code="org.picketlink.identity.federation.bindings.jboss.auth.SAML2LoginModule" flag="required"/>
-            </authentication>
-        </security-domain>
-    </security-domains>
-</subsystem>
-----
-
-Now change the OData transport in the Teiid subsystem to use the security domain define above.
+the above commands will result in XML in standalone.xml or domain.xml file similar to:
 
 [source,xml]
-.*"Change OData transport security-domain"*
+.*"Security-Domain for SAML Authentication"*
 ----
-   <transport name="odata">
-     <authentication security-domain="sp"/>
-   </transport>
+	<security-domain name="teiid-security">
+        <authentication>
+            <login-module code="org.picketlink.identity.federation.bindings.jboss.auth.SAML2LoginModule" flag="sufficient"/>
+            <login-module code="RealmDirect" flag="sufficient">
+               <module-option name="password-stacking" value="useFirstPass"/>
+            </login-module>
+        </authentication>
+    </security-domain>
 ----
 
 == Modify the OData WAR File to use SAML based authentication
@@ -62,7 +56,7 @@ Now change the OData transport in the Teiid subsystem to use the security domain
 <?xml version="1.0" encoding="UTF-8"?>
 <jboss-web>
     <context-root>odata4</context-root>
-    <security-domain>sp</security-domain>
+    <security-domain>teiid-security</security-domain>
     <valve>
        <class-name>org.picketlink.identity.federation.bindings.tomcat.sp.ServiceProviderAuthenticator</class-name>
        <param>
