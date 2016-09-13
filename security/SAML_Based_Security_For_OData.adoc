@@ -25,6 +25,7 @@ NOTE: *"DNS Names"* - Do not try to use IP address or localhost except for the t
 In security-domains add following login module using the following CLI 
 
 ---- 
+/subsystem=security/security-domain=teiid-security/authentication=classic/login-module=RealmDirect:write-attribute(name=flag, value=sufficient)
 /subsystem=security/security-domain=teiid-security/authentication=classic/login-module=saml2:add(code=org.picketlink.identity.federation.bindings.jboss.auth.SAML2LoginModule, flag=sufficient) 
 reload 
 ---- 
