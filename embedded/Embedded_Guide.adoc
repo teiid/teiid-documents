@@ -78,10 +78,11 @@ Similar to a server based .vdb deployment a `URL` may be given to a zip file - s
 
 *Translators*
 
-Translators instances can be scoped to a VDB in AS using declarations in a vdb.xml file, however named instances in embedded are scoped to the entire `EmbeddedServer` and must be registered via the `EmbeddedServer.addTranslator` methods. Note that there are two `addTranslator` methods:
+Translators instances can be scoped to a VDB in AS using declarations in a vdb.xml file, however named instances in embedded are scoped to the entire `EmbeddedServer` and must be registered via the `EmbeddedServer.addTranslator` methods. Note that there are three `addTranslator` methods:
 
 * `addTranslator(Class<? extends ExecutionFactory> clazz)` - Adds a default instance of the ExecutionFactory, using the default name either from the Translator annotation or the class name.
-* `addTranslator(String name, ExecutionFactory<?, ?> ef)` - Adds a pre-initialized (ExecutionFactory.start() must have already been called) instance of the ExecutionFactory,  using the given translator name, this is functionally equivalent to using a vdb.xml translator override.
+* `addTranslator(String name, ExecutionFactory<?, ?> ef)` - Adds a pre-initialized (ExecutionFactory.start() must have already been called) instance of the ExecutionFactory, using the given translator name.  The instance will be shared for all usage. 
+* `addTranslator(String name, String type, Map<String, String> properties)` - Adds a definition of an override translator - this is functionally equivalent to using a vdb.xml translator override. 
 
 A new server instance does not assume any translators are deployed and does not perform any sort of library scanning to find translators.
 
