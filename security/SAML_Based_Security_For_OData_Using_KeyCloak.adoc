@@ -65,37 +65,28 @@ above commands will result in XML in standalone.xml or domain.xml file like
         <subsystem xmlns="urn:jboss:domain:keycloak:1.1"/>
 ----    
 
-In security-domains add following security domains using the following CLI 
+In security-domains add following login module using the following CLI 
 
 ---- 
-/subsystem=security/security-domain=keycloak:add(cache-type=default) 
-/subsystem=security/security-domain=keycloak/authentication=classic:add 
-/subsystem=security/security-domain=keycloak/authentication=classic/login-module=keycloak:add(code=org.keycloak.adapters.jboss.KeycloakLoginModule, flag=required) 
+/subsystem=security/security-domain=teiid-security/authentication=classic/login-module=keycloak:add(code=org.keycloak.adapters.jboss.KeycloakLoginModule, flag=sufficient) 
 reload 
 ---- 
 
-above commands will result in XML in standalone.xml or domain.xml file like (you can also edit standalone.xml directly)
+the above commands will result in XML in standalone.xml or domain.xml file like similar to:
 
 [source,xml]
 ----
-    <security-domain name="keycloak">
+    <security-domain name="teiid-security">
         <authentication>
-            <login-module code="org.keycloak.adapters.jboss.KeycloakLoginModule" flag="required"/>
+            <login-module code="org.keycloak.adapters.jboss.KeycloakLoginModule" flag="sufficient"/>
+            <login-module code="RealmDirect" flag="sufficient">
+               <module-option name="password-stacking" value="useFirstPass"/>
+            </login-module>
         </authentication>
     </security-domain>
 ----
 
-Under Teiid subsystem, change the "security-domain" of the "odata" transport, to 
-
-[source,xml]
-----
-    <transport name="odata">
-        <authentication security-domain="keycloak"/>
-    </transport>
-----
-
-
-This finishes all the server side changes that are required to make OAuth authentication using Keycloak. 
+This finishes all the server side changes that are required to make OAuth authentication using Keycloak.
 
 == OData Application WAR 
 

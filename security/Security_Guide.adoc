@@ -14,7 +14,7 @@ CAUTION: By default, access to Teiid is NOT secure. The default link:LoginModule
 
 Teiid JDBC/ODBC also supports link:Kerberos_support_through_GSSAPI.adoc[Kerberos] authentication with additional configuration.
 
-Auto-generated web services, such as link:../client-dev/OData_Support.adoc[OData], for consuming Teiid typically support HTTPBasic authentication, which in turn should utilize link:Security_Guide.html#67240172_SecurityGuide-PassthroughAuthentication[Pass-through Authentication].
+Auto-generated web services, such as link:../client-dev/OData_Support.adoc[OData], for consuming Teiid typically support HTTPBasic authentication, which in turn should utilize Pass-through Authentication.
 
 === Source Authentication
 
