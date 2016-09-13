@@ -68,6 +68,7 @@ above commands will result in XML in standalone.xml or domain.xml file like
 In security-domains add following login module using the following CLI 
 
 ---- 
+subsystem=security/security-domain=teiid-security/authentication=classic/login-module=RealmDirect:write-attribute(name=flag, value=sufficient)
 /subsystem=security/security-domain=teiid-security/authentication=classic/login-module=keycloak:add(code=org.keycloak.adapters.jboss.KeycloakLoginModule, flag=sufficient) 
 reload 
 ---- 
