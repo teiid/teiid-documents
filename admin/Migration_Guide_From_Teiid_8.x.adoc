@@ -52,7 +52,11 @@ There is now a single session service. Session service related properties, prefi
 
 The default maximum number of sessions was increased to 10000 to accommodate for this change.
 
-In addition there is a new property trust-all-local that defaults to true and allows unauthenticated access by local pass-through connections over the embedded transport - this was effectively the default behavior of 8.x and before when no security-domain was set on the embedded transport. You may choose to disallow that type of access by setting the property to false in stead.
+In addition there is a new property trust-all-local that defaults to true and allows unauthenticated access by local pass-through connections over the embedded transport - this was effectively the default behavior of 8.x and before when no security-domain was set on the embedded transport. You may choose to disallow that type of access by setting the property to false instead.
+
+The authentication-security-domain property will only accept a single security domain, and will not interpret the value as a comma separated list.  
+The default behavior has also changed for user names - they are longer allowed to be qualified by the security domain.  Use the
+authentication-allow-security-domain-qualifier property to allow the old behavior of accepting user names that are security domain qualified.
 
 ==== RoleBasedCredentialMapIdentityLoginModule 
 
@@ -110,7 +114,9 @@ There are also duplicate/deprecated methods on:
 EventDistributor
 Admin
 
-Using the TranslatorProperty annotation without a setter now requires that readOnly=true be set on the annotation. 
+Using the TranslatorProperty annotation without a setter now requires that readOnly=true be set on the annotation.
+
+The JDBC DatabaseMetaData and CommandContext getUserName methods will now return just the base user name without the security domain. 
 
 === Embedded Kit
 

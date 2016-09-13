@@ -55,9 +55,11 @@ return value is string.
 
 Retrieve the name of the user executing the query.
 
-USER()
+USER([includeSecurityDomain])
 
-return value is string.
+includeSecurityDomain is a boolean. return value is string.
+
+If includeSecurityDomain is omitted or true, then the user name will be returned with @security-domain appended.
 
 == CURRENT_DATABASE
 
