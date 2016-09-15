@@ -76,6 +76,11 @@ The resolver’s default behavior was to widen comparisons to string, but 9.0 no
 
 The JDBC client will report Teiid views in the metadata as table type VIEW rather than TABLE by default.  Use the connection property reportAsViews=false to use pre-9.0 behavior.
 
+==== Default Precision/Scale
+
+If a column is specified with a precision of 0 or left as the default in DDL metadata it will be treated as having the nominal internal maximum value of 32767.  
+This may cause the precision and scale to be reported differently, which may have been 2147483647 in some places or 20 in JDBC DatabaseMetaData. 
+
 == Compatibility Changes
 
 === System Metadata

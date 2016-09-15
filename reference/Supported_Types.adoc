@@ -128,7 +128,7 @@ Teiid supports a core set of runtime types. Runtime types can be different than 
 |BLOB
 |===
 
-NOTE: Even if a type is declared with a length, precision, or scale argument, those restrictions are effectively ignored by the runtime system.
+NOTE: Even if a type is declared with a length, precision, or scale argument, those restrictions are effectively ignored by the runtime system, but may be enforced/reported at the edge by OData, ODBC, JDBC.
 
 **Reference Link**
 

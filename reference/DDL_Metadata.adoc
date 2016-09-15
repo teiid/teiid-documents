@@ -179,6 +179,8 @@ image:images/create_column.jpg[images/create_column.jpg]
 
 Columns may also be marked as NOT NULL, auto_increment, and with a DEFAULT value. Currently only string values are supported as the default value. To have the string interpreted as an expression use the extension property teiid_rel:default_handling set to expression.
 
+A column of type bigdecimal/decimal/numeric can be declared without a precision/scale which will default to an internal maximum for precision with half scale, or with a precision which will default to a scale of 0. 
+
 === CONSTRAINTS
 
 Constraints can be defined on table/view to define indexes and relationships to other tables/views. This information is used by the Teiid optimizer to plan queries or use the indexes in materialization tables to optimize the access to the data.
