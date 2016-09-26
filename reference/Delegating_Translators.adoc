@@ -1,15 +1,41 @@
 
 = Delegating Translators
 
-You may create a delegating translator by extending the  `org.teiid.translator.BaseDelegatingExecutionFactory` . Once your classes are then packaged as a custom translator, you will be able to wire another translator instance into your delegating translator at runtime in order to intercept all of the calls to the delegate. This base class does not provide any functionality on its own, other than delegation.
+== Translator "delegator"
+
+A translator by name "delegator" is available in core Teiid installation, that can be used to modify the capabilities of a existing translator. Often times for debugging purposes or in special situations, one may require to either turn on/off certain capability of translator. For example, assume Hive database in their latest version supporting the ORDER BY construct, however Teiid's current version of the Hive translator does not have this capability, you can use the "delegator" translator to turn ON the "ORDER BY" support without actually writing any code. Sometimes you may want to do the reverse, you want turn off certain capability to produce a better plan. In these situations, you can use this translator.
+
+To use this translator, you need to define this translator in the VDB, as a shown in the below VDB. The below example overriding the "hive" translator and turning off the ORDER BY support.
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<vdb name="myvdb" version="1">
+
+    <model name="mymodel">
+        <source name="source" translator-name="hive-delegator" connection-jndi-name="java:hive-ds"/>
+    </model>
+
+    <!-- the below it is called translator overriding, where you can set different properties -->
+    <translator name="hive-delegator" type="delegator" />
+        <property name="delegateName" value="hive" />
+        <property name="supportsOrderBy" value="false"/>
+   </translator>
+</vdb>
+----
+
+You can override any/all the translator capabilities defined here link:/dev/Translator_Capabilities.adoc[Translator Capabilities] as Execution Properties to override. Example of "supportsOrderBy" is shown in above example. 
+
+       
+== Extending the "delegator" translator
+ 
+You may create a delegating translator by extending the  `org.teiid.translator.BaseDelegatingExecutionFactory` . Once your classes are then packaged as a custom translator, you will be able to wire another translator instance into your delegating translator at runtime in order to intercept all of the calls to the delegate. This base class does not provide any functionality on its own, other than delegation. The difference here from previous "delegator" translator is, you can hard code the capabilities instead of defining as configuration inside the -vdb.xml, as well as override methods to provide alternate behavior. 
 
 *Execution Properties*  
 
 |===
 |Name |Description |Default
-
-|delegateName
-|Translator instance name to delegate to
+|delegateName |Translator instance name to delegate to|n/a
 |===
  
 
