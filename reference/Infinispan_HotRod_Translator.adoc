@@ -18,7 +18,7 @@ If you are using JDG in library mode, see the link:Infinispan_LibMode_Translator
 The following are the connector capabilities:
 
 * Compare Criteria - EQ
-* Compare Criteria Ordered - LT, GT, LE, GE - if the supportsCompareCriteriaOrdered translator override is set to true. It defaults to false due to an https://issues.jboss.org/browse/TEIID-3627[issue with JDG].
+* Compare Criteria Ordered - LT, GT, LE, GE - support for SupportsComapareCriteriaOrdered will be controlled by the version of JDG being accessed.  Any JDG version 6.5 and prior will have this set to false due to an https://issues.jboss.org/browse/TEIID-3627[issue with JDG].
 * And/Or Criteria
 * In Criteria
 * Like Criteria
@@ -50,68 +50,6 @@ To be done:
 
 The *ispn-hotrod* translator is not configured, out-of-the-box, in the standalone-teiid.xml configuration. To configure the translator, run the https://github.com/teiid/teiid/blob/master/build/kits/jboss-as7/docs/teiid/datasources/infinispan/add-infinispan-hotrod-translator.cli[add-infinispan-hotrod-translator.cli] script. This script can also be found in the teiid-jboss-dist.zip kit, under docs/teiid/datasources/infinispan. See the https://docs.jboss.org/author/display/teiidexamples/JBoss+Data+Grid+Remote+Cache+as+a+Data+Source[jdg-remote-cache] quick start for an example. Note, this assumes you will be installing a separate JDG server, which will be accessed via the Hot Rod Client installed into the Teiid server.
 
-
-=== Configuring Pojo class
-The pojo class is the object that will be used to store the data in the cache.  It should be built accordingly:
-
-*  To take advantage of the cache being indexed enabled, should annotate the class.  See JDG Indexing With Protobuf Annotations at https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_Data_Grid/6.6/html-single/Infinispan_Query_Guide/index.html#Custom_Fields_Indexing_with_Protobuf
-*  The class should be packaged into a jar so that it can be deployed as a module 
-
-Example class:
-[source,java]
-----
-public class Person {
-
-   @ProtoField(number = 2, required = true)
-   public String name;
-   @ProtoField(number = 1, required = true)
-   public int id;
-   @ProtoField(number = 3)
-   public String email;
-   private List<PhoneNumber> phones;
-
-   public String getName() {
-      return name;
-   }
-
-   public void setName(String name) {
-      this.name = name;
-   }
-
-   public int getId() {
-      return id;
-   }
-
-   public void setId(int id) {
-      this.id = id;
-   }
-
-   public String getEmail() {
-      return email;
-   }
-
-   public void setEmail(String email) {
-      this.email = email;
-   }
-
-   public List<PhoneNumber> getPhones() {
-      return phones;
-   }
-
-   public void setPhones(List<PhoneNumber> phones) {
-      this.phones = phones;
-   }
-}
-----
-
-To configure the use of the pojo, do the following:
-
-*  Deploy the pojo jar as a module in the jboss-as server.   Then define the "lib" property in the -vdb.xml and assign the correct module name.   This can be done using the following template:
-[source,xml]
----- 
-     <property name ="lib" value ="{pojo_module_name}"></property>
-----
- 
 
 == *Metadata*
 
