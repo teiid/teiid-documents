@@ -558,6 +558,26 @@ a sample query looks like
 SELECT loc FROM maps where mongo.geoWithin(loc, 'LineString', ((cast(1.0 as double), cast(2.0 as double)), (cast(1.0 as double), cast(2.0 as double))))
 ----
 
+Same functions using built-in Geometry type (the above functions will be deprecated and removed in future versions)
+----
+CREATE FOREIGN FUNCTION geoIntersects (columnRef string,  geo geometry) RETURNS boolean;
+CREATE FOREIGN FUNCTION geoWithin (ccolumnRef string,  geo geometry) RETURNS boolean;
+CREATE FOREIGN FUNCTION near (ccolumnRef string, geo geometry, maxdistance integer) RETURNS boolean;
+CREATE FOREIGN FUNCTION nearSphere (ccolumnRef string, geo geometry, maxdistance integer) RETURNS boolean;
+CREATE FOREIGN FUNCTION geoPolygonIntersects (ref string, geo geometry) RETURNS boolean;
+CREATE FOREIGN FUNCTION geoPolygonWithin (ref string, geo geometry) RETURNS boolean;
+----
+
+a sample query looks like
+
+[source,sql]
+----
+SELECT loc FROM maps where mongo.geoWithin(loc, ST_GeomFromGeoJSON('{"coordinates":[[1,2],[3,4]],"type":"Polygon"}'))
+----
+
+There are various "st_geom.." methods are available in the Geo Spatial function library in Teiid.
+
+
 == Capabilities
 
 MongoDB translator designed on top of the MongoDB aggregation framework, use of MongoDB version that supports this framework is mandatory. Apart from SELECT queries, this translator also supports INSERT, UPDATE and DELETE queries.
