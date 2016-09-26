@@ -6,7 +6,7 @@ The _google-spreadsheet_ translator is used to connect to a Google Spreadsheet. 
 The query approach expects the data in the worksheet to be in a specific format. Namely:
 
 * Any column that has data is queryable.
-* Any non-string column with an empty cell has the value retrieved as null, otherwise it is the empty string.
+* Any column with an empty cell has the value retrieved as null.
 * If the first row is present and contains string values, then it will be assumed to represent the column labels.
 
 If you are using the default native metadata import, the metadata for your Google account (worksheets and information about columns in worksheets) are loaded upon translator start up. If you make any changes in data types, it is advisable to restart your vdb.
