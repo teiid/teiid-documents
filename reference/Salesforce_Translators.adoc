@@ -287,6 +287,7 @@ Where salesforce is the source name of the target source.
 
 The default chunk size of 100,000 records will be used. 
 
+Note: this feature is only supported by Salsforce API equal to greater than 28, since the default "salesforce" translator uses version 22 of API, it recommended to use "salesforce-34" version of the translator to use this feature.
 
 == Supported Capabilities
 
