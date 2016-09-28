@@ -27,3 +27,5 @@ TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalon
 
 NOTE: To use an anonymous bind, set the LdapAdminUserDN and LdapAdminUserPassword to empty values.
 
+TIP: If you experience stale connections in the pool, you should enable either the validate-on-match or the background-validation pool settings.
+
