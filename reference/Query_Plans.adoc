@@ -356,6 +356,7 @@ ProjectNode(0) output=[pm1.g1.e1, pm1.g2.e2, pm1.g3.e3] [pm1.g1.e1, pm1.g2.e2, p
 * Join Criteria - the join predicates
 * Execution Plan - the nested execution plan
 * Into Target - the insertion target
+* Upsert - if the insert is an upsert
 * Sort Columns - the columns for sorting
 * Sort Mode - if the sort performs another function as well, such as distinct removal
 * Rollup - if the group by has the rollup option

@@ -203,6 +203,9 @@ Each node has a set of applicable properties that are typically shown on the nod
 
 |CONSTRAINT 
 |the constraint that must be met if the values are being projected into a group
+
+|UPSERT 
+|If the insert is an upsert
 |===
 
 ==== Select Properties

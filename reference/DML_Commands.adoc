@@ -98,23 +98,24 @@ Example Syntax
 DELETE FROM table [WHERE criteria]
 ----
 
-== MERGE Command
+== UPSERT/MERGE Command
 
-The MERGE command, also known as UPSERT, is used to add and/or update records. The Teiid specific (non-ANSI) MERGE is simply a modified INSERT statement that requires the target table to have a primary key and for the target columns to cover the primary key. The MERGE operation will then check the existence of each row prior to INSERT and instead perform an UPDATE if the row already exists.
+The UPSERT (or MERGE) is used to add and/or update records. The Teiid specific (non-ANSI) UPSERT is simply a modified INSERT statement that requires the target table to have a primary key and for the target columns to cover the primary key. 
+The UPSERT operation will then check the existence of each row prior to INSERT and instead perform an UPDATE if the row already exists.
 
 Example Syntax
 
 [source,sql]
 ----
-MERGE INTO table (column,...) VALUES (value,...)
+UPSERT INTO table (column,...) VALUES (value,...)
 ----
 
 [source,sql]
 ----
-MERGE INTO table (column,...) query
+UPSERT INTO table (column,...) query
 ----
 
-NOTE: *Merge Pushdown* - The MERGE statement is not currently pushed to sources, but rather will be broken down into the respective insert/update operations.
+NOTE: *UPSERT Pushdown* - If UPSERT statement is not pushed to the source, it will be broken down into the respective insert/update operations, which requires XA support on the target system to guarantee atomicity.
 
 == EXECUTE Command
 

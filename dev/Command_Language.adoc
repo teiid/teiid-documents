@@ -7,10 +7,10 @@ Teiid sends commands to your Translator in object form. These classes are all de
 
 The language objects all extend from the `LanguageObject` interface. Language objects should be thought of as a tree where each node is a language object that has zero or more child language objects of types that are dependent on the current node.
 
-All commands sent to your Translator are in the form of these language trees, where the root of the tree is a subclass of `Command`. Command has several sub-interfaces, namely:
+All commands sent to your Translator are in the form of these language trees, where the root of the tree is a subclass of `Command`. Command has several sub-classes, namely:
 
 * `QueryExpression`
-* `Insert`
+* `Insert` - also represents an upsert, see the isUpsert flag.
 * `Update`
 * `Delete`
 * `BatchedUpdates`

@@ -318,6 +318,10 @@ The following table lists the capabilities that can be specified in the `Executi
 |SelectWithoutFrom
 |SelectExpressions
 |Translator supports selecting values without a FROM clause, e.g. SELECT 1.
+
+|Upsert
+|
+|Translator supports an upsert style insert.
 |===
 
 Note that any pushdown subquery must itself be compliant with the Translator capabilities.
