@@ -1,0 +1,35 @@
+= GeoServer Integration
+
+link:http://geoserver.org/[GeoServer] is an open source server for geospatial data.  It can be integrated with Teiid to serve geospatial
+ data from a variety of sources.
+
+== Prerequisites
+
+- Have GeoServer installed.  By default this will be in a different container than the Teiid WildFly instance, but it should be possible to
+deploy into the same WildFly instance. 
+
+- Your Teiid installation should already be setup for link:../admin/Socket_Transports.adoc[ODBC] access.  This allows the built-in support of GeoServer 
+for PostGIS/PostgreSQL to be used.
+
+- Have a VDB deployed that exposes one or more tables containing an appropriate Geometry column.
+
+== GeoServer Configuration
+
+This process will need to be repeated for each VDB schema you are exposing that contains geospatial data.
+
+. Using the GeoServer admin web application, select Stores -> Add new Store. Under Vector Data Sources, select PostGIS. 
+. Using the non-JNDI connection, fill in the Teiid server host, ODBC port, database (VDB Name with optional version), user, and password, 
+schema (schema/model from the target VDB).
+.. If your VDBs contain target schema or table names with % or _, Teiid must be configured to use the same default like escape 
+character '\' as PostgreSQL to properly respond to metadata queries.  Either the link:../admin/System_Properties.adoc[system property] 
+org.teiid.backslashDefaultMatchEscape must be set to true or the Teiid session variable backslashDefaultMatchEscape must be set to true -  
+for example enter "select cast(teiid_session_set('backslashDefaultMatchEscape', true) as boolean)" in the "Session startup SQL" to
+configure just this GeoServer connection pool.
+. Follow the typical GeoServer instructions for creating a Layer based upon the Teiid store.
+.. Note that the PostGIS function ST_Estimated_Extent is not supported by Teiid and the execution will be shown in the logs as an error
+when selecting to compute the bounding box from the data.  
+
+== Additional Considerations
+
+- If you are integrating a PostgreSQL source, you must not re-expose the geometry_columns table.
+This is because GeoServer makes unqualified queries that reference geometry_columns and the query should resolve against the Teiid system table instead.

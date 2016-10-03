@@ -7,7 +7,11 @@ Teiid can provide ODBC access to deployed VDBs in the Teiid runtime through http
 
 NOTE: By default, ODBC is enabled and running on on port _35432_.
 
-The pg emulation is not complete. The intention of the ODBC access is to provide non-JDBC connectivity to issue Teiid queries - not pgsql queries. While many PostgreSQL constructs are supported the default behavior for queries matches Teiid’s expectations. See link:../admin/System_Properties.adoc[System Properties] for optional properties that further emulate pgsql handling.
+The pg emulation is not complete. The intention of the ODBC access is to provide non-JDBC connectivity to issue Teiid queries - not pgsql queries. 
+While many PostgreSQL constructs are supported the default behavior for queries matches Teiid’s expectations. 
+See link:../admin/System_Properties.adoc[System Properties] for optional properties that further emulate pgsql handling.
+
+If you do not wish to globally enable org.teiid.backslashDefaultMatchEscape, then have your ODBC client issue "select cast(teiid_session_set('backslashDefaultMatchEscape', true) as boolean)" to alter the default behavior for just the current session.
 
 == Known Limitations:
 

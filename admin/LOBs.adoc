@@ -9,5 +9,5 @@ Source LOB values (LOBs from physical sources) are typically accessed by referen
 
 Cached lobs will be copied rather than relying on the reference to the source lob.
 
-Temporary lobs created by Teiid will be cleaned up when the result set or statement is closed. To rely on implicit garbage collection based cleanup instead of statement close, the Teiid session variable clean_lobs_onclose can be set to false (by issuing the query "SELECT teiid_session_set(’clean_lobs_onclose’, false)" - which can be done for example via the new connection sql in the datasource definition). This can be used for local client scenarios that relied on the implicit behavior, such as Designer generated REST VDBs.
+Temporary lobs created by Teiid will be cleaned up when the result set or statement is closed. To rely on implicit garbage collection based cleanup instead of statement close, the Teiid session variable clean_lobs_onclose can be set to false (by issuing the query "SELECT teiid_session_set('clean_lobs_onclose', false)" - which can be done for example via the new connection sql in the datasource definition). This can be used for local client scenarios that relied on the implicit behavior, such as Designer generated REST VDBs.
 
