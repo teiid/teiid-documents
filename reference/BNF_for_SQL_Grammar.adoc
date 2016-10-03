@@ -753,6 +753,9 @@
 |[[token_TRIM]]_TRIM_
 |<<function,function>>, <<nonReserved,non-reserved identifier>>, <<textColumn,text table column>>, <<textTable,text table>>
 
+|[[token_UPSERT]]_UPSERT_
+|<<insert,insert statement>>, <<nonReserved,non-reserved identifier>>
+
 |[[token_VARIADIC]]_VARIADIC_
 |<<nonReserved,non-reserved identifier>>, <<procedureParameter,procedure parameter>>
 
@@ -1614,6 +1617,8 @@ Example:
 
 * <<token_PRESERVE,PRESERVE>>
 
+* <<token_UPSERT,UPSERT>>
+
 
 Allows non-reserved keywords to be parsed as identifiers  
 
@@ -2211,7 +2216,7 @@ param1 => 'x', param2 => 1
 
 === [[insert]]_<<usage_insert, insert statement>>_ ::= 
 
-* ( <<token_INSERT,INSERT>> | <<token_MERGE,MERGE>> ) <<token_INTO,INTO>> <<<id,identifier>>> ( <<<columnList,column list>>> )? <<<queryExpression,query expression>>> ( <<<option,option clause>>> )?
+* ( <<token_INSERT,INSERT>> | <<token_MERGE,MERGE>> | <<token_UPSERT,UPSERT>> ) <<token_INTO,INTO>> <<<id,identifier>>> ( <<<columnList,column list>>> )? <<<queryExpression,query expression>>> ( <<<option,option clause>>> )?
 
 
 Inserts values into the given target.
