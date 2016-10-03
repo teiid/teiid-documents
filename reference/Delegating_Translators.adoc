@@ -24,7 +24,7 @@ To use this translator, you need to define this translator in the VDB, as a show
 </vdb>
 ----
 
-You can override any/all the translator capabilities defined here link:/dev/Translator_Capabilities.adoc[Translator Capabilities] as Execution Properties to override. Example of "supportsOrderBy" is shown in above example. 
+You can override any/all the translator capabilities defined here link:../dev/Translator_Capabilities.adoc[Translator Capabilities] as Execution Properties to override. Example of "supportsOrderBy" is shown in above example. 
 
        
 == Extending the "delegator" translator
