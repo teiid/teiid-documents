@@ -42,7 +42,7 @@ The second step is executing the DDL to map a Phoenix table to an existing HBase
 
 The Following is a example for mapping an existing HBase Customer with the following structure:
 
-image:images/raw.githubusercontent.com/kylinsoong/kylinsoong.github.io/master/img/teiid/hbase-table-1.png[images/raw.githubusercontent.com/kylinsoong/kylinsoong.github.io/master/img/teiid/hbase-table-1.png]
+image:images/hbase-table-1.png[hbase-table-1.png]
 
 As depicted above, the HBase _Customer_ table have 2 column families, _customer_ and _sales_, and each has 2 column qualifiers, _name_, _city_, _product_ and _amount_ respectively. We can map this Table to Phoenix via DDL:
 

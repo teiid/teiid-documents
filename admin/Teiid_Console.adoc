@@ -27,7 +27,7 @@ Profile view is for configuration. Click on "profile" on top right hand corner o
 * Translators - view, add and remove the Translators configured in Teiid.
 * Transports - view, add and remove transports to the Teiid engine.
 
-image:images/author/download/attachments/18646076/webconsole2.png[images/author/download/attachments/18646076/webconsole2.png]
+image:images/webconsole2.png[webconsole2.png]
 
 Using this view you can change any configuration value of Teiid. Note that various different configuration properties are sub-divided into different tabs. You can click "Need Help" link on these pages to see the description of each field on the page.
 
@@ -37,7 +37,7 @@ NOTE: *Server Restart* - Note that some properties require you to restart the se
 
 Runtime view shows run time information about AS7 and Teiid subsystem. Runtime information about Teiid can be viewed by selecting "Virtual Databases" on left hand navigational tree.
 
-image:images/author/download/attachments/18646076/webconsole1.png[images/author/download/attachments/18646076/webconsole1.png]
+image:images/webconsole1.png[webconsole1.png]
 
 Using this page user can view many different settings in the context a VDB. All the VDBs deployed in the server are shown in top level table. When you select and highlight a VDB, more details about that VDB are displayed in the sub-tabs below. Each of these sub-tabs are divided into grouping of the functionality.
 
