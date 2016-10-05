@@ -89,6 +89,18 @@ The metadata will be resolved by reverse engineering the defined object in the c
 
 This translator supports using the cache for external materialization.   However, there are specific configuration changes that are required at the [Infinispan-HotRod resource-adapter] and at the translator.   
 
+[NOTE]
+====
+Creating or selecting a view to materialize:
+
+Unfortunately for protobufs, complex data types don't convert to C / C++. So when you are creating a view to use for materialization, it is recommended to stick with primitive data types because protobuffer doesn't support bigdecimal directly. So there are 3 options:
+
+1. use all primitive data types
+2. implement a marshaller that will handle the conversion, which means the .proto file will also need to be created (see JDG for creation of files)
+3. create a view that will convert the bigdecimal to a string, then materialize that view.
+
+====
+
 
 === *Native Queries*
 
