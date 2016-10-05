@@ -137,6 +137,8 @@ link:../reference/sysadmin_schema.adoc#_sysadmin_loadmatview[SYSADMIN.loadMatVie
 5. Executes `teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT` if defined.
 6. Updates `teiid_rel:MATVIEW_STATUS_TABLE` entry to set materialized view status status to "LOADED" and valid.
 
+
+
 == Materialization Management
 
 Users, when they are designing their views, can define additional metadata and extension properties(refer to above section) on their views to control the loading and refreshing of external materialization cache. This option provides a limited, but a powerful way to manage the materialization views. For this purpose, link:../reference/sysadmin_schema.adoc#_virtual_procedures[SYSADMIN Schema] defines three procedures (link:../reference/sysadmin_schema.adoc#_sysadmin_loadmatview[loadMatView], link:../reference/sysadmin_schema.adoc#_sysadmin_updatematview[updateMatView], link:../reference/sysadmin_schema.adoc#_sysadmin_matviewstatus[matViewStatus]) to cooperate with the Materialization Management. 
@@ -205,7 +207,14 @@ If stage table is not defined, you can define truncate target table in before lo
 "teiid_rel:MATVIEW_LOAD_SCRIPT" 'insert into matTable select * from matview option nocache matview',
 ---- 
 
-NOTE: That however may be too simplistic because your index creation may be more performant if deferred until after the table has been created. Also full snapshot refreshes are best done to a staging table then swapping it for the existing physical table to ensure that the refresh does not impact user queries and to ensure that the table is valid prior to use.
+NOTE: That however may be too simplistic because your index creation may be more performant if deferred until after the table has been created. 
+Also full snapshot refreshes are best done to a staging table then swapping it for the existing physical table to ensure that the refresh does not impact user queries and to ensure that the table is valid prior to use.
+
+For some sources, the effect of a RENAME operations may not be performed atomically with the other after load script operations.  If this is the case, it 
+will be possible for the materialization target table to not exist while being queried.  Possible workarounds include:
+
+- It's possible to send a set of commands to the source rather than as individual native queries.  For example: 'execute accounts.native(''ALTER TABLE matTable RENAME TO matTable_temp; ALTER TABLE stageTable RENAME TO matTable; ALTER TABLE matTable_temp RENAME TO stageTable'')'
+- Use an alternative strategy based upon maintaining just a single table, such as updating based upon an UPSERT/MERGE and then a purge of entries that are no longer valid.
 
 ==== 3. Use Materialized View
 
