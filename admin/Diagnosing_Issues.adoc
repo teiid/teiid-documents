@@ -6,9 +6,10 @@ You may experience situations where you incur performance issues or unexpected r
 
 * When there is an issue, start by isolating a problem query as much as possible.  If accessing through ODBC or OData, does a similar issue occur just through JDBC.  In whatever scenario the issue occurs, the particulars matter - what sources, if there is a transaction, load, etc.
 * Don't make too many assumptions 
- ** For example memory consumption for example can be heavily dependent upon drivers, and a resulting out of memory issue may only be indirectly related to Teiid
+ ** For example memory consumption can be heavily dependent upon drivers, and a resulting out of memory issue may only be indirectly related to Teiid
 * Start with the query plan - especially with performance issues
  ** There may be simplifications or changes possible to views and procedures utilized by the user query.
+ ** Ensure that relevant costing metadata is set and/or that hints you have provided are being applied as expected.
 * Utilize link:#_logging[Logging]
  ** Planning issues may be understood with the link:#_plan_debug_log[debug plan]
  ** The link:Logging.adoc[command log]  
@@ -78,10 +79,12 @@ ProjectNode
 ----
 
 In addition to the execution stats, note there are also cost estimates.  The values for the cost estimates are derived from the statistic values set of each table/column about the row count, number of distinct values, number of null values, etc.
-Unlike systems that own the data, we are not attempting to build histograms or other in-depth models of the data.  Theses values are meant to be approximations with nominally distribution assumptions.
+Unlike systems that own the data, Teiid does not build histograms or other in-depth models of the data.  Theses values are meant to be approximations with nominally distribution assumptions.
 The costing information from the metadata only matters for physical entities as we'll recompute the higher values in planning after merge virtual and other plan modifications.  
 If you see that join is being implemented inefficiently, then first make sure reasonable costing values are being set on the tables involved.  Statistics can be gathered for some sources at design time or deploy time.  
 In environments that fluctuate rapidly, you may need to issue runtime costing updates via link:../reference/sysadmin_schema.adoc#_foreign_procedures[system procedures].
+
+Note: if you cardinality values are unknown - shown as 'Node Cardinality: -1.0' in the plan - and no hints are used, then the optimizer will not assume that dependent join plans should be used.
 
 === Pushdown Inhibited
 
@@ -131,6 +134,11 @@ link:../reference/XQuery_Optimization.adoc[XQuery/XPath] can be difficult to get
 With XMLQUERY/XMLTABLE each XPath/XQuery expression can have a large impact on performance.  In particular descendant access '//' can be costly.  Just accessing elements in the direct parentage is efficient though.   
 
 The larger the document being processed, the more careful you need to be to ensure that document projection and stream processing can be used.  Streaming typically requires a simple context path - 'a/b/c'
+
+=== Out of Memory
+
+Out of memory errors can be difficult to track down.  In almost all cases, it is best to determine the actual memory consumption utilizing a heap dump - which can be obtained using the vm HeapDumpOnOutOfMemoryError option or via a tool such as VisualVM.
+You may also simply increase the size of the heap, but that may simply delay the issue from reappearing.
 
 === Logging
 
