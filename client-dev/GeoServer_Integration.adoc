@@ -12,6 +12,9 @@ deploy into the same WildFly instance.
 for PostGIS/PostgreSQL to be used.
 
 - Have a VDB deployed that exposes one or more tables containing an appropriate Geometry column.
+.. The Teiid system table link:../reference/sys_schema.adoc[GEOMETY_COLUMNS] will be used by GeoServer.  Please ensure that the relevant 
+geometry columns have the appropriate srid and coord_dimensions, which may require setting the {http://www.teiid.org/translator/spatial/2015}srid and {http://www.teiid.org/translator/spatial/2015}coord_dimension
+extension property on the geometry column. 
 
 == GeoServer Configuration
 
