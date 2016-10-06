@@ -7,7 +7,7 @@ Use the following URL format for JDBC connections:
 
 [source,java]
 ----
-jdbc:teiid:<vdb-name>@mm[s]://<host>:<port>;[prop-name=prop-value;]*
+jdbc:teiid:<vdb-name>[@mm[s]://<host>:<port>][;prop-name=prop-value]*
 ----
 
 NOTE: The JDBC client will have both JRE and server compatibility considerations.  Unless otherwise stated a client jar will typically be forward and backwards compatible with one major version of the server.
@@ -20,6 +20,12 @@ URL Components
 3.  <host> - defines the server where the Teiid Server is installed. If you are using IPv6 binding address as the host name, place it in square brackets. ex:[::1]
 4.  <port> - defines the port on which the Teiid Server is listening for incoming JDBC connections.
 5.  [prop-name=prop-value] - additionally you can supply any number of name value pairs separated by semi-colon [;]. All supported URL properties are defined in the link:Driver_Connection.adoc[connection properties] section. Property values should be URL encoded if they contain reserved characters, e.g. (’?’, '=', ';', etc.)
+
+NOTE: host and port may be a comma separated list to specify link:Using_Multiple_Hosts.adoc[multiple hosts].
+
+== Local Connections
+
+To make a link:WildFly_DataSource.adoc[local] in-VM connection, omit the protocol and host/port.
 
 == URL Connection Properties
 
@@ -125,7 +131,10 @@ will enable backwards compatibility when JDBC3 and older support is still requir
 
 |`loginTimeout`
 |`integer`
-|The login timeout in seconds. Must be >= 0. 0 indicates no timeout. If a connection cannot be created in approximately the the timeout value an exception will be thrown. Default 0, no timeout.
+|The login timeout in seconds. Must be >= 0. 0 indicates no specific timeout, but other timeouts may apply. 
+If a connection cannot be created in approximately the the timeout value an exception will be thrown. A default of 0 does not mean that the login
+will wait indefinitely.  Typically is an active vdb cannot be found the login will fail at that time.  Local connections that specify a vdb version however
+can wait by default for up to link:../admin/System_Properties.adoc[org.teiid.clientVdbLoadTimeoutMillis].
 
 |`reportAsViews`
 |`boolean`

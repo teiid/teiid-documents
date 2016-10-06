@@ -103,13 +103,13 @@ You can also use Teiid’s JDBC driver class `org.teiid.jdbc.TeiidDriver` to cre
 
 If you are deploying your client application on the same {{ book.asName }} instance as the Teiid runtime is installed, then you will want to configure the connection to by-pass making a socket based JDBC connection. By using a slightly different data source configuration to make a "local" connection, the JDBC API will lookup a local Teiid runtime in the same VM.
 
-WARNING: Since DataSources start before Teiid VDBs are deployed, leave the min pool size of 0 for local connections. Otherwise errors may occur on the startup of the Teiid DataSource.  Also note that local connections specifying a VDB version will wait for their VDB to be loaded before allowing a connection.
+WARNING: Since DataSources start before Teiid VDBs are deployed, leave the min pool size of 0 for local connections. 
+Otherwise errors may occur on the startup of the Teiid DataSource.  Also note that local connections specifying a VDB version will wait for their VDB to be loaded before allowing a connection.
+See link:Driver_Connection.adoc[loginTimeout] and the link:../admin/System_Properties.adoc[org.teiid.clientVdbLoadTimeoutMillis] system property.
 
 WARNING: Do not include any additional copy of Teiid jars in the application classload that is utilizing the local connection.  Even if the exact same version of the client jar is included in your application classloader, you will fail to connect to the local connection with a class cast exception.
 
 NOTE: By default local connections use their calling thread to perform processing operations rather than using an engine thread while the calling thread is blocked. To disable this behavior set the connection property _useCallingThreads=false_. The default is true, and is recommended in transactional queries.
-
-NOTE: Local connections that specify a VDB version will wait for the VDB load to finish before allowing the connection to continue.
 
 [source,xml]
 .*Local data source*
