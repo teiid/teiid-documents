@@ -32,9 +32,9 @@ The following properties are required when the protobuf definition file (.proto)
 |===
 |Property Name |Req. |Property Template|Description
 
-| ProtobufDefinitionFile | Y | | Path to the Google Protobuf file that's packaged in a jar (ex: /quickstart/addressbook.proto) 
-| MessageMarshallers | Y | marshaller \[,marshaller,..\] | Contains Class names mapped its respective message marshaller, (class:marshaller,\[class:marshaller,..\]), that are to be registered for serialization 
-| MessageDescriptor | Y | | Message descriptor class name for the root object in cache 
+| ProtobufDefinitionFile | Y | | Path to the Google Protobuf descriptor file that's packaged in a jar (ex: /quickstart/addressbook.proto) 
+| MessageMarshallers | Y | className:marshallerClassName \[,className:marshallerClassName,..\] | Contains Class name(s) mapped to its respective message marshaller(s) that is to be registered for serialization 
+| MessageDescriptor | Y | | Message descriptor package name in the protobuf descriptor file 
 |===
 
 === *Pojo Class/Jar*
