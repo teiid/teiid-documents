@@ -68,6 +68,7 @@ A relationship needs to be defined if the primary class contains a complex objec
 ==== Table level requirements
 
 * The table name (or the name in source) must match the name of the Pojo class storing the child information.  This is how the table is matched to the registered class(s) in the cache.
+* A primary key is required if updates are to be performed
 * The child table must have a foreign key that maps to the parent table primary key.
 * The name in source for the foreign key is the name of the parent class method to access the child objects. 
 

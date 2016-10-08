@@ -17,6 +17,16 @@ See link:../reference/Infinispan_HotRod_Translator.adoc[Infinispan HotRod Transl
 
 == *Configuration*
 
+One of the following properties is required for defining how the RemoteCacheManager will be created/accessed:
+
+|===
+|Property Name |Req. |Property Template|Description
+
+| CacheJndiName | N | | JNDI name to find the CacheContainer 
+| RemoteServerList | N | host:port\[;host:port….\] | Specify the host and ports that will be clustered together to access the caches 
+| HotRodClientPropertiesFile | N | | The HotRod properties file for configuring a connection to a remote cache 
+|===
+
 The following property is required as it provides the mapping to the Infinispan cache and pojo that will be accessed.
 
 |===
@@ -25,7 +35,7 @@ The following property is required as it provides the mapping to the Infinispan 
 | CacheTypeMap |cacheName:className[;pkFieldName[:cacheKeyJavaType]]  | For the indicated cacheName, map the root Java Object (pojo) class name.  Optionally, but required for updates, identify which class attribute is the primary key to the cache.  Optionally, identify primary key java type when different than class attribute type 
 |===
 
-=== *Protobuf Definition and Marshaller(s)*
+=== *JDG Schema using Protobuf Definition and Marshaller(s)*
 
 The following properties are required when the protobuf definition file (.proto) and the pojo marshaller(s) are being used to configure the JDG schema: 
 
@@ -37,13 +47,83 @@ The following properties are required when the protobuf definition file (.proto)
 | MessageDescriptor | Y | | Message descriptor class name for the root object in cache 
 |===
 
-=== *Pojo Class/Jar*
+The following property should be defined when using protobuf definition file and marshallers: 
+
+|===
+|Property Name |Req. |Property Template|Description
+
+| module | N | | Specify the {{ book.asName }} module that contains the cache classes that need to be loaded 
+
+|===
+
+=== *JDG Schema using Pojo Annotations*
 
 The pojo class is the object that is used to store the data in the cache.  It should be built accordingly:
 
 *  If the pojo is to be used to define the schema, then should use the protobuf annotations.  See JDG Protobuf Annotations at https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_Data_Grid/6.6/html-single/Infinispan_Query_Guide/index.html#Custom_Fields_Indexing_with_Protobuf
-*  If the protobuf definition and mashaller(s) are to be used, then these should also be packaged in the jar (or a separate jar that is included in the classpath). 
 *  The class should be packaged into a jar so that it can be deployed as a module.
+*  If the root pojo, defined in CacheTypeMap property, contains other pojo(s) (e.g., 1-to-1 or 1-to-many relationship), then those child pojo's must be defined in the ChildClasses property so that they can get registered in the JDG schema.  The following property must be configured:
+
+|===
+|Property Name |Property Template|Description
+
+| ChildClasses | className[,className,..]]  | comma separated list of class names that indicate the child classes to register in the JDG schema
+|===
+
+
+=== *Using for External Materialization*
+
+The following are the additional properties that need to be configured if using the Remote Cache for external materialization:
+
+|===
+|Property Name |Req. |Description
+
+| StagingCacheName | Y | Cache name for the staging cache used in materialization 
+| AliasCacheName   | Y | Cache name for the alias cache used in tracking aliasing of the caches used in materialization.  This cache can be shared with other configured materializations.
+|===
+
+
+
+== *Examples*
+
+There are many ways to create the data source, using CLI, link:AdminShell.adoc[AdminShell], admin-console etc. 
+
+=== *1st Example*
+
+The 1st example is an xml snippet of a resource-adapter that is using probufs and marshallers to configure the JDG schema:
+
+[source,xml]
+.*Sample Resource Adapter defining Protobuf Definition and Marshaller*
+----
+               <resource-adapter id="infinispanRemQS">
+                    <module slot="main" id="org.jboss.teiid.resource-adapter.infinispan.hotrod"/>
+                    <connection-definitions>
+                        <connection-definition class-name="org.teiid.resource.adapter.infinispan.hotrod.InfinispanManagedConnectionFactory" jndi-name="java:/infinispanRemote" enabled="true" use-java-context="true" pool-name="infinispanDS">
+                            <config-property name="CacheTypeMap">
+                                addressbook:org.jboss.as.quickstarts.datagrid.hotrod.query.domain.Person;id
+                            </config-property>
+                            <config-property name="ProtobufDefinitionFile">
+                                 /quickstart/addressbook.proto
+                            </config-property>
+                            <config-property name="MessageDescriptor">
+                                quickstart.Person
+                            </config-property>
+                            <config-property name="Module">
+                                com.client.quickstart.pojos
+                            </config-property>
+                            <config-property name="MessageMarshallers">                              org.jboss.as.quickstarts.datagrid.hotrod.query.domain.Person:org.jboss.as.quickstarts.datagrid.hotrod.query.marshallers.PersonMarshaller,org.jboss.as.quickstarts.datagrid.hotrod.query.domain.PhoneNumber:org.jboss.as.quickstarts.datagrid.hotrod.query.marshallers.PhoneNumberMarshaller,org.jboss.as.quickstarts.datagrid.hotrod.query.domain.PhoneType:org.jboss.as.quickstarts.datagrid.hotrod.query.marshallers.PhoneTypeMarshaller
+                            </config-property>
+                            <config-property name="RemoteServerList">
+                                127.0.0.1:11322
+                            </config-property>
+                        </connection-definition>
+                    </connection-definitions>
+                </resource-adapter>
+----
+
+=== *2nd Example*
+
+The 2nd example showing a pojo example with annotations and the xml snippet of the resource-adapter:
 
 [source,java]
 .*Sample Pojo with Annotations*
@@ -92,82 +172,6 @@ public class Person {
 }
 ----
 
-
-To configure the resource-adapter to use the pojo, do the following:
-
-*  Deploy the pojo jar as a module in the jboss-as server.
-
-
-=== *Reading and Writing to the Cache*
-
-
-One of the following properties is required for defining how the RemoteCacheManager will be created/accessed:
-
-|===
-|Property Name |Req. |Property Template|Description
-
-| CacheJndiName | N | | JNDI name to find the CacheContainer 
-| RemoteServerList | N | host:port\[;host:port….\] | Specify the host and ports that will be clustered together to access the caches 
-| HotRodClientPropertiesFile | N | | The HotRod properties file for configuring a connection to a remote cache 
-|===
-
-
-The following property should be defined when using protobuf definition file and marshallers: 
-
-|===
-|Property Name |Req. |Property Template|Description
-
-| module | N | | Specify the {{ book.asName }} module that contains the cache classes that need to be loaded 
-
-|===
-
-
-=== *Using Remote Cache for External Materialization*
-
-The following are the additional properties that need to be configured if using the Remote Cache for external materialization:
-
-|===
-|Property Name |Req. |Description
-
-| StagingCacheName | Y | Cache name for the staging cache used in materialization 
-| AliasCacheName   | Y | Cache name for the alias cache used in tracking aliasing of the caches used in materialization.  This cache can be shared with other configured materializations.
-|===
-
-
-
-*Examples* 
-
-There are many ways to create the data source, using CLI, link:AdminShell.adoc[AdminShell], admin-console etc. The first example is an xml snippet of a resource-adapter that is used to connect to the JDG remote-query quick start:me
-
-[source,xml]
-.*Sample Resource Adapter defining Protobuf Definition and Marshaller*
-----
-               <resource-adapter id="infinispanRemQS">
-                    <module slot="main" id="org.jboss.teiid.resource-adapter.infinispan.hotrod"/>
-                    <connection-definitions>
-                        <connection-definition class-name="org.teiid.resource.adapter.infinispan.hotrod.InfinispanManagedConnectionFactory" jndi-name="java:/infinispanRemote" enabled="true" use-java-context="true" pool-name="infinispanDS">
-                            <config-property name="CacheTypeMap">
-                                addressbook:org.jboss.as.quickstarts.datagrid.hotrod.query.domain.Person;id
-                            </config-property>
-                            <config-property name="ProtobufDefinitionFile">
-                                 /quickstart/addressbook.proto
-                            </config-property>
-                            <config-property name="MessageDescriptor">
-                                quickstart.Person
-                            </config-property>
-                            <config-property name="Module">
-                                com.client.quickstart.pojos
-                            </config-property>
-                            <config-property name="MessageMarshallers">                              org.jboss.as.quickstarts.datagrid.hotrod.query.domain.Person:org.jboss.as.quickstarts.datagrid.hotrod.query.marshallers.PersonMarshaller,org.jboss.as.quickstarts.datagrid.hotrod.query.domain.PhoneNumber:org.jboss.as.quickstarts.datagrid.hotrod.query.marshallers.PhoneNumberMarshaller,org.jboss.as.quickstarts.datagrid.hotrod.query.domain.PhoneType:org.jboss.as.quickstarts.datagrid.hotrod.query.marshallers.PhoneTypeMarshaller
-                            </config-property>
-                            <config-property name="RemoteServerList">
-                                127.0.0.1:11322
-                            </config-property>
-                        </connection-definition>
-                    </connection-definitions>
-                </resource-adapter>
-----
-
 [source,xml]
 .*Sample Resource Adapter using Pojo with annotations*
 ----
@@ -181,10 +185,17 @@ There are many ways to create the data source, using CLI, link:AdminShell.adoc[A
                             <config-property name="CacheTypeMap">
                                 addressbook_indexed:org.jboss.as.quickstarts.datagrid.hotrod.query.domain.Person;id
                             </config-property>
+                            <config-property name="ChildClasses">
+                               org.jboss.as.quickstarts.datagrid.hotrod.query.domain.PhoneNumber
+                            </config-property>
                         </connection-definition>
                     </connection-definitions>
                 </resource-adapter>
 ----
+
+=== *3rd Example*
+
+The 3rd example is using the JDG data source for materialization.
 
 
 [source,xml]
