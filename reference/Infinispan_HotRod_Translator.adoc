@@ -36,7 +36,7 @@ Limitations:
 * boolean data type:  JDG will throw an exception if no value is specified on the insert or when no default value is defined in the protobuf definition file.
 * char data type:  is not a supported type in theProtobuf data types (https://developers.google.com/protocol-buffers/docs/proto#scalar).  Would either have to handle conversion in the protobuf marshaller or create a Teiid view with the data type as char.
 * 1-to-Many, currently only supports Collection or Array, not Map's'
-* Write transactions not supported by JDG when using Hot Rod client 
+* XA transactions are not supported by JDG when using Hot Rod client.  
 
 To be done:
 
@@ -83,7 +83,7 @@ The metadata will be resolved by reverse engineering the defined object in the c
 
 * Columns will be identified as SEARCHABLE if either the protobuf definition for a column indicates its indexed or the pojo class has the attribute/method annotated.
 * A 1-to-* relationship class must have a foreign key to map to the root class/table, where the name in source for the foreign key is the name of the root class method to access those child objects. Note, this is the class method, not a reference in the google protobuf definition.
-* A container/child class will have attributes where the NIS contain a period. Example: phone.number. This is because this maps to to google protobuf definition and what is expected to be used in the DSL query.
+* A container/child class will have attributes where the NIS contain a period. Example: phone.number. This is because this maps to to google protobuf definition and what is expected by the DSL query to reference attributes of a inner class.
 
 == *External Materialization*
 
