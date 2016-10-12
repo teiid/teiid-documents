@@ -9,7 +9,7 @@ The below shows a code example as how user can use `EventDistributor` interface 
 
 
 [source,java]
-.*EventDistributor Code Example
+.*EventDistributor Code Example*
 ----
 public class ChangeDataCapture {
 
