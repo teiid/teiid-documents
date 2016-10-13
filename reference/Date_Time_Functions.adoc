@@ -120,35 +120,76 @@ Parse and format Date/Time functions use the convention established within the j
 Add a specified interval amount to the timestamp.
 
 [source,sql]
+.*Syntax*
 ----
 TIMESTAMPADD(interval, count, timestamp)
 ----
 
-count is an integer and the return value is a timestamp. Intervals can be one of the following keywords:# SQL_TSI_FRAC_SECOND - fractional seconds (billionths of a second)
+**Arguments**
+[cols="1,5a"]
+|===
+|Name |Description
 
-1.  SQL_TSI_SECOND - seconds
-2.  SQL_TSI_MINUTE - minutes
-3.  SQL_TSI_HOUR - hours
-4.  SQL_TSI_DAY - days
-5.  SQL_TSI_WEEK - weeks using Sunday as the first day
-6.  SQL_TSI_MONTH - months
-7.  SQL_TSI_QUARTER - quarters (3 months) where the first quarter is months 1-3, etc.
-8.  SQL_TSI_YEAR - years
+|interval
+|A datetime interval unit, can be one of the following keywords:
 
-The full interval amount based upon calendar fields will be added. For example adding 1 QUARTER will move the timestamp up by three full months and not just to the start of the next calendar quarter.
+* SQL_TSI_FRAC_SECOND - fractional seconds (billionths of a second)
+* SQL_TSI_SECOND - seconds
+* SQL_TSI_MINUTE - minutes
+* SQL_TSI_HOUR - hours
+* SQL_TSI_DAY - days
+* SQL_TSI_WEEK - weeks using Sunday as the first day
+* SQL_TSI_MONTH - months
+* SQL_TSI_QUARTER - quarters (3 months) where the first quarter is months 1-3, etc.
+* SQL_TSI_YEAR - years
+
+|count
+|An integer represent the datetime need add to timestamp 
+
+|timestamp
+|A datetime expression.
+|===
+
+[source,sql]
+.*Example*
+----
+SELECT TIMESTAMPADD(SQL_TSI_MONTH, 12,'2016-10-10')
+SELECT TIMESTAMPADD(SQL_TSI_SECOND, 12,'2016-10-10 23:59:59')
+----
 
 === Timestampdiff
 
-Calculates the number of date part intervals crossed between the two timestamps.
+Calculates the number of date part intervals crossed between the two timestamps return a long value.
 
 [source,sql]
+.*Syntax*
 ----
 TIMESTAMPDIFF(interval, startTime, endTime)
 ----
 
-Interval can be one of the same keywords as used by timestampadd; startTime, endTime are timestamps and the return value is a long.
+**Arguments**
+|===
+|Name |Description
 
-If (endTime > startTime), a non-negative number will be returned. If (endTime < startTime), a non-positive number will be returned. The date part difference difference is counted regardless of how close the timestamps are. For example, '2000-01-02 00:00:00.0' is still considered 1 hour ahead of `2000-01-01 23:59:59.999999'.
+|interval
+|A datetime interval unit, the same as keywords used by <<Timestampadd, Timestampadd>>.
+
+|startTime
+|A datetime expression.
+
+|endTime
+|A datetime expression.
+|===
+
+[source,sql]
+.*Example*
+----
+SELECT TIMESTAMPDIFF(SQL_TSI_MONTH,'2000-01-02','2016-10-10')
+SELECT TIMESTAMPDIFF(SQL_TSI_SECOND,'2000-01-02 00:00:00','2016-10-10 23:59:59')
+SELECT TIMESTAMPDIFF(SQL_TSI_FRAC_SECOND,'2000-01-02 00:00:00.0','2016-10-10 23:59:59.999999')
+----
+
+NOTE: If (endTime > startTime), a non-negative number will be returned. If (endTime < startTime), a non-positive number will be returned. The date part difference difference is counted regardless of how close the timestamps are. For example, '2000-01-02 00:00:00.0' is still considered 1 hour ahead of '2000-01-01 23:59:59.999999'.
 
 *Compatibility Issues*
 
