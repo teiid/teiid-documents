@@ -334,7 +334,7 @@ NOTE: *Providing the JAR libraries* - If you have defined a UDF (virtual) functi
 
 |UPDATECOUNT
 |int
-|if this procedure updates the underlying sources, what is the update count, when update count is >1 the XA protocol for execution is enforced
+|if this procedure updates the underlying sources, how many updates may be issued. When update count is >1 the XA protocol for execution is enforced. Defaults to -1 AUTO.
 |===
 
 [source,sql]
