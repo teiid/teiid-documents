@@ -652,7 +652,7 @@ geom is a geometry. Return value is a geometry.
 
 === ST_Difference
 
-Computes the closure of the point-set of the points contained in geom1 that are not in geom2
+Computes the closure of the point set of the points contained in geom1 that are not in geom2
 
 [source,sql]
 ----
@@ -682,6 +682,17 @@ ST_Force_2D(geom)
 ----
 
 geom is a geometry. Return value is a geometry.
+
+=== ST_Intersection
+
+Computes the point set intersection of the points contained in geom1 and in geom2
+
+[source,sql]
+----
+ST_Intersection(geom1, geom2)
+----
+
+geom1, geom2 are geometry. Return value is a geometry.
 
 === ST_Simplify
 
