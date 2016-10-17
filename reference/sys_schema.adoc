@@ -787,7 +787,7 @@ See also the http://postgis.net/docs/using_postgis_dbmanagement.html#geometry_co
 
 Note: The coord_dimension and srid properties are determined from the {http://www.teiid.org/translator/spatial/2015}coord_dimension and {http://www.teiid.org/translator/spatial/2015}srid 
 extension properties on the column.  When possible these values will be set automatically by the relevant importer.  If they are not set, they will be reported as 2 and 0 respectively.
-If client logic expects actual values, such as integration with link:../client_dev/GeoServer_Integration.adoc[GeoServer], then you may need to set these values manually. 
+If client logic expects actual values, such as integration with link:../client-dev/GeoServer_Integration.adoc[GeoServer], then you may need to set these values manually. 
 
 == Procedures
 
