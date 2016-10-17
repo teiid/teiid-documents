@@ -17,7 +17,7 @@ The translator, known by the type name of *_salesforce-34_*, provides Salesforce
 
 If you need connectivity to an API version other than what is built in, please utilize the project https://github.com/teiid/salesforce[https://github.com/teiid/salesforce] to generate new resource adapter / translator pair.
 
-=== Execution Properties
+== Execution Properties
 
 |===
 |Name |Description |Default
@@ -37,7 +37,7 @@ If you need connectivity to an API version other than what is built in, please u
 
 The Salesforce translator can import metadata.
 
-=== Import Properties
+== Import Properties
 
 |===
 |Property Name |Description |Required |Default
@@ -274,7 +274,7 @@ SalesForce translator also supports bulk insert statements using JDBC batch sema
 
 === Bulk Selects
 
-When quering large tables (typically over 10,000,000) records or experience timeouts with just result batching, Teiid can issue queries to Salesforce using the bulk API with PK chunking enabled.
+When quering large tables (typically over 10,000,000 records) or if experiencing timeouts with just result batching, Teiid can issue queries to Salesforce using the bulk API.  When using a bulk select, PK chunking will be enabled if supported by the query.
 
 The use of the bulk api requires a source hint in the query:
 
