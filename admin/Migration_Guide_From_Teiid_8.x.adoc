@@ -83,6 +83,10 @@ This may cause the precision and scale to be reported differently, which may hav
 
 == Compatibility Changes
 
+=== DDL Delimiters
+
+Not using a semicolon delimiter between statements is deprecated and should only be relied on for backwards compatibility.
+
 === System Metadata
 
 With data roles enabled system tables (SYS, SYSADMIN, and pg_catalog) will only expose tables, columns, procedures, etc. for which the user is entitled to access.  A READ permission is expected for tables/columns, while an EXECUTE permission is expected for functions/procedures.  All non-hidden schemas will still be visible though.

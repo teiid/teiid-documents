@@ -36,6 +36,8 @@ NOTE: *Metadata for Source Models* - The DDL based schema is not constrained to 
 
 NOTE: *Grammar Reference* - The full grammar for DDL can be found in the link:BNF_for_SQL_Grammar.adoc[BNF for SQL Grammar].
 
+WARNING: Not using a semicolon delimiter between statements is deprecated and should only be relied on for backwards compatibility.
+
 == Create FOREIGN Table
 
 A _FOREIGN_ table is table that is defined on PHYSICAL model that represents a real relational table in source databases like Oracle, SQLServer etc. For relational databases, Teiid has capability to automatically retrieve the database schema information upon the deployment of the VDB, if one like to auto import the existing schema. However, user can use below FOREIGN table semantics, when they would like to explicitly define tables on PHYSICAL models or represent non-relational data as relational in custom translators.
@@ -211,7 +213,7 @@ CREATE TRIGGER ON CustomerOrders INSTEAD OF INSERT AS
    FOR EACH ROW
    BEGIN ATOMIC
    INSERT INTO Customer (...) VALUES (NEW.value ...);
-   END
+   END;
 ----
 
 == Create Procedure/Function
@@ -495,7 +497,7 @@ CREATE VIEW MyView (...) OPTIONS ("foo:mycustom-prop" 'anyvalue')
                     to_user string PATH 'to_user',
                     profile_image_url string PATH 'profile_image_url',
                     source string PATH 'source',
-                    text string PATH 'text') tweet;
+                    text string PATH 'text') tweet;;
                 CREATE VIEW Tweet AS select * FROM twitterview.getTweets;
         ]]> </metadata>
     </model>
