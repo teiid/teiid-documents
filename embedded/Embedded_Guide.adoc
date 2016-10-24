@@ -16,16 +16,33 @@ IMPORTANT: Most of the default configuration values for memory and threads assum
 
 == The Classpath
 
-=== Embedded kit
+=== Embedded Using Maven
 
-Your application is responsible for having the appropriate classpath to utilize Teiid embedded. Typically you will want to include all of the jars from the embedded kit’s lib directory. As needed by your deployment you should include jars from the optional folder along with any jars needed to provide source access. Hibernate core 4.1.6 or compatible is needed, but not included in the kit, if you wish to utilize the JDBC translator support for dependent joins using temp tables.
+Your application is responsible for having the appropriate classpath to utilize Teiid embedded. 
+Typically you will want all transitive dependencies from referenced Teiid artifacts to be included. 
+Optional dependencies, such as Hibernate core 4.1.6 or compatible, will be needed for specific features - such as utilizing the JDBC translator support for dependent joins using temp tables.
+
+Some of the Teiid transitive dependencies have known vulnerabilities. WildFly/Teiid addresses this by introducing managed dependency overrides. It is recommended that you include these overrides in your usage of Teiid Embedded by importing the Teiid parent pom in your depedency management section:
+
+[source,xml]
+----
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.jboss.teiid</groupId>
+      <artifactId>teiid-parent</artifactId>
+      <version>${version.teiid}</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+----
 
 === OSGI
 
 All Teiid jars can also be deployed as bundles in a OSGI container like Karaf. If you are working with Karaf, a feature.xml file is available in maven repo for your convenience. Usage pattern is below
 
 ----
-features:addurl mvn:org.jboss.teiid/teiid/8.6.0.Final/xml/karaf-features
+features:addurl mvn:org.jboss.teiid/teiid/9.1.0.Final/xml/karaf-features
 features:install -v teiid
 ----
 
