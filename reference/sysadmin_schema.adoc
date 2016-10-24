@@ -61,6 +61,30 @@ This table supplies information about how views / procedures are defined.
 SELECT * FROM SYSADMIN.Usage
 ----
 
+Recursive common table queries can be used to determine transitive relationships.
+
+[source,sql]
+.*Example Finding All Incoming Usage*
+----
+with im_using as (
+    select 0 as level, uid, Uses_UID, Uses_Name, Uses_Object_Type, Uses_ElementName 
+      from usage where uid = (select uid from sys.tables where name='table name' and schemaName='schema name')
+    union all 
+    select level + 1, usage.uid, usage.Uses_UID, usage.Uses_Name, usage.Uses_Object_Type, usage.Uses_ElementName 
+      from usage, im_using where level < 10 and usage.uid = im_using.Uses_UID) select * from im_using
+----
+
+[source,sql]
+.*Example Finding All Outgoing Usage*
+----
+with uses_me as (
+    select 0 as level, uid, Uses_UID, Name, Object_Type, ElementName 
+      from usage where uses_uid = (select uid from sys.tables where name='table name' and schemaName='schema name')
+    union all 
+    select level + 1, usage.uid, usage.Uses_UID, usage.Name, usage.Object_Type, usage.ElementName 
+      from usage, uses_me where level < 10 and usage.uses_uid = uses_me.UID) select * from uses_me
+----
+
 === SYSADMIN.MatViews
 
 This table supplies information about all the materailized views in the virtual database.
