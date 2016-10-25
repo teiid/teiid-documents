@@ -1,5 +1,7 @@
 
 = Extending The JDBC Translator
+:toc: manual
+:toc-placement: preamble
 
 The JDBC Translator can be extended to handle new JDBC drivers and database versions. This is one of the most common needs of custom Translator development. This chapter outlines the process by which a user can modify the behavior of the JDBC Translator for a new source, rather than starting from scratch.
 
