@@ -309,7 +309,9 @@ The default OData client is configured with HTTP Basic authentication, to conver
 mvn clean install
 ----
 
-This will generate a new WAR file in "odata-kerberos/target" directory. Follow the below deployment direction based on your server 
+This will generate a new WAR file in "odata-kerberos/target" directory. Follow the below deployment direction based on your server.
+
+NOTE: To use Kerberos or any web layer authentication, the OData war must use PassthroughAuthentication=true (which is the default). 
 
 ==== Community Teiid Server based on WildFly
 
