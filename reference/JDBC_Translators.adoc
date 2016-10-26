@@ -1,5 +1,7 @@
 
 = JDBC Translators
+:toc: manual
+:toc-placement: preamble
 
 The JDBC translators bridge between SQL semantic and data type differences between Teiid and a target RDBMS. Teiid has a range of specific translators that target the most popular open source and proprietary databases.
 
