@@ -135,7 +135,8 @@ Regular expression matched against the connecting user’s name that determines 
 
 * _model.visible_ 
 
-Used to override the visibility of imported vdb models, where model is the name of the imported model.
+Used to override the visibility of imported vdb models, where model is the name of the imported model.  
+Note that the model name is case sensitive.
 
 * _include-pg-metadata_ 
 

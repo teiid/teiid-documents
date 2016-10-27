@@ -10,6 +10,8 @@ An imported VDB includes all of its models and may not conflict with any model, 
 ----
 <vdb name="reuse" version="1">
 
+    <property name="imported-model.visible" value="false"/>
+
     <import-vdb name="common" version="1" import-data-policies="false"/>
 
     <model visible="true" type="VIRTUAL" name="new-model">
@@ -17,12 +19,13 @@ An imported VDB includes all of its models and may not conflict with any model, 
               CREATE VIEW x (
                 y varchar
                 ) AS 
-                  select * from old-model.tbl;
+                  select * from imported-model.tbl;
          ]]>
          </metadata>
     </model>
 </vdb>
 ----
 
-In the above example the reuse VDB will have access to all of the models defined in the common VDB and adds in the "new-model".
+In the above example the reuse VDB will have access to all of the models defined in the common VDB and adds in the "new-model".  
+The visibility of imported models may be overridden via boolean vdb properties using the key model.visible - shown above as imported-model.visible with a value of false. 
 
