@@ -235,7 +235,7 @@
 ... link:reference/Infinispan_LibMode_Translator.adoc[Infinispan Library Mode Translator]
 ... link:reference/JDBC_Translators.adoc[JDBC Translators]
 .... link:reference/Actian_Vector_Translator.adoc[Actian Vector Translator]
-.... link:reference/Apache_HBase_Translator.adoc[Apache HBase Translator]
+.... link:reference/Apache_Phoenix_Translator.adoc[Apache Phoenix Translator]
 .... link:reference/Cloudera_Impala_Translator.adoc[Cloudera Impala Translator]
 .... link:reference/DB2_Translator.adoc[DB2 Translator]
 .... link:reference/Derby_Translator.adoc[Derby Translator]

@@ -45,7 +45,7 @@ Teiid provides the means (i.e., link:Translators.adoc[Translators] and link:../a
 * link:MongoDB_Translator.adoc[Mongo DB]
 * link:OLAP_Translator.adoc[Mondrian OLAP]
 * link:Netezza_Translator.adoc[Netezza data warehouse appliance]
-* link:Apache_HBase_Translator.adoc[Phoenix / HBase]
+* link:Apache_Phoenix_Translator.adoc[Phoenix / HBase]
 * link:PrestoDB_Translator.adoc[PrestoDB]
 * link:Redshift_Translator.adoc[Redshift]
 
