@@ -308,26 +308,30 @@ Parameters are specified using a '?' symbol. Parameters may only be used with Pr
 
 == Arrays
 
-Array values may be constructed using parenthesis around an expression list with an optional trailing comma.
+Array values may be constructed using parenthesis around an expression list with an optional trailing comma or with an explicit ARRAY constructor
 
 [source,sql]
 .*empty arrays*
 ----
-() (,)
+() 
+(,) 
+ARRAY[]
 ----
 
 [source,sql]
 .*single element array*
 ----
-(expr,)
+(expr,) 
+ARRAY[expr]
 ----
 
-NOTE: A trailing comma is required for the parser to recognize a single element expression as an array, rather than a simple nested expression.
+NOTE: A trailing comma is required for the parser to recognize a single element expression as an array with parenthesis, rather than a simple nested expression.
 
 [source,sql]
 .*general array syntax*
 ----
-(expr, expr ... [,])
+(expr, expr ... [,]) 
+ARRAY[expr, ...]
 ----
 
 If all of the elements in the array have the same type, the array will have a matching base type. If the element types differ the array base type will be object.

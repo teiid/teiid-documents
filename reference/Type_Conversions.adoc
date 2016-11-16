@@ -32,7 +32,7 @@ WARNING: The Teiid conversions of float/double/bigdecimal/timestamp to string re
 
 |string
 |clob
-|char, boolean, byte, short, integer, long, biginteger, float, double, bigdecimal, xml [1]
+|char, boolean, byte, short, integer, long, biginteger, float, double, bigdecimal, xml footnote:[string to xml is equivalent to XMLPARSE(DOCUMENT exp) - See also link:XML_Functions.adoc#_xmlparse[XML Functions#XMLPARSE]]
 
 |char
 |string
@@ -55,15 +55,15 @@ WARNING: The Teiid conversions of float/double/bigdecimal/timestamp to string re
 |boolean, byte, short, float
 
 |long
-|string, biginteger, bigdecimal
+|string, biginteger, bigdecimal, float footnoteref:[imp_note,implicit conversion to float/double only occurs for literal values], double footnoteref:[imp_note]
 |boolean, byte, short, integer, float, double
 
 |biginteger
-|string, bigdecimal
+|string, bigdecimal float footnoteref:[imp_note], double footnoteref:[imp_note]
 |boolean, byte, short, integer, long, float, double
 
 |bigdecimal
-|string
+|string, float footnoteref:[imp_note], double footnoteref:[imp_note]
 |boolean, byte, short, integer, long, biginteger, float, double
 
 |float
@@ -71,7 +71,7 @@ WARNING: The Teiid conversions of float/double/bigdecimal/timestamp to string re
 |boolean, byte, short, integer, long, biginteger
 
 |double
-|string, bigdecimal
+|string, bigdecimal, float footnoteref:[imp_note]
 |boolean, byte, short, integer, long, biginteger, float
 
 |date
@@ -92,11 +92,5 @@ WARNING: The Teiid conversions of float/double/bigdecimal/timestamp to string re
 
 |xml
 |
-|string [2]
-|===
-
-**Reference Link**
-
-1. string to xml is equivalent to XMLPARSE(DOCUMENT exp) - See also link:XML_Functions.adoc#_xmlparse[XML Functions#XMLPARSE]
-2. xml to string is equivalent to XMLSERIALIZE(exp AS STRING) - see also link:XML_Functions.adoc#_xmlserialize[XML Functions#XMLSERIALIZE]
-
+|string footnote:[xml to string is equivalent to XMLSERIALIZE(exp AS STRING) - see also link:XML_Functions.adoc#_xmlserialize[XML Functions#XMLSERIALIZE]]
+|=== 
