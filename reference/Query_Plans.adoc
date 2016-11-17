@@ -367,8 +367,9 @@ ProjectNode(0) output=[pm1.g1.e1, pm1.g2.e2, pm1.g3.e3] [pm1.g1.e1, pm1.g2.e2, p
 * With - the with clause
 * Window Functions - the window functions being computed
 * Table Function - the table function (XMLTABLE, OBJECTTABLE, TEXTTABLE, etc.)
+* Streaming - if the XMLTABLE is using stream processing
 
-==== XML
+==== XML Plan
 
 * Message
 * Tag
