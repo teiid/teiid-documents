@@ -1,7 +1,7 @@
 
 = Security Functions
 
-Security functions provide the ability to interact with the security system.
+Security functions provide the ability to interact with the security system or to hash/encrypt values.
 
 == HASROLE
 
@@ -18,3 +18,46 @@ The two argument form is provided for backwards compatibility. roleType is a str
 
 Role names are case-sensitive and only match Teiid link:Data_Roles.adoc[Data Roles]. JAAS roles/groups names are not valid for this function - unless there is corresponding data role with the same name.
 
+== MD5
+
+Computes the MD5 hash of the value.
+
+[source,sql]
+----
+MD5(value)
+----
+
+value must be a string or varbinary, the return type is varbinary.  String values are first converted to their UTF-8 byte representation.
+
+== SHA1
+
+Computes the SHA-1 hash of the value.
+
+[source,sql]
+----
+SHA1(value)
+----
+
+value must be a string or varbinary, the return type is varbinary.  String values are first converted to their UTF-8 byte representation.
+
+== SHA2_256
+
+Computes the SHA-2 256 bit hash of the value.
+
+[source,sql]
+----
+SHA2_256(value)
+----
+
+value must be a string or varbinary, the return type is varbinary.  String values are first converted to their UTF-8 byte representation.
+
+== SHA2_512
+
+Computes the SHA-2 512 bit hash of the value.
+
+[source,sql]
+----
+SHA2_512(value)
+----
+
+value must be a string or varbinary, the return type is varbinary.  String values are first converted to their UTF-8 byte representation.
