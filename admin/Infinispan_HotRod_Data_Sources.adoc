@@ -32,7 +32,7 @@ The following property is required as it provides the mapping to the Infinispan 
 |===
 |Property Name |Property Template|Description
 
-| CacheTypeMap |cacheName:className[;pkFieldName[:cacheKeyJavaType]]  | For the indicated cacheName, map the root Java Object (pojo) class name.  Optionally, but required for updates, identify which class attribute is the primary key to the cache.  The pkFieldName *MUST* match a corresponding getter/setter method in the pojo.  Optionally, identify primary key java type when different than class attribute type 
+| CacheTypeMap |cacheName:className[:pkFieldName[:cacheKeyJavaType]]  | For the indicated cacheName, map the root Java Object (pojo) class name.  Optionally, but required for updates, identify which class attribute is the primary key to the cache.  The pkFieldName *MUST* match a corresponding getter/setter method in the pojo.  Optionally, identify primary key java type when different than class attribute type 
 |===
 
 === *JDG Schema using Protobuf Definition and Marshaller(s)*
