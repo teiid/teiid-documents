@@ -39,7 +39,7 @@ The following are the required properties:
 |===
 |Property Name |Property Template|Description
 
-| CacheTypeMap |cacheName:className[;pkFieldName[:cacheKeyJavaType]]  | For the indicated cache, map the root Java Object class name.  Optionally, but required for updates, identify which class attribute is the primary key to the cache.  The pkFieldName *MUST* match a corresponding getter/setter method in the pojo. Identify primary key java type when different than class attribute type 
+| CacheTypeMap |cacheName:className[:pkFieldName[:cacheKeyJavaType]]  | For the indicated cache, map the root Java Object class name.  Optionally, but required for updates, identify which class attribute is the primary key to the cache.  The pkFieldName *MUST* match a corresponding getter/setter method in the pojo. Identify primary key java type when different than class attribute type 
 |===
 
 The following are the property options for defining how the CacheManager will be created/accessed:
