@@ -9,3 +9,4 @@ If you’re needs go beyond JDBC, Teiid has also provided link:JDBC_Extensions.a
 
 Teiid supports returning generated keys for JDBC sources and from Teiid temp tables with SERIAL primary key columns. However the current implementation will return only the last set of keys generated and will return the key results directly from the source - no view projection of other intermediate handling is performed. For most scenarios (single source inserts) this handling is sufficient. A custom solution may need to be developed if you are using a FOR EACH ROW instead of trigger to process your inserts and target multiple tables that each return generated keys. It is possible to develop a UDF that also manipulates the returned generated keys - see the `org.teiid.CommandContext` methods dealing with generated keys for more.
 
+NOTE: Generated Keys is not supported when the JDBC Batched updates is used to insert the values into the source table.
