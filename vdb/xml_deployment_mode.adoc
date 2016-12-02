@@ -1,0 +1,256 @@
+
+= Deployment/File Based VDBs (XML Deployment)
+
+In the file based VDBs category, a vdb can be define in take two forms - a simple xml deployment and a full zip file. The zip file is small variation of the xml based one.
+
+== XML Deployment
+
+You can simply create a *SOME-NAME-vdb.xml* file. The XML file captures information about the VDB, the sources it integrate, and preferences for importing metadata. The format of the XML file need to adhere to _vdb-deployer.xml_ file, which is available in the schema folder under the docs with the Teiid distribution.
+
+IMPORTANT: The VDB name pattern must adhere to "-vdb.xml" for the Teiid VDB deployer to recognize this file when deployed in Teiid Server.
+
+[source,xml]
+.Example VDB XML Template
+----
+<vdb name="${name}" version="${version}">
+    
+    <!-- Optional description -->
+    <description>...</description>
+    
+    <!-- Optional connection-type -->
+    <connection-type>...</connection-type>
+
+    <!-- VDB properties -->
+    <property name="${property-name}" value="${property-value}" />
+
+    <!-- UDF defined in an AS module,  see Developers Guide --> 
+    <property name ="lib" value ="{module-name}"></property>
+
+    <import-vdb name="..." version="..." import-data-policies="true|false"/>
+
+    <!-- define a model fragment for each data source -->
+    <model visible="true" name="${model-name}" type="${model-type}" >
+
+        <property name="..." value="..." />
+
+        <source name="${source-name}" translator-name="${translator-name}" 
+            connection-jndi-name="${deployed-jndi-name}">
+
+        <metadata type="${repository-type}">raw text</metadata>
+        
+        <!-- additional metadata
+        <metadata type="${repository-type}">raw text</metadata>
+        -->
+    </model>
+
+   <!-- define a model with multiple sources - see Multi-Source Models -->
+   <model name="${model-name}" path="/Test/Customers.xmi">
+        <property name="multisource" value="true"/>
+        . . .
+        <source name="${source-name}"
+            translator-name="${translator-name}" connection-jndi-name="${deployed-jndi-name}"/>
+        <source . . . />
+        <source . . . />
+    </model>
+
+    <!-- see Reference Guide - Data Roles -->
+    <data-role name="${role-name}">
+        <description>${role-description}</description>
+        ….
+    </data-role>
+
+    <!-- create translator instances that override default properties -->
+    <translator name="${translator-name}" type="${translator-type}" />
+        <property name="..." value="..." />
+    </translator>
+</vdb>
+----
+
+NOTE: *Property Substitution* - If a -vdb.xml file has defined property values like $\{my.property.name.value}, these can be replaced by actual values that are defined through JAVA system properties. To define system properties on a {{ book.asName }} server, please consult {{ book.asName }} documentation.
+
+WARNING: You may choose to locally name vdb artifacts as you wish, but the runtime names of deployed VDB artifacts must either be \*.vdb for a zip file or \*-vdb.xml for an xml file. Failure to name the deployment properly will result in a deployment failure as the Teiid subsystem will not know how to properly handle the artifact.
+
+=== VDB Element
+
+*Attributes*
+
+* _name_ 
+
+The name of the VDB. The VDB name referenced through the driver or datasource during the connection time.
+
+* _version_ 
+
+The version of the VDB. Provides an explicit versioning mechanism to the VDB name - see link:../admin/VDB_Versioning.adoc[VDB Versioning].
+
+*Description Element*
+
+Optional text element to describe the VDB.
+
+*Connection Type Element*
+
+Determines how clients can connect to the VDB.  Can be one of BY_VERSION, ANY, or NONE.  Defaults to BY_VERSION.  See link:../admin/VDB_Versioning.adoc[VDB Versioning].
+
+*Properties Element*
+
+see link:vdb_properties.adoc[VDB Properties] for properties that can be set at VDB level.
+
+=== import-vdb Element
+VDBs may reuse other VDBs deployed in the same server instance by using an "import-vdb" declaration in the vdb.xml file.  An imported VDB can have it’s tables and procedures referenced by views and procedures in the importing VDB as if they are part of the VDB.  Imported VDBs are required to exist before an importing VDB may start.  If an imported VDB is undeployed, then any importing VDB will be stopped.+
+
+An imported VDB includes all of its models and may not conflict with any model, data policy, or source already defined in the importing VDB.  Once a VDB is imported it is mostly operationally independent from the base VDB.  Only cost related metadata may be updated for an object from an imported VDB in the scope of the importing VDB.  All other updates must be made through the original VDB, but they will be visible in all imported VDBs.  Even materialized views are separately maintained for an imported VDB in the scope of each importing VDB.
+
+.Example reuse VDB XML
+[source,xml]
+----
+<vdb name="reuse" version="1">
+    <import-vdb name="common" version="1" import-data-policies="false"/>
+    <model visible="true" type="VIRTUAL" name="new-model">
+         <metadata type = "DDL"><![CDATA[
+              CREATE VIEW x (
+                y varchar
+                ) AS 
+                  select * from old-model.tbl;
+         ]]>
+         </metadata>
+    </model>
+</vdb>
+----
+
+*Attributes*
+
+* _name_ 
+
+The name of the VDB to be imported.
+
+* _version_ 
+
+The version of the VDB to be imported (should be an positive integer).
+
+* _import-data-policies_ 
+
+Optional attribute to indicate whether the data policies should be imported as well. Defaults to "true".
+
+=== Model Element
+
+*Attributes*
+
+* _name_ 
+
+The name of the model is used as a top level schema name for all of the metadata imported from the connector. The name should be unique among all Models in the VDB and should not contain the '.' character.
+
+* _visible_ 
+
+By default this value is set to "true", when the value is set to "false", this model will not be visible to when JDBC metadata queries. Usually it is used to hide a model from client applications that should not directly issue queries against it. However, this does not prohibit either client application or other view models using this model, if they knew the schema for this model.
+
+*Property Elements*
+
+All properties are available as extension metadata on the corresponding `Schema` object that is accessible via the metadata API.
+
+* _cache-metadata_ 
+
+Can be "true" or "false". defaults to "false" for -vdb.xml deployments otherwise "true". If "false", Teiid will obtain metadata once for every launch of the vdb. "true" will save a file containing the metadata into the PROFILE/data/teiid directory Can be used to override the vdb level cache-metadata property.
+
+* _teiid_rel:DETERMINISM_ 
+
+Can be one of: 
+DETERMINISM 
+NONDETERMINISTIC 
+COMMAND_DETERMINISTIC 
+SESSION_DETERMINISTIC 
+USER_DETERMINISTIC 
+VDB_DETERMINISTIC 
+DETERMINISTIC
+
+Will influence the cache scope for result set cache entries formed from accessing this model. Alternatively the scope may be influenced through the Translator API or via table/procedure extension metadata.
+
+*Source Element*
+
+A source is a named binding of a translator and connection source to a model.
+
+* _name_ 
+
+The name of the source to use for this model. This can be any name you like, but will typically be the same as the model name. Having a name different than the model name is only useful in multi-source scenarios. In multi-source, the source names under a given model must be unique. If you have the same source bound to multiple models it may have the same name for each. An exception will be raised if the same source name is used for different sources.
+
+* _translator-name_
+
+The name or type of the Teiid Translator to use. Possible values include the built-in types (ws, file, ldap, oracle, sqlserver, db2, derby, etc.) and translators defined in the translators section.
+
+* _connection-jndi-name_ 
+
+The JNDI name of this source’s connection factory. There should be a corresponding datasource that defines the connection factory in the JBoss AS. Check out the deploying VDB dependencies section for info. You also need to define these connection factories before you can deploy the VDB.
+
+*Property Elements*
+
+* _importer.<propertyname>_ 
+
+Property to be used by the connector importer for the model for purposes importing metadata. See possible property name/values in the Translator specific section. Note that using these properties you can narrow or widen the data elements available for integration.
+
+*Metadata Element*
+
+The optional metadata element defines the metadata repository type and optional raw metadata to be consumed by the metadata repository.
+
+* _type_ 
+
+The metadata repository type. Defaults to INDEX for Designer VDBs and NATIVE for non-Designer VDB source models. For all other deployments/models a value must be specified. Built-in types include DDL, NATIVE, INDEX, and DDL-FILE. The usage of the raw text varies with the by type. NATIVE and INDEX (only for Designer VDBs) metadata repositories do not use the raw text. The raw text for DDL is expected to be be a series of DDL statements that define the schema. Note that, since <model> element means schema, you only use DDL statements as defined in 
+
+* link:hosted_mode.adoc#create_table[Create Foreign Table]
+* link:hosted_mode.adoc#create_view[Create VIEW]
+* link:hosted_mode.adoc#create_procedures[Create Procedures/Functions]
+
+Rest of DDL statements can *NOT* be used in the artifact mode, as those constructs are defined by the XML file. Like <Model> element is similar to "CREATE SCHEMA ...". Due to backwards compatibility Teiid supports both modes as both have their advantages. 
+
+DDL-FILE (used only with zip deployments) is similar to DDL, except that the raw text specifies an absolute path relative to the vdb root of the location of a file containing the DDL. See link:./Metadata_Repositories.adoc[Metadata Repositories] for more information and examples
+
+=== Translator Element
+
+*Attributes*
+
+* _name_ 
+
+The name of the the Translator. Referenced by the source element.
+
+* _type_ 
+
+The base type of the Translator. Can be one of the built-in types (ws, file, ldap, oracle, sqlserver, db2, derby, etc.).
+
+*Property Elements*
+
+* Set a value that overrides a translator default property. See possible property name/values in the Translator specific section.
+
+
+== VDB Zip Deployment
+
+For more complicated scenarios you are not limited to just an xml file deployment. A full zip file similar to a Designer VDB may also be deployed. In a vdb zip deployment:
+
+* The deployment must end with the extension .vdb
+* The vdb xml file must be name vdb.xml and placed in the zip under /META-INF/vdb.xml
+* If a /lib folder exists any jars found underneath will automatically be added to the vdb classpath.
+* For backwards compatibility with Designer VDBs, if any .INDEX file exists the default metadata repository will be assumed to be INDEX.
+* Files within the VDB zip are accessible using the `MetadataFactory.getVDBResources()` method, which returns a map of all `VDBResources` in the VDB keyed by absolute path relative to the vdb root.
+* The built-in DDL-FILE metadata repository type may be used to define DDL-based metadata in files outside of the vdb.xml. This improves the memory footprint of the vdb metadata and the maintainability of vdb.xml.
+
+[source,xml]
+.Example VDB Zip Structure
+----
+/META-INF
+   vdb.xml
+/ddl
+   schema1.ddl
+/lib
+   some-udf.jar
+----
+
+In the above example the vdb.xml could use a DDL-FILE metadata type for schema1:
+
+[source,xml]
+----
+<model name="schema1" ...
+   <metadata type="DDL-FILE">/ddl/schema1.ddl</metadata>
+</model>
+----
+
+The contents inside schema1.ddl can only contain DDL statements from  
+
+* link:hosted_mode.adoc#create_table[Create Foreign TABLE]
+* link:hosted_mode.adoc#create_view[Create VIEW]
+* link:hosted_mode.adoc#create_procedures[Create Procedures/Functions]
