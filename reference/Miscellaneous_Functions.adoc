@@ -1,5 +1,7 @@
 
 = Miscellaneous Functions
+:toc: manual
+:toc-placement: preamble
 
 Other functions.
 
@@ -42,3 +44,123 @@ the return type is string.
 
 Generates a type 4 (pseudo randomly generated) UUID using a cryptographically strong random number generator. The format is XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX where each X is a hex digit.
 
+== random
+
+Returns the randomized string. For example, `jboss teiid` may randomize to `jtids soibe`.
+
+[source,sql]
+----
+random(sourceValue)
+----
+
+The sourceValue is the string that need to randomize.
+
+== digit
+
+Returns digit characters of the string. For example, `a1 b2 c3 d4` will become `1234`
+
+[source,sql]
+----
+digit(sourceValue)
+----
+
+The sourceValue is the string that need to digit.
+
+== whitespaceIndex
+
+Returns the index of the first whitespace, For example, `jboss teiid` will return `5`.
+
+[source,sql]
+----
+whitespaceIndex(sourceValue)
+----
+
+The sourceValue is the string that need to find whitespace index.
+
+== validCreditCard
+
+Check whether a Credit Card number is a valid Credit Card number, return `true` if matches credit card logic and checksum.
+
+[source,sql]
+----
+validCreditCard(cc)
+----
+
+The cc is the Credit Card number string that need to check.
+
+== validSSN
+
+Check whether a SSN number is a valid SSN number, return `true` if matches ssn logic.
+
+[source,sql]
+----
+validSSN(ssn)
+----
+
+The ssn is the SSN number string that need to check.
+
+== validPhone
+
+Check whether a phone number is a valid phone number, return `true` if matches phone logic that  more than 8 character less than 12 character, can't start with 000.
+
+[source,sql]
+----
+validPhone(phone)
+----
+
+The phone is the phone number string need to check.
+
+== validEmail
+
+Check whether a email address is a valid email address, return `true` if valid.
+
+[source,sql]
+----
+validEmail(email)
+----
+
+The email is the email adress string that need to check.
+
+== cosineDistance
+
+Returns the float distance between two string which base on Cosine Similarity algorithm.
+
+[source,sql]
+----
+cosineDistance(a, b)
+----
+
+The a and b are strings that need to calculate the distance.
+
+== jaccardDistance
+
+Returns the float distance between two string which base on Jaccard similarity algorithm.
+
+[source,sql]
+----
+jaccardDistance(a, b) 
+----
+
+The a and  b are strings that need to calculate the distance.
+
+== jaroWinklerDistance
+
+Returns the float distance between two string which base on Jaro-Winkler algorithm.
+
+[source,sql]
+----
+jaroWinklerDistance(a, b)
+----
+
+The a and  b are strings that need to calculate the distance.
+
+== levenshteinDistance
+
+Returns the float distance between two string which base on Levenshtein algorithm.
+
+[source,sql]
+----
+levenshteinDistance(a, b)
+----
+
+The a and  b are strings that need to calculate the distance.
