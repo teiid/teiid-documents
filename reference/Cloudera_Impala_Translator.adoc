@@ -23,3 +23,5 @@ NOTE: If useDatabaseMetaData is false the typical JDBC DatabaseMetaData calls ar
 
 NOTE: Some versions of Impala requires the use of a LIMIT when performing an ORDER BY. If no default is configured in Impala, then an exception can occur when a Teiid query with an ORDER BY but no LIMIT is issued. You should set an Impala wide default, or configure the connection pool to use a new connection sql string to issue a SET DEFAULT_ORDER_BY_LIMIT statement. See the http://www.cloudera.com/content/cloudera-content/cloudera-docs/Impala/latest/Installing-and-Using-Impala/ciiu_langref_sql.html?scroll=limit_unique_1[Cloudera docs] for more on limit options - such as controlling what happens when the limit is exceeded.
 
+NOTE: The Impala JDBC driver seems to have issues with PreparedStatements and statement parsing in general that may require disabling useBindVariables - see link:https://issues.jboss.org/browse/TEIID-4610
+
