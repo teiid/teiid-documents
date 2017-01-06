@@ -18,8 +18,8 @@ connection.setAutoCommit(false);
 try {
     // Execute multiple updates
     Statement statement = connection.createStatement();
-    statement.executeUpdate(“INSERT INTO Accounts (ID, Name) VALUES (10, ‘Mike’)”);
-    statement.executeUpdate(“INSERT INTO Accounts (ID, Name) VALUES (15, ‘John’)”);
+    statement.executeUpdate("INSERT INTO Accounts (ID, Name) VALUES (10, 'Mike')");
+    statement.executeUpdate("INSERT INTO Accounts (ID, Name) VALUES (15, 'John')");
     statement.close();
 
     // Commit the transaction
