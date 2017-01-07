@@ -1,5 +1,7 @@
 
 = Security Functions
+:toc: manual
+:toc-placement: preamble
 
 Security functions provide the ability to interact with the security system.
 
@@ -17,4 +19,26 @@ _roleName_ must be a string, the return type is boolean.
 The two argument form is provided for backwards compatibility. roleType is a string and must be `data'.
 
 Role names are case-sensitive and only match Teiid link:Data_Roles.adoc[Data Roles]. JAAS roles/groups names are not valid for this function - unless there is corresponding data role with the same name.
+
+== AES_ENCRYPT
+
+[source,sql]
+----
+aes_encrypt(data, key)
+----
+
+`AES_ENCRYPT()` allow encryption of data using the official AES (Advanced Encryption Standard) algorithm, 16 bytes(128 bit) key length, and AES/CBC/PKCS5Padding cipher algorithm.
+
+The `AES_ENCRYPT()` will return a BinaryType encrypted data. The argument `data` is a BinaryType data that need to encrypt, the argument `key` is a BinaryType used in encryption. 
+
+== AES_DECRYPT
+
+[source,sql]
+----
+aes_decrypt(data, key)
+----
+
+`AES_DECRYPT()` allow decryption of data using the official AES (Advanced Encryption Standard) algorithm, 16 bytes(128 bit) key length, and AES/CBC/PKCS5Padding cipher algorithm.
+
+The `AES_DECRYPT()` will return a BinaryType decrypted data. The argument `data` is a BinaryType data that need to decrypt, the argument `key` is a BinaryType used in decryption.
 
