@@ -10,6 +10,56 @@ can be configured to access an Infinispan cache running in library mode:
 
 == *Configuration*
 
+=== Accessing Cache in Library Mode
+
+One of the following properties is required for defining how the cache will be accessed via the CacheManager:
+
+[cols="3,6"]
+|===
+|Property Name 
+|Description
+
+|CacheJndiName
+|JNDI name used to find the CacheContainer
+
+|ConfigurationFileNameForLocalCache
+|The Infinispan Configuration xml file will be used to create and configure the CacheManager as a local cache
+|===
+
+
+=== Configuring Which Cache and Pojo 
+
+The following property is required as it provides the mapping to the Infinispan cache and pojo that will be accessed.
+
+|===
+|Property Name |Property Template|Description
+
+| CacheTypeMap |cacheName:className[:pkFieldName[:cacheKeyJavaType]]  | Defines the cache name and pojo components for accessing the cache
+
+|===
+
+Where::
+
+*  cacheName -  Name of the cache to access
+*  className -  Class name of the pojo that is used to store the data in the cache
+*  pkFieldName - [Optional] identifies the pojo class attribute that is used as the primary key.  It is required for updates or if the pojo contains complex objects used in relationships (1-to-1 or 1-to-many).  The pkFieldName *MUST* match a corresponding getter/setter method in the pojo
+*  cacheKeyJavaType - [Optional] identify primary key java type when different than class attribute type
+
+
+The following configures the module that contains the pojo stored in the cache:
+
+[cols="2,2,5"]
+|===
+|Property Name 
+|Req.
+|Description
+
+|module
+|N
+|Specify the {{ book.asName }} module that contains the cache classes that were defined in CacheTypeMap
+
+|===
+
 === *Pojo Jar*
 
 The pojo class is the object that will be used to store the data in the cache.  It should be built accordingly:
@@ -32,39 +82,8 @@ To configure the use of the pojo, do the following:
       <module name="{pojo_module_name}"   export="true" />
 ----
  
-=== *Read and Write to the Cache*
 
-The following are the required properties:
-
-|===
-|Property Name |Property Template|Description
-
-| CacheTypeMap |cacheName:className[;pkFieldName[:cacheKeyJavaType]]  | For the indicated cache, map the root Java Object class name.  Optionally, but required for updates, identify which class attribute is the primary key to the cache.  The pkFieldName *MUST* match a corresponding getter/setter method in the pojo. Identify primary key java type when different than class attribute type 
-|===
-
-The following are the property options for defining how the CacheManager will be created/accessed:
-
-[cols="2,2,5"]
-|===
-|Property Name 
-|Req.
-|Description
-
-|module
-|N
-|Specify the {{ book.asName }} module that contains the cache classes that were defined in CacheTypeMap
-
-|CacheJndiName
-|N
-|JNDI name to fine the CacheContainer
-
-|ConfigurationFileNameForLocalCache
-|N
-|The Infinispan Configuration xml file for configuring a local cache
-|===
-
-
-=== *Using Cache for External Materialization*
+== *Using Cache for External Materialization*
 
 The following are the additional properties that need to be configured if using the Remote Cache for external materialization:
 

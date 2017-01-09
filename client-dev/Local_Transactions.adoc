@@ -5,7 +5,9 @@ A Local transaction from a client perspective affects only a single resource, bu
 
 == JDBC Specific
 
-The `Connection` class uses the "autoCommit" flag to explicitly control local transactions. By default, autoCommit is set to "true", which indicates request level or implicit transaction control. example of how to use local transactions by setting the autoCommit flag to false.
+The `Connection` class uses the `autoCommit` flag to explicitly control local transactions. By default, autoCommit is set to `true`, which indicates request level or implicit transaction control. 
+
+An example of how to use local transactions by setting the autoCommit flag to false.
 
 [source,java]
 .*Local transaction control using autoCommit*
@@ -16,8 +18,8 @@ connection.setAutoCommit(false);
 try {
     // Execute multiple updates
     Statement statement = connection.createStatement();
-    statement.executeUpdate(“INSERT INTO Accounts (ID, Name) VALUES (10, ‘Mike’)”);
-    statement.executeUpdate(“INSERT INTO Accounts (ID, Name) VALUES (15, ‘John’)”);
+    statement.executeUpdate("INSERT INTO Accounts (ID, Name) VALUES (10, 'Mike')");
+    statement.executeUpdate("INSERT INTO Accounts (ID, Name) VALUES (15, 'John')");
     statement.close();
 
     // Commit the transaction

@@ -17,6 +17,8 @@ See link:../reference/Infinispan_HotRod_Translator.adoc[Infinispan HotRod Transl
 
 == *Configuration*
 
+=== Accessing HotRod Remote Cache
+
 One of the following properties is required for defining how the RemoteCacheManager will be created/accessed:
 
 |===
@@ -27,13 +29,22 @@ One of the following properties is required for defining how the RemoteCacheMana
 | HotRodClientPropertiesFile | N | | The HotRod properties file for configuring a connection to a remote cache 
 |===
 
+=== Configuring Which Cache and Pojo 
+
 The following property is required as it provides the mapping to the Infinispan cache and pojo that will be accessed.
 
 |===
 |Property Name |Property Template|Description
 
-| CacheTypeMap |cacheName:className[;pkFieldName[:cacheKeyJavaType]]  | For the indicated cacheName, map the root Java Object (pojo) class name.  Optionally, but required for updates, identify which class attribute is the primary key to the cache.  The pkFieldName *MUST* match a corresponding getter/setter method in the pojo.  Optionally, identify primary key java type when different than class attribute type 
+| CacheTypeMap |cacheName:className[:pkFieldName[:cacheKeyJavaType]]  | Defines the cache name and pojo components for accessing the cache
 |===
+
+Where::
+
+*  cacheName -  Name of the cache to access
+*  className -  Class name of the pojo that is used to store the data in the cache
+*  pkFieldName - [Optional] identifies the pojo class attribute that is used as the primary key.  It is required for updates or if the pojo contains complex objects used in relationships (1-to-1 or 1-to-many).  The pkFieldName *MUST* match a corresponding getter/setter method in the pojo
+*  cacheKeyJavaType - [Optional] identify primary key java type when different than class attribute type
 
 === *JDG Schema using Protobuf Definition and Marshaller(s)*
 

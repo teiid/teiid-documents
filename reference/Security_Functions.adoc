@@ -1,5 +1,7 @@
 
 = Security Functions
+:toc: manual
+:toc-placement: preamble
 
 Security functions provide the ability to interact with the security system or to hash/encrypt values.
 
@@ -61,3 +63,25 @@ SHA2_512(value)
 ----
 
 value must be a string or varbinary, the return type is varbinary.  String values are first converted to their UTF-8 byte representation.
+=======
+== AES_ENCRYPT
+
+[source,sql]
+----
+aes_encrypt(data, key)
+----
+
+`AES_ENCRYPT()` allow encryption of data using the official AES (Advanced Encryption Standard) algorithm, 16 bytes(128 bit) key length, and AES/CBC/PKCS5Padding cipher algorithm with an explicit initialization vector.
+
+The `AES_ENCRYPT()` will return a BinaryType encrypted data. The argument `data` is a BinaryType data that need to encrypt, the argument `key` is a BinaryType used in encryption. 
+
+== AES_DECRYPT
+
+[source,sql]
+----
+aes_decrypt(data, key)
+----
+
+`AES_DECRYPT()` allow decryption of data using the official AES (Advanced Encryption Standard) algorithm, 16 bytes(128 bit) key length, and AES/CBC/PKCS5Padding cipher algorithm expecting an explicit initialization vector.
+
+The `AES_DECRYPT()` will return a BinaryType decrypted data. The argument `data` is a BinaryType data that need to decrypt, the argument `key` is a BinaryType used in decryption.

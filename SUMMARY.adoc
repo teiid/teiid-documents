@@ -10,6 +10,7 @@
 .... link:admin/Amazon_SimpleDB_Data_Sources.adoc[Amazon SimpleDB Data Sources]
 .... link:admin/Cassandra_Data_Sources.adoc[Cassandra Data Sources]
 .... link:admin/File_Data_Sources.adoc[File Data Sources]
+.... link:admin/Ftp_Data_Sources.adoc[Ftp/Ftps Data Sources]
 .... link:admin/Google_Spreadsheet_Data_Sources.adoc[Google Spreadsheet Data Sources]
 .... link:admin/Infinispan_Library_Mode_Data_Sources.adoc[Infinispan Library Mode Data Sources]
 .... link:admin/Infinispan_HotRod_Data_Sources.adoc[Infinispan HotRod Data Sources]
