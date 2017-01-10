@@ -63,7 +63,7 @@ SHA2_512(value)
 ----
 
 value must be a string or varbinary, the return type is varbinary.  String values are first converted to their UTF-8 byte representation.
-=======
+
 == AES_ENCRYPT
 
 [source,sql]
