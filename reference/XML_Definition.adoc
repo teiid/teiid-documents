@@ -61,6 +61,8 @@ The above XML defined three data roles, "RoleA" which allows everything except d
 
 The "mapped-role-name" defines the container JAAS roles that are assigned the data role. For assigning roles to your users in the {{ book.asName }}, check out the instructions for the selected Login Module. Check the "Admin Guide" for configuring Login Modules.
 
+Using the grant-all option provides every permission on over object in the vdb.  When importing a vdb and its roles, grant-all applies only to resources from the imported vdb. 
+
 *Additional Role Attributes*
 
 You may also choose to allow any authenticated user to have a data role by setting the any-authenticated attribute value to true on data-role element.
