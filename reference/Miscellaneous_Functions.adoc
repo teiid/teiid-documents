@@ -3,11 +3,13 @@
 :toc: manual
 :toc-placement: preamble
 
-Other functions.
+Documents additional functions and those contributed by other projects.
 
-== array_get
+== Array functions
 
-Retuns the object value at a given array index.
+=== array_get
+
+Returns the object value at a given array index.
 
 [source,sql]
 ----
@@ -18,7 +20,7 @@ array is the object type, index must be an integer, and the return type is objec
 
 1-based indexing is used. The actual array value should be a java.sql.Array or java array type. A null will be returned if either argument is null or if the index is out of bounds.
 
-== array_length
+=== array_length
 
 Returns the length for a given array
 
@@ -31,7 +33,9 @@ array is the object type, and the return type is integer.
 
 The actual array value should be a java.sql.Array or java array type. An exception will be thrown if the array value is the wrong type.
 
-== uuid
+== Other Functions
+
+=== uuid
 
 Retuns a universally unique identifier.
 
@@ -44,7 +48,11 @@ the return type is string.
 
 Generates a type 4 (pseudo randomly generated) UUID using a cryptographically strong random number generator. The format is XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX where each X is a hex digit.
 
-== random
+== Data Quality Functions
+
+Data Quality functions are contributed by the https://sourceforge.net/projects/dataquality/[ODDQ Project].  The functions are prefixed with 'osdq.', but may be called without the prefix.  
+
+=== osdq.random
 
 Returns the randomized string. For example, `jboss teiid` may randomize to `jtids soibe`.
 
@@ -55,7 +63,7 @@ random(sourceValue)
 
 The sourceValue is the string that need to randomize.
 
-== digit
+=== osdq.digit
 
 Returns digit characters of the string. For example, `a1 b2 c3 d4` will become `1234`
 
@@ -66,7 +74,7 @@ digit(sourceValue)
 
 The sourceValue is the string that need to digit.
 
-== whitespaceIndex
+=== osdq.whitespaceIndex
 
 Returns the index of the first whitespace, For example, `jboss teiid` will return `5`.
 
@@ -77,7 +85,7 @@ whitespaceIndex(sourceValue)
 
 The sourceValue is the string that need to find whitespace index.
 
-== validCreditCard
+=== osdq.validCreditCard
 
 Check whether a Credit Card number is a valid Credit Card number, return `true` if matches credit card logic and checksum.
 
@@ -88,7 +96,7 @@ validCreditCard(cc)
 
 The cc is the Credit Card number string that need to check.
 
-== validSSN
+=== osdq.validSSN
 
 Check whether a SSN number is a valid SSN number, return `true` if matches ssn logic.
 
@@ -99,7 +107,7 @@ validSSN(ssn)
 
 The ssn is the SSN number string that need to check.
 
-== validPhone
+=== osdq.validPhone
 
 Check whether a phone number is a valid phone number, return `true` if matches phone logic that  more than 8 character less than 12 character, can't start with 000.
 
@@ -110,7 +118,7 @@ validPhone(phone)
 
 The phone is the phone number string need to check.
 
-== validEmail
+=== osdq.validEmail
 
 Check whether a email address is a valid email address, return `true` if valid.
 
@@ -121,7 +129,7 @@ validEmail(email)
 
 The email is the email adress string that need to check.
 
-== cosineDistance
+=== osdq.cosineDistance
 
 Returns the float distance between two string which base on Cosine Similarity algorithm.
 
@@ -132,7 +140,7 @@ cosineDistance(a, b)
 
 The a and b are strings that need to calculate the distance.
 
-== jaccardDistance
+=== osdq.jaccardDistance
 
 Returns the float distance between two string which base on Jaccard similarity algorithm.
 
@@ -143,7 +151,7 @@ jaccardDistance(a, b)
 
 The a and  b are strings that need to calculate the distance.
 
-== jaroWinklerDistance
+=== osdq.jaroWinklerDistance
 
 Returns the float distance between two string which base on Jaro-Winkler algorithm.
 
@@ -154,7 +162,7 @@ jaroWinklerDistance(a, b)
 
 The a and  b are strings that need to calculate the distance.
 
-== levenshteinDistance
+=== osdq.levenshteinDistance
 
 Returns the float distance between two string which base on Levenshtein algorithm.
 
