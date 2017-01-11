@@ -23,6 +23,10 @@ The following table lists the capabilities that can be specified in the `Executi
 |
 |Translator can support SELECT of more than just column references.
 
+|SelectExpressionArrayType
+|SelectExpression, ArrayType
+|Translator can support SELECT of array expressions.
+
 |SelectWithoutFrom
 |
 |Translator can support a SELECT of scalar values without a FROM clause
