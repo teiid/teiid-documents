@@ -27,3 +27,6 @@ set SESSION sql_mode = 'ANSI'
 If you may deal with null timestamp values, then set the connection property zeroDateTimeBehavior=convertToNull. Otherwise you’ll get conversion errors in Teiid that `0000-00-00 00:00:00' cannot be converted to a timestamp.
 
 WARNING: If retrieving large result sets, you should consider setting the connection property useCursorFetch=true, otherwise MySQL will fully fetch result sets into memory on the Teiid instance.
+
+NOTE: MySQL reports TINYINT(1) columns as a JDBC BIT type - however the value range is not actually restricted and may cause issues if for example you are relying on -1 being recognized as a true value.  
+If not using the native importer, you should change affected source BOOLEAN columns to have a native type of "TINYINT(1)" rather than BIT so that the translator can appropriately handle the boolean conversion. 
