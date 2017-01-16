@@ -1,6 +1,5 @@
 
 = Data Sources
-------------
 
 Teiid provides the means (i.e., link:Translators.adoc[Translators] and link:../admin/Deploying_VDB_Dependencies.adoc[JEE connectors] ) to access a variety of types of data sources. The types of data sources that are currently accessible are:
 
