@@ -39,6 +39,8 @@ then in a separate console window execute
 
 this will install Teiid subsystem into the running configuration of the {{ book.asVersionNumber }} in standalone mode.
 
+Note: If you are using standalone ha or standalone full-ha, you should use the teiid-standalone-ha-mode-install.cli script instead. 
+
 === Domain Mode
 
 To start the server in "Domain" mode, install {{ book.asVersionNumber }} and Teiid {{ book.versionNumber }} on all the servers that are going to be part of the cluster. Select one of the servers as the "master" domain controller, the rest of the servers will be slaves that connect to the "master" domain controller for all the administrative operations. Please refer to {{ book.asVersionNumber }} provided https://docs.jboss.org/author/display/WFLY9/WildFly+9+Cluster+Howto[documentation] for full details.
@@ -57,14 +59,11 @@ and on "slave" nodes
 
 The slave nodes fetch their domain configuration from the "master" node.
 
-Once all the servers are up, complete the installation to run in domain mode by executing the following command against the "master" node. Note that this only needs to be run once per domain (i.e. cluster) install. This script will install Teiid in the *HA* profile. It will also re-configure _main-server-group_ to start the _HA_ profile. Once in domain mode, you can not statically deploy resources by dropping them in the _domain/deployments_ folder, so this script will deploy the default resources (file, ldap, salesforce and ws connectors) using the CLI interface.
+Once all the servers are up, complete the installation to run in domain mode by executing the following command against the "master" node. Note that this only needs to be run once per domain (i.e. cluster) install. This script will install Teiid in the *ha* and *full-ha* profiles. It will also re-configure _main-server-group_ to start the _ha_ profile. Once in domain mode, you can not statically deploy resources by dropping them in the _domain/deployments_ folder, so this script will deploy the default resources (file, ldap, salesforce and ws connectors) using the CLI interface.
 
 ----
 <jboss-install>/bin/jboss-cli.sh --file=scripts/teiid-domain-mode-install.cli
 ----
-
-NOTE: *Installing "Teiid" in other profiles* - 
- If Teiid needs to be installed in profiles other than _HA_, before executing edit the _teiid-domain-mode-install.cli_ file, making the appropriate changes to profile, socket-bindings, and server-groups.
 
 Thats it!. {{ book.asName }} and Teiid are now installed and running. See below instructions to customize various other settings.
 
