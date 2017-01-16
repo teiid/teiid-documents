@@ -62,7 +62,7 @@ Subject subject = ConnectionContext.getSubject();
 
 This "Subject" object can give access to logged-in user’s credentials and roles that are defined. Note that this may be null.
 
-Note that you can define "security-domain" for this resource adapter, that is separate from the Teiid defined "security-domain" for validating the JDBC end user. However, it is users responsibility to make the necessary logins before the Container’s thread accesses this resource adapter, and this can get overly complex.
+Note that you can define "security-domain" for this resource adapter, that is separate from the Teiid defined "security-domain" for validating the JDBC end user. However, it is the user's responsibility to make the necessary logins before the Container’s thread accesses this resource adapter, and this can get overly complex.
 
 == Define the Connection class
 
