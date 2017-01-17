@@ -80,8 +80,7 @@ The *ispn-lib-mode* translator is not configured, out-of-the-box, in the standal
 |false
 |===
 
-*SupportsNotCriteria* defaults to false because the testing of _colum
-----n_ <> 1 returns true when the _column_ is null, which isn’t correct by SQL standards - see ht4702tps://issues.jboss.org/browse/TEIID-3573[https://issues.jboss.org/browse/TEIID-3573]. There is an enhancement coming that will enable adding "_column_ IS NOT NULL" when _column_ <> 1 type criteria is detected.
+*SupportsNotCriteria* defaults to false because the testing of _column_ <> 1 returns true when the _column_ is null, which isn’t correct by SQL standards - see https://issues.jboss.org/browse/TEIID-3573[https://issues.jboss.org/browse/TEIID-3573]. There is an enhancement coming that will enable adding "_column_ IS NOT NULL" when _column_ <> 1 type criteria is detected.
 
 *SupportsIsNullCriteria* defaults to false because Infinispan/JDG has an issue with issuing a IS NULL check on a numeric type attribute - see https://issues.jboss.org/browse/TEIID-3539[https://issues.jboss.org/browse/TEIID-3539]. Set this to true if you need this check and can control which non-numeric columns that this will be issued against.
 
