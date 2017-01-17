@@ -1,60 +1,50 @@
 
 = Temp Tables
+:toc: manual
+:toc-placement: preamble
 
-Teiid supports creating temporary, or "temp", tables. Temp tables are dynamically created, but are treated as any other physical table.
+Teiid supports creating temporary(or "temp") tables. Temp tables are dynamically created, but are treated as any other physical table.
 
 == Local Temporary Tables
 
-Local temporary tables can be defined implicitly by referencing them in a INSERT statement or explicitly with a CREATE TABLE statement. Implicitly created temp tables must have a name that starts with `#'.
-
-Creation syntax:
-
-Explicit:
+Local temporary tables can be defined implicitly by referencing them in a INSERT statement or explicitly with a CREATE TABLE statement. Implicitly created temp tables must have a name that starts with `#`.
 
 [source,sql]
+.*Explicit Creation syntax*
 ----
 CREATE LOCAL TEMPORARY TABLE name (column type [NOT NULL], ... [PRIMARY KEY (column, ...)]) [ON COMMIT PRESERVE ROWS]
 ----
 
 * Use the SERIAL data type to specify a NOT NULL and auto-incrementing INTEGER column. The starting value of a SERIAL column is 1.
 
-Implicit:
-
 [source,sql]
+.*Implicit Creation syntax*
 ----
 INSERT INTO #name (column, ...) VALUES (value, ...) 
-----
-
-If #x doesn’t exist, it will be defined using the given column names and types from the value expressions.
-
-Implicit:
-
-[source,sql]
-----
 INSERT INTO #name [(column, ...)] select c1, c2 from t
 ----
 
-If #x doesn’t exist, it will be defined using the target column names (in not supplied, the column names will match the derived column names from the query), and the types from the query derived columns.
+If #x doesn’t exist, it will be defined using the given column names and types from the value expressions, or the target column names (in not supplied, the column names will match the derived column names from the query), and the types from the query derived columns.
 
 NOTE: Teiid’s interpretation of local is different than the SQL specification and other database vendors. Local means that the scope of temp table will be either to the session or the block of a virtual procedure that creates it. Upon exiting the block or the termination of the session the table is dropped. Session and any other temporary tables created in calling procedures are not visible to called procedures. If a temporary table of the same name is created in a called procedure a new instance is created.
 
-Drop syntax:
-
 [source,sql]
+.*Drop syntax*
 ----
 DROP TABLE name
 ----
+
+=== Example
 
 The following example is a series of statements that loads a temporary table with data from 2 sources, and with a manually inserted record, and then uses that temp table in a subsequent query.
 
 [source,sql]
 ----
-... 
 CREATE LOCAL TEMPORARY TABLE TEMP (a integer, b integer, c integer); 
-SELECT * INTO temp FROM Src1; SELECT * INTO temp FROM Src2; 
+SELECT * INTO temp FROM Src1; 
+SELECT * INTO temp FROM Src2; 
 INSERT INTO temp VALUES (1,2,3); 
 SELECT a,b,c FROM Src3, temp WHERE Src3.a = temp.b; 
-...
 ----
 
 See link:Virtual_Procedures.adoc[Virtual Procedures] for more on local temporary table usage.
@@ -63,9 +53,8 @@ See link:Virtual_Procedures.adoc[Virtual Procedures] for more on local temporary
 
 Global temporary tables are created in Teiid Designer or via the metadata supplied to Teiid at deploy time. Unlike local temporary tables, they cannot be created at runtime. A global temporary tables share a common definition via a schema entry, but each session has a new instance of the temporary table created upon it’s first use. The table is then dropped when the session ends. There is no explicit drop support. A common use for a global temporary table is to pass results into and out of procedures.
 
-Creation syntax:
-
 [source,sql]
+.*Creation syntax*
 ----
 CREATE GLOBAL TEMPORARY TABLE name (column type [NOT NULL], ... [PRIMARY KEY (column, ...)]) OPTIONS (UPDATABLE 'true')
 ----
