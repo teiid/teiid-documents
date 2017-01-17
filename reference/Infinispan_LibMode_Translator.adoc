@@ -1,9 +1,7 @@
 
 = Infinispan Library Mode Translator
 
-The Infinispan Library Mode translator, known by the name of *ispn-lib-mode*, is a bridge for reading and writing java objects to/from an Infinispan/JDG Cache running in library mode.  This translator extends the link:Object_Translator.adoc[Object Translator] and uses it for the core processing of reading and writing objects. The Infinispan Library Mode Translator is written so that it can control how the cache is searched and any capabilities that are needed to control that behavior. 
-
-It is assumed that you will be installing the *JDG Library Mode EAP Modules Kit*, which can be obtained on the Red Hat's Customer Portal at https://access.redhat.com/jbossnetwork/restricted/listSoftware.html.
+The Infinispan Library Mode translator, known by the name of *ispn-lib-mode*, is a bridge for reading and writing java objects to/from an JDG Cache running in library mode.  This translator extends the link:Object_Translator.adoc[Object Translator] and uses it for the core processing of reading and writing objects. The Infinispan Library Mode Translator is written so that it can control how the cache is searched and any capabilities that are needed to control that behavior. 
 
 If you are using JDG to access a remote cache, see the link:Infinispan_HotRod_Translator.adoc[Infinispan HotRod Translator] for this type of configuration.
 
@@ -82,8 +80,7 @@ The *ispn-lib-mode* translator is not configured, out-of-the-box, in the standal
 |false
 |===
 
-*SupportsNotCriteria* defaults to false because the testing of _colum
-----n_ <> 1 returns true when the _column_ is null, which isn’t correct by SQL standards - see https://issues.jboss.org/browse/TEIID-3573[https://issues.jboss.org/browse/TEIID-3573]. There is an enhancement coming that will enable adding "_column_ IS NOT NULL" when _column_ <> 1 type criteria is detected.
+*SupportsNotCriteria* defaults to false because the testing of _column_ <> 1 returns true when the _column_ is null, which isn’t correct by SQL standards - see https://issues.jboss.org/browse/TEIID-3573[https://issues.jboss.org/browse/TEIID-3573]. There is an enhancement coming that will enable adding "_column_ IS NOT NULL" when _column_ <> 1 type criteria is detected.
 
 *SupportsIsNullCriteria* defaults to false because Infinispan/JDG has an issue with issuing a IS NULL check on a numeric type attribute - see https://issues.jboss.org/browse/TEIID-3539[https://issues.jboss.org/browse/TEIID-3539]. Set this to true if you need this check and can control which non-numeric columns that this will be issued against.
 
@@ -267,5 +264,5 @@ CREATE FOREIGN TABLE ST_Trade (
 
 == JCA Resource Adapter
 
-See link:../admin/Infinispan_Library_Mode_Data_Sources.adoc[Infinispan Library Mode Data Sources]  resource adapter for this translator. It can be configured to lookup the cache container via JNDI or created (i.e., ConfigurationFileName). 
+See link:../admin/JDG_Library_Mode_Data_Sources.adoc[JDG Library Mode Data Sources]  resource adapter for this translator. It can be configured to lookup the cache container via JNDI or created (i.e., ConfigurationFileName). 
 

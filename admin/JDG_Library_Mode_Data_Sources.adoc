@@ -1,11 +1,13 @@
 
-= Infinispan Library Mode Data Sources
+= JBoss Data Grid (JDG) Library Mode Data Sources
 
-Infinispan Libary Mode data sources use a Teiid specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. This connector has the following options that
-can be configured to access an Infinispan cache running in library mode:
+JDG Libary Mode data sources use a Teiid specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. This connector has the following options that
+can be configured to access an JDG cache running in library mode:
 
 *  Using JNDI
 *  Using configuration file
+
+It is assumed that you will be installing the *JDG Library Mode EAP Modules Kit*, which can be obtained on the Red Hat's Customer Portal at https://access.redhat.com/jbossnetwork/restricted/listSoftware.html.
 
 
 == *Configuration*
@@ -23,13 +25,13 @@ One of the following properties is required for defining how the cache will be a
 |JNDI name used to find the CacheContainer
 
 |ConfigurationFileNameForLocalCache
-|The Infinispan Configuration xml file will be used to create and configure the CacheManager as a local cache
+|The JDG Configuration xml file will be used to create and configure the CacheManager as a local cache
 |===
 
 
 === Configuring Which Cache and Pojo 
 
-The following property is required as it provides the mapping to the Infinispan cache and pojo that will be accessed.
+The following property is required as it provides the mapping to the JDG cache and pojo that will be accessed.
 
 |===
 |Property Name |Property Template|Description
