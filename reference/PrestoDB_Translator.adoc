@@ -9,3 +9,7 @@ The PrestoDB translator, known by the type name *_prestodb_*, exposes querying f
 
 The PrestoDB translator supports only SELECT statements with a restrictive set of capabilities. This translator is developed with 0.85 version of PrestoDB and capabilities are designed for this version. With new versions of PrestoDB Teiid will adjust the capabilities of this translator. Since PrestoDB exposes a relational model, the usage of this is no different than any RDBMS source like Oracle, DB2 etc. For configuring the PrestoDB consult the PrestoDB documentation.
 
+TIP: PrestoDB not support multiple columns in the ORDER BY with in JOIN situations well, the translator property `supportsOrderBy` can use to diable Order by in some specific situations.
+
+TIP: Some versions of PrestoDB not support null as valid values in subquery well, to check the PrestoDB whether support null as valid values in subquery if you hit releated error.  
+
