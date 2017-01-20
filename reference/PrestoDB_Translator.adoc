@@ -13,3 +13,4 @@ TIP: PrestoDB not support multiple columns in the ORDER BY with in JOIN situatio
 
 TIP: Some versions of PrestoDB not support null as valid values in subquery well, to check the PrestoDB whether support null as valid values in subquery if you hit releated error.  
 
+NOTE: Every catalogs in PrestoDB has a `information_schema` schema by default, If configure multiple catalogs, it should be consider to use import options to filter the schemas/tables, to avoid `Duplicate Table` error cause VDB deploy failed. For instance, set `catalog` to a specific catalog name to match the catalog name as it is stored in the prestodb, set `schemaPattern` to a regular expression to filter schemas by matching result, set `excludeTables` to a regular expression to filter tables by matching result.
