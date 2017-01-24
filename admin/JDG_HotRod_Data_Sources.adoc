@@ -5,7 +5,7 @@ JDG caches running in client/server mode can use a Teiid specific JCA connector 
 
 It is assumed that you will be installing the *JDG Hotrod Client EAP Modules Kit*, which can be obtained on the Red Hat's Customer Portal at https://access.redhat.com/jbossnetwork/restricted/listSoftware.html.
 
-Each JDG cache that has a referenced pojo object by doing a "get(key)" on the cache, for which you want to access, will require a different configured resource-adapter.
+To handle pojo types in the same cache, where each pojo object can be accessed by performing a "get(key)" on the cache, will require a different configured resource-adapter for each pojo type.
 
 There are two options for how the JDG schema can be configured in the connector; protobuf annotations or protobuf (.proto) file with marshaller(s).  The following are the requirements.
 
@@ -18,6 +18,13 @@ See link:../reference/Infinispan_HotRod_Translator.adoc[Infinispan HotRod Transl
 
 
 == *Configuration*
+
+There are many different ways to configure this resource-adapter based on different usage scenarios:
+
+*  complexity of the pojo (i.e, pojo contains other pojo's).
+*  using either pojo protobuf annotations or protobuf definition files, to configure the JDG schema
+*  wanting the enable HotRod client to use SSL
+*  utilizing the JDG cache for materialization
 
 === Accessing HotRod Remote Cache
 
@@ -83,6 +90,19 @@ The pojo class is the object that is used to store the data in the cache.  It sh
 | ChildClasses | className[,className,..]]  | comma separated list of class names that indicate the child classes to register in the JDG schema
 |===
 
+=== *Enable Hotrod Client SSL*
+
+To enable the Hotrod client in the resource-adapter to communicate using SSL, configure the following properties on the resource adapter:
+
+|===
+|Property Name |Description
+
+| TrustStoreFileName | File name of the truststore
+| TrustStorePassword | TrustStore Password
+| KeyStoreFileName   | File name of the keystore
+| KeyStorePassword   | KeyStore Password
+| SNIHostName        | [optional] SNI Host Name
+|===
 
 === *Using for External Materialization*
 
