@@ -1,0 +1,934 @@
+= Create VDB using completely using DDL
+
+A Virtual Database (VDB) can created through executing DDL statements. Teiid supports SQL-MED specification to configure the foreign data sources. 
+
+You can simply create a *SOME-NAME-vdb.ddl* file. The DDL file captures information about the VDB, the sources it integrate, and preferences for importing metadata. The format of the DDL file can be any elements in documented here.
+
+IMPORTANT: The VDB name pattern must adhere to "-vdb.ddl" for the Teiid VDB deployer to recognize this file when deployed in Teiid Server.
+
+[source,DDL]
+.Example VDB DDL Template
+----
+CREATE DATABASE my-example VERSION "1";
+CREATE FOREIGN DATA WRAPPER postgresql;
+CREATE SERVER pgsql TYPE 'postgresql-9.4-1201.jdbc41.jar' 
+    VERSION 'one' FOREIGN DATA WRAPPER postgresql 
+    OPTIONS (
+        "jndi-name" 'java:/postgres-ds'
+    );
+CREATE SCHEMA test SERVER pgsql;
+IMPORT FOREIGN SCHEMA public FROM SERVER pgsql INTO test 
+    OPTIONS(
+        importer.useFullSchemaName false, 
+        importer.tableTypes 'TABLE,VIEW'
+);
+----
+
+== <<create_database, Step 1: Create a Database>>
+
+Every VDB file must start with database definition where it specifies the name and version of the database. The create syntax for database is
+
+----
+CREATE DATABASE {db-name} [VERSION {version-string}] OPTIONS ( <options-clause>)
+
+<options-clause> ::= 
+    <key> <value>[,<key>, <value>]*
+----
+
+An example statement
+----
+CREATE DATABASE my-example VERSION "1" OPTIONS ("cache-metadata" true);
+----
+
+you can add additional OPTIONS at later time using below syntax. 
+ 
+----
+ALTER  DATABASE <name> OPTIONS (ADD|SET|DROP <key-value>)
+----
+
+For list database scoped properties see link:vdb_properties.adoc[VDB properties]
+
+As we learned about the VDB components earlier in the guide, we need to first create translators, then connections to data sources, and then using these we can gather metadata about these sources. There is no limit on how many translators, or data sources or schemas you create to build VDB. 
+
+== <<create_translator, Step 2A: Create a Translator>> 
+
+Translator is an adapter to the foreign data source, the creation of translator in the context of the VDB creates a reference to the software module that is available in the Teiid system. For list of available translators, you should look up in Teiid system. Some of the examples of available translator modules include
+
+* oracle
+* mysql
+* postgresql
+* mongodb 
+
+----
+CREATE FOREIGN ( DATA WRAPPER | TRANSLATOR ) {translator-name} 
+    [ TYPE {base-translator-type} ] 
+    OPTIONS ( <options-clause>)
+
+<options-clause> ::= 
+    <key> <value>[,<key>, <value>]*
+----
+
+Optional _TYPE_ is used to create "override" translator. The _OPTIONS_ clause is used to provide the "execution-properties" of a specific translator defined in either in {translator-name} or {base-translator-name}. These names *MUST* match with available Translators in the system. link:Translators.adoc[Translators} documents all the available translators. 
+
+.Example 1: Example creating translator
+[source,sql]  
+----
+CREATE FOREIGN DATA WRAPPER postgresql;
+----
+
+For all available translators see link:translators.adoc[Translators]
+
+. Example 2: Example creating Override Translator
+[source,sql]
+----
+CREATE FOREIGN DATA WRAPPER oracle-override TYPE oracle OPTIONS (useBindVariables false);
+----
+The above example creates a translator override with an example showing turning off the prepared statements. 
+
+Additional management support to alter, delete a translator
+----
+ALTER  (DATA WRAPPER|TRANSLATOR) {translator-name} OPTIONS (ADD|SET|DROP <key-value>);
+
+DROP FOREIGN [<DATA> <WRAPPER>|<TRANSLATOR>] {translator-name}
+----
+  
+
+== <<create_connection, Step 2C: Create a Connection To External Source>>
+
+Before you can create a connection to the data source, you must either have a JDBC driver (Type 4) that can connect to the data source, or Teiid system must have provided a resource adapter (RAR) file to enable connection to the data source. If you are using the JDBC driver file this should have already been deployed to the Teiid system, or made it available on the classpath in the case of the Teiid Embedded. This is Step 2B from earlier, there is currently no DDL mechanism to deploy the external drivers.
+
+Now to create connection to the external data source. One needs to know the name of deployment. For JDBC drivers, it is typically JAR name with out path. For resource adapters, it is the name of the resource-adapter. Step also associates the connection created with the translator to be used in communicating with this source. 
+
+
+[source,sql] 
+----
+CREATE SERVER {source-name} TYPE '{source-type}' 
+    [VERSION '{version}'] FOREIGN DATA WRAPPER {translator-name} 
+    OPTIONS (<options-clause>)
+
+<options-clause> ::= 
+    <key> <value>[,<key>, <value>]*
+----
+
+|====
+|Name |Description
+|source-name | Name given to the source's connection.
+|source-type | For JDBC connection, the driver name or resource-adapter name. 
+|translator-name| Name of the translator to be used with this server.
+|options| All connection properties for the connection.
+|====
+
+For all available translators see link:translators.adoc[Translators] 
+
+
+.Example 3: creating a data source connection to Postgres database
+[source,sql] 
+----
+CREATE SERVER pgsql TYPE 'postgresql-9.4-1201.jdbc41.jar' 
+    FOREIGN DATA WRAPPER postgresql 
+    OPTIONS (
+        "jndi-name" 'java:/postgres-ds' 
+    );
+----
+
+The below are the typical properties that need to be configured for a JDBC connection
+|====
+|Name|Description
+|jndi-name|Jndi name of the datasource
+|====
+
+NOTE: Any additional properties to create a data-source in WildFly can also used here in OPTIONS clause.
+
+IMPORTANT: If the data source is already exists in the configuration, then supply only provide _jndi-name_ property (you can omit all other properties), then above command will create a new connection, but will use existing configuration in the system.
+
+The below shows an example connection with resource adapter.
+
+.Example 4: creating a data source connection to "file" resource adapter.
+----
+CREATE SERVER marketdata TYPE 'file' 
+    FOREIGN DATA WRAPPER file 
+    OPTIONS(
+        ParentDirectory '/path/to/marketdata'
+    );
+----
+For all available resource-adapters see link:resource_adapters.adoc[Resource Adapters]
+
+Additional management support to alter/delete a connection. 
+----
+ALTER  SERVER {source-name}  OPTIONS ( ADD|SET|DROP <key-value>);
+DROP SERVER  {source-name};
+----
+WARNING: ALTER can be used to change properties, but due to a bug in WildFly this feature currently does not work.
+
+Now that we have the Translators and Connections created, the next step is to create SCHEMAs and work with metadata.
+
+== <<create_schema, Step 3 & 5: Create SCHEMA in VDB>>
+
+Before metadata about data sources or abstraction layers can be created, a container for this metadata needs to be created. In relational database concepts this is called Schema, and this also works as a namespace in which metadata elements like TABLES, VIEWS and PROCEDURES exist. The below DDL shows how to create a SCHEMA element.
+
+----
+CREATE [VIRTUAL] SCHEMA {schema-name} 
+    [SERVER {server-name} (<COMMA> {server-name})*] 
+    OPTIONS (<options-clause>)
+
+<options-clause> ::= 
+    <key> <value>[,<key>, <value>]*
+----
+
+* The use of VIRTUAL keyword defines if this schema is "Virtual Schema". In the absence of the VIRTUAL keyword, this Schema element represents a "Source Schema". Refer to link:vdb_guide.adoc[VDB Guide] about different types of Schema types.
+
+IMPORTANT: If the Schema is defined as "Source Schema", then SERVER configuration *must* be provided, to be able to determine the data source connection to be used when executing queries that belong to this Schema. Providing multiple Server names configure this Schema as "multi-source" model.  See link:./Multisource_Models.adoc[Multisource Models] for more information. 
+
+The below are the typical properties that need to be configured for a Schema in the OPTIONS clause.
+|====
+|Name|Description
+|VISIBILITY|Is Schema visible during metadata interrogation
+|====
+
+.Example 5: Showing to create a source schema for PostgreSQL server from example above
+[source,sql]
+----
+CREATE SCHEMA test SERVER pgsql;
+----
+
+Additional management support to alter/delete a schema can be done through following commands. 
+[source,sql]
+----
+ALTER [VIRTUAL] SCHEMA {schema-name} OPTIONS (ADD|SET|DROP <key-value>);
+DROP SCHEMA {schema-name};
+----
+
+When working with existing VDB, or when editing multiple Schema's in a working VDB, one needs to setup context of Schema he/she wants to modify, as some of the DDL commands are context sensitive as to which Schema they belong. To be able to establish the context that you are working with certain Schema use following command.
+
+----
+SET SCHEMA {schema-name};
+----
+
+then you will be add/drop/alter any other Schema elements.
+
+== <<import_schema, Step 4: Importing Schema>>
+
+If you are designing a source schema, you can add the TABLES, PROCEDURES manually to represent the data source, however in certain situations this can be tedious, or complicated. For example, if you need to represent 100s of existing tables from your Oracle database in Teiid? Or if you are working with MongoDB, how are you going to map a document structure into a TABLE? For this purpose, Teiid provides an import metadata command, that can import/create metadata that represents the source. The following command can be used for that purpose with most of the sources (LDAP source is only exception, not providing import)
+
+----
+IMPORT FOREIGN SCHEMA {foreign-schema-name} [ <import qualifications> ] 
+    FROM SERVER {server-name} 
+    INTO {schema-name}
+    OPTIONS (<options-clause>)
+
+<import qualifications> ::=
+    LIMIT TO (<table name list>) | EXCEPT (<table name list>)
+    
+<options-clause> ::= 
+    <key> <value>[,<key>, <value>]*
+----
+
+foreign-schema-name : Name of schema in external data source to import. Typically most databases are tied to a schema name, like "public", "dbo" or name of the database. If you are working with non-relational source, you can provide a dummy value here.
+server-name: name of the server created above to import metadata from.
+schema-name: Name schema element created above to import metadata into.
+import qualifications : using this you can limit your import of the Tables from foreign datasource specified to this list. 
+options-clause : The "importer" properties that can be used to refine the import process behavior of the metadata. Each Translator defines a set of "importer" properties with their documentation or through extension properties. 
+
+The below example shows importing metadata from a PostgreSQL using server example above.
+
+.Example 6
+----
+IMPORT FOREIGN SCHEMA public 
+    LIMIT TO customers, orders
+    FROM SERVER pgsql 
+    INTO test
+----
+
+
+The above command imports public.customers, public.orders tables using pgsql's connection into a VDB schema test.
+
+
+=== Importing another Virtual Database (VDB Reuse)
+
+If you like to import another VDB that is created into the current VDB, the following command cn be used to import all the metadata
+
+
+----
+IMPORT DATABASE {vdb-name} VERSION {version} [WITH ACCESS CONTROL]
+----
+
+Specifying the WITH ACCESS CONTROL also imports any Data Roles defined in the other database.
+
+== <<data_types, Data Types>>
+
+The BNF for Data Types refer to <<../reference/BNF_for_SQL_Grammar.adoc#parseDataTypePrimary, Data Types>>
+
+== <<create_table, Creating a Foreign Table>>
+A _FOREIGN_ table is table that is defined on source schema that represents a real relational table in source databases like Oracle, SQLServer etc. For relational databases, Teiid has capability to automatically retrieve the database schema information upon the deployment of the VDB, if one like to auto import the existing schema. However, user can use below FOREIGN table semantics, when they would like to explicitly define tables on PHYSICAL schema or represent non-relational data as relational in custom translators.
+
+
+.BNF for Create Table
+[source,sql]
+----
+CREATE FOREIGN TABLE {table-name} (
+    <table-element> (,<table-element>)*
+    [<constraint> (,<constraint>)* 
+) OPTIONS (<options-clause>)
+
+
+<table-element> ::=
+    {column-name} <data-type> <element-attr> <options-clause>
+
+<data-type> ::=
+    varchar | boolean | integer | double | date | timestamp .. (see Data Types)
+
+<element-attr> ::=
+    [AUTO_INCREMENT] [NOTNULL] [PRIMARY KEY] [UNIQUE] [INDEX] [DEFAULT {expr}]
+
+<constraint> ::=
+    CONSTRAINT {constraint-name} (
+        PRIMARY KEY <columns> | 
+        FOREIGN KEY (<columns>) REFERENCES tbl (<columns>)
+        UNIQUE <columns> |
+        ACCESSPATTERN <columns>
+        INDEX <columns>
+
+<columns> ::=
+    ( {column-name} [,{column-name}] )  
+          
+<options-clause> ::= 
+    <key> <value>[,<key>, <value>]*
+----
+
+For validating BNF for create table refer to <<../reference/BNF_for_SQL_Grammar.adoc#createTable, CREATE TABLE>> 
+
+Example 7:Create Foreign Table(Created on PHYSICAL model)
+[source,sql]
+----
+CREATE FOREIGN TABLE Customer (
+    id integer PRIMARY KEY, 
+    firstname varchar(25), 
+    lastname varchar(25),  
+    dob timestamp);
+
+CREATE FOREIGN TABLE Order (
+    id integer PRIMARY KEY, 
+    customerid integer OPTIONS(ANNOTATION 'Customer primary key'), 
+    saledate date, 
+    amount decimal(25,4), 
+    CONSTRAINT CUSTOMER_FK FOREGIN KEY(customerid) REFERENCES Customer(id)
+ ) OPTIONS(UPDATABLE true, ANNOTATION 'Orders Table');
+----
+
+*TABLE OPTIONS*: (the below are well known options, any others properties defined will be considered as extension metadata)
+
+|===
+|Property |Data Type or Allowed Values |Description
+
+|UUID
+|string
+|Unique identifier for View
+
+|CARDINALITY
+|int
+|Costing information. Number of rows in the table. Used for planning purposes
+
+|UPDATABLE
+|'TRUE'\|'FALSE'
+|Defines if the view is allowed to update or not
+
+|ANNOTATION
+|string
+|Description of the view
+
+|DETERMINISM
+|NONDETERMINISTIC, COMMAND_DETERMINISTIC, SESSION_DETERMINISTIC, USER_DETERMINISTIC, VDB_DETERMINISTIC, DETERMINISTIC
+|Only checked on source tables
+|===
+
+
+image:images/create_column.jpg[images/create_column.jpg]
+
+*COLUMN OPTIONS*: (the below are well known options, any others properties defined will be considered as extension metadata)
+
+|===
+|Property |Data Type or Allowed Values |Description
+
+|UUID
+|string
+|A unique identifier for the column
+
+|NAMEINSOURCE
+|string
+|If this is a column name on the FOREIGN table, this value represents name of the column in source database, if omitted the column name is used when querying for data against the source
+
+|CASE_SENSITIVE
+|'TRUE'\|'FALSE'
+|
+ 
+|SELECTABLE
+|'TRUE'\|'FALSE'
+|TRUE when this column is available for selection from the user query
+
+|UPDATABLE
+|'TRUE'\|'FALSE'
+|Defines if the column is updatable.  Defaults to true if the view/table is updatable.
+
+|SIGNED
+|'TRUE'\|'FALSE'
+|
+ 
+|CURRENCY
+|'TRUE'\|'FALSE'
+|
+ 
+|FIXED_LENGTH
+|'TRUE'\|'FALSE'
+|
+ 
+|SEARCHABLE
+|'SEARCHABLE'\|'UNSEARCHABLE'\|'LIKE_ONLY'\|'ALL_EXCEPT_LIKE'
+|column searchability, usually dictated by the data type
+
+|MIN_VALUE
+|
+| 
+
+|MAX_VALUE
+|
+| 
+
+|CHAR_OCTET_LENGTH
+|integer
+|
+ 
+|ANNOTATION
+|string
+|
+ 
+|NATIVE_TYPE
+|string
+|
+ 
+|RADIX
+|integer
+|
+ 
+|NULL_VALUE_COUNT
+|long
+|costing information. Number of NULLS in this column
+
+|DISTINCT_VALUES
+|long
+|costing information. Number of distinct values in this column
+|===
+
+Columns may also be marked as NOT NULL, auto_increment, and with a DEFAULT value. Currently only string values are supported as the default value. To have the string interpreted as an expression use the extension property teiid_rel:default_handling set to expression.
+
+A column of type bigdecimal/decimal/numeric can be declared without a precision/scale which will default to an internal maximum for precision with half scale, or with a precision which will default to a scale of 0. 
+
+=== Defining Table CONSTRAINTS
+
+Constraints can be defined on table/view to define indexes and relationships to other tables/views. This information is used by the Teiid optimizer to plan queries or use the indexes in materialization tables to optimize the access to the data.
+
+image:images/constraint.jpg[images/constraint.jpg]
+
+CONSTRAINTS are same as one can define on RDBMS.
+
+[source,sql]
+.*Example of CONSTRAINTs*
+----
+CREATE FOREIGN Orders (
+    name varchar(50),  
+    saledate date, 
+    amount decimal, 
+    CONSTRAINT CUSTOMER_FK FOREGIN KEY(customerid) REFERENCES Customer(id)
+    ACCESSPATTERN (name),
+    PRIMARY KEY ...
+    UNIQUE ...
+    INDEX ...
+----
+
+=== ALTER TABLE
+
+The BNF for ALTER table, refer to <<../reference/BNF_for_SQL_Grammar.adoc#alterTable, ALTER TABLE>>
+
+Using the ALTER COMMAND, one can Add, Change, Delete columns, and/or modify any OPTIONS values. Some examples below.
+
+[source,sql]
+----
+-- add column to the table
+ALTER FOREIGN TABLE "Customer" ADD COLUMN address varchar(50) OPTIONS(SELECTABLE true);
+
+-- remove column to the table
+ALTER FOREIGN TABLE "Customer" DROP COLUMN address;
+
+-- adding options property on the table 
+ALTER FOREIGN TABLE "Customer" OPTIONS (ADD CARDINALITY 10000);
+
+-- Changing options property on the table 
+ALTER FOREIGN TABLE "Customer" OPTIONS (SET CARDINALITY 9999);
+
+-- Changing options property on the table's column
+ALTER FOREIGN TABLE "Customer" ALTER COLUMN "name" OPTIONS(SET UPDATABLE FALSE)
+----
+
+
+== <<create_view, Create View>>
+
+A view is a virtual table. A view contains rows and columns,like a real table. The columns in a view are columns from one or more real tables from the source or other view models. They can also be expressions made up multiple columns, or aggregated columns. When column definitions are not defined on the view table, they will be derived from the projected columns of the view’s select transformation that is defined after the _AS_ keyword.
+
+You can add functions, JOIN statements and WHERE clauses to a view data as if the data were coming from one single table.
+
+.BNF for Create Table
+[source,sql]
+----
+CREATE VIEW {table-name} AS {transformation_query} 
+    OPTIONS (<options-clause>)
+
+<options-clause> ::= 
+    <key> <value>[,<key>, <value>]*
+----
+
+image:images/create_view.jpg[images/create_view.jpg]
+
+*VIEW OPTIONS*: (These properties are in addition to properties defined in the CREATE TABLE )
+
+|===
+|Property |Data Type or Allowed Values |Description
+
+|MATERIALIZED
+|'TRUE'\|'FALSE'
+|Defines if a table is materialized
+
+|MATERIALIZED_TABLE
+|'table.name'
+|If this view is being materialized to a external database, this defines the name of the table that is being materialized to
+
+|===
+
+.*Example:Create View Table(Created on VIRTUAL schema)*
+[source,sql]
+----
+CREATE VIEW CustomerOrders
+  AS
+  SELECT concat(c.firstname, c.lastname) as name, 
+        o.saledate as saledate, 
+        o.amount as amount 
+  FROM Customer C JOIN Order o ON c.id = o.customerid;
+----
+
+IMPORTANT: Note that the columns are implicitly defined by the transformation query (SELECT statement), they can also defined inline but if they are defined they can be only altered to modify their properties, you can not ADD or DROP new columns.
+
+=== ALTER TABLE
+
+The BNF for ALTER VIEW, refer to <<../reference/BNF_for_SQL_Grammar.adoc#alterTable, ALTER TABLE>>
+
+Using the ALTER COMMAND you can change the transformation query of the VIEW. You are *NOT* allowed to Alter the column information. Also the transformation query must be valid 
+
+[source,sql]
+----
+ALTER VIEW CustomerOrders
+    AS
+    SELECT concat(c.firstname, c.lastname) as name, 
+        o.saledate as saledate, 
+        o.amount as amount 
+  FROM Customer C JOIN Order o ON c.id = o.customerid
+  WHERE saledate < TIMESTAMPADD(now(), -1, SQL_TSI_MONTH)    
+----
+
+=== INSTEAD OF TRIGGERS On VIEW (Update VIEW)
+
+A view comprising multiple base tables must use an INSTEAD OF trigger to support inserts, updates and deletes that reference data in the tables. Based on the select transformation’s complexity some times INSTEAD OF TRIGGERS are automatically provided for the user when "UPDATABLE" OPTION on the VIEW is set to "TRUE". However, using the CREATE TRIGGER mechanism user can provide/override the default behavior.
+
+image:images/create_trigger.jpg[images/create_trigger.jpg]
+
+[source,sql]
+.*Example:Define instead of trigger on View for INSERT*
+----
+CREATE TRIGGER ON CustomerOrders INSTEAD OF INSERT AS
+   FOR EACH ROW
+   BEGIN ATOMIC
+      INSERT INTO Customer (...) VALUES (NEW.name ...);
+      INSERT INTO Orders (...) VALUES (NEW.value ...);
+   END
+----
+
+For Update
+
+[source,sql]
+.*Example:Define instead of trigger on View for UPDATE*
+----
+CREATE TRIGGER ON CustomerOrders INSTEAD OF UPDATE AS
+   FOR EACH ROW
+   BEGIN ATOMIC
+      IF (CHANGING.saledate)
+      BEGIN
+          UPDATE Customer SET saledate = NEW.saledate;
+          UPDATE INTO Orders (...) VALUES (NEW.value ...);
+      END
+   END
+----
+
+While updating you have access to previous and new values of the columns. For more detailed explanation of these update procedures please refer to <<../reference/Update_Procedures_Triggers.adoc, Update Procedures>> 
+
+== <<create_proc, Create Procedure/Function>>
+
+Using the below syntax, user can define a
+
+* Source Procedure ("CREATE FOREIGN PROCEDURE") - a stored procedure in source
+* Source Function ("CREATE FOREIGN FUNCTION") - A function that is supported by the source, where Teiid will pushdown to source instead of evaluating in Teiid engine
+* Virtual Procedure ("CREATE VIRTUAL PROCEDURE") - Similar to stored procedure, however this is defined using the Teiid’s Procedure language and evaluated in the Teiid’s engine.
+* Function/UDF ("CREATE VIRTUAL FUNCTION") - A user defined function, that can be defined using the Teiid procedure language or can have the implementation defined using a link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc#_metadata_without_designer[JAVA Class].
+
+image:images/create_procedure.jpg[images/create_procedure.jpg]
+
+See the full grammar for create function/procedure in the link:BNF_for_SQL_Grammar.adoc[BNF for SQL Grammar].
+
+*Variable Argument Support* 
+
+Instead of using just an IN parameter, the last non optional parameter can be declared VARIADIC to indicate that it can be repeated 0 or more times when the procedure is called
+
+[source,sql]
+.*Example:Vararg procedure*
+----
+CREATE FOREIGN PROCEDURE proc (x integer, VARIADIC z integer) 
+    RETURNS (x string);
+----
+
+*FUNCTION OPTIONS*:(the below are well known options, any others properties defined will be considered as extension metadata)
+
+|===
+|Property |Data Type or Allowed Values |Description
+
+|UUID
+|string
+|unique Identifier
+
+|NAMEINSOURCE
+|If this is source function/procedure the name in the physical source, if different from the logical name given above
+|
+
+|ANNOTATION
+|string
+|Description of the function/procedure
+
+|CATEGORY
+|string
+|Function Category
+
+|DETERMINISM
+|NONDETERMINISTIC, COMMAND_DETERMINISTIC, SESSION_DETERMINISTIC, USER_DETERMINISTIC, VDB_DETERMINISTIC, DETERMINISTIC
+|Not used on virtual procedures
+
+|NULL-ON-NULL
+|'TRUE'\|'FALSE'
+|
+
+|JAVA_CLASS
+|string
+|Java Class that defines the method in case of UDF
+
+|JAVA_METHOD
+|string
+|The Java method name on the above defined java class for the UDF implementation
+
+|VARARGS
+|'TRUE'\|'FALSE'
+|Indicates that the last argument of the function can be repeated 0 to any number of times. default false. It is more proper to use a VARIADIC parameter.
+
+|AGGREGATE
+|'TRUE'\|'FALSE'
+|Indicates the function is a user defined aggregate function. Properties specific to aggregates are listed below.
+|===
+
+Note that NULL-ON-NULL, VARARGS, and all of the AGGREGATE properties are also valid relational extension metadata properties that can be used on source procedures marked as functions. See also link:../dev/Source_Supported_Functions.adoc[Source Supported Functions] for creating FOREIGN functions that are supported by a source.
+
+*AGGREGATE FUNCTION OPTIONS*:
+
+|===
+|Property |Data Type or Allowed Values |Description
+
+|ANALYTIC
+|'TRUE'\|'FALSE'
+|indicates the aggregate function must be windowed. default false.
+
+|ALLOWS-ORDERBY
+|'TRUE'\|'FALSE'
+|indicates the aggregate function supports an ORDER BY clause. default false
+
+|ALLOWS-DISTINCT
+|'TRUE'\|'FALSE'
+|indicates the aggregate function supports the DISTINCT keyword. default false
+
+|DECOMPOSABLE
+|'TRUE'\|'FALSE'
+|indicates the single argument aggregate function can be decomposed as agg(agg(x) ) over subsets of data. default false
+
+|USES-DISTINCT-ROWS
+|'TRUE'\|'FALSE'
+|indicates the aggregate function effectively uses distinct rows rather than all rows. default false
+|===
+
+Note that virtual functions defined using the Teiid procedure language cannot be aggregate functions.
+
+NOTE: *Providing the JAR libraries* - If you have defined a UDF (virtual) function without a Teiid procedure deinition, then it must be accompanied by its implementation in Java. To configure the Java library as dependency to the VDB, see link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc#_metadata_without_designer[Support for User-Defined Functions]
+
+*PROCEDURE OPTIONS*:(the below are well known options, any others properties defined will be considered as extension metadata)
+
+|===
+|Property |Data Type or Allowed Values |Description
+
+|UUID
+|string
+|Unique Identifier
+
+|NAMEINSOURCE
+|string
+|In the case of source
+
+|ANNOTATION
+|string
+|Description of the procedure
+
+|UPDATECOUNT
+|int
+|if this procedure updates the underlying sources, what is the update count, when update count is >1 the XA protocol for execution is enforced
+|===
+
+[source,sql]
+.*Example:Define virtual Procedure*
+----
+CREATE VIRTUAL PROCEDURE CustomerActivity(customerid integer) 
+    RETURNS (name varchar(25), activitydate date, amount decimal) 
+    AS
+    BEGIN
+        ...
+    END
+----
+
+Read more information about virtual procedures at <<../reference/Virtual_Procedures.adoc, Virtual Procedures>>, and these procedures are written using  <<../reference/Procedure_Language.adoc, Procedure Language>>
+
+[source,sql]
+.*Example:Define Virtual Function*
+----
+CREATE VIRTUAL FUNCTION CustomerRank(customerid integer) 
+   RETURNS integer AS
+   BEGIN
+   ...
+   END
+----
+
+Procedure columns may also be marked as NOT NULL, or with a DEFAULT value. Currently only string values are supported as the default value. To have the string interpreted as an expression use the extension property teiid_rel:default_handling set to expression. On a source procedure if you want the parameter to be defaultable in the source procedure and not supply a default value in Teiid, then the parameter must be nullable and use the extension property teiid_rel:default_handling set to omit.
+
+There can only be a single RESULT parameter and it must be an out parameter. A RESULT parameter is the same as having a single non-table RETURNS type. If both are declared they are expected to match otherwise an exception is thrown. One is no more correct than the other. "RETURNS type" is shorter hand syntax especially for functions, while the parameter form is useful for additional metadata (explicit name, extension metadata, also defining a returns table, etc.)
+
+*Relational Extension OPTIONS*:
+
+|===
+|Property |Data Type or Allowed Values |Description
+
+|native-query
+|Parameterized String
+|Applies to both functions and procedures. The replacement for the function syntax rather than the standard prefix form with parens. See also link:Translators.adoc#_parameterizable_native_queries[Translators#native]
+
+|non-prepared
+|boolean
+|Applies to JDBC procedures using the native-query option. If true a PreparedStatement will not be used to execute the native query.
+|===
+
+.Example:Native Query
+[source,sql]
+----
+CREATE FOREIGN FUNCTION func (x integer, y integer) 
+    RETURNS integer OPTIONS ("teiid_rel:native-query" '$1 << $2');
+----
+
+.Example:Sequence Native Query
+[source,sql]
+----
+CREATE FOREIGN FUNCTION seq_nextval () 
+    RETURNS integer 
+    OPTIONS ("teiid_rel:native-query" 'seq.nextval');
+----
+
+TIP: Until Teiid provides higher-level metadata support for sequences, a source function representation is the best fit to expose sequence functionality.
+
+== <<data_roles, Data Roles>>
+Data roles, also called entitlements, are sets of permissions defined per VDB that dictate data access (create, read, update, delete). Data roles use a fine-grained permission system that Teiid will enforce at runtime and provide audit log entries for access violations. To read more about Data Roles and Permissions see  <<../reference/Data_Roles.adoc, Data Roles>> and  <<../reference/Permissions.adoc, Permissions>>
+
+Here we will show DDL support to create these Data Roles and corresponding permissions.
+
+.BNF for Create Data Role
+[source,sql]
+----
+CREATE ROLE {data-role}  
+    [WITH JAAS ROLE {enterprise-role}(,{enterprise-role})*] 
+    [WITH ANY AUTHENTICATED]
+----
+
+data-role: Data role referenced in the VDB
+enterprise-role: Enterprise role(s) that this data-role represents 
+WITH ANY AUTHENTICATED: When present, this data-role is given to any user who is valid authenticated user.
+
+.Example: Create Data Role
+[source,sql]
+----
+CREATE ROLE readWrite WITH JASS ROLE developer,analyst;
+
+CREATE ROLE readOnly WITH ANY AUTHENTICATED;
+----
+
+Now to Setting Permissions, see <<../reference/Permissions.adoc, Permissions>> for more details.
+
+.BNF for Grant command
+[source,sql]
+----
+GRANT  (<permission-types> (,<permission-types>)* ) 
+    ON (<grant-resource>)
+    TO {data-role}
+
+<permission-types> ::=
+    SELECT | INSERT |  UPDATE | DELETE | 
+    EXECUTE | LANGUAGE | ALTER | DROP | 
+    ALL PRIVILEGES | TEMPORARY TABLES)
+    
+<grant-resource> ::=
+        DATABASE |
+        TABLE {schema-name}.{table-name} [<condition>] |
+        PROCEDURE {schema-name}.{procedure-name} [<condition>] |
+        SCHEMA {schema-name} |
+        COLUMN {schema-name}.{table-name}.{column-name} | 
+            [MASK [ORDER \d]  {expression} ] 
+            [<condition>]    
+
+<condition> ::=            
+    CONDITION [CONSTRAINT] {expression}
+----
+
+* permission-types: Types of permissions to be granted
+* grant-resource: This is Schema element in the VDB on which this grant applies to. It can anything between a DATABASE and COLUMN
+* schema-name: Name of the schema this resource belongs to
+* table-name: Name of the Table/View
+* procedure-name: Procedure Name
+* column-name: Name of the column
+* condition: When present, the {expression} is appended to the WHERE clause of the query 
+* expression: any valid sql expression, this can include columns from referenced resource
+* CONSTRAINT: When this is supplied along with CONDITION, the {expression} is also applied during the INSERT/UPDATE queries. By default CONDITION *only* applies SELECT queries. Also CONSTRAINT does *NOT* apply to VIEWs only FOREIGN TABLES.
+
+CAUTION: LANGUAGE permission can only be applied on DATABASE
+
+.Example: Give Read, write, update permission on single table to user with enterprise role "role1"
+[source,sql]
+----
+CREATE ROLE RoleA WITH JAAS ROLE role1;
+GRANT INSERT, READ, UPDATE ON TABLE test.Customer TO RoleA;
+----
+
+.Example : Give all permissions to user with "admin" enterprise role
+[source,sql]
+---- 
+CREATE ROLE everything WITH JAAS ROLE admin;
+GRANT ALL PRIVILEGES ON DATABASE TO everything;
+----
+
+.Example : Use of CONDITION, all users can see only Orders table contents amount < 1000
+----
+CREATE ROLE base-role WITH ANY AUTHENTICATED;
+GRANT READ ON TABLE test.Orders CONDITION 'amount < 1000' TO base-role;
+----
+
+.Example : Use of CONDITION, override previous example to more privileged user
+[source,sql]
+----
+GRANT READ ON TABLE test.Orders CONDITION 'amount < 1000 and amount >=1000' TO RoleA;
+----
+
+.Example : Restricting rows, ROW BASED SECURITY
+[source,sql]
+----
+GRANT READ ON TABLE test.CustomerOrders CONDITION CONSTRAINT 'name = user()' TO RoleA;
+----
+
+In the above example, user() function returns the currently logged in user id, if that matches to the name column, only those rows will be returned. There are functions like hasRole('x') that can be used too. 
+
+.Example : Column Masking, mask "amount for all users"
+[source,sql]
+----
+GRANT READ ON COLUMN test.Order.amount 
+    MASK 'xxxx' 
+    TO base-role;
+----
+
+.Example : Column Masking, mask "amount for all users when amount > 1000"
+[source,sql]
+----
+GRANT READ ON COLUMN test.Order.amount 
+    MASK 'CASE WHEN amount > 1000 THEN 'xxxx' END' 
+    TO base-role;
+----
+
+
+.Example : Column Masking, mask "amount for all users" except the calling user is equal to the user()
+[source,sql]
+----
+GRANT READ ON COLUMN test.Order.amount 
+    MASK 'xxxx'
+    CONDITION 'customerid <> user()' 
+    TO base-role;
+----
+
+== <<extension_metadata, Extension Metadata>>
+
+When defining the extension metadata in the case of Custom Translators, the properties on tables/views/procedures/columns can define namespace for the properties such that they will not collide with the Teiid specific properties. The property should be prefixed with alias of the Namespace. Prefixes starting with teiid_ are reserved for use by Teiid.
+
+image:images/create_namespace.jpg[images/create_namespace.jpg]
+
+[source,sql]
+.*Example of Namespace*
+----
+SET NAMESPACE 'http://custom.uri' AS foo
+
+CREATE VIEW MyView (...) 
+  OPTIONS ("foo:mycustom-prop" 'anyvalue')
+----
+
+=== Built-in Namespace Prefixes
+
+|===
+|Prefix |URI |Description
+
+|teiid_rel
+|http://www.teiid.org/ext/relational/2012[http://www.teiid.org/ext/relational/2012]
+|Relational extensions. Uses include function and native query metadata
+
+|teiid_sf
+|http://www.teiid.org/translator/salesforce/2012[http://www.teiid.org/translator/salesforce/2012]
+|Salesforce extensions.
+
+|teiid_mongo
+|http://www.teiid.org/translator/mongodb/2013[http://www.teiid.org/translator/mongodb/2013]
+|MongoDB Extensions
+
+|teiid_odata
+|http://www.jboss.org/teiiddesigner/ext/odata/2012[http://www.jboss.org/teiiddesigner/ext/odata/2012]
+|OData Extensions
+
+|teiid_accumulo
+|http://www.teiid.org/translator/accumulo/2013[http://www.teiid.org/translator/accumulo/2013]
+|Accumulo extensions
+
+|teiid_excel
+|http://www.teiid.org/translator/excel/2014[http://www.teiid.org/translator/excel/2014]
+|Excel Extensions
+
+|teiid_ldap
+|http://www.teiid.org/translator/ldap/2015[http://www.teiid.org/translator/ldap/2015]
+|LDAP Extensions
+
+|teiid_rest
+|http://teiid.org/rest[http://teiid.org/rest]
+|REST Extensions
+
+|teiid_pi
+|http://www.teiid.org/translator/pi/2016[http://www.teiid.org/translator/pi/2016]
+|PI Database Extensions
+
+|===
+
+
