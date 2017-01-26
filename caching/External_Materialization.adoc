@@ -174,7 +174,7 @@ Note: This script is not invoked automatically by Teiid, as the source update ev
 
 == Using JDG as Materialization Store
 
-The JDG can be used as  materialization target to save cache contents of the View in  JDG server, which can be cluster aware, that will be accessed using the JDG Hot Rod Client.  See the link:../admin/Infinispan_HotRod_Data_Sources.adoc[JDG Hot Rod DataSource] for how to configure accessing the remote cache. 
+The JDG can be used as a materialization target to save cache contents of the View in a JDG server.  JDG can be cluster aware and is accessed using the JDG Hot Rod Client.  See the link:../admin/JDG_HotRod_Data_Sources.adoc[JDG Hot Rod DataSource] for how to configure accessing the remote cache. 
 
 To configure for external materialization, see the link:../reference/Infinispan_HotRod_Translator.adoc#External_Materialization[HotRod Translator].  This explains how to configure link:#_Metadatda_Based_Materialization_Management[Materialization Management] that is specific for using JDG remote cache and is essential for managing the underlying multiple caches needed in order to perform materialization.
 
