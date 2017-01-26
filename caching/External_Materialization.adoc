@@ -105,6 +105,11 @@ teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
 |time to live in milliseconds. Provide property or cache hint on view transformation - property takes precedence.
 |true
 |2^63 milliseconds - effectively the table will not refresh, but will be loaded a single time initially
+
+|teiid_rel:MATVIEW_WRITE_THROUGH
+|When true Teiid will perform both the underlying update and the corresponding update against the materialization target for an insert/update/delete issued against the view.
+|true
+|false
 |===
 
 TIP: for scripts that need more than one statement executed, use a procedure block BEGIN statement; statement; ... END

@@ -47,6 +47,11 @@ The materialized option must be set for the view to be materialized. The link:Hi
 |Same as the scope cache hint option. 
 |true
 |VDB
+
+|teiid_rel:MATVIEW_WRITE_THROUGH
+|When true Teiid will perform both the underlying update and the corresponding update against the materialization target for an insert/update/delete issued against the view.
+|true
+|false
 |===
 
 The pref_mem option also applies to internal materialized views. Internal table index pages already have a memory preference, so the perf_mem option indicates that the data pages should prefer memory as well.
