@@ -5,7 +5,7 @@ With help of link:DDL_Metadata.html[DDL Metadata] variety of metadata can be def
 
 == Expose Teiid Procedure as Rest Service
 
-One can define below REST based properties on a Teiid virtual procedure, and when the VDB is deployed the Teiid VDB deployer will analyse the metadata and deploy a REST service automatically. When the VDB un-deployed the REST service also deployed.
+One can define below REST based properties on a Teiid virtual procedure, and when the VDB is deployed the Teiid VDB deployer will analyze the metadata and deploy a REST service automatically. When the VDB un-deployed the REST service also deployed.
 
 |===
 |Property Name |Description |Is Required |Allowed Values

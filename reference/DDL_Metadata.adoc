@@ -1,67 +1,70 @@
-
-= DDL Metadata
+= DDL Metadata for Schema Objects
 :toc: manual
 :toc-placement: preamble
 
-DDL Metadata can be used instead of or in addition to metadata defined by Teiid Designer.
+The DDL for schema objects is common to both link:xml_deployment_mode.adoc[XML] and link:ddl_deployment_mode.adoc[DDL] VDBs.
 
-== DDL Metadata in VDB Models
+== <<data_types, Data Types>>
 
-Starting with Teiid 8.0, a VDB can define models/schemas using DDL. Here is small example of how one can define a View inside the "-vdb.xml" file. See the <metadata> element under <model>.
+The BNF for Data Types refer to <<../reference/BNF_for_SQL_Grammar.adoc#parseDataTypePrimary, Data Types>>
 
-[source,xml]
-.*Example to show view definition*
-----
-<model visible = "true" type = "VIRTUAL" name = "customers">
-     <metadata type = "DDL"><![CDATA[
-              CREATE VIEW PARTS (
-                   PART_ID integer PRIMARY KEY,
-                   PART_NAME varchar(255),
-                   PART_COLOR varchar(30),
-                   PART_WEIGHT varchar(255)
-               ) AS
-                  select a.id as PART_ID, a.name as PART_NAME, b.color as PART_COLOR, b.weight as PART_WEIGHT from modelA.part a, modelB.part b where a.id = b.id
-     ]]>
-     </metadata>
-</model>
-----
+== <<create_table, Creating a Foreign Table>>
+A _FOREIGN_ table is table that is defined on source schema that represents a real relational table in source databases like Oracle, SQLServer etc. For relational databases, Teiid has capability to automatically retrieve the database schema information upon the deployment of the VDB, if one like to auto import the existing schema. However, user can use below FOREIGN table semantics, when they would like to explicitly define tables on PHYSICAL schema or represent non-relational data as relational in custom translators.
 
-Another complete DDL based example is at the end of this section.
-
-NOTE: *Metadata Repositories* - The declaration of metadata using DDL, NATIVE, or DDL-FILE is supported out of the box, however the _MetadataRepository_ interface allows users to plug-in their own metadata facilities. For example, you can write a Hibernate based store that can feed the necessary metadata. See link:../dev/Custom_Metadata_Repository.adoc[Custom Metadata Repository] for more information.
-
-NOTE: *Metadata for Source Models* - The DDL based schema is not constrained to be defined only for the view models.
-
-== BNF notation for the Metadata
-
-NOTE: *Grammar Reference* - The full grammar for DDL can be found in the link:BNF_for_SQL_Grammar.adoc[BNF for SQL Grammar].
-
-WARNING: Not using a semicolon delimiter between statements is deprecated and should only be relied on for backwards compatibility.
-
-== Create FOREIGN Table
-
-A _FOREIGN_ table is table that is defined on PHYSICAL model that represents a real relational table in source databases like Oracle, SQLServer etc. For relational databases, Teiid has capability to automatically retrieve the database schema information upon the deployment of the VDB, if one like to auto import the existing schema. However, user can use below FOREIGN table semantics, when they would like to explicitly define tables on PHYSICAL models or represent non-relational data as relational in custom translators.
-
-image:images/create_table.jpg[images/create_table.jpg]
-
-Example:Create Foreign Table(Created on PHYSICAL model)
-
+.BNF for Create Table
 [source,sql]
 ----
-CREATE FOREIGN TABLE Customer (id integer PRIMARY KEY, firstname varchar(25), lastname varchar(25),  dob timestamp);
+CREATE FOREIGN TABLE {table-name} (
+    <table-element> (,<table-element>)*
+    [<constraint> (,<constraint>)* 
+) OPTIONS (<options-clause>)
 
-CREATE FOREIGN TABLE Order (id integer PRIMARY KEY, customerid integer, saledate date, amount decimal(25,4), CONSTRAINT CUSTOMER_FK FOREGIN KEY(customerid) REFERENCES Customer(id));
+
+<table-element> ::=
+    {column-name} <data-type> <element-attr> <options-clause>
+
+<data-type> ::=
+    varchar | boolean | integer | double | date | timestamp .. (see Data Types)
+
+<element-attr> ::=
+    [AUTO_INCREMENT] [NOTNULL] [PRIMARY KEY] [UNIQUE] [INDEX] [DEFAULT {expr}]
+
+<constraint> ::=
+    CONSTRAINT {constraint-name} (
+        PRIMARY KEY <columns> | 
+        FOREIGN KEY (<columns>) REFERENCES tbl (<columns>)
+        UNIQUE <columns> |
+        ACCESSPATTERN <columns>
+        INDEX <columns>
+
+<columns> ::=
+    ( {column-name} [,{column-name}] )  
+          
+<options-clause> ::= 
+    <key> <value>[,<key>, <value>]*
 ----
 
-== Create View
+For validating BNF for create table refer to <<../reference/BNF_for_SQL_Grammar.adoc#createTable, CREATE TABLE>> 
 
-A view is a virtual table. A view contains rows and columns,like a real table. The fields in a view are fields from one or more real tables from the source or other view models. They can also be expressions made up multiple columns, or aggregated columns. When column definitions are not defined on the view table, they will be derived from the projected columns of the view’s select transformation that is defined after the _AS_ keyword.
+Example 7:Create Foreign Table(Created on PHYSICAL model)
+[source,sql]
+----
+CREATE FOREIGN TABLE Customer (
+    id integer PRIMARY KEY, 
+    firstname varchar(25), 
+    lastname varchar(25),  
+    dob timestamp);
 
-You can add functions, JOIN statements and WHERE clauses to a view data as if the data were coming from one single table.
+CREATE FOREIGN TABLE Order (
+    id integer PRIMARY KEY, 
+    customerid integer OPTIONS(ANNOTATION 'Customer primary key'), 
+    saledate date, 
+    amount decimal(25,4), 
+    CONSTRAINT CUSTOMER_FK FOREGIN KEY(customerid) REFERENCES Customer(id)
+ ) OPTIONS(UPDATABLE true, ANNOTATION 'Orders Table');
+----
 
-image:images/create_view.jpg[images/create_view.jpg]
-
-*TABLE/VIEW OPTIONS*: (the below are well known options, any others properties defined will be considered as extension metadata)
+*TABLE OPTIONS*: (the below are well known options, any others properties defined will be considered as extension metadata)
 
 |===
 |Property |Data Type or Allowed Values |Description
@@ -69,14 +72,6 @@ image:images/create_view.jpg[images/create_view.jpg]
 |UUID
 |string
 |Unique identifier for View
-
-|MATERIALIZED
-|'TRUE'\|'FALSE'
-|Defines if a table is materialized
-
-|MATERIALIZED_TABLE
-|'table.name'
-|If this view is being materialized to a external database, this defines the name of the table that is being materialized to
 
 |CARDINALITY
 |int
@@ -95,13 +90,6 @@ image:images/create_view.jpg[images/create_view.jpg]
 |Only checked on source tables
 |===
 
-[source,sql]
-.*Example:Create View Table(Created on VIRTUAL model)*
-----
-CREATE VIEW CustomerOrders (name varchar(50),  saledate date, amount decimal) OPTIONS (CARDINALITY 100, ANNOTATION 'Example')
-  AS
-  SELECT concat(c.firstname, c.lastname) as name, o.saledate as saledate, o.amount as amount FROM Customer C JOIN Order o ON c.id = o.customerid;
-----
 
 image:images/create_column.jpg[images/create_column.jpg]
 
@@ -183,7 +171,7 @@ Columns may also be marked as NOT NULL, auto_increment, and with a DEFAULT value
 
 A column of type bigdecimal/decimal/numeric can be declared without a precision/scale which will default to an internal maximum for precision with half scale, or with a precision which will default to a scale of 0. 
 
-=== CONSTRAINTS
+=== Defining Table CONSTRAINTS
 
 Constraints can be defined on table/view to define indexes and relationships to other tables/views. This information is used by the Teiid optimizer to plan queries or use the indexes in materialization tables to optimize the access to the data.
 
@@ -194,29 +182,141 @@ CONSTRAINTS are same as one can define on RDBMS.
 [source,sql]
 .*Example of CONSTRAINTs*
 ----
-CREATE VIEW CustomerOrders (name varchar(50),  saledate date, amount decimal, 
-   CONSTRAINT EXAMPLE_INDEX INDEX (name, amount),
-   ACCESSPATTERN (name),
-   PRIMARY KEY ...
+CREATE FOREIGN TABLE Orders (
+    name varchar(50),  
+    saledate date, 
+    amount decimal, 
+    CONSTRAINT CUSTOMER_FK FOREGIN KEY(customerid) REFERENCES Customer(id)
+    ACCESSPATTERN (name),
+    PRIMARY KEY ...
+    UNIQUE ...
+    INDEX ...
 ----
 
-=== INSTEAD OF TRIGGERS
+=== ALTER TABLE
 
-A view comprising multiple base tables must use an INSTEAD OF trigger to support inserts, updates and deletes that reference data in the tables. Based on the select transformation’s complexity some times INSTEAD OF TRIGGERS are automatically provided for the user when "UPDATABLE" OPTION on the view is set to "TRUE". However, using the CREATE TRIGGER mechanism user can provide/override the default behavior.
+The BNF for ALTER table, refer to <<../reference/BNF_for_SQL_Grammar.adoc#alterTable, ALTER TABLE>>
+
+Using the ALTER COMMAND, one can Add, Change, Delete columns, and/or modify any OPTIONS values. Some examples below.
+
+[source,sql]
+----
+-- add column to the table
+ALTER FOREIGN TABLE "Customer" ADD COLUMN address varchar(50) OPTIONS(SELECTABLE true);
+
+-- remove column to the table
+ALTER FOREIGN TABLE "Customer" DROP COLUMN address;
+
+-- adding options property on the table 
+ALTER FOREIGN TABLE "Customer" OPTIONS (ADD CARDINALITY 10000);
+
+-- Changing options property on the table 
+ALTER FOREIGN TABLE "Customer" OPTIONS (SET CARDINALITY 9999);
+
+-- Changing options property on the table's column
+ALTER FOREIGN TABLE "Customer" ALTER COLUMN "name" OPTIONS(SET UPDATABLE FALSE)
+----
+
+
+== <<create_view, Create View>>
+
+A view is a virtual table. A view contains rows and columns,like a real table. The columns in a view are columns from one or more real tables from the source or other view models. They can also be expressions made up multiple columns, or aggregated columns. When column definitions are not defined on the view table, they will be derived from the projected columns of the view’s select transformation that is defined after the _AS_ keyword.
+
+You can add functions, JOIN statements and WHERE clauses to a view data as if the data were coming from one single table.
+
+.BNF for Create Table
+[source,sql]
+----
+CREATE VIEW {table-name} AS {transformation_query} 
+    OPTIONS (<options-clause>)
+
+<options-clause> ::= 
+    <key> <value>[,<key>, <value>]*
+----
+
+image:images/create_view.jpg[images/create_view.jpg]
+
+*VIEW OPTIONS*: (These properties are in addition to properties defined in the CREATE TABLE )
+
+|===
+|Property |Data Type or Allowed Values |Description
+
+|MATERIALIZED
+|'TRUE'\|'FALSE'
+|Defines if a table is materialized
+
+|MATERIALIZED_TABLE
+|'table.name'
+|If this view is being materialized to a external database, this defines the name of the table that is being materialized to
+
+|===
+
+.*Example:Create View Table(Created on VIRTUAL schema)*
+[source,sql]
+----
+CREATE VIEW CustomerOrders
+  AS
+  SELECT concat(c.firstname, c.lastname) as name, 
+        o.saledate as saledate, 
+        o.amount as amount 
+  FROM Customer C JOIN Order o ON c.id = o.customerid;
+----
+
+IMPORTANT: Note that the columns are implicitly defined by the transformation query (SELECT statement), they can also defined inline but if they are defined they can be only altered to modify their properties, you can not ADD or DROP new columns.
+
+=== ALTER TABLE
+
+The BNF for ALTER VIEW, refer to <<../reference/BNF_for_SQL_Grammar.adoc#alterTable, ALTER TABLE>>
+
+Using the ALTER COMMAND you can change the transformation query of the VIEW. You are *NOT* allowed to Alter the column information. Also the transformation query must be valid 
+
+[source,sql]
+----
+ALTER VIEW CustomerOrders
+    AS
+    SELECT concat(c.firstname, c.lastname) as name, 
+        o.saledate as saledate, 
+        o.amount as amount 
+  FROM Customer C JOIN Order o ON c.id = o.customerid
+  WHERE saledate < TIMESTAMPADD(now(), -1, SQL_TSI_MONTH)    
+----
+
+=== INSTEAD OF TRIGGERS On VIEW (Update VIEW)
+
+A view comprising multiple base tables must use an INSTEAD OF trigger to support inserts, updates and deletes that reference data in the tables. Based on the select transformation’s complexity some times INSTEAD OF TRIGGERS are automatically provided for the user when "UPDATABLE" OPTION on the VIEW is set to "TRUE". However, using the CREATE TRIGGER mechanism user can provide/override the default behavior.
 
 image:images/create_trigger.jpg[images/create_trigger.jpg]
 
 [source,sql]
-.*Example:Define instead of trigger on View*
+.*Example:Define instead of trigger on View for INSERT*
 ----
 CREATE TRIGGER ON CustomerOrders INSTEAD OF INSERT AS
    FOR EACH ROW
    BEGIN ATOMIC
-   INSERT INTO Customer (...) VALUES (NEW.value ...);
-   END;
+      INSERT INTO Customer (...) VALUES (NEW.name ...);
+      INSERT INTO Orders (...) VALUES (NEW.value ...);
+   END
 ----
 
-== Create Procedure/Function
+For Update
+
+[source,sql]
+.*Example:Define instead of trigger on View for UPDATE*
+----
+CREATE TRIGGER ON CustomerOrders INSTEAD OF UPDATE AS
+   FOR EACH ROW
+   BEGIN ATOMIC
+      IF (CHANGING.saledate)
+      BEGIN
+          UPDATE Customer SET saledate = NEW.saledate;
+          UPDATE INTO Orders (...) VALUES (NEW.value ...);
+      END
+   END
+----
+
+While updating you have access to previous and new values of the columns. For more detailed explanation of these update procedures please refer to <<../reference/Update_Procedures_Triggers.adoc, Update Procedures>> 
+
+== <<create_proc, Create Procedure/Function>>
 
 Using the below syntax, user can define a
 
@@ -236,7 +336,8 @@ Instead of using just an IN parameter, the last non optional parameter can be de
 [source,sql]
 .*Example:Vararg procedure*
 ----
-CREATE FOREIGN PROCEDURE proc (x integer, VARIADIC z integer) returns (x string);
+CREATE FOREIGN PROCEDURE proc (x integer, VARIADIC z integer) 
+    RETURNS (x string);
 ----
 
 *FUNCTION OPTIONS*:(the below are well known options, any others properties defined will be considered as extension metadata)
@@ -336,22 +437,27 @@ NOTE: *Providing the JAR libraries* - If you have defined a UDF (virtual) functi
 
 |UPDATECOUNT
 |int
-|if this procedure updates the underlying sources, how many updates may be issued. When update count is >1 the XA protocol for execution is enforced. Defaults to -1 AUTO.
+|if this procedure updates the underlying sources, what is the update count, when update count is >1 the XA protocol for execution is enforced
 |===
 
 [source,sql]
-.*Example:Define Procedure*
+.*Example:Define virtual Procedure*
 ----
-CREATE VIRTUAL PROCEDURE CustomerActivity(customerid integer) RETURNS (name varchar(25), activitydate date, amount decimal) AS
-   BEGIN
-   ...
-   END
+CREATE VIRTUAL PROCEDURE CustomerActivity(customerid integer) 
+    RETURNS (name varchar(25), activitydate date, amount decimal) 
+    AS
+    BEGIN
+        ...
+    END
 ----
+
+Read more information about virtual procedures at <<../reference/Virtual_Procedures.adoc, Virtual Procedures>>, and these procedures are written using  <<../reference/Procedure_Language.adoc, Procedure Language>>
 
 [source,sql]
 .*Example:Define Virtual Function*
 ----
-CREATE VIRTUAL FUNCTION CustomerRank(customerid integer) RETURNS integer AS
+CREATE VIRTUAL FUNCTION CustomerRank(customerid integer) 
+   RETURNS integer AS
    BEGIN
    ...
    END
@@ -375,76 +481,24 @@ There can only be a single RESULT parameter and it must be an out parameter. A R
 |Applies to JDBC procedures using the native-query option. If true a PreparedStatement will not be used to execute the native query.
 |===
 
+.Example:Native Query
 [source,sql]
-.*Example:Native Query*
 ----
-CREATE FOREIGN FUNCTION func (x integer, y integer) returns integer OPTIONS ("teiid_rel:native-query" '$1 << $2');
+CREATE FOREIGN FUNCTION func (x integer, y integer) 
+    RETURNS integer OPTIONS ("teiid_rel:native-query" '$1 << $2');
 ----
 
+.Example:Sequence Native Query
 [source,sql]
-.*Example:Sequence Native Query*
 ----
-CREATE FOREIGN FUNCTION seq_nextval () returns integer OPTIONS ("teiid_rel:native-query" 'seq.nextval');
+CREATE FOREIGN FUNCTION seq_nextval () 
+    RETURNS integer 
+    OPTIONS ("teiid_rel:native-query" 'seq.nextval');
 ----
 
 TIP: Until Teiid provides higher-level metadata support for sequences, a source function representation is the best fit to expose sequence functionality.
 
-== Options
-
-image:images/create_options.jpg[images/create_options.jpg]
-
-NOTE: Any option name of the form prefix:key will attempt to be resolved against the current set of namespaces. Failure to resolve will result in the option name being left as is. A resolved name will be replaced with \{uri}key. See also Namespaces for Extension Metadata.
-
-Options can also be added using the ALTER statement. See ALTER stmt.
-
-== ALTER Statement
-
-ALTER statements currently primarily supports adding OPTIONS properties to Tables, Views and Procedures. Using a ALTER statement, you can either add, modify or remove a property.
-
-image:images/alter.png[images/alter.png]
-
-=== ALTER COLUMN
-
-image:images/alterColumn.png[images/alterColumn.png]
-
-=== ALTER OPTION
-
-image:images/alterOption.png[images/alterOption.png]
-
-[source,sql]
-.*Example ALTER*
-----
-ALTER FOREIGN TABLE "customer" OPTIONS (ADD CARDINALITY 10000);
-ALTER FOREIGN TABLE "customer" ALTER COLUMN "name" OPTIONS(SET UPDATABLE FALSE)
-----
-
-ALTER statements are especially useful, when user would like to modify/enhance the metadata that has been imported from a NATIVE datasource. For example, if you have a database called "northwind", and you imported that metadata and would like to add CARDINALITY to its "customer" table, you can use ALTER statement, along with "chainable" metadata repositories feature to add this property to the desired table. The below shows an example -vdb.xml file, that illustrates the usage.
-
-[source,xml]
-.*Example VDB*
-----
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<vdb name="northwind" version="1">
-    <model name="nw">
-        <property name="importer.importKeys" value="true"/>
-        <property name="importer.importProcedures" value="true"/>
-         <source name="northwind-connector" translator-name="mysql" connection-jndi-name="java:/nw-ds"/>
-         <metadata type = "NATIVE,DDL"><![CDATA[
-              ALTER FOREIGN TABLE "customer" OPTIONS (ADD CARDINALITY 10000);
-              ALTER FOREIGN TABLE "customer" ALTER COLUMN "name" OPTIONS(SET UPDATABLE FALSE);
-         ]]>
-         </metadata>
-    </model>
-</vdb>
-----
-
-== Data Types
-
-The following are the supported data types in the Teiid.
-
-image:images/datatypes.png[images/datatypes.png]
-
-== Namespaces for Extension Metadata
+== <<extension_metadata, Extension Metadata>>
 
 When defining the extension metadata in the case of Custom Translators, the properties on tables/views/procedures/columns can define namespace for the properties such that they will not collide with the Teiid specific properties. The property should be prefixed with alias of the Namespace. Prefixes starting with teiid_ are reserved for use by Teiid.
 
@@ -455,7 +509,8 @@ image:images/create_namespace.jpg[images/create_namespace.jpg]
 ----
 SET NAMESPACE 'http://custom.uri' AS foo
 
-CREATE VIEW MyView (...) OPTIONS ("foo:mycustom-prop" 'anyvalue')
+CREATE VIEW MyView (...) 
+  OPTIONS ("foo:mycustom-prop" 'anyvalue')
 ----
 
 === Built-in Namespace Prefixes
@@ -470,42 +525,33 @@ CREATE VIEW MyView (...) OPTIONS ("foo:mycustom-prop" 'anyvalue')
 |teiid_sf
 |http://www.teiid.org/translator/salesforce/2012[http://www.teiid.org/translator/salesforce/2012]
 |Salesforce extensions.
+
+|teiid_mongo
+|http://www.teiid.org/translator/mongodb/2013[http://www.teiid.org/translator/mongodb/2013]
+|MongoDB Extensions
+
+|teiid_odata
+|http://www.jboss.org/teiiddesigner/ext/odata/2012[http://www.jboss.org/teiiddesigner/ext/odata/2012]
+|OData Extensions
+
+|teiid_accumulo
+|http://www.teiid.org/translator/accumulo/2013[http://www.teiid.org/translator/accumulo/2013]
+|Accumulo extensions
+
+|teiid_excel
+|http://www.teiid.org/translator/excel/2014[http://www.teiid.org/translator/excel/2014]
+|Excel Extensions
+
+|teiid_ldap
+|http://www.teiid.org/translator/ldap/2015[http://www.teiid.org/translator/ldap/2015]
+|LDAP Extensions
+
+|teiid_rest
+|http://teiid.org/rest[http://teiid.org/rest]
+|REST Extensions
+
+|teiid_pi
+|http://www.teiid.org/translator/pi/2016[http://www.teiid.org/translator/pi/2016]
+|PI Database Extensions
+
 |===
-
-== Full Example showing above DDL based metadata
-
-[source,xml]
-.*Full Example VDB with View Definition*
-----
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<vdb name="twitter" version="1">
-
-    <description>Shows how to call Web Services</description>
-
-    <model name="twitter">
-        <source name="twitter" translator-name="rest" connection-jndi-name="java:/twitterDS"/>
-    </model>
-    <model name="twitterview" type="VIRTUAL">
-         <metadata type="DDL"><![CDATA[
-             CREATE VIRTUAL PROCEDURE getTweets(query varchar) RETURNS (created_on varchar(25), from_user varchar(25), to_user varchar(25),
-                 profile_image_url varchar(25), source varchar(25), text varchar(140)) AS
-                select tweet.* from
-                    (call twitter.invokeHTTP(action => 'GET', endpoint =>querystring(",query as "q"))) w,
-                    XMLTABLE('results' passing JSONTOXML('myxml', w.result) columns
-                    created_on string PATH 'created_at',
-                    from_user string PATH 'from_user',
-                    to_user string PATH 'to_user',
-                    profile_image_url string PATH 'profile_image_url',
-                    source string PATH 'source',
-                    text string PATH 'text') tweet;;
-                CREATE VIEW Tweet AS select * FROM twitterview.getTweets;
-        ]]> </metadata>
-    </model>
-
-    <translator name="rest" type="ws">
-        <property name="DefaultBinding" value="HTTP"/>
-        <property name="DefaultServiceMode" value="MESSAGE"/>
-    </translator>
-</vdb>
-----
-

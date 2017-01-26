@@ -1,24 +1,32 @@
 = Developing a Virtual Database
 
-There are few different ways a Virtual Database can be developed. Each method have their own advantages and disadvantages. Typically these are due the legacy of Teiid, how we evolved the Teiid feature.
+There are few different ways a Virtual Database can be developed. Each method has advantages and disadvantages.
 
-The VDB is developed as file artifact, which can deployed into a Teiid Server. This file artifact contains the metadata about the VDB, or contains the details to fetch the metadata from source data sources. These artifacts can be shared and moved between different servers.
+A VDB is developed as file artifact, which can deployed into a Teiid Server. This file artifact contains the metadata about the VDB, or contains the details to fetch the metadata from source data sources. 
+These artifacts can be shared and moved between different servers.
 
-* -vdb.xml : In this file format, you can use combination of XML elements and DDL elements to define the metadata.
+* vdb.xml : In this file format, you can use combination of XML elements and DDL elements to define the metadata.
 
-* -vdb.ddl : In this file format, you can use strictly DDL using SQL-MED (with few custom extensions) to define the metadata. This can be viewed as next version to the -vdb.xml and recommend to use. 
+* vdb.ddl : In this file format, you can use strictly DDL using SQL-MED (with few custom extensions) to define the metadata. This can be viewed as next version to the vdb.xml. 
 
-* Designer : Designer provides a graphical UI, that user can use to design a VDB. Using this, user can interactively design tables, views, procedures, functions etc. Designer typically generates a .vdb file artifact, however it can also export this as -vdb.xml file. Support to export as -vdb.ddl is coming soon. 
+* Designer : Designer provides a graphical UI, that user can use to design a VDB. Using this, user can interactively design tables, views, procedures, functions etc. Designer typically generates a .vdb (zip) file artifact, however it can also export this as -vdb.xml file. Support to export as vdb.ddl is coming soon.
 
-IMPORTANT: It is important to note that, the metadata represented by the VDBs is *EXACTLY* same in all different ways. Infact, you can easily convert a VDB from one type to the other.
+vdb.xml and vdb.ddl may be deployed as standalone files.  As a standalone file, the VDB file name pattern must adhere to "-vdb.xxx" for the Teiid VDB deployer to recognize this file.  
+
+They may also be contained in a .vdb zip file along with other relevant files, such as jars, additional ddl, and static file resources.
+ 
+IMPORTANT: It is important to note that, the metadata represented by the VDB formats is *EXACTLY* same in all different ways. In fact, you can convert a VDB from one type to the other.
 
 == Steps to follow in developing a VDB
+
+This will walk through developing a DDL based VDB.
 
 === Step 1: Pick Name and Version
 Pick the name and version of the virtual database you want to create. From previous example this represents
 
 ----
-CREATE DATABASE my-example VERSION "1"; 
+CREATE DATABASE my_example VERSION '1.0.0';
+USE DATABASE my_example VERSION '1.0.0'; 
 ----
 
 === Step 2: Configuring a Source(s)
@@ -132,5 +140,44 @@ deploy my-vdb.ddl
 === Step 7: Client Access
 * Once the VDB is available on the Teiid Server in ACTIVE status, this VDB can be accessed from any JDBC/ODBC connection based applications. You can use BI tools such as Tableau, Business Objects, QuickView, Pentaho by creating a connection to this VDB. You can also access the VDB using OData V4 protocol without any further coding.
 
-
 No matter how you are developing the VDB, whether you are using the tooling or not, the above are steps to be followed to build a successful VDB.
+
+== vdb.xml
+
+The vdb-deployer.xsd schema for this xml file format is available in the schema folder under the docs with the Teiid distribution.
+
+See also link:xml_deployment_mode.adoc
+
+== VDB Zip Deployment
+
+For more complicated scenarios you are not limited to just an xml/ddl file deployment. A full zip file similar to a Designer VDB may also be deployed. In a vdb zip deployment:
+
+* The deployment must end with the extension .vdb
+* The vdb xml/ddl file must be zip under /META-INF/vdb.xxx
+* If a /lib folder exists any jars found underneath will automatically be added to the vdb classpath.
+* For backwards compatibility with Designer VDBs, if any .INDEX file exists the default metadata repository will be assumed to be INDEX.
+* Files within the VDB zip are accessible by a link:../dev/Custom_Metadata_Repository.adoc[Custom Metadata Repository] using the `MetadataFactory.getVDBResources()` method, which returns a map of all `VDBResources` in the VDB keyed by absolute path relative to the vdb root.  
+The resources are also available at runtime via the SYSADMIN.VDBResources table.
+* The built-in DDL-FILE metadata repository type may be used to define DDL-based metadata in other files within the zip archive. This improves the memory footprint of the vdb metadata and the maintainability of the metadata.
+
+[source,xml]
+.*Example VDB Zip Structure*
+----
+/META-INF
+   vdb.xml
+/ddl
+   schema1.ddl
+/lib
+   some-udf.jar
+----
+
+In the above example a vdb.xml could use a DDL-FILE metadata type for schema1:
+
+[source,xml]
+----
+<model name="schema1" ...
+   <metadata type="DDL-FILE">/ddl/schema1.ddl</metadata>
+</model>
+----
+
+The contents inside schema1.ddl can include link:DDL_Metadata.adoc[DDL for Schema Objects]

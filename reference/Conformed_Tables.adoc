@@ -1,7 +1,7 @@
 
 = Conformed Tables
 
-A conformed table is a source table that is the same in several physical sources. Unlike link:../vdb/Multisource_Models.adoc[Multisource Models] which assume a partitioning paradigm, the planner assumes any conformed table may be substituted for another to improve performance. Typically this would be used when reference data exists in multiple sources, but only a single metadata entry is desired to represent the table.
+A conformed table is a source table that is the same in several physical sources. Unlike link:Multisource_Models.adoc[Multisource Models] which assume a partitioning paradigm, the planner assumes any conformed table may be substituted for another to improve performance. Typically this would be used when reference data exists in multiple sources, but only a single metadata entry is desired to represent the table.
 
 Conformed tables are defined by adding the
 

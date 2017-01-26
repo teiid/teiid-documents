@@ -78,4 +78,8 @@ In a multi-source schema all the tables will be implicitly added with additional
 
 * _multisource.addColumn_
 
-This flag to indicate, to add the implicit partition column to all the tables in this Schema. _true_ value adds the column. Default is _false_. 
+This flag to indicate, to add the implicit partition column to all the tables in this Schema. _true_ value adds the column. Default is _false_.
+
+* _allowed-languages_
+
+The allowed-languages property enables the languages use for any purpose in the vdb, while the allow-language permission allows the language to be used by users with RoleA. 

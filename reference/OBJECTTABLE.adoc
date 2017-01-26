@@ -37,7 +37,7 @@ SELECT x.* FROM OBJECTTABLE('teiid_context' COLUMNS "user" string 'teiid_row.use
 
 The result would be a row with two columns containing the user name and 1 respectively.
 
-NOTE: Due to their mostly unrestricted access to Java functionality, usage of languages other than teiid_script is restricted by default. A VDB must declare all allowable languages by name in the allowed-languages link:VDB_Definition.adoc[VDB property] using a comma separated list. The names are case sensitive names and should be separated without whitespace.  Without this property it is not possible to use OBJECTTABLE even from within view definitions that are not subject to normal permission checks.
+NOTE: Due to their mostly unrestricted access to Java functionality, usage of languages other than teiid_script is restricted by default. A VDB must declare all allowable languages by name in the allowed-languages link:vdb_properties.adoc[VDB Properties] using a comma separated list. The names are case sensitive names and should be separated without whitespace.  Without this property it is not possible to use OBJECTTABLE even from within view definitions that are not subject to normal permission checks.
 
 Data roles are also secured with link:XML_Definition.adoc[Data Roles] using the link:Permissions.adoc[language permission].
 

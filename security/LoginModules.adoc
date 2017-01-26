@@ -20,7 +20,7 @@ If no domain can authenticate the user, the login attempt will fail. Details of 
 
 === security-domain in VDB
 
-Starting from Teiid 8.7 version, a VDB can be configured to use a separate security-domain than security-domain defined on the transport that it is being accessed on. This configuration is defined in the vdb.xml file, see link:../reference/VDB_Definition.adoc[VDB Definition] for more information. The security-domain defined on transport configuration will be used as default security-domain, if a security-domain is not configured for a specific VDB.
+A VDB can be configured to use a security-domain other than the Teiid default security-domain. This configuration is defined in the vdb.xml file, see link:../reference/vdb_properties.adoc[VDB Properties] for more information. The security-domain defined on transport configuration will be used as default security-domain, if a security-domain is not configured for a specific VDB.
 
 [source,xml]
 ----

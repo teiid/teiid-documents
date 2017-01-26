@@ -99,7 +99,7 @@ Example Overriding of Translator Property
 
 The above XML fragment is overriding the _oracle_ translator and altering the behavior of _RequiresCriteria_ property to true. Note that the modified translator is only available in the scope of this VDB.
 
-See also link:VDB_Definition.adoc[VDB Definition].
+See also link:vdb_guide.adoc[VDB Definition].
 
 == Parameterizable Native Queries
 

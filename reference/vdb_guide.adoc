@@ -1,11 +1,8 @@
-
-= Virtual Database Guide 
-
-== The Virtual Database
+= Virtual Databases
 
 A virtual database (or VDB) is a metadata container for components used to integrate data from multiple data sources, so that they can be accessed in an integrated manner through a single, uniform API. 
 
-image:images/vdb.png
+image:images/vdb.png[vdb]
 
 A VDB typically contains multiple schema components (also called as models), and each schema contains the metadata (tables, procedures, functions). There are two (2) different types of schemas  
  
@@ -30,11 +27,13 @@ Below is an example VDB, that is using a single foreign schema component definin
 </vdb>
 ----
 
-Another variation of the VDB using completely DDL and using SQL-MED specification
-.Exmaple: 2
+Another variation of the VDB using completely DDL and using SQL-MED specification.
+
+.Example: 2
 [source,sql]
 ----
-CREATE DATABASE my-example VERSION "1";
+CREATE DATABASE my_example VERSION '1.0.0';
+USE DATABASE my_example VERSION '1.0.0' 
 CREATE FOREIGN DATA WRAPPER postgresql;
 CREATE SERVER pgsql TYPE 'postgresql-9.4-1201.jdbc41.jar' 
     VERSION 'one' FOREIGN DATA WRAPPER postgresql 
@@ -42,18 +41,17 @@ CREATE SERVER pgsql TYPE 'postgresql-9.4-1201.jdbc41.jar'
         "jndi-name" 'java:/postgres-ds'
     );
 CREATE SCHEMA test SERVER pgsql;
-SET SCHEMA test;
 IMPORT FOREIGN SCHEMA public FROM SERVER pgsql INTO test 
     OPTIONS(
         importer.useFullSchemaName false, 
         importer.tableTypes 'TABLE,VIEW'
 );
 ----
-The both formats defined above are exactly same, but the way they are developed are different
+Both formats define the same VDB.
 
 There is lot to be explained from above examples, in the following sections, we will go into detail about each of those lines. Before that we need to learn about further fractions in the _Source Schema_ component. 
 
-== Representing External Data Source 
+== External Data Sources 
 A "source schema" component in VDB as shown in above example is a collection schema elements as tables, procedures and functions that represent an external data source's metadata locally. However in the above example, it did not define any such schema elements, however details of connection to the external data source were provided through "jndi-name", which is a named connection reference to a external data source.   
 
 For the purposes of Teiid, connecting and issuing queries to fetch the metadata from these external data sources, Teiid defines/provides two types of resources.

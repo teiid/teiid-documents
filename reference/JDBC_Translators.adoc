@@ -150,7 +150,7 @@ When specifying the importer property, it must be prefixed with "importer.". Exa
 
 WARNING: The default import settings will crawl all available metadata. This import process is time consuming and full metadata import is not needed in most situations. Most commonly you’ll want to limit the import by at least schemaPattern and tableTypes.
 
-Example importer settings to only import tables and views from my-schema. See also link:VDB_Definition.html[VDB Definition]
+Example importer settings to only import tables and views from my-schema. See also link:vdb_guide.adoc[VDB Guide]
 
 [source,xml]
 ----
