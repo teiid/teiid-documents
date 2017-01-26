@@ -1,0 +1,138 @@
+= Developing a Virtual Database
+
+There are few different ways a Virtual Database can be developed. Each method have their own advantages and disadvantages. Typically these are due the legacy of Teiid, how we evolved the Teiid feature.
+
+The VDB is developed as file artifact, which can deployed into a Teiid Server. This file artifact contains the metadata about the VDB, or contains the details to fetch the metadata from source data sources. These artifacts can be shared and moved between different servers.
+
+* -vdb.xml : In this file format, you can use combination of XML elements and DDL elements to define the metadata.
+
+* -vdb.ddl : In this file format, you can use strictly DDL using SQL-MED (with few custom extensions) to define the metadata. This can be viewed as next version to the -vdb.xml and recommend to use. 
+
+* Designer : Designer provides a graphical UI, that user can use to design a VDB. Using this, user can interactively design tables, views, procedures, functions etc. Designer typically generates a .vdb file artifact, however it can also export this as -vdb.xml file. Support to export as -vdb.ddl is coming soon. 
+
+IMPORTANT: It is important to note that, the metadata represented by the VDBs is *EXACTLY* same in all different ways. Infact, you can easily convert a VDB from one type to the other.
+
+== Steps to follow in developing a VDB
+
+=== Step 1: Pick Name and Version
+Pick the name and version of the virtual database you want to create. Then create the database, and set the context that you are going to use this database. From previous example this represents
+
+----
+CREATE DATABASE my-example VERSION '1';
+
+USE DATABASE my-example VERSION '1';
+----
+
+=== Step 2: Configuring a Source(s)
+When working with external sources, there are few extra steps need to be followed, as not all the software components required for the connection nor configuration are automatically provided by Teiid.
+
+==== Step 2A: Find the Translator
+* First find out if the support for the source is provided in Teiid. Look at Teiid documentation and supported translators. Pick the names of translator(s) you will be using. From previous example this represents
+
+----
+CREATE FOREIGN DATA WRAPPER postgresql;
+----
+
+here "postgresql" is our translator name, as example assumes we are going to query a PostgreSQL database. 
+
+==== Step 2B: Find the module to connect to External Source 
+* Typically all releational databases are connected using their JDBC drivers. Find out if the external source has a JDBC driver? if this source has JDBC driver, then acquire the driver jar file.
+* Once the driver is acquired, then make sure this driver is *Type 4* driver, and then deploy this driver into Teiid server using either web-console application or CLI admin-console. The below example shows deploying the Oracle driver in Teiid Server based on WildFly using CLI admin-console. If driver is *not* Type 4, it can be still used, but more set up is needed.
+----
+</wildfly/bin>$./jboss-cli.sh --connect
+[standalone@localhost:9990 /] deploy /path/to/ojdbc6.jar
+----
+
+* if the source does not have JDBC driver and has resource-adapter provided by Teiid, then driver for it is already available in Teiid server. No further action required for this.
+
+
+==== Step 2C: Create a Connection to External Source 
+* Based on above driver or resource adapter a connection to the external source need to be created. There are many methods to create a data source connection. 
+* Teiid Server (choose one method from below) 
+** Edit the _wildfly/standalone/configuration/standalone-teiid.xml_ file and add respective data source or resource adapter configuration. The examples of these templates are provided in _wildfly/docs/teiid/datasources_ directory.
+** Use Teiid Web-console and follow the directions to create a data source or resource-adapter.
+** Use CLI admin-console and execute the script. The sample scripts are given in _wildfly/docs/teiid/datasources_ directory. Also, checkout documentation at link:../admin/Deploying_VDB_Dependencies.adoc[Administrator's Guide] for more details.
+* Teiid Embedded
+** Create the connection programmatically, by supplying your own libraries to connect to the source.
+
+From previous example this represents
+----
+CREATE SERVER pgsql TYPE 'postgresql-9.4-1201.jdbc41.jar' 
+    VERSION 'one' FOREIGN DATA WRAPPER postgresql 
+    OPTIONS (
+        "jndi-name" 'java:/postgres-ds'
+    );
+----
+
+WARNING: This probably is most challenging step in terms of understanding Teiid, make sure you follow before going further into next steps.
+
+=== Step 3: Create Source Schema
+Now that access the external sources is defined, "source schema" or models as shown before needs to be created and metadata needs to be defined. 
+
+From previous example this represents
+----
+CREATE SCHEMA test SERVER pgsql;
+SET SCHEMA test;
+----
+
+SET SCHEMA statement sets the context in which following DDL statements to fall in. 
+
+Schema component is defined, but it has no metadata. i.e tables, procedures or functions. These can be defined one of two ways for a source model, either importing the metadata directly from the source system itself, or defining the DDL manually inline in this file.
+
+==== Step 3A: Import Metadata
+
+* Using the data source connections created in Step 2, import the metadata upon deployment of the VDB. Note that this capability is  slightly different for each source, as to what and how/what kind of metadata is. Check individual source's translator documentation for more information. From previous example this represents
+----
+IMPORT FOREIGN SCHEMA public FROM SERVER pgsql INTO test 
+    OPTIONS(
+        importer.useFullSchemaName false, 
+        importer.tableTypes 'TABLE,VIEW'
+);
+----
+The above import statement is saying that, import the "public" schema from external data source defined by "pgsql" into local "test" schema in Teiid. It also further configures to only fetch TABLE, VIEW types, and do not use fully qualified schema names in the imported metadata. Each translator/source has many of these configuration options you can use to filter/refine your selections, for more information consult the translator documents at link:../reference/Translators.adoc[Translators] for every source you are trying to connect to. 
+
+==== Step 3B: Define Metadata using DDL
+Instead of importing the metadata, you can manually define the tables and procedures inline to define the metadata. This will be further explained in next sections detail on every DDL statement supported. For example, you can define a table like
+----
+CREATE FOREIGN TABLE CUSTOMER (
+    SSN char(10) PRIMARY KEY,
+    FIRSTNAME string(64),
+    LASTNAME string(64),
+    ST_ADDRESS string(256),
+    APT_NUMBER string(32),
+    CITY string(64),
+    STATE string(32),
+    ZIPCODE string(10)    
+);
+----
+WARNING: Please note that when metadata is defined in this manner, the source system must also have representative schema to support any queries resulting from this metadata. Teiid CAN NOT automatically create this structure in your data source. For example, with above table definition, if you are connecting Oracle database, the Oracle database must have the existing table with matching names. Teiid can not create this table in Oracle for you.
+    
+* Repeat this Step 2 & Step 3, for all the external data sources to be included in this VDB
+
+=== Step 5: Create Virtual Views
+* Now using the above source's metadata, define the abstract/logical metadata layer using Teiid's DDL syntax. i.e. create VIEWS, PROCEDURES etc to meet the needs of your business layer. For example (pseudo code):
+----
+CREATE VIRTAL SCHEMA reports;
+
+CREATE VIEW SalesByRegion (
+   quarter date,
+   amount decimal,
+   region varchar(50)   
+) AS
+  SELECT ... FROM Sales JOIN Region on x = y WHERE ... 
+----
+
+* Repeat this step as needed any number of Virtual Views you need. You can refer to View tables in one view from others.
+
+=== Step 6: Deploy the VDB
+* Once the VDB is completed, then this VDB needs to be deployed to the Teiid Server. (this is exactly same as you deploying a WAR file for example). One can use Teiid web-console or CLI admin-console to do this job. For example below cli can be used
+
+----
+deploy my-vdb.ddl
+----
+
+=== Step 7: Client Access
+* Once the VDB is available on the Teiid Server in ACTIVE status, this VDB can be accessed from any JDBC/ODBC connection based applications. You can use BI tools such as Tableau, Business Objects, QuickView, Pentaho by creating a connection to this VDB. You can also access the VDB using OData V4 protocol without any further coding.
+
+
+No matter how you are developing the VDB, whether you are using the tooling or not, the above are steps to be followed to build a successful VDB.
