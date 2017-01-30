@@ -11,6 +11,8 @@ You can simply create a *SOME-NAME-vdb.xml* file. The XML file captures informat
 
 IMPORTANT: The VDB name pattern must adhere to "-vdb.xml" for the Teiid VDB deployer to recognize this file when deployed in Teiid Server.
 
+TIP: if you have existing VDB in combination of XML & DDL format, you can migrate to all DDL version using the "teiid-convert-vdb.bat" or "teiid-convert-vdb.sh" utility in the "bin" directory of the installation.
+
 == XML File Format
 
 [source,xml]
