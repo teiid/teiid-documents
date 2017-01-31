@@ -1,5 +1,5 @@
 
-= FROM Claus 
+= FROM Clause
 
 The FROM clause specifies the target table(s) for SELECT, UPDATE, and
 DELETE statements.
