@@ -82,7 +82,7 @@ teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
 |When not defined, no script will be run
 
 |teiid_rel:MATVIEW_SHARE_SCOPE
-|Allowed values are \{NONE, VDB, SCHEMA}, which define if the cached contents are shared among different VDB versions and different VDBs as long as schema names match
+|Allowed values are \{NONE, VDB, SCHEMA}, which define if the cached contents are shared among different VDB versions and different VDBs as long as schema names match. See important note at bottom of table.
 |true
 |NONE
 
@@ -113,6 +113,8 @@ teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
 |===
 
 TIP: for scripts that need more than one statement executed, use a procedure block BEGIN statement; statement; ... END
+
+IMPORTANT: When a vdb is imported into another vdb, materializied views are not automatically shared across these vdbs. The teiid_rel:MATVIEW_SHARE_SCOPE property must be set to 'SCHEMA' on importing VDB's materialized views to enable sharing across the both vdbs. When this property is set to 'VDB', the materialized view contents are shared across different versions of the same VDB and does not apply to imported VDBs.
 
 == Materialization Management
 When designing Views, you can define additional metadata and extension properties(refer to above section) on the views to control the loading and refreshing of external materialization cache. This option provides a limited, but a powerful way to manage the materialization views. Below we will list steps need to take to configure a View to be materialized.
