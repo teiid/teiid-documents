@@ -215,6 +215,13 @@ ALTER FOREIGN TABLE "Customer" OPTIONS (SET CARDINALITY 9999);
 
 -- Changing options property on the table's column
 ALTER FOREIGN TABLE "Customer" ALTER COLUMN "name" OPTIONS(SET UPDATABLE FALSE)
+
+-- Changing table's column type to integer
+ALTER FOREIGN TABLE "Customer" ALTER COLUMN "id" TYPE bigdecimal; 
+
+-- Changing table's column column name
+ALTER FOREIGN TABLE "Customer" RENAME COLUMN "id" TO "customer_id"; 
+
 ----
 
 

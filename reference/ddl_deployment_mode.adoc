@@ -241,12 +241,20 @@ The below example shows importing metadata from a PostgreSQL using server exampl
 
 .Example 6
 ----
+-- import from native database
 IMPORT FOREIGN SCHEMA public 
     LIMIT TO customers, orders
     FROM SERVER pgsql 
     INTO test
+    
+-- in archive based vdbs(.vdb) you can provide each schema in a separate file and pull them in main vdb.ddl file as 
+IMPORT FOREIGN SCHEMA public 
+    FROM REPOSITORY DDL-FILE 
+    INTO test OPTIONS ("ddl-file" '/path/to/schema.ddl')
+ 
 ----
 
+TIP: The example IMPORT SCHEMA can be used with any custom Metadata Repository, in the REPOSITORY {DDL-FILE}, DDL-FILE represents a particular type of repository.
 
 The above command imports public.customers, public.orders tables using pgsql's connection into a VDB schema test.
 

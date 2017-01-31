@@ -9,7 +9,10 @@ WARNING: If VDB versioning is not used to give distinct version numbers, overwri
 
 CAUTION: Removing an existing VDB will immediately clean up VDB file resources, and will automatically terminate existing sessions.
 
-CAUTION: The runtime names of deployed VDB artifacts must either be *.vdb for a zip file or *-vdb.xml for an xml file. Failure to name the deployment properly will result in a deployment failure as the Teiid subsystem will not know how to properly handle the artifact.
+CAUTION: The runtime names of deployed VDB artifacts must either be *.vdb for a zip file or *-vdb.xml for an xml file or -vdb.ddl for DDL file. Failure to name the deployment properly will result in a deployment failure as the Teiid subsystem will not know how to properly handle the artifact.
+
+TIP: if you have existing VDB in combination of *.vdb or -vdb.xml format, you can migrate to all DDL version using the "teiid-convert-vdb.bat" or "teiid-convert-vdb.sh" utility in the "bin" directory of the installation.
+
 
 == Direct File Deployment
 
