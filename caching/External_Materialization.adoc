@@ -138,7 +138,7 @@ CREATE TABLE status
   Updated timestamp not null,
   LoadNumber long not null,
   PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
-) OPTIONS (UPDATABLE true);
+);
 ----
 
 <<Appendix-1: DDL for creating MatView Status Table, Appendix-1: DDL for creating MatView Status Table>> contains a series of verified schemas against different RDBMS sources. These can be modified to suit your database, please make sure the names and data types match exactly.
@@ -231,7 +231,7 @@ CREATE TABLE status
   Updated timestamp not null,
   LoadNumber long not null,
   PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
-) OPTIONS (UPDATABLE true);
+) ;
 ----
 
 [source,sql]
@@ -311,7 +311,7 @@ The below VDB defines three models, one "Source" model that defines your source 
             Updated timestamp not null,
             LoadNumber long not null,
             PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
-          ) OPTIONS (UPDATABLE true);          
+          );          
         ]]>
         </metadata>
     </model>
