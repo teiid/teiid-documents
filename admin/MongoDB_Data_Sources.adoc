@@ -40,6 +40,21 @@ All the properties that are defined on the RAR file are
 |MongoDB database name
 |true
 |none
+
+|SecurityType
+|MongoDB Type of Authentication to be used. Allowed values are "None","SCRAM_SHA_1","MONGODB_CR", "Kerberos","X509". If you are using MongoDB version lessthan 3.0, MongoDB by default uses "MONGODB_CR", thus this value need to be set accordingly or set to None.
+|false
+|SCRAM_SHA_1
+
+|AuthDatabase
+|MongoDB Database Name for user authentication in case when SecurityType 'MONGODB-CR' is used. This is an optional value.
+|false
+|none
+
+|Ssl
+|Use SSL Connections
+|false
+|none
 |===
 
 To find out all the properties that are supported by this MongoDB Connector execute the following command in the CLI.
