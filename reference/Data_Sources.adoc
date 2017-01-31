@@ -1,8 +1,14 @@
-== Data Sources
+= Data Sources
+:toc: manual
+:toc-placement: preamble
+:toc-title: The types of data sources that are currently accessible are:
 
-Teiid provides the means (i.e., link:Translators.adoc[Translators] and link:../admin/Deploying_VDB_Dependencies.adoc[JEE connectors]) to access a variety of types of data sources. The types of data sources that are currently accessible are:
 
-=== link:JDBC_Translators.adoc[Databases]
+Teiid provides the means (i.e., link:Translators.adoc[Translators] and link:../admin/Deploying_VDB_Dependencies.adoc[JEE connectors]) to access a variety of types of data sources.
+
+== Databases
+
+See link:JDBC_Translators.adoc[JDBC Translators] for access to:
 
 * link:Oracle_Translator.adoc[Oracle]
 * link:PostgreSQL_Translator.adoc[PostgreSQL]
@@ -23,15 +29,19 @@ Teiid provides the means (i.e., link:Translators.adoc[Translators] and link:../a
 * link:JDBC_ANSI_Translator.adoc[Generic ANSI SQL] - for typical JDBC/ODBC sources
 * link:JDBC_Simple_Translator.adoc[Simple SQL] - for any JDBC/ODBC source
 
-=== link:Web_Services_Translator.adoc[Web Services]
+== Web Services
+
+See link:Web_Services_Translator.adoc[Web Services Translator] for access to:
 
 * SOAP
 * REST
 * Arbitrary HTTP(S)
 
-=== link:OData_Translator.adoc[OData]
+== OData
 
-=== Big Data/No SQL/Search Engines/JCR and Other Sources
+See the link:OData_Translator.adoc[OData Translator]
+
+== Big Data/No SQL/Search Engines/JCR and Other Sources
 
 * link:Actian_Vector_Translator.adoc[Actian Vector]
 * link:Amazon_SimpleDB_Translator.adoc[Amazon SimpleDB]
@@ -50,7 +60,7 @@ Teiid provides the means (i.e., link:Translators.adoc[Translators] and link:../a
 * link:PrestoDB_Translator.adoc[PrestoDB]
 * link:Redshift_Translator.adoc[Redshift]
 
-=== Enterprise Systems
+== Enterprise Systems
 
 * link:OSISoft_PI_Translator.adoc[OSISoft PI]
 * link:Salesforce_Translators.adoc[SalesForce]
@@ -58,24 +68,28 @@ Teiid provides the means (i.e., link:Translators.adoc[Translators] and link:../a
 * link:SAP_Hana_Translator.adoc[SAP Hana]
 * link:Teiid_Translator.adoc[Teiid]
 
-=== Object Sources
+== Object Sources
 
 * link:Infinispan_LibMode_Translator.adoc[JDG / Infinispan Library Mode]
 * link:Infinispan_HotRod_Translator.adoc[JDG / Infinispan HotRod Mode]
 * link:Intersystems_Cache_Translator.adoc[Intersystems Cache Object Database]
 * link:JPA_Translator.adoc[JPA] sources
 
-=== link:LDAP_Translator.adoc[LDAP]
+== LDAP 
+
+See the link:LDAP_Translator.adoc[LDAP Translator] for access to:
 
 * RedHat Directory Server
 * Active Directory
 
-=== link:File_Translator.adoc[Files]
+== Files
 
-* link:FROM_Clause.html#18646226_FROMClause-TEXTTABLE[Delimited/Fixed width]
-* link:FROM_Clause.html#18646226_FROMClause-XMLTABLE[XML]
+See the link:File_Translator.adoc[File Translator] for use with:
 
-=== Spreadsheets
+* link:FROM_Clause.adoc#_texttable[Delimited/Fixed width]
+* link:FROM_Clause.adoc#_xmltable[XML]
+
+== Spreadsheets
 
 * link:Microsoft_Excel_Translator.adoc[Excel]
 * link:Google_Spreadsheet_Translator.adoc[Google Spreadsheet]
