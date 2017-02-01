@@ -141,6 +141,26 @@ then depending on scope setting the system will cache sharing will work as
 |A-Shared with/ X,B-Shared w/X,C-Shared from/Y.1
 |===
 
+An example View definition with View Options 
+----
+  CREATE VIEW Person (
+    id varchar,
+    name varchar,
+    dob date,
+    PRIMARY KEY (id)
+  ) OPTIONS (
+    MATERIALIZED 'TRUE', 
+    UPDATABLE 'TRUE',
+    MATERIALIZED_TABLE 'materialized.PersonCached',
+    "teiid_rel:MATVIEW_TTL" 20000,
+    "teiid_rel:ALLOW_MATVIEW_MANAGEMENT" 'true',
+    "teiid_rel:MATVIEW_LOADNUMBER_COLUMN" 'LoadNumber',
+    "teiid_rel:MATVIEW_STATUS_TABLE" 'materialized.status'
+  )
+  AS
+    SELECT p.id, p.name, p.dob FROM Source.Person AS p;
+----
+
 == Materialization Management
 When designing Views, you can define additional metadata and extension properties(refer to above section) on the views to control the loading and refreshing of external materialization cache. This option provides a limited, but a powerful way to manage the materialization views. Below we will list steps need to take to configure a View to be materialized.
 
@@ -164,6 +184,7 @@ CREATE TABLE status
   Cardinality long,
   Updated timestamp not null,
   LoadNumber long not null,
+  NodeName varchar(25) not null,
   PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
 );
 ----
@@ -198,7 +219,7 @@ TIP: The start/stop scripts are not cluster aware - that is they will run on eac
 
 === Eager Materialization Table Update
 
-link:../reference/sysadmin_schema.adoc#_sysadmin_updatematview[SYSADMIN.updateMatView] used to perform a eager incremental update based on criteria provided. If you know that certain data points in the source system were changed after last full refresh of the materialized view, you can call this procedure with a criteria based on the view that cover those changed values, and this procedure will update only those affected rows in the materialized table. 
+link:../reference/sysadmin_schema.adoc#_sysadmin_updatematview[SYSADMIN.updateMatView] can be used to perform a eager incremental update based on any criteria provided. If you know that certain data points in the source system were changed after last full refresh of the materialized view, you can call this procedure with a criteria based on the view that cover those changed values, and this procedure will update only those affected rows in the materialized table instead of doing full snapshot update. This can save lot of time and resources and also keeps your view materialization cache upto date with source system changes. 
 
 Note: This script is not invoked automatically by Teiid, as the source update events may be occurring outside of Teiid. This procedure needs to be invoked by user, when he/she knows that there is change in the source systems.
 
@@ -257,6 +278,7 @@ CREATE TABLE status
   Cardinality long,
   Updated timestamp not null,
   LoadNumber long not null,
+  NodeName varchar(25) not null,
   PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
 ) ;
 ----
@@ -277,6 +299,7 @@ CREATE TABLE status
   Cardinality bigint,
   Updated timestamp not null,
   LoadNumber bigint not null,
+  NodeName varchar(25) not null,
   PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
 ) OPTIONS (UPDATABLE true);
 ----
@@ -337,6 +360,7 @@ The below VDB defines three models, one "Source" model that defines your source 
             Cardinality long,
             Updated timestamp not null,
             LoadNumber long not null,
+            NodeName varchar(25) not null,
             PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
           );          
         ]]>
