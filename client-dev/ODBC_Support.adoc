@@ -71,3 +71,5 @@ Any other setting that does have a client side affect, such as "LF <-> CR/LF con
 ==== Teiid Connection Settings
 
 Most Teiid specific connection properties do not map to ODBC client connection settings. If you find yourself in this situation and cannot use post connection SET statements, then the VDB itself may take default link:ODBC_Connection_Properties.adoc[connection properties] for ODBC. Use VDB properties of the form connection.XXX to control things like partial results mode, result set caching, etc.
+
+The application name may be set by some clients.  If not, you may use a SET statement - "SET application_name name" - to set the name even after the connection is made.
