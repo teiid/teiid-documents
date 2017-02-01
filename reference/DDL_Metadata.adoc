@@ -323,6 +323,26 @@ CREATE TRIGGER ON CustomerOrders INSTEAD OF UPDATE AS
 
 While updating you have access to previous and new values of the columns. For more detailed explanation of these update procedures please refer to <<../reference/Update_Procedures_Triggers.adoc, Update Procedures>> 
 
+=== AFTER TRIGGERS On Source Tables
+
+A source table can have any number of uniquely named triggers registered to handle change events that are reported by a change data capture system.
+
+Similar to view triggers AFTER insert provides access to new values via the NEW group, AFTER delete provides access to old values via the OLD group, and AFTER update provides access to both.
+
+[source,sql]
+.*Example:Define AFTER trigger on Customer*
+----
+CREATE TRIGGER ON Customer AFTER INSERT AS
+   FOR EACH ROW
+   BEGIN ATOMIC
+      INSERT INTO CustomerOrders (CustomerName, CustomerID) VALUES (NEW.Name, NEW.ID);
+   END
+----
+
+You will typically define a handler for each operation - INSERT/UPDATE/DELTE.
+
+For more detailed explanation of these update procedures please refer to <<../reference/Update_Procedures_Triggers.adoc, Update Procedures>> 
+
 == <<create_proc, Create Procedure/Function>>
 
 Using the below syntax, user can define a

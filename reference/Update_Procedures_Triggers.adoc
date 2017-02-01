@@ -1,11 +1,25 @@
 
-= Update Procedures (Triggers)
+= Triggers
+
 :toc: manual
 :toc-placement: preamble
 
+== View Triggers
+
 Views are abstractions above physical sources. They typically union or join information from multiple tables, often from multiple data sources or other views. Teiid can perform update operations against views. Update commands - INSERT, UPDATE, or DELETE - against a view require logic to define how the tables and views integrated by the view are affected by each type of command. This transformation logic, also referred to as a *trigger*, is invoked when an update command is issued against a view. Update procedures define the logic for how a user’s update command against a view should be decomposed into the individual commands to be executed against the underlying physical sources. Similar to link:Virtual_Procedures.adoc[Virtual Procedures], update procedures have the ability to execute queries or other commands, define temporary tables, add data to temporary tables, walk through result sets, use loops, and use conditional logic.
 
-== Update Procedure Processing
+Teiid supports INSTEAD OF triggers on views similar to traditional databases. There may only be 1 FOR EACH ROW procedure for each INSERT, UPDATE, or DELETE operation against a view. 
+
+Usage:
+
+[source,sql]
+----
+CREATE TRIGGER ON view_name INSTEAD OF INSERT|UPDATE|DELETE AS
+FOR EACH ROW
+...
+----
+
+=== Update Procedure Processing
 
 1.  The user application submits the SQL command through one of SOAP, JDBC, or ODBC.
 2.  The view this SQL command is executed against is detected.
@@ -14,26 +28,26 @@ Views are abstractions above physical sources. They typically union or join info
 5.  Commands, as described in the procedure, are issued to the individual physical data sources or other views.
 6.  A value representing the number of rows changed is returned to the calling application.
 
-== For Each Row
+== Source Triggers
 
-A FOR EACH ROW procedure will evaluate its block for each row of the view affected by the update statement. For UPDATE and DELETE statements this will be every row that passes the WHERE condition. For INSERT statements there will be 1 new row for each set of values from the VALUES or query expression. The rows updated is reported as this number regardless of the affect of the underlying procedure logic.
+Teiid supports AFTER triggers on source tables, which are called by events from a CDC (change data capture) system.
 
-Teiid FOR EACH ROW update procedures function like INSTEAD OF triggers in traditional databases. There may only be 1 FOR EACH ROW procedure for each INSERT, UPDATE, or DELETE operation against a view. FOR EACH ROW update procedures can also be used to emulate BEFORE/AFTER each row triggers while still retaining the ability to perform an inherent update. This BEFORE/AFTER trigger behavior with an inherent update can be achieved by creating an additional updatable view over the target view with update procedures of the form:
+Usage:
 
 [source,sql]
 ----
+CREATE TRIGGER ON source_table AFTER INSERT|UPDATE|DELETE AS
 FOR EACH ROW
-    BEGIN ATOMIC
-    --before row logic
-    
-    --default insert/update/delete against the target view
-    INSERT INTO VW (c1, c2, c3) VALUES (NEW.c1, NEW.c2, NEW.c3); 
-    
-    --after row logic
-    END
+...
 ----
 
-== Definition
+== For Each Row
+
+Only the FOR EACH ROW construct is supported as a trigger handler.  A FOR EACH ROW trigger procedure will evaluate its block for each row of the view/source affected by the associated change. 
+For UPDATE and DELETE statements this will be every row that passes the WHERE condition. For INSERT statements there will be 1 new row for each set of values from the VALUES or query expression. 
+For a view the rows updated is reported as this number regardless of the affect of the underlying procedure logic.
+
+=== Definition
 
 Usage:
 
@@ -49,33 +63,33 @@ The BEGIN and END keywords are used to denote block boundaries. Within the body 
 
 TIP: The use of the atomic keyword is currently optional for backward compatibility, but unlike a normal block, the default for instead of triggers is atomic.
 
-== Special Variables
+=== Special Variables
 
 You can use a number of special variables when defining your update procedure.
 
-=== NEW Variables
+==== NEW Variables
 
-Every attribute in the view whose UPDATE and INSERT transformations you are defining has an equivalent variable named NEW.<column_name>
+Every attribute on the view/table whose UPDATE and INSERT transformations you are defining has an equivalent variable named NEW.<column_name>
 
-When an INSERT or an UPDATE command is executed against the view, these variables are initialized to the values in the INSERT VALUES clause or the UPDATE SET clause respectively.
+When an INSERT or an UPDATE command is executed or the event is received, these variables are initialized to the values in the INSERT VALUES clause or the UPDATE SET clause respectively.
 
 In an UPDATE procedure, the default value of these variables, if they are not set by the command, is the old value. In an INSERT procedure, the default value of these variables is the default value of the virtual table attributes. See CHANGING Variables for distinguishing defaults from passed values.
 
-=== OLD Variables
+==== OLD Variables
 
-Every attribute in the view whose UPDATE and DELETE transformations you are defining has an equivalent variable named OLD.<column_name>
+Every attribute on the view/table whose UPDATE and DELETE transformations you are defining has an equivalent variable named OLD.<column_name>
 
-When a DELETE or UPDATE command is executed against the view, these variables are initialized to the current values of the row being deleted or updated respectively.
+When a DELETE or UPDATE command is executed or the event is received, these variables are initialized to the current values of the row being deleted or updated respectively.
 
-=== CHANGING Variables
+==== CHANGING Variables
 
-Every attribute in the view whose UPDATE and INSERT transformations you are defining has an equivalent variable named CHANGING.<column_name>
+Every attribute on the view/table whose UPDATE and INSERT transformations you are defining has an equivalent variable named CHANGING.<column_name>
 
-When an INSERT or an UPDATE command is executed against the view, these variables are initialized to `true` or `false` depending on whether the INPUT variable was set by the command. A CHANGING variable is commonly used to differentiate between a default insert value and one specified in the user query.
+When an INSERT or an UPDATE command is executed or an the event is received, these variables are initialized to `true` or `false` depending on whether the INPUT variable was set by the command. A CHANGING variable is commonly used to differentiate between a default insert value and one specified in the user query.
 
 For example, for a view with columns A, B, C:
 
-|===
+|====
 |If User Executes… |Then…
 
 |`INSERT INTO VT (A, B) VALUES (0, 1)`
@@ -85,7 +99,7 @@ For example, for a view with columns A, B, C:
 |CHANGING.A = false, CHANGING.B = false, CHANGING.C = true
 |===
 
-== Examples
+=== Examples
 
 For example, for a view with columns A, B, C:
 
@@ -111,3 +125,22 @@ BEGIN
 END
 ----
 
+== Other Usages
+
+FOR EACH ROW update procedures on a view can also be used to emulate BEFORE/AFTER each row triggers while still retaining the ability to perform an inherent update. This BEFORE/AFTER trigger behavior with an inherent update can be achieved by creating an additional updatable view over the target view with update procedures of the form:
+
+[source,sql]
+----
+CREATE TRIGGER ON outerVW INSTEAD OF INSERT AS 
+FOR EACH ROW
+    BEGIN ATOMIC
+    --before row logic
+    ...
+    
+    --default insert/update/delete against the target view
+    INSERT INTO VW (c1, c2, c3) VALUES (NEW.c1, NEW.c2, NEW.c3); 
+    
+    --after row logic
+    ...
+    END
+----
