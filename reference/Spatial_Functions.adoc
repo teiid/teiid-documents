@@ -696,7 +696,7 @@ geom1, geom2 are geometry. Return value is a geometry.
 
 === ST_Simplify
 
-Simplifies a Geometry using the Douglas-Peucker algorithm.
+Simplifies a Geometry using the Douglas-Peucker algorithm, but may oversimplify to an invalid or empty geometry.
 
 [source,sql]
 ----
@@ -704,6 +704,28 @@ ST_Simplify(geom, distanceTolerance)
 ----
 
 geom is a geometry. distanceTolerance is a double. Return value is a geometry.
+
+=== ST_SimplifyPreserveTopology
+
+Simplifies a Geometry using the Douglas-Peucker algorithm.  Will always return a valid geometry.
+
+[source,sql]
+----
+ST_SimplifyPreserveTopology(geom, distanceTolerance)
+----
+
+geom is a geometry. distanceTolerance is a double. Return value is a geometry.
+
+=== ST_SnapToGrid
+
+Snaps all points in the geometry to grid of given size.
+
+[source,sql]
+----
+ST_SnapToGrid(geom, size)
+----
+
+geom is a geometry. size is a double. Return value is a geometry.
 
 === ST_SymDifference
 
