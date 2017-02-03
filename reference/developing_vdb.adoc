@@ -153,7 +153,7 @@ See also link:xml_deployment_mode.adoc
 For more complicated scenarios you are not limited to just an xml/ddl file deployment. A full zip file similar to a Designer VDB may also be deployed. In a vdb zip deployment:
 
 * The deployment must end with the extension .vdb
-* The vdb xml/ddl file must be zip under /META-INF/vdb.xxx
+* The vdb xml file must be zip under /META-INF/vdb.xml
 * If a /lib folder exists any jars found underneath will automatically be added to the vdb classpath.
 * For backwards compatibility with Designer VDBs, if any .INDEX file exists the default metadata repository will be assumed to be INDEX.
 * Files within the VDB zip are accessible by a link:../dev/Custom_Metadata_Repository.adoc[Custom Metadata Repository] using the `MetadataFactory.getVDBResources()` method, which returns a map of all `VDBResources` in the VDB keyed by absolute path relative to the vdb root.  
