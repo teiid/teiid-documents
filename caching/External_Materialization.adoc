@@ -121,9 +121,20 @@ Table A is in VDB X.1 and
 Table C in VDB Y.1
 Table A & B in VDB X.2 and imports Y.1
 then depending on scope setting the system will cache sharing will work as
-||Scope||X.1||Y.1||X.2||
-|IMPORTED|A-own copy|C-Shared w/X.2|A-own copy,B-own copy,C-Shared from Y.1|
-|FULL|A-Shared with/X.*|C-Shared w/X.2|A-Shared with/ X,B-Shared w/X,C-Shared from/Y.1|
+
+|===
+|Scope|X.1|Y.1|X.2
+
+|IMPORTED
+|A-own copy
+|C-Shared w/X.2
+|A-own copy,B-own copy,C-Shared from Y.1
+
+|FULL
+|A-Shared with/X.*
+|C-Shared w/X.2
+|A-Shared with/ X,B-Shared w/X,C-Shared from/Y.1
+|===
 
 == Materialization Management
 When designing Views, you can define additional metadata and extension properties(refer to above section) on the views to control the loading and refreshing of external materialization cache. This option provides a limited, but a powerful way to manage the materialization views. Below we will list steps need to take to configure a View to be materialized.
