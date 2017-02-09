@@ -22,7 +22,7 @@ Syntax Rules:
 
 * The columns names must be not contain duplicates.
 * Teiid will place several special variables in the script execution context. The CommandContext is available as teiid_context. Additionally the colScripts may access teiid_row and teiid_row_number.  teiid_row is the current row object produced by the row script.  teiid_row_number is the current 1-based row number.
-* rowScript is evaluated to an Iterator. If the results is already an Iterator, it is used directly. If the evaluation result is an Iteratable, then an Iterator will be obtained. Any other Object will be treated as an Iterator of a single item). In all cases null row values will be skipped.
+* rowScript is evaluated to an Iterator. If the results is already an Iterator, it is used directly. If the evaluation result is an Iteratable, Array, or Array type, then an Iterator will be obtained. Any other Object will be treated as an Iterator of a single item). In all cases null row values will be skipped.
 
 NOTE: While there is no restriction what can be used as a PASSING variable names you should choose names that can be referenced as identifiers in the target language.
 
