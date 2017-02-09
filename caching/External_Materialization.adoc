@@ -26,7 +26,12 @@ The following are the types of data sources that have been tested to work in the
 
 === RDBMS Systems
 
-*  RDBMS - a relational database should work, as long as the user has the correct permissions to rename a table.  Example databases; Oracle, Postgresql, MySQL, MS SqlServer, SAP Hana, etc.
+*  RDBMS - a relational database should work.  Example databases; Oracle, Postgresql, MySQL, MS SqlServer, SAP Hana, etc.
+
+If the database supports a transactional rename operation, you can use the default load strategy that uses a staging table and rely on renaming the staging table to the live table in the after load script.
+
+NOTE: https://issues.jboss.org/browse/TEIID-4294[TEIID-4294] raises that not every database supports a transactional rename, either as separate or a block of statements.  
+If this is the case you should consider using a LOADNUMBER column, or a custom load strategy that maintains only a single table.
 
 === JBoss Data Grid (JDG)
 
