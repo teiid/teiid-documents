@@ -17,11 +17,13 @@ Criteria and join push down are typically the most important aspects of the quer
 
 == Dependent Joins
 
-A special optimization called a dependent join is used to reduce the rows returned from one of the two relations involved in a multi-source join. In a dependent join, queries are issued to each source sequentially rather than in parallel, with the results obtained from the first source used to restrict the records returned from the second. Dependent joins can perform some joins much faster by drastically reducing the amount of data retrieved from the second source and the number of join comparisons that must be performed.
+A special optimization called a dependent join is used to reduce the rows returned from one of the two relations involved in a multi-source join. 
+In a dependent join, queries are issued to each source sequentially rather than in parallel, with the results obtained from the first source used to restrict the records returned from the second. 
+Dependent joins can perform some joins much faster by drastically reducing the amount of data retrieved from the second source and the number of join comparisons that must be performed.
 
-The conditions when a dependent join is used are determined by the query planner based on link:Federated_Optimizations.adoc#_access_patterns[Access Patterns], hints, and costing information. There are three different kinds of dependent joins that Teiid supports
+The conditions when a dependent join is used are determined by the query planner based on link:Federated_Optimizations.adoc#_access_patterns[Access Patterns], hints, and costing information. There are three different kinds of dependent joins that Teiid supports:
 
-* Join based on in/equality support - where the engine will determine how to break of the queries
+* Join based on in/equality support - where the engine will determine how to break up large queries based upon translator capabilities
 * Key Pushdown - where the translator has access to the full set of key values and determines what queries to send
 * Full Pushdown - where translator ships the all data from the independent side to the translator. Can be used automatically by costing or can be specified as an option in the hint.
 
@@ -29,17 +31,27 @@ Teiid supports hints to control dependent join behavior:
 
 * MAKEIND - indicates that the clause should be the independent side of a dependent join.
 * MAKEDEP - indicates that the clause should be the dependent side of a join. MAKEDEP as a non-comment hint supports optional max and join arguments - MAKEDEP(JOIN) meaning that the entire join should be pushed, and MAKEDEP(MAX:5000) meaning that the dependent join should only be performed if there are less than the max number of values from the independent side.
-* MAKENOTDEP - prevents the clause from being the dependent side of ajoin.
+* MAKENOTDEP - prevents the clause from being the dependent side of a join.
 
 Theses can be placed in either the link:OPTION_Clause.adoc[OPTION Clause] or directly in the link:FROM_Clause.html[FROM Clause]. As long as all link:Federated_Optimizations.adoc#_access_patterns[Access Patterns] can be met, the MAKEIND, MAKEDEP, and MAKENOTDEP hints override any use of costing information. MAKENOTDEP supersedes the other hints.
 
-TIP: The MAKEDEP/MAKEIND hint should only be used if the proper query plan is not chosen by default. You should ensure that your costing information is representative of the actual source cardinality. An inappropriate MAKEDEP/MAKEIND hint can force an inefficient join structure and may result in many source queries.
+TIP: The MAKEDEP/MAKEIND hint should only be used if the proper query plan is not chosen by default. You should ensure that your costing information is representative of the actual source cardinality. 
 
-The engine will for IN clauses to filter the values coming from the dependent side. If the number of values from the independent side exceeds the translators MaxInCriteriaSize, the values will be split into multiple IN predicates up to MaxDependentPredicates. When the number of independent values exceeds MaxInCriteriaSize*MaxDependentPredicates, then multiple dependent queries will be issued in parallel.
+NOTE: An inappropriate MAKEDEP/MAKEIND hint can force an inefficient join structure and may result in many source queries.
 
 TIP: While these hints can be applied to views, the optimizer will by default remove views when possible. This can result in the hint placement being significantly different than the original intention. You should consider using the NO_UNNEST hint to prevent the optimizer from removing the view in these cases.
 
-NOTE: *Full Pushdown* - A Full Pushdown, some times also called as data-ship pushdown, is where all the data from independent side of the join is sent to dependent side. Currently this is only supported in the JDBC translators. To enable it, provide translator override property "enableDependentJoins" to "true". The the JDBC source must support creation temp tables (this is determined by using Hibernate dialect capabilities for the source). Once these properties are enabled and MAKEDEP hint is used, the translator will ship the data as temp table contents and push the dependent join to the source for full rocessing. If you are working with custom translators see link:../dev/Dependent_Join_Pushdown.adoc[Dependent Join Pushdown] as to how to support it.
+In the simplest scenario the engine will use IN clauses (or just equality predicates) to filter the values coming from the dependent side. 
+If the number of values from the independent side exceeds the translators MaxInCriteriaSize, the values will be split into multiple IN predicates up to MaxDependentPredicates. 
+When the number of independent values exceeds MaxInCriteriaSize*MaxDependentPredicates, then multiple dependent queries will be issued in parallel.
+
+If the translator returns true for supportsDependentJoins, then the engine may provide the entire set of independent key values.  This will occur when the number of independent values exceeds MaxInCriteriaSize*MaxDependentPredicates so that the translator may use specific logic to avoid issuing multiple queries as would happen in the simple scenario.
+
+If the translator returns true for both supportsDependentJoins and supportsFullDependentJoins then a full pushdown may be chosen by the optimizer  A full pushdown, sometimes also called as data-ship pushdown, is where all the data from independent side of the join is sent to dependent side. This has an added benefit of allowing the plan above the join to be eligible for pushdown as well.
+This is why the optimizer may choose to perform a full pushdown even when the number of independent values does not exceed MaxInCriteriaSize*MaxDependentPredicates.  You may also force full pushdown using the MAKEDEP(JOIN) hint.
+The translator is typically responsible for creating, populating, and removing a temporary table that represents the independent side. If you are working with custom translators see link:../dev/Dependent_Join_Pushdown.adoc[Dependent Join Pushdown] as to how to support it key and full pushdown.
+ 
+NOTE: *Key/Full Pushdown* is currently only supported out-of-the box by a subset of JDBC translators. To enable support, set the translator override property "enableDependentJoins" to "true". The JDBC source must support the creation of temporary tables, which typically requires a Hibernate dialect.  Translators that should support this feature include: DB2, Derby, H2, Hana, HSQL, MySQL, Oracle, PostgreSQL, SQL Server, Sybase, Teiid, and Teradata. 
 
 == Copy Criteria
 
