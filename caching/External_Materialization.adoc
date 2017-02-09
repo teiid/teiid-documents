@@ -82,9 +82,9 @@ teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
 |When not defined, no script will be run
 
 |teiid_rel:MATVIEW_SHARE_SCOPE
-|Allowed values are \{NONE, VDB, SCHEMA}, which define if the cached contents are shared among different VDB versions and different VDBs as long as schema names match. See important note at bottom of table.
+|Allowed values are {IMPORTED, FULL}, which define if the cached contents are shared among different VDB versions and different imported VDBs and parent VDB.
 |true
-|NONE
+|IMPORTED
 
 |teiid_rel:ON_VDB_START_SCRIPT
 |DDL/DML command to run start of vdb
@@ -92,7 +92,7 @@ teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
 |n/a
 
 |teiid_rel:ON_VDB_DROP_SCRIPT
-|DDL/DML command to run at VDB un-deploy; typically used for cleaning the cache/status tables
+|DDL/DML command to run at VDB un-deploy; typically used for cleaning the cache/status tables. DO NOT use this script to delete the contents of Status table, when cache scope settings are configured for {FULL} scope, *if* another version of the VDB is still active. Deletion of this information will reload the materialization table.
 |true
 |n/a
 
@@ -114,7 +114,27 @@ teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
 
 TIP: for scripts that need more than one statement executed, use a procedure block BEGIN statement; statement; ... END
 
-IMPORTANT: When a vdb is imported into another vdb, materializied views are not automatically shared across these vdbs. The teiid_rel:MATVIEW_SHARE_SCOPE property must be set to 'SCHEMA' on importing VDB's materialized views to enable sharing across the both vdbs. When this property is set to 'VDB', the materialized view contents are shared across different versions of the same VDB and does not apply to imported VDBs.
+IMPORTANT: When a vdb is imported into another vdb, materializied views are automatically shared across these vdbs. The teiid_rel:MATVIEW_SHARE_SCOPE property must be set to 'IMPORTED' or 'FULL' on importing VDB's materialized views to enable sharing across the both vdbs. The below table shows an example of how this property works
+
+For example:
+Table A is in VDB X.1 and 
+Table C in VDB Y.1
+Table A & B in VDB X.2 and imports Y.1
+then depending on scope setting the system will cache sharing will work as
+
+|===
+|Scope|X.1|Y.1|X.2
+
+|IMPORTED
+|A-own copy
+|C-Shared w/X.2
+|A-own copy,B-own copy,C-Shared from Y.1
+
+|FULL
+|A-Shared with/X.*
+|C-Shared w/X.2
+|A-Shared with/ X,B-Shared w/X,C-Shared from/Y.1
+|===
 
 == Materialization Management
 When designing Views, you can define additional metadata and extension properties(refer to above section) on the views to control the loading and refreshing of external materialization cache. This option provides a limited, but a powerful way to manage the materialization views. Below we will list steps need to take to configure a View to be materialized.
