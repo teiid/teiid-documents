@@ -24,6 +24,7 @@ With this configuration, REST service is configured with Kerberos JAAS domain, t
 
              <module-option name="doNotPrompt" value="true"/>
              <module-option name="debug" value="false"/>
+             <module-option name="addGSSCredential" value="true"/>
          </login-module>
      </authentication>
 </security-domain> 
@@ -87,13 +88,12 @@ To configure in "passthrough-security" security domain, the "security" subsystem
 ----
 <security-domain name="passthrough-security" cache-type="default">  
     <authentication>  
-        <login-module code="org.teiid.jboss.PassthroughIdentityLoginModule" flag="required" module="org.jboss.teiid">  
-            <module-option name="username" value="guest"/>  
-            <module-option name="password" value="guest"/>  
+        <login-module code="Kerberos" flag="required" module="org.jboss.security.negotiation">
+            <module-option name="delegationCredential" value="REQUIRED"/>
         </login-module>  
     </authentication>  
 </security-domain>  
 ----
 
-The username, password are optional, if in case there is no authenticated subject available in the context, these can help create a simple static user, but that user will not work with kerberos authentication as the subject will not have the kerberos token required.
+If in case there is no delegationCredential is available on the context, the access will fail. 
 

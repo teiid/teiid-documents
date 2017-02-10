@@ -42,7 +42,9 @@ In the datasource configuration, instead of supplying the username/password you 
 <datasource jndi-name="java:/mysql-ds" pool-name="mysql-ds" enabled="true">
     <connection-url>jdbc:mysql://localhost:3306/txns</connection-url>
     <driver>mysql</driver>
-     <pool><allow-multiple-users/></pool>
+     <pool>
+          <allow-multiple-users>true</allow-multiple-users>
+     </pool>
      <security>
           <security-domain>my-security-domain</security-domain>
      </security>
@@ -84,7 +86,7 @@ Using this CallerIdentity module, the connection pool for data source is segment
 == Pass Through Identity
 
 This is similar to the CallerIdentity login module, where the calling user’s credentials and roles are passed as is. 
-This is especially useful when dealing with non-text based credentials where you want to pass down the payload as is. The example is when kerberos login is used the logged in subject contains GSSCredential object that contains the GSS token.
+This is especially useful when dealing with non-text based credentials where you want to pass down the payload as is.
 
 [source,xml]
 .standalone-teiid.xml
@@ -113,16 +115,13 @@ In the datasource configuration, instead of supplying the username/password you 
 <datasource jndi-name="java:/mysql-ds" pool-name="mysql-ds" enabled="true">
     <connection-url>jdbc:mysql://localhost:3306/txns</connection-url>
     <driver>mysql</driver>
-     <pool><allow-multiple-users/></pool>
-     <security>
+    <pool>
+          <allow-multiple-users>true</allow-multiple-users>
+    </pool>
+    <security>
           <security-domain>passthrough-security</security-domain>
-     </security>
+    </security>
 </datasource>
-----
-
-TIP: When working with Kerberos/GSS security token (GssCredential), some JDBC drivers (MS-SQLServer) upon close of the connection they invalidate the GssCredential security token, to avoid accidental invalidation, add an option to above security-domain's login-module configuration to wrap the passed in security token by adding below configuration
-----
-<module-option name="wrapGSSCredential" value="true"/>
 ----
 
 == OAuth Authentication
@@ -231,15 +230,26 @@ The above command will generate resulting XML in the standalone.xml file or doma
          <module-option name="doNotPrompt" value="true"/>
          <module-option name="debug" value="false"/>
          <module-option name="refreshKrb5Config" value = "true"/>
+         <module-option name="addGSSCredential" value = "true"/>
       </login-module>
    </authentication>
 </security-domain>  
 ----
 
-=== Kerberos passthrough
+=== Kerberos Delegation
 
-For using the same kerberos token at Teiid and as well as at the data source level, the token negotiated at the Teiid engine can be passed into data source. Data source explicitly needs to provide this support. Major database 
-vendors like Oracle, MS-SQLServer, DB2, HIVE, Impala support kerberos. Some also support pass through mode. To Make pass-through work, follow the directions here to setup the Kerberos at Teiid engine level [Kerberos support through GSSAPI] then for data source level create the [#Pass Through Identity]
+For using the same kerberos token at Teiid and as well as at the data source level, the token negotiated at the Teiid engine can be passed into data source. The data source must be configured to support this. Major database 
+vendors like Oracle, MS-SQLServer, DB2, HIVE, Impala support kerberos. Some also support pass through mode. 
+To make delegation work, follow the directions here to setup the Kerberos at Teiid engine level [Kerberos support through GSSAPI] and use the module option delegationCredential:
+
+----
+<module-option name="delegationCredential" value="USE"/>
+----
+
+TIP: When working with Kerberos/GSS security token (GssCredential), some JDBC drivers (MS-SQLServer) upon close of the connection they invalidate the GssCredential security token, to avoid accidental invalidation, add an option to above security-domain's login-module configuration to wrap the passed in security token by adding below configuration
+----
+<module-option name="wrapGSSCredential" value="true"/>
+----
 
 == Translator Customization
 

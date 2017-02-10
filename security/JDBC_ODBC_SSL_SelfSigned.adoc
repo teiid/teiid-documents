@@ -93,7 +93,6 @@ I also found a great reference here [1] & [2] for certificate generation. Note i
     </ssl>  
 </transport>  
 <transport name="odbc" socket-binding="teiid-odbc" protocol="pg">  
-    <authentication security-domain="teiid-security"/>  
     <ssl mode="enabled" authentication-mode="1-way">  
         <keystore name="/path/to/rootCA.keystore" password="changeme" type="JKS"/>  
       <!-- uncomment and configure for 2-way authentication  

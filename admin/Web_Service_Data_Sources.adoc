@@ -220,7 +220,7 @@ WS-Policy section is correctly interpreted and enforced on the endpoint. The sam
 </beans>
 ----
 
-and you would need to configure the security-domain in the standalone-teiid.xml file under `security' subsystem as
+and you would need to configure the security-domain in the standalone-teiid.xml file under the 'security' subsystem as
 
 [source,xml]
 ----
