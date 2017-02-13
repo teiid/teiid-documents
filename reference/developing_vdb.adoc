@@ -118,7 +118,7 @@ WARNING: Please note that when metadata is defined in this manner, the source sy
 === Step 5: Create Virtual Views
 * Now using the above source's metadata, define the abstract/logical metadata layer using Teiid's DDL syntax. i.e. create VIEWS, PROCEDURES etc to meet the needs of your business layer. For example (pseudo code):
 ----
-CREATE VIRTAL SCHEMA reports;
+CREATE VIRTUAL SCHEMA reports;
 
 CREATE VIEW SalesByRegion (
    quarter date,
