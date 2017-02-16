@@ -1,10 +1,10 @@
 {
     "variables" : {
-        "versionNumber" : "9.2",
-        "fullVersionNumber": "9.2.0.Final",
+        "versionNumber" : "9.3",
+        "fullVersionNumber": "9.3.0.Final",
         "asVersionNumber" :  "WildFly 10.0.0",
         "asName" :  "WildFly",
-        "copyrightYear" :  "2016",
+        "copyrightYear" :  "2017",
         "copyrightHolder" :  "Red Hat, Inc.",
         "javaVersionUrl" : "https://docs.oracle.com/javase/7",
         "asDocRoot" : "https://docs.jboss.org/author/display/WFLY10"
