@@ -10,13 +10,28 @@ by the link:../admin/File_Data_Sources.adoc[File Data Source] and the link:../ad
 |Name |Description |Default
 
 |Encoding
-|The encoding that should be used for CLOBs returned by the getTextFiles procedure
+|The encoding that should be used for CLOBs returned by the getTextFiles procedure.  The value should match an encoding known to the JRE.
 |The system default encoding
 
 |ExceptionIfFileNotFound
 |Throw an exception in getFiles or getTextFiles if the specified file/directory does not exist.
 |true (false prior to 8.2)
 |===
+
+TIP: See link:Translators.adoc#_override_execution_properties[override an execution property] and the example below to set the properties.
+
+VDB XML Override Example
+[source,xml]
+----
+<model name="file">
+    <source name="file" translator-name="file-override" connection-jndi-name="java:/file"/>
+</model>
+
+<translator name="file-override" type="file">
+    <property name="Encoding" value="ISO-8859-1"/>
+    <property name="ExceptionIfFileNotFound" value="false"/>
+</translator>
+----
 
 == Usage
 

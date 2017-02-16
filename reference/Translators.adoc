@@ -82,11 +82,11 @@ There are no base importer settings.
 
 == Override Execution Properties
 
-For all the translators to override Execution Properties can be configured in the _vdb.xml_ file.
+For all translators, you may override Execution Properties in the _vdb.xml_ file.
 
 Example Overriding of Translator Property
 
-[source,java]
+[source,xml]
 ----
 <model name="ora">
      <source name="ora" translator-name="oracle-override" connection-jndi-name="java:/oracle"/>
@@ -98,6 +98,7 @@ Example Overriding of Translator Property
 ----
 
 The above XML fragment is overriding the _oracle_ translator and altering the behavior of _RequiresCriteria_ property to true. Note that the modified translator is only available in the scope of this VDB.
+As many properties as desired may be overriden together.
 
 See also link:vdb_guide.adoc[VDB Definition].
 
