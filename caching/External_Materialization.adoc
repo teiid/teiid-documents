@@ -193,6 +193,44 @@ CREATE TABLE status
 
 WARNING: Some databases, such as MySQL with the InnoDB backend, may not allow a large primary key such as the one for the status table.  If you experience this, you should consider making the field sizes shorter (such as the table name), using a different database to hold the status, or using a smaller index (for example just over vdbname and vdbversion).
 
+Description Status table: 
+|===
+|Column Name|Description
+
+|VDBName
+|Name of VDB
+
+|VDBVersion
+|Version of VDB
+
+|SchemaName
+|View's Schema 
+
+|TargetSchemaName
+|Schema name of materialization Table 
+
+|TargetName
+|Name of materialization Table 
+
+|Valid
+|true when view materialization contents are valid; false otherwise 
+
+|LoadState
+|Status of the View; LOADING, LOADED, FAILED_LOAD. During the materialization load, this status is set to LOADING, depending upon the success or failure either LOADED or FAILED_LOAD is set. 
+
+|Cardinality
+|Number of rows loaded 
+
+|Updated
+|Time stamp when the last update occurred on the materialization contents
+
+|LoadNumber
+|Counter to keep track of number of updates to the materialization contents
+
+|NodeName
+|Node name, which updated the materialization contents last 
+|===
+
 === 2. Creation of View and Materialized Table
 
 Define the View and its transformation either using the Designer or directly in DDL in a VDB's model. Then provide the extension properties on the View as defined in <<View Options, View Options>>
