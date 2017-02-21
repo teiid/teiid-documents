@@ -152,6 +152,7 @@
 ... link:reference/xml_deployment_mode.adoc[Using XML & DDL]
 ... link:reference/vdb_properties.adoc[VDB Properties]
 ... link:reference/DDL_Metadata.adoc[Schema Object DDL]
+... link:reference/DDL_Domain.adoc[Domain DDL]
 ... link:reference/Multisource_Models.adoc[MultiSource Models]
 ... link:reference/Metadata_Repositories.adoc[Metadata Repositories]
 ... link:reference/REST_Service_Through_VDB.adoc[REST Service Through VDB]

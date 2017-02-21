@@ -1,0 +1,55 @@
+= DDL Metadata for Domains
+
+Domains are simple type declarations that define a set of valid values for a given type name.  They can be created at the database level only.
+
+The DDL for domains is common to both link:xml_deployment_mode.adoc[XML] and link:ddl_deployment_mode.adoc[DDL] VDBs.  
+However in an XML vdb domains must be defined in a VDB property "domain-ddl". 
+
+== Create Domain
+
+[source,sql]
+----
+CREATE DOMAIN <Domain name> [ AS ] <data type>
+     [ [NOT] NULL ]
+----
+
+The domain name may any non-keyword identifier.
+
+See the BNF for <<../reference/BNF_for_SQL_Grammar.adoc#parseDataTypePrimary, Data Types>>
+
+Once a domain is defined it may be referenced as the data type for a column, parameter, etc.
+
+DDL VDB Example
+[source,sql]
+----
+CREATE DOMAIN mychar AS VARCHAR(1000);
+
+CREATE VIRTUAL SCHEMA viewLayer;
+SET SCHEMA viewLayer;
+CREATE VIEW v1 (col1 mychar) as select 'value';
+...
+----
+
+XML VDB Example
+[source,xml]
+----
+<vdb name="Portfolio" version="1">
+
+    <property name="domain-ddl" value="CREATE DOMAIN ssn AS VARCHAR(9); CREATE DOMAIN myint AS integer not null;" />
+    ...
+----
+
+When the system metadata is queried the type for the column will be shown as the domain name.
+
+== Limitations
+
+Domain names are not yet recognized in every place that a data type is expected, such as in:
+
+* create temp table 
+* execute immediate
+* arraytable
+* objecttable
+* texttable
+* xmltable
+
+The ODBC/pg metadata will show the base type name, rather than the domain name when querying pg_attribute.  

@@ -145,6 +145,18 @@ This table supplies information about all the elements (columns, tags, attribute
 |TableUID
 |string
 |Parent Table unique ID
+
+|TypeName
+|string
+|The type name, which may be a domain name
+
+|TypeCode
+|integer
+|JDBC SQL type code
+
+|ColumnSize
+|string
+|If numeric the precision, if character the length, and if date/time then the string length of a literal value
 |===
 
 === SYS.DataTypes
@@ -156,15 +168,15 @@ This table supplies information on datatypes.
 
 |Name
 |string
-|Teiid design-time type name
+|Teiid type or domain name
 
 |IsStandard
 |boolean
-|Always false
+|True if the type is basic
 
-|IsPhysical
-|boolean
-|Always false
+|Type
+|String
+|One of Basic, UserDefined, ResultSet, Domain
 
 |TypeName
 |string
@@ -225,6 +237,18 @@ This table supplies information on datatypes.
 |Description
 |string
 |Description of type
+
+|TypeCode
+|integer
+|JDBC SQL type code
+
+|Literal_Prefix
+|string
+|literal prefix
+
+|Literal_Prefix
+|string
+|literal suffix
 |===
 
 === SYS.KeyColumns
