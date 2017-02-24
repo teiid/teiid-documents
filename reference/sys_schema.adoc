@@ -409,6 +409,18 @@ This supplies information on procedure parameters.
 |Description
 |string
 |Description of parameter
+
+|TypeName
+|string
+|The type name, which may be a domain name
+
+|TypeCode
+|integer
+|JDBC SQL type code
+
+|ColumnSize
+|string
+|If numeric the precision, if character the length, and if date/time then the string length of a literal value
 |===
 
 === SYS.Procedures
@@ -514,6 +526,18 @@ This supplies information on function parameters.
 |Description
 |string
 |Description of parameter
+
+|TypeName
+|string
+|The type name, which may be a domain name
+
+|TypeCode
+|integer
+|JDBC SQL type code
+
+|ColumnSize
+|string
+|If numeric the precision, if character the length, and if date/time then the string length of a literal value
 |===
 
 === SYS.Functions
