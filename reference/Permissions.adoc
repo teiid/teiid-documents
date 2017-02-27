@@ -73,7 +73,7 @@ A condition is applied conjunctively to update/delete/select where clauses again
 
 Inserts and updates against physical tables affected by a condition are further validated so that the insert/change values must pass the condition (evaluate to true) for the insert/update to succeed - this is effectively the same a SQL constraint. This will happen for all styles of insert/update - insert with query expression, bulk insert/update, etc. Inserts/updates against views are not checked with regards to the constraint. You may disable the insert/update constraint check by setting the condition constraint flag to false. This is typically only needed in circumstances when the condition cannot always be evaluated. However disabling the condition as a constraint simply drops the condition from consideration when logically evaluating the constraint. Any other condition constraints will still be evaluated.
 
-Across multiple applicable roles if more than one condition applies to the same resource, the conditions will be accumulated disjunctively via OR, i.e. "(condition1) *OR* (condition2) …". Therefore granting a permission with the condition"true" will allow users in that role to see all rows of the given resource.
+Across multiple applicable roles if more than one condition applies to the same resource, the conditions will be accumulated disjunctively via OR, i.e. "(condition1) *OR* (condition2) …". Therefore granting a permission with the condition "true" will allow users in that role to see all rows of the given resource.
 
 === Considerations When Using Conditions
 

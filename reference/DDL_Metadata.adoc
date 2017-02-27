@@ -4,11 +4,11 @@
 
 The DDL for schema objects is common to both link:xml_deployment_mode.adoc[XML] and link:ddl_deployment_mode.adoc[DDL] VDBs.
 
-== <<data_types, Data Types>>
+== Data Types
 
-The BNF for Data Types refer to <<../reference/BNF_for_SQL_Grammar.adoc#parseDataTypePrimary, Data Types>>
+The BNF for Data Types refer to link:../reference/BNF_for_SQL_Grammar.adoc#parseDataTypePrimary[Data Types]
 
-== <<create_table, Creating a Foreign Table>>
+== Creating a Foreign Table
 A _FOREIGN_ table is table that is defined on source schema that represents a real relational table in source databases like Oracle, SQLServer etc. For relational databases, Teiid has capability to automatically retrieve the database schema information upon the deployment of the VDB, if one like to auto import the existing schema. However, user can use below FOREIGN table semantics, when they would like to explicitly define tables on PHYSICAL schema or represent non-relational data as relational in custom translators.
 
 .BNF for Create Table
@@ -44,7 +44,7 @@ CREATE FOREIGN TABLE {table-name} (
     <key> <value>[,<key>, <value>]*
 ----
 
-For validating BNF for create table refer to <<../reference/BNF_for_SQL_Grammar.adoc#createTable, CREATE TABLE>> 
+For validating BNF for create table refer to link:../reference/BNF_for_SQL_Grammar.adoc#createTable[CREATE TABLE] 
 
 Example 7:Create Foreign Table(Created on PHYSICAL model)
 [source,sql]
@@ -195,7 +195,7 @@ CREATE FOREIGN TABLE Orders (
 
 === ALTER TABLE
 
-The BNF for ALTER table, refer to <<../reference/BNF_for_SQL_Grammar.adoc#alterTable, ALTER TABLE>>
+The BNF for ALTER table, refer to link:../reference/BNF_for_SQL_Grammar.adoc#alterTable[ALTER TABLE]
 
 Using the ALTER COMMAND, one can Add, Change, Delete columns, and/or modify any OPTIONS values. Some examples below.
 
@@ -225,7 +225,7 @@ ALTER FOREIGN TABLE "Customer" RENAME COLUMN "id" TO "customer_id";
 ----
 
 
-== <<create_view, Create View>>
+== Create View
 
 A view is a virtual table. A view contains rows and columns,like a real table. The columns in a view are columns from one or more real tables from the source or other view models. They can also be expressions made up multiple columns, or aggregated columns. When column definitions are not defined on the view table, they will be derived from the projected columns of the view’s select transformation that is defined after the _AS_ keyword.
 
@@ -273,7 +273,7 @@ IMPORTANT: Note that the columns are implicitly defined by the transformation qu
 
 === ALTER TABLE
 
-The BNF for ALTER VIEW, refer to <<../reference/BNF_for_SQL_Grammar.adoc#alterTable, ALTER TABLE>>
+The BNF for ALTER VIEW, refer to link:../reference/BNF_for_SQL_Grammar.adoc#alterTable[ALTER TABLE]
 
 Using the ALTER COMMAND you can change the transformation query of the VIEW. You are *NOT* allowed to Alter the column information. Also the transformation query must be valid 
 
@@ -321,7 +321,7 @@ CREATE TRIGGER ON CustomerOrders INSTEAD OF UPDATE AS
    END
 ----
 
-While updating you have access to previous and new values of the columns. For more detailed explanation of these update procedures please refer to <<../reference/Update_Procedures_Triggers.adoc, Update Procedures>> 
+While updating you have access to previous and new values of the columns. For more detailed explanation of these update procedures please refer to link:../reference/Update_Procedures_Triggers.adoc[Update Procedures] 
 
 === AFTER TRIGGERS On Source Tables
 
@@ -341,9 +341,9 @@ CREATE TRIGGER ON Customer AFTER INSERT AS
 
 You will typically define a handler for each operation - INSERT/UPDATE/DELTE.
 
-For more detailed explanation of these update procedures please refer to <<../reference/Update_Procedures_Triggers.adoc, Update Procedures>> 
+For more detailed explanation of these update procedures please refer to link:../reference/Update_Procedures_Triggers.adoc[Update Procedures] 
 
-== <<create_proc, Create Procedure/Function>>
+== Create Procedure/Function
 
 Using the below syntax, user can define a
 
@@ -478,7 +478,7 @@ CREATE VIRTUAL PROCEDURE CustomerActivity(customerid integer)
     END
 ----
 
-Read more information about virtual procedures at <<../reference/Virtual_Procedures.adoc, Virtual Procedures>>, and these procedures are written using  <<../reference/Procedure_Language.adoc, Procedure Language>>
+Read more information about virtual procedures at link:../reference/Virtual_Procedures.adoc[Virtual Procedures], and these procedures are written using  link:../reference/Procedure_Language.adoc[Procedure Language]
 
 [source,sql]
 .*Example:Define Virtual Function*
@@ -525,7 +525,7 @@ CREATE FOREIGN FUNCTION seq_nextval ()
 
 TIP: Until Teiid provides higher-level metadata support for sequences, a source function representation is the best fit to expose sequence functionality.
 
-== <<extension_metadata, Extension Metadata>>
+== Extension Metadata
 
 When defining the extension metadata in the case of Custom Translators, the properties on tables/views/procedures/columns can define namespace for the properties such that they will not collide with the Teiid specific properties. The property should be prefixed with alias of the Namespace. Prefixes starting with teiid_ are reserved for use by Teiid.
 
