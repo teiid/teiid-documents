@@ -6,7 +6,7 @@
 
 This document will explain what Teiid External Materialization is and how to use it.
 
-== What is it
+== What is it ?
 
 In Teiid, a view is a virtual table based on the computing(loading/transforming/federating) of a complex SQL statement across heterogeneous data sources.   Teiid external materialization process can cache the View data to an external data source systems on a periodic basis.  When a user issues queries against this View, the request will be redirected to this external data source system where cached results will be returned, rather than re-computing results from source systems. Materialization can prove to be time and resource saving if your View transformation is complex and/or access to the source systems is constrained.
 
@@ -35,7 +35,7 @@ If this is the case you should consider using a LOADNUMBER column, or a custom l
 
 === JBoss Data Grid (JDG)
 
-*  JBoss Data Grid (JDG) - for in-memory caching of results.
+*  JBoss Data Grid (JDG) - for in-memory caching of results. see the link:../reference/Infinispan_HotRod_Translator.adoc#External_Materialization[HotRod Translator].
 
 
 == View Options
@@ -115,6 +115,16 @@ teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
 |When true Teiid will perform both the underlying update and the corresponding update against the materialization target for an insert/update/delete issued against the view.
 |true
 |false
+
+|teiid_rel:MATVIEW_REFRESH_TYPE
+|Type of refresh of the View. Currently allowed types are "TTL_SNAPSHOT", "EAGER", "LAZY_SNAPSHOT". See more explanation under <<Materialization Table Loading, Materialization Table Loading>>
+|true
+|TTL_SNAPSHOT
+
+|teiid_rel:MATVIEW_LAZY_MAX_ALLOWED_STALENESS_PCT
+|When using LAZY_SNAPSHOT, this property defines the percentage of staleness allowed before a refresh to the View is invoked. Any double value 0 to 100 is valid value. The _StateCount_ column on Status table is used to keep track of the number of updates, and this value is checked against Cardinality column to calculate the amount of variance.
+|true
+|1
 |===
 
 TIP: for scripts that need more than one statement executed, use a procedure block BEGIN statement; statement; ... END
@@ -185,6 +195,7 @@ CREATE TABLE status
   Updated timestamp not null,
   LoadNumber long not null,
   NodeName varchar(25) not null,
+  StaleCount long,
   PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
 );
 ----
@@ -228,7 +239,11 @@ Description Status table:
 |Counter to keep track of number of updates to the materialization contents
 
 |NodeName
-|Node name, which updated the materialization contents last 
+|Node name, which updated the materialization contents last
+
+|StaleCount
+|Number updates counted against View, based on source table changes when using LAZY-SNAPSHOT strategy.
+ 
 |===
 
 === 2. Creation of View and Materialized Table
@@ -255,47 +270,26 @@ Upon deployment of the VDB to the Teiid server, link:../reference/sysadmin_schem
 
 TIP: The start/stop scripts are not cluster aware - that is they will run on each cluster member as the VDB is deployed. When deploying into a clustered environment, the scripts should be written in such a way as to be cluster safe.
 
-=== Eager Materialization Table Update
+Once the first load of the materialized view, the update of the this View is controlled by the the extension property "MATVIEW_REFRESH_TYPE". Currently there are three different refresh types allowed
 
+==== Refresh Type: "TTL_SNAPSHOT" 
+Based on the TTL extension property defined on View, when the time configured is elapsed from the time of finish of loading the View, the whole view is reloaded automatically if the "ALLOW_MATVIEW_MANAGEMENT" property is set to true. If the contents are externally managed additional properties are required.
+
+==== Refresh Type: "LAZY_SNAPSHOT"     
+This is similar to "TTL_SNAPSHOT", but differs as to what triggers the reload of the view. Every source table update(s) is captured in the Status table's StaleCount column as single updated event, and when this updated count reaches or exceeds the defined "MATVIEW_LAZY_MAX_ALLOWED_STALENESS_PCT" value, then a full refresh is triggered.  The values of (StaleCount/Cardinality) >= MATVIEW_LAZY_MAX_ALLOWED_STALENESS_PCT is used as trigger. Also note this refresh type only applies when view is materialized to external sources. `SYSADMIN.updateStaleCount` procedure is used to increment the StaleCount counter. When integrated with CDC technologies like Debezium (new feature coming..) this procedure is called automatically. 
+
+=== Refresh Type: "EAGER"
+
+When a view refresh type is defined as "EAGER", the very first time the contents if the materialized view are loaded similar to that of other types using the `SYSADMIN.loadMatView` procedure upon the deployment of the VDB. However, once the contents are loaded, 
 link:../reference/sysadmin_schema.adoc#_sysadmin_updatematview[SYSADMIN.updateMatView] can be used to perform a eager incremental update based on any criteria provided. If you know that certain data points in the source system were changed after last full refresh of the materialized view, you can call this procedure with a criteria based on the view that cover those changed values, and this procedure will update only those affected rows in the materialized table instead of doing full snapshot update. This can save lot of time and resources and also keeps your view materialization cache upto date with source system changes. 
 
-Note: This script is not invoked automatically by Teiid, as the source update events may be occurring outside of Teiid. This procedure needs to be invoked by user, when he/she knows that there is change in the source systems.
-
-
-
-== Using JDG as Materialization Store
-
-The JDG can be used as a materialization target to save cache contents of the View in a JDG server.  JDG can be cluster aware and is accessed using the JDG Hot Rod Client.  See the link:../admin/JDG_HotRod_Data_Sources.adoc[JDG Hot Rod DataSource] for how to configure accessing the remote cache. 
-
-To configure for external materialization, see the link:../reference/Infinispan_HotRod_Translator.adoc#External_Materialization[HotRod Translator].  This explains how to configure link:#_Metadatda_Based_Materialization_Management[Materialization Management] that is specific for using JDG remote cache and is essential for managing the underlying multiple caches needed in order to perform materialization.
-
-Once the Materialized View is completely defined, deploy it to a Teiid Server.  Then create a new session and issue a query against Materialized View.  You will find it's time-saving and cpu-saving if your query sentences are complex and across multiple, heterogeneous data stores.
+Note: This script is not invoked automatically by Teiid, as the source update events may be occurring outside of Teiid. This procedure needs to be invoked by user, when he/she knows that there is change in the source systems. When CDC technologies like Debezium is used (new feature coming..), this procedure can be automatically invoked to keep the the View contents fresh.  
 
 
 == Define Materialized View in Designer
 
 * Create materialized views and corresponding physical materialized target tables in Designer. This can be done through setting the materialized and target table manually, or by selecting the desired views, right clicking, then selecting Modeling->"Create Materialized Views"
 * Generate the DDL for your physical model materialization target tables. This can be done by selecting the model, right clicking, then choosing Export->"Metadata Modeling"->"Data Definition Language (DDL) File". This script can be used to create the desired schema for your materialization target on whatever source you choose.
-
-
-== Materialization with Embedded Teiid
-
-The definition of the view and materialized table, status table all of the steps defined above are same as they are part of the VDB. Follow same steps above and deploy the VDB in the embedded Teiid as shown below.
-
-[source,java]
-----
-EmbeddedServer server = new EmbeddedServer(); 
-… 
-server.addConnectionFactory("name", Object); 
-… 
-server.addTranslator("name", ExecutionFactory); 
-EmbeddedConfiguration config = new EmbeddedConfiguration(); 
-config.setTransactionManager(EmbeddedHelper.getTransactionManager()); 
-server.start(config); 
-server.deployVDB("matView-vdb.xml");
-----
-
-https://raw.githubusercontent.com/teiid/teiid-embedded-examples/master/embedded-caching/src/main/java/org/teiid/example/ExternalMaterializationExample.java[An Usage Example]
 
 
 == Appendix-1: DDL for creating MatView Status Table
@@ -317,6 +311,7 @@ CREATE TABLE status
   Updated timestamp not null,
   LoadNumber long not null,
   NodeName varchar(25) not null,
+  StaleCount long,
   PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
 ) ;
 ----
@@ -338,13 +333,14 @@ CREATE TABLE status
   Updated timestamp not null,
   LoadNumber bigint not null,
   NodeName varchar(25) not null,
+  StaleCount bigint,
   PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
 ) OPTIONS (UPDATABLE true);
 ----
 
 == Appendix-2: Example VDB with External Materialized View Options
 
-The below VDB defines three models, one "Source" model that defines your source database where your business data is in, "ViewModel" defines a "Person" view which is derived from subset of the data from your table in the "Source" model's table(s). Note that view table also marked with few extension properties to allow external materialization. The "materialized" model defines a source database model, where it has a table with exact table structure as the ViewModel's materialized view with additional column called "LoadNumber". Note the "materialized table also contains the "status" table. Both these tables must be created manually on the source database before VDB is deployed to the server.
+The below VDB defines three models, one "Source" model that defines your source database where your business data is in, "ViewModel" defines a "Person" view which is derived from subset of the data from your table in the "Source" model's table(s). Note that view table also marked with few extension properties to allow external materialization. The "materialized" model defines a source database model, where it has a table with exact table structure as the ViewModel's materialized view with additional column called "LoadNumber". Note the "materialized table also contains the "status" table. Both these tables must be created manually on the source database before VDB is deployed to the server. The example below uses TTL_SNAPSHOT based refresh.
 
 [source,xml]
 ----
@@ -399,6 +395,7 @@ The below VDB defines three models, one "Source" model that defines your source 
             Updated timestamp not null,
             LoadNumber long not null,
             NodeName varchar(25) not null,
+            StaleCount long,
             PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
           );          
         ]]>
