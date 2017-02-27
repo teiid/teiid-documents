@@ -220,7 +220,7 @@ If you are designing a source schema, you can add the TABLES, PROCEDURES manuall
 
 ----
 IMPORT FOREIGN SCHEMA {foreign-schema-name} [ <import qualifications> ] 
-    FROM SERVER {server-name} 
+    FROM (SERVER {server-name} | REPOSITORY {repository-name}) 
     INTO {schema-name}
     OPTIONS (<options-clause>)
 
@@ -233,6 +233,7 @@ IMPORT FOREIGN SCHEMA {foreign-schema-name} [ <import qualifications> ]
 
 foreign-schema-name : Name of schema in external data source to import. Typically most databases are tied to a schema name, like "public", "dbo" or name of the database. If you are working with non-relational source, you can provide a dummy value here.
 server-name: name of the server created above to import metadata from.
+repository-name: Custom/extended "named" repositories from which metadata can be imported. See MetadataRepository interface for more details. Teiid provides a built in type called "DDL-FILE" see example below.
 schema-name: Name schema element created above to import metadata into.
 import qualifications : using this you can limit your import of the Tables from foreign datasource specified to this list. 
 options-clause : The "importer" properties that can be used to refine the import process behavior of the metadata. Each Translator defines a set of "importer" properties with their documentation or through extension properties. 
