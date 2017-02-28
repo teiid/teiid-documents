@@ -298,32 +298,52 @@ CREATE ROLE readOnly WITH ANY AUTHENTICATED;
 
 Now to Setting Permissions, see <<../reference/Permissions.adoc, Permissions>> for more details.
 
-.BNF for Grant command
+.BNF for Grant/REVOKE command
 [source,sql]
 ----
-GRANT  (<permission-types> (,<permission-types>)* ) 
+GRANT [<permission-types> (,<permission-types>)* ] 
     ON (<grant-resource>)
+    TO {data-role}
+    
+GRANT (TEMPORARY TABLE | ALL PRIVILEGES)  
+    TO {data-role}
+    
+GRANT USAGE ON LANGUAGE {language-name}
     TO {data-role}
 
 <permission-types> ::=
     SELECT | INSERT |  UPDATE | DELETE | 
-    EXECUTE | LANGUAGE | ALTER | DROP | 
-    ALL PRIVILEGES | TEMPORARY TABLES)
+    EXECUTE | ALTER | DROP
     
 <grant-resource> ::=
-        DATABASE |
         TABLE {schema-name}.{table-name} [<condition>] |
         PROCEDURE {schema-name}.{procedure-name} [<condition>] |
         SCHEMA {schema-name} |
-        COLUMN {schema-name}.{table-name}.{column-name} | 
-            [MASK [ORDER \d]  {expression} ] 
-            [<condition>]    
+        COLUMN {schema-name}.{table-name}.{column-name} [MASK [ORDER n] {expression} ] 
 
 <condition> ::=            
-    CONDITION [CONSTRAINT] {expression}
+    CONDITION [CONSTRAINT] {boolean expression}
+    
+REVOKE [(<permission-types> (,<permission-types>)* )] 
+    ON (<revoke-resource>)
+    FROM {data-role}
+    
+REVOKE 
+    (TEMPORARY TABLE | ALL PRIVILEGES) 
+    FROM {data-role}
+    
+REVOKE USAGE ON LANGUAGE {language-name}
+    FROM {data-role}
+
+<revoke-resource> ::=
+        TABLE {schema-name}.{table-name} [CONDITION] |
+        PROCEDURE {schema-name}.{procedure-name} [CONDITION] |
+        SCHEMA {schema-name} |
+        COLUMN {schema-name}.{table-name}.{column-name} [MASK] 
 ----
 
 * permission-types: Types of permissions to be granted
+* language-name: Name of the language
 * grant-resource: This is Schema element in the VDB on which this grant applies to. It can anything between a DATABASE and COLUMN
 * schema-name: Name of the schema this resource belongs to
 * table-name: Name of the Table/View
@@ -331,9 +351,10 @@ GRANT  (<permission-types> (,<permission-types>)* )
 * column-name: Name of the column
 * condition: When present, the {expression} is appended to the WHERE clause of the query 
 * expression: any valid sql expression, this can include columns from referenced resource
-* CONSTRAINT: When this is supplied along with CONDITION, the {expression} is also applied during the INSERT/UPDATE queries. By default CONDITION *only* applies SELECT queries. Also CONSTRAINT does *NOT* apply to VIEWs only FOREIGN TABLES.
+* CONSTRAINT: When this is supplied along with CONDITION, the {boolean expression} is also applied during the INSERT/UPDATE queries. By default CONDITION *only* applies SELECT queries. Also CONSTRAINT does *NOT* apply to VIEWs only FOREIGN TABLES.
 
-CAUTION: LANGUAGE permission can only be applied on DATABASE
+WARING: GRANT/REVOKE mostly function as direct replacements for the XML permission declarations. A grant/revoke 
+has no effect on any other grant/revoke unless it represents the same resource, in which case its effect is combined.
 
 .Example: Give Read, write, update permission on single table to user with enterprise role "role1"
 [source,sql]
@@ -346,7 +367,7 @@ GRANT INSERT, READ, UPDATE ON TABLE test.Customer TO RoleA;
 [source,sql]
 ---- 
 CREATE ROLE everything WITH JAAS ROLE admin;
-GRANT ALL PRIVILEGES ON DATABASE TO everything;
+GRANT ALL PRIVILEGES TO everything;
 ----
 
 .Example : Use of CONDITION, all users can see only Orders table contents amount < 1000
