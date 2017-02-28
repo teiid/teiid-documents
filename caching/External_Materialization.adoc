@@ -116,15 +116,10 @@ teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
 |true
 |false
 
-|teiid_rel:MATVIEW_REFRESH_TYPE
-|Type of refresh of the View. Currently allowed types are "TTL_SNAPSHOT", "EAGER", "LAZY_SNAPSHOT". See more explanation under <<Materialization Table Loading, Materialization Table Loading>>
+|teiid_rel:MATVIEW_MAX_STALENESS_PCT
+|This property defines the percentage max of staleness allowed before a refresh to the View is invoked. Any double value 0 to 100 is valid value. The _StateCount_ column on Status table is used to keep track of the number of updates, and this value is checked against Cardinality column to calculate the amount of variance. The availability of this property, supercedes the MATVIEW_TTL property interms of when a refresh job triggred to update the contents of the view.
 |true
-|TTL_SNAPSHOT
-
-|teiid_rel:MATVIEW_LAZY_MAX_ALLOWED_STALENESS_PCT
-|When using LAZY_SNAPSHOT, this property defines the percentage of staleness allowed before a refresh to the View is invoked. Any double value 0 to 100 is valid value. The _StateCount_ column on Status table is used to keep track of the number of updates, and this value is checked against Cardinality column to calculate the amount of variance.
-|true
-|1
+|n/a
 |===
 
 TIP: for scripts that need more than one statement executed, use a procedure block BEGIN statement; statement; ... END
@@ -270,15 +265,15 @@ Upon deployment of the VDB to the Teiid server, link:../reference/sysadmin_schem
 
 TIP: The start/stop scripts are not cluster aware - that is they will run on each cluster member as the VDB is deployed. When deploying into a clustered environment, the scripts should be written in such a way as to be cluster safe.
 
-Once the first load of the materialized view, the update of the this View is controlled by the the extension property "MATVIEW_REFRESH_TYPE". Currently there are three different refresh types allowed
+Once the first load of the materialized view, the update/refresh of the this View is controlled by the extension property "MATVIEW_TTL" or "MATVIEW_MAX_STALENESS_PCT". Currently there are three different refresh types allowed
 
-==== Refresh Type: "TTL_SNAPSHOT" 
-Based on the TTL extension property defined on View, when the time configured is elapsed from the time of finish of loading the View, the whole view is reloaded automatically if the "ALLOW_MATVIEW_MANAGEMENT" property is set to true. If the contents are externally managed additional properties are required.
+==== Refresh Type: TTL Based SNAPSHOT
+Based on the MATVIEW_TTL extension property defined on View, when the time configured is elapsed from the time of finish of loading the View, the whole view is reloaded automatically if the "ALLOW_MATVIEW_MANAGEMENT" property is set to true. If the contents are externally managed additional properties are required. Note, that "MATVIEW_MAX_STALENESS_PCT" is not provided in this case.
 
-==== Refresh Type: "LAZY_SNAPSHOT"     
-This is similar to "TTL_SNAPSHOT", but differs as to what triggers the reload of the view. Every source table update(s) is captured in the Status table's StaleCount column as single updated event, and when this updated count reaches or exceeds the defined "MATVIEW_LAZY_MAX_ALLOWED_STALENESS_PCT" value, then a full refresh is triggered.  The values of (StaleCount/Cardinality) >= MATVIEW_LAZY_MAX_ALLOWED_STALENESS_PCT is used as trigger. Also note this refresh type only applies when view is materialized to external sources. `SYSADMIN.updateStaleCount` procedure is used to increment the StaleCount counter. When integrated with CDC technologies like Debezium (new feature coming..) this procedure is called automatically. 
+==== Refresh Type: LAZY SNAPSHOT
+This is similar to TTL Based SNAPSHOT, but differs as to what triggers the reload of the view. Every source table update(s) is captured in the Status table's StaleCount column as single updated event, and when this updated count reaches or exceeds the defined "MATVIEW_MAX_STALENESS_PCT" value, then a full refresh is triggered.  The values of StaleCount/Cardinality are used to calculate the percent of varience to invoke the trigger for refresh. Also note this refresh type only applies when view is materialized to external sources. `SYSADMIN.updateStaleCount` procedure is used to increment the StaleCount counter. When integrated with CDC technologies like Debezium (new feature coming..) this procedure is called automatically. 
 
-=== Refresh Type: "EAGER"
+=== Refresh Type: EAGER
 
 When a view refresh type is defined as "EAGER", the very first time the contents if the materialized view are loaded similar to that of other types using the `SYSADMIN.loadMatView` procedure upon the deployment of the VDB. However, once the contents are loaded, 
 link:../reference/sysadmin_schema.adoc#_sysadmin_updatematview[SYSADMIN.updateMatView] can be used to perform a eager incremental update based on any criteria provided. If you know that certain data points in the source system were changed after last full refresh of the materialized view, you can call this procedure with a criteria based on the view that cover those changed values, and this procedure will update only those affected rows in the materialized table instead of doing full snapshot update. This can save lot of time and resources and also keeps your view materialization cache upto date with source system changes. 
