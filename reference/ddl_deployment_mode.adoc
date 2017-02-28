@@ -272,7 +272,7 @@ IMPORT DATABASE {vdb-name} VERSION {version} [WITH ACCESS CONTROL]
 Specifying the WITH ACCESS CONTROL also imports any Data Roles defined in the other database.
 
 == <<data_roles, Data Roles>>
-Data roles, also called entitlements, are sets of permissions defined per VDB that dictate data access (create, read, update, delete). Data roles use a fine-grained permission system that Teiid will enforce at runtime and provide audit log entries for access violations. To read more about Data Roles and Permissions see  <<../reference/Data_Roles.adoc, Data Roles>> and  <<../reference/Permissions.adoc, Permissions>>
+Data roles, also called entitlements, are sets of permissions defined per VDB that dictate data access (create, read, update, delete). Data roles use a fine-grained permission system that Teiid will enforce at runtime and provide audit log entries for access violations. To read more about Data Roles and Permissions see  link:../reference/Data_Roles.adoc[Data Roles] and  link:../reference/Permissions.adoc[Permissions]
 
 Here we will show DDL support to create these Data Roles and corresponding permissions.
 
@@ -296,9 +296,9 @@ CREATE ROLE readWrite WITH JASS ROLE developer,analyst;
 CREATE ROLE readOnly WITH ANY AUTHENTICATED;
 ----
 
-Now to Setting Permissions, see <<../reference/Permissions.adoc, Permissions>> for more details.
+Now to Setting Permissions, see link:../reference/Permissions.adoc[Permissions] for more details.
 
-.BNF for Grant/REVOKE command
+.BNF for GRANT/REVOKE command
 [source,sql]
 ----
 GRANT [<permission-types> (,<permission-types>)* ] 
@@ -344,7 +344,8 @@ REVOKE USAGE ON LANGUAGE {language-name}
 
 * permission-types: Types of permissions to be granted
 * language-name: Name of the language
-* grant-resource: This is Schema element in the VDB on which this grant applies to. It can anything between a DATABASE and COLUMN
+* grant-resource: This is Schema element in the VDB on which this grant applies to.
+* revoke-resource: This is Schema element in the VDB on which this revoke applies to.  Specifying the CONDITION or MASK keyword will attempt to move the specific CONDITION or MASK for that resource.
 * schema-name: Name of the schema this resource belongs to
 * table-name: Name of the Table/View
 * procedure-name: Procedure Name
@@ -353,7 +354,7 @@ REVOKE USAGE ON LANGUAGE {language-name}
 * expression: any valid sql expression, this can include columns from referenced resource
 * CONSTRAINT: When this is supplied along with CONDITION, the {boolean expression} is also applied during the INSERT/UPDATE queries. By default CONDITION *only* applies SELECT queries. Also CONSTRAINT does *NOT* apply to VIEWs only FOREIGN TABLES.
 
-WARING: GRANT/REVOKE mostly function as direct replacements for the XML permission declarations. A grant/revoke 
+WARNING: GRANT/REVOKE mostly function as direct replacements for the XML permission declarations. A grant/revoke 
 has no effect on any other grant/revoke unless it represents the same resource, in which case its effect is combined.
 
 .Example: Give Read, write, update permission on single table to user with enterprise role "role1"
