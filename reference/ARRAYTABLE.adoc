@@ -41,8 +41,3 @@ is the same as
 ----
 TABLE(SELECT cast(array_get(val, 1) AS string) AS col1, cast(array_get(val, 2) AS integer) AS col2) AS X
 ----
-
-* link:FROM_Clause.html[*Prev*FROM Clause]
-* link:#[*Top of page*]
-* link:Reference_Guide.html[*Front page*]
-* link:OBJECTTABLE.html[*Next*OBJECTTABLE]
