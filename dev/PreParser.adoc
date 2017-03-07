@@ -1,7 +1,11 @@
 
 = PreParser
 
-If it is desirable to manipulate incoming queries prior to being handled by Teiid logic, then a custom pre-parser can be installed. Use the _PreParser_ interface provided in the _org.teiid.api_ jar to plug-in a pre-parser for the Teiid engine. See link:Setting_up_the_build_environment.adoc[Setting up the build environment] to start development. For Example:
+If it is desirable to manipulate incoming queries prior to being handled by Teiid logic, then a custom pre-parser can be installed.
+
+A PreParser may be set at a global level for all VDBs, or at a per VDB level.  If both are specified the global PreParser will be called first, then the per VDB PreParser. 
+
+Use the _PreParser_ interface provided in the _org.teiid.api_ jar to plug-in a pre-parser for the Teiid engine. See link:Setting_up_the_build_environment.adoc[Setting up the build environment] to start development. For Example:
 
 [source,java]
 .*Sample Java Code*
@@ -20,14 +24,14 @@ public class CustomPreParser implements PreParser {
 }
 ----
 
-Then build a JAR archive with above implementation class and create a file named _org.teiid.PreParser_ in _META-INF/services_ directory with contents:
+If this is intended to be a global PreParser, then create a file named _org.teiid.PreParser_ in _META-INF/services_ directory with contents:
 
 [source,java]
 ----
 com.something.CustomPreParser
 ----
 
-The the jar has been built, this needs to be deployed in the {{ book.asName }} as a module under _<jboss-as>/modules_ directory. Follow the below steps to create a module.
+After the jar has been built, it needs to be deployed in the {{ book.asName }} as a module under _<jboss-as>/modules_ directory. Follow the below steps to create a module.
 
 * Create a directory _<jboss-as>/modules/com/something/main_
 
@@ -52,11 +56,24 @@ The the jar has been built, this needs to be deployed in the {{ book.asName }} a
 
 * Copy the jar file under this same directory. Make sure you add any additional dependencies if required by your implementation class under dependencies.
 
-* Use the cli or modify the configuration to set the preparser-module in the Teiid subsystem configuration to the appropriate module name.
+* If this is a global PreParser, then use the cli or modify the configuration to set the preparser-module in the Teiid subsystem configuration to the appropriate module name.
 
-* Restart the server
+* If this is a per VDB PreParser, then update the vdb property "preparser-class" to be the class name of your PreParser.  The VDB class path also needs to be updated to include the PreParser module, which can be done by adding the module name to the "lib" property.
+
+[source,xml]
+.*Sample vdb.xml properties*
+----
+<vdb name="..." version="...">
+   <property name="lib" value="preparser-module-name"/>
+   <property name="preparser-class" value="com.something.CustomPreParser"/>
+   ...
+</vdb>
+----
+
+* Restart the server for the module to become available.
 
 == Development Considerations
 
 * Changing the incoming query to a different type of statement is not recommended as are any modifications to the number or types of projected symbols.
 
+* When using Teiid Embedded you just need to include the jar with the PreParser in the application class path - as modules are not used.
