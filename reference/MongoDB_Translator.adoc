@@ -166,6 +166,24 @@ NOTE: Note that even though embedded documents can also be in arrays, the handli
 
 Regular Expressions, MongoDB::Code, MongoDB::MinKey, MongoDB::MaxKey, MongoDB::OID is not currently supported.
 
+== Importer Properties
+
+Importer properties define the behavior of the translator during the metadata import from the physical source.
+
+*Importer Properties*
+
+|===
+|Name |Description |Default
+
+|excludeTables
+|Regular expression to exclude the tables from import
+|null
+
+|includeTables
+|Regular expression to include the tables from import
+|null
+|===
+
 == Extension Metadata Properties To Build Complex Documents
 
 Using the above DDL or any other metadata facility, a user can map a table in a relational store into a document in MongoDB, however to make effective use of MongoDB, you need to be able to build complex documents, that can co-locate related information, so that data can queried in a single MongoDB query. Otherwise, since MongoDB does not support join relationships like relational database, you need to issue multiple queries to retrieve and join data manually. The power of MongoDB comes from its "embedded" documents and its support of complex data types like arrays and use of the aggregation framework to be able to query them. This translator provides way to achieve that goals.
