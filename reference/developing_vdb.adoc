@@ -9,6 +9,19 @@ These artifacts can be shared and moved between different servers.
 
 * vdb.ddl : In this file format, you can use strictly DDL using SQL-MED (with few custom extensions) to define the metadata. This can be viewed as next version to the vdb.xml. 
 
+* myvdb.vdb : This is an archive based (zip) file format is combination of above vdb.xml or vdb.ddl file enclosed in zip archive along with any other supporting files like externalized DDL files, UDF libraries. This closely resembles the Designer VDB format (in future releases Designer VDB will be modified into this), however this will not contain any .INDEX or .XMI files as current Designer based VDB does. If the individual schema elements inside a given model/schema is large and managability of that schema in a single vdb file is getting hard as with above formats, then consider using this format. With this you can define each model/schema's DDL in its own file. The ZIP archive structure must resemble
+
+----
+myvdb.vdb
+/META-INF
+ vdb.ddl
+/schema1.ddl
+/schema2.ddl
+/lib
+  myudf.jar
+----
+      
+
 * Designer : Designer provides a graphical UI, that user can use to design a VDB. Using this, user can interactively design tables, views, procedures, functions etc. Designer typically generates a .vdb (zip) file artifact, however it can also export this as -vdb.xml file. Support to export as vdb.ddl is coming soon.
 
 vdb.xml and vdb.ddl may be deployed as standalone files.  As a standalone file, the VDB file name pattern must adhere to "-vdb.xxx" for the Teiid VDB deployer to recognize this file.  
