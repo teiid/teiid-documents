@@ -156,13 +156,13 @@ The following are the additional properties that need to be configured if using 
 To enable the Hotrod client in the resource-adapter to communicate using SSL, configure the following properties on the resource adapter.
 
 |===
-|Property Name |Description
+|Property Name |Req. |Description
 
-| TrustStoreFileName | File name of the truststore
-| TrustStorePassword | TrustStore Password
-| KeyStoreFileName   | File name of the keystore
-| KeyStorePassword   | KeyStore Password
-| SNIHostName        | _[optional]_ SNI Host Name
+| TrustStoreFileName | Y | File name of the truststore
+| TrustStorePassword | Y | TrustStore Password
+| KeyStoreFileName   | Y | File name of the keystore
+| KeyStorePassword   | Y | KeyStore Password
+| SNIHostName        | N | SNI Host Name
 |===
 
 See the link:http://infinispan.org/docs/9.0.x/infinispan_server_guide/infinispan_server_guide.html#_hot_rod_encryption[SSL Encrption] guide for more details on the properties.
@@ -190,14 +190,14 @@ Note the following
 * mechanisms - it should be the same one defined for <<AuthSASLMechanism>>
 
 
-The following properties define how the JDG resource-adapter can be configured to talk to the JDG server based on the _hotrod_connector_.
+The following properties define how the JDG resource-adapter must be configured to talk to the JDG server based on its defined _hotrod_connector_.
 
 |===
-|Property Name |Description
+|Property Name |Req. |Description
 
-| AuthServerName | The name declared as the _server_name_ in the JDG Server
-| AuthApplicationRealm | The security realm defined in the JDG server.
-| AuthSASLMechanism   | The SASL _mechanisms_ (e.g., PLAN, DIGEST-MD5, etc.)
+| AuthServerName | Y | The name declared as the _server_name_ in the JDG Server
+| AuthApplicationRealm | Y | The security realm defined in the JDG server.
+| AuthSASLMechanism   | Y | The SASL _mechanisms_ (e.g., PLAN, DIGEST-MD5, etc.)
 |===
 
 The Hot Rod protocol supports authentication leveraging different SASL mechanisms. The supported SASL mechanisms (usually shortened as mechs) are.
@@ -208,13 +208,13 @@ The Hot Rod protocol supports authentication leveraging different SASL mechanism
 * EXTERNAL - This mech obtains credentials from the underlying transport (i.e. from a X.509 client certificate) and therefore requires encryption using client-certificates to be enabled.
 
 
-If using Hot Rod Authentication, then the following _admin_ properities will need to be defined so that metadata can be obtained without having to have a user execute a query.
+If using Hot Rod Authentication, then the following _admin_ user will need to be defined so that metadata can be obtained without having to have a user execute a query.   This user can be any JDG authorized user.
 
 |===
-|Property Name |Description
+|Property Name |Req. |Description
 
-| AdminUserName | Username for administration operation
-| AdminPassword   | Password for administration operation
+| AdminUserName | Y | Username for administration operation
+| AdminPassword | Y | Password for administration operation
 |===
 
 There are 2 options for passing the users credentials to JDG
@@ -222,15 +222,15 @@ There are 2 options for passing the users credentials to JDG
 * username/password
 * Subject
 
-When the username/password are not provided, the logic will be pulling the Subject from the current context to use to as the credentials for the user.
+When the username/password are not provided, the logic will be expecting to pull the Subject from the current context to use to as the credentials for the user.
 
 To configure username/password, set the following properties
 
 |===
-|Property Name |Description
+|Property Name |Req. | Description
 
-| AuthUserName   | authorized username
-| AuthPassword | authorized password
+| AuthUserName | N | authorized username
+| AuthPassword | N | authorized password
 |===
 
 
