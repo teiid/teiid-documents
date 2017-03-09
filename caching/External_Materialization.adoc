@@ -70,6 +70,16 @@ The following View properties are extension properties that used in the manageme
 |false
 |n/a
 
+|teiid_rel:MATVIEW_LOAD_SCRIPT - DEPRECATED
+|command to run for loading of the cache. Use of this property is deprecated in favor using the "MATVIEW_LOADNUMBER_COLUMN" property.
+|true		
+|will be determined based on view transformation
+ 
+|teiid_rel:MATERIALIZED_STAGE_TABLE - DEPRECATED
+|When MATVIEW_LOAD_SCRIPT property not defined, Teiid loads the cache contents into this table. Required when MATVIEW_LOAD_SCRIPT not defined. Use of this property is deprecated in favor using the "MATVIEW_LOADNUMBER_COLUMN" property.
+|true		
+|n/a
+
 |teiid_rel:MATVIEW_LOADNUMBER_COLUMN
 |Name of column in the `MATERIALIZED_TABLE` that can hold status information about load/refresh load process. The column type MUST be long, and typically named as "LoadNumber". 
 |false
