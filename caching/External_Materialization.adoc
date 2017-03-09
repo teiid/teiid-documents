@@ -308,7 +308,7 @@ CREATE TABLE status
   NodeName varchar(25) not null,
   StaleCount long,
   PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
-) ;
+);
 ----
 
 [source,sql]
@@ -330,7 +330,7 @@ CREATE TABLE status
   NodeName varchar(25) not null,
   StaleCount bigint,
   PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
-) OPTIONS (UPDATABLE true);
+);
 ----
 
 == Appendix-2: Example VDB with External Materialized View Options
@@ -392,7 +392,7 @@ The below VDB defines three models, one "Source" model that defines your source 
             NodeName varchar(25) not null,
             StaleCount long,
             PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
-          );          
+          ) OPTIONS (UPDATABLE true);          
         ]]>
         </metadata>
     </model>
