@@ -28,7 +28,7 @@ All the properties that start with "buffer-service" used to configure _BufferMan
 /subsystem=teiid:write-attribute(name=buffer-service-memory-buffer-off-heap,value=false)
 ----
 
-NOTE: Note that it is not recommend that to change these properties until there is an understanding of the properties (elaborated below) and any potential issue that is being experienced.
+NOTE: It is not recommend that to change these properties until there is an understanding of the properties (elaborated below) and any potential issue that is being experienced.
 
 Some of _BufferManager’s_ properties are described below. Note that the performance tuning advice is highlighted in info boxes.
 
@@ -75,8 +75,16 @@ It’s also important to keep in mind that Teiid has memory and other hard limit
 1.  The buffer manager has a max addressable space of 16 terabytes - but due to fragmentation you’d expect that the max usable would be less. This is the maximum amount of storage available to Teiid for all temporary lobs, internal tables, intermediate results, etc.
 2.  The max size of an object (batch or table page) that can be serialized by the buffer manager is 32 GB - but you should approach that limit (the default limit is 8 MB). A batch/page is set or rows that are flowing through Teiid engine and is dynamically scaled based upon the estimated data width so that the expected memory size is consistent.
 3.  The max-processing-kb and max-reserve-kb are based upon memory footprint estimations and not exact sizes - actual memory usage and garbage collection cycles are influenced by a lot of other factors.
+4.  The maximum row count for any interface, JDBC/ODBC/OData, is 2^31-1 rows. 
 
 Handling a source that has tera/petabytes of data doesn't by itself impact Teiid in any way. What matters is the processing operations that are being performed and/or how much of that data do we need to store on a temporary basis in Teiid. With a simple forward-only query, Teiid will return a petabytes of data with minimal memory usage.
+
+=== Inferred Limits
+
+To prevent run away memory or disk consumption:
+
+1. Error code TEIID31260. A single lob (xml, clob, blob, json) created on the server side is limited to the .25 * (max buffer space) / (max active plans).
+2. Error code TEIID31261. A single table or tuple buffer is limited to the greater of (max reserve kb) or (max buffer space) / (max active plans).    
 
 === Other Considerations for Sizing
 
