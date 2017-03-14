@@ -5,9 +5,15 @@ JDG caches running in client/server mode can use a Teiid specific JCA connector 
 
 It is assumed that you will be installing the *JDG Hotrod Client EAP Modules Kit*, which can be obtained on the Red Hat's Customer Portal at https://access.redhat.com/jbossnetwork/restricted/listSoftware.html.
 
-To handle pojo types in the same cache, where each pojo object can be accessed by performing a "get(key)" on the cache, will require a different configured resource-adapter for each pojo type.
+There are many different ways to configure this resource-adapter based on different usage scenarios
 
-There are two options for how the JDG schema can be configured in the connector; protobuf annotations or protobuf (.proto) file with marshaller(s).  The following are the requirements.
+*  using complex pojos (i.e, pojo contains other pojo's).
+*  using either pojo protobuf annotations or protobuf definition files, to configure the JDG schema
+*  wanting the enable HotRod security, using username/password and/or SSL
+*  utilizing the JDG cache for materialization
+
+To handle different pojo types in the same cache, where each pojo object can be exposed as a separate table, it will require a different configured resource-adapter for each root pojo type.
+
 
 == *Requirement*
 
@@ -17,28 +23,32 @@ There are two options for how the JDG schema can be configured in the connector;
 See link:../reference/Infinispan_HotRod_Translator.adoc[Infinispan HotRod Translator] for details on how the the metadata will be exposed or can be manually configured based on the schema that's defined for this data source.
 
 
-== *Configuration*
+== *Resource-Adapter Configuration*
 
-There are many different ways to configure this resource-adapter based on different usage scenarios:
 
-*  complexity of the pojo (i.e, pojo contains other pojo's).
-*  using either pojo protobuf annotations or protobuf definition files, to configure the JDG schema
-*  wanting the enable HotRod client to use SSL
-*  utilizing the JDG cache for materialization
+The following are the sections for configuring a resource-adapter to connect, configure schema, and access cache.
 
-=== Accessing HotRod Remote Cache
+* <<HotRod Remote Cache Connection>>
+* <<Configure Which Cache and Class>>
+* <<Configure JDG Schema>>
+* <<Using for External Materialization>>
+* <<Module Configuration>>
+* <<JDG Security Options>>
 
-One of the following properties is required for defining how the RemoteCacheManager will be created/accessed:
+
+=== HotRod Remote Cache Connection
+
+One of the following properties is required for defining how the RemoteCacheManager will be connected to.
 
 |===
-|Property Name |Req. |Property Template|Description
+|Property Name | Property Template |Description
 
-| CacheJndiName | N | | JNDI name to find the CacheContainer 
-| RemoteServerList | N | host:port\[;host:port….\] | Specify the host and ports that will be clustered together to access the caches 
-| HotRodClientPropertiesFile | N | | The HotRod properties file for configuring a connection to a remote cache 
+| CacheJndiName | | JNDI name to find the CacheContainer 
+| RemoteServerList | host:port\[;host:port...\] | Specify the host and ports that will be clustered together to access the caches 
+| HotRodClientPropertiesFile | | The HotRod properties file for configuring a connection to a remote cache 
 |===
 
-=== Configuring Which Cache and Pojo 
+=== Configure Which Cache and Class 
 
 The following property is required as it provides the mapping to the JDG cache and pojo that will be accessed.
 
@@ -55,9 +65,20 @@ Where::
 *  pkFieldName - [Optional] identifies the pojo class attribute that is used as the primary key.  It is required for updates or if the pojo contains complex objects used in relationships (1-to-1 or 1-to-many).  The pkFieldName *MUST* match a corresponding getter/setter method in the pojo
 *  cacheKeyJavaType - [Optional] identify primary key java type when different than class attribute type
 
-=== *JDG Schema using Protobuf Definition and Marshaller(s)*
+See <<Module Configuration>> for information on configuring the pojo jar.
 
-The following properties are required when the protobuf definition file (.proto) and the pojo marshaller(s) are being used to configure the JDG schema: 
+=== Configure JDG Schema
+
+There are 2 options for how the JDG schema can be configured
+
+* use protobuf definition file (.proto) and marshallers
+* use the pojo annotations
+
+Regardless of which option that is chosen, there must also be a deployed pojo jar that contains the class(es). 
+
+==== *Using Protobuf Definition and Marshaller(s)*
+
+The following properties are required when the protobuf definition file (.proto) and the pojo marshaller(s) are being used to configure the JDG schema.
 
 |===
 |Property Name |Req. |Property Template|Description
@@ -67,22 +88,16 @@ The following properties are required when the protobuf definition file (.proto)
 | MessageDescriptor | Y | | Message descriptor package name in the protobuf descriptor file 
 |===
 
-The following property should be defined when using protobuf definition file and marshallers: 
 
-|===
-|Property Name |Req. |Property Template|Description
+==== *Using Pojo Annotations*
 
-| module | N | | Specify the {{ book.asName }} module that contains the cache classes that need to be loaded 
+The pojo class is the object that is used to store the data in the cache.  It should be built accordingly.
 
-|===
+*  If the pojo is to be used to define the schema based on its annotations, then should use this option.  See JDG Protobuf Annotations at https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_Data_Grid/6.6/html-single/Infinispan_Query_Guide/index.html#Custom_Fields_Indexing_with_Protobuf
+*  The class should be packaged into a jar so that it can be deployed as a module.   See <<Module Configuration>>
+*  If the root pojo, defined in CacheTypeMap property, contains other pojo(s) (e.g., 1-to-1 or 1-to-many relationship), then those child pojo's must be defined in the ChildClasses property so that they can get registered in the JDG schema.
 
-=== *JDG Schema using Pojo Annotations*
-
-The pojo class is the object that is used to store the data in the cache.  It should be built accordingly:
-
-*  If the pojo is to be used to define the schema, then should use the protobuf annotations.  See JDG Protobuf Annotations at https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_Data_Grid/6.6/html-single/Infinispan_Query_Guide/index.html#Custom_Fields_Indexing_with_Protobuf
-*  The class should be packaged into a jar so that it can be deployed as a module.
-*  If the root pojo, defined in CacheTypeMap property, contains other pojo(s) (e.g., 1-to-1 or 1-to-many relationship), then those child pojo's must be defined in the ChildClasses property so that they can get registered in the JDG schema.  The following property must be configured:
+The following property must be configured to defined the relationship classes 
 
 |===
 |Property Name |Property Template|Description
@@ -90,23 +105,42 @@ The pojo class is the object that is used to store the data in the cache.  It sh
 | ChildClasses | className[,className,..]]  | comma separated list of class names that indicate the child classes to register in the JDG schema
 |===
 
-=== *Enable Hotrod Client SSL*
 
-To enable the Hotrod client in the resource-adapter to communicate using SSL, configure the following properties on the resource adapter:
+=== Module Configuration
+
+The module configuration describes what's required of the pojo jar that contains the class(es) used to access the data.
+
+The following property must be defined in order to configure the pojo jar on the server.
 
 |===
-|Property Name |Description
+|Property Name |Req. |Description
 
-| TrustStoreFileName | File name of the truststore
-| TrustStorePassword | TrustStore Password
-| KeyStoreFileName   | File name of the keystore
-| KeyStorePassword   | KeyStore Password
-| SNIHostName        | [optional] SNI Host Name
+| module | Y | Specify the {{ book.asName }} module that contains the cache classes that need to be loaded.  This module must contain the className defined in the above section, see <<Configure Which Cache and Class>> 
+
 |===
 
-=== *Using for External Materialization*
 
-The following are the additional properties that need to be configured if using the Remote Cache for external materialization:
+The following is an example of the module.xml that should be used when deploying the pojo.
+
+[source,xml]
+.*Sample module.xml*
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="urn:jboss:module:1.0" name="com.client.quickstart.addressbook.pojos">
+    <resources>
+        <resource-root path="jdg-remote-cache-pojos.jar" />
+    </resources>
+
+    <dependencies>
+        <module name="org.infinispan.client.hotrod" slot="jdg-7.0" optional="true" services="export"/>
+   	<module name="org.infinispan.protostream" slot="jdg-7.0"  optional="true" services="export"/>
+    </dependencies>
+</module>
+----
+
+=== Using for External Materialization
+
+The following are the additional properties that need to be configured if using the Remote Cache for external materialization.
 
 |===
 |Property Name |Req. |Description
@@ -115,6 +149,92 @@ The following are the additional properties that need to be configured if using 
 | AliasCacheName   | Y | Cache name for the alias cache used in tracking aliasing of the caches used in materialization.  This cache can be shared with other configured materializations.
 |===
 
+=== JDG Resource Adapter Security Options
+
+==== *Enable Hotrod Client SSL*
+
+To enable the Hotrod client in the resource-adapter to communicate using SSL, configure the following properties on the resource adapter.
+
+|===
+|Property Name |Req. |Description
+
+| TrustStoreFileName | Y | File name of the truststore
+| TrustStorePassword | Y | TrustStore Password
+| KeyStoreFileName   | Y | File name of the keystore
+| KeyStorePassword   | Y | KeyStore Password
+| SNIHostName        | N | SNI Host Name
+|===
+
+See the link:http://infinispan.org/docs/9.0.x/infinispan_server_guide/infinispan_server_guide.html#_hot_rod_encryption[SSL Encrption] guide for more details on the properties.
+
+==== *Enable using Hot Rod Authentication*
+
+This section describes how to configure the JDG resource-adapter to utilize the Hot Rod Client authentication.
+
+The JDG server will need to have its _hotrod-connector_ configured to enable accessing using authentication. 
+
+[source,xml]
+.*Example configured hotrod-connector*
+----
+<hotrod-connector socket-binding="hotrod" cache-container="default">
+   <authentication security-realm="ApplicationRealm">
+      <sasl server-name="myhotrodserver" mechanisms="DIGEST-MD5" qop="auth" />
+   </authentication>
+</hotrod-connector>
+----
+
+Note the following
+
+* server-name attribute - it is the name that the server declares to incoming clients and therefore the client configuration must match the <<AuthServerName>> property.
+* security-realm - it should be the same one defined for <<AuthApplicationRealm>>
+* mechanisms - it should be the same one defined for <<AuthSASLMechanism>>
+
+
+The following properties define how the JDG resource-adapter must be configured to talk to the JDG server based on its defined _hotrod_connector_.
+
+|===
+|Property Name |Req. |Description
+
+| AuthServerName | Y | The name declared as the _server_name_ in the JDG Server
+| AuthApplicationRealm | Y | The security realm defined in the JDG server.
+| AuthSASLMechanism   | Y | The SASL _mechanisms_ (e.g., PLAN, DIGEST-MD5, etc.)
+|===
+
+The Hot Rod protocol supports authentication leveraging different SASL mechanisms. The supported SASL mechanisms (usually shortened as mechs) are.
+
+* PLAIN - This is the most insecure mech, since credentials are sent over the wire in plain-text format, however it is the simplest to get to work. In combination with encryption (i.e. SSL) it can be used safely
+* DIGEST-MD5 - This mech hashes the credentials before sending them over the wire, so it is more secure than PLAIN
+* GSSAPI - This mech uses Kerberos tickets, and therefore requires the presence of a properly configured Kerberos Domain Controller (such as Microsoft Active Directory)
+* EXTERNAL - This mech obtains credentials from the underlying transport (i.e. from a X.509 client certificate) and therefore requires encryption using client-certificates to be enabled.
+
+
+If using Hot Rod Authentication, then the following _admin_ user will need to be defined so that metadata can be obtained without having to have a user execute a query.   This user can be any JDG authorized user.
+
+|===
+|Property Name |Req. |Description
+
+| AdminUserName | Y | Username for administration operation
+| AdminPassword | Y | Password for administration operation
+|===
+
+There are 2 options for passing the users credentials to JDG
+
+* username/password
+* Subject
+
+When the username/password are not provided, the logic will be expecting to pull the Subject from the current context to use to as the credentials for the user.
+
+To configure username/password, set the following properties
+
+|===
+|Property Name |Req. | Description
+
+| AuthUserName | N | authorized username
+| AuthPassword | N | authorized password
+|===
+
+
+See the link:http://infinispan.org/docs/9.0.x/infinispan_server_guide/infinispan_server_guide.html#_hot_rod_authentication[Hot Rod Authentication] guide for more details on the properties.
 
 
 == *Examples*
@@ -123,40 +243,31 @@ There are many ways to create the data source, using CLI, link:AdminShell.adoc[A
 
 === *1st Example*
 
-The 1st example is an xml snippet of a resource-adapter that is using probufs and marshallers to configure the JDG schema:
+The 1st example is an xml snippet of a resource-adapter that is using probufs and marshallers to configure the JDG schema.
 
-[source,xml]
+[source]
 .*Sample Resource Adapter defining Protobuf Definition and Marshaller*
 ----
-               <resource-adapter id="infinispanRemQS">
-                    <module slot="main" id="org.jboss.teiid.resource-adapter.infinispan.hotrod"/>
-                    <connection-definitions>
-                        <connection-definition class-name="org.teiid.resource.adapter.infinispan.hotrod.InfinispanManagedConnectionFactory" jndi-name="java:/infinispanRemote" enabled="true" use-java-context="true" pool-name="infinispanDS">
-                            <config-property name="CacheTypeMap">
-                                addressbook:org.jboss.as.quickstarts.datagrid.hotrod.query.domain.Person;id
-                            </config-property>
-                            <config-property name="ProtobufDefinitionFile">
-                                 /quickstart/addressbook.proto
-                            </config-property>
-                            <config-property name="MessageDescriptor">
-                                quickstart.Person
-                            </config-property>
-                            <config-property name="Module">
-                                com.client.quickstart.pojos
-                            </config-property>
-                            <config-property name="MessageMarshallers">                              org.jboss.as.quickstarts.datagrid.hotrod.query.domain.Person:org.jboss.as.quickstarts.datagrid.hotrod.query.marshallers.PersonMarshaller,org.jboss.as.quickstarts.datagrid.hotrod.query.domain.PhoneNumber:org.jboss.as.quickstarts.datagrid.hotrod.query.marshallers.PhoneNumberMarshaller,org.jboss.as.quickstarts.datagrid.hotrod.query.domain.PhoneType:org.jboss.as.quickstarts.datagrid.hotrod.query.marshallers.PhoneTypeMarshaller
-                            </config-property>
-                            <config-property name="RemoteServerList">
-                                127.0.0.1:11322
-                            </config-property>
-                        </connection-definition>
-                    </connection-definitions>
-                </resource-adapter>
+batch
+
+/subsystem=resource-adapters/resource-adapter=ispnHotrod:add(module=org.jboss.teiid.resource-adapter.infinispan.dsl)
+/subsystem=resource-adapters/resource-adapter=ispnHotrod/connection-definitions=infinispanHotRodDS:add(jndi-name="java:/PersonJDGSource", class-name=org.teiid.resource.adapter.infinispan.dsl.InfinispanManagedConnectionFactory, enabled=true, use-java-context=true)
+/subsystem=resource-adapters/resource-adapter=ispnHotrod/connection-definitions=infinispanHotRodDS/config-properties=CacheTypeMap:add(value="datasourceCache:com.client.quickstart.addressbook.pojos.domain.Person;id")
+/subsystem=resource-adapters/resource-adapter=ispnHotrod/connection-definitions=infinispanHotRodDS/config-properties=Module:add(value="com.client.quickstart.addressbook.pojos")
+/subsystem=resource-adapters/resource-adapter=ispnHotrod/connection-definitions=infinispanHotRodDS/config-properties=RemoteServerList:add(value="127.0.0.1:11322")
+
+/subsystem=resource-adapters/resource-adapter=ispnHotrod/connection-definitions=infinispanHotRodDS/config-properties=ProtobufDefinitionFile:add(value="/quickstart/addressbook.proto")
+/subsystem=resource-adapters/resource-adapter=ispnHotrod/connection-definitions=infinispanHotRodDS/config-properties=MessageDescriptor:add(value="quickstart.Person")
+/subsystem=resource-adapters/resource-adapter=ispnHotrod/connection-definitions=infinispanHotRodDS/config-properties=MessageMarshallers:add(value=" com.client.quickstart.addressbook.pojos.domain.Person:com.client.quickstart.addressbook.pojos.marshallers.PersonMarshaller,com.client.quickstart.addressbook.pojos.domain.Address:com.client.quickstart.addressbook.pojos.marshallers.AddressMarshaller,com.client.quickstart.addressbook.pojos.domain.PhoneNumber:com.client.quickstart.addressbook.pojos.marshallers.PhoneNumberMarshaller")
+
+/subsystem=resource-adapters/resource-adapter=ispnHotrod:activate
+
+runbatch
 ----
 
 === *2nd Example*
 
-The 2nd example showing a pojo example with annotations and the xml snippet of the resource-adapter:
+The 2nd example showing a pojo example with annotations and the xml snippet of the resource-adapter.
 
 [source,java]
 .*Sample Pojo with Annotations*
@@ -208,22 +319,16 @@ public class Person {
 [source,xml]
 .*Sample Resource Adapter using Pojo with annotations*
 ----
-               <resource-adapter id="infinispanRemQSDSL">
-                    <module slot="main" id="org.jboss.teiid.resource-adapter.infinispan.dsl"/>
-                    <connection-definitions>
-                        <connection-definition class-name="org.teiid.resource.adapter.infinispan.dsl.InfinispanManagedConnectionFactory" jndi-name="java:/infinispanRemoteDSL" enabled="true" use-java-context="true" pool-name="infinispanRemoteDSL">
-                            <config-property name="RemoteServerList">
-                                127.0.0.1:11322
-                            </config-property>
-                            <config-property name="CacheTypeMap">
-                                addressbook_indexed:org.jboss.as.quickstarts.datagrid.hotrod.query.domain.Person;id
-                            </config-property>
-                            <config-property name="ChildClasses">
-                               org.jboss.as.quickstarts.datagrid.hotrod.query.domain.PhoneNumber
-                            </config-property>
-                        </connection-definition>
-                    </connection-definitions>
-                </resource-adapter>
+  batch
+
+/subsystem=resource-adapters/resource-adapter=ispnHotrod:add(module=org.jboss.teiid.resource-adapter.infinispan.dsl)
+/subsystem=resource-adapters/resource-adapter=ispnHotrod/connection-definitions=infinispanHotRodDS:add(jndi-name="java:/PersonJDGSource", class-name=org.teiid.resource.adapter.infinispan.dsl.InfinispanManagedConnectionFactory, enabled=true, use-java-context=true)
+/subsystem=resource-adapters/resource-adapter=ispnHotrod/connection-definitions=infinispanHotRodDS/config-properties=CacheTypeMap:add(value="primaryCache:org.jboss.as.quickstarts.datagrid.hotrod.query.domain.Person;id")
+/subsystem=resource-adapters/resource-adapter=ispnHotrod/connection-definitions=infinispanHotRodDS/config-properties=Module:add(value="com.client.quickstart.addressbook.pojos")
+/subsystem=resource-adapters/resource-adapter=ispnHotrod/connection-definitions=infinispanHotRodDS/config-properties=RemoteServerList:add(value="127.0.0.1:11322")
+/subsystem=resource-adapters/resource-adapter=ispnHotrod:activate
+
+runbatch
 ----
 
 === *3rd Example*
@@ -234,27 +339,17 @@ The 3rd example is using the JDG data source for materialization.
 [source,xml]
 .*Sample Resource Adapter for external materialization*
 ----
-                <resource-adapter id="infinispanRemQSDSL">
-                    <module slot="main" id="org.jboss.teiid.resource-adapter.infinispan.hotrod"/>
-                    <connection-definitions>
-                        <connection-definition class-name="org.teiid.resource.adapter.infinispan.hotrod.InfinispanManagedConnectionFactory" jndi-name="java:/infinispanRemoteDSL" enabled="true" use-java-context="true" pool-name="infinispanRemoteDSL">
-                            <config-property name="CacheTypeMap">
-                                addressbook_indexed:org.jboss.as.quickstarts.datagrid.hotrod.query.domain.Person;id
-                            </config-property>
-                            <config-property name="StagingCacheName">
-                                addressbook_indexed_mat
-                            </config-property>
-                            <config-property name="AliasCacheName">
-                                aliasCache
-                            </config-property>
-                            <config-property name="Module">
-                                com.client.quickstart.addressbook.pojos
-                            </config-property>
-                            <config-property name="RemoteServerList">
-                                127.0.0.1:11322
-                            </config-property>
-                        </connection-definition>
-                    </connection-definitions>
-                </resource-adapter>
+ batch
+
+/subsystem=resource-adapters/resource-adapter=ispnHotrod:add(module=org.jboss.teiid.resource-adapter.infinispan.dsl)
+/subsystem=resource-adapters/resource-adapter=ispnHotrod/connection-definitions=infinispanHotRodDS:add(jndi-name="java:/PersonJDGSource", class-name=org.teiid.resource.adapter.infinispan.dsl.InfinispanManagedConnectionFactory, enabled=true, use-java-context=true)
+/subsystem=resource-adapters/resource-adapter=ispnHotrod/connection-definitions=infinispanHotRodDS/config-properties=CacheTypeMap:add(value="primaryCache:org.jboss.as.quickstarts.datagrid.hotrod.query.domain.Person;id")
+/subsystem=resource-adapters/resource-adapter=ispnHotrod/connection-definitions=infinispanHotRodDS/config-properties=Module:add(value="com.client.quickstart.addressbook.pojos")
+/subsystem=resource-adapters/resource-adapter=ispnHotrod/connection-definitions=infinispanHotRodDS/config-properties=RemoteServerList:add(value="127.0.0.1:11322")
+/subsystem=resource-adapters/resource-adapter=ispnHotrod/connection-definitions=infinispanHotRodDS/config-properties=StagingCacheName:add(value="stagingCache")
+/subsystem=resource-adapters/resource-adapter=ispnHotrod/connection-definitions=infinispanHotRodDS/config-properties=AliasCacheName:add(value="aliasCache")
+/subsystem=resource-adapters/resource-adapter=ispnHotrod:activate
+
+runbatch
 ----
 
