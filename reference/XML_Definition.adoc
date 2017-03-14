@@ -24,6 +24,7 @@ For example, if a VDB defines a table "TableA" in schema "modelName" with column
 
         <permission>
             <resource-name>modelName.TableA</resource-name>
+            <resource-type>TABLE</resource-type>
             <allow-create>true</allow-create>
             <allow-read>true</allow-read>
             <allow-update>true</allow-update>
@@ -38,11 +39,13 @@ For example, if a VDB defines a table "TableA" in schema "modelName" with column
 
         <permission>
             <resource-name>modelName.TableA</resource-name>
+            <resource-type>TABLE</resource-type>
             <allow-read>true</allow-read>
         </permission>
 
         <permission>
             <resource-name>modelName.TableA.colum2</resource-name>
+            <resource-type>COLUMN</resource-type>
             <allow-read>false</allow-read>
         </permission>
 
@@ -62,6 +65,8 @@ The above XML defined three data roles, "RoleA" which allows everything except d
 The "mapped-role-name" defines the container JAAS roles that are assigned the data role. For assigning roles to your users in the {{ book.asName }}, check out the instructions for the selected Login Module. Check the "Admin Guide" for configuring Login Modules.
 
 Using the grant-all option provides every permission on over object in the vdb.  When importing a vdb and its roles, grant-all applies only to resources from the imported vdb. 
+
+NOTE: The optional resource-type element currently accepts LANGUAGE, SCHEMA, DATABASE, PROCEDURE, FUNCTION, TABLE, COLUMN.  This property ensures that migration issues will be prevented when switching to DDL vdbs or dealing with multi-part table names.  
 
 *Additional Role Attributes*
 

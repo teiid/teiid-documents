@@ -2,6 +2,10 @@
 
 == Properties DATABASE Level
 
+* _domain-ddl_
+
+* _schema-ddl_
+
 * _cache-metadata_
 
 Can be "true" or "false". defaults to "false" for -vdb.xml deployments otherwise "true". If "false", Teiid will obtain metadata once for every launch of the vdb. "true" will save a file containing the metadata into the PROFILE/data/teiid directory
@@ -28,7 +32,6 @@ NOTE: An admin needs to configure a matching "custom-security" login module in s
 * _connection.XXX_ 
 
 For use by the ODBC transport and OData to set default connection/execution properties. See link:../client-dev/Driver_Connection.adoc[Driver Connection] for all properties. Note these are set on the connection after it has been established.
-
 
 [source,xml]
 ----
