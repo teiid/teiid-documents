@@ -17,6 +17,8 @@ The translator supports queries against a single sheet. It supports ordering, ag
 
 There are no google-spreadsheet importer settings, but it can provide metadata for VDBs.
 
+WARNING: A sheet with a header that is defined in Teiid, which later has all data rows removed is no longer valid for access through Teiid.  The google api will treat the header as a data row at that point and thus queries will no longer be valid.
+
 == JCA Resource Adapter
 
 The Teiid specific Google Spreadsheet Data Sources Resource Adapter should be used with this translator.
