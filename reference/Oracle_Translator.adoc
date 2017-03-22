@@ -5,6 +5,8 @@ Also see common link:JDBC_Translators.html[JDBC Translator Information]
 
 The Oracle Translator, known by the type name *_oracle_*, is for use with Oracle 9i or later.
 
+NOTE: The Oracle provide JDBC driver may cause memory issues due to excessive buffer usage.  Please see link:https://issues.jboss.org/browse/TEIID-4815[a related issue] and link:http://www.oracle.com/technetwork/topics/memory.pdf[an Oracle whitepaper].
+
 == Importer Properties 
 
 * _useGeometryType_- Use the Teiid Geomety type when importing columns with a source type of SDO_GEOMETRY. Defaults to false.
