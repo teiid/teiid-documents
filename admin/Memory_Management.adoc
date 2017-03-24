@@ -34,7 +34,7 @@ Some of _BufferManager’s_ properties are described below. Note that the perfor
 
 *max-reserve-kb* (default -1) - setting determines the total size in kilobytes of batches that can be held by the _BufferManager_ in memory. This number does not account for persistent batches held by soft (such as index pages) or weak references. The default value of -1 will auto-calculate a typical max based upon the max heap available to the VM. The auto-calculated value assumes a 64bit architecture and will limit buffer usage to 40% of the first gigabyte of memory beyond the first 300 megabytes (which are assumed for use by the AS and other Teiid purposes) and 50% of the memory beyond that. The additional caveat here is that if the size of the memory buffer space is not specified, then it will effectively be allocated out of the max reserve space. A small adjustment is also made to the max reserve to account for batch tracking overhead.
 
-NOTE: With default settings and an 8GB VM size, then _max-reserve-kb_ will at a max use: (((1024-300) * 0.4) + (7 * 1024 * 0.5)) = 4373.6 MB or 4,478,566 KB
+NOTE: With default settings and an 8GB VM size, then _max-reserve-kb_ will at a max use: (((1024-300) * 0.4) + (7 * 1024 * 0.5)) = 4373.6 MB or 4,478,566 KB - before considering the overhead for persistent batches or the fixed memory buffer.
 
 The _BufferManager_ automatically triggers the use of a canonical value cache if enabled when more than 25% of the reserve is in use. This can dramatically cut the memory usage in situations where similar value sets are being read through Teiid, but does introduce a lookup cost. If you are processing small or highly similar datasets through Teiid, and wish to conserve memory, you should consider enabling link:System_Properties.adoc[value caching].
 
@@ -79,12 +79,15 @@ It’s also important to keep in mind that Teiid has memory and other hard limit
 
 Handling a source that has tera/petabytes of data doesn't by itself impact Teiid in any way. What matters is the processing operations that are being performed and/or how much of that data do we need to store on a temporary basis in Teiid. With a simple forward-only query, Teiid will return a petabytes of data with minimal memory usage.
 
-=== Inferred Limits
+=== Other Limits
 
 To prevent run away memory or disk consumption:
 
 1. Error code TEIID31260. A single lob (xml, clob, blob, json) created on the server side is limited to the .25 * (max buffer space) / (max active plans).
-2. Error code TEIID31261. A single table or tuple buffer is limited to the greater of (max reserve kb) or (max buffer space) / (max active plans).    
+2. Error code TEIID31261. A single table or tuple buffer is limited to a portion of the total max reserve, fixed memory buffer, and disk space.     
+
+If needed an administrator can further restrict memory usage from each session by setting the system property org.teiid.maxSessionBufferSizeEstimate to the desired size in bytes.
+This is based upon the memory footprint estimate and may not correspond exactly to heap or disk consumption. 
 
 === Other Considerations for Sizing
 
