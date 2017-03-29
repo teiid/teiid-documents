@@ -231,7 +231,7 @@ A view is a virtual table. A view contains rows and columns,like a real table. T
 
 You can add functions, JOIN statements and WHERE clauses to a view data as if the data were coming from one single table.
 
-.BNF for Create Table
+.BNF for Create View
 [source,sql]
 ----
 CREATE VIEW {table-name} AS {transformation_query} 
