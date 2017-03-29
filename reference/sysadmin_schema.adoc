@@ -85,6 +85,8 @@ with uses_me as (
       from usage, uses_me where level < 10 and usage.uses_uid = uses_me.UID) select * from uses_me
 ----
 
+NOTE: ElementName is not yet implemented and will instead return null.
+
 === SYSADMIN.MatViews
 
 This table supplies information about all the materailized views in the virtual database.
