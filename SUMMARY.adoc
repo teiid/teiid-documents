@@ -90,6 +90,7 @@
 .. link:client-dev/Using_Teiid_with_EclipseLink.adoc[Using Teiid with EclipseLink]
 .. link:client-dev/GeoServer_Integration.adoc[GeoServer Integration]
 .. link:client-dev/QGIS_Integration.adoc[QGIS Integration]
+.. link:client-dev/SQLAlchemy_Integration.adoc[SQLAlchemy Integration]
 .. link:client-dev/Reauthentication.adoc[Reauthentication]
 .. link:client-dev/Execution_Properties.adoc[Execution Properties]
 ... link:client-dev/XML_extensions.adoc[XML extensions]

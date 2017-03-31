@@ -1,0 +1,37 @@
+= SQLAlchemy Integration
+
+link:http://www.sqlalchemy.org/[SQLAlchemy] is an open source SQL toolkit and ORM for Python.  
+
+== Prerequisites
+
+- Have SQLAlchemy installed installed.  Teiid integration was last tested with version 1.1.6. 
+
+- Your Teiid installation should already be setup for link:../admin/Socket_Transports.adoc[ODBC] access.  This allows the built-in support of SQLAlchemy 
+for PostgreSQL to be used.
+
+- Teiid needs to be configured to report the PostgreSQL server version from the version() function as "PostgreSQL 8.2" or later, rather than the default which is "Teiid version".  
+Do this on the runtime by setting the system property org.teiid.pgVersion to "PostgreSQL 8.2".  
+
+NOTE: that this may affect all clients that use the pg transport.  If you need to set this property on VDB or other basis, please log an enhancement request.  
+
+== Usage
+
+You should be able to use a SQLAlchemy engine for querying.  Reflective import of most table metadata is also supported.
+
+[source,python]
+.*Sample Usage*
+----
+import sqlalchemy
+from sqlalchemy import create_engine, Table, MetaData
+engine = create_engine("postgresql+psycopg2://user:password@host:315432/vdb")
+engine.connect()
+#engine is ready for queries
+result = connection.execute("select * from some_table")
+#reflective table import
+meta = MetaData()
+test = Table('public.test', meta, autoload=True, autoload_with=engine,postgresql_ignore_search_path=True)
+----
+
+== Limitations
+
+Only a subset of the PostgreSQL dialect is supported.  The primary intent is to allow querying through Teiid.  If there is additional features that are needed, please log an enhancement request.
