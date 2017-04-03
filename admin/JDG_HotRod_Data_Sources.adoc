@@ -9,10 +9,10 @@ There are many different ways to configure this resource-adapter based on differ
 
 *  using complex pojos (i.e, pojo contains other pojo's).
 *  using either pojo protobuf annotations or protobuf definition files, to configure the JDG schema
-*  wanting the enable HotRod security, using username/password and/or SSL
-*  utilizing the JDG cache for materialization
+*  wanting to enable HotRod security using username/password and/or SSL
+*  utilizing the JDG cache for materialization to improve federated query performance
 
-To handle different pojo types in the same cache, where each pojo object can be exposed as a separate table, it will require a different configured resource-adapter for each root pojo type.
+NOTE:  JDG does _not_ recommend storing multiple pojo's in the same cache (excluding a complex pojo that contains other pojo's).  Therefore, a different resource-adapter will be required for each pojo that is to be accessed and should be referencing different cache names when defining the CacheTypeMap property below.
 
 
 == *Requirement*
@@ -28,12 +28,12 @@ See link:../reference/Infinispan_HotRod_Translator.adoc[Infinispan HotRod Transl
 
 The following are the sections for configuring a resource-adapter to connect, configure schema, and access cache.
 
-* <<HotRod Remote Cache Connection>>
-* <<Configure Which Cache and Class>>
-* <<Configure JDG Schema>>
-* <<Using for External Materialization>>
-* <<Module Configuration>>
-* <<JDG Security Options>>
+*  <<HotRod Remote Cache Connection>>
+*  <<Configure Which Cache and Class>>
+*  <<Configure JDG Schema>>
+*  <<Using for External Materialization>>
+*  <<Module Configuration>>
+*  <<JDG Security Options>>
 
 
 === HotRod Remote Cache Connection
