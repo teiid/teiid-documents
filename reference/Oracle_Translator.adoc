@@ -101,3 +101,11 @@ CREATE FOREIGN FUNCTION sdo_filter (arg1 Object,  arg2 string,  arg3 string) RET
 CREATE FOREIGN FUNCTION sdo_filter (arg1 Object,  arg2 Object,  arg3 string) RETURNS string;
 CREATE FOREIGN FUNCTION sdo_filter (arg1 string,  arg2 object,  arg3 string) RETURNS string;
 ----
+
+=== Pushdown Functions
+
+The Oracle translator, depending upon the version of Oracle, will register other non-geospatial pushdown functions with the engine.  This includes:
+
+- TRUNC, both numeric and timestamp versions 
+- LISTAGG, which requires the Teiid SQL syntax "LISTAGG(arg [, delim] ORDER BY ...)"
+  
