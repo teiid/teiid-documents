@@ -1,9 +1,9 @@
 
 == Google Spreadsheet Data Sources
 
-Authentication to your google account may be done in two ways. ClientLogin (requires login and password) or OAuth (more complicated, requires user to supply refresh token).
+The Google JCA connector is named teiid-connector-google.rar. The examples include a sample google.xml file. The JCA connector has number of config-properties to drive authentication.  The JCA connector connects to exactly one spreadsheet with each sheet exposed as a table.
 
-Google JCA connector is named teiid-connector-google.rar. The examples include a sample google.xml file. The JCA connector has number of config-properties to drive authentication.  The JCA connector connects to exactly one spreadsheet.
+Authentication to your google account may be done using OAuth, which requires a refresh token (outlined below).
 
 |===
 |Config property |Description
