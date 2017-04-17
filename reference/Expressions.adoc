@@ -225,14 +225,24 @@ Syntax Rules:
 * An XMLAGG or JSONARRAY_AGG ORDER BY clause cannot be used when windowed.
 * The window specification ORDER BY clause cannot reference alias names or use positional ordering.
 * Windowed aggregates may not use DISTINCT if the window specification is ordered.
+* Analytical value functions may not use DISTINCT and require the use of an ordering in the window specification. 
 
 == Analytical Function Definitions
+
+Ranking Functions:
 
 * ROW_NUMBER() – functional the same as COUNT(*) with the same window specification. Assigns a number to each row in a partition starting at 1.
 * RANK() – Assigns a number to each unique ordering value within each partition starting at 1, such that the next rank is equal to the count of prior rows.
 * DENSE_RANK() – Assigns a number to each unique ordering value within each partition starting at 1, such that the next rank is sequential.
 
 All values are integers - an exception will be thrown if a larger value is needed.
+
+Value Functions:
+
+* FIRST_VALUE(val) – Return the first value in the window with the given ordering
+* LAST_NUMBER(val) – Return the last observed value in the window with the given ordering
+* LEAD(val [, offset [, default]]) - Access the ordered value in the window that is offset rows ahead of the current row.  If there is no such row, then the default value will be returned.  If not specified the offset is 1 and the default is null.
+* LAG(val [, offset [, default]]) - Access the ordered value in the window that is offset rows behind of the current row.  If there is no such row, then the default value will be returned.  If not specified the offset is 1 and the default is null.
 
 == Processing
 
