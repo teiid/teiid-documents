@@ -23,7 +23,7 @@ You should be able to use a SQLAlchemy engine for querying.  Reflective import o
 ----
 import sqlalchemy
 from sqlalchemy import create_engine, Table, MetaData
-engine = create_engine("postgresql+psycopg2://user:password@host:315432/vdb")
+engine = create_engine("postgresql+psycopg2://user:password@host:35432/vdb")
 engine.connect()
 #engine is ready for queries
 result = connection.execute("select * from some_table")
