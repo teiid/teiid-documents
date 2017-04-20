@@ -5,6 +5,53 @@
 
 JSON functions provide functionality for working with http://www.json.org/[JSON] (JavaScript Object Notation) data.
 
+== Sample Data For Examples
+
+Examples provided with XML functions use the following table structure
+
+[source,sql]
+----
+TABLE  Customer (
+    CustomerId integer PRIMARY KEY,
+    CustomerName varchar(25),
+    ContactName varchar(25)
+    Address varchar(50),
+    City varchar(25),
+    PostalCode varchar(25),
+    Country varchar(25),                
+);
+----
+
+with Data
+
+|===
+|CustomerID |CustomerName |ContactName |Address |City |PostalCode |Country
+
+|87
+|Wartian Herkku
+|Pirkko Koskitalo
+|Torikatu 38
+|Oulu
+|90110
+|Finland
+
+|88
+|Wellington Importadora
+|Paula Parente
+|Rua do Mercado, 12
+|Resende
+|08737-363
+|Brazil
+
+|89
+|White Clover Markets
+|Karl Jablonski
+|305 - 14th Ave. S. Suite 3B
+|Seattle
+|98128
+|USA
+|===
+
 == JSONTOXML
 
 Returns an xml document from JSON.
@@ -123,6 +170,20 @@ Would return
 ["a\"b",1,null,false,"2010-11-21"]
 ----
 
+[source,sql]
+Using JSONARRAY on a Table
+----
+SELECT JSONARRAY(CustomerId, CustomerName)       
+FROM   Customer c
+WHERE  c.CustomerID >= 88;
+
+==========================================================
+[88,"Wellington Importadora"]
+[89,"White Clover Markets"]
+----
+
+
+
 == JSONOBJECT
 
 Returns a JSON object.
@@ -152,6 +213,40 @@ Would return
 {"val":"a\"b","expr2":1,"null":null}
 ----
 
+[source,sql]
+Using JSONOBJECT on a Table
+----
+SELECT JSONOBJECT(CustomerId, CustomerName)       
+FROM   Customer c
+WHERE  c.CustomerID >= 88;
+
+==========================================================
+{"CustomerId":88, "CustomerName":"Wellington Importadora"}
+{"CustomerId":89, "CustomerName":"White Clover Markets"}
+----
+
+[source,sql]
+----
+SELECT JSONOBJECT(JSONOBJECT(CustomerId, CustomerName) as Customer)       
+FROM   Customer c
+WHERE  c.CustomerID >= 88;
+
+==========================================================
+{"Customer":{"CustomerId":88, "CustomerName":"Wellington Importadora"}}
+{"Customer":{"CustomerId":89, "CustomerName":"White Clover Markets"}}
+----
+
+[source,sql]
+----
+SELECT JSONOBJECT(JSONARRAY(CustomerId, CustomerName) as Customer)       
+FROM   Customer c
+WHERE  c.CustomerID >= 88;
+
+==========================================================
+{"Customer":[88, "Wellington Importadora"]}
+{"Customer":[89, "White Clover Markets"]}
+----
+
 == JSONPARSE
 
 Validates and returns a JSON result.
@@ -169,8 +264,34 @@ json parse of a simple literal value
 
 [source,sql]
 ----
-jsonParse('"a"', true)
+jsonParse('{"Customer":{"CustomerId":88, "CustomerName":"Wellington Importadora"}}', true)
 ----
+
+== JSONARRAY_AGG
+creates a JSON array result as a Clob including null value. This is similar to JSONARRAY but aggregates its contents into single object
+
+[source,sql]
+----
+SELECT JSONARRAY_AGG(JSONOBJECT(CustomerId, CustomerName))       
+FROM   Customer c
+WHERE  c.CustomerID >= 88;
+
+==========================================================
+[{"CustomerId":88, "CustomerName":"Wellington Importadora"}, {"CustomerId":89, "CustomerName":"White Clover Markets"}]
+----
+
+You can also wrap array as
+
+[source,sql]
+----
+SELECT JSONOBJECT(JSONARRAY_AGG(JSONOBJECT(CustomerId as id, CustomerName as name)) as Customer)      
+FROM   Customer c
+WHERE  c.CustomerID >= 88;
+
+==========================================================
+{"Customer":[{"id":89,"name":"Wellington Importadora"},{"id":100,"name":"White Clover Markets"}]}
+----
+
 
 == Conversion to JSON
 
