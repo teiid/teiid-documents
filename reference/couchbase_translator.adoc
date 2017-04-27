@@ -1,0 +1,162 @@
+
+= Couchbase Translator
+:toc: manual
+:toc-placement: preamble
+
+The Couchbase Translator, known by the type name _couchbase_, exposes querying functionality to link:../admin/Couchbase_Data_Sources.adoc[Couchbase Data Sources]. The Couchbase Translator provide a SQL Integration solution for integrating Couchbase JSON document with relational model, which allows applications to use normal SQL queries against Couchbase Server, translating standard SQL-92 queries into equivalent N1QL client API calls. The translator translates Teiid push down commands into https://developer.couchbase.com/documentation/server/4.5/n1ql/n1ql-language-reference/index.html[Couchbase N1QL].
+
+== Generating Schema
+
+Couchbase is able to store data that does not follow the rules of data typing and structure that apply to traditional relational tables and columns. Couchbase data is organized into buckets and documents, which can contain nested arrays or arrays of differently-typed elements. Because traditional JDBC toolsets might not support these data structures, the data needs to be mapped to a relational form. To achieve this, the Couchbase Connector will sample data from a Couchbase server(namespace) and then generate the schema that is needed for JDBC applications. When a VDB has defined a Couchbase Source, the connector will automatically generates schema. 
+
+To ensure consistent support for your Couchbase data, use the importer properties to do futher defining in shcema generation.
+
+[source,xml]
+----
+<model name="CouchbaseModel">
+    <property name="importer.sampleSize" value="10"/>
+    <property name="importer.typeNameList" value="`test`:`type`"/>
+    <source name="couchbase" translator-name="translator-couchbase" connection-jndi-name="java:/couchbaseDS"/>
+</model>
+----
+
+* SampleSize - Set the SampleSize property to the number of documents that you want the connector to sample to detect the structure of the data.
+* TypeNameList - Set the TypeNameList property to a comma-separated list of the attributes that the buckets use to specify document types. Each list item must be a bucket name surrounded by  back quotes (`), a colon (:), and an attribute name surrounded by back quotes (`). For example, the following TypeNameList setting indicates that the test, default, and beer-sample buckets use the type attribute to specify the type of each document,
+
+[source,text]
+----
+TypeNameList=`test`:`type`,`default`:`type`,`beer-sample`:`type`
+----
+
+When generating a schema, the connector creates a base table for each different document type specified by the attributes in the list. For example, if the `test` bucket contains documents that have the type values `Customer` and `Order`, then the connector creates two tables named `Customer` and `Order` in the schema. 
+
+A `ISARRAYTABLE` OPTION in table used to differentiate the array table and normal document mapped table. 
+
+* A normal table represent data from collections of Couchbase documents. Documents appear as rows, and all attributes that are not arrays appear as columns. In each table, the primary key column named as documentID that that identifies which Couchbase document each row comes from. If no typed name defined the table name is the keyspace name, but in the Couchbase layer, the name of the table will be translate to keyspace anme.
+* If a table defined the `ISARRAYTABLE` OPTION, then it provide support for arrays, each array table contains the data from one array, and each row in the table represents an element from the array. If an element contains an nested array, an additional virtual tables as needed to expand the nested data. In each array table there also has a documentID column play as a foreign key that identifies the Couchbase document the array comes from and references the documentID from normal table. An index column (with the suffix _IDX in its name) to indicate the position of the element within the array.
+
+=== Example of Table Creation during Schema Generation
+
+The following example shows the tables that the Couchbase connector would generate if it connected to a Couchbase, the keyspace named `test` under namespace `default` contains two kinds of documents named `Customer` and `Order`.
+
+The `Customer` document is of type Customer and contains the following attributes. The SavedAddresses attribute is an array.
+
+[source,text]
+----
+{
+  "ID": "Customer_12345",
+  "Name": "John Doe",
+  "SavedAddresses": [
+    "123 Main St.",
+    "456 1st Ave"
+  ],
+  "type": "Customer"
+}
+----
+
+The `Order` document is of type Order and contains the following attributes. The CreditCard attribute is an object, and the Items attribute is an array of objects.
+
+[source,text]
+----
+{
+  "CreditCard": {
+    "CVN": 123,
+    "CardNumber": "4111 1111 1111 111",
+    "Expiry": "12/12",
+    "Type": "Visa"
+  },
+  "CustomerID": "Customer_12345",
+  "Items": [
+    {
+      "ItemID": 89123,
+      "Quantity": 1
+    },
+    {
+      "ItemID": 92312,
+      "Quantity": 5
+    }
+  ],
+  "Name": "Air Ticket",
+  "type": "Order"
+}
+----
+
+When the VDP deploy and load metedata, the connector exposes these collections as two tables show as below:
+
+.*Customer*
+image:images/couchbase-schemaMapping-example-customer.png[Customer]
+
+.*Order*
+image:images/couchbase-schemaMapping-example-order.png[Order]
+
+The SavedAddresses array from the Customer and the Items array from the Order document do not appear in above table. Instead, the following tables are generated for each array:
+
+.*Customer_SavedAddresses*
+image:images/couchbase-schemaMapping-example-customer-address.png[Customer_SavedAddresses]
+
+.*Order_Items*
+image:images/couchbase-schemaMapping-example-order-item.png[Order_Items]
+
+== Usage
+
+The Couchbase Translator supports INSERT/UPDATE/DELETE/SELECT statements with a restrictive set of capabilities including: count(*), comparison predicates, Order By, Group By, LIMIT etc. Consider a custom extension or create an enhancement request should your usage require additional capabilities.
+
+If you are using Designer Tooling, to create VDB then:
+
+* Create/use a Teiid Designer Model project
+* Use "Teiid Connection >> Source Model" importer, create a new JBoss Data Source connection profile, specifying the JNDI name for resource adapter configured link:../admin/Couchbase_Data_Sources.adoc[Couchbase Data Sources] and use _couchbase_ as translator type. The source model will be created when you finish with this importer.
+* Create a VDB and deploy into Teiid Server and use either jdbc, odbc, odata etc to query.
+
+== JCA Resource Adapter
+
+The Teiid specific Couchbase Resource Adapter should be used with this translator. See link:../admin/Couchbase_Data_Sources.adoc[Couchbase Data Sources] for connecting to a Couchbase cluster.
+
+== Procedures
+
+=== Native Queries
+
+Couchbase source procedures may be created using the teiid_rel:native-query extension - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The procedure will invoke the native-query similar to a direct procedure call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality.
+
+[source,sql]
+.*Example of executing N1QL directly*
+----
+EXEC CouchbaseVDB.native('DELETE FROM test USE KEYS ["customer-3", "order-3"]')
+----
+
+=== getDocuments
+
+Returns the json documents that match the given document id or id pattern as BLOBs.
+
+[source,sql]
+----
+getDocuments(id, keyspace)
+----
+
+* id - The document id or SQL like pattern of what documents to return, for example, the '%' sign is used to define wildcards (missing letters) both before and after the pattern.
+* keyspace - The keyspace name used to retrieve the documents.
+
+[source,sql]
+.*Example of getDocuments()*
+----
+call getDocuments('customer%', 'test')
+----
+
+=== getDocument
+
+Returns a json document that match the given document id as BLOB.
+
+[source,sql]
+----
+getDocument(id, keyspace)
+----
+
+* id - The document id of what document to return.
+* keyspace - The keyspace name used to retrieve the document.
+
+[source,sql]
+.*Example of getDocument()*
+----
+call getDocument('customer-1', 'test')
+----
+
+
