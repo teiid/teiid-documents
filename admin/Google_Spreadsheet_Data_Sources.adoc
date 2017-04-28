@@ -15,7 +15,10 @@ Authentication to your google account may be done using OAuth, which requires a 
 |Use guide below to retrieve RefreshToken. Request access to Google Drive and Spreadsheet API.
 
 |SpreadsheetName
-|Required property with name of the Spreadsheet that is datasource for this connector.
+|Required property with name of the Spreadsheet that is datasource for this connector.  By default it is assumed to be a title.
+
+|SpreadsheetName
+|Optional property to designate the spreadsheet name is a key rather than a title.
 
 |BatchSize
 |Maximum number of rows that can be fetched at a time. Defaults to 4096.
