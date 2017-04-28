@@ -17,8 +17,8 @@ Authentication to your google account may be done using OAuth, which requires a 
 |SpreadsheetName
 |Required property with name of the Spreadsheet that is datasource for this connector.  By default it is assumed to be a title.
 
-|SpreadsheetName
-|Optional property to designate the spreadsheet name is a key rather than a title.
+|Key
+|Optional boolean property to designate the spreadsheet name is a key rather than a title.
 
 |BatchSize
 |Maximum number of rows that can be fetched at a time. Defaults to 4096.
