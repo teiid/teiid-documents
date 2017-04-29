@@ -99,7 +99,7 @@ image:images/couchbase-schemaMapping-example-order-item.png[Order_Items]
 
 == Usage
 
-The Couchbase Translator supports INSERT/UPDATE/DELETE/SELECT statements with a restrictive set of capabilities including: count(*), comparison predicates, Order By, Group By, LIMIT etc. Consider a custom extension or create an enhancement request should your usage require additional capabilities.
+The Couchbase Translator supports INSERT, UPSERT, UPDATE, DELETE, SELECT and bulk INSERT statements with a restrictive set of capabilities including: count(*), comparison predicates, Order By, Group By, LIMIT etc. Consider a custom extension or create an enhancement request should your usage require additional capabilities.
 
 If you are using Designer Tooling, to create VDB then:
 
