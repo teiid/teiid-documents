@@ -67,7 +67,9 @@ Partial aggregate pushdown allows for grouping operations above multi-source joi
 
 == Optional Join
 
-The optional join hint indicates to the optimizer that a joined table should be omitted if none of its columns are used by the output of the user query or in a meaningful way to construct the results of the user query. This hint is typically only used in view layers containing multi-source joins.
+An optional or redundant join is one that can be removed by the optimizer.  The optimizer will automatically remove inner joins based upon a foreign key or left outer joins when the outer results are unique.
+
+The optional join hint goes beyond the automatic cases to indicate to the optimizer that a joined table should be omitted if none of its columns are used by the output of the user query or in a meaningful way to construct the results of the user query. This hint is typically only used in view layers containing multi-source joins.
 
 The optional join hint is applied as a comment on a join clause. It can be applied in both ANSI and non-ANSI joins. With non-ANSI joins an entire joined table may be marked as optional.
 
