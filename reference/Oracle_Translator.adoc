@@ -108,4 +108,10 @@ The Oracle translator, depending upon the version of Oracle, will register other
 
 - TRUNC, both numeric and timestamp versions 
 - LISTAGG, which requires the Teiid SQL syntax "LISTAGG(arg [, delim] ORDER BY ...)"
+
+=== SQLXML
+
+If you need to retrieve SQLXML values from oracle and are getting oracle.xdb.XMLType or OPAQUE instances instead, you need to use client driver later than 11.2, 
+have the xdb.jar and xmlparserv2.jar jars in the classpath, and set the system property oracle.jdbc.getObjectReturnsXMLType="false".  
+See also link:https://docs.oracle.com/cd/E11882_01/java.112/e16548/jdbcvers.htm#JJDBC28110[the Oracle documentation].
   
