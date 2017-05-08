@@ -88,6 +88,8 @@ Using this CallerIdentity module, the connection pool for data source is segment
 This is similar to the CallerIdentity login module, where the calling user’s credentials and roles are passed as is. 
 This is especially useful when dealing with non-text based credentials where you want to pass down the payload as is.
 
+NOTE: this login module will typically only be used in OAuth delegation scenarios.
+
 [source,xml]
 .standalone-teiid.xml
 ----
