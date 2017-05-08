@@ -71,6 +71,7 @@ See the link:OData_Translator.adoc[OData Translator]
 
 == Object Sources
 
+* link:Infinispan_Translator.adoc[Infinispan HotRod Mode]
 * link:Infinispan_LibMode_Translator.adoc[JDG / Infinispan Library Mode]
 * link:Infinispan_HotRod_Translator.adoc[JDG / Infinispan HotRod Mode]
 * link:Intersystems_Cache_Translator.adoc[Intersystems Cache Object Database]
