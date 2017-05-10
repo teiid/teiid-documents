@@ -216,14 +216,11 @@ DROP SCHEMA {schema-name};
 If you are designing a source schema, you can add the TABLES, PROCEDURES manually to represent the data source, however in certain situations this can be tedious, or complicated. For example, if you need to represent 100s of existing tables from your Oracle database in Teiid? Or if you are working with MongoDB, how are you going to map a document structure into a TABLE? For this purpose, Teiid provides an import metadata command, that can import/create metadata that represents the source. The following command can be used for that purpose with most of the sources (LDAP source is only exception, not providing import)
 
 ----
-IMPORT FOREIGN SCHEMA {foreign-schema-name} [ <import qualifications> ] 
+IMPORT FOREIGN SCHEMA {foreign-schema-name}  
     FROM (SERVER {server-name} | REPOSITORY {repository-name}) 
     INTO {schema-name}
     OPTIONS (<options-clause>)
 
-<import qualifications> ::=
-    LIMIT TO (<table name list>) | EXCEPT (<table name list>)
-    
 <options-clause> ::= 
     <key> <value>[,<key>, <value>]*
 ----
@@ -241,7 +238,6 @@ The below example shows importing metadata from a PostgreSQL using server exampl
 ----
 -- import from native database
 IMPORT FOREIGN SCHEMA public 
-    LIMIT TO customers, orders
     FROM SERVER pgsql 
     INTO test
     
