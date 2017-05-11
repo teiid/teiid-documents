@@ -36,8 +36,9 @@ IMPORT FOREIGN SCHEMA public FROM SERVER pgsql INTO test
 
 == DDL File Format
 
-For compatibility with the existing metadata system, DDL statements must appear in a specific order to define a virtual database.  All of the database structure must be defined first - this includes create/alter/drop database, domains, imports, roles, and schemas statements.
-Then the schema object and permission DDL may appear. 
+For compatibility with the existing metadata system, DDL statements must appear in a specific order to define a virtual database.  
+All of the database structure must be defined first - this includes create/alter/drop database, domains, vdb import, roles, and schemas statements.
+Then the schema object, schema import, and permission DDL may appear. 
 
 == Create a Database
 
@@ -432,3 +433,14 @@ GRANT READ ON COLUMN test.Order.amount
     CONDITION 'customerid <> user()' 
     TO base-role;
 ----
+
+== Differences with vdb.xml metadata
+
+Using a .ddl file instead of a .xml file to define a vdb will result in differences in how metadata is loaded when using a full server deploymnet of Teiid.
+
+Using a vdb.ddl file does not support:
+* metadata caching at the schema level - although this feature may be added later
+* metadata reload if a datasource is unavailable at deployment time
+* parallel loading of source metadata
+
+All of same limitations affect all VDBs (regardless of .xml or .ddl) when using Teiid Embedded.
