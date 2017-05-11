@@ -33,9 +33,9 @@ If the database supports a transactional rename operation, you can use the defau
 NOTE: https://issues.jboss.org/browse/TEIID-4294[TEIID-4294] raises that not every database supports a transactional rename, either as separate or a block of statements.  
 If this is the case you should consider using a LOADNUMBER column, or a custom load strategy that maintains only a single table.
 
-=== JBoss Data Grid (JDG)
+=== Infinispan
 
-*  JBoss Data Grid (JDG) - for in-memory caching of results. see the link:../reference/Infinispan_HotRod_Translator.adoc#External_Materialization[HotRod Translator].
+*  Infinispan - for in-memory caching of results. see the link:../reference/Infinispan_Translator.adoc[Infinispan Translator].
 
 
 == View Options
