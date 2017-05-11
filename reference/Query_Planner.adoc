@@ -414,7 +414,8 @@ Dependent join is the key optimization we use to efficiently process multi-sourc
 * Plan Aggregates - performs aggregate decomposition over a join or union
 * Push Limit - pushes the affect of a limit node further into the plan
 * Push Non-Join Criteria - this rule will push predicates out of an on clause if it is not necessary for the correctness of the join.
-* Push Select Criteria - pushed select nodes as far as possible through unions, joins, and views layers toward the access nodes.  In most cases movement down the tree is good as this will filter rows earlier in the plan.  We currently do not undo the decisions made by Push Select Criteria.  However in situations where criteria cannot be evaluated by the source, this can lead to sub optimal plans.
+* Push Select Criteria - push select nodes as far as possible through unions, joins, and views layers toward the access nodes.  In most cases movement down the tree is good as this will filter rows earlier in the plan.  We currently do not undo the decisions made by Push Select Criteria.  However in situations where criteria cannot be evaluated by the source, this can lead to sub optimal plans.
+* Push Large IN - push IN predicates that are larger than directly supported by the translator to be processed as a dependent set.
 
 One of the most important optimization related to pushing criteria, is how the criteria will be pushed through join.  Consider the following plan tree that represents a subtree of the plan for the query `select * from A inner join b on (A.x = B.x) where B.y = 3`
 
