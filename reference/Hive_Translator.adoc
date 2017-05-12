@@ -36,3 +36,6 @@ When the database name used in the Hive is different than "default", the metadat
 
 This is fixed in > 0.13 version Hive Driver. See https://issues.apache.org/jira/browse/HIVE-4256[https://issues.apache.org/jira/browse/HIVE-4256]
 
+== Limitations
+
+Empty tables may report their description without datatype information.  You will need exclude these tables or use the useDatabaseMetaData option for import.
