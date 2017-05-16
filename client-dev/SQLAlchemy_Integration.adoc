@@ -9,11 +9,6 @@ link:http://www.sqlalchemy.org/[SQLAlchemy] is an open source SQL toolkit and OR
 - Your Teiid installation should already be setup for link:../admin/Socket_Transports.adoc[ODBC] access.  This allows the built-in support of SQLAlchemy 
 for PostgreSQL to be used.
 
-- Teiid needs to be configured to report the PostgreSQL server version from the version() function as "PostgreSQL 8.2" or later, rather than the default which is "Teiid version".  
-Do this on the runtime by setting the system property org.teiid.pgVersion to "PostgreSQL 8.2".  
-
-NOTE: that this may affect all clients that use the pg transport.  If you need to set this property on VDB or other basis, please log an enhancement request.  
-
 == Usage
 
 You should be able to use a SQLAlchemy engine for querying.  Reflective import of most table metadata is also supported.
@@ -34,4 +29,16 @@ test = Table('public.test', meta, autoload=True, autoload_with=engine,postgresql
 
 == Limitations
 
-Only a subset of the PostgreSQL dialect is supported.  The primary intent is to allow querying through Teiid.  If there is additional features that are needed, please log an enhancement request.
+Only a subset of the PostgreSQL dialect is supported.  The primary intent is to allow querying through Teiid.  If there are additional features that are needed, please log an enhancement request.
+
+== Application Support
+
+=== Superset
+
+link:http://airbnb.io/superset/[Superset] is an open source data visualization and dashboard builder.  It uses SQLAlchemy to access relational sources.  
+
+Once you have followed the above instructions, you may access a Teiid VDB by adding a Database under the Sources menu.  
+
+The URL will be of the same form shown in the SQLAlchemy integration: postgresql+psycopg2://user:password@host:35432/vdb    
+
+Basic usage scenarios involving aggregation and all basic types have been tested.  If there are additional features that are needed, please log an enhancement request
