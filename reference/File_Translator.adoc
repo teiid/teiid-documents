@@ -37,7 +37,13 @@ VDB XML Override Example
 
 === getFiles
 
-Retrieve all files as BLOBs with an optional extension at the given path.
+[source,sql]
+----
+getFiles(String pathAndPattern) returns 
+TABLE(file blob, filePath string, lastModified timestamp, created timestamp, size long)
+----
+
+Retrieve all files as BLOBs matching the given path and pattern.
 
 [source,sql]
 ----
@@ -52,8 +58,15 @@ If '*' is not used and the path doesn’t exist and ExceptionIfFileNotFound is t
 
 === getTextFiles
 
-Retrieve all files as CLOB(s) with the an optional extension at the
-given path.
+[source,sql]
+----
+getTextFiles(String pathAndPattern) returns 
+TABLE(file clob, filePath string, lastModified timestamp, created timestamp, size long)
+----
+
+NOTE: the size reports the number of bytes
+
+Retrieve all files as CLOB(s) matching the given path and pattern.
 
 [source,sql]
 ----
