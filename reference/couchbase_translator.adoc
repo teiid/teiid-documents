@@ -9,39 +9,62 @@ The Couchbase Translator, known by the type name _couchbase_, exposes querying 
 
 Couchbase is able to store data that does not follow the rules of data typing and structure that apply to traditional relational tables and columns. Couchbase data is organized into buckets and documents, which can contain nested arrays or arrays of differently-typed elements. Because traditional JDBC toolsets might not support these data structures, the data needs to be mapped to a relational form. To achieve this, the Couchbase Connector will sample data from a Couchbase server(namespace) and then generate the schema that is needed for JDBC applications. When a VDB has defined a Couchbase Source, the connector will automatically generates schema. 
 
+=== Importer Properties 
+
 To ensure consistent support for your Couchbase data, use the importer properties to do futher defining in shcema generation.
 
+[cols="2,5a,2"]
+|===
+|Name |Description |Default
+
+|sampleSize
+|Set the SampleSize property to the number of documents per buckets that you want the connector to sample the documents data.
+|100
+
+|typeNameList
+|Set the TypeNameList property to a comma-separated list of the attributes that the buckets use to specify document types. Each list item must be a bucket name surrounded by  back quotes (`), a colon (:), and an attribute name surrounded by back quotes (`). For example, the following TypeNameList setting indicates that the test, default, and beer-sample buckets use the type attribute to specify the type of each document,
+----
+TypeNameList=`test`:`type`,`default`:`type`,`beer-sample`:`type`
+----
+when generating a schema, the connector creates a base table for each different document type specified by the attributes in the list. For example, if the `test` bucket contains documents that have the type values `Customer` and `Order`, then the connector creates two tables named `Customer` and `Order` in the schema.
+|N/A
+
+|===
+
 [source,xml]
+.*An example of importer properties*
 ----
 <model name="CouchbaseModel">
-    <property name="importer.sampleSize" value="10"/>
+    <property name="importer.sampleSize" value="100"/>
     <property name="importer.typeNameList" value="`test`:`type`"/>
     <source name="couchbase" translator-name="translator-couchbase" connection-jndi-name="java:/couchbaseDS"/>
 </model>
 ----
 
-* SampleSize - Set the SampleSize property to the number of documents that you want the connector to sample to detect the structure of the data.
-* TypeNameList - Set the TypeNameList property to a comma-separated list of the attributes that the buckets use to specify document types. Each list item must be a bucket name surrounded by  back quotes (`), a colon (:), and an attribute name surrounded by back quotes (`). For example, the following TypeNameList setting indicates that the test, default, and beer-sample buckets use the type attribute to specify the type of each document,
+=== Additional Table Options
 
-[source,text]
-----
-TypeNameList=`test`:`type`,`default`:`type`,`beer-sample`:`type`
-----
+[cols="2,5a"]
+|===
+|Name |Description
 
-When generating a schema, the connector creates a base table for each different document type specified by the attributes in the list. For example, if the `test` bucket contains documents that have the type values `Customer` and `Order`, then the connector creates two tables named `Customer` and `Order` in the schema. 
+|teiid_couchbase:NAMEDTYPEPAIR
+|A `NAMEDTYPEPAIR` OPTION in table declare the name of typed key/value pair. This option is used once the typeNameList importer property is used and the table is typeName referenced table.
 
-A `ISARRAYTABLE` OPTION in table used to differentiate the array table and normal document mapped table. 
+|teiid_couchbase:ISARRAYTABLE
+|A `ISARRAYTABLE` OPTION in table used to differentiate the array table and normal document mapped table.
 
-* A normal table represent data from collections of Couchbase documents. Documents appear as rows, and all attributes that are not arrays appear as columns. In each table, the primary key column named as documentID that that identifies which Couchbase document each row comes from. If no typed name defined the table name is the keyspace name, but in the Couchbase layer, the name of the table will be translate to keyspace anme.
+* A normal table represent data from collections of Couchbase documents. Documents appear as rows, and all attributes that are not arrays appear as columns. In each table, the primary key column named as documentID that that identifies which Couchbase document each row comes from. If no typed name defined the table name is the keyspace name, but in the Couchbase layer, the name of the table will be translate to keyspace name.
 * If a table defined the `ISARRAYTABLE` OPTION, then it provide support for arrays, each array table contains the data from one array, and each row in the table represents an element from the array. If an element contains an nested array, an additional virtual tables as needed to expand the nested data. In each array table there also has a documentID column play as a foreign key that identifies the Couchbase document the array comes from and references the documentID from normal table. An index column (with the suffix _IDX in its name) to indicate the position of the element within the array.
 
-=== Example of Table Creation during Schema Generation
+|===
+
+=== An example of Schema Generation
 
 The following example shows the tables that the Couchbase connector would generate if it connected to a Couchbase, the keyspace named `test` under namespace `default` contains two kinds of documents named `Customer` and `Order`.
 
 The `Customer` document is of type Customer and contains the following attributes. The SavedAddresses attribute is an array.
 
-[source,text]
+[source,json]
 ----
 {
   "ID": "Customer_12345",
@@ -56,7 +79,7 @@ The `Customer` document is of type Customer and contains the following attribute
 
 The `Order` document is of type Order and contains the following attributes. The CreditCard attribute is an object, and the Items attribute is an array of objects.
 
-[source,text]
+[source,json]
 ----
 {
   "CreditCard": {
