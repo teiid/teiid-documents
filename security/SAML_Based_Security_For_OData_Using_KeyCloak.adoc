@@ -2,6 +2,7 @@ This document will provide detailed instructions to enable SAML authentication o
 
 This examples will show case an example, where Teiid's OData rest interface is secured using SAML using Keycloak as IDP. The VDB accessed by the OData interface, the pass-through of SAML Assertion for OAuth token (SAML Bearer) is not yet available in KeyCloak, when the feature is available then Teiid will support it. However, if you are working with a IDP that supports the SAML Bearer, Teiid does support the mechanism where one can pass the "access-token" from web  layer to the data source layer. See the OAuth example as template and possible configuration needed. (note it is not exactly same, but very similar) 
 
+Tested with Keycloak 3.1.0.Final version.
 
 === Download and install Keycloak as a separate web server.
 
@@ -29,47 +30,30 @@ image:images/saml-keys.png[saml-keys]
 === Install and configure Teiid server
 
 * Download and install Teiid server
-* Download Keycloak adapter for the EAP, and unzip over the Teiid server installation
-* Download Keycloak SAML adapter for EAP, and unzip over the Teiid server installation. (optional but need for another exercise)
-* Edit the standalone-teiid.xml, add the following sections
+* Download Keycloak SAML adapter for EAP, and unzip over the Teiid server installation. 
 
-Run the following CLI to add Keycloak specific modules to the server 
 
+Run the following to add Keycloak specific modules to the server 
+
+[source,sh]
 ---- 
-/extension=org.keycloak.keycloak-saml-adapter-subsystem:add(module=org.keycloak.keycloak-saml-adapter-subsystem) 
-/extension=org.keycloak.keycloak-adapter-subsystem:add(module=org.keycloak.keycloak-adapter-subsystem) 
+$ cd $WILDFLY_HOME
+$ unzip keycloak-saml-wildfly-adapter-dist-${version}.zip
 ---- 
 
-above commands will result in XML in standalone.xml or domain.xml file like 
+Now, start the Teiid Server and using the jboss-cli.sh file run the following to install the KeyCloak confiuration into the Teiid Server.
 
-[source,xml]
+[source,sh]
 ----
-    <extension module="org.keycloak.keycloak-saml-adapter-subsystem"/>
-    <extension module="org.keycloak.keycloak-adapter-subsystem"/>
-----
-    
-    
-Add these two subsystems any where in the file, use the following the CLI script 
-
----- 
-/subsystem=keycloak:add 
-/subsystem=keycloak-saml:add 
+./bin/jboss-cli.sh --file=adapter-install-saml.cli
 ---- 
 
-above commands will result in XML in standalone.xml or domain.xml file like 
-
-
-[source,xml]
-----
-        <subsystem xmlns="urn:jboss:domain:keycloak-saml:1.1"/>
-        <subsystem xmlns="urn:jboss:domain:keycloak:1.1"/>
-----    
 
 In security-domains add following login module using the following CLI 
 
 ---- 
-subsystem=security/security-domain=teiid-security/authentication=classic/login-module=RealmDirect:write-attribute(name=flag, value=sufficient)
-/subsystem=security/security-domain=teiid-security/authentication=classic/login-module=keycloak:add(code=org.keycloak.adapters.jboss.KeycloakLoginModule, flag=sufficient) 
+subsystem=security/security-domain=saml-security/authentication=classic/login-module=RealmDirect:write-attribute(name=flag, value=sufficient)
+/subsystem=security/security-domain=saml-security/authentication=classic/login-module=keycloak:add(code=org.keycloak.adapters.jboss.KeycloakLoginModule, flag=sufficient) 
 reload 
 ---- 
 
@@ -77,7 +61,7 @@ the above commands will result in XML in standalone.xml or domain.xml file like 
 
 [source,xml]
 ----
-    <security-domain name="teiid-security">
+    <security-domain name="saml-security">
         <authentication>
             <login-module code="org.keycloak.adapters.jboss.KeycloakLoginModule" flag="sufficient"/>
             <login-module code="RealmDirect" flag="sufficient">
@@ -87,11 +71,11 @@ the above commands will result in XML in standalone.xml or domain.xml file like 
     </security-domain>
 ----
 
-This finishes all the server side changes that are required to make OAuth authentication using Keycloak.
+This finishes all the server side changes that are required to make SAML authentication using Keycloak.
 
 == OData Application WAR 
 
-In order to use OAuth authentication, the OData WAR needs to be updated to make use of the OAuth based security domain. By default Teiid installation comes with OData web service WAR file configured with "HTTP Basic" authentication. This WAR needs to either replaced or updated.
+In order to use SAML authentication, the OData WAR needs to be updated to make use of the OAuth based security domain. By default Teiid installation comes with OData web service WAR file configured with "HTTP Basic" authentication. This WAR needs to either replaced or updated.
 
 === Build the new OData WAR file that supports SAML.
 
@@ -110,6 +94,8 @@ The build the WAR files running the maven command
 ----
 mvn clean package
 ----
+
+NOTE: You may have to update Teiid and Keycloak versions in the pom.xml file
 
 The above command will generate a new WAR file for deployment. Follow the below directions to deploy this new WAR file to the server 
 
@@ -135,6 +121,22 @@ or overlay the new one using CLI script like
 ---- 
 deployment-overlay add --name=myOverlay --content=/WEB-INF/web.xml=teiid-web-security/teiid-odata-saml-keycloak/src/main/webapp/WEB-INF/web.xml,/WEB-INF/jboss-web.xml=teiid-web-security/teiid-odata-saml-keycloak/src/main/webapp/WEB-INF/jboss-web.xml,/META-INF/MANIFEST.MF=teiid-web-security/teiid-odata-saml-keycloak/src/main/webapp/META-INF/MANIFEST.MF,/WEB-INF/keycloak-saml.xml=teiid-web-security/teiid-odata-saml-keycloak/src/main/webapp/WEB-INF/keycloak-saml.xml,/WEB-INF/keycloak.jks=teiid-web-security/teiid-odata-saml-keycloak/src/main/webapp/WEB-INF/keycloak.jks --deployments=teiid-olingo-odata4.war --redeploy-affected 
 ---- 
+
+In the VDB, define the security layer for the VDB as "saml-security", for example
+
+----
+<vdb name="samldemo" version="1">
+    <property name="security-domain" value="saml-security"/>
+    <model visible="true" name="PM1">
+        <source name="any" translator-name="loopback"/> 
+        <metadata type = "DDL"><![CDATA[        
+            CREATE FOREIGN TABLE G1 (e1 integer PRIMARY KEY, e2 varchar(25), e3 double);
+        ]]>
+       </metadata>        
+    </model>
+</vdb>
+----
+
 
 === Testing the example using Web Browser
 
