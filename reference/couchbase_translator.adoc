@@ -36,17 +36,20 @@ To ensure consistent support for your Couchbase data, use the importer propertie
 |*
 
 |typeNameList
-|A comma-separate list of key/value pair that the buckets(keyspaces) use to specify document types. Each list item must be a bucket(keyspace) name surrounded by back quotes (`), a colon (:), and an attribute name surrounded by back quotes (`):
+|A comma-separate list of key/value pair that the buckets(keyspaces) use to specify document types. Each list item must be a bucket(keyspace) name surrounded by back quotes, a colon, and an attribute name surrounded by back quotes.
+.Syntax of typeNameList
 ----
 `KEYSPACE`:`ATTRIBUTE`,`KEYSPACE`:`ATTRIBUTE`,`KEYSPACE`:`ATTRIBUTE`
 ----
 * KEYSPACE - the keyspaces must be under same namespace it either can be different one, or are same one. 
 * ATTRIBUTE - the attribute must be non object/array, resident on the root of keyspace, and it's type should be equivalent String. If a typeNameList set a specifc bucket(keyspace) has multiple types, and a document has all these types, the first one will be chose.
-For example, the following TypeNameList indicates that the test, default, and beer-sample buckets(keyspaces) use the type attribute to specify the type of each document, during schema generation, all type referenced value will be treated as table name.
+
+For example, the TypeNameList below indicates that the buckets(keyspaces) test, default, and beer-sample use the type attribute to specify the type of each document, during schema generation, all type referenced value will be treated as table name.
 ----
 TypeNameList=`test`:`type`,`default`:`type`,`beer-sample`:`type`
 ----
-the  following TypeNameList indicates that the bucket(keyspace) test use type, name and category attribute to specify the type of each document, during schema generation, the teiid connector scan the documents under test, if a document has attribute as any of type, name and category, it's referenced value will be treated as table name.
+
+The TypeNameList below indicates that the bucket(keyspace) test use type, name and category attribute to specify the type of each document, during schema generation, the teiid connector scan the documents under test, if a document has attribute as any of type, name and category, it's referenced value will be treated as table name.
 ----
 TypeNameList=`test`:`type`,`test`:`name`,`test`:`category`
 ---- 
