@@ -87,13 +87,17 @@ While all of Teiid’s logs are prefixed with _"org.teiid"_, there are more spec
 
 == Command Logging
 
-Command logging captures executing commands in the Teiid System. This includes user commands (that have been submitted to Teiid at an INFO level), data source commands (that are being executed by the connectors at a DEBUG level), and query plan commands (for when the query planning is performed at a TRACE level) are tracked through command logging.
+Command logging captures executing commands in the Teiid System. This includes user commands (that have been submitted to Teiid at an INFO level), data source commands (that are being executed by the connectors at a DEBUG level), and query plans (at a TRACE level) are tracked through command logging.
 
 The user command, "START USER COMMAND", is logged when Teiid starts working on the query for the first time. This does not include the time the query was waiting in the queue. And a corresponding user command, "END USER COMMAND", is logged when the request is complete (i.e. when statement is closed or all the batches are retrieved). There is only one pair of these for every user query.
 
-The query plan command, "PLAN USER COMMAND", is logged when Teiid finishes the query planning process. There is no corresponding ending log entry.
+The query plan command, "PLAN USER COMMAND", is logged when Teiid finishes the query planning process. There is no corresponding ending log entry, but with trace logging enabled the query plan will be included with subsequent user command events.
 
-The data source command, "START DATA SRC COMMAND", is logged when a query is sent to the data source. And a corresponding data source command, "END SRC COMMAND", is logged when the execution is closed (i.e all the rows has been read). There can be one pair for each data source query that has been executed by Teiid, and there can be number of pairs depending upon your query.
+The data source command, "START DATA SRC COMMAND", is logged when a query is sent to the data source. And a corresponding data source command, "END SRC COMMAND", is logged when the execution is closed (i.e all the rows has been read). 
+There can be one pair for each data source query that has been executed by Teiid, and there can be any number of pairs depending upon your user query.  
+
+The SRC command itself is then translated into 1 or more source statements, operations, etc. For sources that have textual representations of the native source query, each will be reported in a "SOURCE SRC COMMAND" event as at the DEBUG level with the field sourceCommand representing the 
+SQL, SOQL, LDAP query etc. that is actually issued.  
 
 With this information being captured, the overall query execution time in Teiid can be calculated. Additionally, each source query execution time can be calculated. If the overall query execution time is showing a performance issue, then look at each data source execution time to see where the issue maybe.
 
