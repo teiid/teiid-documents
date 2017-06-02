@@ -1,6 +1,6 @@
-This document will provide detailed instructions to enable OAuth V2 authentication on Teiid's OData interface using the Keycloak as authentication server (IDP). Please note that use a different IDP server will not work with this implementaion as OAuth implementions are not interoperable. To work with separate IDP than Keycloak consult their documentation, replace the web layer semantics, like the "login-config" in web.xml file etc. Providing the details of other IDP is beyond the scope of this document.
+This document will provide detailed instructions to enable OAuth V2 authentication on Teiid's OData interface using the Keycloak as authentication server (IDP). Please note that use a different IDP server will not work with this implementaion as OAuth2 implementions are not interoperable. To work with separate IDP than Keycloak consult their documentation, replace the web layer semantics, like the "login-config" in web.xml file etc. Providing the details of other IDP is beyond the scope of this document.
 
-This examples will show case an example, where Teiid's OData rest interface is secured using OAuth using Keycloak as IDP. The VDB accessed by the OData interface also depends on another web service which is used as a data source, that is also secured with OAuth using the same Keycloak IDP. The central idea behind this example is to pass the same "access-token" used at OData interface layer to passthrough the Teiid layer to bottom data source layer and gain access to the source.
+This examples will show case an example, where Teiid's OData rest interface is secured using OAuth using Keycloak using OpenID Connect. The VDB accessed by the OData interface also depends on another web service which is used as a data source, that is also secured with OAuth using the same Keycloak IDP. The central idea behind this example is to pass the same "access-token" used at OData interface layer to passthrough the Teiid layer to bottom data source layer and gain access to the source.
 
 
 === Download and install Keycloak as a separate web server.
@@ -37,54 +37,32 @@ image:images/database-client.png[database-client]
 === Install and configure Teiid server
 
 * Download and install Teiid server
-* Download Keycloak adapter for the EAP, and unzip over the Teiid server installation
-* Download Keycloak SAML adapter for EAP, and unzip over the Teiid server installation. (optional but need for another exercise)
-* Edit the standalone-teiid.xml, add the following sections
+* Download Keycloak adapter for the EAP, and unzip over the Teiid server installation or follow Keycloak installtion directions.
 
-Run the following CLI to add Keycloak specific modules to the server 
 
-[source,CLI]
+Run the following to add Keycloak specific modules to the server 
+
+[source,sh]
 ---- 
-/extension=org.keycloak.keycloak-saml-adapter-subsystem:add(module=org.keycloak.keycloak-saml-adapter-subsystem) 
-/extension=org.keycloak.keycloak-adapter-subsystem:add(module=org.keycloak.keycloak-adapter-subsystem) 
+$ cd $WILDFLY_HOME
+$ unzip keycloak-wildfly-adapter-dist-${version}.zip
 ---- 
 
-above commands will result in XML in standalone.xml or domain.xml file like 
+Now, start the Teiid Server and using the jboss-cli.sh file run the following to install the KeyCloak confiuration into the Teiid Server.
 
-[source,xml]
+[source,sh]
 ----
-    <extension module="org.keycloak.keycloak-saml-adapter-subsystem"/>
-    <extension module="org.keycloak.keycloak-adapter-subsystem"/>
+./bin/jboss-cli.sh --file=adapter-install.cli
 ----
-    
-    
-Add these two subsystems any where in the file, use the following the CLI script 
 
-[source,CLI]
----- 
-/subsystem=keycloak:add 
-/subsystem=keycloak-saml:add 
----- 
-
-above commands will result in XML in standalone.xml or domain.xml file like 
-
-[source,xml]
-----
-        <subsystem xmlns="urn:jboss:domain:keycloak-saml:1.1"/>
-        <subsystem xmlns="urn:jboss:domain:keycloak:1.1"/>
-----    
-
-In security-domains add following security domains using the following CLI 
+The Keycloak is installed, now we need to install security-domain called "passthrough". Note that the web layer is using OAuth2, but at the VDB layer, this logged in user need to be passed through and this security domain will help with that.
 
 [souce,CLI]
 ---- 
-/subsystem=security/security-domain=oauth:add(cache-type=default) 
-/subsystem=security/security-domain=oauth/authentication=classic:add 
-/subsystem=security/security-domain=oauth/authentication=classic/login-module=oauth:add(code=org.teiid.jboss.PassthroughIdentityLoginModule, flag=required, module=org.jboss.teiid) 
-
-/subsystem=security/security-domain=keycloak:add(cache-type=default) 
-/subsystem=security/security-domain=keycloak/authentication=classic:add 
-/subsystem=security/security-domain=keycloak/authentication=classic/login-module=keycloak:add(code=org.keycloak.adapters.jboss.KeycloakLoginModule, flag=required) 
+./bin/jboss-cli.sh --connect
+/subsystem=security/security-domain=passthrough:add(cache-type=default) 
+/subsystem=security/security-domain=passthrough/authentication=classic:add 
+/subsystem=security/security-domain=passthrough/authentication=classic/login-module=passthrough:add(code=org.teiid.jboss.PassthroughIdentityLoginModule, flag=required, module=org.jboss.teiid) 
 
 reload 
 ---- 
@@ -93,39 +71,18 @@ above commands will result in XML in standalone.xml or domain.xml file like (you
 
 [source,xml]
 ----
-    <security-domain name="oauth">
+    <security-domain name="passthrough">
         <authentication>
             <login-module code="org.teiid.jboss.PassthroughIdentityLoginModule" flag="required" module="org.jboss.teiid"/>
         </authentication>
     </security-domain>
-    <security-domain name="keycloak">
-        <authentication>
-            <login-module code="org.keycloak.adapters.jboss.KeycloakLoginModule" flag="required"/>
-        </authentication>
-    </security-domain>
 ----
 
-
-Under Teiid subsystem, change the "security-domain" of the "odata" transport, to 
-
-[source,CLI]
----- 
-/subsystem=teiid/transport=odata:write-attribute(name=authentication-security-domain, value=oauth) 
----- 
-
-results in XML 
-
-[source,xml]
-----
-    <transport name="odata">
-        <authentication security-domain="oauth"/>
-    </transport>
-----
 This finishes all the server side changes that are required to make OAuth authentication using Keycloak.
 
 == OData Application WAR 
 
-In order to use OAuth authentication, the OData WAR needs to be updated to make use of the OAuth based security domain. By default Teiid installation comes with OData web service WAR file configured with "HTTP Basic" authentication. This WAR needs to either replaced or updated.
+In order to use OAuth2 authentication, the OData WAR needs to be updated to make use of the OAuth2 based security domain. By default Teiid installation comes with OData web service WAR file configured with "HTTP Basic" authentication. This WAR needs to either replaced or updated.
 
 === Build the new OData WAR file that supports OAuth.
 
@@ -144,15 +101,18 @@ to build the WAR files running the maven command
 mvn clean package
 ----
 
+NOTE: You may have to update Teiid and Keycloak versions in the pom.xml file
+
 The above command will generate a new WAR file for deployment. Follow the below directions to deploy this new WAR file. 
 
 ==== Teiid Server on WildFly 
 
 Replace the <wildfly>/modules/system/layers/dv/org/jboss/teiid/main/deployments/teiid-olingo-odata4.war" file with new WAR file, by executing a command similar to 
 
-{code} 
-cp teiid-web-security/odata-oauth-keycloak/target/teiid-odata-oauth-keycloak-{version}.war <wildfly>/modules/system/layers/dv/org/jboss/teiid/main/deployments/teiid-olingo-odata4.war 
-{code} 
+----
+cp teiid-web-security/odata-oauth-keycloak/target/teiid-odata-oauth-keycloak-{version}.war \
+   <wildfly>/modules/system/layers/dv/org/jboss/teiid/main/deployments/teiid-olingo-odata4.war 
+----
 
 ==== JDV Server 
 
@@ -172,64 +132,18 @@ deployment-overlay add --name=myOverlay --content=/WEB-INF/web.xml=teiid-web-sec
 
 === Working with example VDB
 
-Edit the standalone-teiid.xml and under resource-adapters subsystem, add the following to add access to a database-service from the Teiid query engine.
-
-[source,xml]
-----
-    <resource-adapter id="database">
-        <module slot="main" id="org.jboss.teiid.resource-adapter.webservice"/>
-        <transaction-support>NoTransaction</transaction-support>
-        <connection-definitions>
-            <connection-definition class-name="org.teiid.resource.adapter.ws.WSManagedConnectionFactory" 
-                                jndi-name="java:/database" enabled="true" use-java-context="true" 
-                                pool-name="teiid-database-ds">
-                <config-property name="SecurityType">
-                    OAuth
-                </config-property>
-                <config-property name="EndPoint">
-                    http://localhost:8180/database/
-                </config-property>
-                <security>
-                    <security-domain>oauth</security-domain>
-                </security>
-            </connection-definition>
-        </connection-definitions>
-    </resource-adapter>
-----
-
-Add a VDB with following contents (oauthdemo-vdb.xml)
 
 [source,xml]
 ----
 <vdb name="oauthdemo" version="1">
+    <property name="security-domain" value="passthough"/>
     <model visible="true" name="PM1">
-        <source name="array" translator-name="loopback"/> 
+        <source name="any" translator-name="loopback"/> 
         <metadata type = "DDL"><![CDATA[        
             CREATE FOREIGN TABLE G1 (e1 integer PRIMARY KEY, e2 varchar(25), e3 double);
         ]]>
        </metadata>        
     </model>
-    
-    <model name="view" type="VIRTUAL">
-        <metadata type = "DDL"><![CDATA[        
-            create view message (msgto string primary key, msgfrom string, heading string, body string) 
-            as 
-                SELECT A.msgto, A.msgfrom, A.heading, A.body
-                FROM
-                  (EXEC restsvc.invokeHttp(action=>'GET', endpoint=>'sample', stream=>'TRUE')) AS f, 
-                  XMLTABLE('/note' PASSING XMLPARSE(DOCUMENT f.result) COLUMNS 
-                    msgto string PATH 'to', 
-                    msgfrom string PATH 'from', 
-                    heading string PATH 'heading', 
-                    body string PATH 'body') AS A;           
-        ]]>
-       </metadata>   
-    </model>
-    
-    <model name="restsvc" type="PHYSICAL" visible="true">
-        <property name="importer.importWSDL" value="false"/>
-        <source name="restsvc" translator-name="ws" connection-jndi-name="java:/database"/>
-    </model>    
 </vdb>
 ----
 
@@ -250,50 +164,10 @@ There are two different mechanisms for testing this example. One is purely for t
 Using the browser issue a query  (the use of browser is needed because, this process does few redirects only browsers can automatically follow)
 
 ----
-http://localhost:8180/odata4/kerberos/auth
+http://localhost:8180/odata4/oauthdemo/PM1/G1
 ----
 
-then you should see a message like "Congratulations!!! Login successful..". What this process is doing is negotiating a "access-token" from the Keycloak authentication server and places this in the client's web-session, such that subsequent calls to the service use this token for access.
-
-Now to fetch the data from the "database-service" using the negotiated "access-token" issue a query  
-
-[source]
-----
-http://localhost:8180/odata4/oauthdemo/view/message
-----
-
-If all the configuration is setup correctly, then you will see the response like below.
-
-[source,xml]
-----
-<?xml version='1.0' encoding='UTF-8'?>
-<a:feed xmlns:a="http://www.w3.org/2005/Atom" xmlns:m="http://docs.oasis-open.org/odata/ns/metadata"
-    xmlns:d="http://docs.oasis-open.org/odata/ns/data" m:context="$metadata#mesage">
-    <a:id>http://localhost:8180/odata4/saml.1/RestViewModel/mesage</a:id>
-    <a:entry>
-        <a:id>mesage('Tove')</a:id>
-        <a:title />
-        <a:summary />
-        <a:updated>2016-01-18T20:10:48Z</a:updated>
-        <a:author>
-            <a:name />
-        </a:author>
-        <a:link rel="edit" href="mesage('Tove')" />
-        <a:category scheme="http://docs.oasis-open.org/odata/ns/scheme"
-            term="#saml.1.RestViewModel.mesage" />
-        <a:content type="application/xml">
-            <m:properties>
-                <d:msgto>Tove</d:msgto>
-                <d:msgfrom>Jani</d:msgfrom>
-                <d:heading>Reminder</d:heading>
-                <d:body>Don't forget me this weekend!</d:body>
-            </m:properties>
-        </a:content>
-    </a:entry>
-</a:feed>
-----
-
-WARNING: When above method is used to capture access token, it is possible that the access token gets expired after its lifespan, in that situation a new access token needs to be negotiated.
+The user will be presented with Keycloak based login page, once the credentials are presented the results of the above request are shown.
 
 === Calling programatically
 
@@ -325,9 +199,9 @@ from the above you can take the "access_token" and issue the query to fetch resu
 
 [source]
 ----
-curl -k -H "Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiI0YjI4NDMzYS1.." http://localhost:8180/odata4/oauthdemo/view/message
+curl -k -H "Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiI0YjI4NDMzYS1.." http://localhost:8180/odata4/oauthdemo/PM1/G1
 ----
 
-You should see same XML response as above. Please note that to programatically achieve the access_token in your own program (not using curl) you can see some suggestions in this document [http://keycloak.github.io/docs/userguide/keycloak-server/html/direct-access-grants.html]
+You should see same XML response as above. Please note that to programatically achieve the access_token in your own program (not using curl) you can see some suggestions in this document [https://keycloak.gitbooks.io/documentation/server_development/topics/admin-rest-api.html]
 
 

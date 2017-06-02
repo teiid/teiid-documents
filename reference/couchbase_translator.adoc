@@ -5,43 +5,153 @@
 
 The Couchbase Translator, known by the type name _couchbase_, exposes querying functionality to link:../admin/Couchbase_Data_Sources.adoc[Couchbase Data Sources]. The Couchbase Translator provide a SQL Integration solution for integrating Couchbase JSON document with relational model, which allows applications to use normal SQL queries against Couchbase Server, translating standard SQL-92 queries into equivalent N1QL client API calls. The translator translates Teiid push down commands into https://developer.couchbase.com/documentation/server/4.5/n1ql/n1ql-language-reference/index.html[Couchbase N1QL].
 
-== Generating Schema
+== Schema Definition
 
-Couchbase is able to store data that does not follow the rules of data typing and structure that apply to traditional relational tables and columns. Couchbase data is organized into buckets and documents, which can contain nested arrays or arrays of differently-typed elements. Because traditional JDBC toolsets might not support these data structures, the data needs to be mapped to a relational form. To achieve this, the Couchbase Connector will sample data from a Couchbase server(namespace) and then generate the schema that is needed for JDBC applications. When a VDB has defined a Couchbase Source, the connector will automatically generates schema. 
+Couchbase is able to store data that does not follow the rules of data typing and structure that apply to traditional relational tables and columns. Couchbase data is organized into buckets(keyspaces) and documents.
+
+.*Logical Hierarchy of Couchbase Cluster*
+image:images/couchbase-logical-hierarchy.png[Logical Hierarchy of Couchbase Cluster]
+
+The document in a keyspace are structureless, it may have complex structure, like contain nested object, nested arrays, or arrays of differently-typed elements.   
+
+NOTE: The datastores are higher level abstraction, but the Couchbase Translator focus on one specific namespace, all documents in a namespace across different keyspaces will be map to tables of Teiid source metadata.
+
+Because Teiid metadata/traditional JDBC toolsets might not support these data structures, the data needs to be mapped to a relational form. To achieve this, the Couchbase Translator provide a way to automatically generates schema during VDB deploying. Refer to <<Generating a Schema, Generating a Schema>> for more details.
+
+Alternatively, create the schema manually in a Teiid Source module are supported, creating a schema should base on the sample rules of generating a schema. Refer to <<Creating a Schema, Creating a Schema>> for more details. 
+
+NOTE: Use Generating a Schema are recommend.
+
+=== Generating a Schema
+
+Schema Generation is a way that the Couchbase Translator sample some data from a Couchbase cluster(namespace), and scan these documents data, generate a data typing and structure based schema that is needed for Teiid or traditional JDBC toolsets. The <<Importer Properties, Importer Properties>> are used to control the behavior of data sampling.
+
+The generated schema are tables and procedures, the procedures provide additional flexibility to execute native query; the tables are used to map to documents in a specific namespace. There are two kinds of table, 
+
+* Regular Table - map to a keyspace in a couchbase(namespace)
+* Array Table - map to a array in any documents
+
+A table option used to differentiate Regular Table and Array Table, refer to <<Additional Table Options, Additional Table Options>> for details.
+
+The principle use to generate schema are following:
+
+* Basically, a keyspace be map to a table, keyspace name is the table name, all documents' no-array attribute are column names, each document are a row in table. if `TypeNameList` defined, a keyspace may map to several tables, all same type referenced values are table names, all same type value referenced no-array attribute are map to column names correspondently. If multiple keyspaces has same typed value, the typed value table name will add each keyspace as prefix. For example, 
+----
+TypeNameList=`default`:`type`,`default2`:`type`
+----
+both default and default2 has document defined {"type": "Customer"}, then the default's table name is 'Customer', default2's table name is 'default2_Customer'.
+
+* Each generate table has a documentID column map to a couchbase document ID, the documentID in Regular Table play a role as primary key, the documentID in Array Table play a role as foreign key.  
+
+* Any of array in documents will be map to a Array Table, array index, array item or nested object item attribute are column names. If array contains differently-typed elements and no elements are object, all elements be map to same column with Object type; If array contains object, all object attribute be map to column names, and reference value data type be map to column data type; 
+
+* Each Array Table has at least one index column with the suffix `_idx` to indicate the position of the element within the array. If the dimension of array large than 1, multiple index column are created, the column name with explicity dimension identity `_dimX`, separated by underscore character. For example, a three dimension nested array document
+
+[source,json]
+----
+"default": {"nested": [[["dimension 3"]]]}     
+----
+
+the index columns might like: default_nested_idx, default_nested_dim2_idx, default_nested_dim2_dim3_idx.
+
+* Each Table must define a NAMEINSOURCE to indicate the keyspace name or he path pattern in couchbase, the NAMEINSOURCE of Regular Table are keyspacename, the NAMEINSOURCE of Array Table are path pattern with square brackets suffix to indicate dimension of nested array. Use above three dimension nested array document as example, the NAMEINSOURCE of table might be `default`.nestedArray[][][].
+
+* Each no documentID, no array index columns must be define a NAMEINSOURCE to indicate the path pattern in couchbase, the dot are use to separate the paths. For example, the `p_asia` are nested object attribute of a document in keyspace `travel-sample`:
+
+[source,json]
+----
+default:`travel-sample`/geo/`p_asia`
+----
+
+the `p_asia` referenced column must define a NAMEINSOURCE with value `travel-sample`.geo.`p_asia`. 
+
+The Array Table column's NAMEINSOURCE must use a square brackets for each hierarchy level in which dimension the array is nested. For example, the `nestedArray` are nested array attribute of a document in keyspace `travel-sample`, it's dimension 3 nested array at least has two items, dimension 4 nested array at least has two items:
+
+[source,json]
+----
+default:`travel-sample`/nestedArray[0][0][1][1]
+----
+
+the dimension 4 nested array coulmn must define a NAMEINSOURCE with value `travel-sample`.nestedArray[][][][]. If dimension 4 item has object item, then the coulmn NAMEINSOURCE might be `travel-sample`.nestedArray[][][][].id, `travel-sample`.nestedArray[][][][].`address_name`, etc.
+
+* If a table name defined by TypeNameList, another NAMEDTYPEPAIR option are used to define the type attribute, more details refer to <<Additional Table Options, Additional Table Options>>.
+
+==== Importer Properties 
 
 To ensure consistent support for your Couchbase data, use the importer properties to do futher defining in shcema generation.
 
 [source,xml]
+.*An example of importer properties*
 ----
 <model name="CouchbaseModel">
-    <property name="importer.sampleSize" value="10"/>
+    <property name="importer.sampleSize" value="100"/>
     <property name="importer.typeNameList" value="`test`:`type`"/>
     <source name="couchbase" translator-name="translator-couchbase" connection-jndi-name="java:/couchbaseDS"/>
 </model>
 ----
 
-* SampleSize - Set the SampleSize property to the number of documents that you want the connector to sample to detect the structure of the data.
-* TypeNameList - Set the TypeNameList property to a comma-separated list of the attributes that the buckets use to specify document types. Each list item must be a bucket name surrounded by  back quotes (`), a colon (:), and an attribute name surrounded by back quotes (`). For example, the following TypeNameList setting indicates that the test, default, and beer-sample buckets use the type attribute to specify the type of each document,
+[cols="2,5a,2"]
+|===
+|Name |Description |Default
 
-[source,text]
+|sampleSize
+|Set the SampleSize property to the number of documents per buckets that you want the connector to sample the documents data.
+|100
+
+|sampleKeyspaces
+|A comma-separate list of the keyspace names, used to fine-grained control which keyspaces should be mapped, by default map all keyspaces. The smaller scope of keyspaces, the larger sampleSize, if user focus on specific keyspace, and want more precise metadata, this property is recommended.
+|*
+
+|typeNameList
+|A comma-separate list of key/value pair that the buckets(keyspaces) use to specify document types. Each list item must be a bucket(keyspace) name surrounded by back quotes, a colon, and an attribute name surrounded by back quotes.
+.Syntax of typeNameList
+----
+`KEYSPACE`:`ATTRIBUTE`,`KEYSPACE`:`ATTRIBUTE`,`KEYSPACE`:`ATTRIBUTE`
+----
+* KEYSPACE - the keyspaces must be under same namespace it either can be different one, or are same one. 
+* ATTRIBUTE - the attribute must be non object/array, resident on the root of keyspace, and it's type should be equivalent String. If a typeNameList set a specifc bucket(keyspace) has multiple types, and a document has all these types, the first one will be chose.
+
+For example, the TypeNameList below indicates that the buckets(keyspaces) test, default, and beer-sample use the type attribute to specify the type of each document, during schema generation, all type referenced value will be treated as table name.
 ----
 TypeNameList=`test`:`type`,`default`:`type`,`beer-sample`:`type`
 ----
 
-When generating a schema, the connector creates a base table for each different document type specified by the attributes in the list. For example, if the `test` bucket contains documents that have the type values `Customer` and `Order`, then the connector creates two tables named `Customer` and `Order` in the schema. 
+The TypeNameList below indicates that the bucket(keyspace) test use type, name and category attribute to specify the type of each document, during schema generation, the teiid connector scan the documents under test, if a document has attribute as any of type, name and category, it's referenced value will be treated as table name.
+----
+TypeNameList=`test`:`type`,`test`:`name`,`test`:`category`
+---- 
+|N/A
 
-A `ISARRAYTABLE` OPTION in table used to differentiate the array table and normal document mapped table. 
+|===
 
-* A normal table represent data from collections of Couchbase documents. Documents appear as rows, and all attributes that are not arrays appear as columns. In each table, the primary key column named as documentID that that identifies which Couchbase document each row comes from. If no typed name defined the table name is the keyspace name, but in the Couchbase layer, the name of the table will be translate to keyspace anme.
+==== Additional Table Options
+
+[cols="2,5a"]
+|===
+|Name |Description
+
+|teiid_couchbase:NAMEDTYPEPAIR
+|A `NAMEDTYPEPAIR` OPTION in table declare the name of typed key/value pair. This option is used once the typeNameList importer property is used and the table is typeName referenced table.
+
+|teiid_couchbase:ISARRAYTABLE
+|A `ISARRAYTABLE` OPTION in table used to differentiate the array table and regular table.
+
+* A regular table represent data from collections of Couchbase documents. Documents appear as rows, and all attributes that are not arrays appear as columns. In each table, the primary key column named as documentID that that identifies which Couchbase document each row comes from. If no typed name defined the table name is the keyspace name, but in the Couchbase layer, the name of the table will be translate to keyspace name.
 * If a table defined the `ISARRAYTABLE` OPTION, then it provide support for arrays, each array table contains the data from one array, and each row in the table represents an element from the array. If an element contains an nested array, an additional virtual tables as needed to expand the nested data. In each array table there also has a documentID column play as a foreign key that identifies the Couchbase document the array comes from and references the documentID from normal table. An index column (with the suffix _IDX in its name) to indicate the position of the element within the array.
 
-=== Example of Table Creation during Schema Generation
+|===
+
+=== Creating a Schema
+
+Creating a schema should strict base on the principles listed in <<Generating a Schema, Generating a Schema>>.
+
+=== An example of Schema Generation
 
 The following example shows the tables that the Couchbase connector would generate if it connected to a Couchbase, the keyspace named `test` under namespace `default` contains two kinds of documents named `Customer` and `Order`.
 
 The `Customer` document is of type Customer and contains the following attributes. The SavedAddresses attribute is an array.
 
-[source,text]
+[source,json]
 ----
 {
   "ID": "Customer_12345",
@@ -56,7 +166,7 @@ The `Customer` document is of type Customer and contains the following attribute
 
 The `Order` document is of type Order and contains the following attributes. The CreditCard attribute is an object, and the Items attribute is an array of objects.
 
-[source,text]
+[source,json]
 ----
 {
   "CreditCard": {
