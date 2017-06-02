@@ -19,11 +19,13 @@ There are no google-spreadsheet importer settings, but it can provide metadata f
 
 WARNING: A sheet with a header that is defined in Teiid, which later has all data rows removed is no longer valid for access through Teiid.  The google api will treat the header as a data row at that point and thus queries will no longer be valid.
 
+WARNING: Non-string fields are updated using the canonical Teiid SQL value - in cases where the spreadsheet is using a non-conforming locale, consider disallowing updates.  See also link:https://issues.jboss.org/browse/TEIID-4854[TEIID-4854]
+
 == JCA Resource Adapter
 
 The Teiid specific Google Spreadsheet Data Sources Resource Adapter should be used with this translator.
 
-=== Native Queries
+== Native Queries
 
 Google spreadsheet source procedures may be created using the teiid_rel:native-query extension - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The procedure will invoke the native-query similar to an native procedure call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality. See the link:Google_Spreadsheet_Translator.adoc#_select[Select] format below.
 
