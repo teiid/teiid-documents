@@ -51,7 +51,7 @@ The following View properties are extension properties that used in the manageme
 |n/a
 
 |MATERIALIZED_TABLE
-|Defines the name of target table, this also hints the materialization is using external materialization. Omitting this property and setting the MATERIALIZED proeprty true, invokes internal materialization. 
+|Defines the name of target table, this also hints the materialization is using external materialization. Omitting this property and setting the MATERIALIZED property true, invokes internal materialization. 
 |false
 |n/a
 
