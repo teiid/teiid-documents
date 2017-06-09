@@ -1,5 +1,7 @@
 
 = MongoDB Translator
+:toc: manual
+:toc-placement: preamble
 
 The MongoDB translator, known by the type name _mongodb_, provides a relational view of data that resides in a MongoDB database. This translator is capable of converting Teiid SQL queries into MongoDB based queries. It supports a full range of SELECT, INSERT, UPDATE and DELETE calls.
 
