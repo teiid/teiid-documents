@@ -54,7 +54,7 @@ Once a query plan has been obtained you will most commonly be looking for:
 
 All of the above information can be determined from the processing plan. You will typically be interested in analyzing the textual form of the final processing plan. To understand why particular decisions are made for debugging or support you will want to obtain the full debug log which will contain the intermediate planning steps as well as annotations as to why specific pushdown decisions are made.
 
-A query plan consists of a set of nodes organized in a tree structure. If you are executing a procedure or generating an XML document from an XML Document Model, the overall query plan will contain additional information related the surrounding procedural execution.
+A query plan consists of a set of nodes organized in a tree structure. If you are executing a procedure, the overall query plan will contain additional information related the surrounding procedural execution.
 
 In a procedural context the ordering of child nodes implies the order of execution. In most other situation, child nodes may be executed in any order even in parallel. Only in specific optimizations, such as dependent join, will the children of a join execute serially.
 
@@ -398,5 +398,5 @@ ProjectNode(0) output=[pm1.g1.e1, pm1.g2.e2, pm1.g3.e3] [pm1.g1.e1, pm1.g2.e2, p
 
 == Other Plans
 
-XML document model queries and procedure execution (including instead of triggers) use intermediate and final plan forms that include relational plans. Generally the structure of the xml/procedure plans will closely match their logical forms. It’s the nested relational plans that will be of interest when analyzing performance issues.
+Procedure execution (including instead of triggers) use intermediate and final plan forms that include relational plans. Generally the structure of the xml/procedure plans will closely match their logical forms. It’s the nested relational plans that will be of interest when analyzing performance issues.
 

@@ -5,7 +5,7 @@ Teiid provides the capability to cache the results of specific user queries and
 
 == Support Summary
 
-* Caching of user query results including XML document model results.
+* Caching of user query results.
 * Caching of virtual procedure results.
 * Scoping of results is automatically determined to be VDB/user (replicated) or session level. The default logic will be influenced by every function evaluated, consider the DETERMINISM property on all source models/tables/procedures, and the Scope from the ExecutionContext or CacheDirective.
 * Configurable number of cache entries and time to live.
