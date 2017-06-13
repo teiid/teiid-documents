@@ -17,7 +17,7 @@ IMPORTANT: The VDB name pattern must adhere to "-vdb.ddl" for the Teiid VDB depl
 .Example VDB DDL Template
 ----
 CREATE DATABASE my_example VERSION '1.0.0';
-USE DATABASE my_example VERSION '1.0.0' 
+USE DATABASE my_example VERSION '1.0.0'; 
 
 CREATE FOREIGN DATA WRAPPER postgresql;
 CREATE SERVER pgsql TYPE 'postgresql-9.4-1201.jdbc41.jar' 
