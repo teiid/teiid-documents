@@ -33,7 +33,7 @@ Another variation of the VDB using completely DDL and using SQL-MED specificatio
 [source,sql]
 ----
 CREATE DATABASE my_example VERSION '1.0.0';
-USE DATABASE my_example VERSION '1.0.0' 
+USE DATABASE my_example VERSION '1.0.0'; 
 CREATE FOREIGN DATA WRAPPER postgresql;
 CREATE SERVER pgsql TYPE 'postgresql-9.4-1201.jdbc41.jar' 
     VERSION 'one' FOREIGN DATA WRAPPER postgresql 
