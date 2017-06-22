@@ -70,7 +70,7 @@ The following table shows all the supported connection properties that can used 
 
 |`ansiQuotedIdentifiers`
 |`boolean`
-|Sets the parsing behavior for double quoted entries in SQL. The default, true, parses dobuled quoted entries as identifiers. If set to false, then double quoted values that are valid string literals will be parsed as string literals.
+|Sets the parsing behavior for double quoted entries in SQL. The default, true, parses doubled quoted entries as identifiers. If set to false, then double quoted values that are valid string literals will be parsed as string literals.
 
 |`version`
 |`integer`
@@ -83,6 +83,7 @@ The following table shows all the supported connection properties that can used 
 |`autoFailover`
 |`boolean`
 |If true, will automatically select a new server instance after a communication exception. Default false. This is typically not needed when connections are managed, as the connection can be purged from the pool.
+If true in embedded mode, connections will reconnect to a newer VDB of the same name/version.
 
 |`SHOWPLAN`
 |`String`
