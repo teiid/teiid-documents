@@ -31,6 +31,8 @@ test = Table('public.test', meta, autoload=True, autoload_with=engine,postgresql
 
 Only a subset of the PostgreSQL dialect is supported.  The primary intent is to allow querying through Teiid.  If there are additional features that are needed, please log an enhancement request.
 
+Column metadata will not be available for tables that contain the period '.' character.  Depending upon your needs, you may need import settings that use simple Teiid names and not source schema qualified names.
+
 == Application Support
 
 === Superset
