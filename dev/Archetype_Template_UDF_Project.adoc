@@ -19,7 +19,7 @@ To create a Java project in Eclipse from an arche type, perform the following:
 * On the "Select an Archetype" window, select Configure button
 * Add the remote catalog: https://repository.jboss.org/nexus/content/repositories/releases/[https://repository.jboss.org/nexus/content/repositories/releases/] then click OK to return
 * Enter "teiid" in the filter to see the Teiid arche types.
-* Select the udf-archetype v9.0.0, then press Next
+* Select the udf-archetype v{{ book.archeTypeVersion }}, then press Next
 * Enter all the information (i.e., Group ID, Artifact ID, method-name, method-args, return-type etc.) needed to generate the project, then click Finish
 
 The project will be created and name according to the _*ArtifactID*_.
@@ -30,10 +30,10 @@ To create a custom translator project from the command line, you can use the fol
 
 [source,java]
 ----
-mvn archetype:generate       -DarchethypeRepository=https://repository.jboss.org/nexus/content/repositories/releases/                                \
+mvn archetype:generate       \
   -DarchetypeGroupId=org.jboss.teiid.arche-types               \
   -DarchetypeArtifactId=udf-archetype          \
-  -DarchetypeVersion=9.0.0     \
+  -DarchetypeVersion={{ book.archeTypeVersion }}     \
   -DgroupId=${groupId}   				\
   -DartifactId=${udf-artifact-id}	\
   -Dpackage=${packageName}    \
@@ -66,10 +66,10 @@ The following is an example to execute:
 [source,java]
 ----
 
-mvn archetype:generate         -DarchethypeRepository=https://repository.jboss.org/nexus/content/repositories/releases/   \                               \
+mvn archetype:generate         \
   -DarchetypeGroupId=org.jboss.teiid.arche-types               \
   -DarchetypeArtifactId=udf-archetype          \
-  -DarchetypeVersion=9.0.0     \
+  -DarchetypeVersion={{ book.archeTypeVersion }}     \
   -DgroupId=org.teiid.udf   \
   -DartifactId=udf-myFunction    \
   -Dpackage=org.teiid.udf    \
@@ -85,7 +85,7 @@ When executed, you will be asked to confirm the properties
 
 [source,java]
 ----
-[INFO] Archetype repository not defined. Using the one from [org.jboss.teiid.arche-types:udf-archetype:9.0.0] found in catalog local
+[INFO] Archetype repository not defined. Using the one from [org.jboss.teiid.arche-types:udf-archetype:{{ book.archeTypeVersion }}] found in catalog local
 [INFO] Using property: groupId = org.teiid.udf
 [INFO] Using property: artifactId = udf-myFunction
 [INFO] Using property: version = 0.0.1-SNAPSHOT

@@ -30,10 +30,10 @@ To create a custom preparser project from the command line, you can use the foll
 [source,java]
 ----
 
-mvn archetype:generate       -DarchethypeRepository=https://repository.jboss.org/nexus/content/repositories/releases/                                \
+mvn archetype:generate        \
   -DarchetypeGroupId=org.jboss.teiid.arche-types               \
   -DarchetypeArtifactId=preparser-archetype          \
-  -DarchetypeVersion=9.0.0     \
+  -DarchetypeVersion={{ book.archeTypeVersion }}     \
   -DgroupId=${groupId}   				\
   -DartifactId=${udf-artifact-id}	\
   -Dpackage=${packageName}    \
@@ -66,10 +66,10 @@ mvn archetype:generate       -DarchethypeRepository=https://repository.jboss.org
 
 [source,java]
 ----
-mvn archetype:generate       -DarchethypeRepository=https://repository.jboss.org/nexus/content/repositories/releases/                                \
+mvn archetype:generate      \
   -DarchetypeGroupId=org.jboss.teiid.arche-types               \
   -DarchetypeArtifactId=preparser-archetype          \
-  -DarchetypeVersion=9.0.0     \
+  -DarchetypeVersion={{ book.archeTypeVersion }}     \
   -DgroupId=org.teiid.preparser   \
   -DartifactId=preparser-myParser    \
   -Dpackage=org.teiid.preparser    \

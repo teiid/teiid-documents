@@ -18,7 +18,7 @@ To create a Java project in Eclipse from an arche type, perform the following:
 * On the "Select an Archetype" window, select Configure button
 * Add the remote catalog: https://repository.jboss.org/nexus/content/repositories/releases/[https://repository.jboss.org/nexus/content/repositories/releases/] then click OK to return
 * Enter "teiid" in the filter to see the Teiid arche types.
-* Select the translator-archetype v8.7.1, then press Next
+* Select the translator-archetype v{{ book.archeTypeVersion }}, then press Next
 * Enter all the information (i.e., Group ID, Artifact ID, etc.) needed to generate the project, then click Finish
 
 The project will be created and name according to the _*ArtifactID*_.
@@ -30,10 +30,9 @@ To create a custom translator project from the command line, you can use the fol
 [source,java]
 ----
 mvn archetype:generate                                 \
-  -DarchethypeRepository=https://repository.jboss.org/nexus/content/repositories/releases/   \
   -DarchetypeGroupId=org.jboss.teiid.arche-types               \
   -DarchetypeArtifactId=translator-archetype          \
-  -DarchetypeVersion=8.7.1               \
+  -DarchetypeVersion={{ book.archeTypeVersion }}               \
   -DgroupId=${groupId}                  \
   -DartifactId=translator-${translator-name}    \
   -Dpackage=org.teiid.translator.${translator-name}    \
@@ -62,16 +61,15 @@ The following is an example to execute:
 [source,java]
 ----
 mvn archetype:generate                                  \
-  -DarchethypeRepository=https://repository.jboss.org/nexus/content/repositories/releases/   \
   -DarchetypeGroupId=org.jboss.teiid.arche-types               \
   -DarchetypeArtifactId=translator-archetype          \
-  -DarchetypeVersion=8.7.1      \
+  -DarchetypeVersion={{ book.archeTypeVersion }}      \
   -DgroupId=org.jboss.teiid.connector   \
   -DartifactId=translator-myType    \
   -Dpackage=org.teiid.translator.myType    \
   -Dversion=0.0.1-SNAPSHOT  \
   -Dtranslator-name=MyType  \
-  -Dteiid-version=8.7.0.Final
+  -Dteiid-version={{ book.fullVersionNumber }}
  
 ----
 

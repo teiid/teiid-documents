@@ -18,7 +18,7 @@ To create a Java project in Eclipse from an arche type, perform the following:
 * On the "Select an Archetype" window, select Configure button
 * Add the remote catalog: https://repository.jboss.org/nexus/content/repositories/releases/[https://repository.jboss.org/nexus/content/repositories/releases/] then click OK to return
 * Enter "teiid" in the filter to see the Teiid arche types.
-* Select the connector-archetype v8.7.1, then press Next
+* Select the connector-archetype v{{ book.archeTypeVersion }}, then press Next
 * Enter all the information (i.e., Group ID, Artifact ID, etc.) needed to generate the project, then click Finish
 
 The project will be created and name according to the _*ArtifactID*_.
@@ -29,10 +29,10 @@ To create a custom connector project from the command line, you can use the foll
 
 [source,java]
 ----
-mvn archetype:generate   -DarchethypeRepository=https://repository.jboss.org/nexus/content/repositories/releases/   \
+mvn archetype:generate      \
   -DarchetypeGroupId=org.jboss.teiid.arche-types               \
   -DarchetypeArtifactId=connector-archetype          \
-  -DarchetypeVersion=8.7.1               \
+  -DarchetypeVersion={{ book.archeTypeVersion }}               \
   -DgroupId=${groupId}                  \
   -DartifactId=connector-${connector-name}  \
   -Dpackage=org.teiid.resource.adapter.${connector-name}    \
@@ -62,17 +62,17 @@ The following is an example:
 
 [source,java]
 ----
-mvn archetype:generate   -DarchethypeRepository=https://repository.jboss.org/nexus/content/repositories/releases/                                \
+mvn archetype:generate      \
   -DarchetypeGroupId=org.jboss.teiid.arche-types              \
   -DarchetypeArtifactId=connector-archetype          \
-  -DarchetypeVersion=8.7.1      \
+  -DarchetypeVersion={{ book.archeTypeVersion }}      \
   -DgroupId=org.jboss.teiid.connectors      \
   -Dpackage=org.teiid.resource.adapter.myType    \
   -DartifactId=connector-myType \
   -Dversion=0.0.1-SNAPSHOT    \
   -Dconnector-name=myType   \
   -Dvendor-name=MyVendor    \
-  -Dteiid-version=8.7.0.Final
+  -Dteiid-version={{ book.fullVersionNumber }}
 ----
 
 When executed, you will be asked to confirm the properties
@@ -86,7 +86,7 @@ version: 0.0.1-SNAPSHOT
 package: org.teiid.resource.adapter.myType
 connector-name: myType
 vendor-name: MyVendor
-teiid-version: 8.7.0.Final
+teiid-version: {{ book.fullVersionNumber }}
  Y: : 
 ----
 
