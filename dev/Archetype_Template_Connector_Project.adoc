@@ -25,6 +25,8 @@ The project will be created and name according to the _*ArtifactID*_.
 
 == Create Project using Command Line
 
+NOTE: make sure the https://repository.jboss.org/nexus/content/repositories/releases/ repository is accessible via your maven settings.
+
 To create a custom connector project from the command line, you can use the following template command:
 
 [source,java]
