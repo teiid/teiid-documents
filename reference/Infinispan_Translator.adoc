@@ -1,6 +1,6 @@
 = Infinispan Translator
 
-The Infinispan translator, known by the type name _"infinispan-hotrod"_ exposes the Infinispan cache store to be queried using SQL language, and it uses HotRod protocol to connect the remote Infinispan cluster farm. This translator does NOT work with any arbitary key/value mappings in the Infinispan.  However, if the Infinispan store is defined with "probuf" file then this works. Typical usage of HotRod protocol also dicates this requirement.
+The Infinispan translator, known by the type name _"infinispan-hotrod"_ exposes the Infinispan cache store to be queried using SQL language, and it uses HotRod protocol to connect the remote Infinispan cluster farm. This translator does NOT work with any arbitary key/value mappings in the Infinispan.  However, if the Infinispan store is defined with "probuf" file then this translator works with definition objects in the protobuf file. Typical usage of HotRod protocol also dictates this requirement.
 
 NOTE: *What is Infinispan* - http://infinispan.org/[Infinispan] is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0
 
@@ -28,15 +28,11 @@ Below is a sample VDB that can read metadata from a protobuf file based on the A
         <property name="importer.ProtobufName" value="addressbook.proto"/>
         <source name="localhost" translator-name="infinispan-hotrod" connection-jndi-name="java:/ispnDS"/>
         <metadata type = "NATIVE"/>
-        <metadata type = "DDL"><![CDATA[        
-            ALTER FOREIGN TABLE Person OPTIONS (SET "teiid_ispn:cache" 'personCache');                        
-        ]]>        
-
     </model>
 </vdb>
 ----
 
-For the above VDB to work, a connection to Infinispan is required. Below shows an example configuration for the resource-adapter that is needed.  Be sure to edit the "RemoteServerList" to reflect your Infinispan server location.
+For the above VDB to work, a connection to Infinispan is required. Below shows an example configuration for the resource-adapter that is needed.  Be sure to edit the "RemoteServerList" to reflect your Infinispan server location. If you are working with "WilfFly" based Teiid installation, you need to edit the _/wf-install/standalone/configuration/standalone-teiid.xml_ file and add the following segment to the "resource-adapters" subsystem of the configuration.
 
 [source,xml]
 ----
@@ -94,10 +90,10 @@ There are three different ways to define the metadata for the Infinispan model i
 
 NOTE:  The "<metadata type = "NATIVE"/>" is required in order to trigger the registration of the generated protobuf file.  The name of the protobuf registered in Infinispan will use the format of:  schemaName + ".proto".  So in the above example, it would be named *_ispn.proto_*.   This would be useful if another VDB wished to reference that same cache and would then use the Importer Property importer.ProtobufName.
 
-For this option, a compatible probuf definition is generated and registered in Infinispan. 
+For this option, a compatible protobuf definition is generated and registered in Infinispan. 
 
 
-===  Details on Protobuf to DDL conversion
+===  Details on Internal Protobuf to DDL conversion
 
 This section show cases an example protobuf file and shows how that file converted to relational schema in the Teiid. This below is taken from the quick start examples of Infinispan.
 
