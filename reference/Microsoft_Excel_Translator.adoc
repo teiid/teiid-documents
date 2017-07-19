@@ -83,7 +83,9 @@ forced by putting a single quote ' in front of the numeric text of the cell, or 
  
 === Translator Extension Properties
 
-Currently there are no Translator Extension properties defined for this translator.
+Excel specific execution properties:
+
+* _FormatStrings_- Format non-string cell values in a string column according to the worksheet format. Defaults to false.
 
 === Metadata Extension Properties
 
