@@ -25,7 +25,7 @@ An expression represents a single value in context, although in some cases that 
 * `Expression` – base expression interface
 * `ColumnReference` – represents an column in the data source
 * `Literal` – represents a literal scalar value.
-* `Parameter` – represents a parameter with multiple values. The command should be an instance of BatchedCommand, which provides all values via getParameterValues.
+* `Parameter` – represents a parameter with multiple values. The command should be an instance of BulkCommand, which provides all values via getParameterValues.
 * `Function` – represents a scalar function with parameters that are also Expressions
 * `AggregateFunction` – represents an aggregate function which can hold a single expression
 * `WindowFunction` – represents an window function which holds an AggregateFunction (which is also used to represent analytical functions) and a WindowSpecification
