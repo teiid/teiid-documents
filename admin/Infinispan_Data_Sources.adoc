@@ -13,7 +13,7 @@ batch
 /subsystem=resource-adapters/resource-adapter=infinispanDS/connection-definitions=ispnDS:add(jndi-name="java:/ispnDS", class-name=org.teiid.resource.adapter.infinispan.hotrod.InfinispanManagedConnectionFactory, enabled=true, use-java-context=true)
 /subsystem=resource-adapters/resource-adapter=infinispanDS/connection-definitions=ispnDS/config-properties=RemoteServerList:add(value="{host}:11222")
 /subsystem=resource-adapters/resource-adapter=infinispanDS:activate
-runbatch
+run-batch
 ----
 
 All the properties that are defined on the RAR file are
