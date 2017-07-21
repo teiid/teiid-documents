@@ -8,7 +8,7 @@
         "copyrightHolder" :  "Red Hat, Inc.",
         "javaVersionUrl" : "https://docs.oracle.com/javase/7",
         "asDocRoot" : "https://docs.jboss.org/author/display/WFLY10",
-        "archeTypeVersion" : "9.0.0"
+        "archeTypeVersion" : "9.0.1"
     },
     "plugins": ["collapsible-menu"]
 }

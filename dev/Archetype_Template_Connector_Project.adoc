@@ -29,72 +29,77 @@ NOTE: make sure the https://repository.jboss.org/nexus/content/repositories/rele
 
 To create a custom connector project from the command line, you can use the following template command:
 
-[source,java]
-----
-mvn archetype:generate      \
-  -DarchetypeGroupId=org.jboss.teiid.arche-types               \
+***********
+* TEMPLATE
+***********
+
+mvn archetype:generate       \
+  -DarchetypeGroupId=org.jboss.teiid.arche-types                \
   -DarchetypeArtifactId=connector-archetype          \
-  -DarchetypeVersion={{ book.archeTypeVersion }}               \
+  -DarchetypeVersion=${archetypeVersion}               \
   -DgroupId=${groupId}                  \
-  -DartifactId=connector-${connector-name}  \
-  -Dpackage=org.teiid.resource.adapter.${connector-name}    \
-  -Dversion=${teiid.version}    \
+  -DartifactId=connector-${connector-type}  \
+  -Dpackage=${package}    \
+  -Dversion=${version}    \
+  -Dconnector-type=${connector-type}   \
   -Dconnector-name=${connector-name}   \
   -Dvendor-name=${vendor-name}    \
   -Dteiid-version=${teiid-version}
-----
 
-where:
 
-[source,java]
-----
+********
+* where:
+********
+
   -DarchetypeGroupId    -  is the group ID for the arche type to use to generate
   -DarchetypeArtifactId -  is the artifact ID for the arche type to use to generate
-  -DarchetypeVersion    -  is the version of the arche type to use to generate
+  -DarchetypeVersion    -  is the version for the arche type to use to generate
   -DgroupId     -  (user defined) group ID for the new connector project pom.xml
   -DartifactId      -  (user defined) artifact ID for the new connector project pom.xml
   -Dpackage     -  (user defined) the package structure where the java and resource files will be created
   -Dversion     -  (user defined) the version that the new connector project pom.xml will be
-  -Dconnector-name  -  (user defined) the name (type) of the new connector project, used to create the java class names and rar
+  -Dconnector-type  -  (user defined) the type of the new connector project, used in defining the package name
+  -Dconnector-name  -  (user defined) the name of the new connector project, used as the prefix to creating the java class names
   -Dvendor-name     -  name of the Vendor for the data source, updates the rar
-  -Dteiid-version   -  the Teiid version the connector will depend upon
-----
+  -Dteiid-version   -  [optional] the Teiid version the connector will depend upon
 
-The following is an example:
 
-[source,java]
-----
-mvn archetype:generate      \
-  -DarchetypeGroupId=org.jboss.teiid.arche-types              \
-  -DarchetypeArtifactId=connector-archetype          \
-  -DarchetypeVersion={{ book.archeTypeVersion }}      \
-  -DgroupId=org.jboss.teiid.connectors      \
-  -Dpackage=org.teiid.resource.adapter.myType    \
-  -DartifactId=connector-myType \
+*********
+* EXAMPLE
+*********
+
+-  this is an example of the template that can be run:
+
+mvn archetype:generate      -DarchetypeRepository=https://repository.jboss.org/nexus/content/repositories/releases/                   \
+  -DarchetypeGroupId=org.jboss.teiid.arche-types   \
+  -DarchetypeArtifactId=connector-archetype  \
+  -DarchetypeVersion={{ book.archeTypeVersion }}  \
+  -DgroupId=org.example  \
+  -Dpackage=org.example.adapter.type \
+  -DartifactId=adapter-type \
   -Dversion=0.0.1-SNAPSHOT    \
-  -Dconnector-name=myType   \
-  -Dvendor-name=MyVendor    \
+  -Dconnector-type=type   \
+  -Dconnector-name=Type   \
+  -Dvendor-name=Vendor  \
   -Dteiid-version={{ book.fullVersionNumber }}
-----
 
-When executed, you will be asked to confirm the properties
 
-[source,java]
-----
+
+When executed, you will be asked to confirm the package property
+
 Confirm properties configuration:
-groupId: org.jboss.teiid.connectors
-artifactId: connector-myType
+groupId: org.example
+artifactId: adapter-type
 version: 0.0.1-SNAPSHOT
-package: org.teiid.resource.adapter.myType
-connector-name: myType
-vendor-name: MyVendor
+package: org.example.adapter.type
+connector-type: type
+connector-name: Type
+vendor-name: Vendor
 teiid-version: {{ book.fullVersionNumber }}
  Y: : 
-----
 
 type Y (yes) and press enter, and the creation of the connector project will be done
 
 Upon creation, a directory based on the _*artifactId*_ will be created, that will contain the project. Note: The project will not compile because the $\{connector-name}Connection interface in the ConnectionImpl has not been added as a dependency in the pom.xml. This will need to be done.
 
 Now you are ready to start adding your custom code.
-

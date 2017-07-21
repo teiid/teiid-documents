@@ -29,19 +29,23 @@ NOTE: make sure the https://repository.jboss.org/nexus/content/repositories/rele
 
 To create a custom preparser project from the command line, you can use the following template command:
 
+***********
+* TEMPLATE
+***********
+  
 [source,java]
 ----
 
-mvn archetype:generate        \
+mvn archetype:generate           \
   -DarchetypeGroupId=org.jboss.teiid.arche-types               \
   -DarchetypeArtifactId=preparser-archetype          \
-  -DarchetypeVersion={{ book.archeTypeVersion }}     \
-  -DgroupId=${groupId}   				\
-  -DartifactId=${udf-artifact-id}	\
-  -Dpackage=${packageName}    \
+  -DarchetypeVersion=${archetypeVersion}     \
+  -DgroupId=${groupId}                  \
+  -DartifactId=${preparser-artifact-id} \
+  -Dpackage=${package}    \
   -Dversion=0.0.1-SNAPSHOT      \
   -Dclass-name=${className}     \
-  -Dteiid-version${teiidVersion}
+  -Dteiid-version=${teiidVersion}
 ----
 
 ********
@@ -51,12 +55,12 @@ mvn archetype:generate        \
 ----
   -DarchetypeGroupId    -  is the group ID for the arche type to use to generate
   -DarchetypeArtifactId -  is the artifact ID for the arche type to use to generate
-  -DarchetypeVersion	-  is the version for the arche type to use to generate
-  -DgroupId		-  (user defined) group ID for the new preparser project pom.xml
-  -DartifactId		-  (user defined) artifact ID for the new preparser project pom.xml
-  -Dpackage		-  (user defined) the package structure where the java, module and resource files will be created
-  -Dversion		-  (user defined) the version that the new preparser project pom.xml will be
-  -Dclass-name    	-  (user defined) the class name to give the new user preparser, will become the Class Name 
+  -DarchetypeVersion    -  is the version for the arche type to use to generate
+  -DgroupId     -  (user defined) group ID for the new preparser project pom.xml
+  -DartifactId      -  (user defined) artifact ID for the new example project pom.xml
+  -Dpackage     -  (user defined) the package structure where the java, module and resource files will be created
+  -Dversion     -  (user defined) the version that the new connector project pom.xml will be
+  -Dclass-name      -  (user defined) the class name to give the new user preparser, will become the Class Name 
   -Dteiid-version       -  Optional, defaults to 9.0.0.Final
 ----
 
@@ -68,34 +72,35 @@ mvn archetype:generate        \
 
 [source,java]
 ----
-mvn archetype:generate      \
+mvn archetype:generate             \
   -DarchetypeGroupId=org.jboss.teiid.arche-types               \
   -DarchetypeArtifactId=preparser-archetype          \
-  -DarchetypeVersion={{ book.archeTypeVersion }}     \
-  -DgroupId=org.teiid.preparser   \
-  -DartifactId=preparser-myParser    \
-  -Dpackage=org.teiid.preparser    \
+  -DarchetypeVersion={{ book.archeTypeVersion }}    \
+  -DgroupId=org.example   \
+  -DartifactId=preparser-mypreparser    \
+  -Dpackage=org.example.mypreparser    \
   -Dversion=0.0.1-SNAPSHOT      \
-  -Dclass-name=myPreParser
+  -Dclass-name=MyPreParser      \
+  -Dteiid-version={{ book.fullVersionNumber }}
 ----
 
 When executed, you will be asked to confirm the package property
 
 [source,java]
 ----
-[INFO] Using property: groupId = org.teiid.preparser
-[INFO] Using property: artifactId = preparser-myParser
+[INFO] Using property: groupId = org.example
+[INFO] Using property: artifactId = preparser-mypreparser
 [INFO] Using property: version = 0.0.1-SNAPSHOT
-[INFO] Using property: package = org.teiid.preparser
-[INFO] Using property: class-name = myPreParser
-[INFO] Using property: teiid-version = 9.0.0.Final
+[INFO] Using property: package = org.example.mypreparser
+[INFO] Using property: class-name = MyPreParser
+[INFO] Using property: teiid-version = {{ book.fullVersionNumber }}
 Confirm properties configuration:
 groupId: org.teiid.preparser
 artifactId: preparser-myParser
 version: 0.0.1-SNAPSHOT
-package: org.teiid.preparser
-class-name: myPreParser
-teiid-version: 9.0.0.Final
+package: org.example.mypreparser
+class-name: MyPreParser
+teiid-version: {{ book.fullVersionNumber }}
  Y: : y
 ----
 

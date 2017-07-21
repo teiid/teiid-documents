@@ -30,15 +30,19 @@ NOTE: make sure the https://repository.jboss.org/nexus/content/repositories/rele
 
 To create a custom translator project from the command line, you can use the following template command:
 
+***********
+* TEMPLATE
+***********
+
 [source,java]
 ----
-mvn archetype:generate       \
+mvn archetype:generate                         \
   -DarchetypeGroupId=org.jboss.teiid.arche-types               \
   -DarchetypeArtifactId=udf-archetype          \
-  -DarchetypeVersion={{ book.archeTypeVersion }}     \
-  -DgroupId=${groupId}   				\
-  -DartifactId=${udf-artifact-id}	\
-  -Dpackage=${packageName}    \
+  -DarchetypeVersion=${archetypeVersion}     \
+  -DgroupId=${groupId}                  \
+  -DartifactId=${udf-artifact-id}   \
+  -Dpackage=${package}    \
   -Dversion=0.0.1-SNAPSHOT      \
   -Dudf-name=${functionName}  \
   -Dmethod-name=${methodName}      \
@@ -46,70 +50,73 @@ mvn archetype:generate       \
   -Dreturn-type=${returnType}
 ----
 
-where:
+********
+* where:
+********
 
 [source,java]
 ----
   -DarchetypeGroupId    -  is the group ID for the arche type to use to generate
   -DarchetypeArtifactId -  is the artifact ID for the arche type to use to generate
-  -DarchetypeVersion	-  is the version for the arche type to use to generate
-  -DgroupId		-  (user defined) group ID for the new udf project pom.xml
-  -DartifactId		-  (user defined) artifact ID for the new udf project pom.xml
-  -Dpackage		-  (user defined) the package structure where the java, module and resource files will be created
-  -Dversion		-  (user defined) the version that the new connector project pom.xml will be
-  -Dudf-name    	-  (user defined) the name to give the new user defined function, will become the Class Name 
-  -Dmethod-name	        -  (user defined) the name of the method that will be configured in the model procedure
+  -DarchetypeVersion    -  is the version for the arche type to use to generate
+  -DgroupId     -  (user defined) group ID for the new udf project pom.xml
+  -DartifactId      -  (user defined) artifact ID for the new udf project pom.xml
+  -Dpackage     -  (user defined) the package structure where the java, module and resource files will be created
+  -Dversion     -  (user defined) the version that the new connector project pom.xml will be
+  -Dudf-name        -  (user defined) the name to give the new user defined function, will become the Class Name 
+  -Dmethod-name         -  (user defined) the name of the method that will be configured in the model procedure
   -Dmethod-args         -  (user defined) the arguments the method will accept.  'Type name[, Type name[,...]]  Example:  'String arg0' or 'String arg0, integer arg1'
   -Dreturn-type         -  (user defined) the data type of the value returned by the method
 ----
 
-The following is an example to execute:
+*********
+* EXAMPLE
+*********
+
+-  this is an example of the template that can be run:
 
 [source,java]
 ----
-
-mvn archetype:generate         \
+mvn archetype:generate                           \
   -DarchetypeGroupId=org.jboss.teiid.arche-types               \
   -DarchetypeArtifactId=udf-archetype          \
   -DarchetypeVersion={{ book.archeTypeVersion }}     \
-  -DgroupId=org.teiid.udf   \
-  -DartifactId=udf-myFunction    \
-  -Dpackage=org.teiid.udf    \
+  -DgroupId=org.example   \
+  -DartifactId=udf-function    \
+  -Dpackage=org.example.function    \
   -Dversion=0.0.1-SNAPSHOT      \
-  -Dudf-name=myFunction \
-  -Dmethod-name=myFunction      \
+  -Dudf-name=Function \
+  -Dmethod-name=function      \
   -Dmethod-args='String arg1'   \
   -Dreturn-type=String
  
 ----
 
-When executed, you will be asked to confirm the properties
+When executed, you will be asked to confirm the package property
 
-[source,java]
-----
-[INFO] Archetype repository not defined. Using the one from [org.jboss.teiid.arche-types:udf-archetype:{{ book.archeTypeVersion }}] found in catalog local
-[INFO] Using property: groupId = org.teiid.udf
-[INFO] Using property: artifactId = udf-myFunction
+[INFO] Archetype repository not defined. Using the one from [org.jboss.teiid.arche-types:udf-archetype:9.0.1] found in catalog local
+[INFO] Using property: groupId = org.example
+[INFO] Using property: artifactId = udf-function
 [INFO] Using property: version = 0.0.1-SNAPSHOT
-[INFO] Using property: package = org.teiid.udf
+[INFO] Using property: package = org.example.function
 [INFO] Using property: method-args = String arg1
-[INFO] Using property: method-name = myFunction
+[INFO] Using property: method-name = function
 [INFO] Using property: return-type = String
-[INFO] Using property: udf-name = myFunction
+[INFO] Using property: udf-name = Function
 Confirm properties configuration:
-groupId: org.teiid.udf
-artifactId: udf-myFunction
+groupId: org.example
+artifactId: udf-function
 version: 0.0.1-SNAPSHOT
-package: org.teiid.udf
+package: org.example.function
 method-args: String arg1
-method-name: myFunction
+method-name: function
 return-type: String
-udf-name: myFunction
+udf-name: Function
  Y: : y
 
 ----
 
-type Y (yes) and press enter, and the creation of the translator project will be done
+type Y (yes) and press enter, and the creation of the udf project will be done
 
 Upon creation, a directory based on the _*artifactId*_ will be created, that will contain the project. 'cd' into that directory and execute a test build to confirm the project was created correctly:
 

@@ -29,65 +29,76 @@ NOTE: make sure the https://repository.jboss.org/nexus/content/repositories/rele
 
 To create a custom translator project from the command line, you can use the following template command:
 
+***********
+* TEMPLATE
+***********
+
 [source,java]
 ----
-mvn archetype:generate                                 \
+mvn archetype:generate               \
   -DarchetypeGroupId=org.jboss.teiid.arche-types               \
   -DarchetypeArtifactId=translator-archetype          \
-  -DarchetypeVersion={{ book.archeTypeVersion }}               \
+  -DarchetypeVersion=${archetypeVersion}               \
   -DgroupId=${groupId}                  \
-  -DartifactId=translator-${translator-name}    \
-  -Dpackage=org.teiid.translator.${translator-name}    \
+  -DartifactId=translator-${translator-type}    \
+  -Dpackage=${package}    \
   -Dversion=${version}    \
-  -Dtranslator-name=${translator-name}   \
+  -Dtranslator-type=${translator-type}   \
+  -Dtranslator-name=${translator-name}
   -Dteiid-version=${teiid-version}
-----
+----  
 
-where:
+********
+* where:
+********
 
 [source,java]
 ----
   -DarchetypeGroupId    -  is the group ID for the arche type to use to generate
   -DarchetypeArtifactId -  is the artifact ID for the arche type to use to generate
   -DarchetypeVersion    -  is the version for the arche type to use to generate
-  -DgroupId         -  (user defined) group ID for the new translator project pom.xml
+  -DgroupId     -  (user defined) group ID for the new translator project pom.xml
   -DartifactId      -  (user defined) artifact ID for the new translator project pom.xml
-  -Dpackage         -  (user defined) the package structure where the java and resource files will be created
-  -Dversion         -  (user defined) the version that the new connector project pom.xml will be
-  -Dtranslator-name -  (user defined) the name (type) of the new translator project, used to create the java class names
-  -Dteiid-version   -  the Teiid version the connector will depend upon
+  -Dpackage     -  (user defined) the package structure where the java and resource files will be created
+  -Dversion     -  (user defined) the version that the new connector project pom.xml will be
+  -Dtranslator-type -  (user defined) the translator type that's used by Teiid when mapping the physical source to the translator to use 
+  -Dtranslator-name -  (user defined) the translator name thats used for name the java class names
+  -Dteiid-version   -  [optional] the Teiid version the connector will depend upon, if not specified will default 
 ----
 
-The following is an example to execute:
+*********
+* EXAMPLE
+*********
+
+-  this is an example of the template that can be run:
 
 [source,java]
 ----
-mvn archetype:generate                                  \
-  -DarchetypeGroupId=org.jboss.teiid.arche-types               \
-  -DarchetypeArtifactId=translator-archetype          \
-  -DarchetypeVersion={{ book.archeTypeVersion }}      \
-  -DgroupId=org.jboss.teiid.connector   \
-  -DartifactId=translator-myType    \
-  -Dpackage=org.teiid.translator.myType    \
+mvn archetype:generate                    \
+  -DarchetypeGroupId=org.jboss.teiid.arche-types   \
+  -DarchetypeArtifactId=translator-archetype  \
+  -DarchetypeVersion={{ book.archeTypeVersion }}  \
+  -DgroupId=org.example  \
+  -DartifactId=translator-type  \
+  -Dpackage=org.example.translator.type    \
   -Dversion=0.0.1-SNAPSHOT  \
-  -Dtranslator-name=MyType  \
+  -Dtranslator-type=type  \
+  -Dtranslator-name=Type  \
   -Dteiid-version={{ book.fullVersionNumber }}
- 
 ----
 
 When executed, you will be asked to confirm the properties
 
-[source,java]
-----
 Confirm properties configuration:
-groupId: org.jboss.teiid.connector
-artifactId: translator-myType
+groupId: org.example
+artifactId: translator-type
 version: 0.0.1-SNAPSHOT
-package: org.teiid.translator.myType
-teiid-version: 8.7.0.Final
-translator-name: MyType
- Y: : 
-----
+package: org.example.translator.type
+teiid-version: {{ book.fullVersionNumber }}
+translator-name: Type
+translator-type: type
+ Y: : y
+
 
 type Y (yes) and press enter, and the creation of the translator project will be done
 
