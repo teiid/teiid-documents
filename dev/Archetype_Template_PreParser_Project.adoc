@@ -37,7 +37,7 @@ To create a custom preparser project from the command line, you can use the foll
 ----
 
 mvn archetype:generate           \
-  -DarchetypeGroupId=org.jboss.teiid.arche-types               \
+  -DarchetypeGroupId=org.teiid.arche-types               \
   -DarchetypeArtifactId=preparser-archetype          \
   -DarchetypeVersion=${archetypeVersion}     \
   -DgroupId=${groupId}                  \
@@ -73,7 +73,7 @@ mvn archetype:generate           \
 [source,java]
 ----
 mvn archetype:generate             \
-  -DarchetypeGroupId=org.jboss.teiid.arche-types               \
+  -DarchetypeGroupId=org.teiid.arche-types               \
   -DarchetypeArtifactId=preparser-archetype          \
   -DarchetypeVersion={{ book.archeTypeVersion }}    \
   -DgroupId=org.example   \
