@@ -43,7 +43,7 @@ Add ’teiid-engine-VERSION.jar’to classpath is necessary. If you are using th
 [source,xml]
 ----
 <dependency>
-    <groupId>org.jboss.teiid</groupId>
+    <groupId>org.teiid</groupId>
     <artifactId>teiid-engine</artifactId>
 </dependency>
 ----

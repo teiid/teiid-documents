@@ -20,7 +20,7 @@ You can also obtain the Teiid JDBC from the JBoss Public Maven Repository http:/
 [source,xml]
 ----
 <dependency>
-  <groupId>org.jboss.teiid</groupId>
+  <groupId>org.teiid</groupId>
   <artifactId>teiid</artifactId>
   <classifier>jdbc</classifier>
   <version>{{ book.fullVersionNumber }}</version>

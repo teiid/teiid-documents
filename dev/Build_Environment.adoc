@@ -19,12 +19,12 @@ For maven users add the following as your dependencies:
 
    <dependencies>
       <dependency>
-         <groupId>org.jboss.teiid</groupId>
+         <groupId>org.teiid</groupId>
          <artifactId>teiid-api</artifactId>
          <scope>provided</scope>
       </dependency>
       <dependency>
-         <groupId>org.jboss.teiid</groupId>
+         <groupId>org.teiid</groupId>
          <artifactId>teiid-common-core</artifactId>
          <scope>provided</scope>
       </dependency>

@@ -9,12 +9,12 @@ To provide a custom authorization validator, you must extend the `org.teiid.Poli
 ----
 <dependencies>
       <dependency>
-         <groupId>org.jboss.teiid</groupId>
+         <groupId>org.teiid</groupId>
          <artifactId>teiid-api</artifactId>
          <scope>provided</scope>
       </dependency>
       <dependency>
-         <groupId>org.jboss.teiid</groupId>
+         <groupId>org.teiid</groupId>
          <artifactId>teiid-common-core</artifactId>
          <scope>provided</scope>
       </dependency>
@@ -25,7 +25,7 @@ The _PoilcyDecider_ interface is loaded by the Teiid using the Java’s standard
 
 .*META-INF/services/org.teiid.PolicyDecider*
 ----
-org.jboss.teiid.auth.MyCustomPolicyDecider
+org.example.auth.MyCustomPolicyDecider
 ----
 
 Now package all these files into a JAR archive file and build JBoss module in _jboss-as/modules_ directory. If your PolicyDecider has any third party dependencies those jar files can also be added as dependencies to the same module. Make sure you list all the files in the _module.xml_ file. Below is sample module.xml file along with Teiid specific dependencies
@@ -34,7 +34,7 @@ Now package all these files into a JAR archive file and build JBoss module in _j
 .*module.xml*
 ----
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="urn:jboss:module:1.0" name="org.jboss.teiid.auth">
+<module xmlns="urn:jboss:module:1.0" name="org.example.auth">
     <resources>
         <resource-root path="my_custom_policy.jar" />
         <!--add any other dependent jars here, if they are not defined as modules -->
@@ -42,14 +42,14 @@ Now package all these files into a JAR archive file and build JBoss module in _j
 
 
 <dependencies>
-    <module name="org.jboss.teiid.common-core"/>
-    <module name="org.jboss.teiid.api"/>
+    <module name="org.teiid.common-core"/>
+    <module name="org.teiid.api"/>
     <module name="javax.api"/>
 </dependencies>
 </module>
 ----
 
-create folder in the "<jboss-as>/modules/org/jboss/teiid/auth/main", copy the above _module.xml_ file along with all the jar files. This directory can be different if you choose, just make sure the name of the
+create folder in the "<jboss-as>/modules/org/example/auth/main", copy the above _module.xml_ file along with all the jar files. This directory can be different if you choose, just make sure the name of the
 module and the directory name match.
 
 After the module has been added, change the configuration. Edit either the standalone-teiid.xml or te domain-teiid.xml file, and in the "teiid" subsystem xml fragment add the following xml with the module name created.

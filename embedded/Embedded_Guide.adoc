@@ -29,7 +29,7 @@ Some of the Teiid transitive dependencies have known vulnerabilities. WildFly/Te
 <dependencyManagement>
   <dependencies>
     <dependency>
-      <groupId>org.jboss.teiid</groupId>
+      <groupId>org.teiid</groupId>
       <artifactId>teiid-parent</artifactId>
       <version>${version.teiid}</version>
       <type>pom</type>
@@ -42,7 +42,7 @@ Some of the Teiid transitive dependencies have known vulnerabilities. WildFly/Te
 All Teiid jars can also be deployed as bundles in a OSGI container like Karaf. If you are working with Karaf, a feature.xml file is available in maven repo for your convenience. Usage pattern is below
 
 ----
-features:addurl mvn:org.jboss.teiid/teiid/9.1.0.Final/xml/karaf-features
+features:addurl mvn:org.teiid/teiid/9.1.0.Final/xml/karaf-features
 features:install -v teiid
 ----
 
@@ -53,7 +53,7 @@ If you are trying run Teidd Embedded with Maven based project and using maven to
 [source,xml]
 ----
 <dependency>
-    <groupId>org.jboss.teiid</groupId>
+    <groupId>org.teiid</groupId>
     <artifactId>teiid-runtime</artifactId>
 </dependency>
 
@@ -63,12 +63,12 @@ If you are trying run Teidd Embedded with Maven based project and using maven to
 </dependency>
 
 <dependency>
-    <groupId>org.jboss.teiid.connectors</groupId>
+    <groupId>org.teiid.connectors</groupId>
     <artifactId>translator-SOURCE</artifactId>
 </dependency>
 
 <dependency>
-    <groupId>org.jboss.teiid.connectors</groupId>
+    <groupId>org.teiid.connectors</groupId>
     <artifactId>connector-SOURCE</artifactId>
 </dependency>
 ----
