@@ -37,7 +37,7 @@ To create a custom translator project from the command line, you can use the fol
 [source,java]
 ----
 mvn archetype:generate                         \
-  -DarchetypeGroupId=org.jboss.teiid.arche-types               \
+  -DarchetypeGroupId=org.teiid.arche-types               \
   -DarchetypeArtifactId=udf-archetype          \
   -DarchetypeVersion=${archetypeVersion}     \
   -DgroupId=${groupId}                  \
@@ -78,7 +78,7 @@ mvn archetype:generate                         \
 [source,java]
 ----
 mvn archetype:generate                           \
-  -DarchetypeGroupId=org.jboss.teiid.arche-types               \
+  -DarchetypeGroupId=org.teiid.arche-types               \
   -DarchetypeArtifactId=udf-archetype          \
   -DarchetypeVersion={{ book.archeTypeVersion }}     \
   -DgroupId=org.example   \
@@ -94,7 +94,7 @@ mvn archetype:generate                           \
 
 When executed, you will be asked to confirm the package property
 
-[INFO] Archetype repository not defined. Using the one from [org.jboss.teiid.arche-types:udf-archetype:9.0.1] found in catalog local
+[INFO] Archetype repository not defined. Using the one from [org.teiid.arche-types:udf-archetype:9.0.1] found in catalog local
 [INFO] Using property: groupId = org.example
 [INFO] Using property: artifactId = udf-function
 [INFO] Using property: version = 0.0.1-SNAPSHOT
