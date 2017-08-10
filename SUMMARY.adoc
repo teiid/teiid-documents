@@ -92,6 +92,7 @@
 .. link:client-dev/GeoServer_Integration.adoc[GeoServer Integration]
 .. link:client-dev/QGIS_Integration.adoc[QGIS Integration]
 .. link:client-dev/SQLAlchemy_Integration.adoc[SQLAlchemy Integration]
+.. link:client-dev/Node_Integration.adoc[Node.js Integration]
 .. link:client-dev/Reauthentication.adoc[Reauthentication]
 .. link:client-dev/Execution_Properties.adoc[Execution Properties]
 .. link:client-dev/SET_Statement.adoc[SET Statement]
