@@ -8,8 +8,11 @@ Authentication to your google account may be done using OAuth, which requires a 
 |===
 |Config property |Description
 
-|AuthMethod
-|Method to access Google. This property can only be OAuth2.
+|ClientId
+|client ID for access.  If not specified, the Teiid default will be used.
+
+|ClientSecret
+|client secret for access.  If not specified, the Teiid default will be used.
 
 |RefreshToken
 |Use guide below to retrieve RefreshToken. Request access to Google Drive and Spreadsheet API.
@@ -24,24 +27,47 @@ Authentication to your google account may be done using OAuth, which requires a 
 |Maximum number of rows that can be fetched at a time. Defaults to 4096.
 |===
 
+== Create Authorization Credentials
+
+It is recommended that you create your own authorization credentials rather than relying on the default Teiid client id and client secret.  Creating your own project will give you greater control over monitoring and controlling API access.
+
+You should follow the https://developers.google.com/accounts/docs/OAuth2ForDevices[OAuth2 For Devices Guide] prerequisites.  You should allow the project access to Google Drive API and the Sheets API. 
+
+A condensed form of the rest of the guide "Obtaining OAuth 2.0 access tokens" is covered next as "Getting an OAuth Refresh Token".
+
 == Getting an OAuth Refresh Token
 
-Use this request:
+With a browser or other client issue the request with the appropriate client ID:
 
-https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive+https%3A%2F%2Fspreadsheets.google.com%2Ffeeds&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&client_id=217138521084.apps.googleusercontent.com[https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive+https%3A%2F%2Fspreadsheets.google.com%2Ffeeds&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&client_id=217138521084.apps.googleusercontent.com]
+https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive+https%3A%2F%2Fspreadsheets.google.com%2Ffeeds&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&client_id=<CLIENT_ID>
 
 Then copy the authorization code into following POST request and run it in command line:
 
 [source,curl]
 ----
-curl \--data-urlencode code=<AUTH_CODE> \
+curl \--data-urlencode code=<AUTHORIZATION_CODE> \
+--data-urlencode client_id=<CLIENT_ID> \
+--data-urlencode client_secret=<CLIENT_SECRET> \
+--data-urlencode redirect_uri=urn:ietf:wg:oauth:2.0:oob \
+--data-urlencode grant_type=authorization_code https://accounts.google.com/o/oauth2/token
+----
+
+The refresh token will be in the response.
+
+To use the Teiid defaults:
+
+Click on https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive+https%3A%2F%2Fspreadsheets.google.com%2Ffeeds&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&client_id=217138521084.apps.googleusercontent.com[https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive+https%3A%2F%2Fspreadsheets.google.com%2Ffeeds&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&client_id=217138521084.apps.googleusercontent.com]
+
+Then copy the authorization code into following POST request and run it in command line:
+
+[source,curl]
+----
+curl \--data-urlencode code=<AUTHORIZATION_CODE> \
 --data-urlencode client_id=217138521084.apps.googleusercontent.com \
 --data-urlencode client_secret=gXQ6-lOkEjE1lVcz7giB4Poy \
 --data-urlencode redirect_uri=urn:ietf:wg:oauth:2.0:oob \
 --data-urlencode grant_type=authorization_code https://accounts.google.com/o/oauth2/token
 ----
-
-The refresh token will be in the response
 
 == Implementation Details
 
