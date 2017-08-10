@@ -34,7 +34,7 @@ To create a custom connector project from the command line, you can use the foll
 ***********
 
 mvn archetype:generate       \
-  -DarchetypeGroupId=org.jboss.teiid.arche-types                \
+  -DarchetypeGroupId=org.teiid.arche-types                \
   -DarchetypeArtifactId=connector-archetype          \
   -DarchetypeVersion=${archetypeVersion}               \
   -DgroupId=${groupId}                  \
@@ -71,7 +71,7 @@ mvn archetype:generate       \
 -  this is an example of the template that can be run:
 
 mvn archetype:generate      -DarchetypeRepository=https://repository.jboss.org/nexus/content/repositories/releases/                   \
-  -DarchetypeGroupId=org.jboss.teiid.arche-types   \
+  -DarchetypeGroupId=org.teiid.arche-types   \
   -DarchetypeArtifactId=connector-archetype  \
   -DarchetypeVersion={{ book.archeTypeVersion }}  \
   -DgroupId=org.example  \
