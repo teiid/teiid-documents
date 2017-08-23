@@ -73,6 +73,13 @@ SELECT o.* FROM NW.orders o join NW.customers c on o.customer_id = c.id where c.
 
 NOTE: *More Comprehensive Documentation about ODATA* - For detailed protocol access you can read the specification at http://odata.org[http://odata.org]. You can also read this very useful web resource http://msdn.microsoft.com/en-us/library/ff478141.aspx[for an example] of accessing an OData server.
 
+=== How to execute a stored procedure?
+Odata allows you to call your exposed stored procedure methods via odata.
+
+----
+http://localhost:8080/odata4/northwind/NW/getcustomersearch(id=120,firstname='micheal')
+----
+
 === Not seeing all the rows?
 
 See the link:#_configuration[configuration section] below for more details. Generally batching is being utilized, which tooling should understand automatically, and additional queries with a $skiptoken query option specified are needed:
