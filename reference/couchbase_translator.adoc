@@ -145,6 +145,11 @@ TypeNameList=`test`:`type`,`test`:`name`,`test`:`category`
 
 Creating a schema should strict base on the principles listed in <<Generating a Schema, Generating a Schema>>.
 
+Couchbase supported Teiid types are String, Boolean, Integer, Long, Double, BigInteger, and BigDecimal.  Creating a source model
+with other types is not fully supported.
+
+Each table is expected to have a document ID column.  It may be arbitrarily named, but it needs to be a string column marked as the primary key.
+
 === An example of Schema Generation
 
 The following example shows the tables that the Couchbase connector would generate if it connected to a Couchbase, the keyspace named `test` under namespace `default` contains two kinds of documents named `Customer` and `Order`.
