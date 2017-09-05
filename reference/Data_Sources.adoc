@@ -44,6 +44,7 @@ See the link:OData_Translator.adoc[OData Translator]
 == Big Data/No SQL/Search Engines/JCR and Other Sources
 
 * link:Actian_Vector_Translator.adoc[Actian Vector]
+* link:Amazon_S3_Translator.adoc[Amazon S3]
 * link:Amazon_SimpleDB_Translator.adoc[Amazon SimpleDB]
 * link:Apache_Accumulo_Translator.adoc[Apache Accumulo]
 * link:Cassandra_Translator.adoc[Apache Cassandra DB]
