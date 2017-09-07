@@ -11,13 +11,17 @@ Usage of a JDBC source is straight-forward. Using Teiid SQL, the source may be q
 
 If you are using a relational data source, or a data source that has a JDBC driver, and you do not find a specific translator available for that data source type, then start with the link:JDBC_ANSI_Translator.adoc[JDBC ANSI Translator]. The JDBC ANSI Translator should enable you to perform the SQL basics. If there specific data source capabilities that are not available, then consider using the link:../dev/Translator_Development.adoc[Translator Development] to create what you need. Or log a https://jira.jboss.org/jira/browse/Teiid[Teiid Jira] with your requirements.
 
+=== Type Conventions
+
+UID types including UUID, GUID, or UNIQUEIDENTIFIER are typically mapped to the Teiid string type.  Be aware that the source will treat UID strings as non-case sensitive, but they will be in Teiid.  The source may also not support the implicit conversion to the string type, thus usage in functions expecting a string value may fail at the source.  Please log an issue if you encounter this situation.  
+
 == Execution Properties - shared by all JDBC Translators
 
 |===
 |Name |Description |Default
 
 |DatabaseTimeZone
-|The time zone of the database. Used when fetchings date, time, or timestamp values.
+|The time zone of the database. Used when fetching date, time, or timestamp values.
 |The system default time zone
 
 |DatabaseVersion
