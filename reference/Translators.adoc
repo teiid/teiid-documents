@@ -108,3 +108,21 @@ In some situations the teiid_rel:native-query property and native procedures acc
 
 For example the native-query `select c from g where c1 = $1 and c2 = '$$1'` results in a JDBC source query of `select c from g where c1 = ? and c2 = '$1'`, where ? will be replaced with the actual value bound to parameter 1.
 
+== General Import Properties
+
+Several import properties are shared by all translators.
+
+When specifying an importer property, it must be prefixed with "importer.". Example: importer.tableTypes
+
+|===
+|Name |Description |Default
+
+|autoCorrectColumnNames
+|Replace any usage of . in a column name with _ as the period character is not supported by Teiid in column names.
+|true
+
+|renameDuplicateColumns
+|If true rename duplicate columns caused by either mixed case collisions or autoCorrectColumnNames replacing . with _.  A suffix _n where n is an integer will be added to make the name unique. 
+|false
+
+
