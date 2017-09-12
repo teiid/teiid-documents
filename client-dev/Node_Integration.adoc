@@ -1,0 +1,42 @@
+= Node.js Integration
+
+link:https://nodejs.org[Node.js] is an open source event driven runtime that can be integrated with Teiid.
+
+== Prerequisites
+
+- Have Node.js installed.  The npm pagckage pg is also required.  Use "
+
+- Your Teiid installation should already be setup for link:../admin/Socket_Transports.adoc[ODBC] access.  This allows the optional support of Node.js 
+for PostGIS/PostgreSQL to be used.
+
+== Usage
+
+For example if you have VDB called "northwind" deployed on your Teiid server, and it has table called "customers" and you are using default configuration such as
+
+user = 'user'
+password = 'user'
+host = 127.0.0.1
+port = 35432
+
+[source,javascript]
+.*Simple Access Example*
+----
+    const { Client } = require('pg')
+    const client = new Client({
+        user: 'user',
+        host: 'localhost',
+        database: 'northwind',
+        password: 'secretpassword',
+        port: 35432,
+    })
+    client.connect()
+    
+    client.query('SELECT CustomerID, ContactName, ContactTitle FROM Customers', (err, res) => {
+        console.log(err, res)
+        client.end()
+    })    
+----
+
+NOTE: you do not have to programmatically specify the connection information in the code as it can be obtained from environment variables and other mechanisms - see https://node-postgres.com
+    
+For more information please refer to: https://npmjs.org/package/pg

@@ -9,7 +9,11 @@ If possible you should make your migration to Teiid 10 by first using Teiid 9.3.
 
 == Configuration Changes
 
+Teiid Embedded by default will not allow the usage of the ENV function.  Use the EmbeddedConfiguration.setAllowEnvFunction to toggle this behavior.
+
 == Compatibility Changes
+
+The FROM_UNIXTIME function now matches the behavior of HIVE/IMPALA.  It accepts a long and returns a string, rather than a timestamp.
 
 === XML Document Model
 

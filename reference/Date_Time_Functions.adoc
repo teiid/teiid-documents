@@ -52,9 +52,13 @@ Parse and format Date/Time functions use the convention established within the j
 |Format timestamp x using format y
 |x is timestamp, y is string, returns string
 
+|FROM_MILLIS (millis)
+|Return the Timestamp value for the given milliseconds  
+|long UTC timestamp in milliseconds
+
 |FROM_UNIXTIME (unix_timestamp)
-|Return the Unix timestamp (in seconds) as a Timestamp value
-|Unix timestamp (in seconds)
+|Return the Unix timestamp as a String value with the default format of yyyy/mm/dd hh:mm:ss
+|long Unix timestamp (in seconds)
 
 |HOUR(x)
 |Return hour (in military 24-hour format)
@@ -103,6 +107,14 @@ Parse and format Date/Time functions use the convention established within the j
 |TIMESTAMPCREATE(date, time)
 |Create a timestamp from a date and time
 |date in \{date}, time in \{time}, returns timestamp
+
+|TO_MILLIS (timestamp)
+|Return the UTC timestamp in milliseconds 
+|timestamp value
+
+|UNIX_TIMESTAMP (unix_timestamp)
+|Return the long Unix timestamp (in seconds)
+|unix_timestamp String in the default format of yyyy/mm/dd hh:mm:ss
 
 |WEEK(x)
 |Return week in year 1-53, see also link:../admin/System_Properties.adoc[System Properties] for customization

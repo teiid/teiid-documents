@@ -22,7 +22,7 @@ Your application is responsible for having the appropriate classpath to utilize 
 Typically you will want all transitive dependencies from referenced Teiid artifacts to be included. 
 Optional dependencies, such as Hibernate core 4.1.6 or compatible, will be needed for specific features - such as utilizing the JDBC translator support for dependent joins using temp tables.
 
-Some of the Teiid transitive dependencies have known vulnerabilities. WildFly/Teiid addresses this by introducing managed dependency overrides. It is recommended that you include these overrides in your usage of Teiid Embedded by importing the Teiid parent pom in your depedency management section:
+Some of the Teiid transitive dependencies have known vulnerabilities. WildFly/Teiid addresses this by introducing managed dependency overrides. It is recommended that you include these overrides in your usage of Teiid Embedded by importing the Teiid parent pom in your dependency management section:
 
 [source,xml]
 ----
@@ -36,19 +36,9 @@ Some of the Teiid transitive dependencies have known vulnerabilities. WildFly/Te
       <scope>import</scope>
     </dependency>
 ----
+==== Dependencies
 
-=== OSGI
-
-All Teiid jars can also be deployed as bundles in a OSGI container like Karaf. If you are working with Karaf, a feature.xml file is available in maven repo for your convenience. Usage pattern is below
-
-----
-features:addurl mvn:org.teiid/teiid/9.1.0.Final/xml/karaf-features
-features:install -v teiid
-----
-
-=== Maven
-
-If you are trying run Teidd Embedded with Maven based project and using maven to pull artifacts, the `runtime`, `admin`, `connector`, `translator` dependencies are necessary as below
+If you are trying run Teidd Embedded as a Maven based project, the `runtime`, `admin`, `connector`, `translator` dependencies necessary are
 
 [source,xml]
 ----
@@ -71,6 +61,49 @@ If you are trying run Teidd Embedded with Maven based project and using maven to
     <groupId>org.teiid.connectors</groupId>
     <artifactId>connector-SOURCE</artifactId>
 </dependency>
+----
+
+You would include all translator/connectors needed by your project.
+
+==== Optional Libraries
+
+If you include a dependency to org.teiid:teiid-data-quality, the osdq data quality functions will be available for use with Embedded.
+
+If you do not need XML type support including XPath and SQL/XML functions like XMLTABLE, then you may also choose to exclude saxon, xom, and nux from usage by the runtime by using excludes:
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.teiid</groupId>
+    <artifactId>teiid-runtime</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>net.sf.saxon</groupId>
+           <artifactId>Saxon-HE</artifactId>
+        </exclusion>
+        <exclusion>
+            <groupId>nux</groupId>
+            <artifactId>nux</artifactId>
+        </exclusion>
+        <exclusion>
+            <groupId>com.io7m.xom</groupId>
+            <artifactId>xom</artifactId>
+        </exclusion>
+        <exclusion>
+            <groupId>org.teiid</groupId>
+            <artifactId>saxon-xom</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+---
+
+=== OSGI
+
+All Teiid jars can also be deployed as bundles in a OSGI container like Karaf. If you are working with Karaf, a feature.xml file is available in maven repo for your convenience. Usage pattern is below
+
+----
+features:addurl mvn:org.teiid/teiid/9.1.0.Final/xml/karaf-features
+features:install -v teiid
 ----
 
 === Vulnerable Libraries
