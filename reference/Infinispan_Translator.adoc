@@ -66,16 +66,44 @@ delete from person where id = <value>;
 
 === Defining the Metadata
 
-There are three different ways to define the metadata for the Infinispan model in Teiid.
+There are three different ways to define the metadata for the Infinispan model in Teiid. Choose what best fits the needs.
 
-1) Metadata from a protobuf file (see <<Importer Properties>>) - User can register a .proto file with translator configuration, which will be read in Teiid and get converted to the model's schema.  Then Teiid will register this protobuf file in Infinispan.
+==== Metadata From New Protobuf File:
+User can register a .proto file with translator configuration, which will be read in Teiid and get converted to the model's schema.  Then Teiid will register this protobuf file in Infinispan. For details see <<Importer Properties>>
 
+Example::
+[source,xml]
+----
+<vdb name="vdbname" version="1">
+    <model name="modelname">
+..
+        <property name="importer.ProtoFilePath" value="/path/to/myschema.proto"/>
+..
+    </model>
+</vdb>
+----
 
-2) Metadata from already registered proto file (see <<Importer Properties>>) - If the protobuf file has already been registered in your Infinispan node, Teiid can obtain it and read the protobuf directly.
+==== Metadata From Existing Registered Protobuf File
+If the protobuf file has already been registered in your Infinispan node, Teiid can obtain it and read the protobuf directly from the cache. For details see <<Importer Properties>>
 
+Example::
+[source,xml]
+ProtobufName
+----
+<vdb name="vdbname" version="1">
+    <model name="modelname">
+..
+        <property name="importer.ProtobufName" value="existing.proto"/>
+..
+    </model>
+</vdb>
+----
 
-3) Define in DDL: Like any other translator, you can use the <metadata> tags to define the DDL directly. For example
+==== Define Metadata in DDL
 
+Like any other translator, you can use the <metadata> tags to define the DDL directly. For example
+
+Example::
 [source,xml]
 ----
     <model name="ispn">
@@ -88,12 +116,12 @@ There are three different ways to define the metadata for the Infinispan model i
     </model>
 ----
 
-NOTE:  The "<metadata type = "NATIVE"/>" is required in order to trigger the registration of the generated protobuf file.  The name of the protobuf registered in Infinispan will use the format of:  schemaName + ".proto".  So in the above example, it would be named *_ispn.proto_*.   This would be useful if another VDB wished to reference that same cache and would then use the Importer Property importer.ProtobufName.
+NOTE:  The "<metadata type = "NATIVE"/>" is required in order to trigger the registration of the generated protobuf file.  The name of the protobuf registered in Infinispan will use the format of:  schemaName + ".proto".  So in the above example, it would be named *_ispn.proto_*.   This would be useful if another VDB wished to reference that same cache and would then use the Importer Property "importer.ProtobufName" to read it. The model must not contain dash ("-") in it's name.
 
-For this option, a compatible protobuf definition is generated and registered in Infinispan. 
+For this option, a compatible protobuf definition is generated automatically during the deployment of the VDB and registered in Infinispan. Please note, if for any reason the DDL is modified (Name changed, type changed, add/remove columns) after the initial VDB is deployed, then previous version of the protobuf file and data contents need to be manually cleared before next revision of the VDB is deployed. Failure to clear will result in data encoding/corruption issues.
 
 
-===  Details on Internal Protobuf to DDL conversion
+===  Details on Protobuf to DDL conversion
 
 This section show cases an example protobuf file and shows how that file converted to relational schema in the Teiid. This below is taken from the quick start examples of Infinispan.
 
@@ -133,7 +161,7 @@ message Person {
 }
 ----
 
-When Teiid's translator processes the above protobuf file, the following DDL is generated automatically for the Teiid model as the relational representation.
+When Teiid's translator processes the above protobuf file, the following DDL is generated automatically for Teiid model as the relational representation.
 
 [source,sql]
 ----
@@ -180,8 +208,6 @@ You can see from above DDL, Teiid makes use of the extension metadata properties
 * To enable updates, the top level message object MUST define @id annotation on one of its columns
 
 NOTE: Notice the *@Id* annotation on the Person message's "id" attribute in protobuf file. This is *NOT* defined by Infinispan, but required by Teiid to identify the key column of the cache entry. In the absence of this annotation, only "read only" access (SELECT) is provided to top level objects.  Any access to complex objects (PhoneNumber from above example) will not be provided.   
-
-TIP: A option to not defining the @Id in the protobuf file, but to enable updates, would be to define the metadata in a Teiid model, where the PK can be defined on the source table.
 
 
 IMPOTANT: When .proto file has more than single top level "message" objects to be stored as the root object in the cache, each of the objects must be stored in a different cache to avoid the key conflicts in a single cache store. This is restriction imposed by Infinispan, however Teiid's single model can have multiple of these message types. Since each of the message will be in different cache store, you can define the cache store name for the "message" object. For this, define an extension property "teiid_ispn:cache" on the corresponding Teiid's table. See below code example.
@@ -233,18 +259,6 @@ ProtoFilePath
     <model name="modelname">
 ..
         <property name="importer.ProtoFilePath" value="/path/to/myschema.proto"/>
-..
-    </model>
-</vdb>
-----
-
-[source,xml]
-ProtobufName
-----
-<vdb name="vdbname" version="1">
-    <model name="modelname">
-..
-        <property name="importer.ProtobufName" value="existing.proto"/>
 ..
     </model>
 </vdb>
