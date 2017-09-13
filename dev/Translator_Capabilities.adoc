@@ -255,6 +255,10 @@ The following table lists the capabilities that can be specified in the `Executi
 |Unions, Intersect, or Except
 |Translator supports set queries with an ORDER BY
 
+|SetQueryLimitOffset
+|(Unions, Intersect, or Except) and (RowLimit or RowOffset)
+|Translator supports set queries with a LIMIT and/or OFFSET which is determined by the respective RowLimit and RowOffset capability.  Defaults to true if RowLimit or RowOffset is supported.
+
 |RowLimit
 |
 |Translator can support the limit portion of the limit clause
