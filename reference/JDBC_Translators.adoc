@@ -147,6 +147,10 @@ When specifying the importer property, it must be prefixed with "importer.". Exa
 |importRowIdAsBinary
 |true will import RowId columns as varbinary values.
 |false
+
+|importLargeAsLob
+|true will import character and binary types larger than the Teiid max as clob or blob respectively.  If you experience memory issues even with the property enabled, you should use the copyLob execution property as well. 
+|false
 |===
 
 [1] JavaDoc for {{ book.javaVersionUrl }}/docs/api/java/sql/DatabaseMetaData.html[DatabaseMetaData] +
