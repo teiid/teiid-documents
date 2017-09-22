@@ -71,7 +71,88 @@ Note also that since your VDBs will likely contain multiple source and view mode
 
 == Identifier Generation
 
-* Identifier generation based upon table values, such as the hilo generator, require that the identifier table(s) be exposed through Teiid.
+=== SEQUENCE Based Identity Generation
+If you want use SEQUENCE based Identity generation with Teiid, this is supported through the TeiidDialect. When you define a JPA Entity like
+
+----
+public class Customer {
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_generator")
+	@SequenceGenerator(name="customer_generator", sequenceName = "customer_seq")
+	@Id
+	Long id;
+}
+----
+
+In the Teiid VDB, define a virtual procudure like below example. 
+
+----
+CREATE VIRTUAL PROCEDURE customer_seq(OUT "return" long RESULT)
+AS
+BEGIN 
+    -- Your code to retrieve the sequence from source database
+    -- or generate one in Teiid.
+END;
+----
+
+Given the above template, if for example you are working with Oracle would like to use the Oracle sequence you already defined as "customer_seq" in your Oracle database, then create View procedure in Teiid as
+
+----
+CREATE VIRTUAL PROCEDURE customer_seq(OUT "return" long RESULT)
+AS
+BEGIN 
+    SELECT OracleDB.mySequence();
+END;
+----
+
+Then in your OracleDB source model, create a source function for example
+
+----
+CREATE FOREIGN FUNCTION mySequence(OUT "return" long RESULT)
+OPTIONS ("teiid_rel:native-query" 'SELECT customer_seq.NEXTVAL FROM dual');
+----
+
+Then when Customer enitity is used in insert the sequence is generated and used.
+
+=== TABLE Based Idenity Generation
+If you want use TABLE based Identity generation with Teiid, this is supported through the TeiidDialect. When you define a JPA Entity like
+
+----
+public class Customer {
+	@TableGenerator(name = "customer", 
+			table = "id_generator", 
+			pkColumnName = "idkey", 
+			valueColumnName = "idvalue", 
+			pkColumnValue = "customer", 
+			allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "customer")	
+	@Id
+	Long id;
+	
+	...
+}
+----
+
+Then create a virtual table in Teiid's view model as
+
+----
+CREATE VIEW id_generator (
+	idkey string(255) NOT NULL,
+	idvalue long,
+	CONSTRAINT id_generatorPK PRIMARY KEY(idkey)
+) OPTIONS (UPDATABLE TRUE)
+AS
+SELECT IDKEY, IDVALUE FROM OracleDB.IDGENERATOR;
+----
+
+Where in OracleDB, you have a physical Table called "IDGENERATOR" and with above shown columns. When you use this technique, please make sure you have seed content like below to begin with
+
+----
+INSERT INTO IDGENERATOR(IDKEY, IDVALUE) VALUES ('customer', 100);
+----
+
+such that the IDKEY matches and IDVALUE has a initializer value.
+
+=== IDENTITY Based identity generation
 * GUID and Identity (using generated key retrieval) identifier generation strategy are directly supported.
 
 == Limitations
