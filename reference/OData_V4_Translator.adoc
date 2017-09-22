@@ -1,7 +1,7 @@
 
 = OData V4 Translator
 
-The OData V4 translator, known by the type name _"odata4"_ exposes the OData Version 4 data sources and uses the Teiid WS resource adapter for making web service calls. This translator is extension of _Web Services Translator_.
+The OData V4 translator, known by the type name _"odata4"_ exposes the OData Version 4 data sources and uses the Teiid WS resource adapter for making web service calls. This translator is extension of _Web Services Translator_.  Do not use the OData V4 translator against older OData V1-3 sources, instead just use the OData translator.
 
 NOTE: *What is Odata* - The http://www.odata.org[Open Data Protocol (OData)] Web protocol is for querying and updating data that provides a way to unlock your data and free it from silos that exist in applications today. OData does this by applying and building upon Web technologies such as HTTP, Atom Publishing Protocol (AtomPub) and JSON to provide access to information from a variety of applications, services, and stores. OData is being used to expose and access information from a variety of sources including, but not limited to, relational databases, file systems, content management systems and traditional Web sites.
 
