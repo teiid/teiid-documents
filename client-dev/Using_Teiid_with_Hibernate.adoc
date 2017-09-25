@@ -108,7 +108,7 @@ Then in your OracleDB source model, create a source function for example
 
 ----
 CREATE FOREIGN FUNCTION mySequence(OUT "return" long RESULT)
-OPTIONS ("teiid_rel:native-query" 'SELECT customer_seq.NEXTVAL FROM dual');
+OPTIONS ("teiid_rel:native-query" 'SELECT customer_seq.NEXTVAL FROM dual', DETERMINISM 'NONDETERMINISTIC');
 ----
 
 Then when Customer enitity is used in insert the sequence is generated and used.
