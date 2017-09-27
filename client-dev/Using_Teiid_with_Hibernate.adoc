@@ -72,7 +72,7 @@ Note also that since your VDBs will likely contain multiple source and view mode
 == Identifier Generation
 
 === SEQUENCE Based Identity Generation
-If you want use SEQUENCE based Identity generation with Teiid, this is supported through the TeiidDialect. When you define a JPA Entity like
+If you want use SEQUENCE based Identity generation with Teiid, this is supported through the TeiidDialect. When you define a JPA Entity
 
 ----
 public class Customer {
@@ -83,10 +83,10 @@ public class Customer {
 }
 ----
 
-In the Teiid VDB, define a virtual procudure like below example. 
+In the Teiid VDB, define a virtual function as below example. Note, "_nextval" appended to the sequence name on the name of the function.
 
 ----
-CREATE VIRTUAL PROCEDURE customer_seq(OUT "return" long RESULT)
+CREATE VIRTUAL FUNCTION customer_seq_nextval() RETURNS long
 AS
 BEGIN 
     -- Your code to retrieve the sequence from source database
@@ -97,18 +97,18 @@ END;
 Given the above template, if for example you are working with Oracle would like to use the Oracle sequence you already defined as "customer_seq" in your Oracle database, then create View procedure in Teiid as
 
 ----
-CREATE VIRTUAL PROCEDURE customer_seq(OUT "return" long RESULT)
+CREATE VIRTUAL FUNCTION customer_seq_nextval() RETURNS long
 AS
 BEGIN 
-    SELECT OracleDB.mySequence();
+    SELECT OracleDB.mySequence_nextval();
 END;
 ----
 
 Then in your OracleDB source model, create a source function for example
 
 ----
-CREATE FOREIGN FUNCTION mySequence(OUT "return" long RESULT)
-OPTIONS ("teiid_rel:native-query" 'SELECT customer_seq.NEXTVAL FROM dual');
+CREATE FOREIGN FUNCTION mySequence_nextval() RETURNS long
+OPTIONS ("teiid_rel:native-query" 'SELECT customer_seq.NEXTVAL FROM dual', DETERMINISM 'NONDETERMINISTIC');
 ----
 
 Then when Customer enitity is used in insert the sequence is generated and used.
