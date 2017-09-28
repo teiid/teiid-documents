@@ -13,6 +13,10 @@ The translator, known by the type name *_salesforce_*, provides Salesforce API 2
 
 The translator, known by the type name of *_salesforce-34_*, provides Salesforce API 34.0 support. The translator must be used with the corresponding Salesforce resource adapter of the same API version.
 
+=== salesforce-41
+
+The translator, known by the type name of *_salesforce-41_*, provides Salesforce API 41.0 support. The translator must be used with the corresponding Salesforce resource adapter of the same API version.
+
 === Other API Versions
 
 If you need connectivity to an API version other than what is built in, please utilize the project https://github.com/teiid/salesforce[https://github.com/teiid/salesforce] to generate new resource adapter / translator pair.
@@ -70,7 +74,7 @@ The Salesforce translator can import metadata.
 
 NOTE： When both _includeTables_ and _excludeTables patterns are present during the import, the _includeTables_ pattern matched first, then the _excludePatterns_ will be applied.
 
-TIP： Teiid translator uses Salesforce Partner API libraries to access the Salesforce system. By default Teiid uses Partner API version "22". Metadata retrieval using the translator and execution of queries against Salesforce using this metadata are *strongly* dependent upon the API version that has been used. It is required that you use same API versions for both Metadata retrieval and query execution. For this reason if you have older VDBS then you either need to re-import the metadata or keep using the default version. For any reason you need to use a different version of API than "22", then you can provide the new translator and resource-adapter combination for that API. For your convenience we provided a template project https://github.com/teiid/salesforce[https://github.com/teiid/salesforce] that you can build and deploy into Teiid system for the new version of the API. If you are using Teiid Embedded, then you could simply choose to replace the kitted salesforce jars with a later version. Up to version v34 is known to be compatible.
+NOTE: If you need connectivity to an API version other than what is built in, you may try to use an existing connectivity pair, but in some circumstances - especially accessing a later remote api from an older java api - this is not possible and results in what appears to be hung connections.  Please raise an issue if you cannot successfully access a specific API version.
 
 === Extension Metadata Properties
 Salesforce is not relational database, however Teiid provides ways to map Saleforce data into relational constructs like Tables and Procedures. You can define a foreign Table using DDL in Teiid VDB, which maps to Salesforce's SObject. At runtime, to interpret this table back to a SObject, Teiid decorates or tags this table definition with additional metadata. For example, a table is defined as

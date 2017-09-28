@@ -1,9 +1,9 @@
 
 = Salesforce Data Sources
 
-Salesforce data sources use a Teiid specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. There are two versions of the salesforce resource adapter - salesforce, which currently provides connectivity to the 22.0 Salesforce API and salesforce-34, which provides connectivity to the 34.0 Salesforce API. The version 22.0 support has been deprecated.
+Salesforce data sources use a Teiid specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. There are three versions of the salesforce resource adapter - salesforce, which currently provides connectivity to the 22.0 Salesforce API, salesforce-34, which provides connectivity to the 34.0 Salesforce API, and salesforce-41. The version 22.0 support has been deprecated.
 
-If you need connectivity to an API version other than what is built in, please utilize the project https://github.com/teiid/salesforce[https://github.com/teiid/salesforce] to generate new resource adapter / translator pair.
+NOTE: If you need connectivity to an API version other than what is built in, you may try to use an existing connectivity pair, but in some circumstances - especially accessing a later remote api from an older java api - this is not possible and results in what appears to be hung connections.  Please raise an issue if you cannot successfully access a specific API version.
 
 There are many ways to create the salesforce data source, using CLI,link:AdminShell.adoc[AdminShell], admin-console etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
 
@@ -20,7 +20,7 @@ batch
 runbatch
 ----
 
-The salesforce-34 connection definition configuration is similar to the above. The resource adapter name would instead be salesforce-34, and the url would point to 34.0 instead.
+The salesforce-xx connection definition configuration is similar to the above. The resource adapter name would instead be salesforce-xx, and the url would point to a later version.
 
 To find out all the properties that are supported by this Salesforce Connector execute the following command in the CLI.
 
