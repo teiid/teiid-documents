@@ -5,6 +5,31 @@
 
 The Couchbase Translator, known by the type name _couchbase_, exposes querying functionality to link:../admin/Couchbase_Data_Sources.adoc[Couchbase Data Sources]. The Couchbase Translator provide a SQL Integration solution for integrating Couchbase JSON document with relational model, which allows applications to use normal SQL queries against Couchbase Server, translating standard SQL-92 queries into equivalent N1QL client API calls. The translator translates Teiid push down commands into https://developer.couchbase.com/documentation/server/4.5/n1ql/n1ql-language-reference/index.html[Couchbase N1QL].
 
+== Usage
+
+The Couchbase Translator supports INSERT, UPSERT, UPDATE, DELETE, SELECT and bulk INSERT statements with a restrictive set of capabilities including: count(*), comparison predicates, Order By, Group By, LIMIT etc. Consider a custom extension or create an enhancement request should your usage require additional capabilities.
+
+If you are using Designer Tooling, to create VDB then:
+
+* Create/use a Teiid Designer Model project
+* Use "Teiid Connection >> Source Model" importer, create a new JBoss Data Source connection profile, specifying the JNDI name for resource adapter configured link:../admin/Couchbase_Data_Sources.adoc[Couchbase Data Sources] and use _couchbase_ as translator type. The source model will be created when you finish with this importer.
+* Create a VDB and deploy into Teiid Server and use either jdbc, odbc, odata etc to query.
+
+== JCA Resource Adapter
+
+The Teiid specific Couchbase Resource Adapter should be used with this translator. See link:../admin/Couchbase_Data_Sources.adoc[Couchbase Data Sources] for connecting to a Couchbase cluster.
+
+== Execution Properties
+Use the translator override mechanism to supply the following properties.
+
+|===
+|Name |Description |Default
+
+|UseDouble
+|Use double rather than allowing for more precise types, such as long, bigdecimal, and biginteger.  This affects both import and execution.  See https://issues.jboss.org/browse/TEIID-5077[the issue] that describes problems with Couchbase and precision loss.
+|false
+|===
+
 == Schema Definition
 
 Couchbase is able to store data that does not follow the rules of data typing and structure that apply to traditional relational tables and columns. Couchbase data is organized into buckets(keyspaces) and documents.
@@ -211,20 +236,6 @@ image:images/couchbase-schemaMapping-example-customer-address.png[Customer_Saved
 
 .*Order_Items*
 image:images/couchbase-schemaMapping-example-order-item.png[Order_Items]
-
-== Usage
-
-The Couchbase Translator supports INSERT, UPSERT, UPDATE, DELETE, SELECT and bulk INSERT statements with a restrictive set of capabilities including: count(*), comparison predicates, Order By, Group By, LIMIT etc. Consider a custom extension or create an enhancement request should your usage require additional capabilities.
-
-If you are using Designer Tooling, to create VDB then:
-
-* Create/use a Teiid Designer Model project
-* Use "Teiid Connection >> Source Model" importer, create a new JBoss Data Source connection profile, specifying the JNDI name for resource adapter configured link:../admin/Couchbase_Data_Sources.adoc[Couchbase Data Sources] and use _couchbase_ as translator type. The source model will be created when you finish with this importer.
-* Create a VDB and deploy into Teiid Server and use either jdbc, odbc, odata etc to query.
-
-== JCA Resource Adapter
-
-The Teiid specific Couchbase Resource Adapter should be used with this translator. See link:../admin/Couchbase_Data_Sources.adoc[Couchbase Data Sources] for connecting to a Couchbase cluster.
 
 == Procedures
 

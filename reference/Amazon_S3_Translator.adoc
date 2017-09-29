@@ -40,7 +40,7 @@ e1,e2,e3
 ----
 
 == Execution Properties
-These below properties can be provided using translator override mechanism to supply as default properties.
+Use the translator override mechanism to supply the following properties.
 
 |===
 |Name |Description |Default
