@@ -6,7 +6,7 @@
         "asName" :  "WildFly",
         "copyrightYear" :  "2017",
         "copyrightHolder" :  "Red Hat, Inc.",
-        "javaVersionUrl" : "https://docs.oracle.com/javase/7",
+        "javaVersionUrl" : "http://docs.oracle.com/javase/8",
         "asDocRoot" : "https://docs.jboss.org/author/display/WFLY10",
         "archeTypeVersion" : "9.0.1"
     },
