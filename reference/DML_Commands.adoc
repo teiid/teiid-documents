@@ -84,7 +84,7 @@ Example Syntax
 
 [source,sql]
 ----
-UPDATE table SET (column=value,...) [WHERE criteria]
+UPDATE table [[AS] alias] SET (column=value,...) [WHERE criteria]
 ----
 
 == DELETE Command
@@ -95,7 +95,7 @@ Example Syntax
 
 [source,sql]
 ----
-DELETE FROM table [WHERE criteria]
+DELETE FROM table [[AS] alias] [WHERE criteria]
 ----
 
 == UPSERT/MERGE Command
@@ -107,7 +107,7 @@ Example Syntax
 
 [source,sql]
 ----
-UPSERT INTO table (column,...) VALUES (value,...)
+UPSERT INTO table [[AS] alias] (column,...) VALUES (value,...)
 ----
 
 [source,sql]
