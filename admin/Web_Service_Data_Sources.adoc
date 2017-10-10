@@ -243,8 +243,11 @@ for complete list of kerberos properties please refer to http://anonsvn.jboss.or
 
 == Logging
 
-The CXF config property may also be used to control the logging of requests and responses for specific or all ports. Logging, when enabled, will be performed at an INFO level to the org.apache.cxf.interceptor context.
+Logging, when enabled, will be performed at an INFO level to the org.apache.cxf.interceptor context.
 
+=== SOAP
+
+The CXF config property may also be used to control the logging of requests and responses for specific or all ports. 
 
 .*Example logging data source*
 ----
@@ -277,6 +280,18 @@ Corresponding xxx-jbossws-cxf.xml
     </jaxws:client>
 
 </beans>
+----
+
+=== All CXF Usage
+
+With the {{ book.asName }} distribution of CXF a system property can be used to enable CXF logging across all usage in the application server (including salesforce) - see https://docs.jboss.org/author/display/JBWS/Advanced+User+Guide[the {{ book.asName }} docs].
+
+[source,xml]
+.*Example System Property*
+----
+<system-properties>
+  <property name="org.apache.cxf.logging.enabled" value="true"/>
+</system-properties>
 ----
 
 == Transport Settings

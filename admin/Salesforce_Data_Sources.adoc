@@ -159,3 +159,67 @@ https://help.salesforce.com/apex/HTViewHelpDoc?id=remoteaccess_oauth_jwt_flow.ht
 http://salesforce.stackexchange.com/questions/31904/how-and-when-does-a-salesforce-saml-oauth2-user-give-permission-to-use-a-conne
 http://salesforce.stackexchange.com/questions/30596/oauth-2-0-jwt-bearer-token-flow
 http://salesforce.stackexchange.com/questions/88396/invalid-assertion-error-in-jwt-bearer-token-flow
+
+== Logging
+
+Logging, when enabled, will be performed at an INFO level to the org.apache.cxf.interceptor context.
+
+=== Per Resource Adapder
+
+The CXF config property may also be used to control the logging of requests and responses.
+
+[source,xml]
+.*Example logging data source*
+----
+<resource-adapter id="salesforce-ds">
+    <module slot="main" id="org.jboss.teiid.resource-adapter.salesforce-34"/>
+    <transaction-support>NoTransaction</transaction-support>
+    <connection-definitions>
+        <connection-definition class-name="org.teiid.resource.adapter.salesforce.SalesForceManagedConnectionFactory" jndi-name="java:/salesforce_bulk_api" enabled="true" use-java-context="true" pool-name="salesforce-ds">
+            <config-property name="password">
+                token
+            </config-property>
+            <config-property name="URL">
+                https://www.salesforce.com/services/Soap/u/34.0
+            </config-property>
+            <config-property name="username">
+                name
+            </config-property>
+            <config-property name="ConfigFile">
+                /path/to/cxf.xml
+            </config-property>
+        </connection-definition>
+    </connection-definitions>
+</resource-adapter>
+----
+
+Corresponding cxf.xml
+
+[source,xml]
+.*Example logging data source*
+----
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:cxf="http://cxf.apache.org/core"
+      xsi:schemaLocation="http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+ 
+    <bean id="loggingFeature" class="org.apache.cxf.feature.LoggingFeature"/>
+    <cxf:bus>
+        <cxf:features>
+            <ref bean="loggingFeature"/>
+        </cxf:features>
+    </cxf:bus>
+</beans>
+----
+
+=== All CXF Usage
+
+With the {{ book.asName }} distribution of CXF a system property can be used to enable CXF logging across all usage in the application server - see https://docs.jboss.org/author/display/JBWS/Advanced+User+Guide[the {{ book.asName }} docs].
+
+[source,xml]
+.*Example System Property*
+----
+<system-properties>
+  <property name="org.apache.cxf.logging.enabled" value="true"/>
+</system-properties>
+----
