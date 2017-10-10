@@ -25,3 +25,18 @@ If a view is defined by a join query or has a WITH clause it may still be inhere
 
 If the default handling is not available or you wish to have an alternative implementation of an INSERT/UPDATE/DELETE, then you may use link:Update_Procedures_Triggers.adoc[Update Procedures (Triggers)] to define procedures to handle the respective operations.
 
+Consider the following example of an inherently updatable denormalized view:
+
+[source,sql]
+----
+create foreign table parent_table (pk_col integer primary key, name string) options (updatable true);
+
+create foreign table child_table (pk_col integer primary key, name string, fk_col integer, foreign key (fk_col) references parent_table (pk_col)) options (updatable true);
+
+create view denormalized options (updatable true) as select c.fk_col, c.name as child_name, p.name from parent_table as p, child_table as c where p.pk_col = c.fk_col;
+----
+ 
+A query such as "insert into denormalized (fk_col, child_name) values (1, 'a')" would succeed against this view as it targets a single key-preserved table - child_table.  However "insert into denormalized (name) values ('a')" would fail as it maps to a parent_table which is not key preserved as there can be multiple rows for each parent_table key.  Also an insert against just parent_table may not be visible to the view - as there may be no child entities associated either.
+ 
+Not all scenarios will work.  Referencing the above example, an "insert into denormalized (pk_col, child_name) values (1, 'a')" with a view that is defined using the p.pk_col will fail as the logic doesn't yet consider the equivalency of the key values.  If you encounter a scenario that needs support, please log an issue.
+
