@@ -318,7 +318,7 @@ BEGIN
 END
 ----
 
-The criteria may be any valid boolean expression or an IS DISTINCT FROM predicate. IS DISTINCT FROM uses the syntax:
+The criteria may be any valid boolean expression or an IS DISTINCT FROM predicate referencing row values. This IS DISTINCT FROM extension uses the syntax:
 
 [source,sql]
 ----
