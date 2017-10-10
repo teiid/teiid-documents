@@ -89,3 +89,12 @@ name is a string, value is an object, and the return value is an object.
 
 The previous value for the key or null will be returned. A set has no effect on the current transaction and is not affected by commit/rollback.
 
+== GENERATED_KEY
+
+Get a column value from the generated keys of the previous statement.
+ 
+GENERATED_KEY(column_name)
+ 
+column_name is a string.  The return value is of type object.
+ 
+Null is returned if there is no such generated key nor matching key column. Typically this function will only be used within the scope of procedure to determine a generated key value from an insert.  It should not be expected that all inserts provide generated keys as not all sources support returning generated keys.  

@@ -99,6 +99,24 @@ For example, for a view with columns A, B, C:
 |CHANGING.A = false, CHANGING.B = false, CHANGING.C = true
 |===
 
+==== Key Variables
+
+To support returning generated keys from an INSERT trigger, a KEY group is made available that can be assigned the value to be returned.
+Typically this requires using the generated_key system function - however not all inserts provide generated keys as not all sources support returning generated keys.  
+
+[source,sql]
+----
+create view v1 (i integer, k integer not null auto_increment primary key) 
+OPTIONS (UPDATABLE true) as 
+   select x, y from tbl;
+create trigger on v1 instead of insert as 
+   for each row begin atomic
+      -- ... some logic
+      insert into tbl (x) values (new.i); 
+      key.k = cast(generated_key('y') as integer);
+   end;
+----
+
 === Examples
 
 For example, for a view with columns A, B, C:
