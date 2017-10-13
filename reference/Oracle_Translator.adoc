@@ -10,7 +10,6 @@ NOTE: The Oracle provide JDBC driver may cause memory issues due to excessive bu
 == Importer Properties 
 
 * _useGeometryType_- Use the Teiid Geomety type when importing columns with a source type of SDO_GEOMETRY. Defaults to false.
-* _useIntegralTypes_- Use integral types rather than decimal when the scale is 0. Defaults to false.
 
 == Execution Properties
 

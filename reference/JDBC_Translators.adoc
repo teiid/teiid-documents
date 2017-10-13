@@ -120,6 +120,10 @@ When specifying the importer property, it must be prefixed with "importer.". Exa
 |true to convert unsigned types to the next widest type. For example SQL Server reports tinyint as an unsigned type. With this option enabled, tinyint would be imported as a short instead of a byte.
 |true
 
+|useIntegralTypes
+|true to use integral types rather than decimal when the scale is 0. 
+|false
+
 |quoteNameInSource
 |false will override the default and direct Teiid to create source queries using unquoted identifiers.
 |true
