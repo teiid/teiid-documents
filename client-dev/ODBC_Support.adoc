@@ -11,7 +11,7 @@ The pg emulation is not complete. The intention of the ODBC access is to provide
 While many PostgreSQL constructs are supported the default behavior for queries matches Teiid’s expectations. 
 See link:../admin/System_Properties.adoc[System Properties] for optional properties that further emulate pgsql handling.
 
-If you do not wish to globally enable org.teiid.backslashDefaultMatchEscape, then have your ODBC client issue "select cast(teiid_session_set('backslashDefaultMatchEscape', true) as boolean)" to alter the default behavior for just the current session.
+NOTE: *Handling Tables with Underscore ("_")* in them in ODBC. By default Teiid does not have default escape character, however Postgres emulation requires back splash as default to handle tables with underscore. To set this property globally enable `org.teiid.backslashDefaultMatchEscape` system property to `true`. To alter the property just for the current session then have your ODBC client issue `select cast(teiid_session_set('backslashDefaultMatchEscape', true) as boolean)` statement before any other statement.
 
 == Known Limitations:
 
