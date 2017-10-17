@@ -125,4 +125,8 @@ When specifying an importer property, it must be prefixed with "importer.". Exam
 |If true rename duplicate columns caused by either mixed case collisions or autoCorrectColumnNames replacing . with _.  A suffix _n where n is an integer will be added to make the name unique. 
 |false
 
+|renameDuplicateTables
+|If true rename duplicate tables caused by mixed case collisions.  A suffix _n where n is an integer will be added to make the name unique. 
+|false
+|===
 
