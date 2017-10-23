@@ -117,7 +117,8 @@ When specifying the importer property, it must be prefixed with "importer.". Exa
 |false
 
 |importSequences
-|true to import sequences.  Note supported only for DB2, Oracle, PostgreSQL, SQL Server, and H2.
+|true to import sequences.  Note supported only for DB2, Oracle, PostgreSQL, SQL Server, and H2.  A matching sequence will be imported
+to a 0-argument Teiid function name_nextval.
 |false
 
 |sequenceNamePattern
