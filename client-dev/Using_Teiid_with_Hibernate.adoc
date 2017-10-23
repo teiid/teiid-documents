@@ -104,14 +104,14 @@ BEGIN
 END;
 ----
 
-Then in your OracleDB source model, create a source function for example
+Stating with Teiid 10.0 some sources, including DB2, Oracle, H2, PostgreSQL, DB2, support automatic import of sequence information.  For other sources you need to add source functions to represent the sequence calls.  For example assuming you wanted to do this manually for Oracle, then in your OracleDB source model, create a source function:
 
 ----
 CREATE FOREIGN FUNCTION mySequence_nextval() RETURNS long
 OPTIONS ("teiid_rel:native-query" 'SELECT customer_seq.NEXTVAL FROM dual', DETERMINISM 'NONDETERMINISTIC');
 ----
 
-Then when Customer enitity is used in insert the sequence is generated and used.
+Then when the Customer entity is inserted, the sequence is used.
 
 === TABLE Based Idenity Generation
 If you want use TABLE based Identity generation with Teiid, this is supported through the TeiidDialect. When you define a JPA Entity like

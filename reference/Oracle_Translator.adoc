@@ -21,6 +21,8 @@ NOTE: The Oracle provide JDBC driver may cause memory issues due to excessive bu
 
 Sequences may be used with the Oracle translator. A sequence may be modeled as a table with a name in source of DUAL and columns with the name in source set to <sequence name>.[nextval|currval]
 
+With Teiid 10.0+ sequences may be imported automatically link:JDBC_Translators.adoc[import properties].
+
 Teiid 8.4 and Prior Oracle Sequence DDL
 
 [source,sql]

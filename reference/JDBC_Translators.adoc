@@ -116,6 +116,14 @@ When specifying the importer property, it must be prefixed with "importer.". Exa
 |true to import procedures and procedure columns - Note that it is not always possible to import procedure result set columns due to database limitations. It is also not currently possible to import overloaded procedures.
 |false
 
+|importSequences
+|true to import sequences.  Note supported only for DB2, Oracle, PostgreSQL, SQL Server, and H2.
+|false
+
+|sequenceNamePattern
+|like pattern string to use when importing sequences.  Null or % will match all.
+|null
+
 |widenUnsignedTypes
 |true to convert unsigned types to the next widest type. For example SQL Server reports tinyint as an unsigned type. With this option enabled, tinyint would be imported as a short instead of a byte.
 |true
