@@ -1,13 +1,13 @@
 {
     "variables" : {
         "versionNumber" : "10.0",
-        "fullVersionNumber": "10.0.0.Final",
-        "asVersionNumber" :  "WildFly 10.0.0",
+        "fullVersionNumber": "11.0.0.Final",
+        "asVersionNumber" :  "WildFly 11.0.0",
         "asName" :  "WildFly",
         "copyrightYear" :  "2017",
         "copyrightHolder" :  "Red Hat, Inc.",
         "javaVersionUrl" : "http://docs.oracle.com/javase/8",
-        "asDocRoot" : "https://docs.jboss.org/author/display/WFLY10",
+        "asDocRoot" : "https://docs.jboss.org/author/display/WFLY/Documentation",
         "archeTypeVersion" : "9.0.1"
     },
     "plugins": ["collapsible-menu"]

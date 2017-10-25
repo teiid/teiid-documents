@@ -138,7 +138,7 @@
 |<<sortSpecification,sort specification>>
 
 |[[token_DISTINCT]]_DISTINCT_
-|<<aggregateSymbol,standard aggregate function>>, <<function,function>>, <<ifStatement,if statement>>, <<queryExpressionBody,query expression body>>, <<queryTerm,query term>>, <<select,select clause>>
+|<<aggregateSymbol,standard aggregate function>>, <<function,function>>, <<isDistinct,IS Distinct>>, <<queryExpressionBody,query expression body>>, <<queryTerm,query term>>, <<select,select clause>>
 
 |[[token_DOUBLE]]_DOUBLE_
 |<<parseDataTypePrimary,simple data type>>
@@ -192,7 +192,7 @@
 |<<alterStatement,alterStatement>>, <<createDDLProcedure,create procedure>>, <<createDataWrapper,create data wrapper>>, <<createForeignTempTable,create foreign temp table>>, <<createServer,create server, aka data source>>, <<createTable,create table>>, <<dropDataWrapper,Drop data wrapper>>, <<dropProcedure,drop procedure>>, <<dropTableView,drop table>>, <<foreignKey,foreign key>>, <<importSchema,Import foreign schema>>
 
 |[[token_FROM]]_FROM_
-|<<delete,delete statement>>, <<from,from clause>>, <<function,function>>, <<ifStatement,if statement>>, <<importSchema,Import foreign schema>>, <<revokeGrantOption,Revoke GRANT>>
+|<<delete,delete statement>>, <<from,from clause>>, <<function,function>>, <<importSchema,Import foreign schema>>, <<isDistinct,IS Distinct>>, <<revokeGrantOption,Revoke GRANT>>
 
 |[[token_FULL]]_FULL_
 |<<qualifiedJoin,qualified table>>
@@ -246,7 +246,7 @@
 |<<dynamicCommand,dynamic data statement>>, <<importSchema,Import foreign schema>>, <<insert,insert statement>>, <<into,into clause>>
 
 |[[token_IS]]_IS_
-|<<ifStatement,if statement>>, <<isNullCrit,is null predicate>>
+|<<isDistinct,IS Distinct>>, <<isNullCrit,is null predicate>>
 
 |[[token_JOIN]]_JOIN_
 |<<crossJoin,cross join>>, <<makedepOptions,make dep options>>, <<qualifiedJoin,qualified table>>
@@ -309,7 +309,7 @@
 |<<option,option clause>>
 
 |[[token_NOT]]_NOT_
-|<<alterColumn,alter column options>>, <<betweenCrit,between predicate>>, <<compoundStatement,compound statement>>, <<createColumn,table element>>, <<createDomain,create a domain or type alias>>, <<ifStatement,if statement>>, <<isNullCrit,is null predicate>>, <<matchCrit,match predicate>>, <<notCrit,boolean factor>>, <<procedureParameter,procedure parameter>>, <<procedureRsColumn,procedure result column>>, <<regexMatchCrit,like regex predicate>>, <<setCrit,in predicate>>, <<tableElement,temporary table element>>
+|<<alterColumn,alter column options>>, <<betweenCrit,between predicate>>, <<compoundStatement,compound statement>>, <<createColumn,table element>>, <<createDomain,create a domain or type alias>>, <<isDistinct,IS Distinct>>, <<isNullCrit,is null predicate>>, <<matchCrit,match predicate>>, <<notCrit,boolean factor>>, <<procedureParameter,procedure parameter>>, <<procedureRsColumn,procedure result column>>, <<regexMatchCrit,like regex predicate>>, <<setCrit,in predicate>>, <<tableElement,temporary table element>>
 
 |[[token_NULL]]_NULL_
 |<<alterColumn,alter column options>>, <<createColumn,table element>>, <<createDomain,create a domain or type alias>>, <<isNullCrit,is null predicate>>, <<nonNumericLiteral,non numeric literal>>, <<procedureParameter,procedure parameter>>, <<procedureRsColumn,procedure result column>>, <<tableElement,temporary table element>>, <<xmlQuery,xml query>>
@@ -1170,7 +1170,7 @@
 |<<constraint,other constraints>>, <<createTempTable,create temporary table>>, <<foreignKey,foreign key>>, <<insert,insert statement>>, <<primaryKey,primary key>>, <<withListElement,with list element>>
 
 |[[usage_commonValueExpression]]_<<commonValueExpression, common value expression>>_
-|<<betweenCrit,between predicate>>, <<booleanPrimary,boolean primary>>, <<compareCrit,comparison predicate>>, <<exception,sql exception>>, <<matchCrit,match predicate>>, <<regexMatchCrit,like regex predicate>>, <<setCrit,in predicate>>, <<textTable,text table>>
+|<<betweenCrit,between predicate>>, <<booleanPrimary,boolean primary>>, <<compareCrit,comparison predicate>>, <<exception,sql exception>>, <<isDistinct,IS Distinct>>, <<matchCrit,match predicate>>, <<regexMatchCrit,like regex predicate>>, <<setCrit,in predicate>>, <<textTable,text table>>
 
 |[[usage_compareCrit]]_<<compareCrit, comparison predicate>>_
 |<<booleanPrimary,boolean primary>>
@@ -1335,7 +1335,7 @@
 |<<query,query>>
 
 |[[usage_id]]_<<id, identifier>>_
-|<<alter,alter>>, <<alterChildOptionPair,alter child option pair>>, <<alterColumn,alter column options>>, <<alterDatabase,ALTER DATABASE >>, <<alterDropColumn,DROP column>>, <<alterOptionPair,alter option pair>>, <<alterProcedure,ALTER PROCEDURE >>, <<alterRenameColumn,rename column options>>, <<alterRenameTable,RENAME Table>>, <<alterServer,ALTER SERVER >>, <<alterTable,ALTER TABLE >>, <<alterTranslator,ALTER DATA WRAPPER >>, <<alterTrigger,ALTER TRIGGER >>, <<arrayTable,array table>>, <<assignStatement,assignment statement>>, <<branchingStatement,branching statement>>, <<callableStatement,callable statement>>, <<columnList,column list>>, <<compoundStatement,compound statement>>, <<createColumn,table element>>, <<createDDLProcedure,create procedure>>, <<createDataWrapper,create data wrapper>>, <<createDatabase,create database>>, <<createDomain,create a domain or type alias>>, <<createElementsWithTypes,typed element list>>, <<createForeignTempTable,create foreign temp table>>, <<createNameSpace,option namespace>>, <<createRole,create role >>, <<createSchema,create schema>>, <<createServer,create server, aka data source>>, <<createTable,create table>>, <<createTableBody,create table body>>, <<createTempTable,create temporary table>>, <<createTrigger,create trigger>>, <<declareStatement,declare statement>>, <<delete,delete statement>>, <<derivedColumn,derived column>>, <<dropChildOption,drop option>>, <<dropDataWrapper,Drop data wrapper>>, <<dropOption,drop option>>, <<dropProcedure,drop procedure>>, <<dropRole,drop role >>, <<dropSchema,drop schema>>, <<dropServer,drop server, aka data source>>, <<dropTable,drop table>>, <<dropTableView,drop table>>, <<dynamicCommand,dynamic data statement>>, <<exceptionReference,exception reference>>, <<executeNamedParams,named parameter list>>, <<foreignKey,foreign key>>, <<function,function>>, <<grantOption,Create GRANT>>, <<ifStatement,if statement>>, <<importDatabase,Import another Database>>, <<importSchema,Import foreign schema>>, <<insert,insert statement>>, <<into,into clause>>, <<loopStatement,loop statement>>, <<namespaceItem,xml namespace element>>, <<objectColumn,object table column>>, <<objectTable,object table>>, <<option,option clause>>, <<optionPair,option pair>>, <<procedureParameter,procedure parameter>>, <<procedureRsColumn,procedure result column>>, <<queryPrimary,query primary>>, <<readCSVString,identifier list>>, <<revokeGrantOption,Revoke GRANT>>, <<selectExpression,select derived column>>, <<setClauseList,set clause list>>, <<statement,statement>>, <<storedProcedure,call statement>>, <<subqueryFromClause,table subquery>>, <<tableElement,temporary table element>>, <<textAgg,text aggreate function>>, <<textColumn,text table column>>, <<textTable,text table>>, <<unaryFromClause,table name>>, <<update,update statement>>, <<useDatabase,use database>>, <<useSchema,use schema>>, <<withListElement,with list element>>, <<xmlColumn,xml table column>>, <<xmlElement,xml element>>, <<xmlSerialize,xml serialize>>, <<xmlTable,xml table>>
+|<<alter,alter>>, <<alterChildOptionPair,alter child option pair>>, <<alterColumn,alter column options>>, <<alterDatabase,ALTER DATABASE >>, <<alterDropColumn,DROP column>>, <<alterOptionPair,alter option pair>>, <<alterProcedure,ALTER PROCEDURE >>, <<alterRenameColumn,rename column options>>, <<alterRenameTable,RENAME Table>>, <<alterServer,ALTER SERVER >>, <<alterTable,ALTER TABLE >>, <<alterTranslator,ALTER DATA WRAPPER >>, <<alterTrigger,ALTER TRIGGER >>, <<arrayTable,array table>>, <<assignStatement,assignment statement>>, <<branchingStatement,branching statement>>, <<callableStatement,callable statement>>, <<columnList,column list>>, <<compoundStatement,compound statement>>, <<createColumn,table element>>, <<createDDLProcedure,create procedure>>, <<createDataWrapper,create data wrapper>>, <<createDatabase,create database>>, <<createDomain,create a domain or type alias>>, <<createElementsWithTypes,typed element list>>, <<createForeignTempTable,create foreign temp table>>, <<createNameSpace,option namespace>>, <<createRole,create role >>, <<createSchema,create schema>>, <<createServer,create server, aka data source>>, <<createTable,create table>>, <<createTableBody,create table body>>, <<createTempTable,create temporary table>>, <<createTrigger,create trigger>>, <<declareStatement,declare statement>>, <<delete,delete statement>>, <<derivedColumn,derived column>>, <<dropChildOption,drop option>>, <<dropDataWrapper,Drop data wrapper>>, <<dropOption,drop option>>, <<dropProcedure,drop procedure>>, <<dropRole,drop role >>, <<dropSchema,drop schema>>, <<dropServer,drop server, aka data source>>, <<dropTable,drop table>>, <<dropTableView,drop table>>, <<dynamicCommand,dynamic data statement>>, <<exceptionReference,exception reference>>, <<executeNamedParams,named parameter list>>, <<foreignKey,foreign key>>, <<function,function>>, <<grantOption,Create GRANT>>, <<importDatabase,Import another Database>>, <<importSchema,Import foreign schema>>, <<insert,insert statement>>, <<into,into clause>>, <<loopStatement,loop statement>>, <<namespaceItem,xml namespace element>>, <<objectColumn,object table column>>, <<objectTable,object table>>, <<option,option clause>>, <<optionPair,option pair>>, <<procedureParameter,procedure parameter>>, <<procedureRsColumn,procedure result column>>, <<queryPrimary,query primary>>, <<readCSVString,identifier list>>, <<revokeGrantOption,Revoke GRANT>>, <<selectExpression,select derived column>>, <<setClauseList,set clause list>>, <<statement,statement>>, <<storedProcedure,call statement>>, <<subqueryFromClause,table subquery>>, <<tableElement,temporary table element>>, <<textAgg,text aggreate function>>, <<textColumn,text table column>>, <<textTable,text table>>, <<unaryFromClause,table name>>, <<update,update statement>>, <<useDatabase,use database>>, <<useSchema,use schema>>, <<withListElement,with list element>>, <<xmlColumn,xml table column>>, <<xmlElement,xml element>>, <<xmlSerialize,xml serialize>>, <<xmlTable,xml table>>
 
 |[[usage_ifStatement]]_<<ifStatement, if statement>>_
 |<<statement,statement>>
@@ -1360,6 +1360,9 @@
 
 |[[usage_into]]_<<into, into clause>>_
 |<<query,query>>
+
+|[[usage_isDistinct]]_<<isDistinct, IS Distinct>>_
+|<<booleanPrimary,boolean primary>>
 
 |[[usage_isNullCrit]]_<<isNullCrit, is null predicate>>_
 |<<booleanPrimary,boolean primary>>
@@ -2241,7 +2244,7 @@ LOOP ON (SELECT * FROM tbl) AS x BEGIN ... END
 
 === [[ifStatement]]_<<usage_ifStatement, if statement>>_ ::= 
 
-* <<token_IF,IF>> <<<token_LPAREN,lparen>>> ( ( <<<id,identifier>>> <<token_IS,IS>> ( <<token_NOT,NOT>> )? <<token_DISTINCT,DISTINCT>> <<token_FROM,FROM>> <<<id,identifier>>> ) | <<<criteria,condition>>> ) <<<token_RPAREN,rparen>>> <<<statement,statement>>> ( <<token_ELSE,ELSE>> <<<statement,statement>>> )?
+* <<token_IF,IF>> <<<token_LPAREN,lparen>>> <<<criteria,condition>>> <<<token_RPAREN,rparen>>> <<<statement,statement>>> ( <<token_ELSE,ELSE>> <<<statement,statement>>> )?
 
 
 A procedure loop statement that executes over the given cursor.
@@ -3307,7 +3310,7 @@ NOT x = 'a'
 
 === [[booleanPrimary]]_<<usage_booleanPrimary, boolean primary>>_ ::= 
 
-* ( <<<commonValueExpression,common value expression>>> ( <<<betweenCrit,between predicate>>> | <<<matchCrit,match predicate>>> | <<<regexMatchCrit,like regex predicate>>> | <<<setCrit,in predicate>>> | <<<isNullCrit,is null predicate>>> | <<<subqueryCompareCriteria,quantified comparison predicate>>> | <<<compareCrit,comparison predicate>>> )? )
+* ( <<<commonValueExpression,common value expression>>> ( <<<betweenCrit,between predicate>>> | <<<matchCrit,match predicate>>> | <<<regexMatchCrit,like regex predicate>>> | <<<setCrit,in predicate>>> | <<<isNullCrit,is null predicate>>> | <<<subqueryCompareCriteria,quantified comparison predicate>>> | <<<compareCrit,comparison predicate>>> | <<<isDistinct,IS Distinct>>> )? )
 
 * <<<existsCriteria,exists predicate>>>
 
@@ -3351,6 +3354,24 @@ Example:
 [source,sql]
 ----
 =
+----
+
+
+'''
+
+
+=== [[isDistinct]]_<<usage_isDistinct, IS Distinct>>_ ::= 
+
+* <<token_IS,IS>> ( <<token_NOT,NOT>> )? <<token_DISTINCT,DISTINCT>> <<token_FROM,FROM>> <<<commonValueExpression,common value expression>>>
+
+
+Is Distinct Right Hand Side
+
+
+Example:
+[source,sql]
+----
+IS DISTINCT FROM expression
 ----
 
 
