@@ -50,11 +50,11 @@ Use the translator override mechanism to supply the following properties.
 |The system default encoding
 
 |Accesskey
-|Amazon Security Access Key. Log in to Amazom console to find your security access key. When provided, this becomes the default access key
+|Amazon Security Access Key. Log in to Amazon console to find your security access key. When provided, this becomes the default access key
 |n/a
 
 |Secretkey
-|Amazon Security secret Key. Log in to Amazom console to find your security secret key. When provided, this becomes the default secret key.
+|Amazon Security secret Key. Log in to Amazon console to find your security secret key. When provided, this becomes the default secret key.
 |n/a
 
 |Region
@@ -89,11 +89,13 @@ Retrieves the given named object as text file from specified bucket and region u
 [source,sql]
 ----
 getTextFile(string name NOT NULL, string bucket, string region, 
-   string endpoint, string accesskey, string secretkey,string encryption, string encryptionkey) 
+   string endpoint, string accesskey, string secretkey,string encryption, string encryptionkey, boolean stream default false) 
    returns TABLE(file blob, endpoint string, lastModified string, etag string, size long);
 ----
 
-NOTE: endpoint property is optional, when provided the this URL will be used instead of the one constructed by the supplied properties. Use encryption and encryptionkey only in when server side security with customer supplied keys (SSE-C) in force.   
+NOTE: endpoint is optional, when provided the this URL will be used instead of the one constructed by the supplied properties. Use encryption and encryptionkey only in when server side security with customer supplied keys (SSE-C) in force.
+
+If stream is true, then returned lobs may only be read once and will not typically be buffered to disk.   
 
 ==== examples
 [source,sql] 
@@ -111,11 +113,13 @@ Retrieves the given named object as binary file from specified bucket and region
 [source,sql]
 ----
 getFile(string name NOT NULL, string bucket, string region, 
-   string endpoint, string accesskey, string secretkey, string encryption, string encryptionkey) 
+   string endpoint, string accesskey, string secretkey, string encryption, string encryptionkey, boolean stream default false) 
    returns TABLE(file blob, endpoint string, lastModified string, etag string, size long)
 ----
 
-NOTE: endpoint property is optional, when provided the this URL will be used instead of the one constructed by the supplied properties. Use encryption and encryptionkey only in when server side security with customer supplied keys (SSE-C) in force.   
+NOTE: endpoint is optional, when provided the this URL will be used instead of the one constructed by the supplied properties. Use encryption and encryptionkey only in when server side security with customer supplied keys (SSE-C) in force.
+
+If stream is true, then returned lobs may only be read once and will not typically be buffered to disk.   
 
 ==== examples
 [source,sql] 
