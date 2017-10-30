@@ -22,6 +22,8 @@ Your application is responsible for having the appropriate classpath to utilize 
 Typically you will want all transitive dependencies from referenced Teiid artifacts to be included. 
 Optional dependencies, such as Hibernate core 4.1.6 or compatible, will be needed for specific features - such as utilizing the JDBC translator support for dependent joins using temp tables.
 
+NOTE: With Teiid 10+ the maven coordinate group for most Teiid artifacts changed from org.jboss.teiid to just org.teiid.  Please update your pom files accordingly.
+
 Some of the Teiid transitive dependencies have known vulnerabilities. WildFly/Teiid addresses this by introducing managed dependency overrides. It is recommended that you include these overrides in your usage of Teiid Embedded by importing the Teiid parent pom in your dependency management section:
 
 [source,xml]
@@ -48,7 +50,7 @@ If you are trying run Teidd Embedded as a Maven based project, the `runtime`, `a
 </dependency>
 
 <dependency>
-    <groupId>org.jboss.teiid</groupId>
+    <groupId>org.teiid</groupId>
     <artifactId>teiid-admin</artifactId>
 </dependency>
 

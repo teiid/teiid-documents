@@ -5,7 +5,7 @@ Teiid strives to maintain consistency between all versions, but when necessary b
 
 You should consult the release notes for compatibility and configuration changes from each minor version that you are upgrading over.  This guide expands upon the release notes included in the kit to cover changes since 9.x.
 
-If possible you should make your migration to Teiid 10 by first using Teiid 9.3.  Teiid 9.1 though 9.3 have the same JRE and WildFly requirements as Teiid 10.0.  See also link:Migration_Guide_From_Teiid_8.x.adoc[8 to 9 Migration Guide]
+If possible you should make your migration to Teiid 10 by first using Teiid 9.3.  Teiid 9.1 though 9.3 have the same JRE and WildFly requirements.  Teiid 10 requires Java 8 and WildFly 11.  See also link:Migration_Guide_From_Teiid_8.x.adoc[8 to 9 Migration Guide]
 
 == Configuration Changes
 
@@ -20,3 +20,5 @@ The FROM_UNIXTIME function now matches the behavior of HIVE/IMPALA.  It accepts 
 The XML Document Model has been removed along with related client properties.  Please consider migrating to OData or utilizing SQL/XML functions for constructing documents.
 
 == Kitting/Build Changes
+
+The maven coordinates for Teiid artifacts has change from the org.jboss.teiid group to the org.teiid group.  The artifacts are also published directly to maven central, rather than the JBoss nexus repository.  This change was largely motivated by making the Teiid Spring integration less cumbersome.  Note that this does not effect EAP/WildFly module names as those remain org.jboss.teiid.
