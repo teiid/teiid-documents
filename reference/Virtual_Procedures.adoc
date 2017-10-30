@@ -16,6 +16,8 @@ In Designer:
 
 In DDL: link:DDL_Metadata.adoc#_create_procedure_function[DDL Metadata#Create Procedure/Function]
 
+Note that the optional result parameter is always considered the first parameter 
+
 Within the body of the procedure, any valid link:Procedure_Language.adoc[statement] may be used.
 
 There is no explicit cursoring or value returning statement, rather the last unnamed command statement executed in the procedure that returns a result set will be returned as the result. The output of that statement must match the expected result set and parameters of the procedure.
