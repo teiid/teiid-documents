@@ -37,6 +37,7 @@ NOTE: Strings are always fully held in memory. Do not set this value too high as
 * _org.teiid.widenComparisonToString_ - defaults to false. Set to true to enable widening of values to string in comparisons, which was the default behavior prior to Teiid 9. For example with this setting as false timestamp_col < 'a' will produce an exception whereas when set to true it would effectively evaluate cast(timestamp_col as string) < `a'.
 * _org.teiid.aggressiveJoinGrouping_ - defaults to true.  Set to false to not aggressively group joins (typically allowed if there exists an explicit relationship) against the same source for pushdown and rely more upon a cost based ordering.  
 * _org.teiid.maxSessionBufferSizeEstimate_ - defaults to 2^63 - 1.  Set to the desired size in bytes to limit the amount of buffer resources (heap and disk) consumed by a single session's tuple buffers and table structures.  This is based upon the memory footprint estimate and may not correspond exactly to heap or disk consumption.
+* _org.teiid.resultAnyPosition_ - defaults to false.  Set to true to allow a RESULT parameter to appear at in position in a procedure parameter list.
 
 *Security*
 

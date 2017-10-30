@@ -167,7 +167,7 @@ image:images/create_column.jpg[images/create_column.jpg]
 |costing information. Number of distinct values in this column
 |===
 
-Columns may also be marked as NOT NULL, auto_increment, and with a DEFAULT value. Currently only string values are supported as the default value. To have the string interpreted as an expression use the extension property teiid_rel:default_handling set to expression.
+Columns may also be marked as NOT NULL, auto_increment, and with a DEFAULT value.
 
 A column of type bigdecimal/decimal/numeric can be declared without a precision/scale which will default to an internal maximum for precision with half scale, or with a precision which will default to a scale of 0. 
 
@@ -490,9 +490,11 @@ CREATE VIRTUAL FUNCTION CustomerRank(customerid integer)
    END
 ----
 
-Procedure columns may also be marked as NOT NULL, or with a DEFAULT value. Currently only string values are supported as the default value. To have the string interpreted as an expression use the extension property teiid_rel:default_handling set to expression. On a source procedure if you want the parameter to be defaultable in the source procedure and not supply a default value in Teiid, then the parameter must be nullable and use the extension property teiid_rel:default_handling set to omit.
+Procedure columns may also be marked as NOT NULL, or with a DEFAULT value. On a source procedure if you want the parameter to be defaultable in the source procedure and not supply a default value in Teiid, then the parameter must be nullable and use the extension property teiid_rel:default_handling set to omit.
 
-There can only be a single RESULT parameter and it must be an out parameter. A RESULT parameter is the same as having a single non-table RETURNS type. If both are declared they are expected to match otherwise an exception is thrown. One is no more correct than the other. "RETURNS type" is shorter hand syntax especially for functions, while the parameter form is useful for additional metadata (explicit name, extension metadata, also defining a returns table, etc.)
+There can only be a single RESULT parameter and it must be an out parameter. A RESULT parameter is the same as having a single non-table RETURNS type. If both are declared they are expected to match otherwise an exception is thrown. One is no more correct than the other. "RETURNS type" is shorter hand syntax especially for functions, while the parameter form is useful for additional metadata (explicit name, extension metadata, also defining a returns table, etc.).  
+
+A return parameter will be treated as the first parameter in for the procedure at runtime, regardless of where it appears in the argument list.  This matches the expectation of Teiid and JDBC calling semantics that expect assignments in the form "? = EXEC ...".
 
 *Relational Extension OPTIONS*:
 
