@@ -1,5 +1,5 @@
 
-= Migration Guide From Teiid 8.x
+= Migration Guide From Teiid 8.x to 9.x
 
 Teiid strives to maintain consistency between all versions, but when necessary breaking configuration and VDB/sql changes are made - and then typically only for major releases. 
 
