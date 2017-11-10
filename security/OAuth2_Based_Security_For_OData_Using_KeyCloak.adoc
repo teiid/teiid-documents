@@ -60,7 +60,7 @@ Then we need to change the OData transport’s "security-domain" to "keycloak".
 [source,sh]
 ----
 ./bin/jboss-cli.sh --connect
-/subsystem=teiid/transport=odata:write-attribute(name=authentication-security-domain, value=*keycloak*)
+/subsystem=teiid/transport=odata:write-attribute(name=authentication-security-domain, value=keycloak)
 
 reload
 ----
@@ -70,7 +70,7 @@ above commands will result in XML in standalone.xml or domain.xml file like (you
 [source,xml]
 ----
     <transport name="odata">
-        <authentication security-domain="*keycloak*"/>
+        <authentication security-domain="keycloak"/>
     </transport>
 ----
 
@@ -119,7 +119,7 @@ Edit the "teiid-web-security/odata-oauth-keycloak/src/main/webapp/WEB-INF/web.xm
 ----
     <init-param>
         <param-name>PassthroughAuthentication</param-name>
-        <param-value>*true*</param-value>
+        <param-value>true</param-value>
     </init-param>
 ----
 
