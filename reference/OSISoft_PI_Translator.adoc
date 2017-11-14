@@ -110,12 +110,12 @@ queries.
 PI translator is extension of _jdbc-ansi_ translator, so all the SQL ANSI queries are supported. PI translator also supports
 LATERAL join with Table Valued Functions (TVF). An example Teiid query looks like
 
-{code}
+----
 SELECT EH.Name, BT."Time", BT."Number of Computers", BT."Temperature"
     FROM Sample.Asset.ElementHierarchy EH
     LEFT JOIN  LATERAL (exec "TransposeArchive_Building Template"(EH.ElementID, TIMESTAMPADD(SQL_TSI_HOUR, -1, now()), now())) BT on 1=1
     WHERE EH.ElementID IN (SELECT ElementID FROM Sample.Asset.ElementHierarchy WHERE Path='\Data Center\')
-{code} 
+---- 
 
 NOTE: ANSI SQL semantics require a ON clause, but CROSS APPLY or OUTER APPLY do no have a ON clause, so for this
 reason user need to pass in a dummy ON clause like ON (1 = 1), which will be ignored when converted to APPLY clause which
@@ -127,4 +127,6 @@ NOTE: The PI data type, "GUID" will need to be modeled as "String" and must defi
 translator will appropriately convert the data back forth with the PI datasource's native guid type with appropriate type 
 casting from string.
 
+Known Issues:
+TEIID-5123 - Casting a string containing a negative or zero value (e.g. '-24' or '0') to Float/Single fails with PI Jdbc driver.
 

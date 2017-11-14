@@ -48,14 +48,33 @@ $ cd $WILDFLY_HOME
 $ unzip keycloak-wildfly-adapter-dist-${version}.zip
 ---- 
 
-Now, start the Teiid Server and using the jboss-cli.sh file run the following to install the KeyCloak confiuration into the Teiid Server.
+Now, start the Teiid Server and using the jboss-cli.sh file run the following to install the KeyCloak configuration into the Teiid Server.
 
 [source,sh]
 ----
 ./bin/jboss-cli.sh --file=adapter-install.cli
 ----
 
-The Keycloak is installed, now we need to install security-domain called "passthrough". Note that the web layer is using OAuth2, but at the VDB layer, this logged in user need to be passed through and this security domain will help with that.
+Then we need to change the OData transport’s "security-domain" to "keycloak".
+
+[source,sh]
+----
+./bin/jboss-cli.sh --connect
+/subsystem=teiid/transport=odata:write-attribute(name=authentication-security-domain, value=keycloak)
+
+reload
+----
+
+above commands will result in XML in standalone.xml or domain.xml file like (you can also edit standalone.xml directly)
+
+[source,xml]
+----
+    <transport name="odata">
+        <authentication security-domain="keycloak"/>
+    </transport>
+----
+
+The Keycloak is installed and the OData transport is modified, now we need to install security-domain called "passthrough". Note that the web layer is using OAuth2, but at the VDB layer, this logged in user need to be passed through and this security domain will help with that.
 
 [souce,CLI]
 ---- 
@@ -94,7 +113,17 @@ Replace the "teiid-web-security/teiid-odata-oauth-keycloak/src/main/webapp/WEB-I
 
 Similarly replace the "teiid-web-security/examples/database-service/src/main/webapp/WEB-INF/keyclock.json" file contents with "installation" script in "keycloak.json" format from Keycloak admin console's "database-client" client application.
 
-to build the WAR files running the maven command
+Edit the "teiid-web-security/odata-oauth-keycloak/src/main/webapp/WEB-INF/web.xml" file to enable Passthrough Authentication
+
+[source,xml]
+----
+    <init-param>
+        <param-name>PassthroughAuthentication</param-name>
+        <param-value>true</param-value>
+    </init-param>
+----
+
+Build the WAR files running the maven command
 
 [source]
 ----
@@ -136,13 +165,12 @@ deployment-overlay add --name=myOverlay --content=/WEB-INF/web.xml=teiid-web-sec
 [source,xml]
 ----
 <vdb name="oauthdemo" version="1">
-    <property name="security-domain" value="passthough"/>
     <model visible="true" name="PM1">
         <source name="any" translator-name="loopback"/> 
         <metadata type = "DDL"><![CDATA[        
             CREATE FOREIGN TABLE G1 (e1 integer PRIMARY KEY, e2 varchar(25), e3 double);
         ]]>
-       </metadata>        
+        </metadata>
     </model>
 </vdb>
 ----
@@ -203,5 +231,3 @@ curl -k -H "Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiI0YjI4NDMzYS1..
 ----
 
 You should see same XML response as above. Please note that to programatically achieve the access_token in your own program (not using curl) you can see some suggestions in this document [https://keycloak.gitbooks.io/documentation/server_development/topics/admin-rest-api.html]
-
-
