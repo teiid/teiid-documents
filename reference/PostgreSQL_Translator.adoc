@@ -12,4 +12,4 @@ PostgreSQL specific execution properties:
 * _PostGisVersion_- indicate the PostGIS version in use. Defaults to 0 meaning PostGIS is not installed. Will be set automatically if the database version is not set.
 * _ProjSupported_- boolean indicating if Proj is support for PostGis. Will be set automatically if the database version is not set.
 
-NOTE: Some driver versions of PostgreSQL will not associate columns to "INDEX" type tables and fail during import if the importer.tableType property is left as the default.
+NOTE: Some driver versions of PostgreSQL will not associate columns to "INDEX" type tables.  Later versions of Teiid will omit these tables automatically.  Older versions of Teiid may need the importer.tableType property or other filtering set.
