@@ -13,3 +13,7 @@
 
 *time-slice-in-milliseconds* (default 2000) - Provides course scheduling of long running processor plans. Plans whose execution exceed a time slice will be re-queued for additional processing to allow for other plans to be initiated. The time slice is from the perspective of the engine processing thread. This value is not honored exactly as the plan may not be at a re-startable point when the time slice expires. This is not a replacement for the thread scheduling performed by Java and the operating system, rather it just ensures that Teiid allows other work to be started if the current set of active plans includes long running queries.
 
+== Async Operations
+
+*async-thread-pool-max-thread-count* (default 10) - Controls the number of threads available for system level async operations, such as metadata load. 
+

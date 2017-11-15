@@ -20,6 +20,9 @@ undeploy adminapi-test-vdb.xml
 
 /subsystem=teiid:add-data-role(vdb-name=AdminAPITestVDB, vdb-version=1, data-role=TestDataRole, mapped-role=test) 
 /subsystem=teiid:remove-data-role(vdb-name=AdminAPITestVDB, vdb-version=1, data-role=TestDataRole, mapped-role=test)
+
+/subsystem=teiid:read-attribute(name=async-thread-pool-max-thread-count)
+/subsystem=teiid:write-attribute(name=async-thread-pool-max-thread-count,value=15)
 ----
 
 == Authentication Operations
