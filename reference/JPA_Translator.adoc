@@ -11,7 +11,7 @@ The JPA Translator currently has no import or execution properties.
 
 JPA source procedures may be created using the teiid_rel:native-query extension - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The procedure will invoke the native-query similar to an native procedure call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality. See the query syntax below.
 
-== Direct Query Procedure
+=== Direct Query Procedure
 
 NOTE: This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:Translators.adoc#_override_execution_properties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
 

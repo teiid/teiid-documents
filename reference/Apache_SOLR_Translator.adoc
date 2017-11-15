@@ -46,7 +46,7 @@ If you are using Designer Tooling, to create VDB then
 
 The Teiid specific Solr Resource Adapter should be used with this translator. See link:../admin/Solr_Data_Sources.adoc[Solr Data Sources] for connecting to a Solr Search Engine.
 
-=== Native Queries
+== Native Queries
 
 This feature is not applicable for Solr translator.
 

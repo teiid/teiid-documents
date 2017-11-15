@@ -33,9 +33,9 @@ NOTE: The resource adapter for this translator is provided by configuring the ld
 
 There are no import settings for the ldap translator; it also does not provide metadata.
 
-=== Metadata Options
+== Metadata Options
 
-==== SEARCHABLE 'equality_only'
+=== SEARCHABLE 'equality_only'
 
 For openldap, apacheds, and other ldap servers dn attributes have search restrictions, such that only equality predicates are supported. Use SEARCHABLE `equality_only` to indicates that only equality predicates should be pushed down. Any other predicate would need evaluated in the engine. For example
 
@@ -44,7 +44,7 @@ For openldap, apacheds, and other ldap servers dn attributes have search restric
  col string OPTIONS (SEARCHABLE 'equality_only', ...) 
 ----
 
-==== teiid_ldap:rdn_type
+=== teiid_ldap:rdn_type
 
 Used on a column with a dn value to indicate the rdn to extract. If the entry suffix does not match this rdn type, then no row will be produced. For example
 
@@ -53,7 +53,7 @@ Used on a column with a dn value to indicate the rdn to extract. If the entry su
  col string OPTIONS ("teiid_ldap:rdn_type" 'cn', ...) 
 ----
 
-==== teiid_ldap:dn_prefix
+=== teiid_ldap:dn_prefix
 
 Used on a column if rdn_type is specified to indicates that the values should match this prefix, no row will be produced for a non-matching entry. For example
 
@@ -107,7 +107,7 @@ The result from "select * from membership" will then produce 1 row for each memb
 
 If the unwrap attribute is missing or there are no values, then a single row with a null value will be produced.
 
-=== Native Queries
+== Native Queries
 
 LDAP procedures may optionally have native queries associated with them - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The operation prefix (select;, insert;, update;, delete; - see below for more) must be present in the native-query, butit will not be issued as part of the query to the
 

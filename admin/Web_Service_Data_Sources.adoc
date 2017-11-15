@@ -26,7 +26,7 @@ The Web Service Data Source supports specifying a WSDL using the Wsdl property.Â
 
 TIP: *Developerâ€™s Tip* - If {{ book.asVersionNumber }} is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in *"<jboss-install>/docs/teiid/datasources/web-service" directory under "resource-adapters" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
 
-=== All available configuration properties of web resource-adapter
+== All available configuration properties of web resource-adapter
 
 |===
 |Property Name |applies to |Required |Default Value |Description

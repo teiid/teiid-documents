@@ -1,5 +1,5 @@
 
-== Kerberos support through GSSAPI
+= Kerberos support through GSSAPI
 
 
 Teiid supports kerberos authentication using GSSAPI for single sign-on applications. This service ticket negotiation based authentication is supported through remote JDBC/ODBC drivers and LocalConnections. Client configuration is different for each client type.

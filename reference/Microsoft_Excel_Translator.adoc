@@ -141,7 +141,7 @@ TIP:Currently Excel translator does not support updates.
 
 The Teiid specific Excel Resource Adapter does not exist, user should use File JCA adapter with this translator. See link:../admin/File_Data_Sources.adoc[File Data Sources] for opening a File based connection.
 
-=== Native Queries
+== Native Queries
 
 NOTE: This feature is not applicable for Excel translator.
 

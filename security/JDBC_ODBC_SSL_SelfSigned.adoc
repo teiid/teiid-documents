@@ -120,14 +120,14 @@ jdbc:teiid:<vdb>:mms://<host>:31000
  
 note "mm[s]" to represent [s] for secure. You also need to add the following system properties to your client for 
 
-==== 1-WAY SSL
+=== 1-WAY SSL
 ----
 -Djavax.net.ssl.trustStore=/path/to/teiid.keystore  
 -Djavax.net.ssl.trustStorePassword=changeme  
 -Djavax.net.ssl.keyStoreType=JKS  
 ----
  
-==== 2-WAY SSL 
+=== 2-WAY SSL 
 
 ----
 -Djavax.net.ssl.keyStore=/path/to/teiid.keystore  
@@ -143,13 +143,13 @@ The start your client application normally, that should make sure the SSL certif
  
 * Install the Postgresql ODBC driver in your link:../client-dev/Installing_the_ODBC_Driver_Client.adoc[Windows machine]. 
 
-==== 1-WAY SSL
+=== 1-WAY SSL
 * Copy the "_rootCA.crt_" and "_rootCA_trust.cer_" files into your Windows machine into directory _c:\Users\<yourname>\AppData\Roaming\postgresql_. Note this directory may be hidden or non existent, if non-existent create a new folder. Note that if you are dealing with CA signed certificate, you do not have to share your private certificate "rootCA.crt". However since we are using self signed this will become the root certificate.
 * Rename "_rootCA.crt_" to "_root.crt_"
 * Rename "_rootCA_trust.cer_" to "_postgresql.cer_"
 * Now open the "ODBC Data Manager" application, create DSN for the connection you are ready to make using previously installed Postgres ODBC driver. Provide the correct host name and port (35432), and use VDB name as Database name, and select the "ssl-model" property to "verify-ca" or "verify-full" and save the configuration.
  
-==== 2-WAY SSL
+=== 2-WAY SSL
 * Copy the "_rootCA.crt_", "_teiid.crt_", "_teiid.key_" files into your Windows machine into directory _c:\Users\<yourname>\AppData\Roaming\postgresql_. Note this directory may be hidden or non existent, if non-existent create a new folder. Note that if you are dealing with CA signed certificate, you do not have to share your private certificate "rootCA.crt". However since we are using self signed this will become the root certificate.
 * Rename "_rootCA.crt_" to "_root.crt_"
 * Rename "_teiid.crt_" to "_postgresql.crt_"

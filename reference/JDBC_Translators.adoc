@@ -183,7 +183,7 @@ Example importer settings to only import tables and views from my-schema. See al
 </model>
 ----
 
-=== Native Queries
+== Native Queries
 
 Physical tables, functions, and procedures may optionally have native queries associated with them.  No validation of the native query is performed, it is simply used in a straight-forward manner to generate the source SQL.  For a physical table setting the teiid_rel:native-query extension metadata will execute the native query as an inline view in the source query.  This feature should only be used against sources that support inline views.  The native query is used as is and is not treated as a parameterized string. For example on a physical table y with nameInSource="x" and teiid_rel:native-query="select c from g", the Teiid source query"SELECT c FROM y" would generate the SQL query "SELECT c FROM (select c from g) as x".  Note that the column names in the native query must match the nameInSource of the physical table columns for the resulting SQL to be valid.
 

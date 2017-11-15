@@ -162,7 +162,7 @@ The Teiid specific Accumulo Resource Adapter should be used with this translator
 
 Currently this feature is not applicable. Based on user demand Teiid could expose a way for user to submit a MAP-REDUCE job.
 
-== Direct Query Procedure
+=== Direct Query Procedure
 
 This feature is not applicable for this translator.
 

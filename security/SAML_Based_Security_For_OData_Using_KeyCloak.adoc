@@ -1,10 +1,12 @@
+= SAML Based Security For OData Using KeyCloak
+
 This document will provide detailed instructions to enable SAML authentication on Teiid's OData interface using the Keycloak as authentication server (IDP). SAML is standard, so the modified OData WAR should work fine with any other compatible SAML Authorization server, however the configuration may be little different. Please consult their documentation for any such specifics of different authorization server other then KeyCloak.
 
 This examples will show case an example, where Teiid's OData rest interface is secured using SAML using Keycloak as IDP. The VDB accessed by the OData interface, the pass-through of SAML Assertion for OAuth token (SAML Bearer) is not yet available in KeyCloak, when the feature is available then Teiid will support it. However, if you are working with a IDP that supports the SAML Bearer, Teiid does support the mechanism where one can pass the "access-token" from web  layer to the data source layer. See the OAuth example as template and possible configuration needed. (note it is not exactly same, but very similar) 
 
 Tested with Keycloak 3.1.0.Final version.
 
-=== Download and install Keycloak as a separate web server.
+== Download and install Keycloak as a separate web server.
 
  * Login using the default "admin/admin" credentials into the Keycloak "master" realm.
  * Add a new realm called "oauth-demo"
@@ -27,7 +29,7 @@ image:images/saml-main.png[saml-main]
 
 image:images/saml-keys.png[saml-keys]
  
-=== Install and configure Teiid server
+== Install and configure Teiid server
 
 * Download and install Teiid server
 * Download Keycloak SAML adapter for EAP, and unzip over the Teiid server installation. 

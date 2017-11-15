@@ -614,7 +614,7 @@ This translator supports
 
 NOTE: *example* - For a full example see https://github.com/teiid/teiid/blob/master/connectors/translator-mongodb/src/test/resources/northwind.ddl[https://github.com/teiid/teiid/blob/master/connectors/translator-mongodb/src/test/resources/northwind.ddl]
 
-=== Native Queries
+== Native Queries
 
 MongoDB source procedures may be created using the teiid_rel:native-query extension - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The procedure will invoke the native-query similar to a direct procedure call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality.
 

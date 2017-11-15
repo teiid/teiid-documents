@@ -32,7 +32,7 @@ The parameter value substitution directly inserts boolean, and number values, an
 
 The procedure will invoke the native-query similar to an invokeMdx call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality.
 
-== Direct Query Procedure
+=== Direct Query Procedure
 
 The invokeMdx procedure is the direct query procedure for the OLAP translator. It may be disabled or have it’s name changed via the common direct query translator properties just like any other source. A call to the direct query procedure without any parameters will not attempt to parse the mdx query for parameterization. If parameters are used, the value substitution directly inserts boolean, and number values, and treats all other values as string literals.
 
