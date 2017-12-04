@@ -369,24 +369,6 @@ ProjectNode(0) output=[pm1.g1.e1, pm1.g2.e2, pm1.g3.e3] [pm1.g1.e1, pm1.g2.e2, p
 * Table Function - the table function (XMLTABLE, OBJECTTABLE, TEXTTABLE, etc.)
 * Streaming - if the XMLTABLE is using stream processing
 
-==== XML Plan
-
-* Message
-* Tag
-* Namespace
-* Data Column
-* Namespace Declarations
-* Optional Flag
-* Default Value
-* Recursion Direction
-* Bindings
-* Is Staging Flag
-* Source In Memory Flag
-* Condition
-* Default Program
-* Encoding
-* Formatted Flag
-
 ==== Procedure
 
 * Expression

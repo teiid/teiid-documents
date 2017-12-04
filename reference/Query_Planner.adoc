@@ -587,24 +587,6 @@ Project(groups=[pm1.g1])
 
 The procedure planner is fairly simple.  It converts the statements in the procedure into instructions in a program that will be run during processing.  This is mostly a 1-to-1 mapping and very little optimization is performed.
 
-=== XML Planner
-
-The XML Planner creates an XML plan that is relatively close to the end result of the Procedure Planner – a program with instructions.  Many of the instructions are even similar (while loop, execute SQL, etc). Additional instructions deal with producing the output result document (adding elements and attributes).  
-
-The XML planner does several types of planning (not necessarily in this order):
-
-* Document selection - determine which tags of the virtual document should be excluded from the output document.  This is done based on a combination of the model (which marks parts of the document excluded) and the query (which may specify a subset of columns to include in the SELECT clause).  
-
-* Criteria evaluation - breaks apart the user’s criteria, determine which result set the criteria should be applied to, and add that criteria to that result set query.
-
-* Result set ordering - the query’s ORDER BY clause is broken up and the ORDER BY is applied to each result set as necessary
-
-* Result set planning - ultimately, each result set is planned using the relational planner and taking into account all the impacts from the user’s query. The planner will also look to automatically create staging tables and dependent joins based upon the mapping class hierarchy.
-
-* Program generation - a set of instructions to produce the desired output document is produced, taking into account the final result set queries and the excluded parts of the document.  Generally, this involves walking through the virtual document in document order, executing queries as necessary and emitting elements and attributes.
-
-XML programs can also be recursive, which involves using the same document fragment for both the initial fragment and a set of repeated fragments (each a new query) until some termination criteria or limit is met.
-
 === XQuery
 
 XQuery is eligible for specific link:XQuery_Optimization.adoc[optimizations]. Document projection is the most common optimization. It will be shown in the debug plan as an annotation. For example with the user query containing "xmltable('/a/b' passing doc columns x string path '@x', val string path '/.')", the debug plan would show a tree of the document that will effectively be used by the context and path XQuerys:
