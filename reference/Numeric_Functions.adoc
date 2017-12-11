@@ -131,7 +131,8 @@ Numeric functions return numeric values (integer, long, float, double, bigintege
 |Returns double.
 
 |RAND(x)
-|Returns a random number, using new generator seeded with x.
+|Returns a random number, using new generator seeded with x.  This should typically be called in an initialization query.  
+It will only effect the random values returned by the Teiid RAND function and not the values from RAND functions evaluated by sources.
 |x is integer, returns double.
 
 |ROUND(x,y)
