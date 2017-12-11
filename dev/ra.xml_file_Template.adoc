@@ -72,5 +72,5 @@ This appendix contains an example of the ra.xml file that can be used as a templ
 </connector>
 ----
 
-$\{…} indicates a value to be supplied by the developer.
+${…} indicates a value to be supplied by the developer.
 

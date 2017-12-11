@@ -149,7 +149,7 @@ Returns the float distance between two string which base on Jaccard similarity a
 jaccardDistance(a, b) 
 ----
 
-The a and  b are strings that need to calculate the distance.
+The a and b are strings that need to calculate the distance.
 
 === osdq.jaroWinklerDistance
 
@@ -160,7 +160,7 @@ Returns the float distance between two string which base on Jaro-Winkler algorit
 jaroWinklerDistance(a, b)
 ----
 
-The a and  b are strings that need to calculate the distance.
+The a and b are strings that need to calculate the distance.
 
 === osdq.levenshteinDistance
 
@@ -171,4 +171,37 @@ Returns the float distance between two string which base on Levenshtein algorith
 levenshteinDistance(a, b)
 ----
 
-The a and  b are strings that need to calculate the distance.
+The a and b are strings that need to calculate the distance.
+
+=== osdq.intersectionFuzzy
+
+Returns the set of unique elements from the first set with cosine distance less than the specified value to every member of the second set.
+
+[source,sql]
+----
+intersectionFuzzy(a, b)
+----
+
+The a and b are string arrays.  c is a float representing the distance, such that 0.0 or less will match any and > 1.0 will match exact.
+
+=== osdq.minusFuzzy
+
+Returns the set of unique elements from the first set with cosine distance less than the specified value to every member of the second set.
+
+[source,sql]
+----
+minusFuzzy(a, b, c)
+----
+
+The a and b are string arrays.  c is a float representing the distance, such that 0.0 or less will match any and > 1.0 will match exact.
+
+=== osdq.unionFuzzy
+
+Returns the set of unique elements that contains members from the first set and members of the second set that have a cosine distance less than the specified value to every member of the first set.
+
+[source,sql]
+----
+unionFuzzy(a, b, c)
+----
+
+The a and b are string arrays.  c is a float representing the distance, such that 0.0 or less will match any and > 1.0 will match exact.

@@ -226,7 +226,7 @@ or
 JAVA_OPTS = "$JAVA_OPTS -Djava.security.krb5.conf=/path/to/krb5.conf -Djava.security.krb5.debug=false -Djavax.security.auth.useSubjectCredsOnly=false"
 ----
 
-or you can also add these properties inside standalone-teiid.xml file, right after \{<extensions>} segment as
+or you can add these properties inside the standalone-teiid.xml file right after the <extensions> segment as
 
 [source,xml]
 ----

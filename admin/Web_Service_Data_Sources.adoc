@@ -122,7 +122,7 @@ Only 1 port configuration can be used by this data source. You may explicitly se
 </beans>
 ----
 
-In the conduit name \{http://teiid.org[http://teiid.org]}configName.http-conduit, the namespace, \{http://teiid.org[http://teiid.org]}, may be set via the namespace datasource property. Typically that will only need done when also supplying the wsdl setting. The local name is followed by .http-conduit. It will be based upon the configName setting, with a default value of teiid.
+In the conduit name {http://teiid.org[http://teiid.org]}configName.http-conduit, the namespace, {http://teiid.org[http://teiid.org]}, may be set via the namespace datasource property. Typically that will only need done when also supplying the wsdl setting. The local name is followed by .http-conduit. It will be based upon the configName setting, with a default value of teiid.
 
 See the http://cxf.apache.org/docs/[CXF documentation] for all possible configuration options.
 
@@ -177,7 +177,7 @@ The corresponding xxx-jbossws-cxf.xml file that adds a timestamp to the SOAP hea
 </beans>
 ----
 
-Note that the client port configuration is matched to the data source instance by the QName \{http://teiid.org[http://teiid.org]}port_x, where the namespace will match your namespace setting or the default of
+Note that the client port configuration is matched to the data source instance by the QName {http://teiid.org}port_x, where the namespace will match your namespace setting or the default of
 http://teiid.org[http://teiid.org]. The configuration may contain other port configurations with different local names.
 
 For more information on configuring CXF interceptors, please consult the http://cxf.apache.org/docs/security.html[CXF documentation]

@@ -237,7 +237,7 @@ Returns an XML type representation of the string value expression.
 XMLPARSE((DOCUMENT|CONTENT) expr [WELLFORMED])
 ----
 
-expr in \{string, clob, blob, varbinary}. Return value is xml.
+expr in {string, clob, blob, varbinary}. Return value is xml.
 
 If DOCUMENT is specified then the expression must have a single root element and may or may not contain an XML declaration.
 
@@ -356,7 +356,7 @@ Applies an XSL stylesheet to the given document.
 XSLTRANSFORM(doc, xsl)
 ----
 
-Doc, xsl in \{string, clob, xml}. Return value is a clob.
+Doc, xsl in {string, clob, xml}. Return value is a clob.
 
 If either argument is null, the result is null.
 
@@ -369,7 +369,7 @@ Applies the XPATH expression to the document and returns a string value for the 
 XPATHVALUE(doc, xpath)
 ----
 
-Doc in \{string, clob, blob, xml}. xpath is string. Return value is a string.
+Doc in {string, clob, blob, xml}. xpath is string. Return value is a string.
 
 Matching a non-text node will still produce a string result, which includes all descendant text nodes. If a single element is matched that is marked with xsi:nil, then null will be returned.
 

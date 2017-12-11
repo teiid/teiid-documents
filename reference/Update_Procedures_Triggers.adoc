@@ -21,7 +21,7 @@ FOR EACH ROW
 
 === Update Procedure Processing
 
-1.  The user application submits the SQL command through one of SOAP, JDBC, or ODBC.
+1.  The user application submits the SQL command.
 2.  The view this SQL command is executed against is detected.
 3.  The correct procedure is chosen depending upon whether the command is an INSERT, UPDATE, or DELETE.
 4.  The procedure is executed. The procedure itself can contain SQL commands of its own which can be of different types than the command submitted by the user application that invoked the procedure.
