@@ -82,7 +82,7 @@ the above commands will result in XML in standalone.xml or domain.xml file simil
 * Add the certificate keystore from your IDP to the classes directory. This is \{KEYSTORE-FILE} in below configuration. or you can add to a existing keystore using following command
 
 ----
-keytool -import -file idp_cert.cer -keystore \{KEYSTORE-FILE\} -alias \{CERTIFICATE-ALIAS\}
+keytool -import -file idp_cert.cer -keystore {KEYSTORE-FILE} -alias {CERTIFICATE-ALIAS}
 ----
 
 * Add "picketlink.xml" file to WEB-INF directory with following content
@@ -95,12 +95,12 @@ keytool -import -file idp_cert.cer -keystore \{KEYSTORE-FILE\} -alias \{CERTIFIC
         ServerEnvironment="tomcat" BindingType="POST" SupportsSignatures="true">
         <KeyProvider
             ClassName="org.picketlink.identity.federation.core.impl.KeyStoreKeyManager">
-            <Auth Key="KeyStoreURL" Value="\{KEYSTORE-FILE\}" />
-            <Auth Key="KeyStorePass" Value="\{KEYSTORE-PASSWORD\}" />         
-            <Auth Key="SigningKeyAlias" Value="\{CERTIFICATE-ALIAS\}" />
-                        <Auth Key="SigningKeyPass" Value="\{CERTIFICATE-PASSWORD\}" />
-            <ValidatingAlias Key="localhost" Value="\{CERTIFICATE-ALIAS\}" />
-            <ValidatingAlias Key="127.0.0.1" Value="\{CERTIFICATE-ALIAS\}" />
+            <Auth Key="KeyStoreURL" Value="{KEYSTORE-FILE}" />
+            <Auth Key="KeyStorePass" Value="{KEYSTORE-PASSWORD}" />         
+            <Auth Key="SigningKeyAlias" Value="{CERTIFICATE-ALIAS}" />
+                        <Auth Key="SigningKeyPass" Value="{CERTIFICATE-PASSWORD}" />
+            <ValidatingAlias Key="localhost" Value="{CERTIFICATE-ALIAS}" />
+            <ValidatingAlias Key="127.0.0.1" Value="{CERTIFICATE-ALIAS}" />
         </KeyProvider>
     </PicketLinkSP>
     <Handlers xmlns="urn:picketlink:identity-federation:handler:config:2.1">

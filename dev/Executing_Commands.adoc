@@ -77,7 +77,7 @@ execution and will also make use of the
 
 == Bulk Execution
 
-Non batched `Insert, Update, Delete` commands may have multi-valued `Parameter` objects if the capabilities shows support for BulkUpdate. Commands with multi-valued \{\{Parameters}}s represent multiple executions of the same command with different values. As with BatchedUpdates, bulk operations should be executed atomically if possible.
+Non batched `Insert, Update, Delete` commands may have multi-valued `Parameter` objects if the capabilities shows support for BulkUpdate. Commands with multi-valued `Parameters` represent multiple executions of the same command with different values. As with BatchedUpdates, bulk operations should be executed atomically if possible.
 
 == Command Completion
 

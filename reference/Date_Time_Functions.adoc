@@ -22,23 +22,24 @@ Parse and format Date/Time functions use the convention established within the j
 
 |DAYNAME(x)
 |Return name of day in the default locale
-|x in \{date, timestamp}, returns string
+|x in {date, timestamp}, returns string
 
 |DAYOFMONTH(x)
 |Return day of month
-|x in \{date, timestamp}, returns integer
+|x in {date, timestamp}, returns integer
 
 |DAYOFWEEK(x)
 |Return day of week (Sunday=1, Saturday=7)
-|x in \{date, timestamp}, returns integer
+|x in {date, timestamp}, returns integer
 
 |DAYOFYEAR(x)
 |Return day number in year
-|x in \{date, timestamp}, returns integer
+|x in {date, timestamp}, returns integer
 
-|EXTRACT(YEAR\|MONTH\|DAY\|HOUR\|MINUTE\|SECOND FROM x)
-|Return the given field value from the date value x. Produces the same result as the assoceated YEAR, MONTH, DAYOFMONTH, HOUR, MINUTE, SECOND functions.The SQL specification also allows for TIMEZONE_HOUR and TIMEZONE_MINUTE as extraction targets. In Teiid all date values are in the timezone of the server.
-|x in \{date, time, timestamp}, returns integer
+|EXTRACT(YEAR\|MONTH\|DAY
+\|HOUR\|MINUTE\|SECOND FROM x)
+|Return the given field value from the date value x. Produces the same result as the associated YEAR, MONTH, DAYOFMONTH, HOUR, MINUTE, SECOND functions.The SQL specification also allows for TIMEZONE_HOUR and TIMEZONE_MINUTE as extraction targets. In Teiid all date values are in the timezone of the server.
+|x in {date, time, timestamp}, returns integer
 
 |FORMATDATE(x, y)
 |Format date x using format y
@@ -62,14 +63,14 @@ Parse and format Date/Time functions use the convention established within the j
 
 |HOUR(x)
 |Return hour (in military 24-hour format)
-|x in \{time, timestamp}, returns integer
+|x in {time, timestamp}, returns integer
 
 |MINUTE(x)
 |Return minute
-|x in \{time, timestamp}, returns integer
+|x in {time, timestamp}, returns integer
 
 |MODIFYTIMEZONE (timestamp, startTimeZone, endTimeZone)
-|Returns a timestamp based upon the incoming timestamp adjusted for the differential between the start and end time zones.  i.e. if the server is in GMT-6, then modifytimezone(\{ts '2006-01-10 04:00:00.0'},'GMT-7', 'GMT-8') will return the timestamp \{ts '2006-01-10 05:00:00.0'} as read in GMT-6.  The value has been adjusted 1 hour ahead to compensate for the difference between GMT-7 and GMT-8.
+|Returns a timestamp based upon the incoming timestamp adjusted for the differential between the start and end time zones.  i.e. if the server is in GMT-6, then modifytimezone({ts '2006-01-10 04:00:00.0'},'GMT-7', 'GMT-8') will return the timestamp {ts '2006-01-10 05:00:00.0'} as read in GMT-6.  The value has been adjusted 1 hour ahead to compensate for the difference between GMT-7 and GMT-8.
 |startTimeZone and endTimeZone are strings, returns a timestamp
 
 |MODIFYTIMEZONE (timestamp, endTimeZone)
@@ -78,35 +79,35 @@ Parse and format Date/Time functions use the convention established within the j
 
 |MONTH(x)
 |Return month
-|x in \{date, timestamp}, returns integer
+|x in {date, timestamp}, returns integer
 
 |MONTHNAME(x)
 |Return name of month in the default locale
-|x in \{date, timestamp}, returns string
+|x in {date, timestamp}, returns string
 
 |PARSEDATE(x, y)
 |Parse date from x using format y
-|x, y in \{string}, returns date
+|x, y in {string}, returns date
 
 |PARSETIME(x, y)
 |Parse time from x using format y
-|x, y in \{string}, returns time
+|x, y in {string}, returns time
 
 |PARSETIMESTAMP(x,y)
 |Parse timestamp from x using format y
-|x, y in \{string}, returns timestamp
+|x, y in {string}, returns timestamp
 
 |QUARTER(x)
 |Return quarter
-|x in \{date, timestamp}, returns integer
+|x in {date, timestamp}, returns integer
 
 |SECOND(x)
 |Return seconds
-|x in \{time, timestamp}, returns integer
+|x in {time, timestamp}, returns integer
 
 |TIMESTAMPCREATE(date, time)
 |Create a timestamp from a date and time
-|date in \{date}, time in \{time}, returns timestamp
+|date in {date}, time in {time}, returns timestamp
 
 |TO_MILLIS (timestamp)
 |Return the UTC timestamp in milliseconds 
@@ -118,11 +119,11 @@ Parse and format Date/Time functions use the convention established within the j
 
 |WEEK(x)
 |Return week in year 1-53, see also link:../admin/System_Properties.adoc[System Properties] for customization
-|x in \{date, timestamp}, returns integer
+|x in {date, timestamp}, returns integer
 
 |YEAR(x)
 |Return four-digit year
-|x in \{date, timestamp}, returns integer
+|x in {date, timestamp}, returns integer
 |===
 
 == Timestampadd/Timestampdiff

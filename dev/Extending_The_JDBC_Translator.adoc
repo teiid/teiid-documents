@@ -116,7 +116,7 @@ In addition to building your own FunctionModifiers, there are a number of pre-bu
 |Handles simply renaming a function ("ucase" to "upper" for example)
 
 |EscapeSyntaxModifier
-|Wraps a function in the standard JDBC escape syntax for functions: \{fn xxxx()}
+|Wraps a function in the standard JDBC escape syntax for functions: {fn xxxx()}
 |===
 
 To register the function modifiers for your supported functions, you must call the `ExecutionFactory.registerFunctionModifier(String name, FunctionModifier modifier)` method.

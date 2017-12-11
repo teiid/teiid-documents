@@ -38,4 +38,4 @@ For maven users add the following as your dependencies:
 </project>
 ----
 
-Where the $\{teiid-version} property should be set to the expected version, such as {{ book.fullVersionNumber }}. You can find Teiid artifacts in the http://community.jboss.org/docs/DOC-15169[JBoss maven repository]. The $\{version.connector.api} version last used was 1.5.
+Where the $\{teiid-version} property should be set to the expected version, such as {{ book.fullVersionNumber }}. You can find Teiid artifacts in the http://community.jboss.org/docs/DOC-15169[JBoss maven repository]. The ${version.connector.api} version last used was 1.5.

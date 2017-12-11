@@ -33,6 +33,7 @@ To create a custom connector project from the command line, you can use the foll
 * TEMPLATE
 ***********
 
+----
 mvn archetype:generate       \
   -DarchetypeGroupId=org.teiid.arche-types                \
   -DarchetypeArtifactId=connector-archetype          \
@@ -45,7 +46,7 @@ mvn archetype:generate       \
   -Dconnector-name=${connector-name}   \
   -Dvendor-name=${vendor-name}    \
   -Dteiid-version=${teiid-version}
-
+----
 
 ********
 * where:
@@ -70,6 +71,7 @@ mvn archetype:generate       \
 
 -  this is an example of the template that can be run:
 
+----
 mvn archetype:generate      -DarchetypeRepository=https://repository.jboss.org/nexus/content/repositories/releases/                   \
   -DarchetypeGroupId=org.teiid.arche-types   \
   -DarchetypeArtifactId=connector-archetype  \
@@ -82,8 +84,7 @@ mvn archetype:generate      -DarchetypeRepository=https://repository.jboss.org/n
   -Dconnector-name=Type   \
   -Dvendor-name=Vendor  \
   -Dteiid-version={{ book.fullVersionNumber }}
-
-
+----
 
 When executed, you will be asked to confirm the package property
 
@@ -100,6 +101,6 @@ teiid-version: {{ book.fullVersionNumber }}
 
 type Y (yes) and press enter, and the creation of the connector project will be done
 
-Upon creation, a directory based on the _*artifactId*_ will be created, that will contain the project. Note: The project will not compile because the $\{connector-name}Connection interface in the ConnectionImpl has not been added as a dependency in the pom.xml. This will need to be done.
+Upon creation, a directory based on the _*artifactId*_ will be created, that will contain the project. Note: The project will not compile because the $\{connector-name} Connection interface in the ConnectionImpl has not been added as a dependency in the pom.xml. This will need to be done.
 
 Now you are ready to start adding your custom code.

@@ -8,7 +8,7 @@ Numeric functions return numeric values (integer, long, float, double, bigintege
 
 |+ - * /
 |Standard numeric operators
-|x in \{integer, long, float, double, biginteger, bigdecimal}, return type is same as x [a]
+|x in {integer, long, float, double, biginteger, bigdecimal}, return type is same as x [a]
 
 |ABS(x)
 |Absolute value of x
@@ -16,43 +16,43 @@ Numeric functions return numeric values (integer, long, float, double, bigintege
 
 |ACOS(x)
 |Arc cosine of x
-|x in \{double, bigdecimal}, return type is double
+|x in {double, bigdecimal}, return type is double
 
 |ASIN(x)
 |Arc sine of x
-|x in \{double, bigdecimal}, return type is double
+|x in {double, bigdecimal}, return type is double
 
 |ATAN(x)
 |Arc tangent of x
-|x in \{double, bigdecimal}, return type is double
+|x in {double, bigdecimal}, return type is double
 
 |ATAN2(x,y)
 |Arc tangent of x and y
-|x, y in \{double, bigdecimal}, return type is double
+|x, y in {double, bigdecimal}, return type is double
 
 |CEILING(x)
 |Ceiling of x
-|x in \{double, float}, return type is double
+|x in {double, float}, return type is double
 
 |COS(x)
 |Cosine of x
-|x in \{double, bigdecimal}, return type is double
+|x in {double, bigdecimal}, return type is double
 
 |COT(x)
 |Cotangent of x
-|x in \{double, bigdecimal}, return type is double
+|x in {double, bigdecimal}, return type is double
 
 |DEGREES(x)
 |Convert x degrees to radians
-|x in \{double, bigdecimal}, return type is double
+|x in {double, bigdecimal}, return type is double
 
 |EXP(x)
 |e^x
-|x in \{double, float}, return type is double
+|x in {double, float}, return type is double
 
 |FLOOR(x)
 |Floor of x
-|x in \{double, float}, return type is double
+|x in {double, float}, return type is double
 
 |FORMATBIGDECIMAL(x, y)
 |Formats x using format y
@@ -80,15 +80,15 @@ Numeric functions return numeric values (integer, long, float, double, bigintege
 
 |LOG(x)
 |Natural log of x (base e)
-|x in \{double, float}, return type is double
+|x in {double, float}, return type is double
 
 |LOG10(x)
 |Log of x (base 10)
-|x in \{double, float}, return type is double
+|x in {double, float}, return type is double
 
 |MOD(x, y)
 |Modulus (remainder of x / y)
-|x in \{integer, long, float, double, biginteger, bigdecimal}, return type is same as x
+|x in {integer, long, float, double, biginteger, bigdecimal}, return type is same as x
 
 |PARSEBIGDECIMAL(x, y)
 |Parses x using format y
@@ -120,11 +120,11 @@ Numeric functions return numeric values (integer, long, float, double, bigintege
 
 |POWER(x,y)
 |x to the y power
-|x in \{double, bigdecimal, biginteger}, return is the same type as x
+|x in {double, bigdecimal, biginteger}, return is the same type as x
 
 |RADIANS(x)
 |Convert x radians to degrees
-|x in \{double, bigdecimal}, return type is double
+|x in {double, bigdecimal}, return type is double
 
 |RAND()
 |Returns a random number, using generator established so far in the query or initializing with system clock if necessary.
@@ -137,39 +137,39 @@ It will only effect the random values returned by the Teiid RAND function and no
 
 |ROUND(x,y)
 |Round x to y places; negative values of y indicate places to the left of the decimal point
-|x in \{integer, float, double, bigdecimal} y is integer, return is same type as x
+|x in {integer, float, double, bigdecimal} y is integer, return is same type as x
 
 |SIGN(x)
 |1 if x > 0, 0 if x = 0, -1 if x < 0
-|x in \{integer, long, float, double, biginteger, bigdecimal}, return type is integer
+|x in {integer, long, float, double, biginteger, bigdecimal}, return type is integer
 
 |SIN(x)
 |Sine value of x
-|x in \{double, bigdecimal}, return type is double
+|x in {double, bigdecimal}, return type is double
 
 |SQRT(x)
 |Square root of x
-|x in \{long, double, bigdecimal}, return type is double
+|x in {long, double, bigdecimal}, return type is double
 
 |TAN(x)
 |Tangent of x
-|x in \{double, bigdecimal}, return type is double
+|x in {double, bigdecimal}, return type is double
 
 |BITAND(x, y)
 |Bitwise AND of x and y
-|x, y in \{integer}, return type is integer
+|x, y in {integer}, return type is integer
 
 |BITOR(x, y)
 |Bitwise OR of x and y
-|x, y in \{integer}, return type is integer
+|x, y in {integer}, return type is integer
 
 |BITXOR(x, y)
 |Bitwise XOR of x and y
-|x, y in \{integer}, return type is integer
+|x, y in {integer}, return type is integer
 
 |BITNOT(x)
 |Bitwise NOT of x
-|x in \{integer}, return type is integer
+|x in {integer}, return type is integer
 |===
 
 [a] The precision and scale of non-bigdecimal arithmetic function functions results matches that of Java. The results of bigdecimal operations match Java, except for division, which uses a preferred scale of max(16, dividend.scale + divisor.precision + 1), which then has trailing zeros removed by setting the scale to max(dividend.scale, normalized scale)

@@ -10,7 +10,7 @@ Unless specified, all of the arguments and return types in the following table a
 
 |x \|\| y
 |Concatenation operator
-|x,y in \{string, clob}, return type is string or clob
+|x,y in {string, clob}, return type is string or clob
 
 |ASCII(x)
 |Provide ASCII value of the left most character in x. The empty string will as input will return null.
@@ -18,35 +18,35 @@ Unless specified, all of the arguments and return types in the following table a
 
 |CHR(x) CHAR(x)
 |Provide the character for ASCII value x [a]
-|x in \{integer}
+|x in {integer}
 
 |CONCAT(x, y)
 |Concatenates x and y with ANSI semantics. If x and/or y is null, returns null.
-|x, y in \{string}
+|x, y in {string}
 
 |CONCAT2(x, y)
 |Concatenates x and y with non-ANSI null semantics. If x and y is null, returns null. If only x or y is null, returns the other value.
-|x, y in \{string}
+|x, y in {string}
 
 |ENDSWITH(x, y)
 |Checks if y ends with x. If x or y is null, returns null.
-|x, y in \{string}, returns boolean
+|x, y in {string}, returns boolean
 
 |INITCAP(x)
 |Make first letter of each word in string x capital and all others lowercase
-|x in \{string}
+|x in {string}
 
 |INSERT(str1, start, length, str2)
 |Insert string2 into string1
-|str1 in \{string}, start in \{integer}, length in \{integer}, str2 in \{string}
+|str1 in {string}, start in {integer}, length in {integer}, str2 in {string}
 
 |LCASE(x)
 |Lowercase of x
-|x in \{string}
+|x in {string}
 
 |LEFT(x, y)
 |Get left y characters of x
-|x in \{string}, y in \{integer}, return string
+|x in {string}, y in {integer}, return string
 
 |LENGTH(x)
 |Length of x
@@ -54,43 +54,43 @@ Unless specified, all of the arguments and return types in the following table a
 
 |LOCATE(x, y)
 |Find position of x in y starting at beginning of y
-|x in \{string}, y in \{string}, return integer
+|x in {string}, y in {string}, return integer
 
 |LOCATE(x, y, z)
 |Find position of x in y starting at z
-|x in \{string}, y in \{string}, z in \{integer}, return integer
+|x in {string}, y in {string}, z in {integer}, return integer
 
 |LPAD(x, y)
 |Pad input string x with spaces on the left to the length of y
-|x in \{string}, y in \{integer}, return string
+|x in {string}, y in {integer}, return string
 
 |LPAD(x, y, z)
 |Pad input string x on the left to the length of y using character z
-|x in \{string}, y in \{string}, z in \{character}, return string
+|x in {string}, y in {string}, z in {character}, return string
 
 |LTRIM(x)
 |Left trim x of blank chars
-|x in \{string}, return string
+|x in {string}, return string
 
 |QUERYSTRING(path [, expr [AS name] …])
 |Returns a properly encoded query string appended to the given path. Null valued expressions are omitted, and a null path is treated as ". Names are optional for column reference expressions.e.g. `QUERYSTRING('path', 'value' as "&x", ' & ' as y, null as z) returns 'path?%26x=value&y=%20%26%20'`
-|path, expr in \{string}. name is an identifier
+|path, expr in {string}. name is an identifier
 
 |REPEAT(str1,instances)
 |Repeat string1 a specified number of times
-|str1 in \{string}, instances in \{integer} return string
+|str1 in {string}, instances in {integer} return string
 
 |RIGHT(x, y)
 |Get right y characters of x
-|x in \{string}, y in \{integer}, return string
+|x in {string}, y in {integer}, return string
 
 |RPAD(input string x, pad length y)
 |Pad input string x with spaces on the right to the length of y
-|x in \{string}, y in \{integer}, return string
+|x in {string}, y in {integer}, return string
 
 |RPAD(x, y, z)
 |Pad input string x on the right to the length of y using character z
-|x in \{string}, y in \{string}, z in \{character}, return string
+|x in {string}, y in {string}, z in {character}, return string
 
 |RTRIM(x)
 |Right trim x of blank chars
@@ -102,27 +102,27 @@ Unless specified, all of the arguments and return types in the following table a
 
 |SUBSTRING(x, y) SUBSTRING(x FROM y)
 |[b] Get substring from x, from position y to the end of x
-|y in \{integer}
+|y in {integer}
 
 |SUBSTRING(x, y, z) SUBSTRING(x FROM y FOR z)
 |[b] Get substring from x from position y with length z
-|y, z in \{integer}
+|y, z in {integer}
 
 |TRANSLATE(x, y, z)
 |Translate string x by replacing each character in y with the character in z at the same position
-|x in \{string}
+|x in {string}
 
 |TRIM([[LEADING\|TRAILING\|BOTH] [x] FROM] y)
 |Trim the leading, trailing, or both ends of a string y of character x. If LEADING/TRAILING/BOTH is not specified, BOTH is used. If no trim character x is specficed then the blank space `' is used.
-|x in \{character}, y in \{string}
+|x in {character}, y in {string}
 
 |UCASE(x)
 |Uppercase of x
-|x in \{string}
+|x in {string}
 
 |UNESCAPE(x)
 |Unescaped version of x. Possible escape sequences are \b - backspace, \t - tab, \n - line feed, \f - form feed, \r - carriage return. \uXXXX, where X is a hex value, can be used to specify any unicode character. \XXX, where X is an octal digit, can be used to specify an octal byte value. If any other character appears after an escape character, that character will appear in the output and the escape character will be ignored.
-|x in \{string}
+|x in {string}
 |===
 
 [a] Non-ASCII range characters or integers used in these functions may produce different results or exceptions depending on where the function is evaluated (Teiid vs. source). Teiid’s uses Java default int to char and char to int conversions, which operates over UTF16 values.

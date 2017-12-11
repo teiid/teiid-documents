@@ -69,7 +69,7 @@ The above properties must be defined with NAMESPACE `http://teiid.org/rest' on t
 </vdb>
 ----
 
-NOTE: <property name="\{http://teiid.org/rest[http://teiid.org/rest]}auto-generate" value="true"/>, can be used to control the generation of the REST based WAR based on the VDB. This property along with at least one procedure with REST based extension metadata is required to generate a REST WAR file. Also, the procedure needs to return result set with single column of either XML, Clob, Blob or String. When PRODUCES property is not defined, this property is derived from the result column that is projected out.
+NOTE: <property name="{http://teiid.org/rest}auto-generate" value="true"/>, can be used to control the generation of the REST based WAR based on the VDB. This property along with at least one procedure with REST based extension metadata is required to generate a REST WAR file. Also, the procedure needs to return result set with single column of either XML, Clob, Blob or String. When PRODUCES property is not defined, this property is derived from the result column that is projected out.
 
 when the above VDB is deployed in the {{ book.asName }} + Teiid server, and if the VDB is valid and after the metadata is loaded then a REST war generated automatically and deployed into the local {{ book.asName }} server. The REST VDB is deployed with "\{vdb-name}_\{vdb-version}" context. The model name is prepended to uri of the service call. For example the procedure in above example can be accessed as
 

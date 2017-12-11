@@ -61,7 +61,7 @@ Returns an xml document from JSON.
 JSONTOXML(rootElementName, json)
 ----
 
-rootElementName is a string, json is in \{clob, blob}. Return value is xml.
+rootElementName is a string, json is in {clob, blob}. Return value is xml.
 
 The appropriate UTF encoding (8, 16LE. 16BE, 32LE, 32BE) will be detected for JSON blobs. If another encoding is used, see the to_chars function.
 

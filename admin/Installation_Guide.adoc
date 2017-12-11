@@ -116,9 +116,9 @@ This shows the contents of the Teiid {{ book.versionNumber }} deployment. The di
 |/modules/system/layers/base/org/jboss/teiid/client
 |This directory contains Teiid client libraries. It has the Teiid JDBC driver jar, "teiid-{{ book.fullVersionNumber }}-jdbc.jar", and also contains "teiid-hibernate-dialect-{{ book.fullVersionNumber }}.jar" that contains Teiid’s Hibernate dialect.
 
-|\{standalone or domain}/tmp/teiid
+|{standalone or domain}/tmp/teiid
 |This directory under standalone or domain, contains temporary files created by Teiid. These are mostly created by the buffer manager. These files are not needed across a VM restart. Creation of Teiid lob values(for example through SQL/XML) will typically create one file per lob once it exceeds the allowable in memory size of 8KB. In heavy usage scenarios, consider pointing the buffer directory at a partition that is routinely defragmented.
 
-|\{standalone or domain}/data/teiid-data
+|{standalone or domain}/data/teiid-data
 |This directory under standalone or domain, contains cached vdb metadata files. Do not edit them manually.
 |===

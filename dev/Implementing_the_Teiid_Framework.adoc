@@ -120,7 +120,7 @@ the "ra.xml" file. These properties are used by user to configure instance of th
 </config-property>
 ----
 
-The format and contents of "<description>" element may be used as extended metadata for tooling. The special format must begin and end with curly braces e.g. \{…}. This use of the special format and all properties is optional. Property names begin with '$' and are separated from the value with ':'. Double quotes identifies a single value. A pair of square brackets, e.g. […], containing comma separated double quoted entries denotes a list value.
+The format and contents of "<description>" element may be used as extended metadata for tooling. The special format must begin and end with curly braces e.g. {…}. This use of the special format and all properties is optional. Property names begin with '$' and are separated from the value with ':'. Double quotes identifies a single value. A pair of square brackets, e.g. […], containing comma separated double quoted entries denotes a list value.
 
 Extended metadata properties
 
