@@ -9,7 +9,7 @@ MongoDB is a document based "schema-less" database with it own query language - 
 
 To make MongoDB work with Teiid the challenge for the MongoDB translator is "How to design a MongoDB store that can achieve the balance between relational and document based storage?" In our opinion the advantages of "schema-less" design are great at development time, not much at runtime except in few special situations. "Schema-less" can also be a problem with migration of application versions and the ability to query and make use of returned information effectively.
 
-Since it is hard and may be impossible in certain situations to derive a schema based on existing the MongoDB collection(s), Teiid approaches the problem in reverse compared to other translators. When working with MongoDB, Teiid requires the user to define the MongoDB schema upfront using Teiid metadata. Since Teiid only allows relational schema as its metadata, the user needs to define their MongoDB schema in relational terms using tables, procedures, and functions. For the purposes of MongoDB, the Teiid metadata has been extended to support extension properties that can be defined on the table to convert it into a MongoDB based document. These extension properties let users define, how a MongoDB document is structured and stored. Based on the relationships (primary-key, foreign-key) defined on a table, and the cardinality (ONE-to-ONE, ONE-to-MANY, MANY-to-ONE) relations between tables are mapped such that related information can be embedded along with the parent document for co-location (see the de-normalization comment above). Thus a relational schema based design, but document based storage in MongoDB. Currently direct mapping of MANY-to-MANY is not supported.
+Since it is hard and may be impossible in certain situations to derive a schema based on existing the MongoDB collection(s), Teiid approaches the problem in reverse compared to other translators. When working with MongoDB, Teiid requires the user to define the MongoDB schema upfront using Teiid metadata. Since Teiid only allows relational schema as its metadata, the user needs to define their MongoDB schema in relational terms using tables, procedures, and functions. For the purposes of MongoDB, the Teiid metadata has been extended to support extension properties that can be defined on the table to convert it into a MongoDB based document. These extension properties let users define, how a MongoDB document is structured and stored. Based on the relationships (primary-key, foreign-key) defined on a table, and the cardinality (ONE-to-ONE, ONE-to-MANY, MANY-to-ONE) relations between tables are mapped such that related information can be embedded along with the parent document for co-location (see the de-normalization comment above). Thus a relational schema based design, but document based storage in MongoDB. 
 
 == Who is the primary audience for this translator?
 
@@ -202,7 +202,7 @@ Using the above properties and FOREIGN KEY relationships, we will illustrate how
 
 NOTE: *Usage* - Please note a given table can contain either the "teiid_mongo:EMBEDDABLE" property or the "teiid_mongo:MERGE" property defining the type of nesting in MongoDB. A table is not allowed to have both properties.
 
-=== 2-ONE Mapping
+=== ONE-2-ONE Mapping
 
 If your current DDL structure representing ONE-2-ONE relationship is like
 
@@ -289,7 +289,7 @@ With the above both tables are merged into a single collection that can be queri
 
 NOTE: Note that the Foreign Key defined on child table, must refer to Primary Keys on both parent and child tables to form a One-2-One relationship.
 
-=== 2-MANY Mapping.
+=== ONE-2-MANY Mapping.
 
 Typically there can be more than two (2) tables involved in this relationship. If MANY side is only associated *single* table, then use "teiid_mongo:MERGE" property on MANY side of table and define ONE as the parent. If associated with more than single table then use "teiid_mongo:EMBEDDABLE".
 
