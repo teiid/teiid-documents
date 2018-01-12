@@ -342,9 +342,29 @@ This table supplies information about primary, foreign, and unique keys.
 |string
 |Referenced key UID (if foreign key)
 
+|RefTableUID
+|string
+|Referenced key table UID (if foreign key)
+
+|RefSchemaUID
+|string
+|Referenced key table schema UID (if foreign key)
+
 |UID
 |string
 |Key unique ID
+
+|TableUID
+|string
+|Key Table unique ID
+
+|SchemaUID
+|string
+|Key Table Schema unique ID
+
+|ColPositions
+|short[]
+|Array of column positions within the key table
 |===
 
 === SYS.ProcedureParams
