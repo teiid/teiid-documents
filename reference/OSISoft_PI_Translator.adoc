@@ -127,6 +127,13 @@ NOTE: The PI data type, "GUID" will need to be modeled as "String" and must defi
 translator will appropriately convert the data back forth with the PI datasource's native guid type with appropriate type 
 casting from string.
 
+=== Pushdown Functions
+
+PI accepts time interval literals that are not recognized by Teiid.  If you wish to make a comparison based upon an interval, use the PI.inteveral function:
+
+----
+select * from Archive a where a.time between PI.interval('*-14d') and PI.interval('*')
+----
+
 Known Issues:
 TEIID-5123 - Casting a string containing a negative or zero value (e.g. '-24' or '0') to Float/Single fails with PI Jdbc driver.
-
