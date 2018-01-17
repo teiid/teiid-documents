@@ -3,7 +3,7 @@
 There are three types of remote transports, each with it’s own encryption configuration:
 
 * "teiid" - Defaults to only encrypt login traffic, in which none of the other configuration properties are used.
-* "pg" - Defaults to no SSL
+* "odbc" - Defaults to no SSL
 * "odata" - Defaults to no SSL
 
 [source,xml]
