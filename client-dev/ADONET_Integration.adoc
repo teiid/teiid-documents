@@ -1,0 +1,19 @@
+= ADO.Net Integration
+
+link:http://www.npgsql.org/[Npgsql] is an open source ADO.NET Data Provider for PostgreSQL.  It can be integrated with Teiid to provide access from programs written in C#, Visual Basic, F#.
+
+== Prerequisites
+
+- Install the Npgsql using the .msi Windows installer.  Teiid integration was last tested with version 3.2.6. 
+
+- Your Teiid installation should already be setup for link:../admin/Socket_Transports.adoc[pg/ODBC] access. 
+
+- Have a VDB deployed.
+
+== Npgsql Configuration
+
+See the link:http://www.npgsql.org/doc/connection-string-parameters.html[documentation] for supported connection parameters.  Not all configuration parameters have been tested for use with Teiid.
+
+== Known Limitations
+
+- link:https://issues.jboss.org/browse/TEIID-5220[TEIID-5220] prevents displaying the metadata of tables and views, but does not affect querying.  Certain tools, such as PowerBi, may have options to turn of the need to perform metadata introspection.
