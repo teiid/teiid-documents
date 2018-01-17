@@ -1,9 +1,25 @@
 = Teiid Server Transport Security 
 
-There are two types of remote transports, each with it’s own encryption configuration:
+There are three types of remote transports, each with it’s own encryption configuration:
 
 * "teiid" - Defaults to only encrypt login traffic, in which none of the other configuration properties are used.
-* "pg" - Defaults to no SSL
+* "odbc" - Defaults to no SSL
+* "odata" - Defaults to no SSL
+
+[source,xml]
+.Example Transport Configuration
+----
+            <transport name="jdbc" socket-binding="teiid-jdbc" protocol="teiid">
+                <authentication security-domain="teiid-security"/>
+            </transport>
+            <transport name="odbc" socket-binding="teiid-odbc" protocol="pg">
+                <authentication security-domain="teiid-security"/>
+                <ssl mode="disabled"/>
+            </transport>
+           <transport name="odata">
+                <authentication security-domain="teiid-security"/>
+            </transport>
+----
 
 WARNING: The pg transport for ODBC access defaults to clear text username password authentication.  You should consider using a security domain that utilizes non-plaintext passwords, kerberos, or SSL.
 
