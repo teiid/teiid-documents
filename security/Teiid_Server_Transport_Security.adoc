@@ -1,13 +1,27 @@
 = Teiid Server Transport Security 
 
-There are two types of remote transports, each with it’s own encryption configuration:
+There are two types of direct remote transports, each with it’s own encryption configuration:
 
 * "teiid" - Defaults to only encrypt login traffic, in which none of the other configuration properties are used.
-* "pg" - Defaults to no SSL
+* "odbc" - Defaults to no SSL
 
-WARNING: The pg transport for ODBC access defaults to clear text username password authentication.  You should consider using a security domain that utilizes non-plaintext passwords, kerberos, or SSL.
+[source,xml]
+.Example Transport Configuration
+----
+            <transport name="jdbc" socket-binding="teiid-jdbc" protocol="teiid">
+                <authentication security-domain="teiid-security"/>
+            </transport>
+            <transport name="odbc" socket-binding="teiid-odbc" protocol="pg">
+                <authentication security-domain="teiid-security"/>
+                <ssl mode="disabled"/>
+            </transport>
+----
+
+WARNING: The pg protocol for ODBC access defaults to clear text username password authentication.  You should consider using a security domain that utilizes non-plaintext passwords, kerberos, or SSL.
 
 SSL configuration is part of the _transport_ configuration in the Teiid subsystem.
+
+Other indirect access into Teiid, such as OData or REST via WARs, relies on the container settings for HTTP/HTTPS access.
 
 == Encryption Modes
 
@@ -16,11 +30,11 @@ Teiid supports a couple different encryption modes based on the _mode_ attribute
 * *logIn* - This is the default setting for the transports.
 ** JDBC (non-data by default) messages between client and server are encrypted using 128 bit AES with a http://en.wikipedia.org/wiki/Diffie-Hellman_key_exchange[Diffie-Hellman] key that is negotiated per connection. When possible a 2048 bit key exchange will be used otherwise 1024 bit will be used. 
 Oracle/Sun 1.7 JREs are known not to support key lengths over 1024 bits. The link:../client-dev/Driver_Connection.adoc[connection property] encryptRequest can be used to encrypt requests and results using the same 128 bit AES scheme.
-** For the pg transport authentication is expected to be secure - which currently is only GSS logins.  Pre 9.x and unpatched client/server combinations will use a less secure ECB block mode, which is not recommended for large authentication payloads and the encryptRequest option.  
+** pg authentication is expected to be secure - which currently is only GSS logins.  Pre 9.x and unpatched client/server combinations will use a less secure ECB block mode, which is not recommended for large authentication payloads and the encryptRequest option.  
 
 * *enabled* - Mode to enable SSL. Clients are required to connect using SSL.
 
-* *disabled* - turns off any kind of encryption. This is the default for the pg transport.
+* *disabled* - turns off any kind of encryption. This is the default for the odbc transport.
 
 == SSL Authentication Modes
 
