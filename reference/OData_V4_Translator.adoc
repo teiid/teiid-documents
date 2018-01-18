@@ -40,6 +40,8 @@ All CRUD operations will be appropriately mapped to the resulting entity based o
 
 Usage of a OData source is similar a JDBC translator. The metadata import is supported through the translator, once the metadata is imported from source system and exposed in relational terms, then this source can be queried as if the EntitySets, Function Imports and Action Imports were local to the Teiid system.
 
+It is not recommended to define your own metadata using Teiid DDL for complex services as there are several extension metadata properties required for proper functioning.  On non-string properties a NATIVE_TYPE property is expected and should specify the ful EDM type name - "Edm.xxx".  
+
 The below is sample VDB that can read metadata service from TripPin service on http://odata.org[http://odata.org] site.
 
 [source,xml]
