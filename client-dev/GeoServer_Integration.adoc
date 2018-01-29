@@ -6,7 +6,7 @@ link:http://geoserver.org/[GeoServer] is an open source server for geospatial da
 == Prerequisites
 
 - Have GeoServer installed.  By default this will be in a different container than the Teiid WildFly instance, but it should be possible to
-deploy into the same WildFly instance. 
+deploy into the same WildFly instance.  Teiid integration was intially tested with GeoServer version 2.6.x, and was later updated to support 2.8.x and 2.12.x with link:https://issues.jboss.org/browse/TEIID-5236[TEIID-5236] 
 
 - Your Teiid installation should already be setup for link:../admin/Socket_Transports.adoc[ODBC] access.  This allows the built-in support of GeoServer 
 for PostGIS/PostgreSQL to be used.
@@ -34,5 +34,6 @@ when selecting to compute the bounding box from the data.
 
 == Additional Considerations
 
-- If you are integrating a PostgreSQL source, you must not re-expose the geometry_columns table.
+- If you are integrating a PostgreSQL source, you must not re-expose the geometry_columns or geography_columns tables.
 This is because GeoServer makes unqualified queries that reference geometry_columns and the query should resolve against the Teiid system table instead.
+- Teiid does not by default expose a GT_PK_METADATA, which is optionally used by GeoServer
