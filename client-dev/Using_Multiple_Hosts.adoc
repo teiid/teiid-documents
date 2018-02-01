@@ -1,7 +1,17 @@
 
 = Using Multiple Hosts
 
-A group of Teiid Servers in the same {{ book.asName }} cluster may be connected using failover and load-balancing features. To enable theses features in their simplest form, the client needs to specify multiple host name and port number combinations on the URL connection string.
+A group of Teiid Servers in the same {{ book.asName }} cluster may be connected using failover and load-balancing features. 
+
+== External HA / Load Balancers
+
+You may choose to use an external tcp load balancer, such as http://haproxy.1wt.eu/[haproxy]. The Teiid driver/DataSource should then typically be configured to just use the single host/port of your load balancer.  The load balancer should use an algorithm that supports sticky connections as Teiid sessions as specific to the original host.  For HAProxy it is recommended that you use leastconn or source.  
+
+Even if you configure the load balancer to redirect when there is a failed host, that will not maintain the Teiid session state.  If you wish to keep the connection alive, then use the _autoFailover_ feature discussed below.  Otherwise the other Teiid Client Features are not necessary when using an external load balancer.
+
+== Teiid Client Features
+
+To enable theses features in their simplest form, the client needs to specify multiple host name and port number combinations on the URL connection string.
 
 [source,java]
 .*Example URL connection string*
@@ -13,11 +23,11 @@ If you are using a DataSource to connect to Teiid Server, use the "AlternateServ
 
 The client will randomly pick one the Teiid server from the list and establish a session with that server. If that server cannot be contacted, then a connection will be attempted to each of the remaining servers in random order. This allows for both connection time fail-over and random server selection load balancing.
 
-== Fail Over
+=== Fail Over
 
-Post connection fail over will be used, if the _autoFailover_ connection property on JDBC URL is set to true. Post connection failover works by sending a ping, at most every second, to test the connection prior to use. If the ping fails, a new instance will be selected prior to the operation being attempted. This is not true "transparent application failover" as the client will not restart the transaction/query/recreate session scoped temp tables, etc. So this feature should be used with caution.
+Post connection fail over will be used if the _autoFailover_ connection property on JDBC URL is set to true. Post connection failover works by sending a ping, at most every second, to test the connection prior to use. If the ping fails, a new instance will be selected prior to the operation being attempted. This is not true "transparent application failover" as the client will not restart the transaction/query/recreate session scoped temp tables, etc. So this feature should be used with caution.
 
-== Load Balancing
+=== Load Balancing
 
 Post connection load balancing can be utilized in one of two ways. First if you are using `TeiidDataSource` and the Connections returned by Teiid `PooledConnections` have their `close` method called, then a new server instance will be selected automatically. However when using driver based connections or even when using `TeiidDataSource` in a connection pool (such as {{ book.asName }}), the automatic load balancing will not happen. Second you can explicitly trigger load balancing through the use of the set statement:
 
@@ -55,15 +65,13 @@ Typically you will not need want to issue this statement manually, but instead u
     </datasources>
 ----
 
-Teiid by default maintians a pool of extra socket connections that are reused. For load balancing, this reduces the potential cost of switching a connection to another server instance. The default setting is to maintain 16 connections (can be set via `org.teiid.sockets.maxCachedInstances` in a teiid-client-settings.properties file). If you’re client is connecting to large numbers of Teiid instances and you’re using post connection time load balancing, then consider increasing the number of cached instances. You may either set an analogous system property or create a teiid-client-settings.properties (see the teiid-client-settings.orig.properties file in the client jar) file and place it into the classpath ahead of the client jar.
+Teiid by default maintains a pool of extra socket connections that are reused. For load balancing this reduces the potential cost of switching a connection to another server instance. The default setting is to maintain 16 connections (this can be set via `org.teiid.sockets.maxCachedInstances` in a teiid-client-settings.properties file). If you’re client is connecting to a large numbers of Teiid instances and you’re using post connection time load balancing, then consider increasing the number of cached instances. You may either set an analogous system property or create a teiid-client-settings.properties (see the teiid-client-settings.orig.properties file in the client jar) file and place it into the classpath ahead of the client jar.
 
 NOTE: Session level temporary tables, currently running transactions, session level cache entries, and PreparedPlans for a given session will not be available on other cluster members. Therefore, it is recommended that post connection time load balancing is only used when the logical connection could have been closed, but the actual connection is reused (the typical connection pool pattern).
 
-== Advanced Configuration
+=== Advanced Configuration
 
-Server discovery, load balancing, fail over, retry, retry delay, etc. may be customize if the default policy is not sufficient. See the `org.teiid.net.socket.ServerDiscovery` interface and default implementaion `org.teiid.net.socket.UrlServerDiscovery` for how to start with your customization. The `UrlServerDiscovery` implemenation provides the following: discovery of servers from the URL hosts (DataSource server/alternativeServers), random selection for load balancing and failover, 1 connection attempt per host, no biasing, black listing, or other advanced features. Typically you’ll want to extend the `UrlServerDiscovery` so that it can be used as the fallback strategy and to only implement the necessary changed methods. It’s important to consider that 1 `ServerDiscovery` instance will be created for each connection. Any sharing of information between instances should be done through static state or some other shared lookup.
+Server discovery, load balancing, fail over, retry, retry delay, etc. may be customize if the default policy is not sufficient. See the `org.teiid.net.socket.ServerDiscovery` interface and default implementation `org.teiid.net.socket.UrlServerDiscovery` for how to start with your customization. The `UrlServerDiscovery` implementation provides the following: discovery of servers from the URL hosts (DataSource server/alternativeServers), random selection for load balancing and failover, 1 connection attempt per host, no biasing, black listing, or other advanced features. Typically you’ll want to extend the `UrlServerDiscovery` so that it can be used as the fallback strategy and to only implement the necessary changed methods. It’s important to consider that 1 `ServerDiscovery` instance will be created for each connection. Any sharing of information between instances should be done through static state or some other shared lookup.
 
 Your customized server discovery class will then need to be referenced by the discoveryStategy connection/DataSource property by its full class name.
-
-You may also choose to use an external tcp load balancer, such as http://haproxy.1wt.eu/[haproxy]. The Teiid driver/DataSource should then typically be configured to just use the single host/port of your load balancer.
 

@@ -109,7 +109,7 @@ WARNING: Strings are always fully held in memory. Do not set this value too high
 |10
 
 |_org.teiid.checkPing_
-|Can be set to false to disable ping checking for remote JDBC connections. Ping checking should only be disabled in specific circumstances, such as when using an external load balancer and not utilizing the Teiid default load balancing logic.
+|Can be set to false to disable ping checking for remote JDBC connections. Ping checking should only be disabled in specific circumstances, such as when using an external load balancer and not utilizing the Teiid default load balancing logic.  Deprecated as of Teiid 10.2.
 |true
 
 |_org.teiid.defaultNullOrder_
