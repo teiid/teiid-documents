@@ -168,6 +168,8 @@ NOTE: Note that even though embedded documents can also be in arrays, the handli
 
 Regular Expressions, MongoDB::Code, MongoDB::MinKey, MongoDB::MaxKey, MongoDB::OID is not currently supported.
 
+NOTE: Documents that contain values of mixed types for the same key, for example "key" is a string value in one document and an integer in another, the column must be marked as unsearchable as MongoDB will not correct match predicates against the column.  See also the importer.sampleSize property.  
+
 == Importer Properties
 
 Importer properties define the behavior of the translator during the metadata import from the physical source.
@@ -184,6 +186,10 @@ Importer properties define the behavior of the translator during the metadata im
 |includeTables
 |Regular expression to include the tables from import
 |null
+
+|sampleSize
+|Number of documents to sample to determine the structure - if documents have different fields or fields with different types, this should be greater than 1.
+|1
 |===
 
 == Extension Metadata Properties To Build Complex Documents
