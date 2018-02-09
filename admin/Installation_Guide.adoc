@@ -62,7 +62,7 @@ The slave nodes fetch their domain configuration from the "master" node.
 Once all the servers are up, complete the installation to run in domain mode by executing the following command against the "master" node. Note that this only needs to be run once per domain (i.e. cluster) install. This script will install Teiid in the *ha* and *full-ha* profiles. It will also re-configure _main-server-group_ to start the _ha_ profile. Once in domain mode, you can not statically deploy resources by dropping them in the _domain/deployments_ folder, so this script will deploy the default resources (file, ldap, salesforce and ws connectors) using the CLI interface.
 
 ----
-<jboss-install>/bin/jboss-cli.sh --file=scripts/teiid-domain-mode-install.cli
+<jboss-install>/bin/jboss-cli.sh --file=bin/scripts/teiid-domain-mode-install.cli
 ----
 
 Thats it!. {{ book.asName }} and Teiid are now installed and running. See below instructions to customize various other settings.
