@@ -24,7 +24,7 @@ This table supplies information about how views / procedures are defined.
 
 |object_type
 |string
-|Type of object (StoredProcedure, View, etc.)
+|Type of object (StoredProcedure, ForeignProcedure, Table, View, Column, etc.)
 
 |Name
 |string
@@ -32,7 +32,7 @@ This table supplies information about how views / procedures are defined.
 
 |ElementName
 |string
-|Name of column or parameter, may be null to indicate a table/procedure
+|Name of column or parameter, may be null to indicate a table/procedure.  Parameter level dependencies are currently not implemented.
 
 |Uses_UID
 |string
