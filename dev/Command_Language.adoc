@@ -65,7 +65,7 @@ A list of `TableReference` are used by default, in the pushdown query when no ou
 
 == Select Structure
 
-Each `QueryExpression` can be a `Select` describing the expressions (typically elements) being selected and an `TableReference` specifying the table or tables being selected from, along with any join information.  The `Select` may optionally also supply an `Condition` (representing a SQL WHERE clause), a `GroupBy` (representing a SQL GROUP BY clause), an an `Condition` (representing a SQL HAVING clause).
+Each `QueryExpression` can be a `Select` describing the expressions (typically `ColumnReference`s) being selected and an `TableReference` specifying the table or tables being selected from, along with any join information.  The `Select` may optionally also supply an `Condition` (representing a SQL WHERE clause), a `GroupBy` (representing a SQL GROUP BY clause), an an `Condition` (representing a SQL HAVING clause).
 
 == SetQuery Structure
 
@@ -165,13 +165,13 @@ The `DelegatingHierarchyVisitor` is a special subclass of the HierarchyVisitor t
 
 The `SQLStringVisitor` is a special visitor that can traverse a tree of language interfaces and output the equivalent Teiid SQL.  This visitor can be used to print language objects for debugging and logging.  The `SQLStringVisitor` does not use the `HierarchyVisitor` described in the last section; it provides both iteration and processing type functionality in a single custom visitor.    
 
-The `CollectorVisitor` is a handy utility to collect all language objects of a certain type in a tree. Some additional helper methods exist to do common tasks such as retrieving all elements in a tree, retrieving all groups in a tree, and so on.  
+The `CollectorVisitor` is a handy utility to collect all language objects of a certain type in a tree. Some additional helper methods exist to do common tasks such as retrieving all `ColumnReference`s in a tree, retrieving all groups in a tree, and so on.  
 
 == Writing a Visitor
 
 Writing your own visitor can be quite easy if you use the provided facilities.  If the normal method of iterating the language tree is sufficient, then just follow these steps:
 
-Create a subclass of AbstractLanguageVisitor.  Override any visit methods needed for your processing.  For instance, if you wanted to count the number of elements in the tree, you need only override the `visit(ColumnReference)` method.  Collect any state in local variables and provide accessor methods for that state.
+Create a subclass of AbstractLanguageVisitor.  Override any visit methods needed for your processing.  For instance, if you wanted to count the number of `ColumnReference`s in the tree, you need only override the `visit(ColumnReference)` method.  Collect any state in local variables and provide accessor methods for that state.
 
 Decide whether to use pre-order or post-order iteration. Note that visitation order is based upon syntax ordering of SQL clauses - not processing order.
 

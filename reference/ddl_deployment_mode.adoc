@@ -178,7 +178,7 @@ Now that we have the Translators and Connections created, the next step is to cr
 
 == Create SCHEMA in VDB
 
-Before metadata about data sources or abstraction layers can be created, a container for this metadata needs to be created. In relational database concepts this is called Schema, and this also works as a namespace in which metadata elements like TABLES, VIEWS and PROCEDURES exist. The below DDL shows how to create a SCHEMA element.
+Before metadata about data sources or abstraction layers can be created, a container for this metadata needs to be created. In relational database concepts this is called Schema, and this also works as a namespace in which metadata objects like TABLES, VIEWS and PROCEDURES exist. The below DDL shows how to create a SCHEMA element.
 
 ----
 CREATE [VIRTUAL] SCHEMA {schema-name} 

@@ -8,7 +8,7 @@ A VDB typically contains multiple schema components (also called as models), and
  
 * Source Schema (also called Physical or Foreign schema), which represents an external/remote data sources like Relational database (Oracle, DB2, MySQL..), Files(CSV, Excel..), Web-Services(SOAP, REST) etc.
 
-* Virtual Schema. This is a view layer or logical schema layer, that is defined using schema elements from Foreign Schemas. For example, creating a view table using multiple foreign tables from different sources, thus hiding the complexities of definition of the view from user.
+* Virtual Schema. This is a view layer or logical schema layer, that is defined using schema objects from Foreign Schemas. For example, creating a view table using multiple foreign tables from different sources, thus hiding the complexities of definition of the view from user.
 
 One important thing to note is, a VDB ONLY contains metadata, NEVER copies/has the actual data. Any usecase involving Teiid MUST have a VDB to begin with. So, it is very important to learn how a VDB can be designed/developed.
 
@@ -52,7 +52,7 @@ Both formats define the same VDB.
 There is lot to be explained from above examples, in the following sections, we will go into detail about each of those lines. Before that we need to learn about further fractions in the _Source Schema_ component. 
 
 == External Data Sources 
-A "source schema" component in VDB as shown in above example is a collection schema elements as tables, procedures and functions that represent an external data source's metadata locally. However in the above example, it did not define any such schema elements, however details of connection to the external data source were provided through "jndi-name", which is a named connection reference to a external data source.   
+A "source schema" component in VDB as shown in above example is a collection schema objects as tables, procedures and functions that represent an external data source's metadata locally. In the above example, it did not define any such schema objects directly, but will instead import them from the server.  Details of the connection to the external data source were provided through "jndi-name", which is a named connection reference to a external data source.   
 
 For the purposes of Teiid, connecting and issuing queries to fetch the metadata from these external data sources, Teiid defines/provides two types of resources.
 
