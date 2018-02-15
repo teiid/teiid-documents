@@ -140,6 +140,10 @@ WARNING: Strings are always fully held in memory. Do not set this value too high
 |Set to false to allow the pre-10.1 behavior of allowing qualified names in create to be used.  For example 'create foreign table x.y ...', rather than 'create foreign table "x.y" ...'
 |true
 
+|_org.teiid.aliasCacheName_
+|For some Infinispan/JDG integration scenarios '-' is not allowable in a cache name, this property can be used to override the default.
+|teiid-alias-naming-cache
+
 |===
 
 
