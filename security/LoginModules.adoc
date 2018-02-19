@@ -75,8 +75,8 @@ The _UsersRolesLoginModule_ utilizes simple text files to authenticate users and
         <security-domain name="teiid-security" cache-type="default">
             <authentication>
                 <login-module code="UsersRoles" flag="required">
-                    <module-option name="usersProperties" value="$(jboss.server.config.dir)/users.properties"/>
-                    <module-option name="rolesProperties" value="$(jboss.server.config.dir)/roles.properties"/>
+                    <module-option name="usersProperties" value="${jboss.server.config.dir}/users.properties"/>
+                    <module-option name="rolesProperties" value="${jboss.server.config.dir}/roles.properties"/>
                 </login-module>
             </authentication>
         </security-domain>
