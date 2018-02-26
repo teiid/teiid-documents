@@ -5,6 +5,8 @@ The Teiid JDBC API provides Java Database Connectivity (JDBC) access to any Virt
 
 Java client applications connecting to a Teiid Server will need to use Java 1.6 JDK. Previous versions of Java are not supported.
 
+Support for Teiid clients and servers older than version 8 has been dropped from Teiid 10.2 and later.
+
 Before you can connect to the Teiid Server using the Teiid JDBC API, please do following tasks first.
 
 1.  Install the Teiid Server. See the "Admin Guide" for instructions.
