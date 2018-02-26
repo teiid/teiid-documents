@@ -18,18 +18,23 @@ Authentication to your google account may be done using OAuth, which requires a 
 |Use guide below to retrieve RefreshToken. Request access to Google Drive and Spreadsheet API.
 
 |SpreadsheetName
-|Required property with name of the Spreadsheet that is datasource for this connector.  By default it is assumed to be a title.
+|Name/Title of the Spreadsheet.
 
-|Key
-|Optional boolean property to designate the spreadsheet name is a key rather than a title.
+|SpreadsheetId
+|ID of Spreadsheet.
+
+|ApiVersion
+|Optional GData API version.  Can be v3 or v4.  Defaults to v3.
 
 |BatchSize
 |Maximum number of rows that can be fetched at a time. Defaults to 4096.
 |===
 
+The v4 api requires the use of SpreadsheetId and specifying ClientId and ClientSecret.  Some sheets such as those contained in a team drive will only be visible to the v4 api.
+
 == Create Authorization Credentials
 
-It is recommended that you create your own authorization credentials rather than relying on the default Teiid client id and client secret.  Creating your own project will give you greater control over monitoring and controlling API access.
+For v3 connections it is recommended that you create your own authorization credentials rather than relying on the default Teiid client id and client secret.  For v4 connections it is required that you create your own credentials.  Creating your own project will give you greater control over monitoring and controlling API access.
 
 You should follow the https://developers.google.com/accounts/docs/OAuth2ForDevices[OAuth2 For Devices Guide] prerequisites.  You should allow the project access to Google Drive API and the Sheets API. 
 
@@ -39,7 +44,7 @@ A condensed form of the rest of the guide "Obtaining OAuth 2.0 access tokens" is
 
 With a browser or other client issue the request with the appropriate client ID:
 
-https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive+https%3A%2F%2Fspreadsheets.google.com%2Ffeeds&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&client_id=<CLIENT_ID>
+https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fspreadsheets&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&client_id=<CLIENT_ID>
 
 Then copy the authorization code into following POST request and run it in command line:
 
@@ -71,9 +76,5 @@ curl \--data-urlencode code=<AUTHORIZATION_CODE> \
 
 == Implementation Details
 
-Google Translator is implemented using GData API [1] (java library for [4]) and Google Visualization Protocol [2]. Authentication is implemented using OAuth2 for devices [3]. 
-1. https://developers.google.com/google-apps/spreadsheets/[https://developers.google.com/google-apps/spreadsheets/]
-2. https://developers.google.com/chart/interactive/docs/querylanguage[https://developers.google.com/chart/interactive/docs/querylanguage] 
-3. https://developers.google.com/accounts/docs/OAuth2ForDevices[https://developers.google.com/accounts/docs/OAuth2ForDevices] 
-4. https://developers.google.com/google-apps/spreadsheets[https://developers.google.com/google-apps/spreadsheets]
+Google Translator is implemented using GData API and the Google Visualization Protocol.  v4 connections still rely upon v3 functionality for update/delete as the v4 API does not provide appropriate search functionality.
 
