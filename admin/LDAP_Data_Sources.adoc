@@ -25,7 +25,7 @@ execute the following command in the CLI.
 
 TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in *"<jboss-install>/docs/teiid/datasources/ldap" directory under "resource-adapters" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
 
-NOTE: To use an anonymous bind, set the LdapAdminUserDN and LdapAdminUserPassword to empty values.
+NOTE: To use an anonymous bind, set the LdapAuthType to none.  When performing an anonymous bind the values for the admin user and password will be ignored.
 
 TIP: If you experience stale connections in the pool, you should enable either the validate-on-match or the background-validation pool settings.
 
