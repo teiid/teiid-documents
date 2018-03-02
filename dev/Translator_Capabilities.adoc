@@ -67,6 +67,10 @@ The following table lists the capabilities that can be specified in the `Executi
 |LateralJoin
 |Translator supports lateral join pushdown with a join condition.
 
+|OnlyLateralJoinProcedure
+|LateralJoin
+|Translator supports only lateral join to a procedure or table valued function.
+
 |SubqueryInOn
 |Join and base subquery support, such as ExistsCriteria
 |Translator can support subqueries in the ON clause. Defaults to true.
