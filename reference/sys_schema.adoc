@@ -441,6 +441,10 @@ This supplies information on procedure parameters.
 |ColumnSize
 |string
 |If numeric the precision, if character the length, and if date/time then the string length of a literal value
+
+|DefaultValue
+|string
+|Default value
 |===
 
 === SYS.Procedures
