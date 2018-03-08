@@ -32,6 +32,10 @@ UID types including UUID, GUID, or UNIQUEIDENTIFIER are typically mapped to the 
 |true to trim trailing whitespace from fixed length character strings. Note that Teiid only has a string, or varchar, type that treats trailing whitespace as meaningful.
 |false
 
+|RemovePushdownCharacters
+|Set to a regular expression to remove characters that not allowed or undesirable for the source.  For example "[\u0000]" will remove the null character which is problematic for sources such as PostgreSQL and Oracle.  Note that this does effectively change the meaning of the affected string literals and bind values, which must be carefully considered.
+|
+
 |UseBindVariables
 |true to indicate that PreparedStatements should be used and that literal values in the source query should be replace with bind variables. If false only LOB values will trigger the use of PreparedStatements.
 |true
