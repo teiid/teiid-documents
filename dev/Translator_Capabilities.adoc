@@ -149,7 +149,7 @@ The following table lists the capabilities that can be specified in the `Executi
 
 |OnlyLiteralComparison
 |
-|Translator if only Literal comparisons (equality, ordered, like, etc.) are supported for non-join conditions.
+|If only Literal comparisons (equality, ordered, like, etc.) are supported for non-join conditions.
 
 |Convert(int fromType, int toType)
 |
