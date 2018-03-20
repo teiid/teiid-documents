@@ -26,7 +26,7 @@ Teiid provides several translators for common enterprise information system type
 
 Teiid offers numerous built-in translators, including:
 
-* *JDBC Translator* - Works with many relational databases. The JDBC translator is validated against the following database systems: Oracle, Microsoft SQL Server, IBM DB2, MySQL, Postgres, Derby, Sybase, H2, and HSQL. In addition, the JDBC Translator can often be used with other 3rd-party drivers and provides a wide range of extensibility options to specialize behavior against those drivers.
+* *JDBC Translator* - Works with many relational databases. The JDBC translator is validated against the following database systems: Oracle, Microsoft SQL Server, IBM DB2, MySQL, Postgres, Derby, Sybase, SQP-IQ, H2, and HSQL. In addition, the JDBC Translator can often be used with other 3rd-party drivers and provides a wide range of extensibility options to specialize behavior against those drivers.
 
 * *File Translator* - Provides a procedural way to access the file system to handle text files.
 

@@ -51,7 +51,7 @@ If the translator returns true for both supportsDependentJoins and supportsFullD
 This is why the optimizer may choose to perform a full pushdown even when the number of independent values does not exceed MaxInCriteriaSize*MaxDependentPredicates.  You may also force full pushdown using the MAKEDEP(JOIN) hint.
 The translator is typically responsible for creating, populating, and removing a temporary table that represents the independent side. If you are working with custom translators see link:../dev/Dependent_Join_Pushdown.adoc[Dependent Join Pushdown] as to how to support it key and full pushdown.
  
-NOTE: *Key/Full Pushdown* is currently only supported out-of-the box by a subset of JDBC translators. To enable support, set the translator override property "enableDependentJoins" to "true". The JDBC source must support the creation of temporary tables, which typically requires a Hibernate dialect.  Translators that should support this feature include: DB2, Derby, H2, Hana, HSQL, MySQL, Oracle, PostgreSQL, SQL Server, Sybase, Teiid, and Teradata. 
+NOTE: *Key/Full Pushdown* is currently only supported out-of-the box by a subset of JDBC translators. To enable support, set the translator override property "enableDependentJoins" to "true". The JDBC source must support the creation of temporary tables, which typically requires a Hibernate dialect.  Translators that should support this feature include: DB2, Derby, H2, Hana, HSQL, MySQL, Oracle, PostgreSQL, SQL Server, SAP IQ, Sybase, Teiid, and Teradata. 
 
 == Copy Criteria
 

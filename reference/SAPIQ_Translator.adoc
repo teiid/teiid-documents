@@ -1,0 +1,7 @@
+
+= SAP IQ Translator (sap-iq)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The SAP IQ Translator, known by the type name *_sap-iq_*, is for use with Sybase/SAP IQ version 15.1 or later.  The translator name *_sybaseiq_* has been deprecated.
+

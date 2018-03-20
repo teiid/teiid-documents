@@ -16,7 +16,7 @@ See link:JDBC_Translators.adoc[JDBC Translators] for access to:
 * link:DB2_Translator.adoc[DB2]
 * link:Microsoft_SQL_Server_Translator.adoc[Microsoft SQL Server]
 * link:Sybase_Translator.adoc[Sybase]
-* link:SybaseIQ_Translator.adoc[Sybase IQ]
+* link:SAPIQ_Translator.adoc[SAP IQ]
 * link:Microsoft_Access_Translators.adoc[Microsoft Access]
 * link:Derby_Translator.adoc[Derby]
 * link:H2_Translator.adoc[H2]

@@ -57,7 +57,7 @@ UID types including UUID, GUID, or UNIQUEIDENTIFIER are typically mapped to the 
 |OBJECT
 
 |EnableDependentJoins
-|For sources that support temporary tables (DB2, Derby, H2, HSQL 2.0+, MySQL 5.0+, Oracle, PostgreSQL, SQLServer, Sybase) allow dependent join pushdown
+|For sources that support temporary tables (DB2, Derby, H2, HSQL 2.0+, MySQL 5.0+, Oracle, PostgreSQL, SQLServer, SQP IQ, Sybase) allow dependent join pushdown
 |false
 |===
 

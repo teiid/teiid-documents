@@ -264,7 +264,7 @@
 .... link:reference/PrestoDB_Translator.adoc[PrestoDB Translator]
 .... link:reference/Redshift_Translator.adoc[Redshift Translator]
 .... link:reference/SAP_Hana_Translator.adoc[SAP Hana Translator]
-.... link:reference/SybaseIQ_Translator.adoc[SybaseIQ Translator]
+.... link:reference/SAPIQ_Translator.adoc[SAP IQ Translator]
 .... link:reference/Sybase_Translator.adoc[Sybase Translator]
 .... link:reference/Teiid_Translator.adoc[Teiid Translator]
 .... link:reference/Teradata_Translator.adoc[Teradata Translator]

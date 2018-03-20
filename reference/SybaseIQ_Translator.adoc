@@ -1,7 +1,0 @@
-
-= SybaseIQ Translator (sybaseiq)
-
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
-
-The SybaseIQ Translator, known by the type name *_sybaseiq_*, is for use with Sybase IQ version 15.1 or later.
-
