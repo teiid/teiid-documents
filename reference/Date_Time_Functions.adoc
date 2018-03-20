@@ -9,15 +9,15 @@ Parse and format Date/Time functions use the convention established within the j
 |Function |Definition |Datatype Constraint
 
 |CURDATE()
-|Return current date
+|Return current date - will return the same value for all invocations in the user command
 |returns date
 
 |CURTIME()
-|Return current time
+|Return current time - will return the same value for all invocations in the user command
 |returns time
 
 |NOW()
-|Return current timestamp (date and time)
+|Return current timestamp (date and time with millisecond precision) - will return the same value for all invocations in the user command or procedure instruction
 |returns timestamp
 
 |DAYNAME(x)
