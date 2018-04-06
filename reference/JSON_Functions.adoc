@@ -139,10 +139,11 @@ XML:
 ----
 <?xml version="1.0" ?>
 <root>
-  <_u002F_invalid>abc</_u002F_invalid>
+  <_x002F_invalid>abc</_x002F_invalid>
 </root>
 ----
 
+NOTE: prior releases defaulted incorrectly to using _uXXXX_ escaping rather than _xXXXX_.  If you need to rely on that behavior see the org.teiid.useXMLxEscape system property.
 
 == JSONARRAY
 

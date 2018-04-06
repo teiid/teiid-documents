@@ -144,6 +144,10 @@ WARNING: Strings are always fully held in memory. Do not set this value too high
 |For some Infinispan/JDG integration scenarios '-' is not allowable in a cache name, this property can be used to override the default.
 |teiid-alias-naming-cache
 
+|_org.teiid.useXMLxEscape_
+|If _x escaping should be used for invalid characters in SQL/XML names.  Set to false to use the older behavior of an _u escape.
+|true
+
 |===
 
 
