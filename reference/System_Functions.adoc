@@ -17,11 +17,11 @@ key, return value are strings
 
 == ENV
 
-Retrieve a system environment property.
+Retrieve a system property.  This function was misnamed and is for legacy compatibility, see ENV_VAR and SYS_PROP for more appropriately named functions.
 
 ENV(key)
 
-To prevent untrusted access to system properties, this function is not enabled by default. The ENV function needs to be enabled via CLI
+To prevent untrusted access to system properties, this function is not enabled by default. Use the CLI:
 
 ----
 /subsystem=teiid:write-attribute(name=allow-env-function,value=true)
@@ -33,8 +33,48 @@ or edit the standalone-teiid.xml file and add following to the "teiid" subsystem
 <allow-env-function>true</allow-env-function>
 ----
 
-then call using ENV('KEY'), which returns value as string. Ex: ENV('PATH')
+then call using ENV('KEY'), which returns value as string. Ex: ENV('PATH').  If a value is not found with the key passed in, a lower cased version of the key is tried as well.  This function is treated as deterministic, even though it is possible to set system properties at runtime.
 
+== ENV_VAR
+
+Retrieve an environment variable.
+
+ENV_VAR(key)
+
+To prevent untrusted access to environment variables, this function is not enabled by default. Use the CLI:
+
+----
+/subsystem=teiid:write-attribute(name=allow-env-function,value=true)
+----
+
+or edit the standalone-teiid.xml file and add following to the "teiid" subsystem
+
+----
+<allow-env-function>true</allow-env-function>
+----
+
+then call using ENV_VAR('KEY'), which returns value as string. Ex: ENV_VAR('USER').  The behavior of this function is platform dependent with respect to case-sensitivity.  This function is treated as deterministic, even though it is possible for environment variables to change at runtime.
+
+== SYS_PROP
+
+Retrieve an system property.
+
+SYS_PROP(key)
+
+To prevent untrusted access to environment variables, this function is not enabled by default. Use the CLI:
+
+----
+/subsystem=teiid:write-attribute(name=allow-env-function,value=true)
+----
+
+or edit the standalone-teiid.xml file and add following to the "teiid" subsystem
+
+----
+<allow-env-function>true</allow-env-function>
+----
+
+then call using SYS_PROP('KEY'), which returns value as string. Ex: SYS_PROP('USER').  This function is treated as deterministic, even though it is possible for system properties to change at runtime.
+ 
 == NODE_ID
 
 Retrieve the node id - typically the System property value for "jboss.node.name" which will not be set for Teiid embedded.
