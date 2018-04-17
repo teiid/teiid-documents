@@ -56,7 +56,7 @@ The following View properties are extension properties that used in the manageme
 |n/a
 
 |UPDATABLE
-|Allow updating Materialized View via DML `UPDATE`
+|Allow updating Materialized View via DML updates
 |true
 |false
 
@@ -66,12 +66,12 @@ The following View properties are extension properties that used in the manageme
 |false
 
 |teiid_rel:MATVIEW_STATUS_TABLE
-|Fully qualified Status Table Name to manage the load/refresh of the View. See below for table structure and DDL for it.
+|Fully qualified Status Table Name to manage the load/refresh of the materialized view. See below for table structure and DDL for it.
 |false
 |n/a
 
 |teiid_rel:MATVIEW_LOAD_SCRIPT - DEPRECATED
-|command to run for loading of the cache. Use of this property is deprecated in favor using the "MATVIEW_LOADNUMBER_COLUMN" property.
+|command to run for loading of the cache. Use of this property is deprecated in favor of using the "MATVIEW_LOADNUMBER_COLUMN" property.
 |true		
 |will be determined based on view transformation
  
@@ -130,6 +130,16 @@ teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
 |This property defines the percentage max of staleness allowed before a refresh to the View is invoked. Any double value 0 to 100 is valid value. The _StateCount_ column on Status table is used to keep track of the number of updates, and this value is checked against Cardinality column to calculate the amount of variance. The availability of this property, supercedes the MATVIEW_TTL property interms of when a refresh job triggred to update the contents of the view.
 |true
 |n/a
+
+|teiid_rel:MATVIEW_POLLING_QUERY
+|This property defines a query that must return a single timestamp value.  If the value is greater than the last update time of the materialization table, it will be reloaded.
+|true
+|n/a
+
+|teiid_rel:MATVIEW_POLLING_INTERVAL
+|This property defines the polling interval, in milliseconds, used with the polling query and STALENESS_PCT based refreshes.
+|true
+|60000
 |===
 
 TIP: for scripts that need more than one statement executed, use a procedure block BEGIN statement; statement; ... END
@@ -281,7 +291,8 @@ Once the first load of the materialized view, the update/refresh of the this Vie
 Based on the MATVIEW_TTL extension property defined on View, when the time configured is elapsed from the time of finish of loading the View, the whole view is reloaded automatically if the "ALLOW_MATVIEW_MANAGEMENT" property is set to true. If the contents are externally managed additional properties are required. Note, that "MATVIEW_MAX_STALENESS_PCT" is not provided in this case.
 
 ==== Refresh Type: LAZY SNAPSHOT
-This is similar to TTL Based SNAPSHOT, but differs as to what triggers the reload of the view. Every source table update(s) is captured in the Status table's StaleCount column as single updated event, and when this updated count reaches or exceeds the defined "MATVIEW_MAX_STALENESS_PCT" value, then a full refresh is triggered.  The values of StaleCount/Cardinality are used to calculate the percent of varience to invoke the trigger for refresh. Also note this refresh type only applies when view is materialized to external sources. `SYSADMIN.updateStaleCount` procedure is used to increment the StaleCount counter. When integrated with CDC technologies like Debezium (new feature coming..) this procedure is called automatically. 
+This is similar to TTL Based SNAPSHOT, but differs as to what triggers the reload of the view. Every source table update(s) is captured in the Status table's StaleCount column as single updated event, and when this updated count reaches or exceeds the defined "MATVIEW_MAX_STALENESS_PCT" value, then a full refresh is triggered.  
+The values of StaleCount/Cardinality are used to calculate the percent of variance to invoke the trigger for refresh. Also note this refresh type only applies when view is materialized to external sources. `SYSADMIN.updateStaleCount` procedure is used to increment the StaleCount counter. When integrated with CDC technologies like Debezium (new feature coming..) this procedure is called automatically. 
 
 === Refresh Type: EAGER
 

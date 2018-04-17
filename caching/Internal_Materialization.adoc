@@ -52,6 +52,16 @@ The materialized option must be set for the view to be materialized. The link:Hi
 |When true Teiid will perform both the underlying update and the corresponding update against the materialization target for an insert/update/delete issued against the view.
 |true
 |false
+
+|teiid_rel:MATVIEW_POLLING_QUERY
+|This property defines a query that must return a single timestamp value.  If the value is greater than the last update time of the materialization table, it will be reloaded.
+|true
+|n/a
+
+|teiid_rel:MATVIEW_POLLING_INTERVAL
+|This property defines the polling interval, in milliseconds, used with the polling query.
+|true
+|60000
 |===
 
 The pref_mem option also applies to internal materialized views. Internal table index pages already have a memory preference, so the perf_mem option indicates that the data pages should prefer memory as well.

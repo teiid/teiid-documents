@@ -38,3 +38,5 @@ IMPORTANT: Materialized view tables default to the VDB scope. By default if a ma
 resulting table will contain only the initially evaluated values. In most instances you should consider nesting a materialized view without the deterministic results that is joined with relevant non-deterministic
 values in a parent view. You may also scope the materialized view to be session specific, but that may limit the reuse of the results in many situations.
 
+IMPORTANT: Nearly all of the materialization related properties must be set at the time the vdb is loaded and are not monitored for changes.  Removal of properties at runtime, such as the status table, will result in exceptions.
+
