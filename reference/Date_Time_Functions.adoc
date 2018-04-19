@@ -8,16 +8,24 @@ Parse and format Date/Time functions use the convention established within the j
 |===
 |Function |Definition |Datatype Constraint
 
-|CURDATE()
+|CURDATE() CURRENT_DATE()
 |Return current date - will return the same value for all invocations in the user command
 |returns date
 
 |CURTIME()
-|Return current time - will return the same value for all invocations in the user command
+|Return current time - will return the same value for all invocations in the user command.  See also CURRENT_TIME
 |returns time
 
 |NOW()
-|Return current timestamp (date and time with millisecond precision) - will return the same value for all invocations in the user command or procedure instruction
+|Return current timestamp (date and time with millisecond precision) - will return the same value for all invocations in the user command or procedure instruction.  See also CURRENT_TIMESTAMP
+|returns timestamp
+
+|CURRENT_TIME[(precision)]
+|Return current time - will return the same value for all invocations in the user command.  The Teiid time type does not track fractional seconds, so the precision argument is effectively ignored.  Without a precision is the same as CURTIME().
+|returns time
+
+|CURRENT_TIMESTAMP[(precision)]
+|Return current timestamp (date and time with millisecond precision) - will return the same value for all invocations with the same precision in the user command or procedure instruction.  Without a precision is the same as NOW().  Since the current timestamp has only millisecond precision by default setting the precision to greater than 3 will have no effect.
 |returns timestamp
 
 |DAYNAME(x)
