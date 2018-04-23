@@ -3,6 +3,7 @@ language: node_js
 
 install:
     - npm install -g gitbook-cli
+    - gitbook install
     
 script: 
     - gitbook build
