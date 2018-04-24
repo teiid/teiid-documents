@@ -4,17 +4,21 @@ language: node_js
 install:
     - npm install -g gitbook-cli
     - gitbook install
+    - sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()"
     
 script: 
     - gitbook build
+    - gitbook pdf ./ _book/full.pdf
 
 after_success: |
     if [ -n "$GITHUB_API_KEY" ]; then
+    mkdir $TRAVIS_BRANCH
+    git add $TRAVIS_BRANCH
+    cd $TRAVIS_BRANCH
     git checkout --orphan gh-pages
     git rm -rf .
-    mv public/* .
-    rm -rf public master*
-    git add -f --ignore-errors --all
+    mv ../_book/* .
+    git add -f --ignore-errors --all .
     git -c user.name='travis' -c user.email='travis' commit -m init
     git push -f -q https://$GITHUB_USER:$GITHUB_API_KEY@github.com/$TRAVIS_REPO_SLUG gh-pages
     fi
