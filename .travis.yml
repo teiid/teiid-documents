@@ -8,7 +8,7 @@ install:
     
 script: 
     - gitbook build
-    - gitbook pdf ./ _book/full.pdf
+    - gitbook pdf ./ _book/teiid-full.pdf
 
 after_success: |
     if [ -n "$GITHUB_API_KEY" ]; then
@@ -17,6 +17,6 @@ after_success: |
     rm -rf $TRAVIS_BRANCH
     mv _book $TRAVIS_BRANCH
     git add -f --ignore-errors --all $TRAVIS_BRANCH
-    git -c user.name='travis' -c user.email='travis' commit -m init
+    git -c user.name='travis' -c user.email='travis' commit -m 'ci publishing'
     git push -f -q https://$GITHUB_USER:$GITHUB_API_KEY@github.com/$TRAVIS_REPO_SLUG gh-pages
     fi
