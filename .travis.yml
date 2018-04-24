@@ -8,7 +8,7 @@ install:
     
 script: 
     - gitbook build
-    - gitbook pdf ./ _book/teiid-full.pdf
+    - gitbook pdf ./ _book/teiid-documents.pdf
 
 after_success: |
     if [ -n "$GITHUB_API_KEY" ]; then
