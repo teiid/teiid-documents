@@ -5,8 +5,6 @@ image::cover_small.jpg[Teiid Logo]
 
 == Contribute to Teiid Documentation
 
-The pages themselves have commenting enabled.  You should be able to click on any text area to add a comment.
-
 The documentation project is hosted on GitHub at (https://github.com/teiid/teiid-documents[teiid/teiid-documents]).
 
 For simple changes you can just use the online editing capabilities of GitHub by navigating to the appropriate source file and selecting fork/edit.
@@ -25,7 +23,7 @@ Use any text editor to edit the adoc files, http://asciidoctor.org/docs/asciidoc
 
 *Step.3* submit your change
 
-Once you finished this steps, the content of https://teiid.gitbooks.io/documents/content/[documents] will updated automatically.
+Once the pull request is committed the published content will be updated automatically.
 
 == Test locally
 
