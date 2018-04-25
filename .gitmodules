@@ -2,3 +2,7 @@
 	path = master
 	url = https://github.com/teiid/teiid-documents
 	branch = master-gh-pages
+[submodule "10.2.x"]
+	path = 10.2.x
+	url = https://github.com/teiid/teiid-documents
+	branch = 10.2.x-gh-pages
