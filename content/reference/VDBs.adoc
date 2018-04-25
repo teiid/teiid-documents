@@ -1,0 +1,3 @@
+= VDBs
+
+A Virtual Database or VDB is the core abstraction layer for Teiid.  A VDB defines how to integrate and expose a set of sources.  
