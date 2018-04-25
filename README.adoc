@@ -53,7 +53,9 @@ Once above commands executes successfully, the `teiid-documents` folder, `teiid-
 
 The .travis.yaml file allows for continuous integration of doc changes on multiple branches to be published to a single gh-pages branch.  When you setup the travis build job you must create the gh-pages branch if it does not already exist:
 
+----
 git checkout --orphan gh-pages
 git rm -rf .
 git commit --allow-empty -m "initializing gh-pages"
 git push origin gh-pages
+----
