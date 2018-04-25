@@ -17,6 +17,7 @@ after_success: |
     git add -f --ignore-errors --all content teiid-documents.pdf
     git -c user.name='travis' -c user.email='travis' commit -m 'ci publishing'
     git push -f -q https://$GITHUB_USER:$GITHUB_API_KEY@github.com/$TRAVIS_REPO_SLUG $TRAVIS_BRANCH-gh-pages
+    git remote add origin https://$GITHUB_USER:$GITHUB_API_KEY@github.com/$TRAVIS_REPO_SLUG.git
     git checkout -b gh-pages --track origin/gh-pages
     if [ ! -d "$TRAVIS_BRANCH" ]; then
     git submodule add -b $TRAVIS_BRANCH-gh-pages https://$GITHUB_USER:$GITHUB_API_KEY@github.com/$TRAVIS_REPO_SLUG $TRAVIS_BRANCH
