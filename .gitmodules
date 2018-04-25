@@ -1,0 +1,4 @@
+[submodule "master"]
+	path = master
+	url = https://github.com/teiid/teiid-documents
+	branch = master-gh-pages
