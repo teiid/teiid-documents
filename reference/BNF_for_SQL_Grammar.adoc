@@ -119,6 +119,15 @@
 |[[token_CROSS]]_CROSS_
 |<<crossJoin,cross join>>
 
+|[[token_CURRENT_DATE]]_CURRENT_DATE_
+|<<function,function>>
+
+|[[token_CURRENT_TIME]]_CURRENT_TIME_
+|<<function,function>>
+
+|[[token_CURRENT_TIMESTAMP]]_CURRENT_TIMESTAMP_
+|<<function,function>>
+
 |[[token_DATE]]_DATE_
 |<<nonNumericLiteral,non numeric literal>>, <<parseDataTypePrimary,simple data type>>
 
@@ -868,7 +877,6 @@
 |CALLED|CASCADED|CHARACTER
 |CHECK|CLOSE|COLLATE
 |CONNECT|CORRESPONDING|CRITERIA
-|CURRENT_DATE|CURRENT_TIME|CURRENT_TIMESTAMP
 |CURRENT_USER|CURSOR|CYCLE
 |DATALINK|DEALLOCATE|DEC
 |DEREF|DESCRIBE|DETERMINISTIC
@@ -1353,7 +1361,7 @@
 |<<fetchLimit,fetch clause>>, <<limit,limit clause>>
 
 |[[usage_intVal]]_<<intVal, unsigned integer>>_
-|<<dynamicCommand,dynamic data statement>>, <<grantOption,Create GRANT>>, <<intParam,integer parameter>>, <<makedepOptions,make dep options>>, <<parameterReference,parameter reference>>, <<parseDataTypePrimary,simple data type>>, <<textColumn,text table column>>, <<textTable,text table>>
+|<<dynamicCommand,dynamic data statement>>, <<function,function>>, <<grantOption,Create GRANT>>, <<intParam,integer parameter>>, <<makedepOptions,make dep options>>, <<parameterReference,parameter reference>>, <<parseDataTypePrimary,simple data type>>, <<textColumn,text table column>>, <<textTable,text table>>
 
 |[[usage_intervalType]]_<<intervalType, time interval>>_
 |<<function,function>>
@@ -4067,6 +4075,10 @@ CASE WHEN x = 'a' THEN 1 WHEN y = 'b' THEN 2
 * <<<xmlQuery,xml query>>>
 
 * ( <<<id,identifier>>> <<<token_LPAREN,lparen>>> ( <<token_ALL,ALL>> | <<token_DISTINCT,DISTINCT>> )? ( <<<expressionList,expression list>>> )? ( <<<orderby,order by clause>>> )? <<<token_RPAREN,rparen>>> ( <<<filterClause,filter clause>>> )? )
+
+* ( <<token_CURRENT_DATE,CURRENT_DATE>> <<<token_LPAREN,lparen>>> <<<token_RPAREN,rparen>>> )
+
+* ( ( <<token_CURRENT_TIMESTAMP,CURRENT_TIMESTAMP>> | <<token_CURRENT_TIME,CURRENT_TIME>> ) ( <<<token_LPAREN,lparen>>> <<<intVal,unsigned integer>>> <<<token_RPAREN,rparen>>> )? )
 
 
 Calls a scalar function.
