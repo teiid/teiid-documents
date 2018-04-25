@@ -11,6 +11,7 @@ after_success: |
     git add -f --ignore-errors --all teiid-documents.pdf
     git -c user.name='travis' -c user.email='travis' commit -m 'ci publishing'
     git push -f -q https://$GITHUB_USER:$GITHUB_API_KEY@github.com/$TRAVIS_REPO_SLUG $TRAVIS_BRANCH-gh-pages
+    git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*" 1>/dev/null
     git fetch origin gh-pages
     git branch -v -a
     git checkout -b gh-pages origin/gh-pages
