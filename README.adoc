@@ -59,3 +59,5 @@ git rm -rf .
 git commit --allow-empty -m "initializing gh-pages"
 git push origin gh-pages
 ----
+
+You will need to add an appropriate user and git api key with repo access as the environment properties GITHUB_USER and GITHUB_API_KEY respectively in the travis build settings.
