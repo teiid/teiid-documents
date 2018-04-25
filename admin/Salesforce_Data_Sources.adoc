@@ -13,7 +13,7 @@ Execute following command using the {{ book.asDocRoot }}/Admin+Guide#AdminGuide-
 ----
 batch
 /subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS:add(jndi-name=java:/sfDS, class-name=org.teiid.resource.adapter.salesforce.SalesForceManagedConnectionFactory, enabled=true, use-java-context=true)
-/subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=URL:add(value=https://www.salesforce.com/services/Soap/u/22.0)
+/subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=URL:add(value=https://login.salesforce.com/services/Soap/u/22.0)
 /subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=username:add(value={user})
 /subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=password:add(value={password})
 /subsystem=resource-adapters/resource-adapter=salesforce:activate
@@ -180,7 +180,7 @@ The CXF config property may also be used to control the logging of requests and 
                 token
             </config-property>
             <config-property name="URL">
-                https://www.salesforce.com/services/Soap/u/34.0
+                https://login.salesforce.com/services/Soap/u/34.0
             </config-property>
             <config-property name="username">
                 name
