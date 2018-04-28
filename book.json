@@ -1,6 +1,6 @@
 {
     "variables" : {
-        "versionNumber" : "10.2",
+        "versionNumber" : "10.3",
         "fullVersionNumber": "11.0.0.Final",
         "asVersionNumber" :  "WildFly 11.0.0",
         "asName" :  "WildFly",

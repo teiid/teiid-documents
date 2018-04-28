@@ -1,9 +1,11 @@
 
 link:./Legal_Notice.adoc[Legal Notice]
 
+== {{ book.versionNumber }} Teiid Documentation
+
 image::cover_small.jpg[Teiid Logo]
 
-== Contribute to Teiid Documentation
+=== Contribute
 
 The documentation project is hosted on GitHub at (https://github.com/teiid/teiid-documents[teiid/teiid-documents]).
 
@@ -25,7 +27,7 @@ Use any text editor to edit the adoc files, http://asciidoctor.org/docs/asciidoc
 
 Once the pull request is committed the published content will be updated automatically.
 
-== Test locally
+=== Test locally
 
 You may need test locally, to make sure the changes are correct, to do this install https://github.com/GitbookIO/gitbook[gitbook], then execute the following commands from the checkout location:
 
@@ -36,7 +38,7 @@ $ gitbook serve -w
 
 Once above commands executes successfully, the http format document can be test locally via `http://localhost:4000/`.
 
-== Generate html/pdf/epub/mobi 
+=== Generate html/pdf/epub/mobi 
 
 You may locally create rendered forms of the documentation. To do this install https://github.com/GitbookIO/gitbook[gitbook] and https://help.gitbook.com/build/ebookconvert.html[ebook-convert], then execute the following commands from the checkout location:
 
@@ -49,7 +51,7 @@ $ gitbook mobi ./ teiid-documents.mobi
 
 Once above commands executes successfully, the `teiid-documents` folder, `teiid-documents.pdf`, `teiid-documents.epub`, and `teiid-documents.mobi` will be generated.
 
-== CI Build
+=== CI Build
 
 The .travis.yaml file allows for continuous integration of doc changes on multiple branches to be published to a single gh-pages branch.  When you setup the travis build job you must create the gh-pages branch if it does not already exist:
 
