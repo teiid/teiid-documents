@@ -1,10 +1,11 @@
 
-= System Properties
+= System Properties and Environment Variables
 :toc: manual
 :toc-placement: preamble
 
 Some of Teiid’s low-level behavior can be configured via system properties, rather than through configuration files. A typical place to set system properties for {{ book.asName }} launches is in the <install>/bin/<mode>.conf. A property setting has the format `-Dproperty=value`.
 
+Note with 10.3 environment variables will be checked for a given key before using the system property.  This allows for Teiid client and server code running in Docker or on OpenShift to more easily have the properties below configured.
 
 == General
 
