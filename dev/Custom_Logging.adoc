@@ -7,7 +7,7 @@ If you want a custom log handler, follow the directions to write a custom _http:
 
 == Command Logging API
 
-If you want to build a custom handler for command logging that will have access to java.util.logging http://docs.oracle.com/javase/6/docs/api/java/util/logging/LogRecord.html[LogRecords] to the "COMMAND_LOG" context, the handler will receive a instance of LogRecord message, this object will contain a parameter of type `org.teiid.logging.CommandLogMessage`. The relevant Teiid classes are defined in the _teiid-api-{{ book.fullVersionNumber }}.jar_. The CommmdLogMessage includes information about vdb, session, command sql, etc. CommandLogMessages are logged at the INFO (user queries), DEBUG (source queries), and TRACE (query plan) levels.
+If you want to build a custom handler for command logging that will have access to java.util.logging http://docs.oracle.com/javase/6/docs/api/java/util/logging/LogRecord.html[LogRecords] to the "COMMAND_LOG" context, the handler will receive a instance of LogRecord message, this object will contain a parameter of type `org.teiid.logging.CommandLogMessage`. The relevant Teiid classes are defined in the _teiid-api-{{ book.fullVersionNumber }}.jar_. The CommmdLogMessage includes information about vdb, session, command sql, etc. CommandLogMessages are logged at the DEBUG (user queries and source queries on the .SOURCE child context), and TRACE (query plan) levels.
 
 [source,java]
 .*Sample CommandLogMessage Usage*

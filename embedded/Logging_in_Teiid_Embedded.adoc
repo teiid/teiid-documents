@@ -6,10 +6,6 @@ Teiid’s LogManager is an interface to a single logging framework that is easil
 * whether that message is to be recorded or discarded
 * where to send any recorded messages
 
-== Command Logging
-
-By default logging of user commands is done at an INFO level to the org.teiid.COMMAND_LOG context.  This may be too verbose for high query volumes, in which case you should change the org.teiid.COMMAND_LOG context to log at a WARN level. 
-
 == JBoss Logging
 
 JBoss Logging is used by default. The JBoss Logging jar is already in the kit and you just need to ensure the jboss-logging library is in your class path. If you use Maven, add the dependency as shown below:
