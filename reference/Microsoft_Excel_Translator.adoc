@@ -135,7 +135,12 @@ NOTE: *"Extended capabilities using ROW_ID column"* - If you define column, that
 
 TIP: User does not have to depend upon "source metadata" import, or Designer tool import to create the schema represented by Excel document, they can manually create a source table and add the appropriate extension properties to make a fully functional model. If you introspect the schema model created by the import, it would look like above.
 
-TIP:Currently Excel translator does not support updates.
+With 10.3+ the Excel translator does support updates with a couple of limitations:
+* The ROW_ID can not be directly modified or used as an insert value.
+* Update and insert values must be literals.
+* Updates are not transactional - the write lock is only held while writing the file and not over the entire update, thus it is possible for one update to overwrite another.
+
+The ROW_ID of an inserted row can be returned as a generated key.
 
 == JCA Resource Adapter
 
