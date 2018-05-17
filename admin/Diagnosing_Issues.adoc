@@ -4,7 +4,7 @@ You may experience situations where you incur performance issues or unexpected r
 
 == General Diagnostic Process
 
-* When there is an issue, start by isolating a problem query as much as possible.  If accessing through ODBC or OData, does a similar issue occur just through JDBC.  In whatever scenario the issue occurs, the particulars matter - what sources, if there is a transaction, load, etc.
+* When there is an issue start by isolating a problem query as much as possible.  OData, REST, and pg/ODBC access are layered on JDBC.  If not accessing through JDBC, does the issue occur when using JDBC?  If not, then the issue is at the transport layer rather than at the engine level.  In whatever scenario the issue occurs, the particulars matter - what sources, if there is a transaction, load, etc.
 * Don't make too many assumptions 
  ** For example memory consumption can be heavily dependent upon drivers, and a resulting out of memory issue may only be indirectly related to Teiid
 * Start with the query plan - especially with performance issues
