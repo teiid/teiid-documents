@@ -132,5 +132,9 @@ When specifying an importer property, it must be prefixed with "importer.". Exam
 |renameAllDuplicates
 |If true rename all duplicate tables, columns, procedures, and parameters caused by mixed case collisions.  A suffix _n where n is an integer will be added to make the name unique.  Supersedes the individual rename duplicate options.
 |false
+
+|nameFormat
+|Set to a Java string format to modify table and procedure names on import.  The only argument will be the original name Teiid name.  For example use prod_%s to prefix all names with prod_.
+|
 |===
 
