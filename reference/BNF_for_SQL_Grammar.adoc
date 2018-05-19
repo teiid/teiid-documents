@@ -24,7 +24,7 @@
 |<<aggregateSymbol,standard aggregate function>>, <<function,function>>, <<grantOption,Create GRANT>>, <<queryExpressionBody,query expression body>>, <<queryTerm,query term>>, <<revokeGrantOption,Revoke GRANT>>, <<select,select clause>>, <<subqueryCompareCriteria,quantified comparison predicate>>
 
 |[[token_ALTER]]_ALTER_
-|<<alter,alter>>, <<alterColumn,alter column options>>, <<alterStatement,alterStatement>>, <<readGrantTypes,grant type>>
+|<<alter,alter>>, <<alterProcedure,ALTER PROCEDURE >>, <<alterStatement,alterStatement>>, <<alterTable,ALTER TABLE >>, <<readGrantTypes,grant type>>
 
 |[[token_AND]]_AND_
 |<<betweenCrit,between predicate>>, <<compoundCritAnd,boolean term>>
@@ -99,7 +99,7 @@
 |<<parseDataTypePrimary,simple data type>>, <<xmlSerialize,xml serialize>>
 
 |[[token_COLUMN]]_COLUMN_
-|<<alterAddColumn,ADD column>>, <<alterColumn,alter column options>>, <<alterDropColumn,DROP column>>, <<alterRenameColumn,rename column options>>, <<grantOption,Create GRANT>>, <<revokeGrantOption,Revoke GRANT>>
+|<<alterAddColumn,ADD column>>, <<alterDropColumn,DROP column>>, <<alterTable,ALTER TABLE >>, <<grantOption,Create GRANT>>, <<revokeGrantOption,Revoke GRANT>>
 
 |[[token_COMMIT]]_COMMIT_
 |<<createTempTable,create temporary table>>
@@ -198,7 +198,7 @@
 |<<forEachRowTriggerAction,for each row trigger action>>, <<function,function>>, <<textAgg,text aggreate function>>, <<textColumn,text table column>>, <<xmlColumn,xml table column>>
 
 |[[token_FOREIGN]]_FOREIGN_
-|<<alterStatement,alterStatement>>, <<createDDLProcedure,create procedure>>, <<createDataWrapper,create data wrapper>>, <<createForeignTempTable,create foreign temp table>>, <<createServer,create server, aka data source>>, <<createTable,create table>>, <<dropDataWrapper,Drop data wrapper>>, <<dropProcedure,drop procedure>>, <<dropTableView,drop table>>, <<foreignKey,foreign key>>, <<importSchema,Import foreign schema>>
+|<<alterProcedure,ALTER PROCEDURE >>, <<alterTable,ALTER TABLE >>, <<createDDLProcedure,create procedure>>, <<createDataWrapper,create data wrapper>>, <<createForeignTempTable,create foreign temp table>>, <<createSchema,create schema>>, <<createServer,create server, aka data source>>, <<createTable,create table>>, <<dropDataWrapper,Drop data wrapper>>, <<dropProcedure,drop procedure>>, <<dropSchema,drop schema>>, <<dropTableView,drop table>>, <<foreignKey,foreign key>>, <<importSchema,Import foreign schema>>
 
 |[[token_FROM]]_FROM_
 |<<delete,delete statement>>, <<from,from clause>>, <<function,function>>, <<importSchema,Import foreign schema>>, <<isDistinct,IS Distinct>>, <<revokeGrantOption,Revoke GRANT>>
@@ -360,7 +360,7 @@
 |<<windowSpecification,window specification>>
 
 |[[token_PARAMETER]]_PARAMETER_
-|<<alterColumn,alter column options>>, <<alterRenameColumn,rename column options>>
+|<<alterProcedure,ALTER PROCEDURE >>
 
 |[[token_PARTITION]]_PARTITION_
 |<<windowSpecification,window specification>>
@@ -495,7 +495,7 @@
 |<<parseDataTypePrimary,simple data type>>, <<xmlSerialize,xml serialize>>
 
 |[[token_VIRTUAL]]_VIRTUAL_
-|<<alterStatement,alterStatement>>, <<createDDLProcedure,create procedure>>, <<createSchema,create schema>>, <<createTable,create table>>, <<dropProcedure,drop procedure>>, <<dropSchema,drop schema>>, <<dropTableView,drop table>>, <<procedureBodyCommand,procedure body definition>>
+|<<alterProcedure,ALTER PROCEDURE >>, <<alterTable,ALTER TABLE >>, <<createDDLProcedure,create procedure>>, <<createSchema,create schema>>, <<createTable,create table>>, <<dropProcedure,drop procedure>>, <<dropSchema,drop schema>>, <<dropTableView,drop table>>, <<procedureBodyCommand,procedure body definition>>
 
 |[[token_WHEN]]_WHEN_
 |<<caseExpression,case expression>>, <<searchedCaseExpression,searched case expression>>
@@ -1343,7 +1343,7 @@
 |<<query,query>>
 
 |[[usage_id]]_<<id, identifier>>_
-|<<alter,alter>>, <<alterChildOptionPair,alter child option pair>>, <<alterColumn,alter column options>>, <<alterDatabase,ALTER DATABASE >>, <<alterDropColumn,DROP column>>, <<alterOptionPair,alter option pair>>, <<alterProcedure,ALTER PROCEDURE >>, <<alterRenameColumn,rename column options>>, <<alterRenameTable,RENAME Table>>, <<alterServer,ALTER SERVER >>, <<alterTable,ALTER TABLE >>, <<alterTranslator,ALTER DATA WRAPPER >>, <<alterTrigger,ALTER TRIGGER >>, <<arrayTable,array table>>, <<assignStatement,assignment statement>>, <<branchingStatement,branching statement>>, <<callableStatement,callable statement>>, <<columnList,column list>>, <<compoundStatement,compound statement>>, <<createColumn,table element>>, <<createDataWrapper,create data wrapper>>, <<createDatabase,create database>>, <<createElementsWithTypes,typed element list>>, <<createForeignTempTable,create foreign temp table>>, <<createNameSpace,option namespace>>, <<createSchema,create schema>>, <<createTableBody,create table body>>, <<createTempTable,create temporary table>>, <<createTrigger,create trigger>>, <<declareStatement,declare statement>>, <<delete,delete statement>>, <<derivedColumn,derived column>>, <<dropChildOption,drop option>>, <<dropDataWrapper,Drop data wrapper>>, <<dropOption,drop option>>, <<dropProcedure,drop procedure>>, <<dropRole,drop role >>, <<dropSchema,drop schema>>, <<dropServer,drop server, aka data source>>, <<dropTable,drop table>>, <<dynamicCommand,dynamic data statement>>, <<exceptionReference,exception reference>>, <<executeNamedParams,named parameter list>>, <<foreignKey,foreign key>>, <<function,function>>, <<grantOption,Create GRANT>>, <<importDatabase,Import another Database>>, <<importSchema,Import foreign schema>>, <<insert,insert statement>>, <<into,into clause>>, <<loopStatement,loop statement>>, <<namespaceItem,xml namespace element>>, <<objectColumn,object table column>>, <<objectTable,object table>>, <<option,option clause>>, <<optionPair,option pair>>, <<procedureParameter,procedure parameter>>, <<procedureRsColumn,procedure result column>>, <<queryPrimary,query primary>>, <<readCSVString,identifier list>>, <<revokeGrantOption,Revoke GRANT>>, <<selectExpression,select derived column>>, <<setClauseList,set clause list>>, <<statement,statement>>, <<storedProcedure,call statement>>, <<subqueryFromClause,table subquery>>, <<tableElement,temporary table element>>, <<textAgg,text aggreate function>>, <<textColumn,text table column>>, <<textTable,text table>>, <<unaryFromClause,table name>>, <<update,update statement>>, <<useDatabase,use database>>, <<useSchema,use schema>>, <<withListElement,with list element>>, <<xmlColumn,xml table column>>, <<xmlElement,xml element>>, <<xmlSerialize,xml serialize>>, <<xmlTable,xml table>>
+|<<alter,alter>>, <<alterChildOptionPair,alter child option pair>>, <<alterColumn,alter column options>>, <<alterDatabase,ALTER DATABASE >>, <<alterDropColumn,DROP column>>, <<alterOptionPair,alter option pair>>, <<alterProcedure,ALTER PROCEDURE >>, <<alterRenameColumn,rename column options>>, <<alterRenameTable,RENAME Table>>, <<alterServer,ALTER SERVER >>, <<alterTable,ALTER TABLE >>, <<alterTranslator,ALTER DATA WRAPPER >>, <<alterTrigger,ALTER TRIGGER >>, <<arrayTable,array table>>, <<assignStatement,assignment statement>>, <<branchingStatement,branching statement>>, <<callableStatement,callable statement>>, <<columnList,column list>>, <<compoundStatement,compound statement>>, <<createColumn,table element>>, <<createDataWrapper,create data wrapper>>, <<createDatabase,create database>>, <<createElementsWithTypes,typed element list>>, <<createForeignTempTable,create foreign temp table>>, <<createNameSpace,option namespace>>, <<createSchema,create schema>>, <<createTableBody,create table body>>, <<createTempTable,create temporary table>>, <<createTrigger,create trigger>>, <<declareStatement,declare statement>>, <<delete,delete statement>>, <<derivedColumn,derived column>>, <<dropChildOption,drop option>>, <<dropDataWrapper,Drop data wrapper>>, <<dropOption,drop option>>, <<dropProcedure,drop procedure>>, <<dropRole,drop role >>, <<dropSchema,drop schema>>, <<dropServer,drop server, aka data source>>, <<dropTable,drop table>>, <<dropTableView,drop table>>, <<dynamicCommand,dynamic data statement>>, <<exceptionReference,exception reference>>, <<executeNamedParams,named parameter list>>, <<foreignKey,foreign key>>, <<function,function>>, <<grantOption,Create GRANT>>, <<importDatabase,Import another Database>>, <<importSchema,Import foreign schema>>, <<insert,insert statement>>, <<into,into clause>>, <<loopStatement,loop statement>>, <<namespaceItem,xml namespace element>>, <<objectColumn,object table column>>, <<objectTable,object table>>, <<option,option clause>>, <<optionPair,option pair>>, <<procedureParameter,procedure parameter>>, <<procedureRsColumn,procedure result column>>, <<queryPrimary,query primary>>, <<readCSVString,identifier list>>, <<revokeGrantOption,Revoke GRANT>>, <<selectExpression,select derived column>>, <<setClauseList,set clause list>>, <<statement,statement>>, <<storedProcedure,call statement>>, <<subqueryFromClause,table subquery>>, <<tableElement,temporary table element>>, <<textAgg,text aggreate function>>, <<textColumn,text table column>>, <<textTable,text table>>, <<unaryFromClause,table name>>, <<update,update statement>>, <<useDatabase,use database>>, <<useSchema,use schema>>, <<withListElement,with list element>>, <<xmlColumn,xml table column>>, <<xmlElement,xml element>>, <<xmlSerialize,xml serialize>>, <<xmlTable,xml table>>
 
 |[[usage_ifStatement]]_<<ifStatement, if statement>>_
 |<<statement,statement>>
@@ -1577,7 +1577,7 @@
 |<<unsignedValueExpressionPrimary,unsigned value expression primary>>
 
 |[[usage_unqualifiedId]]_<<unqualifiedId, Unqualified identifier>>_
-|<<createDDLProcedure,create procedure>>, <<createDataWrapper,create data wrapper>>, <<createRole,create role >>, <<createServer,create server, aka data source>>, <<createTable,create table>>, <<dropTableView,drop table>>
+|<<createDDLProcedure,create procedure>>, <<createDataWrapper,create data wrapper>>, <<createRole,create role >>, <<createServer,create server, aka data source>>, <<createTable,create table>>
 
 |[[usage_unsignedNumericLiteral]]_<<unsignedNumericLiteral, unsigned numeric literal>>_
 |<<alterChildOptionPair,alter child option pair>>, <<alterOptionPair,alter option pair>>, <<optionPair,option pair>>, <<valueExpressionPrimary,value expression primary>>
@@ -4572,7 +4572,7 @@ USE DATABASE foo [VERSION 'version']
 
 === [[createSchema]]_<<usage_createSchema, create schema>>_ ::= 
 
-* <<token_CREATE,CREATE>> ( <<token_VIRTUAL,VIRTUAL>> )? <<token_SCHEMA,SCHEMA>> <<<id,identifier>>> ( <<token_SERVER,SERVER>> <<<readCSVString,identifier list>>> )? ( <<<optionsClause,options clause>>> )?
+* <<token_CREATE,CREATE>> ( <<token_VIRTUAL,VIRTUAL>> | <<token_FOREIGN,FOREIGN>> )? <<token_SCHEMA,SCHEMA>> <<<id,identifier>>> ( <<token_SERVER,SERVER>> <<<readCSVString,identifier list>>> )? ( <<<optionsClause,options clause>>> )?
 
 
 create a schema in database
@@ -4590,7 +4590,7 @@ CREATE [VIRTUAL] SCHEMA foo SERVER (s1,s2,s3) OPTIONS(...)
 
 === [[dropSchema]]_<<usage_dropSchema, drop schema>>_ ::= 
 
-* <<token_DROP,DROP>> ( <<token_VIRTUAL,VIRTUAL>> )? <<token_SCHEMA,SCHEMA>> <<<id,identifier>>>
+* <<token_DROP,DROP>> ( <<token_VIRTUAL,VIRTUAL>> | <<token_FOREIGN,FOREIGN>> )? <<token_SCHEMA,SCHEMA>> <<<id,identifier>>>
 
 
 drop a schema in database
@@ -4883,7 +4883,7 @@ CREATE VIEW vw AS SELECT 1
 
 === [[dropTableView]]_<<usage_dropTableView, drop table>>_ ::= 
 
-* <<token_DROP,DROP>> ( ( <<token_FOREIGN,FOREIGN>> <<token_TABLE,TABLE>> ) | ( ( <<token_VIRTUAL,VIRTUAL>> )? <<token_VIEW,VIEW>> ) | ( <<token_GLOBAL,GLOBAL>> <<token_TEMPORARY,TEMPORARY>> <<token_TABLE,TABLE>> ) ) <<<unqualifiedId,Unqualified identifier>>>
+* <<token_DROP,DROP>> ( ( <<token_FOREIGN,FOREIGN>> <<token_TABLE,TABLE>> ) | ( ( <<token_VIRTUAL,VIRTUAL>> )? <<token_VIEW,VIEW>> ) | ( <<token_GLOBAL,GLOBAL>> <<token_TEMPORARY,TEMPORARY>> <<token_TABLE,TABLE>> ) ) <<<id,identifier>>>
 
 
 Drops a table or view.
@@ -5083,16 +5083,14 @@ Example:
 
 === [[alterStatement]]_<<usage_alterStatement, alterStatement>>_ ::= 
 
-* <<token_ALTER,ALTER>> ( <<token_VIRTUAL,VIRTUAL>> | <<token_FOREIGN,FOREIGN>> )? ( <<<alterTable,ALTER TABLE >>> | <<<alterProcedure,ALTER PROCEDURE >>> | <<<alterTrigger,ALTER TRIGGER >>> | <<<alterServer,ALTER SERVER >>> | <<<alterTranslator,ALTER DATA WRAPPER >>> | <<<alterDatabase,ALTER DATABASE >>> )
+* <<token_ALTER,ALTER>> ( <<<alterTable,ALTER TABLE >>> | <<<alterProcedure,ALTER PROCEDURE >>> | <<<alterTrigger,ALTER TRIGGER >>> | <<<alterServer,ALTER SERVER >>> | <<<alterTranslator,ALTER DATA WRAPPER >>> | <<<alterDatabase,ALTER DATABASE >>> )
 
 '''
 
 
 === [[alterTable]]_<<usage_alterTable, ALTER TABLE >>_ ::= 
 
-* ( <<token_VIEW,VIEW>> <<<id,identifier>>> ( <<token_AS,AS>> <<<queryExpression,query expression>>> ( <<<alterOptionsList,alter options list>>> | <<<alterColumn,alter column options>>> )? | <<token_RENAME,RENAME>> <<<alterRenameTable,RENAME Table>>> ) )
-
-* ( <<token_TABLE,TABLE>> <<<id,identifier>>> ( <<<alterOptionsList,alter options list>>> | <<<alterAddColumn,ADD column>>> | <<<alterDropColumn,DROP column>>> | <<<alterColumn,alter column options>>> | <<token_RENAME,RENAME>> ( <<<alterRenameTable,RENAME Table>>> | <<<alterRenameColumn,rename column options>>> ) )? )
+* ( ( ( <<token_VIRTUAL,VIRTUAL>> )? <<token_VIEW,VIEW>> <<<id,identifier>>> ) | ( ( <<token_FOREIGN,FOREIGN>> )? <<token_TABLE,TABLE>> <<<id,identifier>>> ) ) ( ( <<token_AS,AS>> <<<queryExpression,query expression>>> ) | <<<alterOptionsList,alter options list>>> | <<<alterAddColumn,ADD column>>> | <<<alterDropColumn,DROP column>>> | ( <<token_ALTER,ALTER>> <<token_COLUMN,COLUMN>> <<<alterColumn,alter column options>>> ) | ( <<token_RENAME,RENAME>> ( <<<alterRenameTable,RENAME Table>>> | ( <<token_COLUMN,COLUMN>> <<<alterRenameColumn,rename column options>>> ) ) ) )
 
 
 alters options of database
@@ -5163,7 +5161,7 @@ Example:
 
 === [[alterColumn]]_<<usage_alterColumn, alter column options>>_ ::= 
 
-* <<token_ALTER,ALTER>> ( <<token_COLUMN,COLUMN>> | <<token_PARAMETER,PARAMETER>> ) <<<id,identifier>>> ( <<token_TYPE,TYPE>> ( <<token_SERIAL,SERIAL>> | ( <<<parseDataType,data type>>> ( <<token_NOT,NOT>> <<token_NULL,NULL>> )? ( <<token_AUTO_INCREMENT,AUTO_INCREMENT>> )? ) ) | <<<alterChildOptionsList,alter child options list>>> )
+* <<<id,identifier>>> ( ( <<token_TYPE,TYPE>> ( <<token_SERIAL,SERIAL>> | ( <<<parseDataType,data type>>> ( <<token_NOT,NOT>> <<token_NULL,NULL>> )? ( <<token_AUTO_INCREMENT,AUTO_INCREMENT>> )? ) ) ) | <<<alterChildOptionsList,alter child options list>>> )
 
 
 alters a set of column options
@@ -5181,7 +5179,7 @@ ALTER COLUMN bar OPTIONS (ADD updatable true)
 
 === [[alterRenameColumn]]_<<usage_alterRenameColumn, rename column options>>_ ::= 
 
-* ( <<token_COLUMN,COLUMN>> | <<token_PARAMETER,PARAMETER>> ) <<<id,identifier>>> <<token_TO,TO>> <<<id,identifier>>>
+* <<<id,identifier>>> <<token_TO,TO>> <<<id,identifier>>>
 
 
 renames either a table column or procedure's parameter name
@@ -5199,7 +5197,7 @@ RENAME COLUMN bar TO foo
 
 === [[alterProcedure]]_<<usage_alterProcedure, ALTER PROCEDURE >>_ ::= 
 
-* <<token_PROCEDURE,PROCEDURE>> <<<id,identifier>>> ( <<token_AS,AS>> <<<statement,statement>>> )? ( <<<alterOptionsList,alter options list>>> | <<<alterColumn,alter column options>>> | <<token_RENAME,RENAME>> <<<alterRenameColumn,rename column options>>> )?
+* ( <<token_VIRTUAL,VIRTUAL>> | <<token_FOREIGN,FOREIGN>> )? <<token_PROCEDURE,PROCEDURE>> <<<id,identifier>>> ( ( <<token_AS,AS>> <<<statement,statement>>> ) | <<<alterOptionsList,alter options list>>> | ( <<token_ALTER,ALTER>> <<token_PARAMETER,PARAMETER>> <<<alterColumn,alter column options>>> ) | ( <<token_RENAME,RENAME>> <<token_PARAMETER,PARAMETER>> <<<alterRenameColumn,rename column options>>> ) )
 
 
 alters options of database
