@@ -33,9 +33,9 @@ TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalon
 
 |EndPoint
 |HTTP & SOAP
-|true
+|false
 |n/a
-|URL for HTTP, Service Endpoint for SOAP
+|URL for HTTP, Service Endpoint for SOAP.  Not required if using HTTP invoke procedures that specify absolute URLs. Will be used as the base URL if an invoke procedure uses a relative URL.
 
 |SecurityType
 |HTTP & SOAP
