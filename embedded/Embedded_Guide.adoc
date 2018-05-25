@@ -40,7 +40,7 @@ Some of the Teiid transitive dependencies have known vulnerabilities. WildFly/Te
 ----
 ==== Dependencies
 
-If you are trying run Teidd Embedded as a Maven based project, the `runtime`, `admin`, `connector`, `translator` dependencies necessary are
+If you are trying run Teiid Embedded as a Maven based project, the `runtime`, `admin`, `connector`, `translator` dependencies necessary are
 
 [source,xml]
 ----
