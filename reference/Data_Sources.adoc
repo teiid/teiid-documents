@@ -26,6 +26,7 @@ See link:JDBC_Translators.adoc[JDBC Translators] for access to:
 * link:MetaMatrix_Translator.adoc[MetaMatrix]
 * link:Teradata_Translator.adoc[Teradata]
 * link:Vertica_Translator.adoc[Vertica]
+* link:Exasol_Translator.adoc[Exasol]
 * link:JDBC_ANSI_Translator.adoc[Generic ANSI SQL] - for typical JDBC/ODBC sources
 * link:JDBC_Simple_Translator.adoc[Simple SQL] - for any JDBC/ODBC source
 

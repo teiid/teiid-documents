@@ -243,6 +243,7 @@
 .... link:reference/Cloudera_Impala_Translator.adoc[Cloudera Impala Translator]
 .... link:reference/DB2_Translator.adoc[DB2 Translator]
 .... link:reference/Derby_Translator.adoc[Derby Translator]
+.... link:reference/Exasol_Translator.adoc[Exasol Translator]
 .... link:reference/Greenplum_Translator.adoc[Greenplum Translator]
 .... link:reference/H2_Translator.adoc[H2 Translator]
 .... link:reference/Hive_Translator.adoc[Hive Translator]
