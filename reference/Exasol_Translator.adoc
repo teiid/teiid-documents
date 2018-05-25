@@ -1,0 +1,14 @@
+
+= Exasol Translator (exasol)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The Exasol translator, known by the type name *_exasol_*, is for use with Exasol version 6 or later.
+
+== Usage
+
+The Exasol database has the NULL HIGH default ordering, whereas the Teiid engine works in the NULL LOW mode,
+which means that depending on whether the ordering is pushed down to Exasol or done by the engine, you
+may observe NULLs either at the beginning or at the end of returned results. If you need consistency,
+you can run Teiid with org.teiid.pushdownDefaultNullOrder=true and
+enforce the NULL LOW ordering (may impact performance).
