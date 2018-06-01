@@ -52,6 +52,16 @@ The pseudo column is by default not present in your actual metadata; it is not a
 * With either VDB type to make the multisource column present in the system metadata, you may set the model property *multisource.addColumn* to true on a multisource model. If the table has a column or the procedure has a parameter already with a matching name, then an additional column will not be added. A variadic procedure can still have a source parameter added, but it can only be specified when using named parameters. Care should be taken though when using this property in Designer as any transformation logic (views/procedures) that you have defined will not have been aware of the multisource column and may fail validation upon server deployment.
 * If using Designer, you can manually add the multisource column. 
 
+=== Other Partitioning Columns
+
+If other columns on a multisource table are partitioned across the sources, the optimizer can be made aware via an extension property.  Operations over that column, such as group by or distinct, can then be pushed separately to each source without post-processing in the engine.  If you need to enable this, add the extension metadata property teiid_rel:multisource.partitioned=true to the column.
+
+[source,sql]
+.*Example DDL*
+----
+CREATE FOREIGN TABLE TBL (my_col integer options ("teiid_rel:multisource.partitoned" true) ...);
+----
+
 == Planning and Execution
 
 The planner logically treats a multisource table as if it were a view containing the union all of the respective source tables.  More complex partitioning scenarios, such as heterogeneous sources or list partitioning will require the use of a link:Federated_Optimizations.adoc#_partitioned_union[Federated Optimizations#Partitioned Union].
