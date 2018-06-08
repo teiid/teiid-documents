@@ -17,7 +17,7 @@ _Syntax Rules:_
 
 NOTE: When a table specification contains a dot resolving will allow for the match of a partial name against any number of the end segments in the name. e.g. a table with the fully-qualified name vdbname."sourcescema.sourcetable" would match the partial name sourcetable.
 
-* Columns, schemas, and aliases identifiers cannot contain a dot.
+* Columns, column aliases, and schemas cannot contain a dot '.' character.
 * Identifiers, even when quoted, are not case-sensitive in Teiid.
 
 Some examples of valid fully-qualified table identifiers are:
@@ -33,6 +33,8 @@ Some examples of valid fully-qualified column identifiers are:
 * MySchema.MyCatalog.dbo.Authors.lastName
 
 Fully-qualified identifiers can always be used in SQL commands. Partially- or unqualified forms can also be used, as long as the resulting names are unambiguous in the context of the command. Different forms of qualification can be mixed in the same query.
+
+If you use an alias containing a '.' character, it is a known issue that the alias name will be treated the same as a qualified name and may conflict with fully qualified object names.
 
 == Reserved Words
 
