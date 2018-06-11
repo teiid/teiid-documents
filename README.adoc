@@ -7,7 +7,9 @@ image::cover_small.jpg[Teiid Logo]
 
 === Contribute
 
-The documentation project is hosted on GitHub at (https://github.com/teiid/teiid-documents[teiid/teiid-documents]).
+The documentation project is hosted on GitHub at (https://github.com/teiid/teiid-documents[teiid/teiid-documents]). 
+
+It is published on GitHub Pages at (http://teiid.github.io/teiid-documents/master/content[teiid.github.io/teiid-documents/master/content]) ('master' can be substituted with any maintained branch e.g. '10.3.x'). 
 
 For simple changes you can just use the online editing capabilities of GitHub by navigating to the appropriate source file and selecting fork/edit.
 
