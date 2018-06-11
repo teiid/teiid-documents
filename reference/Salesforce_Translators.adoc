@@ -7,7 +7,7 @@ The Salesforce translator supports the SELECT, DELETE, INSERT, UPSERT, and UPDAT
 
 === salesforce
 
-The translator, known by the type name *_salesforce_*, provides Salesforce API 22.0 support. The translator must be used with the corresponding Salesforce resource adapter of the same API version. Salesforce API version 22.0 support has been deprecated.
+The translator, known by the type name *_salesforce_*, provides Salesforce API 34.0 support. The translator must be used with the corresponding Salesforce resource adapter of the same API version. Salesforce API version 34.0 support has been removed.
 
 === salesforce-34
 
@@ -296,7 +296,7 @@ Where salesforce is the source name of the target source.
 
 The default chunk size of 100,000 records will be used. 
 
-Note: this feature is only supported by Salsforce API equal to greater than 28, since the default "salesforce" translator uses version 22 of API, it recommended to use "salesforce-34" version of the translator to use this feature.
+Note: this feature is only supported by Salsforce API equal to greater than 28.
 
 == Supported Capabilities
 

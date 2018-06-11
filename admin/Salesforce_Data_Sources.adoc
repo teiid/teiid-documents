@@ -1,7 +1,7 @@
 
 = Salesforce Data Sources
 
-Salesforce data sources use a Teiid specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. There are three versions of the salesforce resource adapter - salesforce, which currently provides connectivity to the 22.0 Salesforce API, salesforce-34, which provides connectivity to the 34.0 Salesforce API, and salesforce-41. The version 22.0 support has been deprecated.
+Salesforce data sources use a Teiid specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. There are three versions of the salesforce resource adapter - salesforce, which currently provides connectivity to the 34.0 Salesforce API, salesforce-34, which provides connectivity to the 34.0 Salesforce API, and salesforce-41. The version 22.0 support has been removed.
 
 NOTE: If you need connectivity to an API version other than what is built in, you may try to use an existing connectivity pair, but in some circumstances - especially accessing a later remote api from an older java api - this is not possible and results in what appears to be hung connections.  Please raise an issue if you cannot successfully access a specific API version.
 
@@ -13,7 +13,7 @@ Execute following command using the {{ book.asDocRoot }}/Admin+Guide#AdminGuide-
 ----
 batch
 /subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS:add(jndi-name=java:/sfDS, class-name=org.teiid.resource.adapter.salesforce.SalesForceManagedConnectionFactory, enabled=true, use-java-context=true)
-/subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=URL:add(value=https://login.salesforce.com/services/Soap/u/22.0)
+/subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=URL:add(value=https://login.salesforce.com/services/Soap/u/34.0)
 /subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=username:add(value={user})
 /subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=password:add(value={password})
 /subsystem=resource-adapters/resource-adapter=salesforce:activate

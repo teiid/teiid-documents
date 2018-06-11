@@ -17,5 +17,7 @@ The default max buffer space on disk for embedded, Spring, and Thorntail environ
 
 Function model support has been completely removed as it had been deprecated in Teiid Designer for some time.  Those models should be removed and the functions moved to other physical or virtual models. 
 
+The salesforce translator and resource adapter now provide access to the 34.0 version of the Salesforce API.  You may need to re-import your salesforce source metadata to ensure compatibility.
+
 == Kitting/Build Changes
 
