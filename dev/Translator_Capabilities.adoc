@@ -295,6 +295,10 @@ The following table lists the capabilities that can be specified in the `Executi
 |CommonTableExpressions
 |Translator supports a WITH clause in subqueries.
 
+|RecursiveCommonTableExpressions
+|CommonTableExpressions
+|Translator supports recursive common table expressions
+
 |ElementaryOlapOperations
 |
 |Translator supports window functions and analytic functions RANK, DENSE_RANK, and ROW_NUMBER.
