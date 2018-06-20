@@ -7,7 +7,9 @@ VDB Versioning is a feature that allows multiple versions of a VDB to be deploye
 
 When a user connects to Teiid the desired VDB version can be set as a connection property (See the link:../client-dev/Client_Developers_Guide.adoc[Client Developer’s Guide]) in JDBC or used as part of the VDB name for OData and ODBC access.
 
-The vdb version is set in either the vdb.xml, which is useful for an xml file deployment, or through a naming convention of the deployment name - vdbname.version.vdb, e.g. marketdata.2.vdb. The deployer is responsible for choosing an appropriate version number. If there is already a VDB name/version that matches the current deployment, then connections to the previous VDB will be terminated and its cache entries will be flushed. Any new connections will then be made to the new VDB.
+The vdb version is set in either the vdb.xxx or through a naming convention of the deployment name - vdbname.version.vdb, e.g. marketdata.2.vdb. The deployer is responsible for choosing an appropriate version number. If there is already a VDB name/version that matches the current deployment, then connections to the previous VDB will be terminated and its cache entries will be flushed. Any new connections will then be made to the new VDB.
+
+NOTE: When setting the version in the vdb.xml or ddl file a unique deployment name must still be used as that is the name the application server internally uses for the deployment.  Using the same deployment name as a previous version will simply overwrite the older deployment.
 
 A simple integer version actually treated as the semantic version X.0.0.  If desired a full semantic version can be used instead. A semantic version is up to three integers separated by periods.
 
