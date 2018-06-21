@@ -10,6 +10,10 @@ Usage:
 LIMIT [offset,] limit
 ----
 
+----
+LIMIT limit OFFSET offset
+----
+
 [source,sql]
 ----
 [OFFSET offset ROW|ROWS] [FETCH FIRST|NEXT [limit] ROW|ROWS ONLY]

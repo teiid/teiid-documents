@@ -48,11 +48,11 @@ Unless specified, all of the arguments and return types in the following table a
 |Get left y characters of x
 |x in {string}, y in {integer}, return string
 
-|LENGTH(x)
+|LENGTH(x) CHAR_LENGTH(x) CHARACTER_LENGTH(x)
 |Length of x
 |return type is integer
 
-|LOCATE(x, y)
+|LOCATE(x, y) POSITION(x IN y)
 |Find position of x in y starting at beginning of y
 |x in {string}, y in {string}, return integer
 

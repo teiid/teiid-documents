@@ -8,7 +8,7 @@ Parse and format Date/Time functions use the convention established within the j
 |===
 |Function |Definition |Datatype Constraint
 
-|CURDATE() CURRENT_DATE()
+|CURDATE() CURRENT_DATE[()]
 |Return current date - will return the same value for all invocations in the user command
 |returns date
 
