@@ -869,7 +869,7 @@ If client logic expects actual values, such as integration with link:../client-d
 
 === SYS.getXMLSchemas
 
-Returns a resultset with a single column, schema, containing the schemas as xml.
+DEPRECATED: Returns a resultset with a single column, schema, containing the schemas as xml.
 
 [source,sql]
 ----
