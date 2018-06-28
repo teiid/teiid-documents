@@ -29,12 +29,28 @@ You can also obtain the Teiid JDBC from the JBoss Public Maven Repository http:/
 </dependency>
 ----
 
-Against 
-
-Main classes in the client JAR:
+Important classes in the client JAR:
 
 * `org.teiid.jdbc.TeiidDriver`- allows JDBC connections using the {{ book.javaVersionUrl }}/docs/api/java/sql/DriverManager.html[DriverManager] class.
 * `org.teiid.jdbc.TeiidDatasource`- allows JDBC connections using the {{ book.javaVersionUrl }}/docs/api/javax/sql/DataSource.html[DataSource] {{ book.javaVersionUrl }}/docs/api/javax/sql/XADataSource.html[XADataSource] class. You should use this class to create managed or XA connections.
 
 Once you have established a connection with the Teiid Server, you can use standard JDBC API classes to interrogate metadata and execute queries.
 
+== OpenTracing Support
+
+http://opentracing.io/[OpenTracing] support is optional for the client driver.  For remote connections to propagate the span the driver must have the appropriate OpenTracing jars in its classpath.  This can be done via a maven dependency:
+
+[source,xml]
+----
+<dependency>
+    <groupId>io.opentracing</groupId>
+    <artifactId>opentracing-util</artifactId>
+    <version>${version.opentracing}</version>
+</dependency>
+----
+
+where version.opentracing (0.31 for Teiid 11.0) is defined in the project integration bom.  
+
+Or you may manually include the opentracing-util, opentracing-api, and opentracing-noop jars as needed by the tooling or other environment where the Teiid client jar is utilized.
+
+OpenTracing support in the client and server requires that the respective runtimes have an appropriate tracing client installed and available via the GlobalTracer.

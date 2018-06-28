@@ -149,6 +149,10 @@ WARNING: Strings are always fully held in memory. Do not set this value too high
 |If _x escaping should be used for invalid characters in SQL/XML names.  Set to false to use the older behavior of an _u escape.
 |true
 
+|_org.teiid.tracingWithActiveSpanOnly_
+|Set to false to always generate OpenTracing information even if no Span is active.
+|true
+
 |===
 
 
