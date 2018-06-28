@@ -36,6 +36,10 @@ You may create a delegating translator by extending the  `org.teiid.translator.
 |===
 |Name |Description |Default
 |delegateName |Translator instance name to delegate to|n/a
+
+|cachePattern|Regex pattern of queries that should be cached using the translator caching API|n/a
+
+|cacheTtl|Time to live in milliseconds for queries matching the cache pattern|n/a
 |===
  
 

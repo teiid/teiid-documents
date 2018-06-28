@@ -1,7 +1,7 @@
 
 = Delegating Translator
 
-In some instances you may wish to extend several differnt kinds of translators with the same functionality. Rather than create separate subclasses for each extension, you can use the delegating translator framework which provides you with a proxying mechanism to override translator behavior. It implement a delegating translator, your common translator logic should be added to a subclass of BaseDelegatingExecutionFactory where you can override any of the delegation methods to perform whatever logic you want.
+In some instances you may wish to extend several different kinds of translators with the same functionality. Rather than create separate subclasses for each extension, you can use the delegating translator framework which provides you with a proxying mechanism to override translator behavior. It implement a delegating translator, your common translator logic should be added to a subclass of BaseDelegatingExecutionFactory where you can override any of the delegation methods to perform whatever logic you want.
 
 [source,java]
 .*Example BaseDelegatingExecutionFactory Subclass*
