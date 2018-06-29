@@ -57,7 +57,7 @@ This table supplies information about how views / procedures are defined.
 
 Every column, parameter, table, or procedure referenced in a procedure or view definition will be shown as used.  
 Likewise every column, parameter, table, or procedure referenced in the expression that defines a view column will be shown as used by that column.
-No dependency information is yet shown for procedure result set columns.
+No dependency information is yet shown for procedure parameters.  Column level dependencies are not yet inferred through intervening temporary or common tables. 
 
 [source,sql]
 .*Example SYSADMIN.Usage*
