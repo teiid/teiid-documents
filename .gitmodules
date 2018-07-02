@@ -34,3 +34,7 @@
 	path = 10.3.x
 	url = https://github.com/teiid/teiid-documents
 	branch = 10.3.x-gh-pages
+[submodule "11.0.x"]
+	path = 11.0.x
+	url = https://github.com/teiid/teiid-documents
+	branch = 11.0.x-gh-pages
