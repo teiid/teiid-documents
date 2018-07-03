@@ -147,7 +147,7 @@
 |<<sortSpecification,sort specification>>
 
 |[[token_DISTINCT]]_DISTINCT_
-|<<aggregateSymbol,standard aggregate function>>, <<function,function>>, <<isDistinct,IS Distinct>>, <<queryExpressionBody,query expression body>>, <<queryTerm,query term>>, <<select,select clause>>
+|<<aggregateSymbol,standard aggregate function>>, <<function,function>>, <<isDistinct,is distinct>>, <<queryExpressionBody,query expression body>>, <<queryTerm,query term>>, <<select,select clause>>
 
 |[[token_DOUBLE]]_DOUBLE_
 |<<parseDataTypePrimary,simple data type>>
@@ -201,7 +201,7 @@
 |<<alterProcedure,ALTER PROCEDURE >>, <<alterTable,ALTER TABLE >>, <<createDDLProcedure,create procedure>>, <<createDataWrapper,create data wrapper>>, <<createForeignTempTable,create foreign temp table>>, <<createSchema,create schema>>, <<createServer,create server, aka data source>>, <<createTable,create table>>, <<dropDataWrapper,Drop data wrapper>>, <<dropProcedure,drop procedure>>, <<dropSchema,drop schema>>, <<dropTableView,drop table>>, <<foreignKey,foreign key>>, <<importSchema,Import foreign schema>>
 
 |[[token_FROM]]_FROM_
-|<<delete,delete statement>>, <<from,from clause>>, <<function,function>>, <<importSchema,Import foreign schema>>, <<isDistinct,IS Distinct>>, <<revokeGrantOption,Revoke GRANT>>
+|<<delete,delete statement>>, <<from,from clause>>, <<function,function>>, <<importSchema,Import foreign schema>>, <<isDistinct,is distinct>>, <<revokeGrantOption,Revoke GRANT>>
 
 |[[token_FULL]]_FULL_
 |<<qualifiedJoin,qualified table>>
@@ -234,7 +234,7 @@
 |<<importDatabase,Import another Database>>, <<importSchema,Import foreign schema>>
 
 |[[token_IN]]_IN_
-|<<procedureParameter,procedure parameter>>, <<setCrit,in predicate>>
+|<<function,function>>, <<procedureParameter,procedure parameter>>, <<setCrit,in predicate>>
 
 |[[token_INNER]]_INNER_
 |<<qualifiedJoin,qualified table>>
@@ -255,7 +255,7 @@
 |<<dynamicCommand,dynamic data statement>>, <<importSchema,Import foreign schema>>, <<insert,insert statement>>, <<into,into clause>>
 
 |[[token_IS]]_IS_
-|<<isDistinct,IS Distinct>>, <<isNullCrit,is null predicate>>
+|<<isDistinct,is distinct>>, <<isNullCrit,is null predicate>>
 
 |[[token_JOIN]]_JOIN_
 |<<crossJoin,cross join>>, <<makedepOptions,make dep options>>, <<qualifiedJoin,qualified table>>
@@ -318,7 +318,7 @@
 |<<option,option clause>>
 
 |[[token_NOT]]_NOT_
-|<<alterColumn,alter column options>>, <<betweenCrit,between predicate>>, <<compoundStatement,compound statement>>, <<createColumn,table element>>, <<createDomain,create a domain or type alias>>, <<isDistinct,IS Distinct>>, <<isNullCrit,is null predicate>>, <<matchCrit,match predicate>>, <<notCrit,boolean factor>>, <<procedureParameter,procedure parameter>>, <<procedureRsColumn,procedure result column>>, <<regexMatchCrit,like regex predicate>>, <<setCrit,in predicate>>, <<tableElement,temporary table element>>
+|<<alterColumn,alter column options>>, <<betweenCrit,between predicate>>, <<compoundStatement,compound statement>>, <<createColumn,table element>>, <<createDomain,create a domain or type alias>>, <<isDistinct,is distinct>>, <<isNullCrit,is null predicate>>, <<matchCrit,match predicate>>, <<notCrit,boolean factor>>, <<procedureParameter,procedure parameter>>, <<procedureRsColumn,procedure result column>>, <<regexMatchCrit,like regex predicate>>, <<setCrit,in predicate>>, <<tableElement,temporary table element>>
 
 |[[token_NULL]]_NULL_
 |<<alterColumn,alter column options>>, <<createColumn,table element>>, <<createDomain,create a domain or type alias>>, <<isNullCrit,is null predicate>>, <<nonNumericLiteral,non numeric literal>>, <<procedureParameter,procedure parameter>>, <<procedureRsColumn,procedure result column>>, <<tableElement,temporary table element>>, <<xmlQuery,xml query>>
@@ -722,6 +722,9 @@
 
 |[[token_PATH]]_PATH_
 |<<nonReserved,non-reserved identifier>>, <<xmlColumn,xml table column>>
+
+|[[token_POSITION]]_POSITION_
+|<<function,function>>, <<nonReserved,non-reserved identifier>>
 
 |[[token_PRESERVE]]_PRESERVE_
 |<<createTempTable,create temporary table>>, <<nonReserved,non-reserved identifier>>
@@ -1178,7 +1181,7 @@
 |<<constraint,other constraints>>, <<createTempTable,create temporary table>>, <<foreignKey,foreign key>>, <<insert,insert statement>>, <<primaryKey,primary key>>, <<withListElement,with list element>>
 
 |[[usage_commonValueExpression]]_<<commonValueExpression, common value expression>>_
-|<<betweenCrit,between predicate>>, <<booleanPrimary,boolean primary>>, <<compareCrit,comparison predicate>>, <<exception,sql exception>>, <<isDistinct,IS Distinct>>, <<matchCrit,match predicate>>, <<regexMatchCrit,like regex predicate>>, <<setCrit,in predicate>>, <<textTable,text table>>
+|<<betweenCrit,between predicate>>, <<booleanPrimary,boolean primary>>, <<compareCrit,comparison predicate>>, <<exception,sql exception>>, <<function,function>>, <<isDistinct,is distinct>>, <<matchCrit,match predicate>>, <<regexMatchCrit,like regex predicate>>, <<setCrit,in predicate>>, <<textTable,text table>>
 
 |[[usage_compareCrit]]_<<compareCrit, comparison predicate>>_
 |<<booleanPrimary,boolean primary>>
@@ -1369,7 +1372,7 @@
 |[[usage_into]]_<<into, into clause>>_
 |<<query,query>>
 
-|[[usage_isDistinct]]_<<isDistinct, IS Distinct>>_
+|[[usage_isDistinct]]_<<isDistinct, is distinct>>_
 |<<booleanPrimary,boolean primary>>
 
 |[[usage_isNullCrit]]_<<isNullCrit, is null predicate>>_
@@ -1867,6 +1870,8 @@ Example:
 * <<token_GEOMETRY,GEOMETRY>>
 
 * <<token_DEFAULT_KEYWORD,DEFAULT>>
+
+* <<token_POSITION,POSITION>>
 
 
 Allows non-reserved keywords to be parsed as identifiers  
@@ -3341,7 +3346,7 @@ NOT x = 'a'
 
 === [[booleanPrimary]]_<<usage_booleanPrimary, boolean primary>>_ ::= 
 
-* ( <<<commonValueExpression,common value expression>>> ( <<<betweenCrit,between predicate>>> | <<<matchCrit,match predicate>>> | <<<regexMatchCrit,like regex predicate>>> | <<<setCrit,in predicate>>> | <<<isNullCrit,is null predicate>>> | <<<subqueryCompareCriteria,quantified comparison predicate>>> | <<<compareCrit,comparison predicate>>> | <<<isDistinct,IS Distinct>>> )? )
+* ( <<<commonValueExpression,common value expression>>> ( <<<betweenCrit,between predicate>>> | <<<matchCrit,match predicate>>> | <<<regexMatchCrit,like regex predicate>>> | <<<setCrit,in predicate>>> | <<<isNullCrit,is null predicate>>> | <<<subqueryCompareCriteria,quantified comparison predicate>>> | <<<compareCrit,comparison predicate>>> | <<<isDistinct,is distinct>>> )? )
 
 * <<<existsCriteria,exists predicate>>>
 
@@ -3391,7 +3396,7 @@ Example:
 '''
 
 
-=== [[isDistinct]]_<<usage_isDistinct, IS Distinct>>_ ::= 
+=== [[isDistinct]]_<<usage_isDistinct, is distinct>>_ ::= 
 
 * <<token_IS,IS>> ( <<token_NOT,NOT>> )? <<token_DISTINCT,DISTINCT>> <<token_FROM,FROM>> <<<commonValueExpression,common value expression>>>
 
@@ -3701,7 +3706,7 @@ Example:
 
 === [[limit]]_<<usage_limit, limit clause>>_ ::= 
 
-* ( <<token_LIMIT,LIMIT>> <<<intParam,integer parameter>>> ( <<<token_COMMA,comma>>> <<<intParam,integer parameter>>> )? )
+* ( <<token_LIMIT,LIMIT>> <<<intParam,integer parameter>>> ( ( <<<token_COMMA,comma>>> <<<intParam,integer parameter>>> ) | ( <<token_OFFSET,OFFSET>> <<<intParam,integer parameter>>> ) )? )
 
 * ( <<token_OFFSET,OFFSET>> <<<intParam,integer parameter>>> ( <<token_ROW,ROW>> | <<token_ROWS,ROWS>> ) ( <<<fetchLimit,fetch clause>>> )? )
 
@@ -4074,9 +4079,11 @@ CASE WHEN x = 'a' THEN 1 WHEN y = 'b' THEN 2
 
 * <<<xmlQuery,xml query>>>
 
+* ( <<token_POSITION,POSITION>> <<<token_LPAREN,lparen>>> <<<commonValueExpression,common value expression>>> <<token_IN,IN>> <<<commonValueExpression,common value expression>>> <<<token_RPAREN,rparen>>> )
+
 * ( <<<id,identifier>>> <<<token_LPAREN,lparen>>> ( <<token_ALL,ALL>> | <<token_DISTINCT,DISTINCT>> )? ( <<<expressionList,expression list>>> )? ( <<<orderby,order by clause>>> )? <<<token_RPAREN,rparen>>> ( <<<filterClause,filter clause>>> )? )
 
-* ( <<token_CURRENT_DATE,CURRENT_DATE>> <<<token_LPAREN,lparen>>> <<<token_RPAREN,rparen>>> )
+* ( <<token_CURRENT_DATE,CURRENT_DATE>> ( <<<token_LPAREN,lparen>>> <<<token_RPAREN,rparen>>> )? )
 
 * ( ( <<token_CURRENT_TIMESTAMP,CURRENT_TIMESTAMP>> | <<token_CURRENT_TIME,CURRENT_TIME>> ) ( <<<token_LPAREN,lparen>>> <<<intVal,unsigned integer>>> <<<token_RPAREN,rparen>>> )? )
 
