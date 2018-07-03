@@ -25,7 +25,9 @@ after_success: |
     git -c user.name='travis' -c user.email='travis' commit -am "adding submodule"
     git push -q https://$GITHUB_USER:$GITHUB_API_KEY@github.com/$TRAVIS_REPO_SLUG gh-pages
     fi
-    git submodule update --init --remote --no-fetch
+    git submodule update --init --remote --no-fetch $TRAVIS_BRANCH
+    git pull
+    git submodule update --remote --no-fetch --merge
     git -c user.name='travis' -c user.email='travis' commit -am "updating submodules"
     git push -q https://$GITHUB_USER:$GITHUB_API_KEY@github.com/$TRAVIS_REPO_SLUG gh-pages
     fi
