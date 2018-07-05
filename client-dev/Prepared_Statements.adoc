@@ -11,3 +11,20 @@ Teiid provides a standard implementation of `java.sql.PreparedStatement`. Prepar
 * Plans are cached for the entire VDB or for just a particular session. The scope of a plan is detected automatically based upon the functions evaluated during it’s planning process.
 * Stored procedures executed through a `CallableStatement` have their plans cached just as a `PreparedStatement`.
 * Bind variable types in function signatures, e.g. "where t.col = abs(?)" can be determined if the function has only one signature or if the function is used in a predicate where the return type can be determined. In more complex situations it may be necessary to add a type hint with a cast or convert, e.g. upper(convert(?, string)).
+* If you have the same value of a binding repeated multiple times in your query, you can consolidate that usage in a couple of ways.
+** The query can be enclosed as a anonymous procedure block:
+
+[source,sql]
+----
+BEGIN
+  DECLARE string PARAM1 = cast(? as string);
+  SELECT ... WHERE COLUMN1 = $1 AND COLUMN2 = $1 ...;
+----
+Note the cast of the bind variable, which is due to a small issue with the resolver that isn't inferring the type from the variable declaration.
+
+** You may also use the not officially supported PostgreSQL like feature of $n positional bindings:
+
+[source,sql]
+----
+SELECT ... WHERE COLUMN1 = $1 AND COLUMN2 = $1 ...
+----
