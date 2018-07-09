@@ -165,7 +165,7 @@ TIMESTAMPADD(interval, count, timestamp)
 * SQL_TSI_YEAR - years
 
 |count
-|An integer represent the datetime need add to timestamp 
+|A long or integer count of units to add to the timestamp.  Negative values will subtract that number of units.  Long values are allowed for symmetry with TIMESTAMPDIFF - but the effective range is still limited to integer values. 
 
 |timestamp
 |A datetime expression.
