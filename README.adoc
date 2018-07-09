@@ -42,7 +42,7 @@ Once above commands execute successfully (may take a few minutes), you should se
 
 === Generate html/pdf/epub/mobi 
 
-You may locally create rendered forms of the documentation. To do this install https://github.com/GitbookIO/gitbook[gitbook] and https://help.gitbook.com/build/ebookconvert.html[ebook-convert], then execute the following commands from the checkout location:
+You may locally create rendered forms of the documentation. To do this install https://github.com/GitbookIO/gitbook[gitbook] and https://download.calibre-ebook.com[ebook-convert], then execute the following commands from the checkout location:
 
 ----
 $ gitbook build ./ teiid-documents
