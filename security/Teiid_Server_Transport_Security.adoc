@@ -8,11 +8,9 @@ There are two types of direct remote transports, each with it’s own encryption
 [source,xml]
 .Example Transport Configuration
 ----
-            <transport name="jdbc" socket-binding="teiid-jdbc" protocol="teiid">
-                <authentication security-domain="teiid-security"/>
-            </transport>
+            <authentication security-domain="teiid-security"/>
+            <transport name="jdbc" socket-binding="teiid-jdbc" protocol="teiid"/>
             <transport name="odbc" socket-binding="teiid-odbc" protocol="pg">
-                <authentication security-domain="teiid-security"/>
                 <ssl mode="disabled"/>
             </transport>
 ----

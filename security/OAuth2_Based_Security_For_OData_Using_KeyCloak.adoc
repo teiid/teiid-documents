@@ -62,7 +62,7 @@ Then we need to change the OData transport’s "security-domain" to "keycloak".
 [source,sh]
 ----
 ./bin/jboss-cli.sh --connect
-/subsystem=teiid/transport=odata:write-attribute(name=authentication-security-domain, value=keycloak)
+/subsystem=teiid:write-attribute(name=authentication-security-domain, value=keycloak)
 
 reload
 ----
@@ -71,9 +71,8 @@ above commands will result in XML in standalone.xml or domain.xml file like (you
 
 [source,xml]
 ----
-    <transport name="odata">
-        <authentication security-domain="keycloak"/>
-    </transport>
+    <authentication security-domain="keycloak"/>
+    <transport name="odata"/>
 ----
 
 The Keycloak is installed and the OData transport is modified, now we need to install security-domain called "passthrough". Note that the web layer is using OAuth2, but at the VDB layer, this logged in user need to be passed through and this security domain will help with that.
