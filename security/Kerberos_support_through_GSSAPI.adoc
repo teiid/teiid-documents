@@ -131,39 +131,22 @@ the resulting xml will look like below where \{user-name-based-auth} replaced wi
 
 The above configuration defined security-domains, before you can use these domains for login into Teiid, they need to be associated with Teiid's transport configuration or VDB configuration. Paragraphs below offer both solutions. 
 
-==== Defining a "default" authentication based on Teiid Transport
+==== Defining a "default" authentication
 
-User can define a "default" authentication per transport as below that can be used for all the VDBs system wide.
+User can define a "default" authentication as below that can be used for all the VDBs system wide.
 
 [source,xml]
-.For JDBC:
-
 Use below CLI commands to edit the configuration 
 ---- 
-/subsystem=teiid/transport=jdbc:write-attribute(name=authentication-security-domain, value=MY_REALM) 
-/subsystem=teiid/transport=jdbc:write-attribute(name=authentication-type, value=GSS) 
+/subsystem=teiid:write-attribute(name=authentication-security-domain, value=MY_REALM) 
+/subsystem=teiid:write-attribute(name=authentication-type, value=GSS) 
 ---- 
 
 Will result in following changes (or you can edit the standalone-teiid.xml file directly) 
 ----
+
+<authentication security-domain="MY_REALM" type="GSS"/>
 <transport name="jdbc" protocol="teiid" socket-binding="teiid-jdbc"/>
-        <authentication security-domain="MY_REALM" type="GSS"/>
-</transport>
-----
-
-[source,xml]
-.For ODBC:
-
-Use below CLI commands to edit the configuration 
----- 
-/subsystem=teiid/transport=odbc:write-attribute(name=authentication-security-domain, value=MY_REALM) 
-/subsystem=teiid/transport=odbc:write-attribute(name=authentication-type, value=GSS) 
----- 
-
-----
-<transport name="odbc" protocol="pg" socket-binding="teiid-odbc"/>
-    <authentication security-domain="MY_REALM" type="GSS"/>
-</transport>
 ----
 
 *"What is the value of Type"*
