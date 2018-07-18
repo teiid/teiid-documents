@@ -42,10 +42,6 @@ All the properties (except for version, which is known on TeiidDataSource as Dat
 |`DataSourceName`
 |`String`
 |Name given to this data source
-
-|`LoadBalance`
-|`boolean`
-|Set to false to disable the default load balancing behavior of selecting a new server when a pooled connection is returned to the pool.
 |===
 
 NOTE: *Additional Properties* - All the properties from link:Driver_Connection.adoc[URL Connection Properties] can be used on DataSource using the _AdditionalProperties_ setter method if the corresponding setter method is not already available. For example, you can add _"useCallingThread"_ property as `<xa-datasource-property name="AdditionalProperties">useCallingThread=false</xa-datasource-property>`

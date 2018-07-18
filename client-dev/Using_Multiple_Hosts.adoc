@@ -25,46 +25,6 @@ The client will randomly pick one the Teiid server from the list and establish a
 
 === Fail Over
 
-Post connection fail over will be used if the _autoFailover_ connection property on JDBC URL is set to true. Post connection failover works by sending a ping, at most every second, to test the connection prior to use. If the ping fails, a new instance will be selected prior to the operation being attempted. This is not true "transparent application failover" as the client will not restart the transaction/query/recreate session scoped temp tables, etc. So this feature should be used with caution.
+Post connection fail over will be used if the _autoFailover_ connection property on JDBC URL is set to true. Post connection failover works by sending a ping, at most every second, to test the connection prior to use. If the ping fails, a new instance will be selected prior to the operation being attempted. 
 
-=== Load Balancing
-
-Post connection load balancing can be utilized in one of two ways. First if you are using `TeiidDataSource` and the Connections returned by Teiid `PooledConnections` have their `close` method called, then a new server instance will be selected automatically. However when using driver based connections or even when using `TeiidDataSource` in a connection pool (such as {{ book.asName }}), the automatic load balancing will not happen. Second you can explicitly trigger load balancing through the use of the set statement:
-
-[source,java]
-----
-SET NEWINSTANCE TRUE
-----
-
-Typically you will not need want to issue this statement manually, but instead use it as the connection test query on your DataSource configuration.
-
-[source,xml]
-.*{{ book.asName }} DataSource With Post Connection Load Balancing*
-----
-<datasources>
-        <datasource jndi-name="java:/teiidDS" pool-name="teiidDS">
-            <connection-url>jdbc:teiid:{vdb}@mm://{host}:31000</connection-url>
-            <driver>teiid</driver>
-            <pool>
-                <prefill>false</prefill>
-                <use-strict-min>false</use-strict-min>
-                <flush-strategy>FailingConnectionOnly</flush-strategy>
-                <check-valid-connection-sql>SET NEWINSTANCE TRUE</check-valid-connection-sql>
-            </pool>
-            <security>
-                <user-name>{user}</user-name>
-                <password>{password}</password>
-            </security>
-        </datasource>
-        <drivers>
-            <driver name="teiid" module="org.jboss.teiid.client">
-                <driver-class>org.teiid.jdbc.TeiidDriver</driver-class>
-                <xa-datasource-class>org.teiid.jdbc.TeiidDataSource</xa-datasource-class>
-            </driver>
-        </drivers>
-    </datasources>
-----
-
-Teiid by default maintains a pool of extra socket connections that are reused. For load balancing this reduces the potential cost of switching a connection to another server instance. The default setting is to maintain 16 connections (this can be set via `org.teiid.sockets.maxCachedInstances` in a teiid-client-settings.properties file). If you’re client is connecting to a large numbers of Teiid instances and you’re using post connection time load balancing, then consider increasing the number of cached instances. You may either set an analogous system property or create a teiid-client-settings.properties (see the teiid-client-settings.orig.properties file in the client jar) file and place it into the classpath ahead of the client jar.
-
-NOTE: Session level temporary tables, currently running transactions, session level cache entries, and PreparedPlans for a given session will not be available on other cluster members. Therefore, it is recommended that post connection time load balancing is only used when the logical connection could have been closed, but the actual connection is reused (the typical connection pool pattern).
+This is not true "transparent application failover" as the client will not restart the transaction/query/recreate session scoped temp tables, etc. So this feature should be used with caution.
