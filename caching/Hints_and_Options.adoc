@@ -19,7 +19,7 @@ NOTE: Care should be taken to not over use the pref_mem option. The memory prefe
 
 * _ttl:n_- if present n indicates the time to live value in milliseconds. The default value for result set caching is the default expiration for the corresponding Infinispan cache. There is no default time to live for materialized views.
 * _updatable_- if present indicates that the cached results can be updated. This defaults to false for materialized views and to true for result set cache entries.
-* _scope_- There are three different cache scopes: session - cached only for current session, user - cached for any session by the current user, vdb - cached for any user connected to the same vdb. For cached queries the presence of the scope overrides the computed scope. Materialized views on the other hand default to the vdb scope. For materialized views explicitly setting the session or user scopes will result in a non-replicated session scoped materialized view.
+* _scope_- There are three different cache scopes: session - cached only for current session, user - cached for any session by the current user, vdb - cached for any user connected to the same vdb. For cached queries the presence of the scope overrides the computed scope. Materialized views can only be the vdb scope.
 
 The _pref_mem_, _ttl_, _updatable_, and _scope_ values for a materialized view may also be set via extension properties on the view - using the teiid_rel namespace with MATVIEW_PREFER_MEMORY, MATVIEW_TTL, MATVIEW_UPDATABLE, and MATVIEW_SCOPE respectively. If both are present, the use of an extension property supersedes the usage of the cache hint.
 

@@ -19,6 +19,8 @@ Function model support has been completely removed as it had been deprecated in 
 
 The salesforce translator and resource adapter now provide access to the 34.0 version of the Salesforce API.  You may need to re-import your salesforce source metadata to ensure compatibility.
 
-Starting with 11.1 the Teiid client no longer supports the pluggable ServerDiscovery mechanism.
+Starting with 11.1 the Teiid client no longer supports the pluggable ServerDiscovery mechanism.  The client will no longer support post-connection load-balancing nor a client side ping.  If connecting to Teiid servers earlier than 10.1, then ping must be disabled on the server.
+
+Session/user scoped materialized views are no longer supported.  Please use a global temporary table instead.
 
 
