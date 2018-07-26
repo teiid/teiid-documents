@@ -197,7 +197,7 @@ CREATE FOREIGN TABLE Orders (
 
 The BNF for ALTER table, refer to link:../reference/BNF_for_SQL_Grammar.adoc#alterTable[ALTER TABLE]
 
-Using the ALTER COMMAND, one can Add, Change, Delete columns, and/or modify any OPTIONS values. Some examples below.
+Using the ALTER COMMAND, one can Add, Change, Delete columns, modify any OPTIONS values, and add constraints. Some examples below.
 
 [source,sql]
 ----
@@ -221,6 +221,9 @@ ALTER FOREIGN TABLE "Customer" ALTER COLUMN "id" TYPE bigdecimal;
 
 -- Changing table's column column name
 ALTER FOREIGN TABLE "Customer" RENAME COLUMN "id" TO "customer_id"; 
+
+-- Adding a constraint
+ALTER VIEW "Customer_View" ADD PRIMARY KEY (id);
 
 ----
 
