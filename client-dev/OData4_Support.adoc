@@ -198,6 +198,11 @@ The OData WAR file can be configured with following properties in the web.xml fi
 |connection.XXX
 |Sets XXX as an execution property on the local connection. Can be used for example to enable result set cache mode.
 |n/a
+
+|explicit-vdb-version
+|When explicit-vdb-version is true, an explicit vdb version needs to be part of the url to use anything other than the default verion 1 vdb.  When explicit-vdb-version is false, the odata vdb version will be determined just like a JDBC connection.
+|true
+
 |===
 
 NOTE: *"Behind Proxy or In Cloud Environments?"* - If the Teiid server is configured behind a proxy server or deployed in cloud environment, or using a load-balancer then the URI of the server which is handling the OData request is different from URI of proxy. To generate valid links in the OData responses configure "proxy-base-uri" property in the web.xml. If this value is available as system property then define the property value like below
