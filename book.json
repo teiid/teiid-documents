@@ -3,6 +3,7 @@
         "versionNumber" : "11.1",
         "fullVersionNumber": "11.1.0",
         "asVersionNumber" :  "WildFly 11.0.0",
+        "asFullVersionNumber" :  "11.0.0.Final",
         "asName" :  "WildFly",
         "copyrightYear" :  "2017",
         "copyrightHolder" :  "Red Hat, Inc.",

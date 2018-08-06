@@ -1,0 +1,37 @@
+= Dockerize Teiid
+
+Running Teiid as a Docker container is straight-forward, but since the runtime by itself is not a turn-key environment you must consider how you will configure/use the server from there.
+
+The following is a basic Dockerfile that can be used to create a base image.  Just create a Dockerfile with these contents and run "docker build ." from that directory.
+
+----
+FROM jboss/wildfly:{{book.asFullVersionNumber}}
+
+ENV JBOSS_HOME /opt/jboss/wildfly
+
+# Set the TEIID_VERSION env variable
+ENV TEIID_VERSION {{book.fullVersionNumber}}
+
+# Download and unzip Teiid server
+RUN cd $JBOSS_HOME \
+    && curl -O https://oss.sonatype.org/service/local/repositories/releases/content/org/teiid/teiid/$TEIID_VERSION/teiid-$TEIID_VERSION-wildfly-dist.zip \
+    && bsdtar -xf teiid-$TEIID_VERSION-wildfly-dist.zip \
+    && chmod +x $JBOSS_HOME/bin/*.sh \
+    && rm teiid-$TEIID_VERSION-wildfly-dist.zip
+    
+VOLUME ["$JBOSS_HOME/standalone", "$JBOSS_HOME/domain"]
+
+USER jboss
+
+ENV LAUNCH_JBOSS_IN_BACKGROUND true
+
+# Expose Teiid server  ports 
+EXPOSE 8080 9990 31000 35432 
+
+# Run Teiid server and bind to all interface
+CMD ["/bin/sh", "-c", "$JBOSS_HOME/bin/standalone.sh -c standalone-teiid.xml -b 0.0.0.0 -bmanagement 0.0.0.0"]
+----
+
+Pre-built images can be found at https://hub.docker.com/r/jboss/teiid/[Docker Hub].
+
+If you are just using the Teiid Docker environment for more than just testing you will likely want to extend the base image or base Dockerfile to overlay the necessary modules, vdbs, and other artifacts as well as run any necessary cli to create your data sources.  

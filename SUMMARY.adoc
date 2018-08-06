@@ -4,6 +4,7 @@
 
 . link:admin/Administrators_Guide.adoc[Administrator's Guide]
 .. link:admin/Installation_Guide.adoc[Installation Guide]
+... link:admin/Dockerize_Teiid.adoc[Dockerize Teiid]
 .. link:admin/Deploying_VDBs.adoc[Deploying VDBs]
 ... link:admin/Deploying_VDB_Dependencies.adoc[Deploying VDB Dependencies]
 .... link:admin/Accumulo_Data_Sources.adoc[Accumulo Data Sources]
