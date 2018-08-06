@@ -1,5 +1,5 @@
 
 = Client Developer's Guide
 
-This guide intended for developers that are trying to write 3rd party applications that interact with Teiid. This will guide you through connection mechanisms, extensions to JDBC API, ODBC, SSL etc. Before one can delve into Teiid it is very important to learn few basic constructs of Teiid, like what is VDB? what is Model? etc. For that please read the short introduction here http://teiid.jboss.org/basics/[http://teiid.jboss.org/basics/]
+This guide intended for developers that are trying to write 3rd party applications that interact with Teiid. This will guide you through connection mechanisms, extensions to JDBC API, ODBC, SSL etc. Before one can delve into Teiid it is very important to learn few basic constructs of Teiid, like what is VDB? what is Model? etc. For that please read the http://teiid.io/about/basics/[short introduction].
 
