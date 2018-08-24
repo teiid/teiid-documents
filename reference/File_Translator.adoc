@@ -10,7 +10,7 @@ by the link:../admin/File_Data_Sources.adoc[File Data Source] and the link:../ad
 |Name |Description |Default
 
 |Encoding
-|The encoding that should be used for CLOBs returned by the getTextFiles procedure.  The value should match an encoding known to the JRE.
+|The encoding that should be used for CLOBs returned by the getTextFiles procedure.  The value should match an encoding known to Teiid, see also link:String_Functions.adoc[TO_CHARS and TO_BYTES].
 |The system default encoding
 
 |ExceptionIfFileNotFound

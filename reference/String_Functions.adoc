@@ -146,7 +146,7 @@ Return a clob from the blob with the given encoding.
 TO_CHARS(x, encoding [, wellformed])
 ----
 
-BASE64, HEX, and the built-in Java Charset names are valid values for the encoding [b]. x is a blob, encoding is a string, wellformed is a boolean, and returns a clob. The two argument form defaults to wellformed=true. If wellformed is false, the conversion function will immediately validate the result such that an unmappable character or malformed input will raise an exception.
+BASE64, HEX, UTF-8-BOM and the built-in Java Charset names are valid values for the encoding [b]. x is a blob, encoding is a string, wellformed is a boolean, and returns a clob. The two argument form defaults to wellformed=true. If wellformed is false, the conversion function will immediately validate the result such that an unmappable character or malformed input will raise an exception.
 
 === TO_BYTES
 
@@ -157,9 +157,9 @@ Return a blob from the clob with the given encoding.
 TO_BYTES(x, encoding [, wellformed])
 ----
 
-BASE64, HEX, and the builtin Java Charset names are valid values for the encoding [b]. x in a clob, encoding is a string, wellformed is a boolean and returns a blob. The two argument form defaults to wellformed=true. If wellformed is false, the conversion function will immediately validate the result such that an unmappable character or malformed input will raise an exception. If wellformed is true, then unmappable characters will be replaced by the default replacement character for the character set. Binary formats, such as BASE64 and HEX, will be checked for correctness regardless of the wellformed parameter.
+BASE64, HEX, UTF-8-BOM and the builtin Java Charset names are valid values for the encoding [b]. x in a clob, encoding is a string, wellformed is a boolean and returns a blob. The two argument form defaults to wellformed=true. If wellformed is false, the conversion function will immediately validate the result such that an unmappable character or malformed input will raise an exception. If wellformed is true, then unmappable characters will be replaced by the default replacement character for the character set. Binary formats, such as BASE64 and HEX, will be checked for correctness regardless of the wellformed parameter.
 
-[b] See the http://java.sun.com/j2se/1.5.0/docs/api/java/nio/charset/Charset.html[Charset JavaDoc] for more on supported Charset names.
+[b] See the https://docs.oracle.com/javase/8/docs/technotes/guides/intl/encoding.doc.html[Charset docs] for more on supported Charset names.
 
 == Replacement Functions
 
