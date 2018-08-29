@@ -211,17 +211,16 @@ Usage:
 
 [source,sql]
 ----
-aggregate|ranking OVER ([PARTITION BY ...]] [ORDER BY ...])
+aggregate|analytical OVER ([PARTITION BY ...]] [ORDER BY ...])
 ----
 
-aggregate can be any link:Expressions.adoc#_aggregate_functions[Aggregate Functions]. Ranking can be one of ROW_NUMBER(), RANK(), DENSE_RANK().
+aggregate can be any link:Expressions.adoc#_aggregate_functions[Aggregate Functions]. Keywords exist for the analytical ranking functions which can be one of ROW_NUMBER(), RANK(), DENSE_RANK(), PERCENT_RANK(), CUME_DIST().
 
 Syntax Rules:
 
 * Window functions can only appear in the SELECT and ORDER BY clauses of a query expression.
 * Window functions cannot be nested in one another.
 * Partitioning and order by expressions cannot contain subqueries or outer references.
-* The ranking (ROW_NUMBER, RANK, DENSE_RANK) functions require the use of the window specification ORDER BY clause.
 * An XMLAGG or JSONARRAY_AGG ORDER BY clause cannot be used when windowed.
 * The window specification ORDER BY clause cannot reference alias names or use positional ordering.
 * Windowed aggregates may not use DISTINCT if the window specification is ordered.
@@ -231,18 +230,25 @@ Syntax Rules:
 
 Ranking Functions:
 
-* ROW_NUMBER() – functional the same as COUNT(*) with the same window specification. Assigns a number to each row in a partition starting at 1.
 * RANK() – Assigns a number to each unique ordering value within each partition starting at 1, such that the next rank is equal to the count of prior rows.
 * DENSE_RANK() – Assigns a number to each unique ordering value within each partition starting at 1, such that the next rank is sequential.
+* PERCENT_RANK() – Computed as (RANK - 1) / ( RC - 1) where RC is the total row count of the partition. 
+* CUME_DIST() – Computed as the PR / RC where PR is the rank of the row including peers and RC is the total row count of the partition.
 
 All values are integers - an exception will be thrown if a larger value is needed.
 
 Value Functions:
 
-* FIRST_VALUE(val) – Return the first value in the window with the given ordering
-* LAST_NUMBER(val) – Return the last observed value in the window with the given ordering
+* FIRST_VALUE(val) – Return the first value in the window frame with the given ordering
+* LAST_VALUE(val) – Return the last observed value in the window frame with the given ordering
 * LEAD(val [, offset [, default]]) - Access the ordered value in the window that is offset rows ahead of the current row.  If there is no such row, then the default value will be returned.  If not specified the offset is 1 and the default is null.
 * LAG(val [, offset [, default]]) - Access the ordered value in the window that is offset rows behind of the current row.  If there is no such row, then the default value will be returned.  If not specified the offset is 1 and the default is null.
+* NTH_VALUE(val, n) - Returns the nth val in window frame.  The index must be greater than 0.  If no such value exists, then null is returned. 
+
+Row Value Functions:
+
+* ROW_NUMBER() – Sequentially assigns a number to each row in a partition starting at 1.
+* NTILE(n) – Divides the partition into n tiles that differ in size by at most 1.  Larger tiles will be created sequenctially starting at the first.  n must be greater than 0.
 
 == Processing
 

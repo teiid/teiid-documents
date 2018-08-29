@@ -315,6 +315,22 @@ The following table lists the capabilities that can be specified in the `Executi
 |ElementaryOlapOperations
 |Translator supports aggregate conditions.
 
+|WindowFunctionCumeDist
+|
+|Translator supports CUME_DIST window function. Defaults to the support value for ElementaryOlapOperations
+
+|WindowFunctionPercentDist
+|
+|Translator supports PERCENT_DIST window function. Defaults to the support value for ElementaryOlapOperations
+
+|WindowFunctionNtile
+|
+|Translator supports NTILE window function. Defaults to the support value for ElementaryOlapOperations
+
+|WindowFunctionNthValue
+|
+|Translator supports NTH_VALUE window function. Defaults to the support value for ElementaryOlapOperations
+
 |OnlyFormatLiterals
 |function support for a parse/format function and an implementation of the supportsFormatLiteral method.
 |Translator supports only literal format patterns that must be validated by the supportsFormatLiteral method.

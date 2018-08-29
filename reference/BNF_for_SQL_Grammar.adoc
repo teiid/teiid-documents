@@ -119,6 +119,9 @@
 |[[token_CROSS]]_CROSS_
 |<<crossJoin,cross join>>
 
+|[[token_CUME_DIST]]_CUME_DIST_
+|<<analyticAggregateSymbol,analytic aggregate function>>
+
 |[[token_CURRENT_DATE]]_CURRENT_DATE_
 |<<function,function>>
 
@@ -364,6 +367,9 @@
 
 |[[token_PARTITION]]_PARTITION_
 |<<windowSpecification,window specification>>
+
+|[[token_PERCENT_RANK]]_PERCENT_RANK_
+|<<analyticAggregateSymbol,analytic aggregate function>>
 
 |[[token_PRIMARY]]_PRIMARY_
 |<<createTempTable,create temporary table>>, <<inlineConstraint,inline constraint>>, <<primaryKey,primary key>>
@@ -2891,7 +2897,7 @@ COUNT(*)
 
 === [[analyticAggregateSymbol]]_<<usage_analyticAggregateSymbol, analytic aggregate function>>_ ::= 
 
-* ( <<token_ROW_NUMBER,ROW_NUMBER>> | <<token_RANK,RANK>> | <<token_DENSE_RANK,DENSE_RANK>> ) <<<token_LPAREN,lparen>>> <<<token_RPAREN,rparen>>>
+* ( <<token_ROW_NUMBER,ROW_NUMBER>> | <<token_RANK,RANK>> | <<token_DENSE_RANK,DENSE_RANK>> | <<token_PERCENT_RANK,PERCENT_RANK>> | <<token_CUME_DIST,CUME_DIST>> ) <<<token_LPAREN,lparen>>> <<<token_RPAREN,rparen>>>
 
 
 An analytic aggregate function.
