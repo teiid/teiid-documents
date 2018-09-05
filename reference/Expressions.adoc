@@ -211,10 +211,19 @@ Usage:
 
 [source,sql]
 ----
-aggregate|analytical OVER ([PARTITION BY ...]] [ORDER BY ...])
+aggregate|analytical OVER ([PARTITION BY ...]] [ORDER BY ...] [RANGE | ROWS ...])
+
+PARTITION BY expression [, expression]
+
+(RANGE | ROWS) (frame bound | BETWEEN frame bound AND frame bound)
+
+frame bound := UNBOUNDED (PRECEDING | FOLLOWING)
+  | int (PRECEDING | FOLLOWING)
+  | CURRENT ROW
+
 ----
 
-aggregate can be any link:Expressions.adoc#_aggregate_functions[Aggregate Functions]. Keywords exist for the analytical ranking functions which can be one of ROW_NUMBER(), RANK(), DENSE_RANK(), PERCENT_RANK(), CUME_DIST().
+aggregate can be any link:Expressions.adoc#_aggregate_functions[Aggregate Functions]. Keywords exist for the analytical functions  ROW_NUMBER, RANK, DENSE_RANK, PERCENT_RANK, CUME_DIST.  There are also the FIRST_VALUE, LAST_VALUE, LEAD, LAG, NTH_VALUE, and NTILE analytical functions.
 
 Syntax Rules:
 
@@ -224,7 +233,8 @@ Syntax Rules:
 * An XMLAGG or JSONARRAY_AGG ORDER BY clause cannot be used when windowed.
 * The window specification ORDER BY clause cannot reference alias names or use positional ordering.
 * Windowed aggregates may not use DISTINCT if the window specification is ordered.
-* Analytical value functions may not use DISTINCT and require the use of an ordering in the window specification. 
+* Analytical value functions may not use DISTINCT and require the use of an ordering in the window specification.
+* RANGE or ROWS requires the ORDER BY clause to be specified.  The default frame if not specified is RANGE UNBOUNDED PRECEDING.  If no end is specified the default is CURRENT ROW.  No combination of start and end is allowed such that the end is before the start - for example UNBOUNDED FOLLOWING is not allow as a start nor is UNBOUNDED PRECEDING allowed as an end.  RANGE or ROWS is only  with aggregate functions and the LEAD/LAG analytical functions.
 
 == Analytical Function Definitions
 
@@ -248,13 +258,15 @@ Value Functions:
 Row Value Functions:
 
 * ROW_NUMBER() – Sequentially assigns a number to each row in a partition starting at 1.
-* NTILE(n) – Divides the partition into n tiles that differ in size by at most 1.  Larger tiles will be created sequenctially starting at the first.  n must be greater than 0.
+* NTILE(n) – Divides the partition into n tiles that differ in size by at most 1.  Larger tiles will be created sequentially starting at the first.  n must be greater than 0.
 
 == Processing
 
 Window functions are logically processed just before creating the output from the SELECT clause. Window functions can use nested aggregates if a GROUP BY clause is present. The is no guaranteed affect on the output ordering from the presence of window functions. The SELECT statement must have an ORDER BY clause to have a predictable ordering.
 
-Teiid will process all window functions with the same window specification together. In general a full pass over the row values coming into the SELECT clause will be required for each unique window specification. For each window specification the values will be grouped according to the PARTITION BY clause. If no PARTITION BY clause is specified, then the entire input is treated as a single partition. The output value is determined based upon the current row value, it’s peers (that is rows that are the same with respect to their ordering), and all prior row values based upon ordering in the partition. The ROW_NUMBER function will assign a unique value to every row regardless of the number of peers.
+Teiid will process all window functions with the same window specification together. In general a full pass over the row values coming into the SELECT clause will be required for each unique window specification. For each window specification the values will be grouped according to the PARTITION BY clause. If no PARTITION BY clause is specified, then the entire input is treated as a single partition. The output value is determined based upon the definition of the analytical function or the ROWS/RANGE clause.  By default RANGE UNBOUNDED PRECEDING uses the current row value, it’s peers (that is rows that are the same with respect to their ordering), and all prior row values based upon ordering in the partition. The ROW_NUMBER function will assign a unique value to every row regardless of the number of peers.
+
+If RANGE or ROWS is specified it is currently only allowed to be evaluated at the source and an exception will arise if evaluated in the engine.
 
 [source,sql]
 .*Example Windowed Results*

@@ -27,7 +27,7 @@
 |<<alter,alter>>, <<alterProcedure,ALTER PROCEDURE >>, <<alterStatement,alterStatement>>, <<alterTable,ALTER TABLE >>, <<readGrantTypes,grant type>>
 
 |[[token_AND]]_AND_
-|<<betweenCrit,between predicate>>, <<compoundCritAnd,boolean term>>
+|<<betweenCrit,between predicate>>, <<compoundCritAnd,boolean term>>, <<windowFrame,window frame>>
 
 |[[token_ANY]]_ANY_
 |<<aggregateSymbol,standard aggregate function>>, <<readWith,with role>>, <<subqueryCompareCriteria,quantified comparison predicate>>
@@ -54,7 +54,7 @@
 |<<compoundStatement,compound statement>>, <<forEachRowTriggerAction,for each row trigger action>>
 
 |[[token_BETWEEN]]_BETWEEN_
-|<<betweenCrit,between predicate>>
+|<<betweenCrit,between predicate>>, <<windowFrame,window frame>>
 
 |[[token_BIGDECIMAL]]_BIGDECIMAL_
 |<<parseDataTypePrimary,simple data type>>
@@ -377,6 +377,9 @@
 |[[token_PROCEDURE]]_PROCEDURE_
 |<<alter,alter>>, <<alterProcedure,ALTER PROCEDURE >>, <<createDDLProcedure,create procedure>>, <<dropProcedure,drop procedure>>, <<grantOption,Create GRANT>>, <<procedureBodyCommand,procedure body definition>>, <<revokeGrantOption,Revoke GRANT>>
 
+|[[token_RANGE]]_RANGE_
+|<<windowFrame,window frame>>
+
 |[[token_REAL]]_REAL_
 |<<parseDataTypePrimary,simple data type>>
 
@@ -399,10 +402,10 @@
 |<<groupBy,group by clause>>
 
 |[[token_ROW]]_ROW_
-|<<fetchLimit,fetch clause>>, <<forEachRowTriggerAction,for each row trigger action>>, <<limit,limit clause>>, <<textTable,text table>>
+|<<fetchLimit,fetch clause>>, <<forEachRowTriggerAction,for each row trigger action>>, <<limit,limit clause>>, <<textTable,text table>>, <<windowFrameBound,window frame bound>>
 
 |[[token_ROWS]]_ROWS_
-|<<createTempTable,create temporary table>>, <<fetchLimit,fetch clause>>, <<limit,limit clause>>
+|<<createTempTable,create temporary table>>, <<fetchLimit,fetch clause>>, <<limit,limit clause>>, <<windowFrame,window frame>>
 
 |[[token_SECOND]]_SECOND_
 |<<function,function>>
@@ -615,6 +618,9 @@
 |[[token_COUNT]]_COUNT_
 |<<aggregateSymbol,standard aggregate function>>, <<nonReserved,non-reserved identifier>>
 
+|[[token_CURRENT]]_CURRENT_
+|<<nonReserved,non-reserved identifier>>, <<windowFrameBound,window frame bound>>
+
 |[[token_DATA]]_DATA_
 |<<alterTranslator,ALTER DATA WRAPPER >>, <<createDataWrapper,create data wrapper>>, <<createServer,create server, aka data source>>, <<dropDataWrapper,Drop data wrapper>>, <<nonReserved,non-reserved identifier>>
 
@@ -662,6 +668,9 @@
 
 |[[token_FIRST]]_FIRST_
 |<<fetchLimit,fetch clause>>, <<nonReserved,non-reserved identifier>>, <<sortSpecification,sort specification>>
+
+|[[token_FOLLOWING]]_FOLLOWING_
+|<<nonReserved,non-reserved identifier>>, <<windowFrameBound,window frame bound>>
 
 |[[token_GEOMETRY]]_GEOMETRY_
 |<<nonReserved,non-reserved identifier>>, <<parseDataTypePrimary,simple data type>>
@@ -731,6 +740,9 @@
 
 |[[token_POSITION]]_POSITION_
 |<<function,function>>, <<nonReserved,non-reserved identifier>>
+
+|[[token_PRECEDING]]_PRECEDING_
+|<<nonReserved,non-reserved identifier>>, <<windowFrameBound,window frame bound>>
 
 |[[token_PRESERVE]]_PRESERVE_
 |<<createTempTable,create temporary table>>, <<nonReserved,non-reserved identifier>>
@@ -843,6 +855,9 @@
 |[[token_TYPE]]_TYPE_
 |<<alterColumn,alter column options>>, <<createDataWrapper,create data wrapper>>, <<createServer,create server, aka data source>>, <<nonReserved,non-reserved identifier>>
 
+|[[token_UNBOUNDED]]_UNBOUNDED_
+|<<nonReserved,non-reserved identifier>>, <<windowFrameBound,window frame bound>>
+
 |[[token_UPSERT]]_UPSERT_
 |<<insert,insert statement>>, <<nonReserved,non-reserved identifier>>
 
@@ -904,18 +919,18 @@
 |NATURAL|NCHAR|NCLOB
 |NEW|NUMERIC|OLD
 |OPEN|OUTPUT|OVERLAPS
-|PRECISION|PREPARE|RANGE
-|READS|RECURSIVE|REFERENCING
-|RELEASE|ROLLBACK|SAVEPOINT
-|SCROLL|SEARCH|SENSITIVE
-|SESSION_USER|SPECIFIC|SPECIFICTYPE
-|SQL|START|STATIC
-|SUBMULTILIST|SYMETRIC|SYSTEM
-|SYSTEM_USER|TIMEZONE_HOUR|TIMEZONE_MINUTE
-|TRANSLATION|TREAT|VALUE
-|VARYING|WHENEVER|WINDOW
-|WITHIN|XMLBINARY|XMLDOCUMENT
-|XMLITERATE|XMLVALIDATE
+|PRECISION|PREPARE|READS
+|RECURSIVE|REFERENCING|RELEASE
+|ROLLBACK|SAVEPOINT|SCROLL
+|SEARCH|SENSITIVE|SESSION_USER
+|SPECIFIC|SPECIFICTYPE|SQL
+|START|STATIC|SUBMULTILIST
+|SYMETRIC|SYSTEM|SYSTEM_USER
+|TIMEZONE_HOUR|TIMEZONE_MINUTE|TRANSLATION
+|TREAT|VALUE|VARYING
+|WHENEVER|WINDOW|WITHIN
+|XMLBINARY|XMLDOCUMENT|XMLITERATE
+|XMLVALIDATE
 |===
 
 == Tokens
@@ -1388,7 +1403,7 @@
 |<<fetchLimit,fetch clause>>, <<limit,limit clause>>
 
 |[[usage_intVal]]_<<intVal, unsigned integer>>_
-|<<dynamicCommand,dynamic data statement>>, <<function,function>>, <<grantOption,Create GRANT>>, <<intParam,integer parameter>>, <<makedepOptions,make dep options>>, <<parameterReference,parameter reference>>, <<parseDataTypePrimary,simple data type>>, <<textColumn,text table column>>, <<textTable,text table>>
+|<<dynamicCommand,dynamic data statement>>, <<function,function>>, <<grantOption,Create GRANT>>, <<intParam,integer parameter>>, <<makedepOptions,make dep options>>, <<parameterReference,parameter reference>>, <<parseDataTypePrimary,simple data type>>, <<textColumn,text table column>>, <<textTable,text table>>, <<windowFrameBound,window frame bound>>
 
 |[[usage_intervalType]]_<<intervalType, time interval>>_
 |<<function,function>>
@@ -1638,6 +1653,12 @@
 
 |[[usage_whileStatement]]_<<whileStatement, while statement>>_
 |<<statement,statement>>
+
+|[[usage_windowFrame]]_<<windowFrame, window frame>>_
+|<<windowSpecification,window specification>>
+
+|[[usage_windowFrameBound]]_<<windowFrameBound, window frame bound>>_
+|<<windowFrame,window frame>>
 
 |[[usage_windowSpecification]]_<<windowSpecification, window specification>>_
 |<<unescapedFunction,unescapedFunction>>
@@ -1902,6 +1923,14 @@ Example:
 * <<token_DEFAULT_KEYWORD,DEFAULT>>
 
 * <<token_POSITION,POSITION>>
+
+* <<token_CURRENT,CURRENT>>
+
+* <<token_UNBOUNDED,UNBOUNDED>>
+
+* <<token_PRECEDING,PRECEDING>>
+
+* <<token_FOLLOWING,FOLLOWING>>
 
 
 Allows non-reserved keywords to be parsed as identifiers  
@@ -4021,7 +4050,7 @@ Example:
 
 === [[windowSpecification]]_<<usage_windowSpecification, window specification>>_ ::= 
 
-* <<token_OVER,OVER>> <<<token_LPAREN,lparen>>> ( <<token_PARTITION,PARTITION>> <<token_BY,BY>> <<<expressionList,expression list>>> )? ( <<<orderby,order by clause>>> )? <<<token_RPAREN,rparen>>>
+* <<token_OVER,OVER>> <<<token_LPAREN,lparen>>> ( <<token_PARTITION,PARTITION>> <<token_BY,BY>> <<<expressionList,expression list>>> )? ( <<<orderby,order by clause>>> )? ( <<<windowFrame,window frame>>> )? <<<token_RPAREN,rparen>>>
 
 
 The window specification for an analytical or windowed aggregate function.
@@ -4031,6 +4060,44 @@ Example:
 [source,sql]
 ----
 OVER (PARTION BY col1)
+----
+
+
+'''
+
+
+=== [[windowFrame]]_<<usage_windowFrame, window frame>>_ ::= 
+
+* ( <<token_RANGE,RANGE>> | <<token_ROWS,ROWS>> ) ( ( <<token_BETWEEN,BETWEEN>> <<<windowFrameBound,window frame bound>>> <<token_AND,AND>> <<<windowFrameBound,window frame bound>>> ) | <<<windowFrameBound,window frame bound>>> )
+
+
+Defines the mode, start, and optionally end of the window frame
+
+
+Example:
+[source,sql]
+----
+RANGE UNBOUNDED PRECEDING
+----
+
+
+'''
+
+
+=== [[windowFrameBound]]_<<usage_windowFrameBound, window frame bound>>_ ::= 
+
+* ( ( <<token_UNBOUNDED,UNBOUNDED>> | <<<intVal,unsigned integer>>> ) ( <<token_FOLLOWING,FOLLOWING>> | <<token_PRECEDING,PRECEDING>> ) )
+
+* ( <<token_CURRENT,CURRENT>> <<token_ROW,ROW>> )
+
+
+Defines the start or end of a window frame
+
+
+Example:
+[source,sql]
+----
+CURRENT ROW
 ----
 
 
