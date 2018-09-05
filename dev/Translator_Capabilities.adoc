@@ -303,6 +303,10 @@ The following table lists the capabilities that can be specified in the `Executi
 |
 |Translator supports window functions and analytic functions RANK, DENSE_RANK, and ROW_NUMBER.
 
+|WindowFrameClause
+|ElementaryOlapOperations
+|Translator supports window frame RANGE/ROWS clause.  Defaults to ElementaryOlapOperations support value.
+
 |WindowOrderByWithAggregates
 |ElementaryOlapOperations
 |Translator supports windowed aggregates with a window order by clause.
