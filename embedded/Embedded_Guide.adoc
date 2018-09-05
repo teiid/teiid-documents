@@ -99,15 +99,6 @@ If you do not need XML type support including XPath and SQL/XML functions like X
 </dependency>
 ---
 
-=== OSGI
-
-All Teiid jars can also be deployed as bundles in a OSGI container like Karaf. If you are working with Karaf, a feature.xml file is available in maven repo for your convenience. Usage pattern is below
-
-----
-features:addurl mvn:org.teiid/teiid/9.1.0.Final/xml/karaf-features
-features:install -v teiid
-----
-
 === Vulnerable Libraries
 
 Prior to Teiid 8.13/8.12.2 when using the remote JDBC transport, Teiid embedded could be susceptible to deserialization exploits if it also included most versions of common-collections, older version of groovy, or spring in the classpath - see also http://www.infoq.com/news/2015/11/commons-exploit[this posting] for more details on the affected libraries.
