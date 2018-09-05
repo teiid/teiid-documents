@@ -60,7 +60,7 @@ CREATE FOREIGN TABLE Order (
     customerid integer OPTIONS(ANNOTATION 'Customer primary key'), 
     saledate date, 
     amount decimal(25,4), 
-    CONSTRAINT CUSTOMER_FK FOREGIN KEY(customerid) REFERENCES Customer(id)
+    CONSTRAINT CUSTOMER_FK FOREIGN KEY(customerid) REFERENCES Customer(id)
  ) OPTIONS(UPDATABLE true, ANNOTATION 'Orders Table');
 ----
 
@@ -186,7 +186,7 @@ CREATE FOREIGN TABLE Orders (
     name varchar(50),  
     saledate date, 
     amount decimal, 
-    CONSTRAINT CUSTOMER_FK FOREGIN KEY(customerid) REFERENCES Customer(id)
+    CONSTRAINT CUSTOMER_FK FOREIGN KEY(customerid) REFERENCES Customer(id)
     ACCESSPATTERN (name),
     PRIMARY KEY ...
     UNIQUE ...
