@@ -354,11 +354,11 @@ The following table lists the capabilities that can be specified in the `Executi
 |Upsert
 |
 |Translator supports an upsert style insert.
-|===
 
 |OnlyTimestampAddLiteral
 |function support for a timestampadd function.
 |Translator supports only a literal interval value.
+|===
 
 Note that any pushdown subquery must itself be compliant with the Translator capabilities.
 
