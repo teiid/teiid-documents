@@ -362,6 +362,10 @@ The following table lists the capabilities that can be specified in the `Executi
 |OnlyTimestampAddLiteral
 |function support for a timestampadd function.
 |Translator supports only a literal interval value.
+
+|MultipleOpenExecutions
+|
+|Translator supports multiple open executions against a single connection.  If false, in transactional scenarios the execution will be thread bound.
 |===
 
 Note that any pushdown subquery must itself be compliant with the Translator capabilities.
