@@ -1,0 +1,39 @@
+language: node_js
+    - "8.9.0"
+    
+install:
+    - npm install -g gitbook-cli
+    - gitbook install
+    - sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()"
+    
+script: 
+    - gitbook build ./ content
+    - gitbook pdf ./ teiid-documents.pdf
+
+after_success: |
+    if [ -n "$GITHUB_API_KEY" ]; then
+    git checkout --orphan $TRAVIS_BRANCH-gh-pages
+    git rm -rf .
+    git add -f --ignore-errors --all content teiid-documents.pdf
+    git -c user.name='travis' -c user.email='travis' commit -m 'ci publishing'
+    git push -f -q https://$GITHUB_USER:$GITHUB_API_KEY@github.com/$TRAVIS_REPO_SLUG $TRAVIS_BRANCH-gh-pages
+    git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*" 1>/dev/null
+    git fetch origin gh-pages
+    git checkout gh-pages
+    if [ ! -d "$TRAVIS_BRANCH" ]; then
+    git submodule add -b $TRAVIS_BRANCH-gh-pages https://github.com/$TRAVIS_REPO_SLUG $TRAVIS_BRANCH
+    git -c user.name='travis' -c user.email='travis' commit -am "adding submodule"
+    git push -q https://$GITHUB_USER:$GITHUB_API_KEY@github.com/$TRAVIS_REPO_SLUG gh-pages
+    fi
+    git submodule update --init --remote --no-fetch
+    git -c user.name='travis' -c user.email='travis' commit -am "updating submodules"
+    git push -q https://$GITHUB_USER:$GITHUB_API_KEY@github.com/$TRAVIS_REPO_SLUG gh-pages
+    fi
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/5ada7bbc05b2a99cff40
+    on_success: change
+    on_failure: always
+    on_start: never
