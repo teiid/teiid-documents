@@ -247,6 +247,7 @@ Syntax Rules:
 * Windowed aggregates may not use DISTINCT if the window specification is ordered.
 * Analytical value functions may not use DISTINCT and require the use of an ordering in the window specification.
 * RANGE or ROWS requires the ORDER BY clause to be specified.  The default frame if not specified is RANGE UNBOUNDED PRECEDING.  If no end is specified the default is CURRENT ROW.  No combination of start and end is allowed such that the end is before the start - for example UNBOUNDED FOLLOWING is not allow as a start nor is UNBOUNDED PRECEDING allowed as an end.
+* RANGE cannot be used n PRECEDING or n FOLLOWING
 
 == Analytical Function Definitions
 
