@@ -10,7 +10,7 @@ NOTE: The resource adapter for this translator is provided by configuring the ld
 |===
 |Name |Description |Default
 
-|SearchDerfaultBaseDN
+|SearchDefaultBaseDN
 |Default Base DN for LDAP Searches
 |null
 
