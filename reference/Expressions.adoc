@@ -211,14 +211,26 @@ Usage:
 
 [source,sql]
 ----
-aggregate|analytical OVER ([PARTITION BY ...]] [ORDER BY ...] [RANGE | ROWS ...])
+  aggregate [FILTER (WHERE ...)] OVER ( [partition] [ORDER BY ...] [frame] )
+| FIRST_VALUE(val) OVER ( [partition] [ORDER BY ...] [frame] )
+| LAST_VALUE(val) OVER ( [partition] [ORDER BY ...] [frame] )
+| analytical OVER ( [partition] [ORDER BY ...] )
 
-PARTITION BY expression [, expression]
+partition := PARTITION BY expression [, expression]*
 
-(RANGE | ROWS) (frame bound | BETWEEN frame bound AND frame bound)
+frame := range_or_rows extent
 
-frame bound := UNBOUNDED (PRECEDING | FOLLOWING)
-  | int (PRECEDING | FOLLOWING)
+range_or_rows := RANGE | ROWS
+
+extent := 
+    frameBound 
+  | BETWEEN frameBound AND frameBound
+
+frameBound := 
+    UNBOUNDED PRECEDING 
+  | UNBOUNDED FOLLOWING
+  | n PRECEDING 
+  | n FOLLOWING
   | CURRENT ROW
 
 ----
@@ -230,11 +242,11 @@ Syntax Rules:
 * Window functions can only appear in the SELECT and ORDER BY clauses of a query expression.
 * Window functions cannot be nested in one another.
 * Partitioning and order by expressions cannot contain subqueries or outer references.
-* An XMLAGG or JSONARRAY_AGG ORDER BY clause cannot be used when windowed.
+* An aggregate ORDER BY clause cannot be used when windowed.
 * The window specification ORDER BY clause cannot reference alias names or use positional ordering.
 * Windowed aggregates may not use DISTINCT if the window specification is ordered.
 * Analytical value functions may not use DISTINCT and require the use of an ordering in the window specification.
-* RANGE or ROWS requires the ORDER BY clause to be specified.  The default frame if not specified is RANGE UNBOUNDED PRECEDING.  If no end is specified the default is CURRENT ROW.  No combination of start and end is allowed such that the end is before the start - for example UNBOUNDED FOLLOWING is not allow as a start nor is UNBOUNDED PRECEDING allowed as an end.  RANGE or ROWS is only  with aggregate functions and the LEAD/LAG analytical functions.
+* RANGE or ROWS requires the ORDER BY clause to be specified.  The default frame if not specified is RANGE UNBOUNDED PRECEDING.  If no end is specified the default is CURRENT ROW.  No combination of start and end is allowed such that the end is before the start - for example UNBOUNDED FOLLOWING is not allow as a start nor is UNBOUNDED PRECEDING allowed as an end.
 
 == Analytical Function Definitions
 
@@ -264,9 +276,9 @@ Row Value Functions:
 
 Window functions are logically processed just before creating the output from the SELECT clause. Window functions can use nested aggregates if a GROUP BY clause is present. The is no guaranteed affect on the output ordering from the presence of window functions. The SELECT statement must have an ORDER BY clause to have a predictable ordering.
 
-Teiid will process all window functions with the same window specification together. In general a full pass over the row values coming into the SELECT clause will be required for each unique window specification. For each window specification the values will be grouped according to the PARTITION BY clause. If no PARTITION BY clause is specified, then the entire input is treated as a single partition. The output value is determined based upon the definition of the analytical function or the ROWS/RANGE clause.  By default RANGE UNBOUNDED PRECEDING uses the current row value, it’s peers (that is rows that are the same with respect to their ordering), and all prior row values based upon ordering in the partition. The ROW_NUMBER function will assign a unique value to every row regardless of the number of peers.
+Teiid will process all window functions with the same window specification together. In general a full pass over the row values coming into the SELECT clause will be required for each unique window specification. For each window specification the values will be grouped according to the PARTITION BY clause. If no PARTITION BY clause is specified, then the entire input is treated as a single partition. 
 
-If RANGE or ROWS is specified it is currently only allowed to be evaluated at the source and an exception will arise if evaluated in the engine.
+The frame for the output value is determined based upon the definition of the analytical function or the ROWS/RANGE clause.  The default frame is RANGE UNBOUNDED PRECEDING, which also implies the default end bound of CURRENT ROW.  RANGE computes over a row and its peers together.  ROWS computes over every row.  Most analytical functions, such as ROW_NUMBER, has an implicit RANGE/ROWS - which is why a different one cannot be specified.  For example ROW_NUMBER() OVER (order) can be expressed instead as count(*) OVER (order ROWS UNBOUNDED PRECEDING AND CURRENT ROW) - thus it assigns a different value to every row regardless of the number of peers.
 
 [source,sql]
 .*Example Windowed Results*
