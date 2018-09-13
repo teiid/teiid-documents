@@ -277,6 +277,8 @@ Row Value Functions:
 
 Window functions are logically processed just before creating the output from the SELECT clause. Window functions can use nested aggregates if a GROUP BY clause is present. The is no guaranteed affect on the output ordering from the presence of window functions. The SELECT statement must have an ORDER BY clause to have a predictable ordering.
 
+NOTE: An ORDER BY in the OVER clause follows the same rules pushdown and processing rules as a top level ORDER BY.  In general this means you should specify NULLS FIRST/LAST as null handling may differ between engine and pushdown processing.  Also see the system properties controlling sort behavior if you different default behavior. 
+
 Teiid will process all window functions with the same window specification together. In general a full pass over the row values coming into the SELECT clause will be required for each unique window specification. For each window specification the values will be grouped according to the PARTITION BY clause. If no PARTITION BY clause is specified, then the entire input is treated as a single partition. 
 
 The frame for the output value is determined based upon the definition of the analytical function or the ROWS/RANGE clause.  The default frame is RANGE UNBOUNDED PRECEDING, which also implies the default end bound of CURRENT ROW.  RANGE computes over a row and its peers together.  ROWS computes over every row.  Most analytical functions, such as ROW_NUMBER, has an implicit RANGE/ROWS - which is why a different one cannot be specified.  For example ROW_NUMBER() OVER (order) can be expressed instead as count(*) OVER (order ROWS UNBOUNDED PRECEDING AND CURRENT ROW) - thus it assigns a different value to every row regardless of the number of peers.
