@@ -183,6 +183,22 @@ could return
 'a,b,c'
 ----
 
+* LIST_AGG(x [, delim]) WITHIN GROUP (ORDER BY ...) – a form of STRING_AGG that uses the same syntax as Oracle.  Here x can be any type convertable to string, the delim if specified must be a literal, and the order by is required.  This is just a parsing alias for an equivalent string_agg expression.
+
+list agg example
+
+[source,sql]
+----
+listagg(col1, ',') WITHIN GROUP (ORDER BY col1 ASC)
+----
+
+could return
+
+[source,sql]
+----
+'a,b,c'
+----
+
 * ARRAY_AGG(x [link:ORDER_BY_Clause.html[ORDER BY …]]) – creates an array with a base type matching the expression x. The ORDER BY clause cannot reference alias names or use positional ordering.
 * agg([DISTINCT|ALL] arg … [link:ORDER_BY_Clause.html[ORDER BY …]]) – a user defined aggregate function
 

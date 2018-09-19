@@ -219,6 +219,14 @@ The following table lists the capabilities that can be specified in the `Executi
 |
 |Translator can support the VAR_SAMP, VAR_POP, STDDEV_SAMP, STDDEV_POP aggregate functions.
 
+|StringAgg
+|
+|Translator can support the string_agg aggregate function.
+
+|ListAgg
+|
+|Translator can support a restricted form (matching Oracle's listagg) of the string_agg aggregate function.
+
 |ScalarSubqueries
 |
 |Translator can support the use of a subquery in a scalar context (wherever an expression is valid).
