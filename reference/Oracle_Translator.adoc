@@ -11,13 +11,7 @@ NOTE: The Oracle provide JDBC driver may cause memory issues due to excessive bu
 
 * _useGeometryType_- Use the Teiid Geometry type when importing columns with a source type of SDO_GEOMETRY. Defaults to false.
 
-NOTE: Metadata import from Oracle may be slow.  It is recommended that at least a schema name filter is specified.  There is also the useFetchSizeWithLongColumn=true link:https://docs.oracle.com/cd/E11882_01/appdev.112/e13995/oracle/jdbc/OracleDriver.html[connection property] that can increase the fetch size for metadata queries.   
-
-it significantly improves the metadata load process, especially when there are a large number of tables in a schema. See doc [1]
-
-Teiid should either somehow enforce or document this.
-
-[1] 
+NOTE: Metadata import from Oracle may be slow.  It is recommended that at least a schema name filter is specified.  There is also the useFetchSizeWithLongColumn=true link:https://docs.oracle.com/cd/E11882_01/appdev.112/e13995/oracle/jdbc/OracleDriver.html[connection property] that can increase the fetch size for metadata queries.  It significantly improves the metadata load process, especially when there are a large number of tables in a schema.
 
 == Execution Properties
 
