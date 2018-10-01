@@ -36,7 +36,7 @@ expression IS [NOT] DISTINCT FROM expression
 
 IS DISTINCT FROM considers null values equivalent and never produces an UNKNOWN value.
 
-NOTE: Using IS DISTINCT FROM in a join predicate that is not pushed down will not yet procedure as performant of a plan as a regular comparison as the optimizer is not tuned to handling IS DISTINCT FROM.
+NOTE: Using IS DISTINCT FROM in a join predicate that is not pushed down will not yet produce as performant of a plan as a regular comparison as the optimizer is not tuned to handling IS DISTINCT FROM.
 
 [source,sql]
 ----
