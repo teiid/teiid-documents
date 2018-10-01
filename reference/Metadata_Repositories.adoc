@@ -35,7 +35,7 @@ This is only applicable on source models (and is also the default), when used th
 
 This is applicable to both source and view models. See link:DDL_Metadata.adoc[DDL Metadata] for more information on how to use this feature.
 
-== FILE
+== DDL-FILE
 
 [source,xml]
 .*Sample vdb.xml file*
@@ -49,6 +49,31 @@ This is applicable to both source and view models. See link:DDL_Metadata.adoc[DD
 ----
 
 DDL is applicable to both source and view models in zip VDB deployments. See link:DDL_Metadata.adoc[DDL Metadata] for more information on how to use this feature.
+
+== UDF (11.2+)
+
+[source,xml]
+.*Sample vdb.xml file*
+----
+<vdb name="{vdb-name}" version="1">
+    <model name="{model-name}" type="VIRTUAL">
+        <property name="importer.schemaName" value="org.foo.Class"/>
+        <metadata type="UDF"></metadata>
+    </model>
+</vdb>
+----
+
+[source,ddl]
+.*Sample ddl file*
+----
+CREATE DATABASE {vdb-name} VERSION '1';
+USE DATABASE {vdb-name} VERSION '1';
+CREATE VIRTUAL SCHEMA {model-name};
+IMPORT FOREIGN SCHEMA "org.foo.Class" FROM REPOSITORY UDF INTO {model-name};
+----
+
+The logic will import all static functions that return non-void results, or import the user defined aggregate function if
+the class implements the UserDefinedAggregate interface.
 
 == Chaining Repositories
 
