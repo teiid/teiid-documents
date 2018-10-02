@@ -153,6 +153,10 @@ WARNING: Strings are always fully held in memory. Do not set this value too high
 |Set to false to always generate OpenTracing information even if no Span is active.
 |true
 
+|_org.teiid.longRanks_
+|Set to true to have the ranking functions RANK, DENSE_RANK, and ROW_NUMBER return long instead of integer.
+|false
+
 |===
 
 

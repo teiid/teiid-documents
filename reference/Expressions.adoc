@@ -132,6 +132,8 @@ Teiid supports the following aggregate functions:
 
 * COUNT(*) – count the number of values (including nulls and duplicates) in a group. Returns an integer - an exception will be thrown if a larger count is computed.
 * COUNT(x) – count the number of values (excluding nulls) in a group. Returns an integer - an exception will be thrown if a larger count is computed.
+* COUNT_BIG(*) – count the number of values (including nulls and duplicates) in a group. Returns a long - an exception will be thrown if a larger count is computed.
+* COUNT_BIG(x) – count the number of values (excluding nulls) in a group. Returns a long - an exception will be thrown if a larger count is computed.
 * SUM(x) – sum of the values (excluding nulls) in a group
 * AVG(x) – average of the values (excluding nulls) in a group
 * MIN(x) – minimum value in a group (excluding null)
@@ -274,7 +276,7 @@ Ranking Functions:
 * PERCENT_RANK() – Computed as (RANK - 1) / ( RC - 1) where RC is the total row count of the partition. 
 * CUME_DIST() – Computed as the PR / RC where PR is the rank of the row including peers and RC is the total row count of the partition.
 
-All values are integers - an exception will be thrown if a larger value is needed.
+By default all values are integers - an exception will be thrown if a larger value is needed.  Use the system org.teiid.longRanks to have RANK, DENSE_RANK, and ROW_NUMBER return long values instead. 
 
 Value Functions:
 

@@ -283,4 +283,4 @@ Since OData schema model is not a relational schema model, Teiid uses the follow
 
 Teiid by design does not define any "embedded" ComplexType in the EntityType.
 
-Since OData access is more key based, it is * MANDATORY* that every table Teiid exposes through OData must have a PK or at least one UNIQUE key. A table which does not either of these will be dropeed out of the $metadata
+Since OData access is more key based, it is *MANDATORY* that every table Teiid exposes through OData must have a PK or at least one UNIQUE key. A table which does not either of these will be dropeed out of the $metadata

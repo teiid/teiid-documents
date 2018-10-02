@@ -219,7 +219,7 @@
 |<<grantOption,Create GRANT>>
 
 |[[token_GROUP]]_GROUP_
-|<<groupBy,group by clause>>
+|<<function,function>>, <<groupBy,group by clause>>
 
 |[[token_HAVING]]_HAVING_
 |<<having,having clause>>
@@ -518,6 +518,9 @@
 |[[token_WITH]]_WITH_
 |<<assignStatement,assignment statement>>, <<createRole,create role >>, <<importDatabase,Import another Database>>, <<queryExpression,query expression>>, <<readWith,with role>>, <<sqlStatement,data statement>>
 
+|[[token_WITHIN]]_WITHIN_
+|<<function,function>>
+
 |[[token_WITHOUT]]_WITHOUT_
 |<<assignStatement,assignment statement>>, <<sqlStatement,data statement>>
 
@@ -618,6 +621,9 @@
 |[[token_COUNT]]_COUNT_
 |<<aggregateSymbol,standard aggregate function>>, <<nonReserved,non-reserved identifier>>
 
+|[[token_COUNT_BIG]]_COUNT_BIG_
+|<<aggregateSymbol,standard aggregate function>>, <<nonReserved,non-reserved identifier>>
+
 |[[token_CURRENT]]_CURRENT_
 |<<nonReserved,non-reserved identifier>>, <<windowFrameBound,window frame bound>>
 
@@ -672,6 +678,9 @@
 |[[token_FOLLOWING]]_FOLLOWING_
 |<<nonReserved,non-reserved identifier>>, <<windowFrameBound,window frame bound>>
 
+|[[token_GEOGRAPHY]]_GEOGRAPHY_
+|<<nonReserved,non-reserved identifier>>, <<parseDataTypePrimary,simple data type>>
+
 |[[token_GEOMETRY]]_GEOMETRY_
 |<<nonReserved,non-reserved identifier>>, <<parseDataTypePrimary,simple data type>>
 
@@ -701,6 +710,9 @@
 
 |[[token_LAST]]_LAST_
 |<<nonReserved,non-reserved identifier>>, <<sortSpecification,sort specification>>
+
+|[[token_LISTAGG]]_LISTAGG_
+|<<function,function>>, <<nonReserved,non-reserved identifier>>
 
 |[[token_MASK]]_MASK_
 |<<grantOption,Create GRANT>>, <<nonReserved,non-reserved identifier>>, <<revokeGrantOption,Revoke GRANT>>
@@ -928,9 +940,8 @@
 |SYMETRIC|SYSTEM|SYSTEM_USER
 |TIMEZONE_HOUR|TIMEZONE_MINUTE|TRANSLATION
 |TREAT|VALUE|VARYING
-|WHENEVER|WINDOW|WITHIN
-|XMLBINARY|XMLDOCUMENT|XMLITERATE
-|XMLVALIDATE
+|WHENEVER|WINDOW|XMLBINARY
+|XMLDOCUMENT|XMLITERATE|XMLVALIDATE
 |===
 
 == Tokens
@@ -1742,6 +1753,8 @@ Example:
 
 * <<token_COUNT,COUNT>>
 
+* <<token_COUNT_BIG,COUNT_BIG>>
+
 * <<token_ROW_NUMBER,ROW_NUMBER>>
 
 * <<token_RANK,RANK>>
@@ -1931,6 +1944,10 @@ Example:
 * <<token_PRECEDING,PRECEDING>>
 
 * <<token_FOLLOWING,FOLLOWING>>
+
+* <<token_LISTAGG,LISTAGG>>
+
+* <<token_GEOGRAPHY,GEOGRAPHY>>
 
 
 Allows non-reserved keywords to be parsed as identifiers  
@@ -2906,9 +2923,9 @@ TEXTAGG (col1 as t1, col2 as t2 DELIMITER ',' HEADER)
 
 === [[aggregateSymbol]]_<<usage_aggregateSymbol, standard aggregate function>>_ ::= 
 
-* ( <<token_COUNT,COUNT>> <<<token_LPAREN,lparen>>> <<<token_STAR,star>>> <<<token_RPAREN,rparen>>> )
+* ( ( <<token_COUNT,COUNT>> | <<token_COUNT_BIG,COUNT_BIG>> ) <<<token_LPAREN,lparen>>> <<<token_STAR,star>>> <<<token_RPAREN,rparen>>> )
 
-* ( ( <<token_COUNT,COUNT>> | <<token_SUM,SUM>> | <<token_AVG,AVG>> | <<token_MIN,MIN>> | <<token_MAX,MAX>> | <<token_EVERY,EVERY>> | <<token_STDDEV_POP,STDDEV_POP>> | <<token_STDDEV_SAMP,STDDEV_SAMP>> | <<token_VAR_SAMP,VAR_SAMP>> | <<token_VAR_POP,VAR_POP>> | <<token_SOME,SOME>> | <<token_ANY,ANY>> ) <<<token_LPAREN,lparen>>> ( <<token_DISTINCT,DISTINCT>> | <<token_ALL,ALL>> )? <<<expression,expression>>> <<<token_RPAREN,rparen>>> )
+* ( ( <<token_COUNT,COUNT>> | <<token_COUNT_BIG,COUNT_BIG>> | <<token_SUM,SUM>> | <<token_AVG,AVG>> | <<token_MIN,MIN>> | <<token_MAX,MAX>> | <<token_EVERY,EVERY>> | <<token_STDDEV_POP,STDDEV_POP>> | <<token_STDDEV_SAMP,STDDEV_SAMP>> | <<token_VAR_SAMP,VAR_SAMP>> | <<token_VAR_POP,VAR_POP>> | <<token_SOME,SOME>> | <<token_ANY,ANY>> ) <<<token_LPAREN,lparen>>> ( <<token_DISTINCT,DISTINCT>> | <<token_ALL,ALL>> )? <<<expression,expression>>> <<<token_RPAREN,rparen>>> )
 
 
 A standard aggregate function.
@@ -4178,6 +4195,8 @@ CASE WHEN x = 'a' THEN 1 WHEN y = 'b' THEN 2
 
 * ( <<token_POSITION,POSITION>> <<<token_LPAREN,lparen>>> <<<commonValueExpression,common value expression>>> <<token_IN,IN>> <<<commonValueExpression,common value expression>>> <<<token_RPAREN,rparen>>> )
 
+* ( <<token_LISTAGG,LISTAGG>> <<<token_LPAREN,lparen>>> <<<expression,expression>>> ( <<<token_COMMA,comma>>> <<<stringVal,string>>> )? <<<token_RPAREN,rparen>>> <<token_WITHIN,WITHIN>> <<token_GROUP,GROUP>> <<<token_LPAREN,lparen>>> <<<orderby,order by clause>>> <<<token_RPAREN,rparen>>> )
+
 * ( <<<id,identifier>>> <<<token_LPAREN,lparen>>> ( <<token_ALL,ALL>> | <<token_DISTINCT,DISTINCT>> )? ( <<<expressionList,expression list>>> )? ( <<<orderby,order by clause>>> )? <<<token_RPAREN,rparen>>> ( <<<filterClause,filter clause>>> )? )
 
 * ( <<token_CURRENT_DATE,CURRENT_DATE>> ( <<<token_LPAREN,lparen>>> <<<token_RPAREN,rparen>>> )? )
@@ -4415,6 +4434,8 @@ NO DEFAULT
 * ( <<token_VARBINARY,VARBINARY>> ( <<<token_LPAREN,lparen>>> <<<intVal,unsigned integer>>> <<<token_RPAREN,rparen>>> )? )
 
 * <<token_GEOMETRY,GEOMETRY>>
+
+* <<token_GEOGRAPHY,GEOGRAPHY>>
 
 * <<token_XML,XML>>
 
