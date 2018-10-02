@@ -49,7 +49,7 @@ After the jar has been built, it needs to be deployed in the {{ book.asName }} a
         <module name="javax.api"/>
         <module name="javax.resource.api"/>
         <module name="org.teiid.common-core"/>
-        <module name="org.teiid.teiid-api" />
+        <module name="org.teiid.teiid.api" />
     </dependencies>
 </module>
 ----
