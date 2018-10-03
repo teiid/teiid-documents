@@ -17,7 +17,7 @@ To create a Java project in Eclipse from an arche type, perform the following:
 * In the tree, expand Maven and select Maven Project, press Next
 * On the "Select project name and Location" window, you can accept the defaults, press Next
 * On the "Select an Archetype" window, select Configure button
-* Add the remote catalog: https://repository.jboss.org/nexus/content/repositories/releases/[https://repository.jboss.org/nexus/content/repositories/releases/] then click OK to return
+* Add the remote catalog: link:http://central.maven.org/maven2/ then click OK to return
 * Enter "teiid" in the filter to see the Teiid arche types.
 * Select the udf-archetype v{{ book.archeTypeVersion }}, then press Next
 * Enter all the information (i.e., Group ID, Artifact ID, method-name, method-args, return-type etc.) needed to generate the project, then click Finish
@@ -26,7 +26,7 @@ The project will be created and name according to the _*ArtifactID*_.
 
 == Create Project using Command Line
 
-NOTE: make sure the https://repository.jboss.org/nexus/content/repositories/releases/ repository is accessible via your maven settings.
+NOTE: make sure the link:http://central.maven.org/maven2/ repository is accessible via your maven settings.
 
 To create a custom translator project from the command line, you can use the following template command:
 
@@ -39,7 +39,7 @@ To create a custom translator project from the command line, you can use the fol
 mvn archetype:generate                         \
   -DarchetypeGroupId=org.teiid.arche-types               \
   -DarchetypeArtifactId=udf-archetype          \
-  -DarchetypeVersion=${archetypeVersion}     \
+  -DarchetypeVersion=10.0.0     \
   -DgroupId=${groupId}                  \
   -DartifactId=${udf-artifact-id}   \
   -Dpackage=${package}    \
@@ -80,7 +80,7 @@ mvn archetype:generate                         \
 mvn archetype:generate                           \
   -DarchetypeGroupId=org.teiid.arche-types               \
   -DarchetypeArtifactId=udf-archetype          \
-  -DarchetypeVersion={{ book.archeTypeVersion }}     \
+  -DarchetypeVersion=10.0.0     \
   -DgroupId=org.example   \
   -DartifactId=udf-function    \
   -Dpackage=org.example.function    \
