@@ -195,6 +195,10 @@ The following table lists the capabilities that can be specified in the `Executi
 |
 |Translator can support the COUNT aggregate function.
 
+|AggregatesCountBig
+|AggregatesCount, AggregatesCountStar
+|Translator supports a separate COUNT function that returns a long value.  If false COUNT will be pushed instead.
+
 |AggregatesCountStar
 |
 |Translator can support the COUNT(*) aggregate function.
@@ -374,6 +378,11 @@ The following table lists the capabilities that can be specified in the `Executi
 |MultipleOpenExecutions
 |
 |Translator supports multiple open executions against a single connection.  If false, in transactional scenarios the execution will be thread bound.
+
+|GeographyType
+|
+|Translator supports the geograpy type variations of ST_ geospatial functions.
+
 |===
 
 Note that any pushdown subquery must itself be compliant with the Translator capabilities.

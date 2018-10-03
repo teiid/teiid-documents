@@ -92,4 +92,9 @@ WARNING: The Teiid conversions of float/double/bigdecimal/timestamp to string re
 |xml
 |
 |string footnote:[xml to string is equivalent to XMLSERIALIZE(exp AS STRING) - see also link:XML_Functions.adoc#_xmlserialize[XML Functions#XMLSERIALIZE]]
+
+|geography
+|
+|geometry
+
 |=== 
