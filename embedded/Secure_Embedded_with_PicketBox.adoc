@@ -33,7 +33,7 @@ Teiid Embedded exposes 2 methods for security authentication:
 * EmbeddedConfiguration.setSecurityHelper() - associated with a _org.teiid.security.SecurityHelper_ in the engine jar. If no SecurityHelper is set, then no authentication will be performed.
 * EmbeddedConfiguration.setSecurityDomain() - associated with a application-policy’s name in Security Configuration file. If no SecurityDomain is set, then a default `teiid-security` will be used.
 
-https://raw.githubusercontent.com/teiid/teiid-embedded/master/src/main/java/org/teiid/embedded/security/EmbeddedSecurityHelper.java[EmbeddedSecurityHelper] is a sample implementation of _SecurityHelper_, https://raw.githubusercontent.com/teiid/teiid-embedded/master/src/main/resources/picketbox/authentication.conf[authentication.conf]
+https://raw.githubusercontent.com/teiid/teiid-embedded-examples/master/embedded-portfolio-security/src/main/java/org/teiid/example/EmbeddedSecurityHelper.java[EmbeddedSecurityHelper] is a sample implementation of _SecurityHelper_, https://raw.githubusercontent.com/teiid/teiid-embedded-examples/master/embedded-portfolio-security/src/main/resources/picketbox/authentication.conf[authentication.conf]
 is a sample Security Configuration file.
 
 == How to develop a SecurityHelper
