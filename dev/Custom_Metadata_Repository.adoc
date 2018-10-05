@@ -11,7 +11,7 @@ import org.teiid.metadata.MetadataRepository;
 
 package com.something;
 
-public class CustomMetadataRepository extends MetadataRepository {
+public class CustomMetadataRepository implements MetadataRepository {
     @Override
     public void loadMetadata(MetadataFactory factory, ExecutionFactory executionFactory, Object connectionFactory)
         throws TranslatorException {
