@@ -132,6 +132,13 @@ Teiid supports a core set of runtime types. Runtime types can be different than 
 |java.sql.Blob [6]
 |BLOB
 |BLOB
+
+|json (11.2+)
+|character large object, representing a stream of json characters
+|java.sql.Clob [7]
+|CLOB
+|VARCHAR
+
 |===
 
 NOTE: Even if a type is declared with a length, precision, or scale argument, those restrictions are effectively ignored by the runtime system, but may be enforced/reported at the edge by OData, ODBC, JDBC.  The geospatial types act in a similar manner.  Extension metadata may be needed for srid, type, and number of dimensions for consumption by tools/OData - but it is not yet enforced.  In some instances you may need to use the ST_SETSRID function to ensure the srid is associated.
@@ -144,6 +151,7 @@ NOTE: Even if a type is declared with a length, precision, or scale argument, th
 4. The concrete type is expected to be org.teiid.core.types.XMLType 
 5. The concrete type is expected to be org.teiid.core.types.GeometryType
 6. The concrete type is expected to be org.teiid.core.types.GeographyType
+3. The concrete type is expected to be org.teiid.core.types.JsonType
 
 == Arrays
 

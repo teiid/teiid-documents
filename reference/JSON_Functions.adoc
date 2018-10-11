@@ -154,7 +154,7 @@ Returns a JSON array.
 JSONARRAY(value...)
 ----
 
-value is any object link:JSON_Functions.adoc#_conversion_to_json[convertable to a JSON] value. Return value is a clob marked as being valid JSON.
+value is any object link:JSON_Functions.adoc#_conversion_to_json[convertable to a JSON] value. Return value is json.
 
 Null values will be included in the result as null literals.
 
@@ -194,7 +194,7 @@ Returns a JSON object.
 JSONARRAY(value [as name] ...)
 ----
 
-value is any object link:JSON_Functions.adoc#_conversion_to_JSON[convertable to a JSON] value. Return value is a clob marked as being valid JSON.
+value is any object link:JSON_Functions.adoc#_conversion_to_JSON[convertable to a JSON] value. Return value is json.
 
 Null values will be included in the result as null literals.
 
@@ -260,7 +260,7 @@ Validates and returns a JSON result.
 JSONPARSE(value, wellformed)
 ----
 
-value is blob with an appropriate JSON binary encoding (UTF-8, UTF-16, or UTF-32) or a clob. wellformed is a boolean indicating that validation should be skipped. Return value is a clob marked as being valid JSON.
+value is blob with an appropriate JSON binary encoding (UTF-8, UTF-16, or UTF-32) or a clob. wellformed is a boolean indicating that validation should be skipped. Return value is json.
 
 A null for either input will return null.
 

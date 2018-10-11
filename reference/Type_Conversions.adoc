@@ -89,6 +89,10 @@ WARNING: The Teiid conversions of float/double/bigdecimal/timestamp to string re
 |
 |string
 
+|json
+|clob
+|string
+
 |xml
 |
 |string footnote:[xml to string is equivalent to XMLSERIALIZE(exp AS STRING) - see also link:XML_Functions.adoc#_xmlserialize[XML Functions#XMLSERIALIZE]]
