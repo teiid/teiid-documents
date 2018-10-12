@@ -13,6 +13,8 @@ The default max buffer space on disk for embedded, Spring, and Thorntail environ
 
 /subsystem=teiid/:write-attribute(name=buffer-service-max-buffer-space, value=51200)
 
+The authentication-allow-security-domain-qualifier property has been removed.
+
 == Compatibility Changes
 
 Function model support has been completely removed as it had been deprecated in Teiid Designer for some time.  Those models should be removed and the functions moved to other physical or virtual models. 
