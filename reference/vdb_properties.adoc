@@ -50,6 +50,10 @@ Regular expression matched against the connecting user’s name that determines 
 
 Regular expression matched against the connecting user’s name that determines if GSS authentication is used. _gss-pattern_ Takes precedence of over _password-pattern_. The default is _password-pattern_.
 
+* _max-sessions-per-user_ (11.2+)
+
+Maximum number of sessions allowed for each user, as identified by the user name, of this vdb.  No setting or a negative number indicates no per user max, but the session service max will still apply.  This is enforced at each Teiid server member in a cluster, and not cluster wide.
+
 * _model.visible_ 
 
 Used to override the visibility of imported vdb models, where model is the name of the imported model.
