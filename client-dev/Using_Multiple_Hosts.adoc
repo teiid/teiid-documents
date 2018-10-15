@@ -5,7 +5,7 @@ A group of Teiid Servers in the same {{ book.asName }} cluster may be connected 
 
 == External HA / Load Balancers
 
-You may choose to use an external tcp load balancer, such as http://haproxy.1wt.eu/[haproxy]. The Teiid driver/DataSource should then typically be configured to just use the single host/port of your load balancer.  The load balancer should use an algorithm that supports sticky connections as Teiid sessions as specific to the original host.  For HAProxy it is recommended that you use leastconn or source.  
+You may choose to use an external tcp load balancer, such as http://haproxy.1wt.eu/[haproxy]. The Teiid driver/DataSource should then typically be configured to just use the single host/port of your load balancer.  
 
 Even if you configure the load balancer to redirect when there is a failed host, that will not maintain the Teiid session state.  If you wish to keep the connection alive, then use the _autoFailover_ feature discussed below.  Otherwise the other Teiid Client Features are not necessary when using an external load balancer.
 
