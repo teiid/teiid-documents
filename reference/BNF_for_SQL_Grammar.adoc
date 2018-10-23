@@ -699,6 +699,9 @@
 |[[token_JAAS]]_JAAS_
 |<<nonReserved,non-reserved identifier>>, <<readWith,with role>>
 
+|[[token_JSON]]_JSON_
+|<<nonReserved,non-reserved identifier>>, <<parseDataTypePrimary,simple data type>>
+
 |[[token_JSONARRAY_AGG]]_JSONARRAY_AGG_
 |<<nonReserved,non-reserved identifier>>, <<orderedAgg,ordered aggregate function>>
 
@@ -1884,6 +1887,8 @@ Example:
 * <<token_EXCEPTION,EXCEPTION>>
 
 * <<token_CHAIN,CHAIN>>
+
+* <<token_JSON,JSON>>
 
 * <<token_JSONARRAY_AGG,JSONARRAY_AGG>>
 
@@ -4430,6 +4435,8 @@ NO DEFAULT
 * ( <<token_BLOB,BLOB>> ( <<<token_LPAREN,lparen>>> <<<intVal,unsigned integer>>> <<<token_RPAREN,rparen>>> )? )
 
 * ( <<token_CLOB,CLOB>> ( <<<token_LPAREN,lparen>>> <<<intVal,unsigned integer>>> <<<token_RPAREN,rparen>>> )? )
+
+* <<token_JSON,JSON>>
 
 * ( <<token_VARBINARY,VARBINARY>> ( <<<token_LPAREN,lparen>>> <<<intVal,unsigned integer>>> <<<token_RPAREN,rparen>>> )? )
 
