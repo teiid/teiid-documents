@@ -36,7 +36,7 @@ Creating a module for a driver is no different than any other container module. 
 
 == Create Data Source
 
-Now that you have the JDBC driver deployed or the module created, it is time to create a data source using this driver. There are many ways to create the datasource using CLI, link:AdminShell.adoc[AdminShell], admin-console etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
+Now that you have the JDBC driver deployed or the module created, it is time to create a data source using this driver. There are many ways to create the datasource using CLI, admin-console etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
 
 Execute following command using {{ book.asDocRoot }}/Admin+Guide#AdminGuide-RunningtheCLI[CLI] once you connected to the Server. Make sure you provide the correct URL and user credentials and edit the JNDI name to match the JNDI name you used in VDB.
 

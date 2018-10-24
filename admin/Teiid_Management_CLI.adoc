@@ -3,7 +3,7 @@
 :toc: manual
 :toc-placement: preamble
 
-The {{ book.asName }} CLI is a command line based administrative and monitoring tool for Teiid. Many snippets of CLI scripting are shown throughout the Admin Guide - especially around managing data sources. link:AdminShell.adoc[AdminShell] provides a binding into the Groovy scripting language and higher level methods that are often needed when interacting with Teiid. It is still useful to know the underlying CLI commands in many circumstances. The below is a series useful CLI commands for administering a Teiid Server. Please also refer to the AS documentation for more on interacting with the CLI - including how to navigate, list operations, etc.
+The {{ book.asName }} CLI is a command line based administrative and monitoring tool for Teiid. Many snippets of CLI scripting are shown throughout the Admin Guide - especially around managing data sources. link:../dev/AdminAPI.adoc[AdminAPI] provides higher level methods that are often needed when interacting with Teiid. It is also useful to know the underlying CLI commands in many circumstances. The below is a series useful CLI commands for administering a Teiid Server. Please also refer to the AS documentation for more on interacting with the CLI - including how to navigate, list operations, etc.
 
 == VDB Operations
 

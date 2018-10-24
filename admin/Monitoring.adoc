@@ -2,7 +2,7 @@
 = Monitoring
 ----------
 
-Teiid provides information about its current operational state. This information can be useful in tuning, monitoring, and managing load and through-put. The runtime data can be accessed using administrative tools (i.e. Admin Console, AdminShell or Admin API).
+Teiid provides information about its current operational state. This information can be useful in tuning, monitoring, and managing load and through-put. The runtime data can be accessed using administrative tools (i.e. Admin Console or Admin API).
 
 == Query/Session details:
 

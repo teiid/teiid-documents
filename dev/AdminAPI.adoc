@@ -1,6 +1,6 @@
 = AdminAPI
 
-In most circumstances the admin operations will be performed through the admin console or AdminShell tooling, but it is also possible to invoke admin functionality directly in Java through the AdminAPI.
+In most circumstances the admin operations will be performed through the admin console, but it is also possible to invoke admin functionality directly in Java (or a Java scripting language) through the AdminAPI.
 
 All classes for the AdminAPI are in the client jar under the `org.teiid.adminapi` package.
 
