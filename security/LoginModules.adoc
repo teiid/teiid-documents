@@ -30,7 +30,7 @@ A VDB can be configured to use a security-domain other than the Teiid default se
 </vdb>
 ----
 
-TIP: In existing installations an appropriate security domain may already be configured for use by administrative clients (typically for `admin-console`). If the admin connections (CLI and adminshell) are not secured, it is recommended that you secure that interface by executing `add-user.sh` script in the `bin/scripts` directory.
+TIP: In existing installations an appropriate security domain may already be configured for use by administrative clients (typically for `admin-console`). If the admin connections (CLI) are not secured, it is recommended that you secure that interface by executing `add-user.sh` script in the `bin/scripts` directory.
 
 == Built-in LoginModules
 

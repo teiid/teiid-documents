@@ -56,9 +56,9 @@ deploy /path/to/my.vdb --server-groups=main-server-group
 
 to deploy the VDB. Note that in domain mode, you need to either select a particular "server-group" or all available server groups are deployment options. Check out {{ book.asDocRoot }}/Admin+Guide[CLI documentation] for more general usage of the CLI.
 
-== AdminShell Deployment
+== AdminAPI Deployment
 
-Teiid provides a groovy based AdminShell scripting tool, which can be used to deploy a VDB. See the "deploy" method. Consult the link:AdminShell.adoc[AdminShell] documentation for more information. Note that using the AdminShell scripting, you can automate deployment of artifacts in your environment. When using AdminShell, in domain mode, the VDB is deployed to all the available servers.
+See the "deploy" method. Consult the link:../dev/AdminAPI.adoc[AdminAPI] documentation for more information.  When using AdminAPI, in domain mode, the VDB is deployed to all the available servers.
 
 == Admin API Deployment
 

@@ -10,7 +10,7 @@ Typically users create clusters to improve the performance of the system through
 * *Distributed Caching*: This is automatically done for you once you configure it as specified above. 
 * *Event distribution*: metadata and data modifications will be distributed to all cluster members.
 
-In the _Domain_ mode, the only way a user can deploy any artifacts is using either CLI or using the Admin API or Admin Shell. Copying VDB directly into the "deployments" directory is not supported.
+In the _Domain_ mode, the only way a user can deploy any artifacts is using either CLI or using the Admin API. Copying VDB directly into the "deployments" directory is not supported.
 
 [[HAProxy]]
 == HAProxy

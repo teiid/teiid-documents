@@ -9,5 +9,5 @@ Create a module under "jboss-as/modules" directory and define the translator nam
 
 == As JAR deployment
 
-For development time or quick deployment you can deploy the translator JAR using the CLI or AdminShell or admin console programs. When you deploy in JAR form the dependencies to Teiid java libraries and any other third party libraries must be defined under _META-INF/MANIFEST.MF_ file.
+For development time or quick deployment you can deploy the translator JAR using the CLI or AdminAPI or admin console programs. When you deploy in JAR form the dependencies to Teiid java libraries and any other third party libraries must be defined under _META-INF/MANIFEST.MF_ file.
 

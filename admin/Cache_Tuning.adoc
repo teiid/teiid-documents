@@ -3,7 +3,7 @@
 
 Caching can be tuned for cached results (including user query results and procedure results) and prepared plans (including user and stored procedure plans). Even though it is possible to disable or otherwise severely constrain these caches, this would probably never be done in practice as it would lead to poor performance.
 
-Cache statistics can be obtained through the Admin Console or Adminshell. The statistics can be used to help tune cache parameters and ensure a hit ratio.
+Cache statistics can be obtained through the Admin Console or the AdaminAPI. The statistics can be used to help tune cache parameters and ensure a hit ratio.
 
 Plans are currently fully held in memory and may have a significant memory footprint. When making extensive use of prepared statements and/or virtual procedures, the size of the plan cache may be increased proportionally to number of gigabytes intended for use by Teiid.
 

@@ -116,13 +116,12 @@ For example, setting the property in the vdb.xml:
 The result set cache can be cleared through the AdminAPI using the `clearCache` method. The expected cache key is "QUERY_SERVICE_RESULT_SET_CACHE".
 
 [source,java]
-.*Clearing the ResultSet Cache in AdminShell*
+.*Clearing the ResultSet Cache in AdminAPI*
 ----
-connectAsAdmin()
-clearCache("QUERY_SERVICE_RESULT_SET_CACHE")
+admin.clearCache("QUERY_SERVICE_RESULT_SET_CACHE")
 ----
 
-See the link:../admin/Administrators_Guide.adoc[Administrator’s Guide] for more on using the AdminAPI and AdminShell.
+See the link:../dev/AdminAPI.adoc[AdminAPI] for more on using the AdminAPI.
 
 == Limitations
 

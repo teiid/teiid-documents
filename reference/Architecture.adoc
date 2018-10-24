@@ -11,7 +11,7 @@ image:images/teiid-components.png[images/teiid-components.png]
 * **dashboard.war** - A web based dashboard generator.
 * **teiid-console** - A web based administrative and monitoring tool for Teiid, more details refer to link:../admin/Teiid_Console.adoc[Teiid Console]
 * **JDBC Driver** - JDBC Driver to connect to Teiid Server.
-* **adminshell** - A scripting based Monitor/Management Tool, more details refer to link:../admin/AdminShell.adoc[AdminShell]
+* **AdminAPI** - An API for performing management and monitoring:../dev/AdminAPI.adoc[AdminAPI]
 * **quickstarts** - A maven quickstart showing how to utilize Teiid.
 
 == Teiid Architecture
