@@ -130,8 +130,12 @@ WARNING: Strings are always fully held in memory. Do not set this value too high
 |true
 
 |_org.teiid.maxSessionBufferSizeEstimate_
-|Set to the desired size in bytes to limit the amount of buffer resources (heap and disk) consumed by a single session's tuple buffers and table structures.  This is based upon the memory footprint estimate and may not correspond exactly to heap or disk consumption.
+|Set to the desired size in bytes to limit the amount of buffer resources (heap and disk) consumed by a single session's tuple buffers and table structures.  This is based upon the heap memory footprint estimate and may not correspond exactly to heap and especially to disk consumption.  In general data in serialized from, whether on disk or in the fixed memory buffer, is between 3 and 8 times smaller than its heap representation which includes overhead such as additional object wrappers, lists, and less compact strings.
 |2^63 - 1
+
+|_org.teiid.enforceSingleMaxBufferSizeEstimate_
+|The system will determine an upper limit for a single set of managed batches/pages - which could be a table, result set, or intermediate result - from all of the available buffer manager memory and disk.  When this property is true an exception will be thrown when the limit is exceeded.  When this property is false a warning will be logged.  
+|true
 
 |_org.teiid.resultAnyPosition_
 |Set to true to allow a RESULT parameter to appear at in position in a procedure parameter list. 
