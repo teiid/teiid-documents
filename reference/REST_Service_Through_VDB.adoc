@@ -13,22 +13,22 @@ One can define below REST based properties on a Teiid virtual procedure, and whe
 |METHOD
 |HTTP Method to use
 |Yes
-|GET \| POST\| PUT \| DELETE
+|Method names including GET \| POST\| PUT \| DELETE
 
 |URI
 |URI of procedure
 |Yes
-|ex:/procedure
+|A relative path, which can include parameters as {param name}.  For example: /procedure/{param1} 
 
 |PRODUCES
 |Type of content produced by the service
-|no
-|xml \| json \| plain \| any text
+|No.  If not specified will be inferred from the procedure return value.
+|A comma separated list of the full MIME type(s), or one of xml, json, or plain
 
 |CHARSET
-|When procedure returns Blob, and content type text based, this character set to used to convert the data
-|no
-|US-ASCII \| UTF-8
+|When string/xml data is returned, this will be the encoding
+|No.  If not specified will default to the system default charset.
+|A valid Java charset name, such as UTF-8, US-ASCII, etc.
 |===
 
 The above properties must be defined with NAMESPACE `http://teiid.org/rest' on the metadata. Here is an example VDB that defines the REST based service.
@@ -69,9 +69,9 @@ The above properties must be defined with NAMESPACE `http://teiid.org/rest' on t
 </vdb>
 ----
 
-NOTE: <property name="{http://teiid.org/rest}auto-generate" value="true"/>, can be used to control the generation of the REST based WAR based on the VDB. This property along with at least one procedure with REST based extension metadata is required to generate a REST WAR file. Also, the procedure needs to return result set with single column of either XML, Clob, Blob or String. When PRODUCES property is not defined, this property is derived from the result column that is projected out.
+NOTE: <property name="{http://teiid.org/rest}auto-generate" value="true"/>, can be used to control the generation of the REST based WAR based on the VDB. This property along with at least one procedure with REST based extension metadata is required to generate a REST WAR file. Also, the procedure needs to return result set with single column of either XML, Clob, Blob or String. When PRODUCES property is not defined, this property is derived from the result column that is projected out.  The PRODUCES values xml, json, and plain are actually converted to the MIME types application/xml, application/json, and text/plain respectively.  You may enter the full MIME type if you need, such as text/html. 
 
-when the above VDB is deployed in the {{ book.asName }} + Teiid server, and if the VDB is valid and after the metadata is loaded then a REST war generated automatically and deployed into the local {{ book.asName }} server. The REST VDB is deployed with "\{vdb-name}_\{vdb-version}" context. The model name is prepended to uri of the service call. For example the procedure in above example can be accessed as
+When the above VDB is deployed in the {{ book.asName }} + Teiid server, and if the VDB is valid and after the metadata is loaded then a REST war generated automatically and deployed into the local {{ book.asName }} server. The REST VDB is deployed with "\{vdb-name}_\{vdb-version}" context. The model name is prepended to uri of the service call. For example the procedure in above example can be accessed as
 
 [source,sql]
 ----
