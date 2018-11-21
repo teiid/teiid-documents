@@ -5,13 +5,16 @@ Teiid strives to maintain consistency between all versions, but when necessary b
 
 You should consult the release notes for compatibility and configuration changes from each minor version that you are upgrading over.  This guide expands upon the release notes included in the kit to cover changes since 11.x.
 
-If possible you should make your migration to Teiid 12 by first using Teiid 11.2.  Teiid 12 requires Java 8 and WildFly 14.  See also link:Migration_Guide_From_Teiid_10.x.adoc[10 to 11 Migration Guide]
+If possible you should make your migration to Teiid 12 by first using Teiid 11.2.x.  Teiid 12 requires Java 8 and WildFly 14.  See also link:Migration_Guide_From_Teiid_10.x.adoc[10 to 11 Migration Guide]
 
 == Configuration Changes
 
 The default for org.teiid.longRanks changed to true.  This is more inline with other platforms.  You may switch it back to false for compatiblity or make appropriate updates to your views and other sql that may expect integer values to be returned.
 
 == Compatibility Changes
+
+The ability to specify a jgroups configuration file directly to Teiid Embedded has been removed.
+If you need Teiid Embedded to support clustering, please log an issue.
 
 == Kitting/Build Changes
 
