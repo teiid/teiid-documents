@@ -22,6 +22,8 @@ common table.
 
 NOTE: The WITH clause is also subject to optimization and it’s entries may not be processed if they are not needed in the subsequent query.
 
+NOTE: Common tables are aggressively inlined to enhance the possibility of pushdown.  If a common table is only referenced a single time in the main query it will likely be inlined.  In some situations, such as when using a common table to prevent n-many processing of a non-pushdown correlated subquery, you may need to include the no_inline or materialize hint.
+
 Examples:
 
 [source,sql]
