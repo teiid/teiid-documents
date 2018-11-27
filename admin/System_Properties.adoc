@@ -162,7 +162,7 @@ WARNING: Strings are always fully held in memory. Do not set this value too high
 |false
 
 |_org.teiid.relativeXPath_
-|Set to true to have XPath PATH values beginning with / and // in XMLTABLE always be relative to the context item (the same behavior as Oracle).  Set to false to have the path value to be evaluated from the root of the context item (the same behavior as PostgreSQL).
+|Set to true to have XPath PATH values beginning with / and // in XMLTABLE always be relative to the context item (the same behavior as Oracle).  Set to false to have / and // PATH values to be evaluated from the root of the context item (the same behavior as PostgreSQL).
 |true
 
 |===
