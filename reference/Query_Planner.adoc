@@ -589,15 +589,15 @@ The procedure planner is fairly simple.  It converts the statements in the proc
 
 === XQuery
 
-XQuery is eligible for specific link:XQuery_Optimization.adoc[optimizations]. Document projection is the most common optimization. It will be shown in the debug plan as an annotation. For example with the user query containing "xmltable('/a/b' passing doc columns x string path '@x', val string path '/.')", the debug plan would show a tree of the document that will effectively be used by the context and path XQuerys:
+XQuery is eligible for specific link:XQuery_Optimization.adoc[optimizations]. Document projection is the most common optimization. It will be shown in the debug plan as an annotation. For example with the user query containing "xmltable('/a/b' passing doc columns x string path '@x', val string path '.')", the debug plan would show a tree of the document that will effectively be used by the context and path XQuerys:
 
 [source,sql]
 ----
 MEDIUM XQuery Planning Projection conditions met for /a/b - Document projection will be used
-childelement(Q{}a)
-  childelement(Q{}b)
-    attributeattribute(Q{}x)
-      childtext()
-    childtext()
+child element(Q{}a)
+  child element(Q{}b)
+    attribute attribute(Q{}x)
+      child text()
+    child text()
 ----
 
