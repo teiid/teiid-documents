@@ -96,10 +96,6 @@ When specifying the importer property, it must be prefixed with "importer.". Exa
 |A case-insensitive regular expression that when matched against a fully qualified procedure name [2] will exclude it from import.  Applied after procedure names are retrieved.  Use a negative look-ahead (?!<inclusion pattern>).* to act as an inclusion filter.
 |null 
 
-|useFullSchemaName
-|When false, directs the importer to drop the source catalog/schema from the Teiid object name, so that the Teiid fully qualified name will be in the form of <model name>.<table name> - Note: when false this may lead to objects with duplicate names when importing from multiple schemas, which results in an exception.  This option does not affect the name in source property.
-|true
-
 |importKeys
 |true to import primary and foreign keys - NOTE foreign keys to tables that are not imported will be ignored
 |true
@@ -113,7 +109,7 @@ When specifying the importer property, it must be prefixed with "importer.". Exa
 |false
 
 |importApproximateIndexes
-|true to import approximate index information. See DatabaseMetaData.getIndexInfo [1]
+|true to import approximate index information. See DatabaseMetaData.getIndexInfo [1].  WARNING: setting to false may cause lengthy import times.
 |true
 
 |importProcedures
@@ -129,6 +125,18 @@ to a 0-argument Teiid function name_nextval.
 |like pattern string to use when importing sequences.  Null or % will match all.
 |null
 
+|useFullSchemaName
+|When false, directs the importer to use just the object name as the Teiid name - Note: when false importing from multiple schemas may lead to objects with duplicate names when importing from multiple schemas, which results in an exception.  When true the Teiid name will be formed using the catalog and schema names as directed by the useCatalogName and useQualifiedName properties.  This option does not affect the name in source property.
+|true
+
+|useQualifiedName
+|true will use name qualification for both the Teiid name and name in source as further refined by the useCatalogName and useFullSchemaName properties.  Set to false to disable all qualification for both the Teiid name and the name in source, which effectively ignores the useCatalogName and useFullSchemaName properties.  WARNING: when false this may lead to objects with duplicate names when importing from multiple schemas, which results in an exception.
+|true (rarely needs changed)
+
+|useCatalogName
+|true will use any non-null/non-empty catalog name as part of the name in source, e.g. "catalog"."schema"."table"."column", and in the Teiid runtime name if applicable. false will not use the catalog name in either the name in source nor the Teiid runtime name.  Only required to be set to false for sources that do not support a catalog concept, but return a non-null/non-empty catalog name in their metadata - such as HSQL.
+|true (rarely needs changed)
+
 |widenUnsignedTypes
 |true to convert unsigned types to the next widest type. For example SQL Server reports tinyint as an unsigned type. With this option enabled, tinyint would be imported as a short instead of a byte.
 |true
@@ -140,18 +148,6 @@ to a 0-argument Teiid function name_nextval.
 |quoteNameInSource
 |false will override the default and direct Teiid to create source queries using unquoted identifiers.
 |true
-
-|useProcedureSpecificName
-|true will allow the import of overloaded procedures (which will normally result in a duplicate procedure error) by using the unique procedur specific name as the Teiid name. This option will only work with JDBC 4.0 compatible drivers that report specific names.
-|false
-
-|useCatalogName
-|true will use any non-null/non-empty catalog name as part of the name in source, e.g. "catalog"."schema"."table"."column", and in the Teiid runtime name if useFullSchemaName is also true. false will not use the catalog name in either the name in source or the Teiid runtime name. Should be set to false for sources that do not fully support a catalog concept, but return a non-null catalog name in their metadata - such as HSQL.
-|true
-
-|useQualifiedName
-|true will use name qualification for both the Teiid name and name in source as dictated by the useCatalogName and useFullSchemaName properties.  Set to false to disable all qualification for both the Teiid name and the name in source, which effectively ignores the useCatalogName and useFullSchemaName properties.  Note: when false this may lead to objects with duplicate names when importing from multiple schemas, which results in an exception.
-|true 
 
 |useAnyIndexCardinality
 |true will use the maximum cardinality returned from DatabaseMetaData.getIndexInfo. importKeys or importIndexes needs to be enabled for this setting to have an effect. This allows for better stats gathering from sources that don’t support returning a statistical index.
