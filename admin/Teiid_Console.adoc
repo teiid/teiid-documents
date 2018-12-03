@@ -1,11 +1,15 @@
 
 = Teiid Console
 
-Teiid Console is a web based administrative and monitoring tool for Teiid. Teiid Console is extension of {{ book.asName }} console that is built using GWT based technologies. The Teiid kit does not include files for Teiid Console. This is separate download you can download from http://www.jboss.org/teiid/downloads[Teiid Downloads].
+Teiid Console is a web based administrative and monitoring tool for Teiid. Teiid Console is extension of {{ book.asName }} console that is built using GWT based technologies. There are two primary Teiid kits - an overlay for an existing WildFly install, and an all in one that includes the WildFly server and Teiid console.  
 
 == Installation
 
-Once you download the Teiid Console, unzip the contents over the {{ book.asName }} root directory and all the required files will be overlayed correctly to install Teiid Console. The Teiid Console, by default is secured, so you would need a management realm user id and password to log in. In the <install>/bin directory, use
+If you start with just the overlay, you may separately install the Teiid Console.  Unzip the contents over the {{ book.asName }} root directory and all the required files will be overlayed correctly to install Teiid Console.  See all http://teiid.io/teiid_runtimes/teiid_wildfly/downloads/[downloads] on teiid.io.
+
+== Management User 
+
+The Teiid Console, by default is secured, so you would need a management realm user id and password to log in. In the <install>/bin directory, use
 
 .*Adding a management user in linux*
 ----
@@ -17,25 +21,30 @@ Once you download the Teiid Console, unzip the contents over the {{ book.asName 
 add-user.bat
 ----
 
-then follow the prompts to create Management Realm user. Once you have created a management user, you need to use these credentials to log in to the Teiid Console. If you have started your {{ book.asName }} in default mode, then you can access the Teiid Console at http://localhost:9990/console/App.html[http://localhost:9990/console/App.html]. If you have altered the binding or port numbers then modify the address accordingly.
+then follow the prompts to create Management Realm user. Once you have created a management user, you need to use these credentials to log in to the Teiid Console. 
 
-== Profile View
+== Accessing The Console
 
-Profile view is for configuration. Click on "profile" on top right hand corner of the main console screen, to go to Profile View. You can click on "Teiid" in left navigation tree to go to Teiid configuration. There you have three choices
+If you have started your {{ book.asName }} in default mode, then you can access the Teiid Console at http://localhost:9990/console/App.html[http://localhost:9990/console/App.html]. If you have altered the binding or port numbers then modify the address accordingly.
+
+== Configuration
+
+Click on the configuration tab at the top of the main console screen.  Under Subsystems click on "Teiid" in left navigation tree. There you have four choices:
 
 * Query Engine - view and configure core Teiid engine properties.
 * Translators - view, add and remove the Translators configured in Teiid.
 * Transports - view, add and remove transports to the Teiid engine.
+* Logging - toggle command / audit / trace logging.
 
 image:images/webconsole2.png[webconsole2.png]
 
 Using this view you can change any configuration value of Teiid. Note that various different configuration properties are sub-divided into different tabs. You can click "Need Help" link on these pages to see the description of each field on the page.
 
-NOTE: *Server Restart* - Note that some properties require you to restart the server before they can take effect.
+NOTE: *Server Restart* - some properties require you to restart the server before they can take effect.
 
 == Runtime View
 
-Runtime view shows run time information about AS7 and Teiid subsystem. Runtime information about Teiid can be viewed by selecting "Virtual Databases" on left hand navigational tree.
+Runtime view shows runtime information about WildFly and the subsystems including Teiid. Click on the Runtime tab, select the Standalone Server (or whatever server is appropriate), select Subsystems, then Teiid.
 
 image:images/webconsole1.png[webconsole1.png]
 
