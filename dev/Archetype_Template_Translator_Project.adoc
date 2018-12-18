@@ -38,7 +38,7 @@ To create a custom translator project from the command line, you can use the fol
 mvn archetype:generate               \
   -DarchetypeGroupId=org.teiid.arche-types               \
   -DarchetypeArtifactId=translator-archetype          \
-  -DarchetypeVersion=10.0.0               \
+  -DarchetypeVersion=${archetypeVersion}               \
   -DgroupId=${groupId}                  \
   -DartifactId=translator-${translator-type}    \
   -Dpackage=${package}    \
@@ -63,7 +63,7 @@ mvn archetype:generate               \
   -Dversion     -  (user defined) the version that the new connector project pom.xml will be
   -Dtranslator-type -  (user defined) the translator type that's used by Teiid when mapping the physical source to the translator to use 
   -Dtranslator-name -  (user defined) the translator name thats used for name the java class names
-  -Dteiid-version   -  [optional] the Teiid version the connector will depend upon, if not specified will default 
+  -Dteiid-version   -  the Teiid version the connector will depend upon
 ----
 
 *********
@@ -77,7 +77,7 @@ mvn archetype:generate               \
 mvn archetype:generate                    \
   -DarchetypeGroupId=org.teiid.arche-types   \
   -DarchetypeArtifactId=translator-archetype  \
-  -DarchetypeVersion=10.0.0  \
+  -DarchetypeVersion={{ book.archetypeVersion }}  \
   -DgroupId=org.example  \
   -DartifactId=translator-type  \
   -Dpackage=org.example.translator.type    \

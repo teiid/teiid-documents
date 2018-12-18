@@ -39,7 +39,7 @@ To create a custom translator project from the command line, you can use the fol
 mvn archetype:generate                         \
   -DarchetypeGroupId=org.teiid.arche-types               \
   -DarchetypeArtifactId=udf-archetype          \
-  -DarchetypeVersion=10.0.0     \
+  -DarchetypeVersion=${archetypeVersion}     \
   -DgroupId=${groupId}                  \
   -DartifactId=${udf-artifact-id}   \
   -Dpackage=${package}    \
@@ -47,7 +47,8 @@ mvn archetype:generate                         \
   -Dudf-name=${functionName}  \
   -Dmethod-name=${methodName}      \
   -Dmethod-args=${methodArguments}   \
-  -Dreturn-type=${returnType}
+  -Dreturn-type=${returnType}      \
+  -Dteiid-version=${teiid-version}
 ----
 
 ********
@@ -67,6 +68,7 @@ mvn archetype:generate                         \
   -Dmethod-name         -  (user defined) the name of the method that will be configured in the model procedure
   -Dmethod-args         -  (user defined) the arguments the method will accept.  'Type name[, Type name[,...]]  Example:  'String arg0' or 'String arg0, integer arg1'
   -Dreturn-type         -  (user defined) the data type of the value returned by the method
+  -Dteiid-version   -  the Teiid version the connector will depend upon
 ----
 
 *********
@@ -80,7 +82,7 @@ mvn archetype:generate                         \
 mvn archetype:generate                           \
   -DarchetypeGroupId=org.teiid.arche-types               \
   -DarchetypeArtifactId=udf-archetype          \
-  -DarchetypeVersion=10.0.0     \
+  -DarchetypeVersion={{ book.archetypeVersion }}     \
   -DgroupId=org.example   \
   -DartifactId=udf-function    \
   -Dpackage=org.example.function    \
@@ -88,7 +90,8 @@ mvn archetype:generate                           \
   -Dudf-name=Function \
   -Dmethod-name=function      \
   -Dmethod-args='String arg1'   \
-  -Dreturn-type=String
+  -Dreturn-type=String    \
+  -Dteiid-version=${teiid-version}
  
 ----
 

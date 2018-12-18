@@ -39,7 +39,7 @@ To create a custom preparser project from the command line, you can use the foll
 mvn archetype:generate           \
   -DarchetypeGroupId=org.teiid.arche-types               \
   -DarchetypeArtifactId=preparser-archetype          \
-  -DarchetypeVersion=10.0.0     \
+  -DarchetypeVersion=${archetypeVersion}     \
   -DgroupId=${groupId}                  \
   -DartifactId=${preparser-artifact-id} \
   -Dpackage=${package}    \
@@ -61,7 +61,7 @@ mvn archetype:generate           \
   -Dpackage     -  (user defined) the package structure where the java, module and resource files will be created
   -Dversion     -  (user defined) the version that the new connector project pom.xml will be
   -Dclass-name      -  (user defined) the class name to give the new user preparser, will become the Class Name 
-  -Dteiid-version       -  Optional, defaults to 9.0.0.Final
+  -Dteiid-version   -  the Teiid version the connector will depend upon  
 ----
 
 *********
@@ -75,7 +75,7 @@ mvn archetype:generate           \
 mvn archetype:generate             \
   -DarchetypeGroupId=org.teiid.arche-types               \
   -DarchetypeArtifactId=preparser-archetype          \
-  -DarchetypeVersion=10.0.0    \
+  -DarchetypeVersion={{ book.archeTypeVersion }}    \
   -DgroupId=org.example   \
   -DartifactId=preparser-mypreparser    \
   -Dpackage=org.example.mypreparser    \

@@ -1,7 +1,11 @@
 
 = Custom Metadata Repository
 
-If above provided link:../reference/Metadata_Repositories.adoc[metadata facilities] are not sufficient then a developer can extend the _MetadataRepository_ class provided in the _org.teiid.api_ jar to plug-in their own metadata facilities into the Teiid engine. For example, a user can write a metadata facility that is based on reading data from a database or a JCR repository. See link:Setting_up_the_build_environment.adoc[Setting up the build environment] to start development. For Example:
+If the provided link:../reference/Metadata_Repositories.adoc[metadata facilities] are not sufficient then a developer can extend the _MetadataRepository_ class provided in the _org.teiid.api_ jar to plug-in their own metadata facilities into the Teiid engine. For example, a user can write a metadata facility that is based on reading data from a database or a JCR repository. 
+
+See the arche-type for creating a https://github.com/teiid/teiid-tools/tree/master/arche-types/metadatarepository-archetype[custom metadata repository].
+
+Or see link:Setting_up_the_build_environment.adoc[setting up the build environment] to start development. For Example:
 
 [source,java]
 .*Sample Java Code*
@@ -44,7 +48,6 @@ Once the JAR file has been built, it needs to be deployed in the {{ book.asName 
     </resources>
     <dependencies>
         <module name="javax.api"/>
-        <module name="javax.resource.api"/>
         <module name="org.teiid.common-core"/>
         <module name="org.teiid.teiid-api" />
     </dependencies>

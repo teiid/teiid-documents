@@ -37,7 +37,7 @@ To create a custom connector project from the command line, you can use the foll
 mvn archetype:generate       \
   -DarchetypeGroupId=org.teiid.arche-types                \
   -DarchetypeArtifactId=connector-archetype          \
-  -DarchetypeVersion=10.0.0               \
+  -DarchetypeVersion=${archetypeVersion}               \
   -DgroupId=${groupId}                  \
   -DartifactId=connector-${connector-type}  \
   -Dpackage=${package}    \
@@ -62,7 +62,7 @@ mvn archetype:generate       \
   -Dconnector-type  -  (user defined) the type of the new connector project, used in defining the package name
   -Dconnector-name  -  (user defined) the name of the new connector project, used as the prefix to creating the java class names
   -Dvendor-name     -  name of the Vendor for the data source, updates the rar
-  -Dteiid-version   -  [optional] the Teiid version the connector will depend upon
+  -Dteiid-version   -  the Teiid version the connector will depend upon
 
 
 *********
@@ -75,7 +75,7 @@ mvn archetype:generate       \
 mvn archetype:generate                    \
   -DarchetypeGroupId=org.teiid.arche-types   \
   -DarchetypeArtifactId=connector-archetype  \
-  -DarchetypeVersion=10.0.0  \
+  -DarchetypeVersion={{ book.archeTypeVersion }}  \
   -DgroupId=org.example  \
   -Dpackage=org.example.adapter.type \
   -DartifactId=adapter-type \
