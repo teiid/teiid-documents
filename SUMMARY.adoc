@@ -101,9 +101,7 @@
 
 . link:dev/Developers_Guide.adoc[Developer's Guide]
 .. link:dev/Developing_JEE_Connectors.adoc[Developing JEE Connectors]
-... link:dev/Connector_Environment_Setup.adoc[Connector Environment Setup]
-.... link:dev/Build_Environment.adoc[Build Environment]
-.... link:dev/Archetype_Template_Connector_Project.adoc[Archetype Template Connector Project]
+... link:dev/Archetype_Template_Connector_Project.adoc[Archetype Template Connector Project]
 ... link:dev/Implementing_the_Teiid_Framework.adoc[Implementing the Teiid Framework]
 .... link:dev/ra.xml_file_Template.adoc[ra.xml file Template]
 ... link:dev/Packaging_the_Adapter.adoc[Packaging the Adapter]

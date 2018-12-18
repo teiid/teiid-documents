@@ -7,27 +7,40 @@ For maven users add the following as your dependencies:
 
 [source,java]
 ----
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.teiid</groupId>
+                <artifactId>teiid-bom</artifactId>
+                <version>${teiid-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>org.teiid</groupId>
             <artifactId>teiid-api</artifactId>
-            <version>${teiid-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.teiid</groupId>
+            <artifactId>teiid-resource-spi</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.teiid</groupId>
             <artifactId>teiid-common-core</artifactId>
-            <version>${teiid-version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.resource</groupId>
             <artifactId>connector-api</artifactId>
-            <version>${version.connector.api}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>        
 ----
 
-Where the $\{teiid-version} property should be set to the expected version, such as {{ book.fullVersionNumber }}. You can find Teiid artifacts in the http://community.jboss.org/docs/DOC-15169[JBoss maven repository]. The ${version.connector.api} version last used was 1.5.
+Where the $\{teiid-version} property should be set to the expected version, such as {{ book.fullVersionNumber }}. You can find Teiid artifacts in the Maven Central Repository.
 

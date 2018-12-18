@@ -19,3 +19,16 @@ If you need Teiid Embedded to support clustering, please log an issue.
 == Kitting/Build Changes
 
 The AdminShell has been removed from the build.  AdminShell has releases between 10.x and 11.x are effectively identical.  You may still use one of those versions if you wish to continue using AdminShell.  Alternatively you may use the AdminAPI directly from Java or with the scripting language binding of your choice.
+
+Dependencies on JEE have been pushed to non-core modules of Teiid.  This should not affect anyone using a base Teiid distribution.  However if you have done custom development it may affect you.  The changes include:
+
+* The `org.teiid.resource.spi` package was moved from the teiid-api jar to the org.teiid:teiid-resource-spi jar.  Poms will need to be updated accordingly.  There is no change needed for jboss modules as the teiid-resource-spi artifact is already included in org.jboss.teiid.api.
+
+* ResourceException has been replaced by TranslatorException on Teiid connection interfaces such as SalesforceConnection.
+
+* The file translator resource adapter translator and connector logic were refactored to use a Teiid VirtualFile interface rather than directly expose both a Java File and VFS.  If you were developing based upon FileConnection, please use VirtualFileConnection org.teiid.connectors:file-api instead.
+
+* `org.teiid.translator.WSConnection` has been moved into org.teiid.connector:translator-ws `org.teiid.translator.ws.WSConnection`
+
+* The arche-type version compatible with Teiid 12.0.0 has been bumped to 12.0.0.
+
