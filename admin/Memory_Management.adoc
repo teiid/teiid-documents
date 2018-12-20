@@ -10,65 +10,85 @@ Execute following command on CLI to find all possible settings on _BufferManager
 /subsystem=teiid:read-resource
 ----
 
-All the properties that start with "buffer-service" used to configure _BufferManager_. Shown below are the CLI write attribute commands to change _BufferManager’s_ settings (all show the default setting):
+All the properties that start with "buffer-manager" used to configure _BufferManager_. Shown below are the CLI write attribute commands to change _BufferManager’s_ settings (all show the default setting):
 
 [source,java]
 ----
-/subsystem=teiid:write-attribute(name=buffer-service-use-disk,value=true)
-/subsystem=teiid:write-attribute(name=buffer-service-encrypt-files,value=false)
-/subsystem=teiid:write-attribute(name=buffer-service-processor-batch-size,value=256)
-/subsystem=teiid:write-attribute(name=buffer-service-max-open-files,value=64)
-/subsystem=teiid:write-attribute(name=buffer-service-max-file-size,value=2048)
-/subsystem=teiid:write-attribute(name=buffer-service-max-processing-kb,value=-1)
-/subsystem=teiid:write-attribute(name=buffer-service-max-reserve-kb,value=-1)
-/subsystem=teiid:write-attribute(name=buffer-service-max-buffer-space,value=51200)
-/subsystem=teiid:write-attribute(name=buffer-service-max-inline-lobs,value=true)
-/subsystem=teiid:write-attribute(name=buffer-service-memory-buffer-space,value=-1)
-/subsystem=teiid:write-attribute(name=buffer-service-max-storage-object-size,value=8388608)
-/subsystem=teiid:write-attribute(name=buffer-service-memory-buffer-off-heap,value=false)
+/subsystem=teiid:write-attribute(name=buffer-manager-inline-lobs,value=true)
+/subsystem=teiid:write-attribute(name=buffer-manager-processor-batch-size,value=256)
+
+/subsystem=teiid:write-attribute(name=buffer-manager-heap-max-processing-kb,value=-1)
+/subsystem=teiid:write-attribute(name=buffer-manager-heap-max-reserve-mb,value=-1)
+
+/subsystem=teiid:write-attribute(name=buffer-manager-storage-enabled,value=true)
+/subsystem=teiid:write-attribute(name=buffer-manager-storage-max-object-size-kb,value=8196)
+
+/subsystem=teiid:write-attribute(name=buffer-manager-fixed-memory-buffer-space-mb,value=-1)
+/subsystem=teiid:write-attribute(name=buffer-manager-fixed-memory-buffer-off-heap,value=false)
+
+/subsystem=teiid:write-attribute(name=buffer-manager-disk-max-space-mb,value=51200)
+/subsystem=teiid:write-attribute(name=buffer-manager-disk-encrypt-files,value=false)
+/subsystem=teiid:write-attribute(name=buffer-manager-disk-max-open-files,value=64)
+/subsystem=teiid:write-attribute(name=buffer-manager-disk-max-file-size-mb,value=2048)
 ----
 
 NOTE: It is not recommend that to change these properties until there is an understanding of the properties (elaborated below) and any potential issue that is being experienced.
 
 Some of _BufferManager’s_ properties are described below. Note that the performance tuning advice is highlighted in info boxes.
 
-*max-reserve-kb* (default -1) - setting determines the total size in kilobytes of batches that can be held by the _BufferManager_ in memory. This number does not account for persistent batches held by soft (such as index pages) or weak references. The default value of -1 will auto-calculate a typical max based upon the max heap available to the VM. The auto-calculated value assumes a 64bit architecture and will limit buffer usage to 40% of the first gigabyte of memory beyond the first 300 megabytes (which are assumed for use by the AS and other Teiid purposes) and 50% of the memory beyond that. The additional caveat here is that if the size of the memory buffer space is not specified, then it will effectively be allocated out of the max reserve space. A small adjustment is also made to the max reserve to account for batch tracking overhead.
-
-NOTE: With default settings and an 8GB VM size[\*], then _max-reserve-kb_ will at a max use: (((1024-300) \* 0.4) + (7 \* 1024 \* 0.5)) = 4373.6 MB or 4,478,566 KB - before considering the overhead for persistent batches or the fixed memory buffer.  The fixed memory buffer will by default use 40% of that initial calculation.  Once additional overhead is removed, the actual max reserve kb will be around 2.3 GB.
-
-[\*] Teiid will use the max memory reported by the runtime. This value may be lower than the Xmx setting used as a VM argument as the VM will adjust for necessary overheads.  
-
-The _BufferManager_ automatically triggers the use of a canonical value cache if enabled when more than 25% of the reserve is in use. This can dramatically cut the memory usage in situations where similar value sets are being read through Teiid, but does introduce a lookup cost. If you are processing small or highly similar datasets through Teiid, and wish to conserve memory, you should consider enabling link:System_Properties.adoc[value caching].
-
-WARNING: Memory consumption can be significantly more or less than the nominal target depending upon actual column values and whether link:System_Properties.adoc[value caching] is enabled. Large non built-in type objects can exceed their default size estimate. If an out of memory errors occur, then set a lower _max-reserve-kb_ value. Also note that source lob values are held by memory references that are not cleared when a batch is persisted. With heavy lob usage you should ensure that buffers of other memory associated with lob references are appropriately sized.
-
-*max-processing-kb* (default -1) - setting determines the total size in kilobytes of batches that can be guaranteed for use by _one_ active plan and may be in addition to the memory held based on _max-reserve-kb_. Typical minimum memory required by Teiid when all the active plans are active is _#active-plans*max-processing-kb_. The default value of -1 will auto-calculate a typical max based upon the max heap available to the VM and max active plans. The auto-calculated value assumes a 64bit architecture and will limit nominal processing batch usage to less than 10% of total memory.
-
-NOTE: With default settings including 20 active-plans and an 8GB VM size, then _max-processing-kb_ will be: (.07 * 8 * 1024)/20^.8 = 537.4 MB/11 = 52.2 MB or 53,453 KB per plan. This implies a nominal range between 0 and 1060 MB that may be reserved with roughly 53 MB per plan. You should be cautious in adjusting max-processing-kb on your own. Typically it will not need adjusted unless you are seeing situations where plans seem memory constrained with low performing large sorts.
-
-*max-file-size* (default 2GB) - Each intermediate result buffer, temporary LOB, and temporary table is stored in its own set of buffer files, where an individual file is limited to _max-file-size_ megabytes. Consider increasing the storage space available to all such files by increasing _max-buffer-space,_ if your installation makes use of internal materialization, makes heavy use of SQL/XML, or processes large row counts.
+== General Properties ==
 
 *processor-batch-size* (default 256) - Specifies the target row count of a batch of the query processor. A batch is used to represent both linear data stores, such as saved results, and temporary table pages. Teiid will adjust the processor-batch-size to a working size based upon an estimate of the data width of a row relative to a nominal expectation of 2KB. The base value can be doubled or halved up to three times depending upon the data width estimation. For example a single small fixed width (such as an integer) column batch will have a working size of *processor-batch-size * 8* rows. A batch with hundreds of variable width data (such as string) will have a working size of *processor-batch-size / 8* rows. Any increase in the processor batch size beyond the first doubling should be accompanied with a proportional increase in the max-storage-object-size to accommodate the larger storage size of the batches.
 
 NOTE: Additional considerations are needed if large VM sizes and/or datasets are being used. Teiid has a non-negligible amount of overhead per batch/table page on the order of 100-200 bytes. 
 If you are dealing with datasets with billions of rows and you run into memory issues, then after examining the link:Diagnosing_Issues.adoc[root cause] if you see that it's solely related to memory held by a significant number of batch references, then consider increasing the _processor-batch-size_ to force the allocation of larger batches and table pages. A general guideline would be to double processor-batch-size for every doubling of the effective heap for Teiid beyond 4 GB - processor-batch-size = 512 for an 8 GB heap, processor-batch-size = 1024 for a 16 GB heap, etc.
 
-*max-storage-object-size* (default 8288608 or 8MB) - The maximum size of a buffered managed object in bytes and represents the individual batch page size. If the _processor-batch-size_ is increased and/or you are dealing with extremely wide result sets (several hundred columns), then the default setting of 8MB for the _max-storage-object-size_ may be too low. The inline-lobs setting also can increase the size of batches containing small lobs. The sizing for _max-storage-object-size_ is in terms of serialized size, which will be much closer to the raw data size than the Java memory footprint estimation used for _max-reserved-kb_. _max-storage-object-size_ should not be set too large relative to _memory-buffer-space_ since it will reduce the performance of the memory buffer. The memory buffer supports only 1 concurrent writer for each _max-storage-object-size_ of the _memory-buffer-space_. Note that this value does not typically need to be adjusted unless the processor-batch-size is adjusted, in which case consider adjusting it in proportion to the increase of the processor-batch-size.
+*inline-lobs* (default true) - Small lobs will be stored in their batch directly rather than managed out of band.  Should generally be left as true to minimize the fetch costs of small lobs.
 
-NOTE: If exceptions occur related to missing batches and "_TEIID30001 Max block number exceeded_" is seen in the server log, then increase the max-storage-object-size to support larger storage objects.  Alternatively you could make the processor-batch-size smaller.
+== Heap Properties ==
 
-*memory-buffer-space* (default -1) - This controls the amount of on or off heap memory allocated as byte buffers for use by the Teiid buffer manager measured in megabytes. This setting defaults to -1, which automatically determines a setting based upon whether it is on or off heap and the value for _max-reserve-kb_. The memory buffer supports only 1 concurrent writer for each _max-storage-object-size_ of the _memory-buffer-space_. Any additional space serves as a cache for the serialized for of batches.
+The amount of estimated heap in direct object references to batches / pages held by the _BufferManager_ can be adjusted.
 
-NOTE: When left at the default setting the calculated memory buffer space will be approximately 40% of the _max-reserve-kb_ size. If the memory buffer is on heap and the _max-reserve-kb_ is automatically calculated, then the memory buffer space will be subtracted out of the effective _max-reserve-kb_. If the memory buffer is off heap and the _max-reserve-kb_ is automatically calculated, then it’s size will be reduced slightly to allow for effectively more working memory in the vm.
+*heap-max-reserve-mb* (default -1) - setting determines the total size in kilobytes of batches that can be held by the _BufferManager_ in memory. This number does not account for persistent batches held by soft (such as index pages) or weak references. The default value of -1 will auto-calculate a typical max based upon the max heap available to the VM. The auto-calculated value assumes a 64bit architecture and will limit buffer usage to 40% of the first gigabyte of memory beyond the first 300 megabytes (which are assumed for use by the AS and other Teiid purposes) and 50% of the memory beyond that. The additional caveat here is that if the size of the memory buffer space is not specified, then it will effectively be allocated out of the max reserve space. A small adjustment is also made to the max reserve to account for batch tracking overhead.
 
-*memory-buffer-off-heap* (default false) - Take advantage of the _BufferManager_ memory buffer to access system memory without allocating it to the heap. Setting _memory-buffer-off-heap_ to "true" will allocate the Teiid memory buffer off heap. Depending on whether your installation is dedicated to Teiid and the amount of system memory available, this may be preferable to on-heap allocation. The primary benefit is additional memory usage for Teiid without additional garbage collection tuning. This becomes especially important in situations where more than 32GB of memory is desired for the VM. Note that when using off-heap allocation, the memory must still be available to the java process and that setting the value of _memory-buffer-space_ too high may cause the VM to swap rather than reside in memory. With large off-heap buffer sizes (greater than several gigabytes) you may also need to adjust VM settings.
+NOTE: With default settings and an 8GB VM size[\*], then _heap-max-reserve-mb_ will be: (((1024-300) \* 0.4) + (7 \* 1024 * 0.5)) = 4373.6 MB  before considering the overhead for persistent batches or the fixed memory buffer.  The fixed memory buffer will by default use 40% of that initial calculation.  Once additional overhead is removed, the actual heap-max-reserve-mb will be around 2624 MB.
 
-NOTE: *Oracle/Sun VM* - the relevant VM settings are MaxDirectMemorySize and UseLargePages. For example adding: '-XX:MaxDirectMemorySize=12g -XX:+UseLargePages' to the VM process arguments would allow for an effective allocation of approximately an 11GB Teiid memory buffer (the *memory-buffer-space* setting) accounting for any additional direct memory that may be needed by the AS or applications running in the AS.
+[*] Teiid will use the max memory reported by the runtime. This value may be lower than the Xmx setting used as a VM argument as the VM will adjust for necessary overheads.  
 
-== Disk Usage
+The _BufferManager_ automatically triggers the use of a canonical value cache if enabled when more than 25% of the reserve is in use. This can dramatically cut the memory usage in situations where similar value sets are being read through Teiid, but does introduce a lookup cost. If you are processing small or highly similar datasets through Teiid, and wish to conserve memory, you should consider enabling link:System_Properties.adoc[value caching].
 
-*max-buffer-space* (default -1) - For table page and result batches the buffer manager will have a limited number of files that are dedicated to a particular storage size. However, as mentioned in the installation, creation of Teiid lob values (for example through SQL/XML) will typically create one file per lob once the lob exceeds the allowable in memory size of 32KB. In heavy usage scenarios, consider pointing the buffer directory on a partition that is routinely defragmented. 
-By default Teiid will use up to 50GB of disk space. This is tracked in terms of the number of bytes written by Teiid. For large data sets, you may need to increase the _max-buffer-space_ setting.
+WARNING: Memory consumption can be significantly more or less than the nominal target depending upon actual column values and whether link:System_Properties.adoc[value caching] is enabled. Large non built-in type objects can exceed their default size estimate. If an out of memory errors occur, then set a lower _heap-max-reserve-mb_ value. Also note that source lob values are held by memory references that are not cleared when a batch is persisted. With heavy lob usage you should ensure that buffers of other memory associated with lob references are appropriately sized.
+
+*heap-max-processing-kb* (default -1) - setting determines the total size in kilobytes of batches that can be guaranteed for use by _one_ active plan and may be in addition to the memory held based on _heap-max-reserve-mb_. Typical minimum memory required by Teiid when all the active plans are active is _#active-plans*heap-max-processing-kb_. The default value of -1 will auto-calculate a typical max based upon the max heap available to the VM and max active plans. The auto-calculated value assumes a 64bit architecture and will limit nominal processing batch usage to less than 10% of total memory.
+
+NOTE: With default settings including 20 active-plans and an 8GB VM size, then _heap-max-processing-kb_ will be: (.07 \* 8 * 1024)/20^.8 = 537.4 MB/11 = 52.2 MB or 53,453 KB per plan. This implies a nominal range between 0 and 1060 MB that may be reserved with roughly 53 MB per plan. You should be cautious in adjusting heap-max-processing-kb. Typically it will not need adjusted unless you are seeing situations where plans seem memory constrained with low performing large sorts.
+
+== Storage Properties ==
+
+The tiers of memory below the heap hold the batches / pages in a denser serialized columnar form.  The lowest level is disk storage.  Fronting disk is a fixed memory buffer, which can be allocated on or off heap, that acts as a serialization buffer and cache for reads/writes to disk.
+
+*storage-enabled* (default true) - If disabled, batches / pages that are pushed to the storage layer are instead held in memory.  Also all temporary lob space will be allocated from memory as well.  Generally only useful in constrained or testing situations.    
+
+*storage-max-object-size-kb* (default 8196 or 8MB) - The maximum size of a buffered managed object in bytes and represents the individual batch page size. If the _processor-batch-size_ is increased and/or you are dealing with extremely wide result sets (several hundred columns), then the default setting of 8MB for the _max-storage-object-size_ may be too low. The inline-lobs setting also can increase the size of batches containing small lobs. The sizing for _max-storage-object-size_ is in terms of serialized size, which will be much closer to the raw data size than the Java memory footprint estimation used for _max-reserved-mb_. _max-storage-object-size_ should not be set too large relative to _memory-buffer-space_ since it will reduce the performance of the memory buffer. The memory buffer supports only 1 concurrent writer for each _max-storage-object-size_ of the _memory-buffer-space_. Note that this value does not typically need to be adjusted unless the processor-batch-size is adjusted, in which case consider adjusting it in proportion to the increase of the processor-batch-size.
+
+NOTE: If exceptions occur related to missing batches and "_TEIID30001 Max block number exceeded_" is seen in the server log, then increase the storage-max-object-size-kb to support larger storage objects.  Alternatively you could make the processor-batch-size smaller. 
+
+=== Fixed Memory Properties ===
+
+*fixed-memory-buffer-space-mb* (default -1) - This controls the amount of on or off heap memory allocated as byte buffers for use by the Teiid buffer manager measured in megabytes. This setting defaults to -1, which automatically determines a setting based upon whether it is on or off heap and the value for _heap-max-reserve-mb_. The memory buffer supports only 1 concurrent writer for each _storage-max-object-size-mb_ of the _fixed-memory-buffer-space-mb_. Any additional space serves as a cache for the serialized for of batches.
+
+NOTE: When left at the default setting the calculated memory buffer space will be approximately 40% of the _heap-max-reserve-mb_ size. If the memory buffer is on heap and the _heap-max-reserve-mb_ is automatically calculated, then the memory buffer space will be subtracted out of the effective _heap-max-reserve-mb_. If the memory buffer is off heap and the _heap-max-reserve-mb_ is automatically calculated, then it’s size will be reduced slightly to allow for effectively more working memory in the vm.
+
+*fixed-memory-buffer-off-heap* (default false) - Setting _fixed-memory-buffer-off-heap_ to "true" will allocate the Teiid memory buffer off heap. Depending on whether your installation is dedicated to Teiid and the amount of system memory available, this may be preferable to on-heap allocation. The primary benefit is additional memory usage for Teiid without additional garbage collection tuning. This becomes especially important in situations where more than 32GB of memory is desired for the VM. Note that when using off-heap allocation, the memory must still be available to the java process and that setting the value of _memory-buffer-space_ too high may cause the VM to swap rather than reside in memory. With large off-heap buffer sizes (greater than several gigabytes) you may also need to adjust VM settings.
+
+NOTE: *Oracle/Sun VM* - the relevant VM settings are MaxDirectMemorySize and UseLargePages. For example adding: '-XX:MaxDirectMemorySize=12g -XX:+UseLargePages' to the VM process arguments would allow for an effective allocation of approximately an 11GB Teiid memory buffer (the *fixed-memory-buffer-space-mb* setting) accounting for any additional direct memory that may be needed by the AS or applications running in the AS.
+
+=== Disk Properties ===
+
+*disk-max-space-mb* (default 51200) - For table page and result batches the buffer manager will have a limited number of files that are dedicated to a particular storage size. However, as mentioned in the installation, creation of Teiid lob values (for example through SQL/XML) will typically create one file per lob once the lob exceeds the allowable in memory size of 32KB. In heavy temporary lob usage scenarios, consider pointing the buffer directory on a partition that is routinely defragmented. 
+By default Teiid will use up to 50GB of disk space. This is tracked in terms of the number of bytes written by Teiid. For large data sets, you may need to increase the _disk-max-space-mb_ setting.
+
+*disk-max-file-size-mb* (default 2048) - Each intermediate result buffer, temporary LOB, and temporary table is stored in its own set of buffer files, where an individual file is limited to _disk-max-file-size-mb_ megabytes. Consider increasing the storage space available to all such files by increasing _disk-max-space-mb,_ if your installation makes use of internal materialization, makes heavy use of SQL/XML, or processes large row counts.
 
 == Limitations
 
@@ -76,7 +96,7 @@ It’s also important to keep in mind that Teiid has memory and other hard limit
 
 1.  The buffer manager has a max addressable space of 16 terabytes - but due to fragmentation you’d expect that the max usable would be less. This is the maximum amount of storage available to Teiid for all temporary lobs, internal tables, intermediate results, etc.
 2.  The max size of an object (batch or table page) that can be serialized by the buffer manager is 32 GB - but you should approach that limit (the default limit is 8 MB). A batch/page is set or rows that are flowing through Teiid engine and is dynamically scaled based upon the estimated data width so that the expected memory size is consistent.
-3.  The max-processing-kb and max-reserve-kb are based upon memory footprint estimations and not exact sizes - actual memory usage and garbage collection cycles are influenced by a lot of other factors.
+3.  The heap-max-processing-kb and heap-max-reserve-mb are based upon memory footprint estimations and not exact sizes - actual memory usage and garbage collection cycles are influenced by a lot of other factors.
 4.  The maximum row count for any interface, JDBC/ODBC/OData, is 2^31-1 rows. 
 
 Handling a source that has tera/petabytes of data doesn't by itself impact Teiid in any way. What matters is the processing operations that are being performed and/or how much of that data do we need to store on a temporary basis in Teiid. With a simple forward-only query, Teiid will return a petabytes of data with minimal memory usage.
@@ -101,5 +121,5 @@ If an out of memory error occurs it is best to first capture a heap dump to dete
 
 == Common Configuration Scenarios
 
-In addition to scenarios outlined above, a common scenario would be to minimize the amount of on heap space consumed by Teiid.  This can be done by moving the memory buffer to off heap with the memory-buffer-off-heap setting or by restricting the max-reserve-kb setting.  
-Reducing the max-processing-kb setting should generally not be necessary, unless there is a need to severly restrict the heap usage beyond the max-reserve-kb setting.
+In addition to scenarios outlined above, a common scenario would be to minimize the amount of on heap space consumed by Teiid.  This can be done by moving the memory buffer to off heap with the fixed-memory-buffer-off-heap setting or by restricting the heap-max-reserve-mb setting.  
+Reducing the heap-max-processing-kb setting should generally not be necessary, unless there is a need to severely restrict the heap usage beyond the heap-max-reserve-mb setting.
