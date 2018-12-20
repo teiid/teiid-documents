@@ -5,12 +5,12 @@
 * Quantified compare SOME subqueries are always turned into an equivalent IN predicate or comparison against an aggregate value. e.g. col > SOME (select col1 from table) would become col > (select min(col1) from table)
 * Uncorrelated EXISTs and scalar subquery that are not pushed to the source can be pre-evaluated prior to source command formation.
 * Correlated subqueries used in DETELEs or UPDATEs that are not pushed as part of the corresponding DELETE/UPDATE will cause Teiid to perform row-by-row compensating processing. 
+* The MJ hint directs the optimizer to use a traditional, semijoin, or antisemijoin merge join if possible. The DJ is the same as the MJ hint, but additionally directs the optimizer to use the subquery as the independent side of a dependent join if possible. 
 This will only happen if the affected table has a primary key. If it does not, then an exception will be thrown.
-* WHERE or HAVING clause IN, Quantified Comparison, Scalar Subquery Compare, and EXISTs predicates can take the MJ (merge join), DJ (dependent join), or NO_UNNEST (no unnest) hints appearing just before the subquery. 
-The MJ hint directs the optimizer to use a traditional, semijoin, or antisemijoin merge join if possible. The DJ is the same as the MJ hint, but additionally directs the optimizer to use the subquery as the independent side of a dependent join if possible. 
+* WHERE or HAVING clause IN, Quantified Comparison, Scalar Subquery Compare, and EXISTs predicates can take the MJ (merge join), DJ (dependent join), or NO_UNNEST (no unnest) hints appearing just before the subquery.
 The NO_UNNEST hint, which supersedes the other hints, will direct the optimizer to leave the subquery in place.
 * SELECT scalar subqueries can take the MJ (merge join) or NO_UNNEST (no unnest) hints appearing just before the subquery. The MJ hint directs the optimizer to use a traditional or semijoin merge join if possible. 
-The NO_UNNEST hint, which supercedes the other hints, will direct the optimizer to leave the subquery in place.
+The NO_UNNEST hint, which supersedes the other hints, will direct the optimizer to leave the subquery in place.
 
 [source,sql]
 .*Merge Join Hint Usage*
@@ -33,6 +33,6 @@ SELECT col1 from tbl where col2 IN /*+ NO_UNNEST */ (SELECT col1 FROM tbl2)
 * The system property *org.teiid.subqueryUnnestDefault* controls whether the optimizer will by default unnest subqueries during rewrite. 
 If true, then most non-negated WHERE or HAVING clause EXISTS or IN subquery predicates can be converted to a traditional join.
 * The planner will always convert to antijoin or semijoin variants if costing is favorable. Use a hint to override this behavior needed.
-* EXISTs and scalar subqueries that are not pushed down, and not converted to merge joins, are implicitly limited to 1 and 2 result rows respectively.
+* EXISTs and scalar subqueries that are not pushed down, and not converted to merge joins, are implicitly limited to 1 and 2 result rows respectively via a limit.
 * Conversion of subquery predicates to nested loop joins is not yet available.
 
