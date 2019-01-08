@@ -134,8 +134,8 @@ WARNING: Strings are always fully held in memory. Do not set this value too high
 |2^63 - 1
 
 |_org.teiid.enforceSingleMaxBufferSizeEstimate_
-|The system will determine an upper limit for a single set of managed batches/pages - which could be a table, result set, or intermediate result - from all of the available buffer manager memory and disk.  When this property is true an exception will be thrown when the limit is exceeded.  When this property is false a warning will be logged.  
-|true
+|The system will determine an upper limit from all available memory for a single set of managed batches/pages - which could be a table, result set, or intermediate result - from all of the available buffer manager memory and disk.  When this property is true an exception will be thrown when the limit is exceeded.  When this property is false a TEIID31292 warning will be logged, which can be a good indicator of a query or environment that should be reviewed. 
+|false
 
 |_org.teiid.resultAnyPosition_
 |Set to true to allow a RESULT parameter to appear at in position in a procedure parameter list. 
