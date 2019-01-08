@@ -1,0 +1,65 @@
+
+= VDB Reuse
+
+VDBs may reuse other VDBs deployed in the same server instance by using an "import-vdb" declaration in the link:xml_deployment_mode.adoc[vdb.xml file].  An imported VDB can have it’s tables and procedures referenced by views and procedures in the importing VDB as if they are part of the VDB.  Imported VDBs are required to exist before an importing VDB may start.  If an imported VDB is undeployed, then any importing VDB will be stopped.
+
+Once a VDB is imported it is mostly operationally independent from the base VDB.  Only cost related metadata may be updated for an object from an imported VDB in the scope of the importing VDB.  All other updates must be made through the original VDB, but they will be visible in all imported VDBs.  Even materialized views are separately maintained for an imported VDB in the scope of each importing VDB.
+
+[source,xml]
+.*Example reuse VDB XML*
+----
+<vdb name="reuse" version="1">
+
+    <property name="imported-model.visible" value="false"/>
+
+    <import-vdb name="common" version="1" import-data-policies="false"/>
+
+    <model visible="true" type="VIRTUAL" name="new-model">
+         <metadata type = "DDL"><![CDATA[
+              CREATE VIEW x (
+                y varchar
+                ) AS 
+                  select * from imported-model.tbl;
+         ]]>
+         </metadata>
+    </model>
+</vdb>
+----
+
+In the above example the reuse VDB will have access to all of the models defined in the common VDB and adds in the "new-model".  
+The visibility of imported models may be overridden via boolean vdb properties using the key model.visible - shown above as imported-model.visible with a value of false.
+
+An imported VDB includes all of its models and may not conflict with any model, data policy, or source already defined in the importing VDB.  The import logic though does recognize imported VDBs that perform nothing but imports and will instead import only distinct imports.
+
+[source,xml]
+.*Common Example*
+----
+<code>
+<vdb name="OneVDB" version="1">
+    <description>One VDB</description>
+
+    <import-vdb name=CommonVDB" version="1"/>
+    <import-vdb name="OtherVDB" version="1"/>
+
+</code>
+
+<code>
+<vdb name="TwoVDB" version="1">
+    <description>TwoVDB</description>
+
+    <import-vdb name=CommonVDB" version="1"/>
+    <import-vdb name="SomeOtherVDB" version="1"/>
+
+</code>
+
+<code>
+<vdb name="ThirdVDB" version="1">
+    <description>Third VDB</description>
+
+    <import-vdb name=OneVDB" version="1"/>
+    <import-vdb name="TwoVDB" version="1"/>
+
+</code>
+----
+
+In the above example CommonVDB will only be imported a single time by ThirdVDB, since the import logic recognizes that the importing VDBs perform nothing but imports themselves.
