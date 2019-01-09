@@ -9,7 +9,13 @@ If possible you should make your migration to Teiid 12 by first using Teiid 11.2
 
 == Configuration Changes
 
+=== System Properties
+
 The default for org.teiid.longRanks changed to true.  This is more inline with other platforms.  You may switch it back to false for compatibility or make appropriate updates to your views and other sql that may expect integer values to be returned.
+
+The default for org.teiid.enforceSingleMaxBufferSizeEstimate changed to false.  Proactively limiting the size of a single operation does not match well to many Teiid usage scenarios, which could run just fine as long as enough disk was allocated.  The default behavior will no selective kill sessions that are consuming the most amount of memory in response to running out of disk.  It cannot be guaranteed that the current operation for with the disk running out will succeed however - in those circumstances it would be advisable to engage proactive limits.
+
+=== Buffer Manager
 
 The configuration property names for the buffer manager have been refined to greater consistency.
 
@@ -74,11 +80,35 @@ If you need Teiid Embedded to support clustering, please log an issue.
 
 == Kitting/Build Changes
 
+=== AdminShell
+
 The AdminShell has been removed from the build.  AdminShell has releases between 10.x and 11.x are effectively identical.  You may still use one of those versions if you wish to continue using AdminShell.  Alternatively you may use the AdminAPI directly from Java or with the scripting language binding of your choice.
+
+=== WildFly/JEE Restructuring
+
+The maven coordinates for the full source, wildfly, and combined wildfly artifacts have changed.  They were under org.teiid:teiid with classifiers that began with wildfly-.  For example, instead of:
+
+----
+<groupId>org.teiid.wildfly</groupId>
+<artifactId>teiid-wildfly</artifactId>
+<classifier>server</classifier>
+<type>zip</type>
+----
+
+Use:
+
+----
+<groupId>org.teiid</groupId>
+<artifactId>teiid</artifactId>
+<classifier>wildfly-server</classifier>
+<type>zip</type>
+----
+
+Similarly all of the org.teiid:connector-xxx artifacts have moved to org.teiid.wildfly:connector-xxx.  The Teiid embedded examples will be updated to reflect this change.
 
 Dependencies on JEE have been pushed to non-core modules of Teiid.  This should not affect anyone using a base Teiid distribution.  However if you have done custom development it may affect you.  The changes include:
 
-* The `org.teiid.resource.spi` package was moved from the teiid-api jar to the org.teiid:teiid-resource-spi jar.  Poms will need to be updated accordingly.  There is no change needed for jboss modules as the teiid-resource-spi artifact is already included in org.jboss.teiid.api.
+* The `org.teiid.resource.spi` package was moved from the teiid-api jar to the org.teiid.wildfly:teiid-resource-spi jar.  Poms will need to be updated accordingly.  There is no change needed for jboss modules as the teiid-resource-spi artifact is already included in org.jboss.teiid.api.
 
 * ResourceException has been replaced by TranslatorException on Teiid connection interfaces such as SalesforceConnection.
 
@@ -87,4 +117,3 @@ Dependencies on JEE have been pushed to non-core modules of Teiid.  This should 
 * `org.teiid.translator.WSConnection` has been moved into org.teiid.connector:translator-ws `org.teiid.translator.ws.WSConnection`
 
 * The arche-type version compatible with Teiid 12.0.0 has been bumped to 12.0.0.
-
