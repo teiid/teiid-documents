@@ -89,18 +89,18 @@ The AdminShell has been removed from the build.  AdminShell has releases between
 The maven coordinates for the full source, wildfly, and combined wildfly artifacts have changed.  They were under org.teiid:teiid with classifiers that began with wildfly-.  For example, instead of:
 
 ----
-<groupId>org.teiid.wildfly</groupId>
-<artifactId>teiid-wildfly</artifactId>
-<classifier>server</classifier>
+<groupId>org.teiid</groupId>
+<artifactId>teiid</artifactId>
+<classifier>wildfly-server</classifier>
 <type>zip</type>
 ----
 
 Use:
 
 ----
-<groupId>org.teiid</groupId>
-<artifactId>teiid</artifactId>
-<classifier>wildfly-server</classifier>
+<groupId>org.teiid.wildfly</groupId>
+<artifactId>teiid-wildfly</artifactId>
+<classifier>server</classifier>
 <type>zip</type>
 ----
 
