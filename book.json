@@ -1,11 +1,11 @@
 {
     "variables" : {
-        "versionNumber" : "12.0",
-        "fullVersionNumber": "12.0.0",
-        "asVersionNumber" :  "WildFly 11.0.0",
-        "asFullVersionNumber" :  "11.0.0.Final",
+        "versionNumber" : "12.1",
+        "fullVersionNumber": "12.1.0",
+        "asVersionNumber" :  "WildFly 14.0.1",
+        "asFullVersionNumber" :  "14.0.1.Final",
         "asName" :  "WildFly",
-        "copyrightYear" :  "2018",
+        "copyrightYear" :  "2019",
         "copyrightHolder" :  "Red Hat, Inc.",
         "javaVersionUrl" : "http://docs.oracle.com/javase/8",
         "asDocRoot" : "https://docs.jboss.org/author/display/WFLY/Documentation",
