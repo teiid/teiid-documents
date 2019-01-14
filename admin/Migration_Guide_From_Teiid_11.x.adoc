@@ -117,3 +117,5 @@ Dependencies on JEE have been pushed to non-core modules of Teiid.  This should 
 * `org.teiid.translator.WSConnection` has been moved into org.teiid.connector:translator-ws `org.teiid.translator.ws.WSConnection`
 
 * The arche-type version compatible with Teiid 12.0.0 has been bumped to 12.0.0.
+
+* Teiid Embedded usage will need to include the org.teiid:cache-infinispan dependency, otherwise it will default to non-concurrent cache.  If you are already setting the CacheFactory on the EmbeddedConfiguration, no action is needed.  The EmbeddedConfiguration InfinispanConfigFile methods have been deprecated - in the future the user/platform will be fully responsible for wiring in the CacheFactory.

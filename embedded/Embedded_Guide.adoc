@@ -60,7 +60,7 @@ If you are trying run Teiid Embedded as a Maven based project, the `runtime`, `a
 </dependency>
 
 <dependency>
-    <groupId>org.teiid.connectors</groupId>
+    <groupId>org.teiid.wildfly.connectors</groupId>
     <artifactId>connector-SOURCE</artifactId>
 </dependency>
 ----
@@ -70,6 +70,8 @@ You would include all translator/connectors needed by your project.
 ==== Optional Libraries
 
 If you include a dependency to org.teiid:teiid-data-quality, the osdq data quality functions will be available for use with Embedded.
+
+If you include a dependency to org.teiid:cache-infinispan, Infinispan will be used for caching.
 
 If you do not need XML type support including XPath and SQL/XML functions like XMLTABLE, then you may also choose to exclude saxon, xom, and nux from usage by the runtime by using excludes:
 
@@ -97,11 +99,7 @@ If you do not need XML type support including XPath and SQL/XML functions like X
         </exclusion>
     </exclusions>
 </dependency>
----
-
-=== Vulnerable Libraries
-
-Prior to Teiid 8.13/8.12.2 when using the remote JDBC transport, Teiid embedded could be susceptible to deserialization exploits if it also included most versions of common-collections, older version of groovy, or spring in the classpath - see also http://www.infoq.com/news/2015/11/commons-exploit[this posting] for more details on the affected libraries.
+----
 
 == VDB Deployment
 
