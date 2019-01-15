@@ -14,10 +14,10 @@ ENV TEIID_VERSION {{book.fullVersionNumber}}
 
 # Download and unzip Teiid server
 RUN cd $JBOSS_HOME \
-    && curl -O https://oss.sonatype.org/service/local/repositories/releases/content/org/teiid/teiid/$TEIID_VERSION/teiid-$TEIID_VERSION-wildfly-dist.zip \
-    && bsdtar -xf teiid-$TEIID_VERSION-wildfly-dist.zip \
+    && curl -O https://oss.sonatype.org/service/local/repositories/releases/content/org/teiid/teiid/$TEIID_VERSION/teiid-wildfly-$TEIID_VERSION-dist.zip \
+    && bsdtar -xf teiid-wildfly-$TEIID_VERSION-dist.zip \
     && chmod +x $JBOSS_HOME/bin/*.sh \
-    && rm teiid-$TEIID_VERSION-wildfly-dist.zip
+    && rm teiid-wildfly-$TEIID_VERSION-dist.zip
     
 VOLUME ["$JBOSS_HOME/standalone", "$JBOSS_HOME/domain"]
 
