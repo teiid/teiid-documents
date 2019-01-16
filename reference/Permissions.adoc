@@ -1,5 +1,11 @@
 
 = Permissions
+:toc: manual
+:toc-placement: preamble
+
+Permissions or grants control access to data in several ways.  There are simple access restrictions to READ, UPDATE, etc. down to a column level - note that the column or table metadata won't be visible to the user in JDBC/ODBC unless at user can read at least a single column.
+
+You may also use permissions to filter and mask results, and constrain/check update values.
 
 == User Query Permissions
 
@@ -72,6 +78,15 @@ A permission against a fully qualified table/view/procedure may also specify a c
 A condition is applied conjunctively to update/delete/select where clauses against the affected resource. Those queries will therefore only ever be effective against the subset of rows that pass the condition, i.e. "SELECT * FROM TBL WHERE blah *AND condition*". The condition will be present regardless of how the table/view is used in the query, whether via a union, join, etc.
 
 Inserts and updates against physical tables affected by a condition are further validated so that the insert/change values must pass the condition (evaluate to true) for the insert/update to succeed - this is effectively the same a SQL constraint. This will happen for all styles of insert/update - insert with query expression, bulk insert/update, etc. Inserts/updates against views are not checked with regards to the constraint. You may disable the insert/update constraint check by setting the condition constraint flag to false. This is typically only needed in circumstances when the condition cannot always be evaluated. However disabling the condition as a constraint simply drops the condition from consideration when logically evaluating the constraint. Any other condition constraints will still be evaluated.
+
+[source,xml]
+.Example non-constraint condition
+----
+  <permission>
+    <resource-name>modelName.tblName</resource-name>
+    <condition constraint="false">column1=user()</condition>
+  </permission>
+----
 
 Across multiple applicable roles if more than one condition applies to the same resource, the conditions will be accumulated disjunctively via OR, i.e. "(condition1) *OR* (condition2) …". Therefore granting a permission with the condition "true" will allow users in that role to see all rows of the given resource.
 
