@@ -1,4 +1,6 @@
 = Diagnosing Issues
+:toc: manual
+:toc-placement: preamble
 
 You may experience situations where you incur performance issues or unexpected results/exceptions.  The rest of this chapter will focus on query planning and processing issues.  Configuration or operational issues related to the container are typically more isolated and easier to resolve.  
 
