@@ -6,7 +6,7 @@ admin-console, etc. The example shown below uses the CLI tool, as this works in 
 
 Execute the following command using the {{ book.asDocRoot }}/Admin+Guide#AdminGuide-RunningtheCLI[CLI] once you connected to the Server. Make sure you provide the correct URL and user credentials. Add any additional properties required by the connector by duplicating the "connection-definitions" command below. Edit the JNDI name to match the JNDI name you used in VDB.
 
-[source,java]
+[source]
 ----
 batch
 /subsystem=resource-adapters/resource-adapter=mongodb/connection-definitions=mongodbDS:add(jndi-name="java:/mongoDS", class-name=org.teiid.resource.adapter.mongodb.MongoDBManagedConnectionFactory, enabled=true, use-java-context=true)
@@ -23,7 +23,7 @@ All the properties that are defined on the RAR file are
 
 |RemoteServerList
 |A comma separated list of server locations. Each location can contain an optional port, of the format host:port
-|
+|true
 |
 
 |Username
@@ -65,4 +65,17 @@ To find out all the properties that are supported by this MongoDB Connector exec
 ----
 
 TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in *"<jboss-install>/docs/teiid/datasources/mongodb"* directory under "resource-adapters" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
+
+== Transaction support
+
+With Teiid 12.1 running against a MongoDB server 4+ in a replica set, you may optionally use LocalTransaction transaction support.  Doing so through the CLI requires the creation of a new resource adapter.
+
+[source]
+----
+batch
+/subsystem=resource-adapters/resource-adapter=mongodbLocal:add(transaction-support=LocalTransaction, module=org.jboss.teiid.resource-adapter.mongodb:main
+/subsystem=resource-adapters/resource-adapter=mongodbLocal/connection-definitions=mongodbLocal:add(jndi-name="java:/mongoDS", class-name=org.teiid.resource.adapter.mongodb.MongoDBManagedConnectionFactory, enabled=true, use-java-context=true)
+...
+runbatch
+----
 
