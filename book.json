@@ -2,8 +2,8 @@
     "variables" : {
         "versionNumber" : "12.1",
         "fullVersionNumber": "12.1.0",
-        "asVersionNumber" :  "WildFly 14.0.1",
-        "asFullVersionNumber" :  "14.0.1.Final",
+        "asVersionNumber" :  "WildFly 15.0.1",
+        "asFullVersionNumber" :  "15.0.1.Final",
         "asName" :  "WildFly",
         "copyrightYear" :  "2019",
         "copyrightHolder" :  "Red Hat, Inc.",
