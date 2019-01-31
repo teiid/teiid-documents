@@ -268,7 +268,6 @@
 ... link:reference/Loopback_Translator.adoc[Loopback Translator]
 ... link:reference/Microsoft_Excel_Translator.adoc[Microsoft Excel Translator]
 ... link:reference/MongoDB_Translator.adoc[MongoDB Translator]
-... link:reference/Object_Translator.adoc[Object Translator]
 ... link:reference/OData_Translator.adoc[OData Translator]
 ... link:reference/OData_V4_Translator.adoc[OData V4 Translator]
 ... link:reference/Swagger_Translator.adoc[Swagger Translator]
