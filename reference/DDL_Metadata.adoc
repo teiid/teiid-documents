@@ -380,7 +380,7 @@ Using the below syntax, user can define a
 * Source Procedure ("CREATE FOREIGN PROCEDURE") - a stored procedure in source
 * Source Function ("CREATE FOREIGN FUNCTION") - A function that is supported by the source, where Teiid will pushdown to source instead of evaluating in Teiid engine
 * Virtual Procedure ("CREATE VIRTUAL PROCEDURE") - Similar to stored procedure, however this is defined using the Teiid’s Procedure language and evaluated in the Teiid’s engine.
-* Function/UDF ("CREATE VIRTUAL FUNCTION") - A user defined function, that can be defined using the Teiid procedure language or can have the implementation defined using a link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc#_metadata_without_designer[JAVA Class].
+* Function/UDF ("CREATE VIRTUAL FUNCTION") - A user defined function, that can be defined using the Teiid procedure language or can have the implementation defined using a link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[JAVA Class].
 
 image:images/create_procedure.jpg[images/create_procedure.jpg]
 
@@ -473,7 +473,7 @@ Note that NULL-ON-NULL, VARARGS, and all of the AGGREGATE properties are also va
 
 Note that virtual functions defined using the Teiid procedure language cannot be aggregate functions.
 
-NOTE: *Providing the JAR libraries* - If you have defined a UDF (virtual) function without a Teiid procedure deinition, then it must be accompanied by its implementation in Java. To configure the Java library as dependency to the VDB, see link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc#_metadata_without_designer[Support for User-Defined Functions]
+NOTE: *Providing the JAR libraries* - If you have defined a UDF (virtual) function without a Teiid procedure definition, then it must be accompanied by its implementation in Java. To configure the Java library as dependency to the VDB, see link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[Support for User-Defined Functions]
 
 *PROCEDURE OPTIONS*:(the below are well known options, any others properties defined will be considered as extension metadata)
 

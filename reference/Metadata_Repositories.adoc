@@ -1,7 +1,7 @@
 
 = Metadata Repositories
 
-Traditionally the metadata for a Virtual Database is built by Teiid Designer and supplied to Teiid engine through a VDB archive file. This VDB file contains .INDEX metadata files. By default they are loaded by a _MetadataRepository_ with the name _INDEX_. Other built-in metadata repositories include the following:
+Traditionally the metadata for a Virtual Database is supplied to Teiid engine through a VDB archive file. A number of _MetadataRepository_ instances contribute to the loading of the metadata.  Built-in metadata repositories include the following:
 
 == NATIVE
 

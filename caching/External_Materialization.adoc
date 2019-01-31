@@ -263,7 +263,7 @@ Description Status table:
 
 === 2. Creation of View and Materialized Table
 
-Define the View and its transformation either using the Designer or directly in DDL in a VDB's model. Then provide the extension properties on the View as defined in <<View Options, View Options>>
+Define the View and its transformation a VDB's model/schema. Then provide the extension properties on the View as defined in <<View Options, View Options>>
 
 Set the `MATERIALIZED` to 'TRUE' and the `MATERIALIZED_TABLE` point to a target table is necessary for external materialization, `UPDATABLE` is optional, set it to 'TRUE' if want the external materialized view be updatable, this must be set to true, if you want to issue incremental eager updates to the view. Define the TTL to define the load/refresh semantics.
 
@@ -300,13 +300,6 @@ When a view refresh type is defined as "EAGER", the very first time the contents
 link:../reference/sysadmin_schema.adoc#_sysadmin_updatematview[SYSADMIN.updateMatView] can be used to perform a eager incremental update based on any criteria provided. If you know that certain data points in the source system were changed after last full refresh of the materialized view, you can call this procedure with a criteria based on the view that cover those changed values, and this procedure will update only those affected rows in the materialized table instead of doing full snapshot update. This can save lot of time and resources and also keeps your view materialization cache upto date with source system changes. 
 
 Note: This script is not invoked automatically by Teiid, as the source update events may be occurring outside of Teiid. This procedure needs to be invoked by user, when he/she knows that there is change in the source systems. When CDC technologies like Debezium is used (new feature coming..), this procedure can be automatically invoked to keep the the View contents fresh.  
-
-
-== Define Materialized View in Designer
-
-* Create materialized views and corresponding physical materialized target tables in Designer. This can be done through setting the materialized and target table manually, or by selecting the desired views, right clicking, then selecting Modeling->"Create Materialized Views"
-* Generate the DDL for your physical model materialization target tables. This can be done by selecting the model, right clicking, then choosing Export->"Metadata Modeling"->"Data Definition Language (DDL) File". This script can be used to create the desired schema for your materialization target on whatever source you choose.
-
 
 == Appendix-1: DDL for creating MatView Status Table
 

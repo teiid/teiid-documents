@@ -115,7 +115,7 @@ Some helpful utilities for working with `Condition` objects are provided in the 
 
 == Runtime Metadata
 
-Teiid uses a library of metadata, known as "runtime metadata" for each virtual database that is deployed in Teiid. The runtime metadata is a subset of metadata as defined by models in the Teiid models that compose the virtual database.  While builing your VDB in the Designer, you can define what called "Extension Model", that defines any number of arbitary properties on a model and its objects. At runtime, using this runtime metadata interface, you get access to those set properties defined during the design time, to define/hint any execution behavior.
+Teiid uses a library of metadata, known as "runtime metadata" for each virtual database that is deployed in Teiid. The runtime metadata is a subset of metadata as defined by models in the Teiid models that compose the virtual database.  Extension metadata may be associated via the OPTIONS clause.  At runtime, using this runtime metadata interface, you get access to those set properties defined during the design time, to define/hint any execution behavior.
 
 Translator gets access to the `RuntimeMetadata` interface at the time of `Excecution` creation. Translators can access runtime metadata by using the interfaces defined in `org.teiid.metadata` package.  This package defines API representing a Schema, Table, Columns and Procedures, and ways to navigate these objects.
 

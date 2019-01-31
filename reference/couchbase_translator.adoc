@@ -9,12 +9,6 @@ The Couchbase Translator, known by the type name _couchbase_, exposes querying 
 
 The Couchbase Translator supports INSERT, UPSERT, UPDATE, DELETE, SELECT and bulk INSERT statements with a restrictive set of capabilities including: count(*), comparison predicates, Order By, Group By, LIMIT etc. Consider a custom extension or create an enhancement request should your usage require additional capabilities.
 
-If you are using Designer Tooling, to create VDB then:
-
-* Create/use a Teiid Designer Model project
-* Use "Teiid Connection >> Source Model" importer, create a new JBoss Data Source connection profile, specifying the JNDI name for resource adapter configured link:../admin/Couchbase_Data_Sources.adoc[Couchbase Data Sources] and use _couchbase_ as translator type. The source model will be created when you finish with this importer.
-* Create a VDB and deploy into Teiid Server and use either jdbc, odbc, odata etc to query.
-
 == JCA Resource Adapter
 
 The Teiid specific Couchbase Resource Adapter should be used with this translator. See link:../admin/Couchbase_Data_Sources.adoc[Couchbase Data Sources] for connecting to a Couchbase cluster.

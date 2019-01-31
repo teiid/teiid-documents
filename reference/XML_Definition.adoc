@@ -1,7 +1,7 @@
 
 = XML Definition
 
-Data roles are defined inside the `vdb.xml` file (inside the .vdb Zip archive under META-INF/vdb.xml) if you used Designer. The "vdb.xml" file is checked against the schema file `vdb-deployer.xsd`, which can be found in the kit under docs/teiid/schema. This example will show a sample "vdb.xml" file with few simple data roles.
+Data roles are defined inside the `vdb.xml` file (inside the .vdb Zip archive under META-INF/vdb.xml). The "vdb.xml" file is checked against the schema file `vdb-deployer.xsd`, which can be found in the kit under docs/teiid/schema. This example will show a sample "vdb.xml" file with few simple data roles.
 
 For example, if a VDB defines a table "TableA" in schema "modelName" with columns (column1, column2) - note that the column types do not matter. And we wish to define three roles "RoleA", "RoleB", and "admin" with following permissions:
 

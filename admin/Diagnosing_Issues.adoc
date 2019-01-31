@@ -28,8 +28,6 @@ If you haven't done so already, you should start by familiarizing yourself with 
 
 The link:../reference/Query_Plans.adoc[final processor plan] is generally what is meant when referring to by “the query plan”.  The plan can be viewed in an XML or a plain text format.
 
-Designer is typically the first place to look at query plans from the query execution view.  It's easiest to look at using Designer or an XML aware viewer as the plan trees can get large.
-
 You can also use Teiid Extensions or link:../client-dev/SHOW_Statement.adoc[SQL statements] to get the plan:
 
 [source,sql]

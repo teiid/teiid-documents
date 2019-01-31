@@ -45,19 +45,11 @@ The below shows an example of a VDB, that shows a exposing a Excel Document.
 
 "connection-jndi-name" in above represents connection to Excel document. The Excel translator does NOT provide a connection to the Excel Document. For that purpose, Teiid uses File JCA adapter that provides a connection to Excel. To define such connector, see link:../admin/File_Data_Sources.adoc[File Data Sources] or see an example in "<jboss-as>/docs/teiid/datasources/file". Once you configure both of the above, you can deploy them to Teiid Server and access the Excel Document using JDBC/ODBC/OData protocol.
 
-== Designer VDB
-
-If you are using Designer Tooling, to create Excel based VDB
-
-* Create/use a Teiid Designer Model project
-* Use "Teiid Connection >> Source Model" importer, create File Data Source using data source creation wizard and use _excel_ as translator in the importer. Based on the Excel document relevant relational tables will be created.
-* Create a VDB and deploy into Teiid Server and and access the Excel Document using JDBC/ODBC/OData protocol.
-
 NOTE: *"Headers in Document?"* - If you have headers in the Excel document, you can guide the import process to select the cell headers as the column names in the table creation process. See "Import Properties" section below on defining the "import" properties.
 
 === Import Properties
 
-Import properties guide the schema generation part during the deployment of the VDB. This can be used in a native import or while using "Teiid Connection >> Source Model" in Teiid Designer.
+Import properties guide the schema generation part during the deployment of the VDB. This can be used in a native import.
 
 |=== 
 |Property Name |Description |Default
@@ -133,7 +125,7 @@ The below shows an example table that is defined using the Extension Metadata Pr
 
 NOTE: *"Extended capabilities using ROW_ID column"* - If you define column, that has extension metadata property "CELL_NUMBER" with value "ROW_ID", then that column value contains the row information from Excel document. You can mark this column as Primary Key. You can use this column in SELECT statements with a restrictive set of capabilities including: comparison predicates, IN predicates and LIMIT. All other columns can *not* be used as predicates in a query.
 
-TIP: User does not have to depend upon "source metadata" import, or Designer tool import to create the schema represented by Excel document, they can manually create a source table and add the appropriate extension properties to make a fully functional model. If you introspect the schema model created by the import, it would look like above.
+TIP: User does not have to depend upon "source metadata" import to create the schema represented by Excel document, they can manually create a source table and add the appropriate extension properties to make a fully functional model. If you introspect the schema model created by the import, it would look like above.
 
 With 10.3+ the Excel translator does support updates with a couple of limitations:
 * The ROW_ID can not be directly modified or used as an insert value.

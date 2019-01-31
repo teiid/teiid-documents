@@ -7,8 +7,6 @@ A Translator is the heart of the TCA and acts as the bridge logic between Teiid 
 
 TIP: The TCA is not the same as the JCA, the JavaEE Connector Architecture, although the TCA is designed for use with JCA resource adapters.
 
-TIP: The import capabilities of Teiid Translators can be utilized in Teiid Designer via the Teiid Connection Importer.
-
 A Translator is typically paired with a particular JCA resource adapter. In instances where pooling, environment dependent configuration management, advanced security handling, etc. are not needed, then a JCA resource adapter is not needed. The configuration of JCA ConnectionFactories for needed resource adapters is not part of this guide, please see the Teiid Administrator Guide and the kit examples for configuring resource adapters for use in {{ book.asName }}.
 
 Translators can have a number of configurable properties. These are broken down into execution properties, which determine aspects of how data is retrieved, and import settings, which determine what metadata is read for import.

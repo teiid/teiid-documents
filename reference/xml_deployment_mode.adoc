@@ -197,10 +197,12 @@ The optional metadata element defines the metadata repository type and optional 
 
 * _type_ 
 
-The metadata repository type. Defaults to INDEX for Designer VDBs and NATIVE for non-Designer VDB source models. For all other deployments/models a value must be specified. Built-in types include DDL, NATIVE, INDEX, and DDL-FILE. The usage of the raw text varies with the by type. NATIVE and INDEX (only for Designer VDBs) metadata repositories do not use the raw text. The raw text for DDL is expected to be be a series of DDL statements that define the schema. Note that, since <model> element means schema, you only use link:DDL_Metadata.adoc[Schema Object DDL].  
-Rest of DDL statements can *NOT* be used in the artifact mode, as those constructs are defined by the XML file. Like <Model> element is similar to "CREATE SCHEMA ...". Due to backwards compatibility Teiid supports both modes as both have their advantages. 
+The metadata repository type. Defaults to NATIVE for source models. For all other deployments/models a value must be specified. Built-in types include DDL, NATIVE, and DDL-FILE. The usage of the raw text varies with the by type. NATIVE metadata repositories do not use the raw text. The raw text for DDL is expected to be be a series of DDL statements that define the schema. Note that, since <model> element means schema, you only use link:DDL_Metadata.adoc[Schema Object DDL].  
+The rest of the DDL statements can *NOT* be used in the artifact mode, as those constructs are defined by the XML file. Like <Model> element is similar to "CREATE SCHEMA ...". Due to backwards compatibility Teiid supports both modes as both have their advantages. 
 
-DDL-FILE (used only with zip deployments) is similar to DDL, except that the raw text specifies an absolute path relative to the vdb root of the location of a file containing the DDL. See link:./Metadata_Repositories.adoc[Metadata Repositories] for more information and examples
+DDL-FILE (used only with zip deployments) is similar to DDL, except that the raw text specifies an absolute path relative to the vdb root of the location of a file containing the DDL. See link:./Metadata_Repositories.adoc[Metadata Repositories] for more information and examples.
+
+The INDEX type from Designer VDBs is deprecated.
 
 === Translator Element
 

@@ -74,7 +74,7 @@ Based on types of executions you are supporting, the following methods need to b
 
 == Metadata
 
-Override and implement the method `getMetadataProcessor()`, if you want to expose the metadata about the source for use in VDBs. This defines the tables, column names, procedures, parameters, etc. for use in the query engine. This method is used by Designer tooling when the Teiid Connection importer is used. A sample MetadataProcessor may look like
+Override and implement the method `getMetadataProcessor()`, if you want to expose the metadata about the source for use in VDBs. This defines the tables, column names, procedures, parameters, etc. for use in the query engine. A sample MetadataProcessor may look like
 
 [source,java]
 ----
@@ -116,7 +116,7 @@ If your MetadataProcessor needs external properties that are needed during the i
 
 Note the category type. The configuration property defined in the previous section is different from this one. Configuration properties define the runtime behavior of translator, where as "IMPORT" properties define the metadata import behavior, and aid in controlling what metadata is exposed by your translator.
 
-These properties can be automatically injected through "import" properties set through Designer when using the "Teiid Connection" importer or the properties can be defined under the <model> construct in the vdb.xml file, like
+These properties can be automatically injected through "import" properties that can be defined under the <model> construct in the vdb.xml file, like
 
 [source,xml]
 ----

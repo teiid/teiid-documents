@@ -15,7 +15,7 @@ The use of the other `EventDistributor` methods to manually distribute other eve
 
 == Runtime Metadata Updates
 
-Runtime updates via system procedures and DDL statements are by default ephemeral. They are effective across the cluster only for the currently running vdbs. With the next vdb start the values will revert to whatever is stored in the vdb. Updates may be made persistent though by configuring a `org.teiid.metadata.MetadataRepository`. An instance of a `MetadataRepository` can be installed via VDB file. In Designer based VDB, you can edit the vdb.xml file in the META-INF directory or use VDB file as below.
+Runtime updates via system procedures and DDL statements are by default ephemeral. They are effective across the cluster only for the currently running vdbs. With the next vdb start the values will revert to whatever is stored in the vdb. Updates may be made persistent though by configuring a `org.teiid.metadata.MetadataRepository`. An instance of a `MetadataRepository` can be installed via the vdb.xml file in the META-INF directory or use a VDB file as below.
 
 [source,xml]
 ----

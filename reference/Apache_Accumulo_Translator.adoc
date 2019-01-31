@@ -22,7 +22,7 @@ Apache Accumulo is distributed key value store with unique data model. It allows
 
 image:images/accumulo.png[accumulo.png]
 
-Based on above information, one can define a schema representing Accumulo table structures in Teiid using DDL or using Teiid Designer with help of metadata extension properties defined below. Since no data type information is defined on the columns, by default all columns are considered as string data types. However, during modeling of the schema, one can use various other data types supported through Teiid to define a data type of column, that user wishes to expose as.
+Based on above information, one can define a schema representing Accumulo table structures in Teiid using DDL with help of metadata extension properties defined below. Since no data type information is defined on the columns, by default all columns are considered as string data types. However, during modeling of the schema, one can use various other data types supported through Teiid to define a data type of column, that user wishes to expose as.
 
 Once this schema is defined and exposed through VDB in a Teiid database, and link:../admin/Accumulo_Data_Sources.adoc[Accumulo Data Sources] is created, the user can issue "INSERT/UPDATE/DELETE" based SQL calls to insert/update/delete records into the Accumulo, and issue "SELECT" based calls to retrieve records from Accumulo. You can use full range of SQL with Teiid system integrating other sources along with Accumulo source.
 
@@ -40,12 +40,6 @@ An Example VDB that shows Accumulo translator can be defined as
 ----
 
 The translator does NOT provide a connection to the Accumulo. For that purpose, Teiid has a JCA adapter that provides a connection to Accumulo using Accumulo Java libraries. To define such connector, see link:../admin/Accumulo_Data_Sources.adoc[Accumulo Data Sources] or see an example in "<jboss-as>/docs/teiid/datasources/accumulo"
-
-If you are using Designer Tooling, to create VDB
-
-* Create/use a Teiid Designer Model project
-* Use "Teiid Connection >> Source Model" importer, create Accumulo Data Source using data source creation wizard and use _accumulo_ as translator in the importer. The table is created in a source model by the time you finish with this importer.
-* Create a VDB and deploy into Teiid Server and use either jdbc, odbc, odata etc to query.
 
 == Properties
 
@@ -69,7 +63,7 @@ Accumulo translator is capable of traversing through Accumulo table structures a
 
 NOTE: \{CQ}, \{CF}, \{ROWID} are expressions that you can use to define above properties in any pattern, and respective values of Column Qualifer, Column Familiy or ROWID will be replaced at import time. ROW ID of the Accumulo table, is automatically created as ROWID column, and will be defined as Primary Key on the table.
 
-You can also define the metadata for the Accumulo based model, using DDL or using the Teiid Designer. When doing such exercise, the Accumulo Translator currently defines following extended metadata properties to be defined on its Teiid schema model to guide the translator to make proper decisions. The following properties are described under NAMESPACE "http://www.teiid.org/translator/accumulo/2013", for user convenience this namespace has alias name _teiid_accumulo_ defind in Teiid. To define a extension property use expression like "teiid_accumulo:\{property-name} value". All the properties below are intended to be used as OPTION properties on COLUMNS. See link:DDL_Metadata.adoc[DDL Metadata] for more information on defining DDL based metadata.
+You can also define the metadata for the Accumulo based model using DDL. When doing such exercise, the Accumulo Translator currently defines following extended metadata properties to be defined on its Teiid schema model to guide the translator to make proper decisions. The following properties are described under NAMESPACE "http://www.teiid.org/translator/accumulo/2013", for user convenience this namespace has alias name _teiid_accumulo_ defind in Teiid. To define a extension property use expression like "teiid_accumulo:\{property-name} value". All the properties below are intended to be used as OPTION properties on COLUMNS. See link:DDL_Metadata.adoc[DDL Metadata] for more information on defining DDL based metadata.
 
 == Extension Metadata Properties
 
@@ -138,21 +132,6 @@ CREATE FOREIGN TABLE "User" (
 ----
 
 respectively if the column name is defined by Column Family, you can use "ColumnNamePattern" as "\{CF}", and if the value for that column exists in the Column Qualifier then you can use "ValueIn" as "\{CQ}". Using import properties you can dictate how the table should be modeled.
-
-If you did not use built in import, and would like to manually design the table in Designer like below
-
-image:images/user.png[user.png]
-
-Then you must make sure you supply the Extension Metadata Properties defined above on the User table’s columns from Accumulo extended metadata(In Designer, right click on Model, and select "Model Extension Definitions" and select Accumulo. For example on FirstName column, you would supply
-
-[source,sql]
-----
-teiid_accumulo:CF  name
-teiid_accumulo:CQ  firstname
-teiid_accumulo:VALUE-IN  VALUE
-----
-
-and repeat for each and every column, so that Teiid knows how to communicate correctly with Accumulo.
 
 == JCA Resource Adapter
 

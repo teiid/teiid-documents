@@ -31,7 +31,7 @@ Based on above data structure, when you import the metadata from SimpleDB into T
 |Column - String Array Datatype
 |===
 
-Since all attributes are by default are considered as string data types, columns are defined with string data type. However, during modeling of the schema in Designer, one can use various other data types supported through Teiid to define a data type of column, that user wishes to expose as.
+Since all attributes are by default are considered as string data types, columns are defined with string data type.
 
 NOTE: If you did modify data type be other than string based, be cautioned and do not use those columns in comparison queries, as SimpleDB does only lexicographical matching. To avoid it, set the "SearchType" on that column to "UnSearchable".
 
@@ -47,14 +47,6 @@ An Example VDB that shows SimpleDB translator can be defined as
 ----
 
 The translator does NOT provide a connection to the SimpleDB. For that purpose, Teiid has a JCA adapter that provides a connection to SimpleDB using Amazon SDK Java libraries. To define such connector, see Amazon SimpleDB Data Sources or see an example in "<jboss-as>/docs/teiid/datasources/simpledb"
-
-If you are using Designer Tooling, to create VDB
-
-Create/use a Teiid Designer Model project 
-
-Use "Teiid Connection >> Source Model" importer, create SimpleDB Data Source using data source creation wizard and use _simpledb_ as translator in the importer. The table(s) is created in a source model by the time you finish with this importer, if the data is already defined on Amazon SimpleDB.
-
-Create a VDB and deploy into Teiid Server and use either jdbc, odbc, odata etc to query.
 
 == Properties
 

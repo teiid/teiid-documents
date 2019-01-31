@@ -21,7 +21,7 @@
 
 * A-no-tx, B-no-tx, C-no-tx : Can participate in all transaction scopes, but none of the sources will be bound by transactional terms. This is equivalent to not using transactions or setting Command mode with "autoCommitTxn=OFF".
 
-NOTE: Teiid Designer creates "local" data source by default which is not optimal for the XA transactions. Teiid would like this to be creating a XA data sources, however with current limitations with DTP that feature is currently not available. To create XA data source, look in the {{ book.asName }} "doc" directory for example templates, or use the "admin-console" to create the XA data sources.
+To create XA data source, look in the {{ book.asName }} "doc" directory for example templates, or use the "admin-console" to create the XA data sources.
 
 If your datasource is not XA, and not the only local source and can not use "no-tx", then you can look into extending the source to implement the compensating XA implementation. i.e. define your own resource manager for your source and manage the transaction the way you want it to behave. Note that this could be complicated if not impossible if your source natively does not support distributed XA protocol. In summay
 

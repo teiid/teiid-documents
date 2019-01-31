@@ -136,9 +136,6 @@ If the dynamic SQL is an UPDATE, DELETE, or INSERT command, the rowcount of the 
 EXECUTE IMMEDIATE <expression>;
 ----
 
-* Unless used in other parts of the procedure, tables in the dynamic command will not be seen as sources in the Designer.
-* When using the "AS" clause only the type information will be available to the Designer. ResultSet columns generated from the "AS" clause then will have a default set of properties for length, precision, etc.
-
 == Declaration Statement
 
 A declaration statement declares a variable and its type. After you declare a variable, you can use it in that block within the procedure and any sub-blocks. A variable is initialized to null by default, but can also be assigned the value of an expression as part of the declaration statement.

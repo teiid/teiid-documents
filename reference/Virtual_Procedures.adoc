@@ -7,13 +7,6 @@ Virtual procedures are defined using the Teiid procedural language. A virtual pr
 
 == Virtual Procedure Definition
 
-In Designer:
-
-[source,sql]
-----
-[CREATE VIRTUAL PROCEDURE] statement
-----
-
 In DDL: link:DDL_Metadata.adoc#_create_procedure_function[DDL Metadata#Create Procedure/Function]
 
 Note that the optional result parameter is always considered the first parameter 

@@ -77,8 +77,6 @@ Below is an example showing how to use import properties with a vdb.xml file
 </vdb>
 ----
 
-NOTE: *"Designer Integration"* - When properties are defined using the annotation mechanism and when using the "Teiid Connection" importer in the Designer, these properties will automatically show up in appropriate wizard for input.
-
 == Extension Metadata Properties
 
 During the execution of the command in translator, a translator is responsible to convert Teiid supplied SQL command into data source specific query. Most of times this conversion is not a trivial task can be converted from one form to another. There are many cases built-in metadata is not sufficient and additional metadata about source is useful to form a request to the underlying physical source system. Extension Metadata Properties one such mechanism to fill the gap in the metadata. These can be defined specific for a given translator.
@@ -119,6 +117,3 @@ Now during the execution, on the COMMAND object supplied to the "Execution" clas
 
     // use the encoding value as needed to marshal or unmarshal data 
 ----
-
-NOTE: *"Designer Integration"* - When extended properties are defined using the annotation mechanism, when using "Teiid Connection" importer in the Designer, you do not need to define the "Metadata Extension Defn" in designer and register to to use with your model, the required definitions are automatically downloaded and configured to use. (This feature is not available in current Designer version)
-

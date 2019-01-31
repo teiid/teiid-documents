@@ -30,13 +30,7 @@ For example, to extend the Oracle Connector
 
 If you source handing of the function can be described by simple parameter substitution into a string, then you may not need to extend the translator for a source specific function. You can use the extension property teiid_rel:native-query to define the syntax handling - see also link:../reference/DDL_Metadata.adoc[DDL Metadata] for functions.
 
-== When Using Designer
-
-If you are designing your VDB using the Designer, you can define a function on any "source" model, and that function is automatically added as pushdown function when the VDB is deployed. There is no additional need for adding Java code.
-
-== Without Designer
-
-If you are not using Designer, see defining the metadata link:../reference/DDL_Metadata.adoc[using DDL], you can define your source function in the VDB as
+Se defining the metadata link:../reference/DDL_Metadata.adoc[using DDL], you can define your source function in the VDB as
 
 [source,xml]
 ----

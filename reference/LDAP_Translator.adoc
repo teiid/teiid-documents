@@ -335,7 +335,7 @@ SELECT * FROM HR_Group
 
 == LDAP Attribute Datatype Support
 
-LDAP providers currently return attribute value types of java.lang.String and byte[], and do not support the ability to return any other attribute value type. The LDAP Connector currently supports attribute value types of java.lang.String only. Therefore, all attributes are modeled using the String datatype in Teiid Designer. Conversion functions that are available in Teiid allow you to use models that convert a String value from LDAP into a different data type. Some conversions may be applied implicitly, and do not require the use of any conversion functions. Other conversions must be applied explicitly, via the use of CONVERT functions. Since the CONVERT functions are not supported by the underlying LDAP system, they will be evaluated in Teiid. Therefore, if any criteria is evaluated against a converted datatype, that evaluation cannot be pushed to the data source, since the native type is String.
+LDAP providers currently return attribute value types of java.lang.String and byte[], and do not support the ability to return any other attribute value type. The LDAP Connector currently supports attribute value types of java.lang.String, Timestamp, byte[], and arrays of those values. Conversion functions that are available in Teiid allow you to use models that convert a String value from LDAP into a different data type. Some conversions may be applied implicitly, and do not require the use of any conversion functions. Other conversions must be applied explicitly, via the use of CONVERT functions. Since the CONVERT functions are not supported by the underlying LDAP system, they will be evaluated in Teiid. Therefore, if any criteria is evaluated against a converted datatype, that evaluation cannot be pushed to the data source.
 
 When converting from String to other types, be aware that criteria against that new data type will not be pushed down to the LDAP data source. This may decrease performance for certain queries.
 
@@ -343,7 +343,7 @@ As an alternative, the data type can remain a string and the client application 
 
 === LDAP: Testing Your Connector
 
-You must define LDAP Connector properties accurately or the Teiid server will return unexpected results, or none at all. As you deploy the connector in Console, improper configuration can lead to problems when you attempt to start your connector. You can test your LDAP Connector in Teiid Designer prior to Console deployment by submitting queries at modeling time for verification.
+You must define LDAP Connector properties accurately or the Teiid server will return unexpected results, or none at all.
 
 === LDAP: Console Deployment Issues
 

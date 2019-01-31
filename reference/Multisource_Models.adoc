@@ -26,7 +26,7 @@ To mark a model as multisource, the model property _multisource_ can be set to t
 </vdb>
 ----
 
-NOTE： Currently the tooling support for managing the multisource feature is limited, so if you need to use this feature build the VDB as usual in the Teiid Designer and then edit the "vdb.xml" file in the VDB archive using a Text editor to add the additional sources as defined above. You must deploy a separate data source for each source defined in the xml file.
+NOTE： Tooling support for managing the multisource feature is limited. You must deploy a separate data source for each source defined in the xml file.
 
 In the above example, the VDB has a single model called `Customers`, that has multiple sources (`chicago`, `newyork`, and `la`) that define different instances of data.
 
@@ -49,8 +49,8 @@ insert into table (column, SOURCE_NAME) VALUES ('value', 'newyork')
 The pseudo column is by default not present in your actual metadata; it is not added on source tables/procedures when you import the metadata.  If you would like to use the multisource column in your transformations to control which sources are accessed or updated and/or want the column reported via metadata facilities, there are several options: 
 
 * If directly using DDL, the pseduo-column will already be available to transformations, but will not be present in your System metadata by default.  If using DDL and want to be selective (rather than using the *multisource.addColumn* property), you can manually add the column via DDL. 
-* With either VDB type to make the multisource column present in the system metadata, you may set the model property *multisource.addColumn* to true on a multisource model. If the table has a column or the procedure has a parameter already with a matching name, then an additional column will not be added. A variadic procedure can still have a source parameter added, but it can only be specified when using named parameters. Care should be taken though when using this property in Designer as any transformation logic (views/procedures) that you have defined will not have been aware of the multisource column and may fail validation upon server deployment.
-* If using Designer, you can manually add the multisource column. 
+* With either VDB type to make the multisource column present in the system metadata, you may set the model property *multisource.addColumn* to true on a multisource model. If the table has a column or the procedure has a parameter already with a matching name, then an additional column will not be added. A variadic procedure can still have a source parameter added, but it can only be specified when using named parameters. Care should be taken though when using this property as any transformation logic (views/procedures) that you have defined will not have been aware of the multisource column and may fail validation upon server deployment.
+* You can manually add the multisource column. 
 
 === Other Partitioning Columns
 

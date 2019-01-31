@@ -3,7 +3,7 @@
 
 The Teiid Server supports a "partial results" query mode. This mode changes the behavior of the query processor so the server returns results even when some data sources are unavailable.
 
-For example, suppose that two data sources exist for different suppliers and your data Designers have created a virtual group that creates a union between the information from the two suppliers. If your application submits a query without using partial results query mode and one of the suppliers’ databases is down, the query against the virtual group returns an exception. However, if your application runs the same query in "partial results" query mode, the server returns data from the running data source and no data from the data source that is down.
+For example, suppose that two data sources exist for different suppliers and your data designers have created a virtual group that creates a union between the information from the two suppliers. If your application submits a query without using partial results query mode and one of the suppliers’ databases is down, the query against the virtual group returns an exception. However, if your application runs the same query in "partial results" query mode, the server returns data from the running data source and no data from the data source that is down.
 
 When using "partial results" mode, if a source throws an exception during processing it does not cause the user’s query to fail. Rather, that source is treated as returning no more rows after the failure point. Most commonly, that source will return 0 rows.
 

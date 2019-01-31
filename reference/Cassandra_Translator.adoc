@@ -12,12 +12,6 @@ The Cassandra Translator currently has no import or execution properties.
 
 The Cassandra Translator supports INSERT/UPDATE/DELETE/SELECT statements with a restrictive set of capabilities including: count(*), comparison predicates, IN predicates, and LIMIT. Only indexed columns are searchable. Consider a custom extension or create an enhancement request should your usage require additional capabilities.
 
-If you are using Designer Tooling, to create VDB then:
-
-* Create/use a Teiid Designer Model project
-* Use "Teiid Connection >> Source Model" importer, create a new JBoss Data Source connection profile, specifying the JNDI name for resource adapter configured https://docs.jboss.org/author/display/TEIID Cassandra+Data+Sources[data source] and use _cassandra_ as translator type. The source model will be created when you finish with this importer.
-* Create a VDB and deploy into Teiid Server and use either jdbc, odbc, odata etc to query.
-
 Cassandra updates always return an update count of 1 per update regardless of the number of rows affected.
 
 Cassandra inserts are functionally upserts, that is if a given row exists it will be updated rather than causing an exception.

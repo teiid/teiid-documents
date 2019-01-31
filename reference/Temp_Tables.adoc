@@ -51,7 +51,7 @@ See link:Virtual_Procedures.adoc[Virtual Procedures] for more on local temporary
 
 == Global Temporary Tables
 
-Global temporary tables are created in Teiid Designer or via the metadata supplied to Teiid at deploy time. Unlike local temporary tables, they cannot be created at runtime. A global temporary tables share a common definition via a schema entry, but each session has a new instance of the temporary table created upon it’s first use. The table is then dropped when the session ends. There is no explicit drop support. A common use for a global temporary table is to pass results into and out of procedures.
+Global temporary tables are created via the metadata supplied to Teiid at deploy time. Unlike local temporary tables, they cannot be created at runtime. A global temporary tables share a common definition via a schema entry, but each session has a new instance of the temporary table created upon it’s first use. The table is then dropped when the session ends. There is no explicit drop support. A common use for a global temporary table is to pass results into and out of procedures.
 
 [source,sql]
 .*Creation syntax*

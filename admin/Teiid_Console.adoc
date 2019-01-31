@@ -59,13 +59,13 @@ This tab shows the description and any properties associated with VDB, along wit
 This panel shows all the models that are defined in a given VDB, and shows each models translator name and source connection JNDI name. It also shows the type of models and if it is multi-source or not. When a
 particular model is selected it will show all properties of that model that are defined and also shows any errors associated with the model. When your VDB is not deployed in the "active" status, you would need to verify these errors and fix to resolve any deployment issues.
 
-The "DDL" button shows the schema for the given model. Note that this does not work for XML based models that are designed using Teiid Designer.
+The "DDL" button shows the schema for the given model. 
 
 The tool lets the user edit the translator name or JNDI name by double clicking on them and modifying them. This useful if you would like to change the JNDI name in a given environment.
 
 === Overrides
 
-If you have overridden any translators in the Teiid Designer, this panel will show the all the overridden translators and their properties.
+If you have overridden any translators this panel will show the all the overridden translators and their properties.
 
 === Caching
 
@@ -76,7 +76,7 @@ This panel also provides a UI to flush the entire the resultset cache contents o
 
 === Data Roles
 
-Data Roles panel shows the all the policies that defined in the VDB using the Teiid Designer or hand coded in the vdb.xml file. For each selected policy, it will also list the "permissions" for that policy as to what kind of authorizations user has and shows the mapped enterprise role assignments to that policy. You can even add/remove a enterprise role to the policy using the this UI.
+Data Roles panel shows the all the policies that defined in the VDB. For each selected policy, it will also list the "permissions" for that policy as to what kind of authorizations user has and shows the mapped enterprise role assignments to that policy. You can even add/remove a enterprise role to the policy using the this UI.
 
 === Requests
 
