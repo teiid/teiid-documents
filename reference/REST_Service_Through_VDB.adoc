@@ -118,7 +118,6 @@ By default all the generated Rest based services are secured using "HTTPBasic" w
 </vdb>
 ----
 
-* _auto-generate - will automatically generate the WAR file for the deployed VDB
 * _security-type_ - defines the security type. allowed values are "HttpBasic" or "none". If omitted will default to "HttpBasic"
 * _security-domain_ - defines JAAS security domain to be used with HttpBasic. If omitted will default to "teiid-security"
 * _security-role_ - security role that HttpBasic will use to authorize the users. If omitted the value will default to "rest"
@@ -127,7 +126,11 @@ NOTE: *rest-security* - it is our intention to provide other types of securities
 
 == Special Ad-Hoc Rest Services
 
-Apart from the explicitly defined procedure based rest services, the generated jax-rs war file will also implicitly include a special rest based service under URI "/query" that can take any XML or JSON producing SQL as parameter and expose the results of that query as result of the service. This service is defined with "POST", accepting a Form Parameter named "sql". For example, after you deploy the VDB defined in above example, you can issue a HTTP POST call as
+Apart from the explicitly defined procedure based rest services, the generated jax-rs war file can also include a special rest based service under URI "/query" that can take any XML or JSON producing SQL as parameter and expose the results of that query as result of the service.
+
+The model/schema must be have the {http://teiid.org/rest}security-role property set to true to expose the procedure.
+
+This service is defined with "POST", accepting a Form Parameter named "sql". For example, after you deploy the VDB defined in above example, you can issue a HTTP POST call as
 
 [source,xml]
 ----
