@@ -3,7 +3,7 @@
 
 == Overview
 
-We can use https://docs.jboss.org/author/display/teiid88final/Using+Teiid+with+Hibernate[Teiid with Hibernate], we also have a quick start show how https://docs.jboss.org/author/display/teiidexamples/Using+Hibernate+on+top+of+Teiid[Hibernate on top of Teiid]. Both Hibernate and Eclipselink are fully support JSR-317 (JPA 2.0), primary purpose of this document is demonstrate how use Teiid with EclipseLink.
+We can use link:Using_Teiid_with_Hibernate.adoc[Teiid with Hibernate], we also have a quick start show how https://github.com/teiid/teiid-wildfly-quickstarts/tree/master/hibernate-on-top-of-teiid[Hibernate on top of Teiid]. Both Hibernate and Eclipselink are fully support JSR-317 (JPA 2.0), primary purpose of this document is demonstrate how use Teiid with EclipseLink.
 
 == Configuration
 
