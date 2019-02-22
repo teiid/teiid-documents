@@ -429,6 +429,8 @@ The method `ExecutionFactory.getMaxDependentInPredicates()` is used to specify t
 
 The method `ExecutionFactory.getMaxFromGroups()` can be used to specify the maximum number of FROM Clause groups that can used in a join. -1 indicates there is no limit.
 
+The method `ExecutionFactory.getMaxProjectedColumns()` can be used to specify the maximum number of columns or expressions in the select clause. -1 indicates there is no limit.
+
 == Update Execution Modes
 
 The method `ExecutionFactory.supportsBatchedUpdates()` can be used to indicate that the Translator supports executing the `BatchedUpdates` command.
