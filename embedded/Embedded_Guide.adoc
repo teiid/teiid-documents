@@ -4,7 +4,7 @@
 :toc: manual
 :toc-placement: preamble
 
-Embedded is a light-weight version of Teiid for use in any Java 7+ JRE. {{ book.asName }} nor any application server is not required. This feature/kit are still evolving. Please consult the source examples and even unit tests utilizing the EmbeddedServer for a more complete guide as to its use.
+Embedded is a light-weight version of Teiid for use in any Java 8+ JRE. {{ book.asName }} nor any application server is not required. This feature/kit are still evolving. Please consult the source examples and even unit tests utilizing the EmbeddedServer for a more complete guide as to its use.
 
 == Configuration
 
@@ -20,7 +20,7 @@ IMPORTANT: Most of the default configuration values for memory and threads assum
 
 Your application is responsible for having the appropriate classpath to utilize Teiid embedded. 
 Typically you will want all transitive dependencies from referenced Teiid artifacts to be included. 
-Optional dependencies, such as Hibernate core 4.1.6 or compatible, will be needed for specific features - such as utilizing the JDBC translator support for dependent joins using temp tables.
+Optional dependencies, such as Hibernate core, will be needed for specific features - such as utilizing the JDBC translator support for dependent joins using temp tables.
 
 NOTE: With Teiid 10+ the maven coordinate group for most Teiid artifacts changed from org.jboss.teiid to just org.teiid.  Please update your pom files accordingly.
 
@@ -117,7 +117,16 @@ Similar to a server based -vdb.xml deployment an `InputStream` may be given to a
 
 Similar to a server based .vdb deployment a `URL` may be given to a zip file - see the `EmbeddedServer.deployVDBZip` method. The use of the zip lib for dependency loading is not enabled in Embedded. 
 
-See link:../reference/vdb_guide.adoc[VDB Guide] and link:../reference/Metadata_Repositories.adoc[Metadata Repositories] for more on a typical vdb file and zip structures. Support Teiid Designer 7 and later VDBs is deprecated and are subject to all of the limitations/differences highlighted in this guide.
+See link:../reference/vdb_guide.adoc[VDB Guide] and link:../reference/Metadata_Repositories.adoc[Metadata Repositories] for more on a typical vdb file and zip structures. 
+
+Support Teiid Designer 7 and later VDBs is deprecated and are subject to all of the limitations/differences highlighted in this guide.  To use a Teiid Designer VDB requires including the teiid-metadata dependency:
+
+----
+<dependency>
+    <groupId>org.teiid</groupId>
+    <artifactId>teiid-metadata</artifactId>
+</dependency>
+----
 
 *Translators*
 
