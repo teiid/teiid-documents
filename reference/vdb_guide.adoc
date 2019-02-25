@@ -19,7 +19,7 @@ Below is an example VDB, that is using a single foreign schema component definin
 ----
 <vdb name="my-example" version="1">
     <model name="test" type="PHYSICAL">
-        <property name="importer.schemaPattern" value="public"/>
+        <property name="importer.schemaName" value="public"/>
         <property name="importer.useFullSchemaName" value="false"/>
         <property name="importer.tableTypes" value="TABLE,VIEW"/>         
         <source name="pqsql" translator-name="postgresql" connection-jndi-name="java:/postgres-ds"/>           

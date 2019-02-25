@@ -15,6 +15,6 @@ TIP: Some versions of PrestoDB not support null as valid values in subquery well
 
 TIP: PrestoDB not support transaction, define a no-tx-datasource is recommend.
 
-NOTE: Every catalogs in PrestoDB has a `information_schema` schema by default, If configure multiple catalogs, it should be consider to use import options to filter the schemas/tables, to avoid `Duplicate Table` error cause VDB deploy failed. For instance, set `catalog` to a specific catalog name to match the catalog name as it is stored in the prestodb, set `schemaPattern` to a regular expression to filter schemas by matching result, set `excludeTables` to a regular expression to filter tables by matching result.
+NOTE: Every catalogs in PrestoDB has a `information_schema` schema by default, If configure multiple catalogs, it should be consider to use import options to filter the schemas/tables, to avoid `Duplicate Table` error cause VDB deploy failed. For instance, set `catalog` to a specific catalog name to match the catalog name as it is stored in the prestodb, set `schemaName` to a single schema, or set `excludeTables` to a regular expression to filter tables by matching result.
 
 NOTE: PrestoDB JDBC driver uses Joda-Time library to work with time/date/timestamp. If you need to customize server's time zone (e.g. setting -Duser.timezone via JAVA_OPTS), you cannot use `GMT/...` ID as Joda-Time does not regonize it. However, you can use equivalent `Etc/...` ID. For more details see http://joda-time.sourceforge.net/timezones.html[Joda-Time timezones].

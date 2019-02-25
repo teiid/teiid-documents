@@ -81,7 +81,7 @@ Example importer settings to only import tables and views from NetflixCatalog.
 [source,xml]
 ----
 <property name="importer.schemaNamespace" value="System.Data.Objects"/>
-<property name="importer.schemaPattern" value="NetflixCatalog"/>
+<property name="importer.entityContainer" value="NetflixCatalog"/>
 ----
 
 NOTE: *OData Server is not fully compatible* - Sometimes it’s possible that the odata server you are querying does not fully implement all OData specification features. If your OData implementation does not support a certain feature, then turn off the corresponding capability using "execution Properties", so that Teiid will not pushdown invalid queries to the translator. For example, to turn off $filter you add following to your vdb.xml
