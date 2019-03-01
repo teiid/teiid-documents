@@ -126,7 +126,7 @@ To enable command logging to an alternative file location, configure a separate 
 </logger>
 ----
 
-See the link:../dev/Developers_Guide[Developer’s Guide] to develop a link:../dev/Custom_Logging.adoc[custom logging solution] if file based logging, or any other built-in Log4j logging, is not sufficient.
+See the link:../dev/Developers_Guide.adoc[Developer’s Guide] to develop a link:../dev/Custom_Logging.adoc[custom logging solution] if file based logging, or any other built-in Log4j logging, is not sufficient.
 
 The following is an example of a data source command and what one would look like when printed to the command log:
 
