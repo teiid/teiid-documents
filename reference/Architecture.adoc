@@ -1,4 +1,4 @@
-
+{% if book.targetWildfly %}
 == Teiid Components
 
 image:images/teiid-components.png[images/teiid-components.png]
@@ -13,10 +13,12 @@ image:images/teiid-components.png[images/teiid-components.png]
 * **JDBC Driver** - JDBC Driver to connect to Teiid Server.
 * **AdminAPI** - An API for performing management and monitoring:../dev/AdminAPI.adoc[AdminAPI]
 * **quickstarts** - A maven quickstart showing how to utilize Teiid.
-
+{% endif %}
 == Teiid Architecture
 
+{% if book.targetWildfly %}
 image:images/teiid-architecture.png[images/teiid-architecture.png]
+{% endif %}
 
 * **Client** - link:../client-dev/Client_Developers_Guide.adoc[Client Develop Guide]
 * **Transport** - A Transport managements client connections - security authentication, encryption, etc.
@@ -30,4 +32,6 @@ image:images/teiid-architecture.png[images/teiid-architecture.png]
 Source queries are handled by the Data Tier layer which interfaces with the Query Engine and the Connector Layer which utilizes a Translator/Resource Adapter pair to interact directly with a source.  Connectivity is provided for heterogeneous data stores, like Databases/Data warehouse, NoSQL, Hadoop, Data Grid/Cache, File, SaaS, etc. - see link:Data_Sources.adoc[Data Sources].
 
 * **Translator** - Teiid has developed a series of Translators, for more details refer to link:Translators.adoc[Translators]. 
-* **Resource Adapter** - Provides container managed access to a source, for more details refer to link:../dev/Developing_JEE_Connectors.adoc[Developing JEE Connectors].  
+{% if book.targetWildfly %}
+* **Resource Adapter** - Provides container managed access to a source, for more details refer to link:../dev/Developing_JEE_Connectors.adoc[Developing JEE Connectors].
+{% endif %}  

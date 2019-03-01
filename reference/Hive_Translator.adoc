@@ -27,12 +27,16 @@ NOTE:  If false the typical JDBC DatabaseMetaData calls are not used so not all 
 
 *"Database Name"*
 
-When the database name used in the Hive is different than "default", the metadata retrieval and execution of queries does not work as expected in Teiid, as Hive JDBC driver seems to be implicitly connecting (tested with < 0.12) to "default" database, thus ignoring the database name mentioned on connection URL. This can workaround in the Teiid in {{ book.asName }} environment by setting the following in data source configuration.
+When the database name used in the Hive is different than "default", the metadata retrieval and execution of queries does not work as expected in Teiid, as Hive JDBC driver seems to be implicitly connecting (tested with < 0.12) to "default" database, thus ignoring the database name mentioned on connection URL.  You may configure your connection source to issue "use {database-name}". 
+
+{% if book.targetWildfly %}
+Teiid in {{ book.asName }} environment set the following in data source configuration.
 
 [source,xml]
 ----
     <new-connection-sql>use {database-name}</new-connection-sql>
 ----
+{% endif %}
 
 This is fixed in > 0.13 version Hive Driver. See https://issues.apache.org/jira/browse/HIVE-4256[https://issues.apache.org/jira/browse/HIVE-4256]
 

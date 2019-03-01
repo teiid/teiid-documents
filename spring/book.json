@@ -1,0 +1,18 @@
+{
+    "variables" : {
+        "versionNumber" : "12.1",
+        "fullVersionNumber": "12.1.0",
+        "asVersionNumber" :  "REPLACE ME",
+        "asFullVersionNumber" :  "REPLACE ME",
+        "asName" :  "REPLACE ME",
+        "copyrightYear" :  "2019",
+        "copyrightHolder" :  "Red Hat, Inc.",
+        "javaVersionUrl" : "http://docs.oracle.com/javase/8",
+        "asDocRoot" : "REPLACE ME",
+        "archeTypeVersion" : "REPLACE ME",
+        "targetWildfly" : false,
+        "targetSpring" : true,
+        "productnaneFull" : "Teiid"
+    },
+    "plugins": ["collapsible-menu"]
+}

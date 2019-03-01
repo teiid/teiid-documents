@@ -52,7 +52,7 @@ CREATE FOREIGN DATA WRAPPER postgresql;
 here "postgresql" is our translator name, as example assumes we are going to query a PostgreSQL database. 
 
 ==== Step 2B: Find the module to connect to External Source 
-* Typically all releational databases are connected using their JDBC drivers. Find out if the external source has a JDBC driver? if this source has JDBC driver, then acquire the driver jar file.
+* Typically all relational databases are connected using their JDBC drivers. Find out if the external source has a JDBC driver? if this source has JDBC driver, then acquire the driver jar file.
 * Once the driver is acquired, then make sure this driver is *Type 4* driver, and then deploy this driver into Teiid server using either web-console application or CLI admin-console. The below example shows deploying the Oracle driver in Teiid Server based on WildFly using CLI admin-console. If driver is *not* Type 4, it can be still used, but more set up is needed.
 ----
 </wildfly/bin>$./jboss-cli.sh --connect

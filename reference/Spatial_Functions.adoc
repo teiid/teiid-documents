@@ -66,7 +66,7 @@ ST_GeomFromEWKB(bin)
 
 bin is a blob. Return value is a geography.  Only 2 dimensions are supported.
 
-=== ST_GeomFromText
+=== ST_GeomFromEWKT
 
 Returns a geometry from a Clob in EWKT format.
 

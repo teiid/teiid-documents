@@ -7,5 +7,4 @@ Prior to applying data roles, you should consider restricting source system acce
 
 If data role validation is enabled and data roles are defined in a VDB, then access permissions will be enforced by the Teiid Server. The use of data roles may be disabled system wide by removing the setting for the teiid subsystem policy-decider-module.  Data roles also have built-in link:Security_Functions.adoc[system functions] that can be used for row-based and other authorization checks.
 
-TIP: Unlike previous versions of Teiid data roles will only be checked if present in a VDB. A VDB deployed without data roles is open for use by any authenticated user. If you want to ensure some attempt has been made at securing access, then set the data-roles-required configuration element to true via the CLI or in the standalone.xml on the teiid subsystem.
-
+TIP: A VDB deployed without data roles is open for use by any authenticated user. {% if book.targetWildfly %}If you want to ensure some attempt has been made at securing access, then set the data-roles-required configuration element to true via the CLI or in the standalone.xml on the teiid subsystem.{% endif %}

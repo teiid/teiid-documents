@@ -1,7 +1,11 @@
 
 = JPA Translator
 
-The JPA translator, known by the type name _jpa2_, can reverse a JPA object model into a relational model, which can then be integrated with other relational or non-relational sources. For information on JPA persistence in a {{ book.asName }}, see {{ book.asDocRoot }}/JPA+Reference+Guide[JPA Reference Guide].
+The JPA translator, known by the type name _jpa2_, can reverse a JPA object model into a relational model, which can then be integrated with other relational or non-relational sources. 
+
+{% if book.targetWildfly %}
+For information on JPA persistence in a {{ book.asName }}, see {{ book.asDocRoot }}/JPA+Reference+Guide[JPA Reference Guide].
+{% endif %}
 
 *Properties*
 

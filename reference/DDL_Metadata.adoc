@@ -2,7 +2,9 @@
 :toc: manual
 :toc-placement: preamble
 
+{% if book.targetWildfly %}
 The DDL for schema objects is common to both link:xml_deployment_mode.adoc[XML] and link:ddl_deployment_mode.adoc[DDL] VDBs.
+{% endif %}
 
 == Data Types
 

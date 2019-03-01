@@ -67,7 +67,11 @@ To process any statement against a Teiid temporary table requires the following 
 
 == Row and Column Based Security
 
-Although specified in a similar way to user query CRUD permissions, row-based and column-based permissions may be used together or separately to control at a more granular and consistent level the data returned to users. See also link:XML_Definition.adoc[XML Definition] for examples of specifying data roles with row and column based security.
+Although specified in a similar way to user query CRUD permissions, row-based and column-based permissions may be used together or separately to control at a more granular and consistent level the data returned to users. 
+
+{% if book.targetWildfly %}
+See also link:XML_Definition.adoc[XML Definition] for examples of specifying data roles with row and column based security.
+{% endif %}
 
 == Row-Based Security
 
