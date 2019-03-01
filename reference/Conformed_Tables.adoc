@@ -10,7 +10,7 @@ Conformed tables are defined by adding the
 {http://www.teiid.org/ext/relational/2012}conformed-sources
 ----
 
-extension metadata property to the appropriate source tables. Extension properties can be set in the vdb.xml when using full link:DDL_Metadata.adoc[DDL Metadata] or alter statements, or at runtime using the setProperty link:System_Procedures.html[system procedure]. The property is expected to be a comma separated list of physical model/schema names.
+extension metadata property to the appropriate source tables. Extension properties can be set in the vdb.xml when using full link:DDL_Metadata.adoc[DDL Metadata] or alter statements, or at runtime using the setProperty link:System_Schema.adoc[system procedure]. The property is expected to be a comma separated list of physical model/schema names.
 
 DDL Alter Example
 

@@ -14,4 +14,4 @@ Syntax Rules:
 
 * Triggers are not yet true schema objects. They are scoped only to their view and have no name.
 
-* An link:Update_Procedures_(Triggers).html[Update Procedures (Triggers)] must already exist for the given trigger event.
+* An link:Update_Procedures_Triggers.adoc[Update Procedures (Triggers)] must already exist for the given trigger event.

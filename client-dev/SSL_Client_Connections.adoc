@@ -3,7 +3,7 @@
 
 The following sections define the properties required for each SSL mode. Note that when connecting to Teiid Server with SSL enabled, you _MUST_ use the _"mms"_ protocol, instead of "mm" in the JDBC connection URL, for example
 
-NOTE: Anonymous SSL mode is not supported for some JREs, see the link:link:../security/Teiid_Server_Transport_Security.adoc[Teiid Server Transport Security] for alternatives.
+NOTE: Anonymous SSL mode is not supported for some JREs, see the link:../security/Teiid_Server_Transport_Security.adoc[Teiid Server Transport Security] for alternatives.
 
 [source,java]
 ----
