@@ -287,13 +287,18 @@ Since OData access is more key based, it is *MANDATORY* that every table Teiid e
 
 == OpenAPI Metadata
 
-An https://issues.jboss.org/browse/TEIID-5555[experimental feature] is available to automatically provide an https://www.openapis.org/[OpenAPI] / Swagger 2.0 metadata via base-url/vdb/schema/swagger.json 
+An https://issues.jboss.org/browse/TEIID-5555[experimental feature] is available to automatically provide an https://www.openapis.org/[OpenAPI] / Swagger 2.0 metadata via base-url/vdb/schema/[swagger|openapi].json 
 
 [source]
-.*Example URL*
+.*Example Swagger 2.0 URL*
 ----
 http://localhost:8080/odata4/northwind/NW/swagger.json
 ----
 
-WARNING: Due to all of the possible query options and expansions this metadata will be significantly larger than the OData EDM representation.
+[source]
+.*Example OpenAPI 3.0 URL*
+----
+http://localhost:8080/odata4/northwind/NW/openapi.json
+----
 
+WARNING: Due to all of the possible query options and expansions this metadata will be significantly larger than the OData EDM representation.
