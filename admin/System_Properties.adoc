@@ -186,6 +186,11 @@ WARNING: Strings are always fully held in memory. Do not set this value too high
 may set the session variable ignore_unauthorized_asterisk to true to achieve the same behavior.
 |false
 
+|_org.teiid.metadataRequiresPermission_
+|If true metadata will only be visible in SYS/SYSADMIN tables if the user is permissioned in some way for the given object.  
+If false the non-hidden schema metadata will be visible to any authenticated user.
+|true
+
 |_org.teiid.ODBCRequireSecure_
 |If true setting the SSL config to login or enabled will require clients to connect appropriately with either a GSS login or SSL respectively. Setting the property to false will allow client to use any authentication and no SSL (which was the behavior of the pg transport prior to 8.9 CR2).
 |true
