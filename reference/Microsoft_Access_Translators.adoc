@@ -7,7 +7,7 @@ Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
 
 The Microsoft Access Translator known by the type name *_access_* is for use with Microsoft Access 2003 or later via the JDBC-ODBC bridge.
 
-If you are using the default native metadata import or the Teiid connection importer the importer defaults to importKeys=false and excludeTables=.*[.]MSys.* to avoid issues with the metadata provided by the JDBC ODBC bridge. You may need to adjust these values if you use a different JDBC driver.
+If you are using the default native metadata import or the {{ book.productnameFull }} connection importer the importer defaults to importKeys=false and excludeTables=.*[.]MSys.* to avoid issues with the metadata provided by the JDBC ODBC bridge. You may need to adjust these values if you use a different JDBC driver.
 
 == ucanaccess
 

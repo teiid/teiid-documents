@@ -1,7 +1,7 @@
 
 = OPTION Clause
 
-The OPTION keyword denotes options the user can pass in with the command. These options are Teiid specific and not covered by any SQL specification.
+The OPTION keyword denotes options the user can pass in with the command. These options are {{ book.productnameFull }} specific and not covered by any SQL specification.
 
 Usage:
 
@@ -35,7 +35,7 @@ MAKEDEP tbl([max:val] [[no] join])
 * tbl(NO JOIN) means that the entire join should not be pushed
 * tbl(MAX:val) meaning that the dependent join should only be performed if there are less than the max number of values from the independent side.
 
-TIP: Previous versions of Teiid accepted the PLANONLY, DEBUG, and SHOWPLAN option arguments. These are no longer accepted in the OPTION clause. Please see the Client Developers Guide for replacements to those options.
+TIP: Previous versions of {{ book.productnameFull }} accepted the PLANONLY, DEBUG, and SHOWPLAN option arguments. These are no longer accepted in the OPTION clause. Please see the Client Developers Guide for replacements to those options.
 
 NOTE: MAKEDEP and MAKENOTDEP hints may take table names in the form of @view1.view2…table. For example with an inline view "select * from (select * from tbl1, tbl2 where tbl1.c1 = tbl2.c2) as v1 option makedep @v1.tbl1" the hint will now be understood as applying under the v1 view.
 

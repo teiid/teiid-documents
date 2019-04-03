@@ -3,11 +3,11 @@
 :toc: manual
 :toc-placement: preamble
 
-System functions provide access to information in the Teiid system from within a query.
+System functions provide access to information in the {{ book.productnameFull }} system from within a query.
 
 == COMMANDPAYLOAD
 
-Retrieve a string from the command payload or null if no command payload was specified. The command payload is set by the `TeiidStatement.setPayload` method on the Teiid JDBC API extensions on a per-query basis.
+Retrieve a string from the command payload or null if no command payload was specified. The command payload is set by the `TeiidStatement.setPayload` method on the {{ book.productnameFull }} JDBC API extensions on a per-query basis.
 
 COMMANDPAYLOAD([key])
 
@@ -83,7 +83,7 @@ call using SYS_PROP('KEY'), which returns value as string. Ex: SYS_PROP('USER').
  
 == NODE_ID
 
-Retrieve the node id - typically the System property value for "jboss.node.name" which will not be set for Teiid embedded.
+Retrieve the node id - typically the System property value for "jboss.node.name" which will not be set for {{ book.productnameFull }} embedded.
 
 NODE_ID()
 

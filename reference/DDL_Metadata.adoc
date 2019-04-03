@@ -11,7 +11,7 @@ The DDL for schema objects is common to both link:xml_deployment_mode.adoc[XML] 
 The BNF for Data Types refer to link:../reference/BNF_for_SQL_Grammar.adoc#parseDataTypePrimary[Data Types]
 
 == Creating a Foreign Table
-A _FOREIGN_ table is table that is defined on source schema that represents a real relational table in source databases like Oracle, SQLServer etc. For relational databases, Teiid has capability to automatically retrieve the database schema information upon the deployment of the VDB, if one like to auto import the existing schema. However, user can use below FOREIGN table semantics, when they would like to explicitly define tables on PHYSICAL schema or represent non-relational data as relational in custom translators.
+A _FOREIGN_ table is table that is defined on source schema that represents a real relational table in source databases like Oracle, SQLServer etc. For relational databases, {{ book.productnameFull }} has capability to automatically retrieve the database schema information upon the deployment of the VDB, if one like to auto import the existing schema. However, user can use below FOREIGN table semantics, when they would like to explicitly define tables on PHYSICAL schema or represent non-relational data as relational in custom translators.
 
 .BNF for Create Table
 [source,sql]
@@ -175,7 +175,7 @@ A column of type bigdecimal/decimal/numeric can be declared without a precision/
 
 === Defining Table CONSTRAINTS
 
-Constraints can be defined on table/view to define indexes and relationships to other tables/views. This information is used by the Teiid optimizer to plan queries or use the indexes in materialization tables to optimize the access to the data.
+Constraints can be defined on table/view to define indexes and relationships to other tables/views. This information is used by the {{ book.productnameFull }} optimizer to plan queries or use the indexes in materialization tables to optimize the access to the data.
 
 image:images/constraint.jpg[images/constraint.jpg]
 
@@ -380,9 +380,9 @@ For more detailed explanation of these update procedures please refer to link:..
 Using the below syntax, user can define a
 
 * Source Procedure ("CREATE FOREIGN PROCEDURE") - a stored procedure in source
-* Source Function ("CREATE FOREIGN FUNCTION") - A function that is supported by the source, where Teiid will pushdown to source instead of evaluating in Teiid engine
-* Virtual Procedure ("CREATE VIRTUAL PROCEDURE") - Similar to stored procedure, however this is defined using the Teiid’s Procedure language and evaluated in the Teiid’s engine.
-* Function/UDF ("CREATE VIRTUAL FUNCTION") - A user defined function, that can be defined using the Teiid procedure language or can have the implementation defined using a link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[JAVA Class].
+* Source Function ("CREATE FOREIGN FUNCTION") - A function that is supported by the source, where {{ book.productnameFull }} will pushdown to source instead of evaluating in {{ book.productnameFull }} engine
+* Virtual Procedure ("CREATE VIRTUAL PROCEDURE") - Similar to stored procedure, however this is defined using the {{ book.productnameFull }}’s Procedure language and evaluated in the {{ book.productnameFull }}’s engine.
+* Function/UDF ("CREATE VIRTUAL FUNCTION") - A user defined function, that can be defined using the {{ book.productnameFull }} procedure language or can have the implementation defined using a link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[JAVA Class].
 
 image:images/create_procedure.jpg[images/create_procedure.jpg]
 
@@ -473,9 +473,9 @@ Note that NULL-ON-NULL, VARARGS, and all of the AGGREGATE properties are also va
 |indicates the aggregate function effectively uses distinct rows rather than all rows. default false
 |===
 
-Note that virtual functions defined using the Teiid procedure language cannot be aggregate functions.
+Note that virtual functions defined using the {{ book.productnameFull }} procedure language cannot be aggregate functions.
 
-NOTE: *Providing the JAR libraries* - If you have defined a UDF (virtual) function without a Teiid procedure definition, then it must be accompanied by its implementation in Java. To configure the Java library as dependency to the VDB, see link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[Support for User-Defined Functions]
+NOTE: *Providing the JAR libraries* - If you have defined a UDF (virtual) function without a {{ book.productnameFull }} procedure definition, then it must be accompanied by its implementation in Java. To configure the Java library as dependency to the VDB, see link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[Support for User-Defined Functions]
 
 *PROCEDURE OPTIONS*:(the below are well known options, any others properties defined will be considered as extension metadata)
 
@@ -522,11 +522,11 @@ CREATE VIRTUAL FUNCTION CustomerRank(customerid integer)
    END
 ----
 
-Procedure columns may also be marked as NOT NULL, or with a DEFAULT value. On a source procedure if you want the parameter to be defaultable in the source procedure and not supply a default value in Teiid, then the parameter must use the extension property teiid_rel:default_handling set to omit.
+Procedure columns may also be marked as NOT NULL, or with a DEFAULT value. On a source procedure if you want the parameter to be defaultable in the source procedure and not supply a default value in {{ book.productnameFull }}, then the parameter must use the extension property teiid_rel:default_handling set to omit.
 
 There can only be a single RESULT parameter and it must be an out parameter. A RESULT parameter is the same as having a single non-table RETURNS type. If both are declared they are expected to match otherwise an exception is thrown. One is no more correct than the other. "RETURNS type" is shorter hand syntax especially for functions, while the parameter form is useful for additional metadata (explicit name, extension metadata, also defining a returns table, etc.).  
 
-A return parameter will be treated as the first parameter in for the procedure at runtime, regardless of where it appears in the argument list.  This matches the expectation of Teiid and JDBC calling semantics that expect assignments in the form "? = EXEC ...".
+A return parameter will be treated as the first parameter in for the procedure at runtime, regardless of where it appears in the argument list.  This matches the expectation of {{ book.productnameFull }} and JDBC calling semantics that expect assignments in the form "? = EXEC ...".
 
 *Relational Extension OPTIONS*:
 
@@ -557,11 +557,11 @@ CREATE FOREIGN FUNCTION seq_nextval ()
     OPTIONS ("teiid_rel:native-query" 'seq.nextval');
 ----
 
-TIP: Until Teiid provides higher-level metadata support for sequences, a source function representation is the best fit to expose sequence functionality.
+TIP: Until {{ book.productnameFull }} provides higher-level metadata support for sequences, a source function representation is the best fit to expose sequence functionality.
 
 == Extension Metadata
 
-When defining the extension metadata in the case of Custom Translators, the properties on tables/views/procedures/columns can define namespace for the properties such that they will not collide with the Teiid specific properties. The property should be prefixed with alias of the Namespace. Prefixes starting with teiid_ are reserved for use by Teiid.
+When defining the extension metadata in the case of Custom Translators, the properties on tables/views/procedures/columns can define namespace for the properties such that they will not collide with the {{ book.productnameFull }} specific properties. The property should be prefixed with alias of the Namespace. Prefixes starting with teiid_ are reserved for use by {{ book.productnameFull }}.
 
 image:images/create_namespace.jpg[images/create_namespace.jpg]
 

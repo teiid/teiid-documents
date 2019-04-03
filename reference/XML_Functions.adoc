@@ -424,7 +424,7 @@ data like ['a', 1], ['a', 2], ['b', 3], ['b', 4], if you want generate a XML tha
 </root>
 ----
 
-use the SQL statement in Teiid as below
+use the SQL statement in {{ book.productnameFull }} as below
 
 [source,sql]
 ----

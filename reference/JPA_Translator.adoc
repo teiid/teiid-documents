@@ -21,7 +21,7 @@ NOTE: This feature is turned off by default because of the security risk this ex
 
 TIP: By default the name of the procedure that executes the queries directly is *native*. link:Translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
 
-The JPA translator provides a procedure to execute any ad-hoc JPA-QL query directly against the source without Teiid parsing or resolving. Since the metadata of this procedure’s results are not known to Teiid, they are returned as object array. User can use link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications. Teiid exposes this procedure with a simple query structure as below
+The JPA translator provides a procedure to execute any ad-hoc JPA-QL query directly against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as object array. User can use link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications. {{ book.productnameFull }} exposes this procedure with a simple query structure as below
 
 === Select
 

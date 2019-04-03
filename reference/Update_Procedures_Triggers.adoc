@@ -6,9 +6,9 @@
 
 == View Triggers
 
-Views are abstractions above physical sources. They typically union or join information from multiple tables, often from multiple data sources or other views. Teiid can perform update operations against views. Update commands - INSERT, UPDATE, or DELETE - against a view require logic to define how the tables and views integrated by the view are affected by each type of command. This transformation logic, also referred to as a *trigger*, is invoked when an update command is issued against a view. Update procedures define the logic for how a user’s update command against a view should be decomposed into the individual commands to be executed against the underlying physical sources. Similar to link:Virtual_Procedures.adoc[Virtual Procedures], update procedures have the ability to execute queries or other commands, define temporary tables, add data to temporary tables, walk through result sets, use loops, and use conditional logic.
+Views are abstractions above physical sources. They typically union or join information from multiple tables, often from multiple data sources or other views. {{ book.productnameFull }} can perform update operations against views. Update commands - INSERT, UPDATE, or DELETE - against a view require logic to define how the tables and views integrated by the view are affected by each type of command. This transformation logic, also referred to as a *trigger*, is invoked when an update command is issued against a view. Update procedures define the logic for how a user’s update command against a view should be decomposed into the individual commands to be executed against the underlying physical sources. Similar to link:Virtual_Procedures.adoc[Virtual Procedures], update procedures have the ability to execute queries or other commands, define temporary tables, add data to temporary tables, walk through result sets, use loops, and use conditional logic.
 
-Teiid supports INSTEAD OF triggers on views similar to traditional databases. There may only be 1 FOR EACH ROW procedure for each INSERT, UPDATE, or DELETE operation against a view. 
+{{ book.productnameFull }} supports INSTEAD OF triggers on views similar to traditional databases. There may only be 1 FOR EACH ROW procedure for each INSERT, UPDATE, or DELETE operation against a view. 
 
 Usage:
 
@@ -30,7 +30,7 @@ FOR EACH ROW
 
 == Source Triggers
 
-Teiid supports AFTER triggers on source tables, which are called by events from a CDC (change data capture) system.
+{{ book.productnameFull }} supports AFTER triggers on source tables, which are called by events from a CDC (change data capture) system.
 
 Usage:
 

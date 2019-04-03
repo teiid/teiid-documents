@@ -4,7 +4,7 @@
 :toc-title: The types of data sources that are currently accessible are:
 
 
-Teiid provides the means (i.e., link:Translators.adoc[Translators] and link:../admin/Deploying_VDB_Dependencies.adoc[JEE connectors]) to access a variety of types of data sources.
+{{ book.productnameFull }} provides the means (i.e., link:Translators.adoc[Translators] and link:../admin/Deploying_VDB_Dependencies.adoc[JEE connectors]) to access a variety of types of data sources.
 
 == Databases
 
@@ -98,4 +98,4 @@ See the link:File_Translator.adoc[File Translator] for use with:
 
 This represents data sources that have been validated to work using the available translators and connectors. However, this does not preclude a new data source from working. It can be as easy as extending an existing translator, to creating a new translator using the link:../dev/Translator_Development.adoc[Translator Development] extensions.
 
-Take a look at the list of link:Translators.adoc[Translators] that are used as the bridge between Teiid and the external system.
+Take a look at the list of link:Translators.adoc[Translators] that are used as the bridge between {{ book.productnameFull }} and the external system.

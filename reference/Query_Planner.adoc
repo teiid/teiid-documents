@@ -410,7 +410,7 @@ Dependent join is the key optimization we use to efficiently process multi-sourc
 * Plan Outer Joins - reorders outer joins as permitted to improve push down.
 * Plan Procedures - plans procedures that appear in procedural relational queries
 * Plan Sorts - optimizations around sorting, such as combining sort operations or moving projection
-* Plan Subqueries - New for Teiid 12.  Generalizes the subquery optimization that was performed in Merge Criteria to allow for the creation of join plans from subqueries in both projection and filtering.
+* Plan Subqueries - New for {{ book.productnameFull }} 12.  Generalizes the subquery optimization that was performed in Merge Criteria to allow for the creation of join plans from subqueries in both projection and filtering.
 * Plan Unions - reorders union children for more pushdown
 * Plan Aggregates - performs aggregate decomposition over a join or union
 * Push Limit - pushes the affect of a limit node further into the plan

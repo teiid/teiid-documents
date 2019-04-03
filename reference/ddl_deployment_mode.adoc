@@ -2,7 +2,7 @@
 :toc: manual
 :toc-placement: preamble
 
-A Virtual Database (VDB) can created through DDL statements. Teiid supports SQL-MED specification to configure the foreign data sources.
+A Virtual Database (VDB) can created through DDL statements. {{ book.productnameFull }} supports SQL-MED specification to configure the foreign data sources.
 
 A DDL file captures information about the VDB, the sources it integrate, and preferences for importing metadata. The format of the DDL file can be any elements in documented here.
 The DDL file may be deployed as a single file, or in a zip archive.  See link:developing_vdb.adoc[Developing a Virtual Database] for a discussion of the .vdb zip packaging. 
@@ -11,7 +11,7 @@ The DDL file may be deployed as a single file, or in a zip archive.  See link:de
 
 You can simply create a *SOME-NAME-vdb.ddl* file. 
 
-IMPORTANT: The VDB name pattern must adhere to "-vdb.ddl" for the Teiid VDB deployer to recognize this file when deployed in Teiid Server.
+IMPORTANT: The VDB name pattern must adhere to "-vdb.ddl" for the {{ book.productnameFull }} VDB deployer to recognize this file when deployed in {{ book.productnameFull }} Server.
 
 [source,DDL]
 .Example VDB DDL Template
@@ -64,7 +64,7 @@ As we learned about the VDB components earlier in the guide, we need to first cr
 
 == Create a Translator 
 
-A translator is an adapter to the foreign data source.  The creation of translator in the context of the VDB creates a reference to the software module that is available in the Teiid system. Some of the examples of available translator modules include:
+A translator is an adapter to the foreign data source.  The creation of translator in the context of the VDB creates a reference to the software module that is available in the {{ book.productnameFull }} system. Some of the examples of available translator modules include:
 
 * oracle
 * mysql
@@ -108,8 +108,8 @@ DROP FOREIGN [<DATA> <WRAPPER>|<TRANSLATOR>] {translator-name}
 
 == Create a Connection To an External Source
 
-Before you can create a connection to the data source, you must either have a JDBC driver (Type 4) that can connect to the data source, or Teiid system must have provided a resource adapter (RAR) file to enable connection to the data source. 
-If you are using the JDBC driver file this should have already been deployed to the Teiid system, or made it available on the classpath in the case of the Teiid Embedded. There is currently no DDL mechanism to deploy the external drivers.
+Before you can create a connection to the data source, you must either have a JDBC driver (Type 4) that can connect to the data source, or {{ book.productnameFull }} system must have provided a resource adapter (RAR) file to enable connection to the data source. 
+If you are using the JDBC driver file this should have already been deployed to the {{ book.productnameFull }} system, or made it available on the classpath in the case of the {{ book.productnameFull }} Embedded. There is currently no DDL mechanism to deploy the external drivers.
 
 Now to create connection to the external data source. One needs to know the name of deployment. For JDBC drivers, it is typically JAR name with out path. For resource adapters, it is the name of the resource-adapter. Step also associates the connection created with the translator to be used in communicating with this source. 
 
@@ -214,7 +214,7 @@ DROP SCHEMA {schema-name};
 
 == Importing Schema
 
-If you are designing a source schema, you can add the TABLES, PROCEDURES manually to represent the data source, however in certain situations this can be tedious, or complicated. For example, if you need to represent 100s of existing tables from your Oracle database in Teiid? Or if you are working with MongoDB, how are you going to map a document structure into a TABLE? For this purpose, Teiid provides an import metadata command, that can import/create metadata that represents the source. The following command can be used for that purpose with most of the sources (LDAP source is only exception, not providing import)
+If you are designing a source schema, you can add the TABLES, PROCEDURES manually to represent the data source, however in certain situations this can be tedious, or complicated. For example, if you need to represent 100s of existing tables from your Oracle database in {{ book.productnameFull }}? Or if you are working with MongoDB, how are you going to map a document structure into a TABLE? For this purpose, {{ book.productnameFull }} provides an import metadata command, that can import/create metadata that represents the source. The following command can be used for that purpose with most of the sources (LDAP source is only exception, not providing import)
 
 ----
 IMPORT FOREIGN SCHEMA {foreign-schema-name}  
@@ -228,7 +228,7 @@ IMPORT FOREIGN SCHEMA {foreign-schema-name}
 
 foreign-schema-name : Name of schema in external data source to import. Typically most databases are tied to a schema name, like "public", "dbo" or name of the database. If you are working with non-relational source, you can provide a dummy value here.
 server-name: name of the server created above to import metadata from.
-repository-name: Custom/extended "named" repositories from which metadata can be imported. See MetadataRepository interface for more details. Teiid provides a built in type called "DDL-FILE" see example below.
+repository-name: Custom/extended "named" repositories from which metadata can be imported. See MetadataRepository interface for more details. {{ book.productnameFull }} provides a built in type called "DDL-FILE" see example below.
 schema-name: The foreign schema name to import from - it's meaning is up to the translator.
 import qualifications : using this you can limit your import of the Tables from foreign datasource specified to this list. 
 options-clause : The "importer" properties that can be used to refine the import process behavior of the metadata. Each Translator defines a set of "importer" properties with their documentation or through extension properties. 
@@ -285,7 +285,7 @@ CREATE VIEW my_view AS SELECT 'HELLO WORLD';
 ----
 
 == Data Roles
-Data roles, also called entitlements, are sets of permissions defined per VDB that dictate data access (create, read, update, delete). Data roles use a fine-grained permission system that Teiid will enforce at runtime and provide audit log entries for access violations. To read more about Data Roles and Permissions see  link:../reference/Data_Roles.adoc[Data Roles] and  link:../reference/Permissions.adoc[Permissions]
+Data roles, also called entitlements, are sets of permissions defined per VDB that dictate data access (create, read, update, delete). Data roles use a fine-grained permission system that {{ book.productnameFull }} will enforce at runtime and provide audit log entries for access violations. To read more about Data Roles and Permissions see  link:../reference/Data_Roles.adoc[Data Roles] and  link:../reference/Permissions.adoc[Permissions]
 
 Here we will show DDL support to create these Data Roles and corresponding permissions.
 
@@ -436,11 +436,11 @@ GRANT READ ON COLUMN test.Order.amount
 
 == Differences with vdb.xml metadata
 
-Using a .ddl file instead of a .xml file to define a vdb will result in differences in how metadata is loaded when using a full server deploymnet of Teiid.
+Using a .ddl file instead of a .xml file to define a vdb will result in differences in how metadata is loaded when using a full server deploymnet of {{ book.productnameFull }}.
 
 Using a vdb.ddl file does not support:
 * metadata caching at the schema level - although this feature may be added later
 * metadata reload if a datasource is unavailable at deployment time
 * parallel loading of source metadata
 
-All of same limitations affect all VDBs (regardless of .xml or .ddl) when using Teiid Embedded.
+All of same limitations affect all VDBs (regardless of .xml or .ddl) when using {{ book.productnameFull }} Embedded.

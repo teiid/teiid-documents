@@ -110,5 +110,5 @@ would return:
 
 NOTE: Not all sources support ROLLUPs and some optimizations compared to normal aggregate processing may be inhibited by the use of a ROLLUP.
 
-Teiid’s support for ROLLUP is more limited than the SQL specification. In future releases support for CUBE, grouping sets, and more than a single extended grouping element may be supported.
+{{ book.productnameFull }}’s support for ROLLUP is more limited than the SQL specification. In future releases support for CUBE, grouping sets, and more than a single extended grouping element may be supported.
 

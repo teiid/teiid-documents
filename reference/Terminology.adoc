@@ -1,7 +1,7 @@
 
 = Terminology
 
-* VM or Process – a JBossAS instance running Teiid.  
+* VM or Process – a JBossAS instance running {{ book.productnameFull }}.  
 
 * Host – a machine that is "hosting" one or more VMs.
 

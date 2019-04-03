@@ -1,11 +1,11 @@
 
 = REST Service Through VDB
 
-With help of link:DDL_Metadata.html[DDL Metadata] variety of metadata can be defined on VDB schema models. This metadata is not limited to just defining the tables, procedures and functions. The capabilities of source systems or any extensions to metadata can also be defined on the schema objects using the OPTIONS clause. One such extension properties that Teiid defines is to expose Teiid procedures as REST based services.
+With help of link:DDL_Metadata.html[DDL Metadata] variety of metadata can be defined on VDB schema models. This metadata is not limited to just defining the tables, procedures and functions. The capabilities of source systems or any extensions to metadata can also be defined on the schema objects using the OPTIONS clause. One such extension properties that {{ book.productnameFull }} defines is to expose {{ book.productnameFull }} procedures as REST based services.
 
-== Expose Teiid Procedure as Rest Service
+== Expose {{ book.productnameFull }} Procedure as Rest Service
 
-One can define below REST based properties on a Teiid virtual procedure, and when the VDB is deployed the Teiid VDB deployer will analyze the metadata and deploy a REST service automatically. When the VDB un-deployed the REST service also deployed.
+One can define below REST based properties on a {{ book.productnameFull }} virtual procedure, and when the VDB is deployed the {{ book.productnameFull }} VDB deployer will analyze the metadata and deploy a REST service automatically. When the VDB un-deployed the REST service also deployed.
 
 |===
 |Property Name |Description |Is Required |Allowed Values
@@ -71,7 +71,7 @@ The above properties must be defined with NAMESPACE `http://teiid.org/rest' on t
 
 NOTE: <property name="{http://teiid.org/rest}auto-generate" value="true"/>, can be used to control the generation of the REST based WAR based on the VDB. This property along with at least one procedure with REST based extension metadata is required to generate a REST WAR file. Also, the procedure needs to return result set with single column of either XML, Clob, Blob or String. When PRODUCES property is not defined, this property is derived from the result column that is projected out.  The PRODUCES values xml, json, and plain are actually converted to the MIME types application/xml, application/json, and text/plain respectively.  You may enter the full MIME type if you need, such as text/html. 
 
-When the above VDB is deployed in the {{ book.asName }} + Teiid server, and if the VDB is valid and after the metadata is loaded then a REST war generated automatically and deployed into the local {{ book.asName }} server. The REST VDB is deployed with "\{vdb-name}_\{vdb-version}" context. The model name is prepended to uri of the service call. For example the procedure in above example can be accessed as
+When the above VDB is deployed in the {{ book.asName }} + {{ book.productnameFull }} server, and if the VDB is valid and after the metadata is loaded then a REST war generated automatically and deployed into the local {{ book.asName }} server. The REST VDB is deployed with "\{vdb-name}_\{vdb-version}" context. The model name is prepended to uri of the service call. For example the procedure in above example can be accessed as
 
 [source,sql]
 ----
@@ -96,7 +96,7 @@ Make sure that the number of parameters defined on the URI and query match to th
 
 'POST' methods MUST not be defined with URI with PATHS for parameters as in GET operations, the procedure parameters are automatically added as @FormParam annotations on the generated procedure. A client invoking this service must use FORM to post the values for the parameters. The FORM field names MUST match the names of the procedure parameters names.
 
-If any one of the procedure parameters are BLOB, CLOB or XML type, then POST operation can be only invoked using "multipart/form-data" https://www.ietf.org/rfc/rfc2388.txt[RFC-2388] protocol. This allows user to upload large binary or XML files efficiently to Teiid using streaming".
+If any one of the procedure parameters are BLOB, CLOB or XML type, then POST operation can be only invoked using "multipart/form-data" https://www.ietf.org/rfc/rfc2388.txt[RFC-2388] protocol. This allows user to upload large binary or XML files efficiently to {{ book.productnameFull }} using streaming".
 
 *"VARBINARY type"*
 

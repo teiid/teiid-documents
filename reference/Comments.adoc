@@ -1,7 +1,7 @@
 
 = Comments
 
-Teiid supports multi-line comments enclosed with /* */:
+{{ book.productnameFull }} supports multi-line comments enclosed with /* */:
 
 [source,sql]
 ----

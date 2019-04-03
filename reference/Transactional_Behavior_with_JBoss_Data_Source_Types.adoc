@@ -3,15 +3,15 @@
 
 {{ book.asName }} allows creation of different types of data sources, based on their transactional capabilities. The type of data source you create for your VDB’s sources also dictates if that data source will be participating the distributed transaction or not, irrespective of the transaction scope you selected from above. Here are different types of data sources
 
-* xa-datasource: Capable of participating in the distributed transaction using XA. This is recommended type be used with any Teiid sources.
+* xa-datasource: Capable of participating in the distributed transaction using XA. This is recommended type be used with any {{ book.productnameFull }} sources.
 
 * local-datasource: Does not participate in XA, unless this is the _only_ source that is local-datasource that is participating among other xa-datasources in the current distributed transaction. This technique is called last commit optimization. However, if you have more then one local-datasources participating in a transaction, then the transaction manager will end up with _"Could not enlist in transaction on entering meta-aware object!;"_ exception.
 
-* no-tx-datasource: Does not participate in distributed transaction at all. In the scope of Teiid command over multiple sources, you can include this type of datasource in the same distributed transaction context, however this source will be it will not be subject to any transactional participation. Any changes done on this source as part of the transaction scope, can not be rolled back. If you have three different sources A, B, C and they are being used in Teiid. Here are some variations on how they behave with different types of data sources. The suffixes "xa", "local", "no-tx" define different type of sources used.
+* no-tx-datasource: Does not participate in distributed transaction at all. In the scope of {{ book.productnameFull }} command over multiple sources, you can include this type of datasource in the same distributed transaction context, however this source will be it will not be subject to any transactional participation. Any changes done on this source as part of the transaction scope, can not be rolled back. If you have three different sources A, B, C and they are being used in {{ book.productnameFull }}. Here are some variations on how they behave with different types of data sources. The suffixes "xa", "local", "no-tx" define different type of sources used.
 
 * A-xa B-xa, C-xa : Can participate in all transactional scopes. No restrictions.
 
-* A-xa, B-xa, c-local: Can participate in all transactional scopes. Note that there is only one single source is "local". It is assumed that in the Global scope, the third party datasource, other than Teiid Datasource is also XA.
+* A-xa, B-xa, c-local: Can participate in all transactional scopes. Note that there is only one single source is "local". It is assumed that in the Global scope, the third party datasource, other than {{ book.productnameFull }} Datasource is also XA.
 
 * A-xa, B-xa, C-no-tx : Can participate in all transactional scopes. Note "C" is not a really bound by any transactional contract. A and B are the only participents in XA transaction.
 
@@ -33,9 +33,9 @@ If your datasource is not XA, and not the only local source and can not use "no-
 
 * Write a compensating XA based implementation.
 
-.*Teiid Transaction Participation*
+.*{{ book.productnameFull }} Transaction Participation*
 |===
-|Teiid-Tx-Scope |XA source |Local Source |No-Tx Source
+|Tx-Scope |XA source |Local Source |No-Tx Source
 
 |Local (Auto-commit=false)
 |always

@@ -5,7 +5,7 @@ The Amazon SimpleDB Translator, known by the type name _simpledb_, exposes query
 
 NOTE: *"Amazon SimpleDB"* - Amazon SimpleDB is a web service for running queries on structured data in real time. This service works in close conjunction with Amazon Simple Storage Service (Amazon S3) and Amazon Elastic Compute Cloud (Amazon EC2), collectively providing the ability to store, process and query data sets in the cloud. These services are designed to make web-scale computing easier and more cost-effective for developers. Read more about it at http://aws.amazon.com/simpledb/
 
-This translator provides an easy way connect to Amazon SimpleDB and provides relational way using SQL to add records from directly from user or from other sources that are integrated with Teiid. It also gives ability to read/update/delete existing records from SimpleDB store.
+This translator provides an easy way connect to Amazon SimpleDB and provides relational way using SQL to add records from directly from user or from other sources that are integrated with {{ book.productnameFull }}. It also gives ability to read/update/delete existing records from SimpleDB store.
 
 == Usage
 
@@ -13,10 +13,10 @@ Amazon SimpleDB is hosted key/value store where a single key can contain host mu
 
 image:images/simpledb-key.png[simpledb-key.png]
 
-Based on above data structure, when you import the metadata from SimpleDB into Teiid, the constructs are aligned as below
+Based on above data structure, when you import the metadata from SimpleDB into {{ book.productnameFull }}, the constructs are aligned as below
 
 |===
-|Simple DB Name |SQL (Teiid)
+|Simple DB Name |SQL
 
 |Domain
 |Table
@@ -46,7 +46,7 @@ An Example VDB that shows SimpleDB translator can be defined as
 <vdb>
 ----
 
-The translator does NOT provide a connection to the SimpleDB. For that purpose, Teiid has a JCA adapter that provides a connection to SimpleDB using Amazon SDK Java libraries. To define such connector, see Amazon SimpleDB Data Sources or see an example in "<jboss-as>/docs/teiid/datasources/simpledb"
+The translator does NOT provide a connection to the SimpleDB. For that purpose, {{ book.productnameFull }} has a JCA adapter that provides a connection to SimpleDB using Amazon SDK Java libraries. To define such connector, see Amazon SimpleDB Data Sources or see an example in "<jboss-as>/docs/teiid/datasources/simpledb"
 
 == Properties
 
@@ -58,10 +58,10 @@ The Amazon SimpleDB Translator supports SELECT statements with a restrictive set
 
 *Queries on Attributes with Multiple Values*
 
-Attributes with multiple values will defined as string array type. So this column is treated SQL Array type. The below table shows SimpleDB way of querying to Teiid way to query. The queries are based on http://docs.aws.amazon.com/AmazonSimpleDB/latest/DeveloperGuide/RangeValueQueriesSelect.html[http://docs.aws.amazon.com/AmazonSimpleDB/latest/DeveloperGuide/RangeValueQueriesSelect.html]
+Attributes with multiple values will defined as string array type. So this column is treated SQL Array type. The below table shows SimpleDB way of querying to {{ book.productnameFull }} way to query. The queries are based on http://docs.aws.amazon.com/AmazonSimpleDB/latest/DeveloperGuide/RangeValueQueriesSelect.html[http://docs.aws.amazon.com/AmazonSimpleDB/latest/DeveloperGuide/RangeValueQueriesSelect.html]
 
 |===
-|SimpleDB Query |Teiid Query
+|SimpleDB Query |{{ book.productnameFull }} Query
 
 |select * from mydomain where Rating = '4 stars' or Rating = '****'
 |select * from mydomain where Rating = ('4 stars','****')
@@ -86,7 +86,7 @@ NOTE: This feature is turned off by default because of the security risk this ex
 
 TIP: By default the name of the procedure that executes the queries directly is called native. Override the execution property DirectQueryProcedureName to change it to another name.
 
-The SimpleDB translator provides a procedure to execute any ad-hoc simpledb query directly against the source without Teiid parsing or resolving. Since the metadata of this procedure’s results are not known to Teiid, they are returned as an object array. ARRAYTABLE can be used construct tabular output for consumption by client applications. Direct query supported for "select" based calls.
+The SimpleDB translator provides a procedure to execute any ad-hoc simpledb query directly against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as an object array. ARRAYTABLE can be used construct tabular output for consumption by client applications. Direct query supported for "select" based calls.
 
 [source,sql]
 ----
@@ -96,5 +96,5 @@ SELECT X.*
 
 == JCA Resource Adapter
 
-The Teiid specific Amazon SimpleDB Resource Adapter should be used with this translator. See link:../admin/Amazon_SimpleDB_Data_Sources.adoc[Amazon SimpleDB Data Sources] for connecting to SimpleDB.
+The {{ book.productnameFull }} specific Amazon SimpleDB Resource Adapter should be used with this translator. See link:../admin/Amazon_SimpleDB_Data_Sources.adoc[Amazon SimpleDB Data Sources] for connecting to SimpleDB.
 

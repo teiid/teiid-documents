@@ -1,7 +1,7 @@
 
 = Swagger Translator
 
-The Swagger translator, known by the type name _"swagger"_ exposes the Swagger data sources in realational concepts and uses the Teiid WS resource adapter for making web service calls.
+The Swagger translator, known by the type name _"swagger"_ exposes the Swagger data sources in realational concepts and uses the {{ book.productnameFull }} WS resource adapter for making web service calls.
 
 NOTE: *What is Swagger* - http://swagger.io/ [OpenAPI Specification (Swagger)] Swagger is a simple yet powerful representation of your RESTful API. With the largest ecosystem of API tooling on the planet, thousands of developers are supporting Swagger in almost every modern programming language and deployment environment. With a Swagger-enabled API, you get interactive documentation, client SDK generation and discoverability.
 
@@ -9,7 +9,7 @@ Starting January 1st 2016 the Swagger Specification has been donated to the Open
 
 == Usage
 
-Usage of a Swagger source is similar any other translator in Teiid. The metadata import is supported through the translator, the metadata is imported from source system's swagger.json file and then API from this file is exposed as stored procedures in Teiid, then source system can be queried by executing these stored procedures in Teiid system.
+Usage of a Swagger source is similar any other translator in {{ book.productnameFull }}. The metadata import is supported through the translator, the metadata is imported from source system's swagger.json file and then API from this file is exposed as stored procedures in {{ book.productnameFull }}, then source system can be queried by executing these stored procedures in {{ book.productnameFull }} system.
 
 NOTE: Parameter order is guaranteed by the swagger libraries.  It is recommended that you call procedures using named, rather than positional parameters, if you rely upon the native import. 
 
@@ -41,7 +41,7 @@ The required resource-adapter configuration will look like
 </resource-adapter>
 ----
 
-Once you configure above resource-adapter and deploy the VDB successfully, then you can connect to the VDB deployed using Teiid JDBC driver and issue SQL statements like
+Once you configure above resource-adapter and deploy the VDB successfully, then you can connect to the VDB deployed using {{ book.productnameFull }} JDBC driver and issue SQL statements like
 
 [source,sql]
 ----

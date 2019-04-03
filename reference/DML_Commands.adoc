@@ -1,7 +1,7 @@
 
 = DML Commands
 
-Teiid supports SQL for issuing queries and for defining view transformations; see also link:Procedure_Language.adoc[Procedure Language] for how SQL is used in virtual procedures and update procedures. Nearly all these features follow standard SQL syntax and functionality, so any SQL reference can be used for more information.
+{{ book.productnameFull }} supports SQL for issuing queries and for defining view transformations; see also link:Procedure_Language.adoc[Procedure Language] for how SQL is used in virtual procedures and update procedures. Nearly all these features follow standard SQL syntax and functionality, so any SQL reference can be used for more information.
 
 There are 4 basic commands for manipulating data in SQL, corresponding to the CRUD create, read, update, and delete operations: INSERT, SELECT, UPDATE, and DELETE. A MERGE statement acts as a combination of INSERT and UPDATE.
 
@@ -100,7 +100,7 @@ DELETE FROM table [[AS] alias] [WHERE criteria]
 
 == UPSERT/MERGE Command
 
-The UPSERT (or MERGE) is used to add and/or update records. The Teiid specific (non-ANSI) UPSERT is simply a modified INSERT statement that requires the target table to have a primary key and for the target columns to cover the primary key. 
+The UPSERT (or MERGE) is used to add and/or update records. The {{ book.productnameFull }} specific (non-ANSI) UPSERT is simply a modified INSERT statement that requires the target table to have a primary key and for the target columns to cover the primary key. 
 The UPSERT operation will then check the existence of each row prior to INSERT and instead perform an UPDATE if the row already exists.
 
 Example Syntax

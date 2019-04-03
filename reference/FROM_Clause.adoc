@@ -63,9 +63,9 @@ MAKEDEP and MAKEIND support optional max and join arguments:
 
 === Other Hints
 
-NO_UNNEST can be specified against a subquery from clause or view to instruct the planner to not merge the nested SQL in the surrounding query - also known as view flattening. This hint only applies to Teiid planning and is not passed to source queries. NO_UNNEST may appear in a comment that proceeds the from clause.
+NO_UNNEST can be specified against a subquery from clause or view to instruct the planner to not merge the nested SQL in the surrounding query - also known as view flattening. This hint only applies to {{ book.productnameFull }} planning and is not passed to source queries. NO_UNNEST may appear in a comment that proceeds the from clause.
 
-The PRESERVE hint can be used against an ANSI join tree to preserve the structure of the join rather than allowing the Teiid optimizer to reorder the join. This is similar in function to the Oracle ORDERED or MySQL STRAIGHT_JOIN hints.
+The PRESERVE hint can be used against an ANSI join tree to preserve the structure of the join rather than allowing the {{ book.productnameFull }} optimizer to reorder the join. This is similar in function to the Oracle ORDERED or MySQL STRAIGHT_JOIN hints.
 
 [source,sql]
 .*Example PRESERVE Hint*

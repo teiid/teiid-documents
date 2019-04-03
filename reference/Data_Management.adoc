@@ -3,9 +3,9 @@
 
 == Cursoring and Batching
 
-Teiid cursors all results, regardless of whether they are from one source or many sources, and regardless of what type of processing (joins, unions, etc.) have been performed on the results.
+{{ book.productnameFull }} cursors all results, regardless of whether they are from one source or many sources, and regardless of what type of processing (joins, unions, etc.) have been performed on the results.
 
-Teiid processes results in batches. A batch is simply a set of records. The number of rows in a batch is determined by the buffer system property _processor-batch-size_ and is scaled upon the estimated memory footprint of the batch.
+{{ book.productnameFull }} processes results in batches. A batch is simply a set of records. The number of rows in a batch is determined by the buffer system property _processor-batch-size_ and is scaled upon the estimated memory footprint of the batch.
 
 Client applications have no direct knowledge of batches or batch sizes, but rather specify fetch size. However the first batch, regardless of fetch size is always proactively returned to synchronous clients. Subsequent batches are returned based on client demand for the data. Pre-fetching is utilized at both the client and connector levels.
 

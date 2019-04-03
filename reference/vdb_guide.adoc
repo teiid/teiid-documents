@@ -10,7 +10,7 @@ A VDB typically contains multiple schema components (also called as models), and
 
 * Virtual Schema. This is a view layer or logical schema layer, that is defined using schema objects from Foreign Schemas. For example, creating a view table using multiple foreign tables from different sources, thus hiding the complexities of definition of the view from user.
 
-One important thing to note is, a VDB ONLY contains metadata, NEVER copies/has the actual data. Any usecase involving Teiid MUST have a VDB to begin with. So, it is very important to learn how a VDB can be designed/developed.
+One important thing to note is, a VDB ONLY contains metadata, NEVER copies/has the actual data. Any usecase involving {{ book.productnameFull }} MUST have a VDB to begin with. So, it is very important to learn how a VDB can be designed/developed.
 
 Below is an example VDB, that is using a single foreign schema component defining a connection to PostgreSQL database.
 
@@ -54,17 +54,17 @@ There is lot to be explained from above examples, in the following sections, we 
 == External Data Sources 
 A "source schema" component in VDB as shown in above example is a collection schema objects as tables, procedures and functions that represent an external data source's metadata locally. In the above example, it did not define any such schema objects directly, but will instead import them from the server.  Details of the connection to the external data source were provided through "jndi-name", which is a named connection reference to a external data source.   
 
-For the purposes of Teiid, connecting and issuing queries to fetch the metadata from these external data sources, Teiid defines/provides two types of resources.
+For the purposes of {{ book.productnameFull }}, connecting and issuing queries to fetch the metadata from these external data sources, {{ book.productnameFull }} defines/provides two types of resources.
 
 === Resource Adapter
-A resource adapter (also called as SERVER) is connection object to the external data source. In the case of relational database this can be achieved through a JDBC connection, or in the case of a File this may be a reference to file's location. The resource-adapter provides a unified interface to define a connection in the Teiid. A resource adapter also provides way to natively issue commands and gather results. Teiid provides variety of resource adaptors to many different systems or one can be developed for new/custom data source. A resource adapters connection is represented above as the "jndi-name".
+A resource adapter (also called as SERVER) is connection object to the external data source. In the case of relational database this can be achieved through a JDBC connection, or in the case of a File this may be a reference to file's location. The resource-adapter provides a unified interface to define a connection in the {{ book.productnameFull }}. A resource adapter also provides way to natively issue commands and gather results. {{ book.productnameFull }} provides variety of resource adaptors to many different systems or one can be developed for new/custom data source. A resource adapters connection is represented above as the "jndi-name".
 
-As VDB developer you need to know, how to configure these sources in the Teiid. In WildFly Server these are defined as JCA components. In Teiid embedded, the developer has to define the connections to these sources programmatically.  Check out link:../admin/Administrators_Guide.adoc[Administrator's Guide] on how to configure these in WildFly, or embedded examples, if you are working with Teiid Embedded.
+As VDB developer you need to know, how to configure these sources in the {{ book.productnameFull }}. In WildFly Server these are defined as JCA components. In {{ book.productnameFull }} embedded, the developer has to define the connections to these sources programmatically.  Check out link:../admin/Administrators_Guide.adoc[Administrator's Guide] on how to configure these in WildFly, or embedded examples, if you are working with {{ book.productnameFull }} Embedded.
 
 === Translator  
-A Translator (also called DATA WRAPPER) is a component that provides an abstraction layer between Teiid Query Engine and physical data source, that knows how to convert Teiid issued query commands into source specific commands and execute them using the Resource Adapter. It also have smarts to convert the result data that came from the physical source into a form that Teiid Query engine is expecting. For example, when working with a web-service translator, a SQL procedure executed at Teiid layer may be converted to a HTTP based call through a translator, and response JSON could be converted to tabular results.
+A Translator (also called DATA WRAPPER) is a component that provides an abstraction layer between {{ book.productnameFull }} Query Engine and physical data source, that knows how to convert {{ book.productnameFull }} issued query commands into source specific commands and execute them using the Resource Adapter. It also have smarts to convert the result data that came from the physical source into a form that {{ book.productnameFull }} Query engine is expecting. For example, when working with a web-service translator, a SQL procedure executed at {{ book.productnameFull }} layer may be converted to a HTTP based call through a translator, and response JSON could be converted to tabular results.
 
-Teiid provides various translators as part of the system, or one can be developed using the provided java libraries. For list of available Translators see link:../reference/Translators.adoc[Translators]
+{{ book.productnameFull }} provides various translators as part of the system, or one can be developed using the provided java libraries. For list of available Translators see link:../reference/Translators.adoc[Translators]
 
 IMPORTANT: In a VDB, a source schema *must be* configured with a *correct* Translator and a *valid* resource adapter, to make the system work.
 

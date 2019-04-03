@@ -17,7 +17,7 @@ Since user level commands may execute multiple source commands, users can specif
 |This is the default setting. Will automatically wrap commands in a transaction, but only if the command seems to be transactionally unsafe.
 |===
 
-The concept of command safety with respect to a transaction is determined by Teiid based upon command type, the transaction isolation level, and available metadata. A wrapping transaction is not needed if:
+The concept of command safety with respect to a transaction is determined by {{ book.productnameFull }} based upon command type, the transaction isolation level, and available metadata. A wrapping transaction is not needed if:
 
 * If a user command is fully pushed to the source.
 * If the user command is a SELECT (including XML) and the transaction isolation is not REPEATABLE_READ nor SERIALIABLE.

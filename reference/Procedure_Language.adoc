@@ -3,7 +3,7 @@
 :toc: manual
 :toc-placement: preamble
 
-Teiid supports a procedural language for defining link:Virtual_Procedures.adoc[Virtual Procedures]. These are similar to stored procedures in relational database management systems. You can use this language to define the transformation logic for decomposing INSERT, UPDATE, and DELETE commands against views; these are known as link:Update_Procedures_Triggers.adoc[Update Procedures (Triggers)].
+{{ book.productnameFull }} supports a procedural language for defining link:Virtual_Procedures.adoc[Virtual Procedures]. These are similar to stored procedures in relational database management systems. You can use this language to define the transformation logic for decomposing INSERT, UPDATE, and DELETE commands against views; these are known as link:Update_Procedures_Triggers.adoc[Update Procedures (Triggers)].
 
 == Command Statement
 
@@ -241,7 +241,7 @@ Syntax Rules
 
 If the EXCEPTION clause is used with in a compound statement, any processing exception emitted from statements will be caught with the flow of execution transferring to EXCEPTION statements. Any block level transaction started by this block will commit if the exception handler successfully completes. If another exception or the original exception is emitted from the exception handler the transaction will rollback. Any temporary tables or variables specific to the BLOCK will not be available to the exception handler statements.
 
-NOTE: Only processing exceptions, which are typically caused by errors originating at the sources or with function execution, are caught. A low-level internal Teiid error or Java `RuntimeException` will not be caught.
+NOTE: Only processing exceptions, which are typically caused by errors originating at the sources or with function execution, are caught. A low-level internal {{ book.productnameFull }} error or Java `RuntimeException` will not be caught.
 
 To aid in the processing of a caught exception the EXCEPTION clause specifies a group name that exposes the significant fields of the exception. The exception group will contain:
 
@@ -254,11 +254,11 @@ To aid in the processing of a caught exception the EXCEPTION clause specifies a 
 
 |ERRORCODE
 |integer
-|The error or vendor code. In the case of Teiid internal exceptions this  will be the integer suffix of the TEIIDxxxx code
+|The error or vendor code. In the case of {{ book.productnameFull }} internal exceptions this  will be the integer suffix of the TEIIDxxxx code
 
 |TEIIDCODE
 |string
-|The full Teiid event code. Typically TEIIDxxxx.
+|The full {{ book.productnameFull }} event code. Typically TEIIDxxxx.
 
 |EXCEPTION
 |object
@@ -269,7 +269,7 @@ To aid in the processing of a caught exception the EXCEPTION clause specifies a 
 |The chained exception or cause of the current exception
 |===
 
-NOTE: Teiid does not yet fully comply with the ANSI SQL specification on SQL State usage. For Teiid errors without an underlying SQLException cause, it is best to use the Teiid code.
+NOTE: {{ book.productnameFull }} does not yet fully comply with the ANSI SQL specification on SQL State usage. For {{ book.productnameFull }} errors without an underlying SQLException cause, it is best to use the {{ book.productnameFull }} code.
 
 The exception group name may not be the same as any higher level exception group or loop cursor name.
 
@@ -494,6 +494,6 @@ SQLEXCEPTION message [SQLSTATE state [, code]] CHAIN exception
 Syntax Rules
 
 * Any of the values may be null;
-* message and state are string expressions specifying the exception message and SQL state respectively. Teiid does not yet fully comply with the ANSI SQL specification on SQL state usage, but you are allowed to set any SQL state you choose.
+* message and state are string expressions specifying the exception message and SQL state respectively. {{ book.productnameFull }} does not yet fully comply with the ANSI SQL specification on SQL state usage, but you are allowed to set any SQL state you choose.
 * code is an integer expression specifying the vendor code
 * exception must be a variable reference to an exception or an exception expression and will be chained to the resulting exception as its parent.

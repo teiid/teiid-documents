@@ -8,7 +8,7 @@
 
 * _cache-metadata_
 
-Can be "true" or "false". defaults to "false" for -vdb.xml deployments otherwise "true". If "false", Teiid will obtain metadata once for every launch of the vdb. "true" will save a file containing the metadata into the PROFILE/data/teiid directory
+Can be "true" or "false". defaults to "false" for -vdb.xml deployments otherwise "true". If "false", {{ book.productnameFull }} will obtain metadata once for every launch of the vdb. "true" will save a file containing the metadata into the PROFILE/data/teiid directory
 
 * _query-timeout_ 
 
@@ -52,7 +52,7 @@ Regular expression matched against the connecting user’s name that determines 
 
 * _max-sessions-per-user_ (11.2+)
 
-Maximum number of sessions allowed for each user, as identified by the user name, of this vdb.  No setting or a negative number indicates no per user max, but the session service max will still apply.  This is enforced at each Teiid server member in a cluster, and not cluster wide.  Derived sessions, created for tasks under an existing session, do not count against this maximum.
+Maximum number of sessions allowed for each user, as identified by the user name, of this vdb.  No setting or a negative number indicates no per user max, but the session service max will still apply.  This is enforced at each {{ book.productnameFull }} server member in a cluster, and not cluster wide.  Derived sessions, created for tasks under an existing session, do not count against this maximum.
 
 * _model.visible_ 
 

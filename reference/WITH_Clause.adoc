@@ -1,7 +1,7 @@
 
 = WITH Clause
 
-Teiid supports non-recursive common table expressions via the WITH clause.  WITH clause items may be referenced as tables in subsequent with clause items and in the main query. The WITH clause can be thought of as providing query scoped temporary tables.
+{{ book.productnameFull }} supports non-recursive common table expressions via the WITH clause.  WITH clause items may be referenced as tables in subsequent with clause items and in the main query. The WITH clause can be thought of as providing query scoped temporary tables.
 
 Usage:
 
@@ -17,7 +17,7 @@ Syntax Rules:
 * Each with clause item must have a unique name.
 * The optional no_inline hint indicates to the optimizer that the query expression should not be substituted as an inline view where referenced.
 It is possible with no_inline for multiple evaluations of the common table as needed by source queries.
-* The optional materialize hint requires that the common table be created as a temporary table in Teiid.  This forces a single evaluation of the 
+* The optional materialize hint requires that the common table be created as a temporary table in {{ book.productnameFull }}.  This forces a single evaluation of the 
 common table.
 
 NOTE: The WITH clause is also subject to optimization and it’s entries may not be processed if they are not needed in the subsequent query.

@@ -7,7 +7,7 @@ When a query is canceled, processing will be stopped in the query engine and in 
 
 == User Query Timeouts
 
-User query timeouts in Teiid can be managed on the client-side or the server-side. Timeouts are only relevant for the first record returned. If the first record has not been received by the client within the specified timeout period, a `cancel' command is issued to the server for the request and no results are returned to the client. The cancel command is issued asynchronously without the client’s intervention.
+User query timeouts in {{ book.productnameFull }} can be managed on the client-side or the server-side. Timeouts are only relevant for the first record returned. If the first record has not been received by the client within the specified timeout period, a `cancel' command is issued to the server for the request and no results are returned to the client. The cancel command is issued asynchronously without the client’s intervention.
 
 The JDBC API uses the query timeout set by the `java.sql.Statement.setQueryTimeout` method. You may also set a default statement timeout via the connection property "QUERYTIMEOUT". ODBC clients may also utilize QUERYTIMEOUT as an execution property via a set statement to control the default timeout setting. See the Client Developers Guide for more on connection/execution properties and set statements.
 

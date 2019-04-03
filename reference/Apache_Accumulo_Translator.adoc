@@ -1,17 +1,17 @@
 
 = Apache Accumulo Translator
 
-The Apache Accumulo Translator, known by the type name _accumulo_, exposes querying functionality to link:../admin/Accumulo_Data_Sources.adoc[Accumulo Data Sources]. https://accumulo.apache.org/[Apache Accumulo] is a sorted, distributed key value store with robust, scalable, high performance data storage and retrieval system. This translator provides an easy way connect to Accumulo system and provides relational way using SQL to add records from directly from user or from other sources that are integrated with Teiid. It also gives ability to read/update/delete existing records from Accumulo store. Teiid has capability to pass-in logged in user’s roles as visibility properties to restrict the data access.
+The Apache Accumulo Translator, known by the type name _accumulo_, exposes querying functionality to link:../admin/Accumulo_Data_Sources.adoc[Accumulo Data Sources]. https://accumulo.apache.org/[Apache Accumulo] is a sorted, distributed key value store with robust, scalable, high performance data storage and retrieval system. This translator provides an easy way connect to Accumulo system and provides relational way using SQL to add records from directly from user or from other sources that are integrated with {{ book.productnameFull }}. It also gives ability to read/update/delete existing records from Accumulo store. {{ book.productnameFull }} has capability to pass-in logged in user’s roles as visibility properties to restrict the data access.
 
 TIP: *"versions"* - The development was done using Accumulo 1.5.0, Hadoop 2.2.0 and Zookeeper 3.4.5
 
-NOTE: This document assumes that user is familiar with Accumulo source and has basic understanding of how Teiid works. This document only contains details about Accumulo translator.
+NOTE: This document assumes that user is familiar with Accumulo source and has basic understanding of how {{ book.productnameFull }} works. This document only contains details about Accumulo translator.
 
 == Intended Usecases
 
 The usage Accumulo translator can be highly dependent on user’s usecase(s). Here are some common scenarios.
 
-* Accumulo source can be used in Teiid, to continually add/update the documents in the Accumulo system from other sources automatically.
+* Accumulo source can be used in {{ book.productnameFull }}, to continually add/update the documents in the Accumulo system from other sources automatically.
 * Access Accumulo through SQL interface.
 * Make use of cell level security through enterprise roles.
 * Accumulo translator can be used as an indexing system to gather data from other enterprise sources such as RDBMS, Web Service, SalesForce etc, all in single client call transparently with out any coding.
@@ -22,11 +22,11 @@ Apache Accumulo is distributed key value store with unique data model. It allows
 
 image:images/accumulo.png[accumulo.png]
 
-Based on above information, one can define a schema representing Accumulo table structures in Teiid using DDL with help of metadata extension properties defined below. Since no data type information is defined on the columns, by default all columns are considered as string data types. However, during modeling of the schema, one can use various other data types supported through Teiid to define a data type of column, that user wishes to expose as.
+Based on above information, one can define a schema representing Accumulo table structures in {{ book.productnameFull }} using DDL with help of metadata extension properties defined below. Since no data type information is defined on the columns, by default all columns are considered as string data types. However, during modeling of the schema, one can use various other data types supported through {{ book.productnameFull }} to define a data type of column, that user wishes to expose as.
 
-Once this schema is defined and exposed through VDB in a Teiid database, and link:../admin/Accumulo_Data_Sources.adoc[Accumulo Data Sources] is created, the user can issue "INSERT/UPDATE/DELETE" based SQL calls to insert/update/delete records into the Accumulo, and issue "SELECT" based calls to retrieve records from Accumulo. You can use full range of SQL with Teiid system integrating other sources along with Accumulo source.
+Once this schema is defined and exposed through VDB in a {{ book.productnameFull }} database, and link:../admin/Accumulo_Data_Sources.adoc[Accumulo Data Sources] is created, the user can issue "INSERT/UPDATE/DELETE" based SQL calls to insert/update/delete records into the Accumulo, and issue "SELECT" based calls to retrieve records from Accumulo. You can use full range of SQL with {{ book.productnameFull }} system integrating other sources along with Accumulo source.
 
-By default, Accumulo table structure is flat can not define relationships among tables. So, a SQL JOIN is performed in Teiid layer rather than pushed to source even if both tables on either side of the JOIN reside in the Accumulo. Currently any criteria based on EQUALITY and/or COMPARISON using complex AND/OR clauses are handled by Accumulo translator and will be properly executed at source.
+By default, Accumulo table structure is flat can not define relationships among tables. So, a SQL JOIN is performed in {{ book.productnameFull }} layer rather than pushed to source even if both tables on either side of the JOIN reside in the Accumulo. Currently any criteria based on EQUALITY and/or COMPARISON using complex AND/OR clauses are handled by Accumulo translator and will be properly executed at source.
 
 An Example VDB that shows Accumulo translator can be defined as
 
@@ -39,11 +39,11 @@ An Example VDB that shows Accumulo translator can be defined as
 <vdb>
 ----
 
-The translator does NOT provide a connection to the Accumulo. For that purpose, Teiid has a JCA adapter that provides a connection to Accumulo using Accumulo Java libraries. To define such connector, see link:../admin/Accumulo_Data_Sources.adoc[Accumulo Data Sources] or see an example in "<jboss-as>/docs/teiid/datasources/accumulo"
+The translator does NOT provide a connection to the Accumulo. For that purpose, {{ book.productnameFull }} has a JCA adapter that provides a connection to Accumulo using Accumulo Java libraries. To define such connector, see link:../admin/Accumulo_Data_Sources.adoc[Accumulo Data Sources] or see an example in "<jboss-as>/docs/teiid/datasources/accumulo"
 
 == Properties
 
-Accumulo translator is capable of traversing through Accumulo table structures and build a metadata structure for Teiid translator. The schema importer can understand simple tables by traversing a single ROWID of data, then looks for all the unique keys, based on it it comes up with a tabular structure for Accumulo based table. Using the following import properties, you can further refine the import behavior.
+Accumulo translator is capable of traversing through Accumulo table structures and build a metadata structure for {{ book.productnameFull }} translator. The schema importer can understand simple tables by traversing a single ROWID of data, then looks for all the unique keys, based on it it comes up with a tabular structure for Accumulo based table. Using the following import properties, you can further refine the import behavior.
 
 === Import Properties
 
@@ -63,7 +63,7 @@ Accumulo translator is capable of traversing through Accumulo table structures a
 
 NOTE: \{CQ}, \{CF}, \{ROWID} are expressions that you can use to define above properties in any pattern, and respective values of Column Qualifer, Column Familiy or ROWID will be replaced at import time. ROW ID of the Accumulo table, is automatically created as ROWID column, and will be defined as Primary Key on the table.
 
-You can also define the metadata for the Accumulo based model using DDL. When doing such exercise, the Accumulo Translator currently defines following extended metadata properties to be defined on its Teiid schema model to guide the translator to make proper decisions. The following properties are described under NAMESPACE "http://www.teiid.org/translator/accumulo/2013", for user convenience this namespace has alias name _teiid_accumulo_ defind in Teiid. To define a extension property use expression like "teiid_accumulo:\{property-name} value". All the properties below are intended to be used as OPTION properties on COLUMNS. See link:DDL_Metadata.adoc[DDL Metadata] for more information on defining DDL based metadata.
+You can also define the metadata for the Accumulo based model using DDL. When doing such exercise, the Accumulo Translator currently defines following extended metadata properties to be defined on its {{ book.productnameFull }} schema model to guide the translator to make proper decisions. The following properties are described under NAMESPACE "http://www.teiid.org/translator/accumulo/2013", for user convenience this namespace has alias name _teiid_accumulo_ defind in {{ book.productnameFull }}. To define a extension property use expression like "teiid_accumulo:\{property-name} value". All the properties below are intended to be used as OPTION properties on COLUMNS. See link:DDL_Metadata.adoc[DDL Metadata] for more information on defining DDL based metadata.
 
 == Extension Metadata Properties
 
@@ -135,11 +135,11 @@ respectively if the column name is defined by Column Family, you can use "Column
 
 == JCA Resource Adapter
 
-The Teiid specific Accumulo Resource Adapter should be used with this translator. See link:../admin/Accumulo_Data_Sources.adoc[Accumulo Data Sources] for connecting to a Accumulo Source.
+The {{ book.productnameFull }} specific Accumulo Resource Adapter should be used with this translator. See link:../admin/Accumulo_Data_Sources.adoc[Accumulo Data Sources] for connecting to a Accumulo Source.
 
 == Native Queries
 
-Currently this feature is not applicable. Based on user demand Teiid could expose a way for user to submit a MAP-REDUCE job.
+Currently this feature is not applicable. Based on user demand {{ book.productnameFull }} could expose a way for user to submit a MAP-REDUCE job.
 
 === Direct Query Procedure
 

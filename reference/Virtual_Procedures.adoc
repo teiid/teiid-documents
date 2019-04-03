@@ -3,7 +3,7 @@
 :toc: manual
 :toc-placement: preamble
 
-Virtual procedures are defined using the Teiid procedural language. A virtual procedure has zero or more input/inout/out parameters, an optional return parameter, and an optional result set. Virtual procedures support the ability to execute queries and other SQL commands, define temporary tables, add data to temporary tables, walk through result sets, use loops, and use conditional logic.
+Virtual procedures are defined using the {{ book.productnameFull }} procedural language. A virtual procedure has zero or more input/inout/out parameters, an optional return parameter, and an optional result set. Virtual procedures support the ability to execute queries and other SQL commands, define temporary tables, add data to temporary tables, walk through result sets, use loops, and use conditional logic.
 
 == Virtual Procedure Definition
 
@@ -100,5 +100,5 @@ SELECT * FROM (EXEC ...) AS x
 
 == Limitations
 
-Teiid virtual procedures may only return 1 result set. If you need to pass in a result set or pass out multiple result set, then consider using global temporary tables.
+{{ book.productnameFull }} virtual procedures may only return 1 result set. If you need to pass in a result set or pass out multiple result set, then consider using global temporary tables.
 

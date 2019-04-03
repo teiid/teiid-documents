@@ -1,7 +1,7 @@
 
 = Datatypes
 
-The Teiid link:Supported_Types.adoc[type system] is based upon Java/JDBC types.  
+The {{ book.productnameFull }} link:Supported_Types.adoc[type system] is based upon Java/JDBC types.  
 The runtime object will be represented by the corresponding Java class, such as Long, Integer, Boolean, String, etc.
 
 The type system can be extended using link:DDL_Domain.adoc[domain types].

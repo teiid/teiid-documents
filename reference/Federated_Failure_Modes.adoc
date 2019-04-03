@@ -1,7 +1,7 @@
 
 = Partial Results
 
-Teiid provides the capability to obtain "partial results" in the event of data source unavailability or failure. This is especially useful when unioning information from multiple sources, or when doing a left outer join, where you are `appending' columns to a master record but still want the record if the extra information is not available.
+{{ book.productnameFull }} provides the capability to obtain "partial results" in the event of data source unavailability or failure. This is especially useful when unioning information from multiple sources, or when doing a left outer join, where you are `appending' columns to a master record but still want the record if the extra information is not available.
 
 A source is considered to be `unavailable' if the connection factory associated with the source issues an exception in response to a query. The exception will be propagated to the query processor, where it will become a warning on the statement. See the Client Guide for more on Partial Results Mode and SQLWarnings.
 

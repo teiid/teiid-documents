@@ -7,10 +7,10 @@ Within your queries, you can convert between datatypes using the CONVERT or CAST
 |Function |Definition
 
 |CONVERT(x, type)
-|Convert x to type, where type is a Teiid Base Type
+|Convert x to type, where type is a {{ book.productnameFull }} Base Type
 
 |CAST(x AS type)
-|Convert x to type, where type is a Teiid Base Type
+|Convert x to type, where type is a {{ book.productnameFull }} Base Type
 |===
 
 These functions are identical other than syntax; CAST is the standard SQL syntax, CONVERT is the standard JDBC/ODBC syntax.

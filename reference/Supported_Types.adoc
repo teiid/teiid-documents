@@ -1,9 +1,9 @@
 
 = Supported Types
 
-Teiid supports a core set of runtime types. Runtime types can be different than semantic types defined in type fields at design time. The runtime type can also be specified at design time or it will be automatically chosen as the closest base type to the semantic type.
+{{ book.productnameFull }} supports a core set of runtime types. Runtime types can be different than semantic types defined in type fields at design time. The runtime type can also be specified at design time or it will be automatically chosen as the closest base type to the semantic type.
 
-.*Teiid Runtime Types*
+.*{{ book.productnameFull }} Runtime Types*
 |===
 |Type |Description |Java Runtime Class |JDBC Type |ODBC Type
 
@@ -155,7 +155,7 @@ NOTE: Even if a type is declared with a length, precision, or scale argument, th
 
 == Arrays
 
-WARNING: Teiid’s support for arrays is a new feature as of the 8.5 release. Support will be refined and enhanced in subsequent releases.
+WARNING: {{ book.productnameFull }}’s support for arrays is a new feature as of the 8.5 release. Support will be refined and enhanced in subsequent releases.
 
 An array of any type is designated by adding [] for each array dimension
 to the type declaration.
@@ -172,5 +172,5 @@ string[]
 integer[][]
 ----
 
-NOTE: Teiid array handling is typically in memory. It is not advisable to rely on the usage of large array values. Also arrays of lobs are not well supported and will typically not be handled correctly when serialized.
+NOTE: {{ book.productnameFull }} array handling is typically in memory. It is not advisable to rely on the usage of large array values. Also arrays of lobs are not well supported and will typically not be handled correctly when serialized.
 

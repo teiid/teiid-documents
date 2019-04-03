@@ -3,5 +3,5 @@
 
 Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
 
-The JDBC ANSI translator, known by the type name *_jdbc-ansi_*, declares support for most SQL constructs supported by Teiid, except for row limit/offset and EXCEPT/INTERSECT. Translates source SQL into ANSI compliant syntax. This translator should be used when another more specific type is not available. If source exceptions arise from unsupported SQL, then consider using the link:JDBC_Simple_Translator.adoc[JDBC Simple Translator] to further restrict capabilities, or create a link:../dev/Translator_Development.adoc[Custom Translator] / create an enhancement request.
+The JDBC ANSI translator, known by the type name *_jdbc-ansi_*, declares support for most SQL constructs supported by {{ book.productnameFull }}, except for row limit/offset and EXCEPT/INTERSECT. Translates source SQL into ANSI compliant syntax. This translator should be used when another more specific type is not available. If source exceptions arise from unsupported SQL, then consider using the link:JDBC_Simple_Translator.adoc[JDBC Simple Translator] to further restrict capabilities, or create a link:../dev/Translator_Development.adoc[Custom Translator] / create an enhancement request.
 

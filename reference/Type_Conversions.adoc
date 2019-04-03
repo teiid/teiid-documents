@@ -10,7 +10,7 @@ Type Conversion Considerations:
 * The NULL value may be converted to any type.
 * Any valid implicit conversion is also a valid explicit conversion.
 * Situations involving literal values that would normally require explicit conversions may have the explicit conversion applied implicitly if no loss of information occurs.
-* If link:../admin/System_Properties.adoc[widenComparisonToString] is false (the default), when Teiid detects that an explicit conversion can not be applied implicitly in criteria, then an exception will be raised. If link:../admin/System_Properties.adoc[widenComparisonToString] is true, then depending upon the comparison a widening conversion will be applied or the criteria will be treated as false.
+* If link:../admin/System_Properties.adoc[widenComparisonToString] is false (the default), when {{ book.productnameFull }} detects that an explicit conversion can not be applied implicitly in criteria, then an exception will be raised. If link:../admin/System_Properties.adoc[widenComparisonToString] is true, then depending upon the comparison a widening conversion will be applied or the criteria will be treated as false.
 
 For example:
 
@@ -23,7 +23,7 @@ With link:../admin/System_Properties.adoc[widenComparisonToString] as false and 
 
 * Explicit conversions that are not allowed between two types will result in an exception before execution. Allowed explicit conversions may still fail during processing if the runtime values are not actually convertable.
 
-WARNING: The Teiid conversions of float/double/bigdecimal/timestamp to string rely on the JDBC/Java defined output formats. Pushdown behavior attempts to mimic these results, but may vary depending upon the actual source type and conversion logic. Care should be taken to not assume the string form in criteria or other places where a variation may cause different results.
+WARNING: The {{ book.productnameFull }} conversions of float/double/bigdecimal/timestamp to string rely on the JDBC/Java defined output formats. Pushdown behavior attempts to mimic these results, but may vary depending upon the actual source type and conversion logic. Care should be taken to not assume the string form in criteria or other places where a variation may cause different results.
 
 .*Type Conversions*
 |===

@@ -3,11 +3,11 @@
 
 Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
 
-The PrestoDB translator, known by the type name *_prestodb_*, exposes querying functionality to PrestoDB Data Sources. In data integration respect, PrestoDB has very similar capabilities of Teiid, however it goes beyond in terms of distributed query execution with multiple worker nodes. Teiid’s execution model is limited to single execution node and focuses more on pushing the query down to sources. Currently Teiid has much more complete query support and many enterprise features.
+The PrestoDB translator, known by the type name *_prestodb_*, exposes querying functionality to PrestoDB Data Sources. In data integration respect, PrestoDB has very similar capabilities of {{ book.productnameFull }}, however it goes beyond in terms of distributed query execution with multiple worker nodes. {{ book.productnameFull }}’s execution model is limited to single execution node and focuses more on pushing the query down to sources. Currently {{ book.productnameFull }} has much more complete query support and many enterprise features.
 
 == Capabilities
 
-The PrestoDB translator supports only SELECT statements with a restrictive set of capabilities. This translator is developed with 0.85 version of PrestoDB and capabilities are designed for this version. With new versions of PrestoDB Teiid will adjust the capabilities of this translator. Since PrestoDB exposes a relational model, the usage of this is no different than any RDBMS source like Oracle, DB2 etc. For configuring the PrestoDB consult the PrestoDB documentation.
+The PrestoDB translator supports only SELECT statements with a restrictive set of capabilities. This translator is developed with 0.85 version of PrestoDB and capabilities are designed for this version. With new versions of PrestoDB {{ book.productnameFull }} will adjust the capabilities of this translator. Since PrestoDB exposes a relational model, the usage of this is no different than any RDBMS source like Oracle, DB2 etc. For configuring the PrestoDB consult the PrestoDB documentation.
 
 TIP: PrestoDB not support multiple columns in the ORDER BY with in JOIN situations well, the translator property `supportsOrderBy` can use to disable Order by in some specific situations.
 

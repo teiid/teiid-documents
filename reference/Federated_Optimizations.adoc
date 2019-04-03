@@ -9,9 +9,9 @@ Currently any form of criteria referencing an affected column may satisfy an acc
 
 == Pushdown
 
-In federated database systems pushdown refers to decomposing the user level query into source queries that perform as much work as possible on their respective source system. Pushdown analysis requires knowledge of source system capabilities, which is provided to Teiid though the Connector API. Any work not performed at the source is then processed in Federate’s relational engine.
+In federated database systems pushdown refers to decomposing the user level query into source queries that perform as much work as possible on their respective source system. Pushdown analysis requires knowledge of source system capabilities, which is provided to {{ book.productnameFull }} though the Connector API. Any work not performed at the source is then processed in Federate’s relational engine.
 
-Based upon capabilities, Teiid will manipulate the query plan to ensure that each source performs as much joining, filtering, grouping, etc. as possible. In may cases, such as with join ordering, planning is a combination of link:Federated_Optimizations.adoc#_standard_relational_techniques[Standard Relational Techniques] and, cost based and heuristics for pushdown optimization.
+Based upon capabilities, {{ book.productnameFull }} will manipulate the query plan to ensure that each source performs as much joining, filtering, grouping, etc. as possible. In may cases, such as with join ordering, planning is a combination of link:Federated_Optimizations.adoc#_standard_relational_techniques[Standard Relational Techniques] and, cost based and heuristics for pushdown optimization.
 
 Criteria and join push down are typically the most important aspects of the query to push down when performance is a concern. See link:Query_Plans.adoc[Query Plans] on how to read a plan to ensure that source queries are as efficient as possible.
 
@@ -21,13 +21,13 @@ A special optimization called a dependent join is used to reduce the rows return
 In a dependent join, queries are issued to each source sequentially rather than in parallel, with the results obtained from the first source used to restrict the records returned from the second. 
 Dependent joins can perform some joins much faster by drastically reducing the amount of data retrieved from the second source and the number of join comparisons that must be performed.
 
-The conditions when a dependent join is used are determined by the query planner based on link:Federated_Optimizations.adoc#_access_patterns[Access Patterns], hints, and costing information. There are three different kinds of dependent joins that Teiid supports:
+The conditions when a dependent join is used are determined by the query planner based on link:Federated_Optimizations.adoc#_access_patterns[Access Patterns], hints, and costing information. There are three different kinds of dependent joins that {{ book.productnameFull }} supports:
 
 * Join based on in/equality support - where the engine will determine how to break up large queries based upon translator capabilities
 * Key Pushdown - where the translator has access to the full set of key values and determines what queries to send
 * Full Pushdown - where translator ships the all data from the independent side to the translator. Can be used automatically by costing or can be specified as an option in the hint.
 
-Teiid supports hints to control dependent join behavior:
+{{ book.productnameFull }} supports hints to control dependent join behavior:
 
 * MAKEIND - indicates that the clause should be the independent side of a dependent join.
 * MAKEDEP - indicates that the clause should be the dependent side of a join. MAKEDEP as a non-comment hint supports optional max and join arguments - MAKEDEP(JOIN) meaning that the entire join should be pushed, and MAKEDEP(MAX:5000) meaning that the dependent join should only be performed if there are less than the max number of values from the independent side.
@@ -51,7 +51,7 @@ If the translator returns true for both supportsDependentJoins and supportsFullD
 This is why the optimizer may choose to perform a full pushdown even when the number of independent values does not exceed MaxInCriteriaSize*MaxDependentPredicates.  You may also force full pushdown using the MAKEDEP(JOIN) hint.
 The translator is typically responsible for creating, populating, and removing a temporary table that represents the independent side. If you are working with custom translators see link:../dev/Dependent_Join_Pushdown.adoc[Dependent Join Pushdown] as to how to support it key and full pushdown.
  
-NOTE: *Key/Full Pushdown* is currently only supported out-of-the box by a subset of JDBC translators. To enable support, set the translator override property "enableDependentJoins" to "true". The JDBC source must support the creation of temporary tables, which typically requires a Hibernate dialect.  Translators that should support this feature include: DB2, Derby, H2, Hana, HSQL, MySQL, Oracle, PostgreSQL, SQL Server, SAP IQ, Sybase, Teiid, and Teradata. 
+NOTE: *Key/Full Pushdown* is currently only supported out-of-the box by a subset of JDBC translators. To enable support, set the translator override property "enableDependentJoins" to "true". The JDBC source must support the creation of temporary tables, which typically requires a Hibernate dialect.  Translators that should support this feature include: DB2, Derby, H2, Hana, HSQL, MySQL, Oracle, PostgreSQL, SQL Server, SAP IQ, Sybase, {{ book.productnameFull }}, and Teradata. 
 
 == Copy Criteria
 
@@ -59,7 +59,7 @@ Copy criteria is an optimization that creates additional predicates based upon c
 
 == Projection Minimization
 
-Teiid ensures that each pushdown query only projects the symbols required for processing the user query. This is especially helpful when querying through large intermediate view layers.
+{{ book.productnameFull }} ensures that each pushdown query only projects the symbols required for processing the user query. This is especially helpful when querying through large intermediate view layers.
 
 == Partial Aggregate Pushdown
 
@@ -119,7 +119,7 @@ NOTE: A simple "SELECT COUNT(*) FROM VIEW" against a view where all join tables 
 
 == Source Hints
 
-Teiid user and transformation queries can contain a meta source hint that can provide additional information to source queries. The source hint has the form:
+{{ book.productnameFull }} user and transformation queries can contain a meta source hint that can provide additional information to source queries. The source hint has the form:
 
 [source,sql]
 ----
@@ -174,7 +174,7 @@ If you want a partition-wise join to be performed implicit without the need for 
  
 == Standard Relational Techniques
 
-Teiid also incorporates many standard relational techniques to ensure efficient query plans.
+{{ book.productnameFull }} also incorporates many standard relational techniques to ensure efficient query plans.
 
 * Rewrite analysis for function simplification and evaluation.
 * Boolean optimizations for basic criteria simplification.
@@ -186,5 +186,5 @@ Teiid also incorporates many standard relational techniques to ensure efficient 
 
 == Join Compensation
 
-Some source systems only allow "relationship" queries logically producing left outer join results even when queried with an inner join Teiid will attempt to form an appropriate left outer join. These sources are restricted to only supporting key joins. In some circumstances foreign key relationships on the same source should not be traversed at all or with the referenced table on the outer side of join. The extension property teiid_rel:allow-join can be used on the foreign key to further restrict the pushdown behavior. With a value of "false" no join pushdown will be allowed, and with a value of "inner" the referenced table must be on the inner side of the join. If the join pushdown is prevented, the join will be processed as a federated join.
+Some source systems only allow "relationship" queries logically producing left outer join results even when queried with an inner join {{ book.productnameFull }} will attempt to form an appropriate left outer join. These sources are restricted to only supporting key joins. In some circumstances foreign key relationships on the same source should not be traversed at all or with the referenced table on the outer side of join. The extension property teiid_rel:allow-join can be used on the foreign key to further restrict the pushdown behavior. With a value of "false" no join pushdown will be allowed, and with a value of "inner" the referenced table must be on the inner side of the join. If the join pushdown is prevented, the join will be processed as a federated join.
 

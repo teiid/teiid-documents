@@ -11,7 +11,8 @@
         "asDocRoot" : "https://docs.jboss.org/author/display/WFLY/Documentation",
         "archeTypeVersion" : "12.0.0",
         "targetWildfly" : true,
-        "targetSpring" : false
+        "targetSpring" : false,
+        "productnameFull" : "Teiid"
     },
     "plugins": ["collapsible-menu"]
 }

@@ -1,7 +1,7 @@
 
 = Multisource Models
 
-Multisource models can be used to quickly access data in multiple sources with homogeneous metadata. When you have multiple instances using identical schema (horizontal sharding), Teiid can help you gather data across all the instances, using "multisource" models. In this scenario, instead of creating/importing a model for every data source, one source model is defined to represents the schema and is configured with multiple data "sources" underneath it. During runtime when a query issued against this model, the query engine analyzes the information and gathers the required data from all sources configured and gathers the results and provides in a single result. Since all sources utilize the same physical metadata, this feature is most appropriate for accessing the same source type with multiple instances.
+Multisource models can be used to quickly access data in multiple sources with homogeneous metadata. When you have multiple instances using identical schema (horizontal sharding), {{ book.productnameFull }} can help you gather data across all the instances, using "multisource" models. In this scenario, instead of creating/importing a model for every data source, one source model is defined to represents the schema and is configured with multiple data "sources" underneath it. During runtime when a query issued against this model, the query engine analyzes the information and gathers the required data from all sources configured and gathers the results and provides in a single result. Since all sources utilize the same physical metadata, this feature is most appropriate for accessing the same source type with multiple instances.
 
 == Configuration
 

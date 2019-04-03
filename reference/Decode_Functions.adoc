@@ -1,7 +1,7 @@
 
 = Decode Functions
 
-Decode functions allow you to have the Teiid Server examine the contents of a column in a result set and alter, or decode, the value so that your application can better use the results.
+Decode functions allow you to have the {{ book.productnameFull }} Server examine the contents of a column in a result set and alter, or decode, the value so that your application can better use the results.
 
 |===
 |Function |Definition |Datatype Constraint
@@ -30,7 +30,7 @@ For example, your application might query a table called PARTS that contains a c
 SELECT DECODEINTEGER(IS_IN_STOCK, 'false, 0, true, 1') FROM PartsSupplier.PARTS;
 ----
 
-When the Teiid System encounters the value false in the result set, it replaces the value with 0.
+When the {{ book.productnameFull }} System encounters the value false in the result set, it replaces the value with 0.
 
 If, instead of using integers, your application requires string values, you can use the DECODESTRING function to return the string values you need:
 
@@ -39,9 +39,9 @@ If, instead of using integers, your application requires string values, you can 
 SELECT DECODESTRING(IS_IN_STOCK, 'false, no, true, yes, null') FROM PartsSupplier.PARTS;
 ----
 
-In addition to two input/output value pairs, this sample query provides a value to use if the column does not contain any of the preceding input values. If the row in the IS_IN_STOCK column does not contain true or false, the Teiid Server inserts a null into the result set.
+In addition to two input/output value pairs, this sample query provides a value to use if the column does not contain any of the preceding input values. If the row in the IS_IN_STOCK column does not contain true or false, the {{ book.productnameFull }} Server inserts a null into the result set.
 
-When you use these DECODE functions, you can provide as many input/output value pairs if you want within the string. By default, the Teiid System expects a comma delimiter, but you can add a third parameter to the function call to specify a different delimiter:
+When you use these DECODE functions, you can provide as many input/output value pairs if you want within the string. By default, the {{ book.productnameFull }} System expects a comma delimiter, but you can add a third parameter to the function call to specify a different delimiter:
 
 [source,sql]
 ----
@@ -55,5 +55,5 @@ You can use keyword null in the DECODE string as either an input value or an out
 SELECT DECODESTRING( IS_IN_STOCK, 'null,no,"null",no,nil,no,false,no,true,yes' ) FROM PartsSupplier.PARTS;
 ----
 
-If the DECODE function does not find a matching output value in the column and you have not specified a default value, the DECODE function will return the original value the Teiid Server found in that column.
+If the DECODE function does not find a matching output value in the column and you have not specified a default value, the DECODE function will return the original value the {{ book.productnameFull }} Server found in that column.
 

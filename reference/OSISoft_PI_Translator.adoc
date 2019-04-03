@@ -4,8 +4,8 @@
 Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
 
 The OSISoft Translator, known by the type name *_osisoft-pi_*, is for use with OSIsoft PI OLEDB Enterprise. 
-This translator uses the JDBC driver provided by the OSISoft. The driver is not provided with Teiid install, this needs
-be downloaded from OSISoft and installed correctly on Teiid server according to OSISoft documentation 
+This translator uses the JDBC driver provided by the OSISoft. The driver is not provided with {{ book.productnameFull }} install, this needs
+be downloaded from OSISoft and installed correctly on {{ book.productnameFull }} server according to OSISoft documentation 
 _PI-JDBC-2016-Administrator-Guide.pdf_ or latest document.
 
 
@@ -33,7 +33,7 @@ PI_RDSA_LIB     C:\Program Files (x86)\PIPC\JDBC\RDSAWrapper.dll
 PI_RDSA_LIB64   C:\Program Files\PIPC\JDBC\RDSAWrapper64.dll
 ----
 
-== Installing the JDBC driver for Teiid (same for both Linux and Windows)
+== Installing the JDBC driver for {{ book.productnameFull }} (same for both Linux and Windows)
 
 Then copy the module directory from _<WildFly>/teiid/datasources/osisoft-pi/modules directory into _<WilfFly>/modules_ 
 directory. Then find the "PIJDBCDriver.jar" file from the installation directory, and copy it to 
@@ -48,7 +48,7 @@ file by editing the file and adding something similar to below
     </drivers> 
 ----
 
-That completes the configuration of the PI driver in the Teiid. We still have not created a connection to the PI server.
+That completes the configuration of the PI driver in the {{ book.productnameFull }}. We still have not created a connection to the PI server.
 you can start the server now.
 
 == Creating a Data Source to PI
@@ -78,7 +78,7 @@ this will create following XML in standalone.xml or domain.xml (you can also dir
 </datasource>
 ----
 
-Now you have fully configured the Teiid with PI database connection. You can create VDB that can use this connection to issue
+Now you have fully configured the {{ book.productnameFull }} with PI database connection. You can create VDB that can use this connection to issue
 the queries.
 
 == Usage
@@ -95,20 +95,20 @@ pi-vdb.xml
 </vdb>
 ---- 
 
-Deploy this file into Teiid using CLI or using management console
+Deploy this file into {{ book.productnameFull }} using CLI or using management console
 
 ----
 deploy pi-vdb.xml
 ----
 
-Once the metadata is loaded and VDB is active you can use Teiid JDBC/ODBC driver or OData to connect to the VDB and issue 
+Once the metadata is loaded and VDB is active you can use {{ book.productnameFull }} JDBC/ODBC driver or OData to connect to the VDB and issue 
 queries.
 
 
 == PI Translator Capabilities
 
 PI translator is extension of _jdbc-ansi_ translator, so all the SQL ANSI queries are supported. PI translator also supports
-LATERAL join with Table Valued Functions (TVF). An example Teiid query looks like
+LATERAL join with Table Valued Functions (TVF). An example {{ book.productnameFull }} query looks like
 
 ----
 SELECT EH.Name, BT."Time", BT."Number of Computers", BT."Temperature"
@@ -123,13 +123,13 @@ will be pushed down.
 
 By default this translator turns off the "importer.ImportKeys"  to false.
 
-NOTE: The PI data type, "GUID" will need to be modeled as "String" and must define the NATIVE_TYPE on column as "guid", then Teiid
+NOTE: The PI data type, "GUID" will need to be modeled as "String" and must define the NATIVE_TYPE on column as "guid", then {{ book.productnameFull }}
 translator will appropriately convert the data back forth with the PI datasource's native guid type with appropriate type 
 casting from string.
 
 === Pushdown Functions
 
-PI accepts time interval literals that are not recognized by Teiid.  If you wish to make a comparison based upon an interval, use the PI.inteveral function:
+PI accepts time interval literals that are not recognized by {{ book.productnameFull }}.  If you wish to make a comparison based upon an interval, use the PI.inteveral function:
 
 ----
 select * from Archive a where a.time between PI.interval('*-14d') and PI.interval('*')

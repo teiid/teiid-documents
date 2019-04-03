@@ -3,7 +3,7 @@
 :toc: manual
 :toc-placement: preamble
 
-The Couchbase Translator, known by the type name _couchbase_, exposes querying functionality to link:../admin/Couchbase_Data_Sources.adoc[Couchbase Data Sources]. The Couchbase Translator provide a SQL Integration solution for integrating Couchbase JSON document with relational model, which allows applications to use normal SQL queries against Couchbase Server, translating standard SQL-92 queries into equivalent N1QL client API calls. The translator translates Teiid push down commands into https://developer.couchbase.com/documentation/server/4.5/n1ql/n1ql-language-reference/index.html[Couchbase N1QL].
+The Couchbase Translator, known by the type name _couchbase_, exposes querying functionality to link:../admin/Couchbase_Data_Sources.adoc[Couchbase Data Sources]. The Couchbase Translator provide a SQL Integration solution for integrating Couchbase JSON document with relational model, which allows applications to use normal SQL queries against Couchbase Server, translating standard SQL-92 queries into equivalent N1QL client API calls. The translator translates {{ book.productnameFull }} push down commands into https://developer.couchbase.com/documentation/server/4.5/n1ql/n1ql-language-reference/index.html[Couchbase N1QL].
 
 == Usage
 
@@ -11,7 +11,7 @@ The Couchbase Translator supports INSERT, UPSERT, UPDATE, DELETE, SELECT and bul
 
 == JCA Resource Adapter
 
-The Teiid specific Couchbase Resource Adapter should be used with this translator. See link:../admin/Couchbase_Data_Sources.adoc[Couchbase Data Sources] for connecting to a Couchbase cluster.
+The {{ book.productnameFull }} specific Couchbase Resource Adapter should be used with this translator. See link:../admin/Couchbase_Data_Sources.adoc[Couchbase Data Sources] for connecting to a Couchbase cluster.
 
 == Execution Properties
 Use the translator override mechanism to supply the following properties.
@@ -33,17 +33,17 @@ image:images/couchbase-logical-hierarchy.png[Logical Hierarchy of Couchbase Clus
 
 The document in a keyspace are structureless, it may have complex structure, like contain nested object, nested arrays, or arrays of differently-typed elements.   
 
-NOTE: The datastores are higher level abstraction, but the Couchbase Translator focus on one specific namespace, all documents in a namespace across different keyspaces will be map to tables of Teiid source metadata.
+NOTE: The datastores are higher level abstraction, but the Couchbase Translator focus on one specific namespace, all documents in a namespace across different keyspaces will be map to tables of {{ book.productnameFull }} source metadata.
 
-Because Teiid metadata/traditional JDBC toolsets might not support these data structures, the data needs to be mapped to a relational form. To achieve this, the Couchbase Translator provide a way to automatically generates schema during VDB deploying. Refer to <<Generating a Schema, Generating a Schema>> for more details.
+Because {{ book.productnameFull }} metadata/traditional JDBC toolsets might not support these data structures, the data needs to be mapped to a relational form. To achieve this, the Couchbase Translator provide a way to automatically generates schema during VDB deploying. Refer to <<Generating a Schema, Generating a Schema>> for more details.
 
-Alternatively, create the schema manually in a Teiid Source module are supported, creating a schema should base on the sample rules of generating a schema. Refer to <<Creating a Schema, Creating a Schema>> for more details. 
+Alternatively, create the schema manually in a {{ book.productnameFull }} Source module are supported, creating a schema should base on the sample rules of generating a schema. Refer to <<Creating a Schema, Creating a Schema>> for more details. 
 
 NOTE: Use Generating a Schema are recommend.
 
 === Generating a Schema
 
-Schema Generation is a way that the Couchbase Translator sample some data from a Couchbase cluster(namespace), and scan these documents data, generate a data typing and structure based schema that is needed for Teiid or traditional JDBC toolsets. The <<Importer Properties, Importer Properties>> are used to control the behavior of data sampling.
+Schema Generation is a way that the Couchbase Translator sample some data from a Couchbase cluster(namespace), and scan these documents data, generate a data typing and structure based schema that is needed for {{ book.productnameFull }} or traditional JDBC toolsets. The <<Importer Properties, Importer Properties>> are used to control the behavior of data sampling.
 
 The generated schema are tables and procedures, the procedures provide additional flexibility to execute native query; the tables are used to map to documents in a specific namespace. There are two kinds of table, 
 
@@ -164,7 +164,7 @@ TypeNameList=`test`:`type`,`test`:`name`,`test`:`category`
 
 Creating a schema should strict base on the principles listed in <<Generating a Schema, Generating a Schema>>.
 
-Couchbase supported Teiid types are String, Boolean, Integer, Long, Double, BigInteger, and BigDecimal.  Creating a source model
+Couchbase supported {{ book.productnameFull }} types are String, Boolean, Integer, Long, Double, BigInteger, and BigDecimal.  Creating a source model
 with other types is not fully supported.
 
 Each table is expected to have a document ID column.  It may be arbitrarily named, but it needs to be a string column marked as the primary key.

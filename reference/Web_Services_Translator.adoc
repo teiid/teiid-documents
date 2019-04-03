@@ -1,7 +1,7 @@
 
 = Web Services Translator
 
-The Web Services translator, known by the type name _ws_, exposes stored procedures for calling web services backed by a Teiid WS resource adapter. The WS resource adapter may optionally be configured to point at a specific WSDL.  Results from this translator will commonly be used with the TEXTTABLE or XMLTABLE table functions to use CSV or XML formated data.
+The Web Services translator, known by the type name _ws_, exposes stored procedures for calling web services backed by a {{ book.productnameFull }} WS resource adapter. The WS resource adapter may optionally be configured to point at a specific WSDL.  Results from this translator will commonly be used with the TEXTTABLE or XMLTABLE table functions to use CSV or XML formated data.
 
 *Execution Properties* 
 

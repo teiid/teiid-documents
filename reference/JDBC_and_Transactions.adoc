@@ -9,7 +9,7 @@ The transaction scopes above map to these JDBC modes:
 
 * *Local* - Connection autoCommit property set to false. The transaction is committed by setting autoCommit to true or calling java.sql.Connection.commit . The transaction can be rolled back by a call to java.sql.Connection.rollback
 
-* *Global* - the XAResource interface provided by an XAConnection is used to control the transaction. Note that XAConnections are available only if Teiid is consumed through its XADataSource, `org.teiid.jdbc.TeiidDataSource`. JEE containers or data access APIs typically control XA transactions on behalf of application code.
+* *Global* - the XAResource interface provided by an XAConnection is used to control the transaction. Note that XAConnections are available only if {{ book.productnameFull }} is consumed through its XADataSource, `org.teiid.jdbc.TeiidDataSource`. JEE containers or data access APIs typically control XA transactions on behalf of application code.
 
 == J2EE Usage Models
 

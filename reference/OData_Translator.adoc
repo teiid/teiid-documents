@@ -1,11 +1,11 @@
 
 = OData Translator
 
-The OData translator, known by the type name _"odata"_ exposes the OData V2 and V3 data sources and uses the Teiid WS resource adapter for making web service calls. This translator is extension of _Web Services Translator_.
+The OData translator, known by the type name _"odata"_ exposes the OData V2 and V3 data sources and uses the {{ book.productnameFull }} WS resource adapter for making web service calls. This translator is extension of _Web Services Translator_.
 
 NOTE: *What is Odata* - The http://www.odata.org[Open Data Protocol (OData)] Web protocol is for querying and updating data that provides a way to unlock your data and free it from silos that exist in applications today. OData does this by applying and building upon Web technologies such as HTTP, Atom Publishing Protocol (AtomPub) and JSON to provide access to information from a variety of applications, services, and stores. OData is being used to expose and access information from a variety of sources including, but not limited to, relational databases, file systems, content management systems and traditional Web sites.
 
-Using this specification from OASIS group, with the help from the http://code.google.com/p/odata4j/[OData4J] framework, Teiid maps OData entities into relational schema. Teiid supports reading of CSDL (Conceptual Schema Definition Language) from the OData endpoint provided and converts the OData schema into relational schema. The below table shows the mapping selections in OData Translator from CSDL document
+Using this specification from OASIS group, with the help from the http://code.google.com/p/odata4j/[OData4J] framework, {{ book.productnameFull }} maps OData entities into relational schema. {{ book.productnameFull }} supports reading of CSDL (Conceptual Schema Definition Language) from the OData endpoint provided and converts the OData schema into relational schema. The below table shows the mapping selections in OData Translator from CSDL document
 
 |===
 |OData |Mapped to Relational Entity
@@ -30,7 +30,7 @@ All CRUD operations will be appropriately mapped to the resulting entity based o
 
 == Usage
 
-Usage of a OData source is similar a JDBC translator. The metadata import is supported through the translator, once the metadata is imported from source system and exposed in relational terms, then this source can be queried as if the EntitySets and Function Imports were local to the Teiid system.
+Usage of a OData source is similar a JDBC translator. The metadata import is supported through the translator, once the metadata is imported from source system and exposed in relational terms, then this source can be queried as if the EntitySets and Function Imports were local to the {{ book.productnameFull }} system.
 
 *Execution Properties*
 
@@ -84,7 +84,7 @@ Example importer settings to only import tables and views from NetflixCatalog.
 <property name="importer.entityContainer" value="NetflixCatalog"/>
 ----
 
-NOTE: *OData Server is not fully compatible* - Sometimes it’s possible that the odata server you are querying does not fully implement all OData specification features. If your OData implementation does not support a certain feature, then turn off the corresponding capability using "execution Properties", so that Teiid will not pushdown invalid queries to the translator. For example, to turn off $filter you add following to your vdb.xml
+NOTE: *OData Server is not fully compatible* - Sometimes it’s possible that the odata server you are querying does not fully implement all OData specification features. If your OData implementation does not support a certain feature, then turn off the corresponding capability using "execution Properties", so that {{ book.productnameFull }} will not pushdown invalid queries to the translator. For example, to turn off $filter you add following to your vdb.xml
 
 [source,xml]
 ----
@@ -97,7 +97,7 @@ then use "odata-override" as the translator name on your source model.
 
 TIP: *Native Queries* - Native or direct query execution is not supported through OData translator. However, user can use Web Services Translator’s _invokehttp_ method directly to issue a Rest based call and parse results using SQLXML.
 
-TIP: *Want to use as Server?* - Teiid can not only consume OData based data sources, but it can expose any data source as an Odata based webservice. For more information see link:../client-dev/OData_Support.adoc[OData Support].
+TIP: *Want to use as Server?* - {{ book.productnameFull }} can not only consume OData based data sources, but it can expose any data source as an Odata based webservice. For more information see link:../client-dev/OData_Support.adoc[OData Support].
 
 == JCA Resource Adapter
 

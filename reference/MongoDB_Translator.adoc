@@ -3,17 +3,17 @@
 :toc: manual
 :toc-placement: preamble
 
-The MongoDB translator, known by the type name _mongodb_, provides a relational view of data that resides in a MongoDB database. This translator is capable of converting Teiid SQL queries into MongoDB based queries. It supports a full range of SELECT, INSERT, UPDATE and DELETE calls.
+The MongoDB translator, known by the type name _mongodb_, provides a relational view of data that resides in a MongoDB database. This translator is capable of converting {{ book.productnameFull }} SQL queries into MongoDB based queries. It supports a full range of SELECT, INSERT, UPDATE and DELETE calls.
 
 MongoDB is a document based "schema-less" database with it own query language - it does not map perfectly with relational concepts or the SQL query language. More and more systems are using a MongoDB kind of NOSQL store for scalability and performance. For example, applications like storing audit logs or managing web site data fits well with MongoDB, and does not require using a structural database like Oracle, Postgres etc. MongoDB uses JSON documents as its primary storage unit, and those documents can have additional embedded documents inside the parent document. By using embedded documents it co-locates the related information to achieve de-normalization that typically requires either duplication of data or joins to achieve querying in a relational database.
 
-To make MongoDB work with Teiid the challenge for the MongoDB translator is "How to design a MongoDB store that can achieve the balance between relational and document based storage?" In our opinion the advantages of "schema-less" design are great at development time, not much at runtime except in few special situations. "Schema-less" can also be a problem with migration of application versions and the ability to query and make use of returned information effectively.
+To make MongoDB work with {{ book.productnameFull }} the challenge for the MongoDB translator is "How to design a MongoDB store that can achieve the balance between relational and document based storage?" In our opinion the advantages of "schema-less" design are great at development time, not much at runtime except in few special situations. "Schema-less" can also be a problem with migration of application versions and the ability to query and make use of returned information effectively.
 
-Since it is hard and may be impossible in certain situations to derive a schema based on existing the MongoDB collection(s), Teiid approaches the problem in reverse compared to other translators. When working with MongoDB, Teiid requires the user to define the MongoDB schema upfront using Teiid metadata. Since Teiid only allows relational schema as its metadata, the user needs to define their MongoDB schema in relational terms using tables, procedures, and functions. For the purposes of MongoDB, the Teiid metadata has been extended to support extension properties that can be defined on the table to convert it into a MongoDB based document. These extension properties let users define, how a MongoDB document is structured and stored. Based on the relationships (primary-key, foreign-key) defined on a table, and the cardinality (ONE-to-ONE, ONE-to-MANY, MANY-to-ONE) relations between tables are mapped such that related information can be embedded along with the parent document for co-location (see the de-normalization comment above). Thus a relational schema based design, but document based storage in MongoDB. 
+Since it is hard and may be impossible in certain situations to derive a schema based on existing the MongoDB collection(s), {{ book.productnameFull }} approaches the problem in reverse compared to other translators. When working with MongoDB, {{ book.productnameFull }} requires the user to define the MongoDB schema upfront using {{ book.productnameFull }} metadata. Since {{ book.productnameFull }} only allows relational schema as its metadata, the user needs to define their MongoDB schema in relational terms using tables, procedures, and functions. For the purposes of MongoDB, the {{ book.productnameFull }} metadata has been extended to support extension properties that can be defined on the table to convert it into a MongoDB based document. These extension properties let users define, how a MongoDB document is structured and stored. Based on the relationships (primary-key, foreign-key) defined on a table, and the cardinality (ONE-to-ONE, ONE-to-MANY, MANY-to-ONE) relations between tables are mapped such that related information can be embedded along with the parent document for co-location (see the de-normalization comment above). Thus a relational schema based design, but document based storage in MongoDB. 
 
 == Who is the primary audience for this translator?
 
-The above may not satisfy every user’s needs. The document structure in MongoDB can be more complex than what Teiid can currently define. We hope this will eventually catch up in future versions of Teiid. This is currently designed for:
+The above may not satisfy every user’s needs. The document structure in MongoDB can be more complex than what {{ book.productnameFull }} can currently define. We hope this will eventually catch up in future versions of {{ book.productnameFull }}. This is currently designed for:
 
 1. Users that are using relational databases and would like to move/migrate their data to MongoDB to take advantages scaling and performance with out modifying the end user applications currently running.
 
@@ -34,7 +34,7 @@ The name of the translator to use in vdb.xml is "_mongodb_". For example:
 <vdb>
 ----
 
-The translator does not provide a connection to the MongoDB. For that purpose, Teiid has a JCA adapter that provides a connection to MongoDB using the MongoDB Java Driver. To define such connector, use the following XML fragment in standalone-teiid.xml. See a example in "<jboss-as>/docs/teiid/datasources/mongodb"
+The translator does not provide a connection to the MongoDB. For that purpose, {{ book.productnameFull }} has a JCA adapter that provides a connection to MongoDB using the MongoDB Java Driver. To define such connector, use the following XML fragment in standalone-teiid.xml. See a example in "<jboss-as>/docs/teiid/datasources/mongodb"
 
 [source,xml]
 ----
@@ -82,7 +82,7 @@ The above defines the translator and connector. For more ways to create the conn
 <vdb>
 ----
 
-when INSERT operation below executed against table using Teiid,
+when INSERT operation below executed against table using {{ book.productnameFull }},
 
 [source,sql]
 ----
@@ -150,7 +150,7 @@ the document structure will be
 
 == Data Types
 
-MongoDB translator supports automatic mapping of Teiid data types into MongoDB data types, including the support for Blobs, Clobs and XML. The LOB support is based on GridFS in MongoDB. Arrays are in the form of
+MongoDB translator supports automatic mapping of {{ book.productnameFull }} data types into MongoDB data types, including the support for Blobs, Clobs and XML. The LOB support is based on GridFS in MongoDB. Arrays are in the form of
 
 [source,sql]
 ----
@@ -196,11 +196,11 @@ Importer properties define the behavior of the translator during the metadata im
 
 Using the above DDL or any other metadata facility, a user can map a table in a relational store into a document in MongoDB, however to make effective use of MongoDB, you need to be able to build complex documents, that can co-locate related information, so that data can queried in a single MongoDB query. Otherwise, since MongoDB does not support join relationships like relational database, you need to issue multiple queries to retrieve and join data manually. The power of MongoDB comes from its "embedded" documents and its support of complex data types like arrays and use of the aggregation framework to be able to query them. This translator provides way to achieve that goals.
 
-When you do not define the complex embedded documents in MongoDB, Teiid can step in for join processing and provide that functionality, however if you want to make use of the power of MongoDB itself in querying the data and avoid bringing the unnecessary data and improve performance, you need to look into building these complex documents.
+When you do not define the complex embedded documents in MongoDB, {{ book.productnameFull }} can step in for join processing and provide that functionality, however if you want to make use of the power of MongoDB itself in querying the data and avoid bringing the unnecessary data and improve performance, you need to look into building these complex documents.
 
-MongoDB translator defines two additional metadata properties along with other link:DDL_Metadata.adoc[Teiid metadata properties] to aid in building the complex "embedded" documents. You can use the following metadata properties in your DDL.
+MongoDB translator defines two additional metadata properties along with other link:DDL_Metadata.adoc[{{ book.productnameFull }} metadata properties] to aid in building the complex "embedded" documents. You can use the following metadata properties in your DDL.
 
-* *teiid_mongo:EMBEDDABLE* - Means that data defined in this table is allowed to be included as an "embeddable" document in *any* parent document. The parent document is referenced by the foreign key relationships. In this scenario, Teiid maintains more than one copy of the data in MongoDB store, one in its own collection and also a copy in each of the parent tables that have relationship to this table. You can even nest embeddable table inside another embeddable table with some limitations. Use this property on table, where table can exist, encompass all its relations on its own. For example, a "Category" table that defines a "Product"’s category is independent of Product, which can be embeddable in "Products" table.
+* *teiid_mongo:EMBEDDABLE* - Means that data defined in this table is allowed to be included as an "embeddable" document in *any* parent document. The parent document is referenced by the foreign key relationships. In this scenario, {{ book.productnameFull }} maintains more than one copy of the data in MongoDB store, one in its own collection and also a copy in each of the parent tables that have relationship to this table. You can even nest embeddable table inside another embeddable table with some limitations. Use this property on table, where table can exist, encompass all its relations on its own. For example, a "Category" table that defines a "Product"’s category is independent of Product, which can be embeddable in "Products" table.
 
 * *teiid_mongo:MERGE* - Means that data of this table is merged with the defined parent table. There is only a single copy of the data that is embedded in the parent document. Parent document is defined using the foreign key relationships.
 
@@ -427,7 +427,7 @@ Comment
 
 Here as you can see the Customer table contents are embedded along with other table’s data where they were referenced. This creates duplicated data where multiple of these embedded documents are managed automatically in the MongoDB translator.
 
-NOTE: All the SELECT, INSERT, DELETE operations that are generated against the tables with "teiid_mongo:EMBEDDABLE" property are atomic, except for UPDATES, as there can be multiple operations involved to update all the copies. Since there are no transactions in MongoDB, Teiid plans to provide automatic compensating transaction framework around this in future releases https://issues.jboss.org/browse/TEIID-2957[TEIID-2957].
+NOTE: All the SELECT, INSERT, DELETE operations that are generated against the tables with "teiid_mongo:EMBEDDABLE" property are atomic, except for UPDATES, as there can be multiple operations involved to update all the copies. Since there are no transactions in MongoDB, {{ book.productnameFull }} plans to provide automatic compensating transaction framework around this in future releases https://issues.jboss.org/browse/TEIID-2957[TEIID-2957].
 
 === MANY-2-ONE Mapping.
 
@@ -533,7 +533,7 @@ Products
 === Limitations
 
 * Currently nested embedding of documents has limited support due to capabilities of handling nested arrays is limited in the MongoDB. Nesting of "EMBEDDALBLE" property with multiple levels is OK, however more than two levels with MERGE is not recommended. Also, you need to be caution about not exceeding the document size of 16 MB for single row, so deep nesting is not recommended.
-* JOINS between related tables, MUST have used either of "EMBEDDABLE" or "MERGE" property, otherwise the query will result in error. In order for Teiid to correctly plan and support the JOINS, in the case that any two tables are *NOT* embedded in each other, use _allow-joins=false_ property on the Foreign Key that represents the relation. For example:
+* JOINS between related tables, MUST have used either of "EMBEDDABLE" or "MERGE" property, otherwise the query will result in error. In order for {{ book.productnameFull }} to correctly plan and support the JOINS, in the case that any two tables are *NOT* embedded in each other, use _allow-joins=false_ property on the Foreign Key that represents the relation. For example:
 
 [source,sql]
 ----
@@ -552,16 +552,16 @@ Products
     ) OPTIONS(UPDATABLE 'TRUE');
 ----
 
-with the example above, Teiid will create two collections, however when user issues query such as
+with the example above, {{ book.productnameFull }} will create two collections, however when user issues query such as
 
 [source,sql]
 ----
   SELECT OrderID, LastName FROM Order JOIN Customer ON Order.CustomerId = Customer.CustomerId;
 ----
 
-instead of resulting in error, the JOIN processing will happen in the Teiid engine, without the above property it will result in an error.
+instead of resulting in error, the JOIN processing will happen in the {{ book.productnameFull }} engine, without the above property it will result in an error.
 
-When you use above properties and carefully design the MongoDB document structure, Teiid translator can intelligently collate data based on their co-location and take advantage of it while querying.
+When you use above properties and carefully design the MongoDB document structure, {{ book.productnameFull }} translator can intelligently collate data based on their co-location and take advantage of it while querying.
 
 == Geo Spatial function support
 
@@ -601,7 +601,7 @@ a sample query looks like
 SELECT loc FROM maps where mongo.geoWithin(loc, ST_GeomFromGeoJSON('{"coordinates":[[1,2],[3,4]],"type":"Polygon"}'))
 ----
 
-There are various "st_geom.." methods are available in the Geo Spatial function library in Teiid.
+There are various "st_geom.." methods are available in the Geo Spatial function library in {{ book.productnameFull }}.
 
 
 == Capabilities
@@ -630,7 +630,7 @@ This feature is turned off by default because of the security risk this exposes 
 
 By default the name of the procedure that executes the queries directly is called *native*. link:Translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
 
-The MongoDB translator provides a procedure to execute any ad-hoc aggregate query directly against the source without Teiid parsing or resolving. Since the metadata of this procedure’s results are not known to Teiid, they are returned as an object array containing single blob at array location one(1). This blob contains the JSON document. XMLTABLE can be used construct tabular output for consumption by client applications.
+The MongoDB translator provides a procedure to execute any ad-hoc aggregate query directly against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as an object array containing single blob at array location one(1). This blob contains the JSON document. XMLTABLE can be used construct tabular output for consumption by client applications.
 
 [source,sql]
 .*Example MongoDB Direct Query*
@@ -648,7 +648,7 @@ The direct query MUST be in the format
      "collectionName;{$pipeline instr}+"
 ----
 
-From Teiid 8.10, MongoDB translator also allows to execute Shell type java script commands like remove, drop, createIndex. For this the command needs to be in format
+From {{ book.productnameFull }} 8.10, MongoDB translator also allows to execute Shell type java script commands like remove, drop, createIndex. For this the command needs to be in format
 
 [source,sql]
 ----

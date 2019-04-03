@@ -9,7 +9,7 @@ NOTE: The Oracle provide JDBC driver may cause memory issues due to excessive bu
 
 == Importer Properties 
 
-* _useGeometryType_- Use the Teiid Geometry type when importing columns with a source type of SDO_GEOMETRY. Defaults to false.
+* _useGeometryType_- Use the {{ book.productnameFull }} Geometry type when importing columns with a source type of SDO_GEOMETRY. Defaults to false.
 
 NOTE: Metadata import from Oracle may be slow.  It is recommended that at least a schema name filter is specified.  There is also the useFetchSizeWithLongColumn=true link:https://docs.oracle.com/cd/E11882_01/appdev.112/e13995/oracle/jdbc/OracleDriver.html[connection property] that can increase the fetch size for metadata queries.  It significantly improves the metadata load process, especially when there are a large number of tables in a schema.
 
@@ -23,16 +23,16 @@ NOTE: Metadata import from Oracle may be slow.  It is recommended that at least 
 
 Sequences may be used with the Oracle translator. A sequence may be modeled as a table with a name in source of DUAL and columns with the name in source set to <sequence name>.[nextval|currval]
 
-With Teiid 10.0+ sequences may be imported automatically link:JDBC_Translators.adoc[import properties].
+With {{ book.productnameFull }} 10.0+ sequences may be imported automatically link:JDBC_Translators.adoc[import properties].
 
-Teiid 8.4 and Prior Oracle Sequence DDL
+{{ book.productnameFull }} 8.4 and Prior Oracle Sequence DDL
 
 [source,sql]
 ----
 CREATE FOREIGN TABLE seq (nextval integer OPTIONS (NAMEINSOURCE 'seq.nextval'), currval integer options (NAMEINSOURCE 'seq.currval') ) OPTIONS (NAMEINSOURCE 'DUAL')
 ----
 
-With Teiid 8.5 it’s no longer necessary to rely on a table representation and Oracle specific handling for sequences. See link:DDL_Metadata.adoc[DDL Metadata] for representing currval and nextval as source functions.
+With {{ book.productnameFull }} 8.5 it’s no longer necessary to rely on a table representation and Oracle specific handling for sequences. See link:DDL_Metadata.adoc[DDL Metadata] for representing currval and nextval as source functions.
 
 [source,sql]
 .*8.5 Example:Sequence Native Query*
@@ -110,7 +110,7 @@ CREATE FOREIGN FUNCTION sdo_filter (arg1 string,  arg2 object,  arg3 string) RET
 The Oracle translator, depending upon the version of Oracle, will register other non-geospatial pushdown functions with the engine.  This includes:
 
 - TRUNC, both numeric and timestamp versions 
-- LISTAGG, which requires the Teiid SQL syntax "LISTAGG(arg [, delim] ORDER BY ...)"
+- LISTAGG, which requires the {{ book.productnameFull }} SQL syntax "LISTAGG(arg [, delim] ORDER BY ...)"
 
 === SQLXML
 

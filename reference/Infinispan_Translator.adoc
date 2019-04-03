@@ -32,7 +32,7 @@ Below is a sample VDB that can read metadata from a protobuf file based on the A
 </vdb>
 ----
 
-For the above VDB to work, a connection to Infinispan is required. Below shows an example configuration for the resource-adapter that is needed.  Be sure to edit the "RemoteServerList" to reflect your Infinispan server location. If you are working with "WilfFly" based Teiid installation, you need to edit the _/wf-install/standalone/configuration/standalone-teiid.xml_ file and add the following segment to the "resource-adapters" subsystem of the configuration.
+For the above VDB to work, a connection to Infinispan is required. Below shows an example configuration for the resource-adapter that is needed.  Be sure to edit the "RemoteServerList" to reflect your Infinispan server location. If you are working with "WilfFly" based {{ book.productnameFull }} installation, you need to edit the _/wf-install/standalone/configuration/standalone-teiid.xml_ file and add the following segment to the "resource-adapters" subsystem of the configuration.
 
 [source,xml]
 ----
@@ -50,7 +50,7 @@ For the above VDB to work, a connection to Infinispan is required. Below shows a
 </resource-adapter>
 ----
 
-Once you configure above resource-adapter and deploy the VDB successfully, then you can connect to the VDB  using Teiid JDBC driver and issue SQL statements like
+Once you configure above resource-adapter and deploy the VDB successfully, then you can connect to the VDB  using {{ book.productnameFull }} JDBC driver and issue SQL statements like
 
 [source,sql]
 ----
@@ -66,10 +66,10 @@ delete from person where id = <value>;
 
 === Defining the Metadata
 
-There are three different ways to define the metadata for the Infinispan model in Teiid. Choose what best fits the needs.
+There are three different ways to define the metadata for the Infinispan model in {{ book.productnameFull }}. Choose what best fits the needs.
 
 ==== Metadata From New Protobuf File:
-User can register a .proto file with translator configuration, which will be read in Teiid and get converted to the model's schema.  Then Teiid will register this protobuf file in Infinispan. For details see <<Importer Properties>>
+User can register a .proto file with translator configuration, which will be read in {{ book.productnameFull }} and get converted to the model's schema.  Then {{ book.productnameFull }} will register this protobuf file in Infinispan. For details see <<Importer Properties>>
 
 Example::
 [source,xml]
@@ -84,7 +84,7 @@ Example::
 ----
 
 ==== Metadata From Existing Registered Protobuf File
-If the protobuf file has already been registered in your Infinispan node, Teiid can obtain it and read the protobuf directly from the cache. For details see <<Importer Properties>>
+If the protobuf file has already been registered in your Infinispan node, {{ book.productnameFull }} can obtain it and read the protobuf directly from the cache. For details see <<Importer Properties>>
 
 Example::
 [source,xml]
@@ -123,7 +123,7 @@ For this option, a compatible protobuf definition is generated automatically dur
 
 ===  Details on Protobuf to DDL conversion
 
-This section show cases an example protobuf file and shows how that file converted to relational schema in the Teiid. This below is taken from the quick start examples of Infinispan.
+This section show cases an example protobuf file and shows how that file converted to relational schema in the {{ book.productnameFull }}. This below is taken from the quick start examples of Infinispan.
 
 [source,java]
 ----
@@ -161,7 +161,7 @@ message Person {
 }
 ----
 
-When Teiid's translator processes the above protobuf file, the following DDL is generated automatically for Teiid model as the relational representation.
+When {{ book.productnameFull }}'s translator processes the above protobuf file, the following DDL is generated automatically for {{ book.productnameFull }} model as the relational representation.
 
 [source,sql]
 ----
@@ -184,7 +184,7 @@ CREATE FOREIGN TABLE PhoneNumber (
 
 ===  Protobuf Translation Rules
 
-You can see from above DDL, Teiid makes use of the extension metadata properties to capture all the information required from .proto file into DDL form so that information can be used at runtime. The following are some rules the translation engine follows.
+You can see from above DDL, {{ book.productnameFull }} makes use of the extension metadata properties to capture all the information required from .proto file into DDL form so that information can be used at runtime. The following are some rules the translation engine follows.
 
 |===
 |Infinispan |Mapped to Relational Entity|Example
@@ -207,10 +207,10 @@ You can see from above DDL, Teiid makes use of the extension metadata properties
 * The default values are captured.
 * To enable updates, the top level message object MUST define @id annotation on one of its columns
 
-NOTE: Notice the *@Id* annotation on the Person message's "id" attribute in protobuf file. This is *NOT* defined by Infinispan, but required by Teiid to identify the key column of the cache entry. In the absence of this annotation, only "read only" access (SELECT) is provided to top level objects.  Any access to complex objects (PhoneNumber from above example) will not be provided.   
+NOTE: Notice the *@Id* annotation on the Person message's "id" attribute in protobuf file. This is *NOT* defined by Infinispan, but required by {{ book.productnameFull }} to identify the key column of the cache entry. In the absence of this annotation, only "read only" access (SELECT) is provided to top level objects.  Any access to complex objects (PhoneNumber from above example) will not be provided.   
 
 
-IMPOTANT: When .proto file has more than single top level "message" objects to be stored as the root object in the cache, each of the objects must be stored in a different cache to avoid the key conflicts in a single cache store. This is restriction imposed by Infinispan, however Teiid's single model can have multiple of these message types. Since each of the message will be in different cache store, you can define the cache store name for the "message" object. For this, define an extension property "teiid_ispn:cache" on the corresponding Teiid's table. See below code example.
+IMPOTANT: When .proto file has more than single top level "message" objects to be stored as the root object in the cache, each of the objects must be stored in a different cache to avoid the key conflicts in a single cache store. This is restriction imposed by Infinispan, however {{ book.productnameFull }}'s single model can have multiple of these message types. Since each of the message will be in different cache store, you can define the cache store name for the "message" object. For this, define an extension property "teiid_ispn:cache" on the corresponding {{ book.productnameFull }}'s table. See below code example.
 
 [source,xml]
 ----
@@ -244,7 +244,7 @@ Importer properties define the behavior options of the translator during the met
 |n/a
 
 |ProtobufName
-|The name of the Protobuf .proto file that has been registered with the Infinispan node, that Teiid will read and convert into metadata.  The property value MUST exactly match registered name.
+|The name of the Protobuf .proto file that has been registered with the Infinispan node, that {{ book.productnameFull }} will read and convert into metadata.  The property value MUST exactly match registered name.
 |null
 
 |===
@@ -274,7 +274,7 @@ ProtoFilePath
 - LOBS are not streamed, use caution as this can lead to OOM errors.
 - There is no function library in Infinispan
 - Array objects can not be projected currently, but they will show up in the metadata
-- When using DATE/TIMESTAMP/TIME types in Teiid metadata, they are by default marshaled into a LONG type in Infinispan.
+- When using DATE/TIMESTAMP/TIME types in {{ book.productnameFull }} metadata, they are by default marshaled into a LONG type in Infinispan.
 - SSL and identity support is not currently available (see TEIID-4904) 
 
 NOTE: *Native Queries* - Native or direct query execution is not supported through Infinispan translator.

@@ -1,9 +1,9 @@
 
 = Transaction Support
 
-Teiid utilizes XA transactions for participating in global transactions and for demarcating its local and command scoped transactions. http://www.jboss.org/jbosstm/[JBoss Transactions] is used by Teiid as its transaction manager. See http://www.jboss.org/jbosstm/docs/index.html[this documentation] for the advanced features provided by JBoss Transactions.
+{{ book.productnameFull }} utilizes XA transactions for participating in global transactions and for demarcating its local and command scoped transactions. http://www.jboss.org/jbosstm/[JBoss Transactions] is used by {{ book.productnameFull }} as its transaction manager. See http://www.jboss.org/jbosstm/docs/index.html[this documentation] for the advanced features provided by JBoss Transactions.
 
-.*Teiid Transaction Scopes*
+.*{{ book.productnameFull }} Transaction Scopes*
 |===
 |Scope |Description
 
@@ -14,8 +14,8 @@ Teiid utilizes XA transactions for participating in global transactions and for 
 |The transaction boundary is local defined by a single client session.
 
 |Global
-|Teiid participates in a global transaction as an XA Resource.
+|{{ book.productnameFull }} participates in a global transaction as an XA Resource.
 |===
 
-The default transaction isolation level for Teiid is READ_COMMITTED.
+The default transaction isolation level for {{ book.productnameFull }} is READ_COMMITTED.
 

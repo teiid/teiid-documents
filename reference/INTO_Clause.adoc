@@ -16,5 +16,5 @@ Syntax Rules:
 
 * The INTO clause is logically applied last in processing, after the ORDER BY and LIMIT clauses.
 
-* Teiid’s support for SELECT INTO is similar to MS SQL Server. The target of the INTO clause is a table where the result of the rest select command will be inserted. SELECT INTO should not be used UNION query.
+* {{ book.productnameFull }}’s support for SELECT INTO is similar to MS SQL Server. The target of the INTO clause is a table where the result of the rest select command will be inserted. SELECT INTO should not be used UNION query.
 

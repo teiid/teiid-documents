@@ -2,7 +2,7 @@
 
 = Cassandra Translator
 
-The Cassandra Translator, known by the type name _cassandra_, exposes querying functionality to link:../admin/Cassandra_Data_Sources.adoc[Cassandra Data Sources]. The translator translates Teiid push down commands into http://cassandra.apache.org/doc/cql/CQL.html[Cassandra CQL].
+The Cassandra Translator, known by the type name _cassandra_, exposes querying functionality to link:../admin/Cassandra_Data_Sources.adoc[Cassandra Data Sources]. The translator translates {{ book.productnameFull }} push down commands into http://cassandra.apache.org/doc/cql/CQL.html[Cassandra CQL].
 
 *Properties*
 
@@ -18,7 +18,7 @@ Cassandra inserts are functionally upserts, that is if a given row exists it wil
 
 == JCA Resource Adapter
 
-The Teiid specific Cassandra Resource Adapter should be used with this translator. See link:../admin/Cassandra_Data_Sources.adoc[Cassandra Data Sources] for connecting to a Cassandra cluster.
+The {{ book.productnameFull }} specific Cassandra Resource Adapter should be used with this translator. See link:../admin/Cassandra_Data_Sources.adoc[Cassandra Data Sources] for connecting to a Cassandra cluster.
 
 == Native Queries
 
@@ -30,7 +30,7 @@ This feature is turned off by default because of the security risk this exposes 
 
 By default the name of the procedure that executes the queries directly is called *native*. link:Translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
 
-The Cassandra translator provides a procedure to execute any ad-hoc CQL query directly against the source without Teiid parsing or resolving. Since the metadata of this procedure’s results are not known to Teiid, they are returned as an object array. link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications.
+The Cassandra translator provides a procedure to execute any ad-hoc CQL query directly against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as an object array. link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications.
 
 [source,sql]
 .*Example CQL Direct Query*

@@ -209,7 +209,7 @@ When all properties like bucket, region, accesskey and secretkey are defined as 
 SELECT * FROM Bucket
 ---- 
 
-Note: if there are more then 1000 object in the bucket, then the value 'NextContinuationToken' need to be supplied as 'nexttoken' into the _list_ call to fetch the next batch of objects. This can be automated in Teiid with enhancement request. 
+Note: if there are more then 1000 object in the bucket, then the value 'NextContinuationToken' need to be supplied as 'nexttoken' into the _list_ call to fetch the next batch of objects. This can be automated in {{ book.productnameFull }} with enhancement request. 
 
 
 == JCA Resource Adapter

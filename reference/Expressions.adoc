@@ -3,7 +3,7 @@
 
 Identifiers, literals, and functions can be combined into expressions. Expressions can be used almost anywhere in a query – SELECT, FROM (if specifying join criteria), WHERE, GROUP BY, HAVING, or ORDER BY.
 
-Teiid supports the following types of expressions:
+{{ book.productnameFull }} supports the following types of expressions:
 
 * link:Expressions.adoc#_column_identifiers[Column Identifiers]
 * link:Expressions.adoc#_literals[Literals]
@@ -128,7 +128,7 @@ Either way the string literal value portion of the expression is expected to fol
 
 Aggregate functions take sets of values from a group produced by an explicit or implicit GROUP BY and return a single scalar value computed from the group.
 
-Teiid supports the following aggregate functions:
+{{ book.productnameFull }} supports the following aggregate functions:
 
 * COUNT(*) – count the number of values (including nulls and duplicates) in a group. Returns an integer - an exception will be thrown if a larger count is computed.
 * COUNT(x) – count the number of values (excluding nulls) in a group. Returns an integer - an exception will be thrown if a larger count is computed.
@@ -223,7 +223,7 @@ For more information on aggregates, see the sections on GROUP BY or HAVING.
 
 == Window Functions
 
-Teiid supports ANSI SQL 2003 window functions. A window function allows an aggregate function to be applied to a subset of the result set, without the need for a GROUP BY clause. A window function is similar to an aggregate function, but requires the use of an OVER clause or window specification.
+{{ book.productnameFull }} supports ANSI SQL 2003 window functions. A window function allows an aggregate function to be applied to a subset of the result set, without the need for a GROUP BY clause. A window function is similar to an aggregate function, but requires the use of an OVER clause or window specification.
 
 Usage:
 
@@ -297,7 +297,7 @@ Window functions are logically processed just before creating the output from th
 
 NOTE: An ORDER BY in the OVER clause follows the same rules pushdown and processing rules as a top level ORDER BY.  In general this means you should specify NULLS FIRST/LAST as null handling may differ between engine and pushdown processing.  Also see the system properties controlling sort behavior if you different default behavior. 
 
-Teiid will process all window functions with the same window specification together. In general a full pass over the row values coming into the SELECT clause will be required for each unique window specification. For each window specification the values will be grouped according to the PARTITION BY clause. If no PARTITION BY clause is specified, then the entire input is treated as a single partition. 
+{{ book.productnameFull }} will process all window functions with the same window specification together. In general a full pass over the row values coming into the SELECT clause will be required for each unique window specification. For each window specification the values will be grouped according to the PARTITION BY clause. If no PARTITION BY clause is specified, then the entire input is treated as a single partition. 
 
 The frame for the output value is determined based upon the definition of the analytical function or the ROWS/RANGE clause.  The default frame is RANGE UNBOUNDED PRECEDING, which also implies the default end bound of CURRENT ROW.  RANGE computes over a row and its peers together.  ROWS computes over every row.  Most analytical functions, such as ROW_NUMBER, has an implicit RANGE/ROWS - which is why a different one cannot be specified.  For example ROW_NUMBER() OVER (order) can be expressed instead as count(*) OVER (order ROWS UNBOUNDED PRECEDING AND CURRENT ROW) - thus it assigns a different value to every row regardless of the number of peers.
 
@@ -350,7 +350,7 @@ SELECT name, salary, max(salary) over (partition by name) as max_sal,
 
 == Case and Searched Case
 
-Teiid supports two forms of the CASE expression which allows conditional logic in a scalar expression.
+{{ book.productnameFull }} supports two forms of the CASE expression which allows conditional logic in a scalar expression.
 
 Supported forms:
 
@@ -418,7 +418,7 @@ the same as the array_get system function and expects 1-based indexing.
 
 == Operator Precedence
 
-Teiid parses and evaluates operators with higher precedence before those with lower precedence. Operator with equal precedence are left associative. Operator precedence listed from high to low:
+{{ book.productnameFull }} parses and evaluates operators with higher precedence before those with lower precedence. Operator with equal precedence are left associative. Operator precedence listed from high to low:
 
 |===
 |Operator |Description

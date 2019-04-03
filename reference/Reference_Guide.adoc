@@ -1,9 +1,9 @@
 
 = Reference Guide 
 
-Teiid offers a highly scalable and high performance solution to information integration. By allowing integrated and enriched data to be consumed relationally or as XML over multiple protocols, Teiid simplifies data access for developers and consuming applications.
+{{ book.productnameFull }} offers a highly scalable and high performance solution to information integration. By allowing integrated and enriched data to be consumed relationally or as XML over multiple protocols, {{ book.productnameFull }} simplifies data access for developers and consuming applications.
 
-Commercial development support, production support, and training for Teiid is available through JBoss Inc. Teiid is a Professional Open Source project and a critical component of the JBoss Enterprise Data Services Platform.
+Commercial development support, production support, and training for {{ book.productnameFull }} is available through JBoss Inc. {{ book.productnameFull }} is a Professional Open Source project and a critical component of the JBoss Enterprise Data Services Platform.
 
-Before one can delve into Teiid it is very important to learn few basic constructs of Teiid, like what is VDB? what is Model? etc. For that please read the http://teiid.io/about/basics/[short introduction].
+Before one can delve into {{ book.productnameFull }} it is very important to learn few basic constructs of {{ book.productnameFull }}, like what is VDB? what is Model? etc. For that please read the http://teiid.io/about/basics/[short introduction].
 

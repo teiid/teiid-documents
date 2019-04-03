@@ -1,7 +1,7 @@
 
 = Metadata Repositories
 
-Traditionally the metadata for a Virtual Database is supplied to Teiid engine through a VDB archive file. A number of _MetadataRepository_ instances contribute to the loading of the metadata.  Built-in metadata repositories include the following:
+Traditionally the metadata for a Virtual Database is supplied to {{ book.productnameFull }} engine through a VDB archive file. A number of _MetadataRepository_ instances contribute to the loading of the metadata.  Built-in metadata repositories include the following:
 
 == NATIVE
 

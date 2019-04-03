@@ -125,9 +125,9 @@ Unless specified, all of the arguments and return types in the following table a
 |x in {string}
 |===
 
-[a] Non-ASCII range characters or integers used in these functions may produce different results or exceptions depending on where the function is evaluated (Teiid vs. source). Teiid’s uses Java default int to char and char to int conversions, which operates over UTF16 values.
+[a] Non-ASCII range characters or integers used in these functions may produce different results or exceptions depending on where the function is evaluated ({{ book.productnameFull }} vs. source). {{ book.productnameFull }}’s uses Java default int to char and char to int conversions, which operates over UTF16 values.
 
-[b] The substring function depending upon the source does not have consistent behavior with respect to negative from/length arguments nor out of bounds from/length arguments. The default Teiid behavior is:
+[b] The substring function depending upon the source does not have consistent behavior with respect to negative from/length arguments nor out of bounds from/length arguments. The default {{ book.productnameFull }} behavior is:
 
 * return a null value when the from value is out of bounds or the length is less than 0
 * a zero from index is effective the same as 1.

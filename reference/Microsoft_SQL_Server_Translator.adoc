@@ -7,9 +7,9 @@ The Microsoft SQL Server Translator, known by the type name *_sqlserver_*, is fo
 
 == Sequence Support
 
-With Teiid 8.5+ sequence operations may be modeled as link:DDL_Metadata.adoc[source functions].
+With {{ book.productnameFull }} 8.5+ sequence operations may be modeled as link:DDL_Metadata.adoc[source functions].
 
-With Teiid 10.0+ sequences may be imported automatically link:JDBC_Translators.adoc[import properties].
+With {{ book.productnameFull }} 10.0+ sequences may be imported automatically link:JDBC_Translators.adoc[import properties].
 
 [source,sql]
 .*Example:Sequence Native Query*

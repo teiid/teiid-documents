@@ -3,17 +3,17 @@
 :toc: manual
 :toc-placement: preamble
 
-The JDBC translators bridge between SQL semantic and data type differences between Teiid and a target RDBMS. Teiid has a range of specific translators that target the most popular open source and proprietary databases.
+The JDBC translators bridge between SQL semantic and data type differences between {{ book.productnameFull }} and a target RDBMS. {{ book.productnameFull }} has a range of specific translators that target the most popular open source and proprietary databases.
 
 == Usage
 
-Usage of a JDBC source is straight-forward. Using Teiid SQL, the source may be queried as if the tables and procedures were local to the Teiid system.
+Usage of a JDBC source is straight-forward. Using {{ book.productnameFull }} SQL, the source may be queried as if the tables and procedures were local to the {{ book.productnameFull }} system.
 
 If you are using a relational data source, or a data source that has a JDBC driver, and you do not find a specific translator available for that data source type, then start with the link:JDBC_ANSI_Translator.adoc[JDBC ANSI Translator]. The JDBC ANSI Translator should enable you to perform the SQL basics. If there specific data source capabilities that are not available, then consider using the link:../dev/Translator_Development.adoc[Translator Development] to create what you need. Or log a https://jira.jboss.org/jira/browse/Teiid[Teiid Jira] with your requirements.
 
 === Type Conventions
 
-UID types including UUID, GUID, or UNIQUEIDENTIFIER are typically mapped to the Teiid string type.  Be aware that the source will treat UID strings as non-case sensitive, but they will be in Teiid.  The source may also not support the implicit conversion to the string type, thus usage in functions expecting a string value may fail at the source.  Please log an issue if you encounter this situation.  
+UID types including UUID, GUID, or UNIQUEIDENTIFIER are typically mapped to the {{ book.productnameFull }} string type.  Be aware that the source will treat UID strings as non-case sensitive, but they will be in {{ book.productnameFull }}.  The source may also not support the implicit conversion to the string type, thus usage in functions expecting a string value may fail at the source.  Please log an issue if you encounter this situation.  
 
 == Execution Properties - shared by all JDBC Translators
 
@@ -29,7 +29,7 @@ UID types including UUID, GUID, or UNIQUEIDENTIFIER are typically mapped to the 
 |The base supported version or derived from the DatabaseMetadata.getDatabaseProductVersion string. Automatic detection requires a Connection. If there are circumstances where you are getting an exception from capabilities being unavailable (most likely due to an issue obtaining a Connection), then set DatabaseVersion property. Use the JDBCExecutionFactory.usesDatabaseVersion() method to control whether your translator requires a connection to determine capabilities.
 
 |TrimStrings
-|true to trim trailing whitespace from fixed length character strings. Note that Teiid only has a string, or varchar, type that treats trailing whitespace as meaningful.
+|true to trim trailing whitespace from fixed length character strings. Note that {{ book.productnameFull }} only has a string, or varchar, type that treats trailing whitespace as meaningful.
 |false
 
 |RemovePushdownCharacters
@@ -122,7 +122,7 @@ When specifying the importer property, it must be prefixed with "importer.". Exa
 
 |importSequences
 |true to import sequences.  Note supported only for DB2, Oracle, PostgreSQL, SQL Server, and H2.  A matching sequence will be imported
-to a 0-argument Teiid function name_nextval.
+to a 0-argument {{ book.productnameFull }} function name_nextval.
 |false
 
 |sequenceNamePattern
@@ -130,15 +130,15 @@ to a 0-argument Teiid function name_nextval.
 |null
 
 |useFullSchemaName
-|When false, directs the importer to use just the object name as the Teiid name - Note: when false importing from multiple schemas may lead to objects with duplicate names when importing from multiple schemas, which results in an exception.  When true the Teiid name will be formed using the catalog and schema names as directed by the useCatalogName and useQualifiedName properties.  This option does not affect the name in source property.
+|When false, directs the importer to use just the object name as the {{ book.productnameFull }} name - Note: when false importing from multiple schemas may lead to objects with duplicate names when importing from multiple schemas, which results in an exception.  When true the {{ book.productnameFull }} name will be formed using the catalog and schema names as directed by the useCatalogName and useQualifiedName properties.  This option does not affect the name in source property.
 |true
 
 |useQualifiedName
-|true will use name qualification for both the Teiid name and name in source as further refined by the useCatalogName and useFullSchemaName properties.  Set to false to disable all qualification for both the Teiid name and the name in source, which effectively ignores the useCatalogName and useFullSchemaName properties.  WARNING: when false this may lead to objects with duplicate names when importing from multiple schemas, which results in an exception.
+|true will use name qualification for both the {{ book.productnameFull }} name and name in source as further refined by the useCatalogName and useFullSchemaName properties.  Set to false to disable all qualification for both the {{ book.productnameFull }} name and the name in source, which effectively ignores the useCatalogName and useFullSchemaName properties.  WARNING: when false this may lead to objects with duplicate names when importing from multiple schemas, which results in an exception.
 |true (rarely needs changed)
 
 |useCatalogName
-|true will use any non-null/non-empty catalog name as part of the name in source, e.g. "catalog"."schema"."table"."column", and in the Teiid runtime name if applicable. false will not use the catalog name in either the name in source nor the Teiid runtime name.  Only required to be set to false for sources that do not support a catalog concept, but return a non-null/non-empty catalog name in their metadata - such as HSQL.
+|true will use any non-null/non-empty catalog name as part of the name in source, e.g. "catalog"."schema"."table"."column", and in the {{ book.productnameFull }} runtime name if applicable. false will not use the catalog name in either the name in source nor the {{ book.productnameFull }} runtime name.  Only required to be set to false for sources that do not support a catalog concept, but return a non-null/non-empty catalog name in their metadata - such as HSQL.
 |true (rarely needs changed)
 
 |widenUnsignedTypes
@@ -150,7 +150,7 @@ to a 0-argument Teiid function name_nextval.
 |false
 
 |quoteNameInSource
-|false will override the default and direct Teiid to create source queries using unquoted identifiers.
+|false will override the default and direct {{ book.productnameFull }} to create source queries using unquoted identifiers.
 |true
 
 |useAnyIndexCardinality
@@ -166,7 +166,7 @@ to a 0-argument Teiid function name_nextval.
 |false
 
 |importLargeAsLob
-|true will import character and binary types larger than the Teiid max as clob or blob respectively.  If you experience memory issues even with the property enabled, you should use the copyLob execution property as well. 
+|true will import character and binary types larger than the {{ book.productnameFull }} max as clob or blob respectively.  If you experience memory issues even with the property enabled, you should use the copyLob execution property as well. 
 |false
 |===
 
@@ -189,9 +189,9 @@ Example importer settings to only import tables and views from my-schema. See al
 
 == Native Queries
 
-Physical tables, functions, and procedures may optionally have native queries associated with them.  No validation of the native query is performed, it is simply used in a straight-forward manner to generate the source SQL.  For a physical table setting the teiid_rel:native-query extension metadata will execute the native query as an inline view in the source query.  This feature should only be used against sources that support inline views.  The native query is used as is and is not treated as a parameterized string. For example on a physical table y with nameInSource="x" and teiid_rel:native-query="select c from g", the Teiid source query"SELECT c FROM y" would generate the SQL query "SELECT c FROM (select c from g) as x".  Note that the column names in the native query must match the nameInSource of the physical table columns for the resulting SQL to be valid.
+Physical tables, functions, and procedures may optionally have native queries associated with them.  No validation of the native query is performed, it is simply used in a straight-forward manner to generate the source SQL.  For a physical table setting the teiid_rel:native-query extension metadata will execute the native query as an inline view in the source query.  This feature should only be used against sources that support inline views.  The native query is used as is and is not treated as a parameterized string. For example on a physical table y with nameInSource="x" and teiid_rel:native-query="select c from g", the {{ book.productnameFull }} source query"SELECT c FROM y" would generate the SQL query "SELECT c FROM (select c from g) as x".  Note that the column names in the native query must match the nameInSource of the physical table columns for the resulting SQL to be valid.
 
-For physical procedures you may also set the teiid_rel:native-query extension metadata to a desired query string with the added ability to positionally reference IN parameters - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries].  The teiid_rel:non-prepared extension metadata property may be set to false to turn off parameter binding.  Note this option should be used with caution as inbound may allow for SQL injection attacks if not properly validated.  The native query does not need to call a stored procedure.  Any SQL that returns a result set positionally matching the result set expected by the physical stored procedure metadata will work.  For example on a stored procedure x with teiid_rel:native-query="select c from g where c1 = $1 and c2 = `$$1"', the Teiid source query "CALL x(?)" would generate the SQL query "select c from g where c1 = ? and c2 = `$1"'.  Note that ? in this example will be replaced with the actual value bound to parameter 1.
+For physical procedures you may also set the teiid_rel:native-query extension metadata to a desired query string with the added ability to positionally reference IN parameters - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries].  The teiid_rel:non-prepared extension metadata property may be set to false to turn off parameter binding.  Note this option should be used with caution as inbound may allow for SQL injection attacks if not properly validated.  The native query does not need to call a stored procedure.  Any SQL that returns a result set positionally matching the result set expected by the physical stored procedure metadata will work.  For example on a stored procedure x with teiid_rel:native-query="select c from g where c1 = $1 and c2 = `$$1"', the {{ book.productnameFull }} source query "CALL x(?)" would generate the SQL query "select c from g where c1 = ? and c2 = `$1"'.  Note that ? in this example will be replaced with the actual value bound to parameter 1.
 
 === Direct Query Procedure
 
@@ -199,7 +199,7 @@ This feature is turned off by default because of the security risk this exposes 
 
 By default the name of the procedure that executes the queries directly is *native*. link:Translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
 
-The JDBC translator provides a procedure to execute any ad-hoc SQL query directly against the source without Teiid parsing or resolving. Since the metadata of this procedure’s results are not known to Teiid, they are returned as an object array. link:ARRAYTABLE.html[ARRAYTABLE] can be used construct tabular output for consumption by client applications.
+The JDBC translator provides a procedure to execute any ad-hoc SQL query directly against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as an object array. link:ARRAYTABLE.html[ARRAYTABLE] can be used construct tabular output for consumption by client applications.
 
 [source,sql]
 .*Select Example*

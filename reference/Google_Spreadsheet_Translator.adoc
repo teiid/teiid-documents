@@ -17,9 +17,9 @@ The translator supports queries against a single sheet. It supports ordering, ag
 
 There are no google-spreadsheet importer settings, but it can provide metadata for VDBs.
 
-WARNING: A sheet with a header that is defined in Teiid, which later has all data rows removed is no longer valid for access through Teiid.  The google api will treat the header as a data row at that point and thus queries will no longer be valid.
+WARNING: A sheet with a header that is defined in {{ book.productnameFull }}, which later has all data rows removed is no longer valid for access through {{ book.productnameFull }}.  The google api will treat the header as a data row at that point and thus queries will no longer be valid.
 
-WARNING: Non-string fields are updated using the canonical Teiid SQL value - in cases where the spreadsheet is using a non-conforming locale, consider disallowing updates.  See also link:https://issues.jboss.org/browse/TEIID-4854[TEIID-4854] and the allTypesUpdatable import property below.
+WARNING: Non-string fields are updated using the canonical {{ book.productnameFull }} SQL value - in cases where the spreadsheet is using a non-conforming locale, consider disallowing updates.  See also link:https://issues.jboss.org/browse/TEIID-4854[TEIID-4854] and the allTypesUpdatable import property below.
 
 == Importer Properties 
 
@@ -27,7 +27,7 @@ WARNING: Non-string fields are updated using the canonical Teiid SQL value - in 
 
 == JCA Resource Adapter
 
-The Teiid specific Google Spreadsheet Data Sources Resource Adapter should be used with this translator.
+The {{ book.productnameFull }} specific Google Spreadsheet Data Sources Resource Adapter should be used with this translator.
 
 == Native Queries
 
@@ -39,7 +39,7 @@ NOTE: This feature is turned off by default because of the security risk this ex
 
 TIP: By default the name of the procedure that executes the queries directly is called *native*. link:Translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
 
-The Google spreadsheet translator provides a procedure to execute any ad-hoc query directly against the source without any Teiid parsing or resolving. Since the metadata of this procedure’s execution results are not known to Teiid, they are returned as an object array. link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications. Teiid exposes this procedure with a simple query structure as below:
+The Google spreadsheet translator provides a procedure to execute any ad-hoc query directly against the source without any {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s execution results are not known to {{ book.productnameFull }}, they are returned as an object array. link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications. {{ book.productnameFull }} exposes this procedure with a simple query structure as below:
 
 === Select
 

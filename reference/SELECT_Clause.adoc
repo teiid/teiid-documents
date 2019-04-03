@@ -1,7 +1,7 @@
 
 = SELECT Clause
 
-SQL queries that start with the SELECT keyword and are often referred to as "SELECT statements". Teiid supports most of the standard SQL query constructs.
+SQL queries that start with the SELECT keyword and are often referred to as "SELECT statements". {{ book.productnameFull }} supports most of the standard SQL query constructs.
 
 Usage:
 

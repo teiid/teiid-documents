@@ -12,7 +12,7 @@
         "archeTypeVersion" : "REPLACE ME",
         "targetWildfly" : false,
         "targetSpring" : true,
-        "productnaneFull" : "Teiid"
+        "productnameFull" : "Teiid"
     },
     "plugins": ["collapsible-menu"]
 }

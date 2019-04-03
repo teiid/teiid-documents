@@ -3,11 +3,11 @@
 :toc: manual
 :toc-placement: preamble
 
-Spatial functions provide functionality for working with http://www.opengeospatial.org/[geospatial] data. Teiid relies on the http://www.vividsolutions.com/jts/JTSHome.htm[JTS Topology Suite] to provide partial support for the OpenGIS Simple Features Specification For SQL Revision 1.1. Please refer to the https://portal.opengeospatial.org/files/?artifact_id=829[specification] or to http://postgis.net/docs/manual-2.0/[PostGIS] for more details about particular functions.
+Spatial functions provide functionality for working with http://www.opengeospatial.org/[geospatial] data. {{ book.productnameFull }} relies on the http://www.vividsolutions.com/jts/JTSHome.htm[JTS Topology Suite] to provide partial support for the OpenGIS Simple Features Specification For SQL Revision 1.1. Please refer to the https://portal.opengeospatial.org/files/?artifact_id=829[specification] or to http://postgis.net/docs/manual-2.0/[PostGIS] for more details about particular functions.
 
 Most Geometry support is limited to two dimensions due to the WKB and WKT formats.
 
-NOTE: Geometry support is still evolving. There may be minor differences between Teiid and pushdown results that will need to be further refined.
+NOTE: Geometry support is still evolving. There may be minor differences between {{ book.productnameFull }} and pushdown results that will need to be further refined.
 
 == Conversion Functions
 
@@ -663,7 +663,7 @@ geom is a geometry. Return value is a geometry.
 
 === ST_CurveToLine
 
-Converts a CircularString/CurvedPolygon to a LineString/Polygon.  Not currently implemented in Teiid.
+Converts a CircularString/CurvedPolygon to a LineString/Polygon.  Not currently implemented in {{ book.productnameFull }}.
 
 [source,sql]
 ----

@@ -1,7 +1,7 @@
 
-= Teiid Translator (teiid)
+= {{ book.productnameFull }} Translator (teiid)
 
 Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
 
-The Teiid Translator, known by the type name *_teiid_*, is for use with Teiid 6.0 or later.
+The {{ book.productnameFull }} Translator, known by the type name *_teiid_*, is for use with {{ book.productnameFull }} 6.0 or later.
 

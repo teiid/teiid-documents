@@ -13,12 +13,12 @@ _Syntax Rules:_
 
 * Identifiers can consist of alphanumeric characters, or the underscore (_) character, and must begin with an alphabetic character. Any Unicode character may be used in an identifier.
 * Identifiers in double quotes can have any contents. The double quote character can it’s be escaped with an additional double quote. e.g. "some", " id"
-* Because different data sources organize tables in different ways, some prepending catalog or schema or user information, Teiid allows table specification to be a dot-delimited construct.
+* Because different data sources organize tables in different ways, some prepending catalog or schema or user information, {{ book.productnameFull }} allows table specification to be a dot-delimited construct.
 
 NOTE: When a table specification contains a dot resolving will allow for the match of a partial name against any number of the end segments in the name. e.g. a table with the fully-qualified name vdbname."sourcescema.sourcetable" would match the partial name sourcetable.
 
 * Columns, column aliases, and schemas cannot contain a dot '.' character.
-* Identifiers, even when quoted, are not case-sensitive in Teiid.
+* Identifiers, even when quoted, are not case-sensitive in {{ book.productnameFull }}.
 
 Some examples of valid fully-qualified table identifiers are:
 
@@ -38,5 +38,5 @@ If you use an alias containing a '.' character, it is a known issue that the ali
 
 == Reserved Words
 
-Teiid’s reserved words include the standard SQL 2003 Foundation, SQL/MED, and SQL/XML reserved words, as well as Teiid specific words such as BIGINTEGER, BIGDECIMAL, or MAKEDEP. See the link:BNF_for_SQL_Grammar.adoc[BNF for SQL Grammar] Reserved Keywords and Reserved Keywords For Future Use sections for all reserved words.
+{{ book.productnameFull }}’s reserved words include the standard SQL 2003 Foundation, SQL/MED, and SQL/XML reserved words, as well as {{ book.productnameFull }} specific words such as BIGINTEGER, BIGDECIMAL, or MAKEDEP. See the link:BNF_for_SQL_Grammar.adoc[BNF for SQL Grammar] Reserved Keywords and Reserved Keywords For Future Use sections for all reserved words.
 

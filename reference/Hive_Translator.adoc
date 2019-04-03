@@ -7,7 +7,7 @@ The Hive Translator, known by the type name *_hive_*, is for use with Hive v.10 
 
 == Capabilities
 
-Hive has limited support for data types. It does not have native support for time/xml or LOBs. These limitations are reflected in the translator capabilities. A Teiid view can use these types, however the transformation would need to specify the necessary conversions. Note that in those situations, the evaluations will be done in Teiid engine.
+Hive has limited support for data types. It does not have native support for time/xml or LOBs. These limitations are reflected in the translator capabilities. A {{ book.productnameFull }} view can use these types, however the transformation would need to specify the necessary conversions. Note that in those situations, the evaluations will be done in {{ book.productnameFull }} engine.
 
 The DatabaseTimeZone translator property should not be used.
 
@@ -27,10 +27,10 @@ NOTE:  If false the typical JDBC DatabaseMetaData calls are not used so not all 
 
 *"Database Name"*
 
-When the database name used in the Hive is different than "default", the metadata retrieval and execution of queries does not work as expected in Teiid, as Hive JDBC driver seems to be implicitly connecting (tested with < 0.12) to "default" database, thus ignoring the database name mentioned on connection URL.  You may configure your connection source to issue "use {database-name}". 
+When the database name used in the Hive is different than "default", the metadata retrieval and execution of queries does not work as expected in {{ book.productnameFull }}, as Hive JDBC driver seems to be implicitly connecting (tested with < 0.12) to "default" database, thus ignoring the database name mentioned on connection URL.  You may configure your connection source to issue "use {database-name}". 
 
 {% if book.targetWildfly %}
-Teiid in {{ book.asName }} environment set the following in data source configuration.
+{{ book.productnameFull }} in {{ book.asName }} environment set the following in data source configuration.
 
 [source,xml]
 ----

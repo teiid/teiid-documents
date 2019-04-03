@@ -1,7 +1,7 @@
 
 = Set Operations
 
-Teiid supports the UNION, UNION ALL, INTERSECT, EXCEPT set operation as a way of combining the results of query expressions.
+{{ book.productnameFull }} supports the UNION, UNION ALL, INTERSECT, EXCEPT set operation as a way of combining the results of query expressions.
 
 Usage:
 

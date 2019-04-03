@@ -1,20 +1,20 @@
 {% if book.targetWildfly %}
-== Teiid Components
+== {{ book.productnameFull }} Components
 
 image:images/teiid-components.png[images/teiid-components.png]
 
-* **Designer Plugin** - Deprecated Eclipse Plugin based Teiid design environment, used to connect/federate/transform datasources to produce a `.vdb` file.
-* **JVM** - Teiid is a pure Java Data Virtualization Platform.
-* **{{ book.asName }}** - Teiid use a plugable installation which need a {{ book.asName }} Server installed, alternatively, a full installed {{ book.asName }} kit be distributed.
-* **Subsystem** - Due to {{ book.asName }}'s Modular and Pluggable Architecture(a series of Management commands compose of a subsystem, a series of subsystems compose of the whole server), Teiid implement {{ book.asName }}'s Controller/Management API developed a `teiid` subsystem and reuse lots of other subsystems like `resource-adapter`, `infinispan`, `security`, `logging`, `datasource`.
-* **odata.war** - Teiid support OData via odata.war, more details refer to link:../client-dev/OData_Support.adoc[OData Support] 
+* **Designer Plugin** - Deprecated Eclipse Plugin based {{ book.productnameFull }} design environment, used to connect/federate/transform datasources to produce a `.vdb` file.
+* **JVM** - {{ book.productnameFull }} is a pure Java Data Virtualization Platform.
+* **{{ book.asName }}** - {{ book.productnameFull }} use a plugable installation which need a {{ book.asName }} Server installed, alternatively, a full installed {{ book.asName }} kit be distributed.
+* **Subsystem** - Due to {{ book.asName }}'s Modular and Pluggable Architecture(a series of Management commands compose of a subsystem, a series of subsystems compose of the whole server), {{ book.productnameFull }} implement {{ book.asName }}'s Controller/Management API developed a `teiid` subsystem and reuse lots of other subsystems like `resource-adapter`, `infinispan`, `security`, `logging`, `datasource`.
+* **odata.war** - {{ book.productnameFull }} support OData via odata.war, more details refer to link:../client-dev/OData_Support.adoc[OData Support] 
 * **dashboard.war** - A web based dashboard generator.
 * **teiid-console** - A web based administrative and monitoring tool for Teiid, more details refer to link:../admin/Teiid_Console.adoc[Teiid Console]
 * **JDBC Driver** - JDBC Driver to connect to Teiid Server.
 * **AdminAPI** - An API for performing management and monitoring:../dev/AdminAPI.adoc[AdminAPI]
-* **quickstarts** - A maven quickstart showing how to utilize Teiid.
+* **quickstarts** - A maven quickstart showing how to utilize {{ book.productnameFull }}.
 {% endif %}
-== Teiid Architecture
+== {{ book.productnameFull }} Architecture
 
 {% if book.targetWildfly %}
 image:images/teiid-architecture.png[images/teiid-architecture.png]
@@ -26,12 +26,12 @@ image:images/teiid-architecture.png[images/teiid-architecture.png]
 
 1. SQL is converted to a Processor Plan. The engine receives an incoming SQL query.  It is parsed to a internal command.  Then the command is converted a logical plan via resolving, validating, and rewriting.  Lastly rule and cost-based optimization convert the logical plan to a final Processor Plan. More details refer to link:Federated_Planning.adoc[Federated Planning].
 2. Batch Processing.  The source and other aspects of query processing may return results asynchronously to the processing thread.  As soon as possible batches of results are made available to the client. 
-3. Buffer Management Controls the bulk of the on and off heap memory that Teiid is using.  It prevents consuming too much memory that otherwise might exceed the vm size.
+3. Buffer Management Controls the bulk of the on and off heap memory that {{ book.productnameFull }} is using.  It prevents consuming too much memory that otherwise might exceed the vm size.
 4. Transaction Management determines when transactions are needed and interacts with the TransactionManager subsystem to coordinate XA transactions.
 
 Source queries are handled by the Data Tier layer which interfaces with the Query Engine and the Connector Layer which utilizes a Translator/Resource Adapter pair to interact directly with a source.  Connectivity is provided for heterogeneous data stores, like Databases/Data warehouse, NoSQL, Hadoop, Data Grid/Cache, File, SaaS, etc. - see link:Data_Sources.adoc[Data Sources].
 
-* **Translator** - Teiid has developed a series of Translators, for more details refer to link:Translators.adoc[Translators]. 
+* **Translator** - {{ book.productnameFull }} has developed a series of Translators, for more details refer to link:Translators.adoc[Translators]. 
 {% if book.targetWildfly %}
 * **Resource Adapter** - Provides container managed access to a source, for more details refer to link:../dev/Developing_JEE_Connectors.adoc[Developing JEE Connectors].
 {% endif %}  

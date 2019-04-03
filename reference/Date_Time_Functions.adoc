@@ -21,7 +21,7 @@ Parse and format Date/Time functions use the convention established within the j
 |returns timestamp
 
 |CURRENT_TIME[(precision)]
-|Return current time - will return the same value for all invocations in the user command.  The Teiid time type does not track fractional seconds, so the precision argument is effectively ignored.  Without a precision is the same as CURTIME().
+|Return current time - will return the same value for all invocations in the user command.  The {{ book.productnameFull }} time type does not track fractional seconds, so the precision argument is effectively ignored.  Without a precision is the same as CURTIME().
 |returns time
 
 |CURRENT_TIMESTAMP[(precision)]
@@ -46,7 +46,7 @@ Parse and format Date/Time functions use the convention established within the j
 
 |EXTRACT(YEAR\|MONTH\|DAY
 \|HOUR\|MINUTE\|SECOND FROM x)
-|Return the given field value from the date value x. Produces the same result as the associated YEAR, MONTH, DAYOFMONTH, HOUR, MINUTE, SECOND functions.The SQL specification also allows for TIMEZONE_HOUR and TIMEZONE_MINUTE as extraction targets. In Teiid all date values are in the timezone of the server.
+|Return the given field value from the date value x. Produces the same result as the associated YEAR, MONTH, DAYOFMONTH, HOUR, MINUTE, SECOND functions.The SQL specification also allows for TIMEZONE_HOUR and TIMEZONE_MINUTE as extraction targets. In {{ book.productnameFull }} all date values are in the timezone of the server.
 |x in {date, time, timestamp}, returns integer
 
 |FORMATDATE(x, y)
@@ -214,13 +214,13 @@ NOTE: If (endTime > startTime), a non-negative number will be returned. If (endT
 
 *Compatibility Issues*
 
-* Timestampdiff typically returns an integer, however Teiid’s version returns a long. You may receive an exception if you expect a value out
+* Timestampdiff typically returns an integer, however {{ book.productnameFull }}’s version returns a long. You may receive an exception if you expect a value out
 of the integer range from a pushed down timestampdiff.
-* Teiid’s implementation of timestamp diff in 8.2 and prior versions returned values based upon the number of whole canonical interval approximations (365 days in a year, 91 days in a quarter, 30 days in a month, etc.) crossed. For example the difference in months between 2013-03-24 and 2013-04-01 was 0, but based upon the date parts crossed is 1. See link:../admin/System_Properties.adoc[System Properties] for backwards compatibility.
+* {{ book.productnameFull }}’s implementation of timestamp diff in 8.2 and prior versions returned values based upon the number of whole canonical interval approximations (365 days in a year, 91 days in a quarter, 30 days in a month, etc.) crossed. For example the difference in months between 2013-03-24 and 2013-04-01 was 0, but based upon the date parts crossed is 1. See link:../admin/System_Properties.adoc[System Properties] for backwards compatibility.
 
 == Parsing Date Datatypes from Strings
 
-Teiid does not implicitly convert strings that contain dates presented in different formats, such as '19970101' and '31/1/1996' to date-related datatypes. You can, however, use the parseDate, parseTime, and parseTimestamp functions, described in the next section, to explicitly convert strings with a different format to the appropriate datatype. These functions use the convention established within the java.text.SimpleDateFormat class to define the formats you can use with these functions. You can learn more about how this class defines date and time string formats by visiting the http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html[Javadocs for SimpleDateFormat]. Note that the format strings will be locale specific to your Java default locale.
+{{ book.productnameFull }} does not implicitly convert strings that contain dates presented in different formats, such as '19970101' and '31/1/1996' to date-related datatypes. You can, however, use the parseDate, parseTime, and parseTimestamp functions, described in the next section, to explicitly convert strings with a different format to the appropriate datatype. These functions use the convention established within the java.text.SimpleDateFormat class to define the formats you can use with these functions. You can learn more about how this class defines date and time string formats by visiting the http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html[Javadocs for SimpleDateFormat]. Note that the format strings will be locale specific to your Java default locale.
 
 For example, you could use these function calls, with the formatting string that adheres to the java.text.SimpleDateFormat convention, to parse strings and return the datatype you need:
 

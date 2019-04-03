@@ -1,7 +1,7 @@
 
 = Salesforce Translators
 
-The Salesforce translator supports the SELECT, DELETE, INSERT, UPSERT, and UPDATE operations against a Salesforce.com account. It is designed for use with the Teiid Salesforce resource adapter.
+The Salesforce translator supports the SELECT, DELETE, INSERT, UPSERT, and UPDATE operations against a Salesforce.com account. It is designed for use with the {{ book.productnameFull }} Salesforce resource adapter.
 
 == Salesforce API Version Support
 
@@ -35,7 +35,7 @@ If you need connectivity to an API version other than what is built in, please u
 |2048
 
 |SupportsGroupBy
-|Supports Group By Pushdown. Set to false to have Teiid process group by aggregations, such as those returning more than 2000 rows which error in SOQL.
+|Supports Group By Pushdown. Set to false to have {{ book.productnameFull }} process group by aggregations, such as those returning more than 2000 rows which error in SOQL.
 |true
 |===
 
@@ -77,7 +77,7 @@ NOTE： When both _includeTables_ and _excludeTables patterns are present during
 NOTE: If you need connectivity to an API version other than what is built in, you may try to use an existing connectivity pair, but in some circumstances - especially accessing a later remote api from an older java api - this is not possible and results in what appears to be hung connections.  Please raise an issue if you cannot successfully access a specific API version.
 
 === Extension Metadata Properties
-Salesforce is not relational database, however Teiid provides ways to map Saleforce data into relational constructs like Tables and Procedures. You can define a foreign Table using DDL in Teiid VDB, which maps to Salesforce's SObject. At runtime, to interpret this table back to a SObject, Teiid decorates or tags this table definition with additional metadata. For example, a table is defined as
+Salesforce is not relational database, however {{ book.productnameFull }} provides ways to map Saleforce data into relational constructs like Tables and Procedures. You can define a foreign Table using DDL in {{ book.productnameFull }} VDB, which maps to Salesforce's SObject. At runtime, to interpret this table back to a SObject, {{ book.productnameFull }} decorates or tags this table definition with additional metadata. For example, a table is defined as
 
 [source,sql]
 ----
@@ -115,9 +115,9 @@ In the above the property in OPTIONS clause with property "teiid_sf:Supports Que
 
 == SQL Processing
 
-Salesforce does not provide the same set of functionality as a relational database. For example, Salesforce does not support arbitrary joins between tables. However, working in combination with the Teiid Query Planner, the Salesforce connector supports nearly all of the SQL syntax supported by the Teiid.
+Salesforce does not provide the same set of functionality as a relational database. For example, Salesforce does not support arbitrary joins between tables. However, working in combination with the {{ book.productnameFull }} Query Planner, the Salesforce connector supports nearly all of the SQL syntax supported by the {{ book.productnameFull }}.
 
-The Salesforce Connector executes SQL commands by "pushing down" the command to Salesforce whenever possible, based on the supported capabilities. Teiid will automatically provide additional database functionality when the Salesforce Connector does not explicitly provide support for a given SQL construct. In cases where certain SQL capabilities cannot be pushed down to Salesforce, Teiid will push down the capabilities that are supported, and fetch a set of data from Salesforce. Then, Teiid will evaluate the additional capabilities, creating a subset of the original data set. Finally, Teiid will pass the result to the client.
+The Salesforce Connector executes SQL commands by "pushing down" the command to Salesforce whenever possible, based on the supported capabilities. {{ book.productnameFull }} will automatically provide additional database functionality when the Salesforce Connector does not explicitly provide support for a given SQL construct. In cases where certain SQL capabilities cannot be pushed down to Salesforce, {{ book.productnameFull }} will push down the capabilities that are supported, and fetch a set of data from Salesforce. Then, {{ book.productnameFull }} will evaluate the additional capabilities, creating a subset of the original data set. Finally, {{ book.productnameFull }} will pass the result to the client.
 
 If you are issuing queries with a group by clause and receive an error for salesforce related to queryMore not being supported, you may either add limits or set the execution property SupportsGroupBy to false.
 
@@ -133,7 +133,7 @@ Neither Salesforce nor the Salesforce Connector support the array_agg() scalar, 
 SELECT Reports FROM Supervisor where Division = 'customer support';
 ----
 
-The array_agg() function will be applied by the Teiid Query Engine to the result set returned by the connector.
+The array_agg() function will be applied by the {{ book.productnameFull }} Query Engine to the result set returned by the connector.
 
 In some cases multiple calls to the Salesforce application will be made to support the SQL passed to the connector.
 
@@ -158,7 +158,7 @@ It’s useful to be aware of unsupported capabilities, in order to avoid fetchin
 
 A multi-select picklist is a field type in Salesforce that can contain multiple values in a single field. Query criteria operators for fields of this type in SOQL are limited to EQ, NE, includes and excludes. The full Salesforce documentation for selecting from mullti-select picklists can be found at the following link http://www.salesforce.com/us/developer/docs/soql_sosl/Content/sforce_api_calls_soql_querying_multiselect_picklists.htm[Querying Mulit-select Picklists]
 
-Teiid SQL does not support the includes or excludes operators, but the Salesforce connector provides user defined function definitions for these operators that provided equivalent functionality for fields of type multi-select. The definition for the functions is:
+{{ book.productnameFull }} SQL does not support the includes or excludes operators, but the Salesforce connector provides user defined function definitions for these operators that provided equivalent functionality for fields of type multi-select. The definition for the functions is:
 
 [source,sql]
 ----
@@ -283,7 +283,7 @@ SalesForce translator also supports bulk insert statements using JDBC batch sema
 
 === Bulk Selects
 
-When quering large tables (typically over 10,000,000 records) or if experiencing timeouts with just result batching, Teiid can issue queries to Salesforce using the bulk API.  When using a bulk select, PK chunking will be enabled if supported by the query.
+When quering large tables (typically over 10,000,000 records) or if experiencing timeouts with just result batching, {{ book.productnameFull }} can issue queries to Salesforce using the bulk API.  When using a bulk select, PK chunking will be enabled if supported by the query.
 
 The use of the bulk api requires a source hint in the query:
 
@@ -333,7 +333,7 @@ This feature is turned off by default because of the security risk this exposes 
 
 TIP: By default the name of the procedure that executes the queries directly is *native*. link:Translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
 
-The Salesforce translator provides a procedure to execute any ad-hoc SOQL query directly against the source without Teiid parsing or resolving. Since the metadata of this procedure’s results are not known to Teiid, they are returned as an object array. link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications. Teiid exposes this procedure with a simple query structure as follows:
+The Salesforce translator provides a procedure to execute any ad-hoc SOQL query directly against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as an object array. link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications. {{ book.productnameFull }} exposes this procedure with a simple query structure as follows:
 
 === Select
 

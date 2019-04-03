@@ -125,7 +125,7 @@ NOTE: This feature is turned off by default because of the security risk this ex
 
 TIP: By default the name of the procedure that executes the queries directly is *native*. link:Translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
 
-The LDAP translator provides a procedure to execute any ad-hoc LDAP query directly against the source without Teiid parsing or resolving. Since the metadata of this procedure’s results are not known to Teiid, they are returned as an object array. link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications.
+The LDAP translator provides a procedure to execute any ad-hoc LDAP query directly against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as an object array. link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications.
 
 === Search
 
@@ -224,7 +224,7 @@ uses a number of SQL constructs, including:
 * Compare criteria (Greater-than) support
 * IN support
 
-The LDAP Connector executes LDAP searches by pushing down the equivalent LDAP search filter whenever possible, based on the supported capabilities. Teiid automatically provides additional database functionality when the LDAP Connector does not explicitly provide support for a given SQL construct. In these cases, the SQL construct cannot be pushed down to the data source, so it will be evaluated in Teiid, in order to ensure that the operation is performed. In cases where certain SQL capabilities cannot be pushed down to LDAP, Teiid pushes down the capabilities that are supported, and fetches a set of data from LDAP. Teiid then evaluates the additional capabilities, creating a subset of the original data set. Finally, Teiid will pass the result to the client. It is useful to be aware of unsupported capabilities, in order to avoid fetching large data sets from LDAP when possible.
+The LDAP Connector executes LDAP searches by pushing down the equivalent LDAP search filter whenever possible, based on the supported capabilities. {{ book.productnameFull }} automatically provides additional database functionality when the LDAP Connector does not explicitly provide support for a given SQL construct. In these cases, the SQL construct cannot be pushed down to the data source, so it will be evaluated in {{ book.productnameFull }}, in order to ensure that the operation is performed. In cases where certain SQL capabilities cannot be pushed down to LDAP, {{ book.productnameFull }} pushes down the capabilities that are supported, and fetches a set of data from LDAP. {{ book.productnameFull }} then evaluates the additional capabilities, creating a subset of the original data set. Finally, {{ book.productnameFull }} will pass the result to the client. It is useful to be aware of unsupported capabilities, in order to avoid fetching large data sets from LDAP when possible.
 
 === LDAP Connector Capabilities Support List
 
@@ -243,7 +243,7 @@ Due to the nature of the LDAP source, the following capability is not supported:
 
 * SELECT queries
 
-The following capabilities are not supported in the LDAP Connector, and will be evaluated by Teiid after data is fetched by the connector:
+The following capabilities are not supported in the LDAP Connector, and will be evaluated by {{ book.productnameFull }} after data is fetched by the connector:
 
 * Functions
 * Aggregates
@@ -280,7 +280,7 @@ connection-jndi-name="java:/ldapDS"/>
 </vdb>
 ----
 
-The translator does not provide a connection to the OpenLDAP. For that purpose, Teiid has a JCA adapter that provides a connection to OpenLDAP using the Java Naming API. To define such connector, use the following XML fragment in standalone-teiid.xml. See a example in "<jboss-as>/docs/teiid/datasources/ldap"
+The translator does not provide a connection to the OpenLDAP. For that purpose, {{ book.productnameFull }} has a JCA adapter that provides a connection to OpenLDAP using the Java Naming API. To define such connector, use the following XML fragment in standalone-teiid.xml. See a example in "<jboss-as>/docs/teiid/datasources/ldap"
 
 [source,xml]
 ----
@@ -326,7 +326,7 @@ NAME string options (nameinsource `cn')
 </vdb>
 ----
 
-when SELECT operation below executed against table using Teiid will retrieve Users/Groups in LDAP Server:
+when SELECT operation below executed against table using {{ book.productnameFull }} will retrieve Users/Groups in LDAP Server:
 
 [source,sql]
 ----
@@ -335,7 +335,7 @@ SELECT * FROM HR_Group
 
 == LDAP Attribute Datatype Support
 
-LDAP providers currently return attribute value types of java.lang.String and byte[], and do not support the ability to return any other attribute value type. The LDAP Connector currently supports attribute value types of java.lang.String, Timestamp, byte[], and arrays of those values. Conversion functions that are available in Teiid allow you to use models that convert a String value from LDAP into a different data type. Some conversions may be applied implicitly, and do not require the use of any conversion functions. Other conversions must be applied explicitly, via the use of CONVERT functions. Since the CONVERT functions are not supported by the underlying LDAP system, they will be evaluated in Teiid. Therefore, if any criteria is evaluated against a converted datatype, that evaluation cannot be pushed to the data source.
+LDAP providers currently return attribute value types of java.lang.String and byte[], and do not support the ability to return any other attribute value type. The LDAP Connector currently supports attribute value types of java.lang.String, Timestamp, byte[], and arrays of those values. Conversion functions that are available in {{ book.productnameFull }} allow you to use models that convert a String value from LDAP into a different data type. Some conversions may be applied implicitly, and do not require the use of any conversion functions. Other conversions must be applied explicitly, via the use of CONVERT functions. Since the CONVERT functions are not supported by the underlying LDAP system, they will be evaluated in {{ book.productnameFull }}. Therefore, if any criteria is evaluated against a converted datatype, that evaluation cannot be pushed to the data source.
 
 When converting from String to other types, be aware that criteria against that new data type will not be pushed down to the LDAP data source. This may decrease performance for certain queries.
 
@@ -343,7 +343,7 @@ As an alternative, the data type can remain a string and the client application 
 
 === LDAP: Testing Your Connector
 
-You must define LDAP Connector properties accurately or the Teiid server will return unexpected results, or none at all.
+You must define LDAP Connector properties accurately or the {{ book.productnameFull }} server will return unexpected results, or none at all.
 
 === LDAP: Console Deployment Issues
 

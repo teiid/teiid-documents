@@ -40,7 +40,7 @@ This table supplies information about all the elements (columns, tags, attribute
 
 |DataType
 |string
-|Teiid runtime data type name
+|{{ book.productnameFull }} runtime data type name
 
 |Scale
 |integer
@@ -168,7 +168,7 @@ This table supplies information on datatypes.
 
 |Name
 |string
-|Teiid type or domain name
+|{{ book.productnameFull }} type or domain name
 
 |IsStandard
 |boolean
@@ -228,7 +228,7 @@ This table supplies information on datatypes.
 
 |RuntimeType
 |string
-|Teiid runtime data type name
+|{{ book.productnameFull }} runtime data type name
 
 |BaseType
 |string
@@ -392,7 +392,7 @@ This supplies information on procedure parameters.
 
 |DataType
 |string
-|Teiid runtime data type name
+|{{ book.productnameFull }} runtime data type name
 
 |Position
 |integer
@@ -517,7 +517,7 @@ This supplies information on function parameters.
 
 |DataType
 |string
-|Teiid runtime data type name
+|{{ book.productnameFull }} runtime data type name
 
 |Position
 |integer
