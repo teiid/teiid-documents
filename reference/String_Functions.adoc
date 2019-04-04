@@ -13,12 +13,14 @@ Unless specified, all of the arguments and return types in the following table a
 |x,y in {string, clob}, return type is string or clob
 
 |ASCII(x)
-|Provide ASCII value of the left most character in x. The empty string will as input will return null.
+|Provide ASCII value of the left most character[1] in x. The empty string will as input will return null.
 |return type is integer
 
 |CHR(x) CHAR(x)
-|Provide the character for ASCII value x [a]
+|Provide the character[1] for ASCII value x [a]
 |x in {integer}
+
+[1] For the engine's implementations of the ASCII and CHR functions characters are limited to UCS2 values only.  For pushdown there is little consistency among sources for character values beyond character code 255.  
 
 |CONCAT(x, y)
 |Concatenates x and y with ANSI semantics. If x and/or y is null, returns null.

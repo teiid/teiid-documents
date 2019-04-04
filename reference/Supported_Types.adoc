@@ -20,7 +20,7 @@
 |VARBINARY
 
 |char
-|a single Unicode character
+|a single 16 bit character - which cannot represent a value beyond the Basic Multilingual Plane.  This limitation also applies to functions/expressions that expect a single character such as trim, textagg, texttable, and like escape.
 |java.lang.Character
 |CHAR
 |CHAR
@@ -142,6 +142,8 @@
 |===
 
 NOTE: Even if a type is declared with a length, precision, or scale argument, those restrictions are effectively ignored by the runtime system, but may be enforced/reported at the edge by OData, ODBC, JDBC.  The geospatial types act in a similar manner.  Extension metadata may be needed for srid, type, and number of dimensions for consumption by tools/OData - but it is not yet enforced.  In some instances you may need to use the ST_SETSRID function to ensure the srid is associated.
+
+NOTE: Charater, String, and Clob types are not limited to ascii/extended ascii values.  Character can hold codes up to 2^16-1 and String/Clob can hold any value.
 
 **Reference Link**
 
