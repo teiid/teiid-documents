@@ -10,7 +10,10 @@ By default a system schema for ODBC metadata pg_catalog is also exposed - howeve
 The SYS system schema tables and procedures are always visible/accessible.
 
 Unlike {{ book.productnameFull }} 8.x and prior releases when link:Data_Roles.adoc[Data Roles] are in use table/views and procedure metadata entries will not be visible if the 
-user is not entitled to use the object.  Tables/views/columns require the READ permission and procedures require the EXECUTE permission.  All columns of a key
+user is not entitled by some permission to use the object.  All columns of a key
 must be accessible for the entry to be visible.  
 
+NOTE: If you wish all metadata to be visible to any authenticated user, then set the environment/system property org.teiid.metadataRequiresPermission to false.
+
 NOTE: If there is any caching of system metadata when data roles are in use, then visibility needs to be considered.
+
