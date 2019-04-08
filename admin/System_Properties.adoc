@@ -191,6 +191,10 @@ may set the session variable ignore_unauthorized_asterisk to true to achieve the
 If false the non-hidden schema metadata will be visible to any authenticated user.
 |true
 
+|_org.teiid.hiddenMetadataResolvable_
+|If true pg/JDBC objects under a hidden schema are still resolvable if fully qualified.  If false objects under a hidden schema are never directly resolvable by an end user.  
+|true
+
 |_org.teiid.ODBCRequireSecure_
 |If true setting the SSL config to login or enabled will require clients to connect appropriately with either a GSS login or SSL respectively. Setting the property to false will allow client to use any authentication and no SSL (which was the behavior of the pg transport prior to 8.9 CR2).
 |true
