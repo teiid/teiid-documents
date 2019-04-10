@@ -173,6 +173,11 @@ WARNING: Strings are always fully held in memory. Do not set this value too high
 |===
 |Setting |Description |Default Value
 
+|_org.teiid.allowAlter_
+|If true alter and (sysdamin.setProperty) will be allowed at runtime to alter possibly ephemerally the metadata.  
+If false those metadata alterations will not be allowed.
+|true
+
 |_org.teiid.allowCreateTemporaryTablesByDefault_
 |Set to true to use the pre-8.0 behavior of allowing any authenticated user to create temp tables without an explicit permission.
 |false
@@ -180,6 +185,10 @@ WARNING: Strings are always fully held in memory. Do not set this value too high
 |_org.teiid.allowFunctionCallsByDefault_
 |Set to true to use the pre-8.0 behavior of allowing any authenticated user to call any non-system function without an explicit permission.
 |false
+
+|_org.teiid.hiddenMetadataResolvable_
+|If true pg/JDBC objects under a hidden schema are still resolvable if fully qualified.  If false objects under a hidden schema are never directly resolvable by an end user.  
+|true
 
 |_org.teiid.ignoreUnauthorizedAsterisk_
 |If true unauthorized columns (as determined by data role checking) are not part of select all or qualified select all expansion. If false, the client
@@ -189,10 +198,6 @@ may set the session variable ignore_unauthorized_asterisk to true to achieve the
 |_org.teiid.metadataRequiresPermission_
 |If true metadata will only be visible in SYS/SYSADMIN tables if the user is permissioned in some way for the given object.  
 If false the non-hidden schema metadata will be visible to any authenticated user.
-|true
-
-|_org.teiid.hiddenMetadataResolvable_
-|If true pg/JDBC objects under a hidden schema are still resolvable if fully qualified.  If false objects under a hidden schema are never directly resolvable by an end user.  
 |true
 
 |_org.teiid.ODBCRequireSecure_
