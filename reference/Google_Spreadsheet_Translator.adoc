@@ -25,9 +25,11 @@ WARNING: Non-string fields are updated using the canonical {{ book.productnameFu
 
 * _allTypesUpdatable_- Set to true to mark all columns as updatable. Set to false to enable update only on string/boolean columns, which are not affected by link:https://issues.jboss.org/browse/TEIID-4854[TEIID-4854]. Defaults to true.
 
+{% if book.targetWildfly %}
 == JCA Resource Adapter
 
 The {{ book.productnameFull }} specific Google Spreadsheet Data Sources Resource Adapter should be used with this translator.
+{% endif %}
 
 == Native Queries
 

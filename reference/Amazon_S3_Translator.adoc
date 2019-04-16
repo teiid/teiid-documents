@@ -1,8 +1,9 @@
 
 = Amazon S3 Translator
 
-The Amazon S3 translator, known by the type name _amazon-s3_, exposes stored procedures to leverage Amazon S3 object resources. The link:../admin/Web_Service_Data_Sources.adoc[Web Service Data Source] resource-adapter will be used for access. This will commonly be used with the TEXTTABLE or XMLTABLE table functions to use CSV or XML formatted data or read excel files, or other object files stored in the Amazon S3. This translator supports access to Amazon S3 using access-key and secret-key. 
+The Amazon S3 translator, known by the type name _amazon-s3_, exposes stored procedures to leverage Amazon S3 object resources. 
 
+This will commonly be used with the TEXTTABLE or XMLTABLE table functions to use CSV or XML formatted data or read excel files, or other object files stored in the Amazon S3. This translator supports access to Amazon S3 using access-key and secret-key. 
 
 == Usage
 Here is sample VDB that is reading CSV file from Amazon S3 with name 'g2.txt' in the Amazon S3 bucket called 'teiidbucket' 
@@ -212,7 +213,9 @@ SELECT * FROM Bucket
 Note: if there are more then 1000 object in the bucket, then the value 'NextContinuationToken' need to be supplied as 'nexttoken' into the _list_ call to fetch the next batch of objects. This can be automated in {{ book.productnameFull }} with enhancement request. 
 
 
+{% if book.targetWildfly %}
 == JCA Resource Adapter
 
 The resource adapter for this translator provided through "Web Service Data Source", Refer to Admin Guide for configuration information.
+{% endif %}
 

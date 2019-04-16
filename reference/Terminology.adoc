@@ -1,7 +1,11 @@
 
 = Terminology
 
-* VM or Process – a JBossAS instance running {{ book.productnameFull }}.  
+{% if book.targetWildfly %}
+* VM or Process – a {{ book.asName }} instance running {{ book.productnameFull }}.  
+{% else %}
+* VM or Process – a Spring Boot instance of {{ book.productnameFull }}.  
+{% endif %}
 
 * Host – a machine that is "hosting" one or more VMs.
 

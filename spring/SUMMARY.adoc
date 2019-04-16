@@ -126,7 +126,7 @@
 // ... link:reference/OData_V4_Translator.adoc[OData V4 Translator]
 // ... link:reference/Swagger_Translator.adoc[Swagger Translator]
 // ... link:reference/OLAP_Translator.adoc[OLAP Translator]
-// ... link:reference/Salesforce_Translators.adoc[Salesforce Translators]
+... link:reference/Salesforce_Translators.adoc[Salesforce Translators]
 // ... link:reference/SAP_Gateway_Translator.adoc[SAP Gateway Translator]
 ... link:reference/Web_Services_Translator.adoc[Web Services Translator]
 .. link:reference/Federated_Planning.adoc[Federated Planning]

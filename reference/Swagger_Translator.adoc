@@ -95,9 +95,11 @@ Example importer settings to avoid calling host defined on the swagger.json file
 <property name="importer.useDefaultHost" value="false"/>
 ----
 
+{% if book.targetWildfly %}
 === JCA Resource Adapter
 
 The resource adapter for this translator is a link:../admin/Web_Service_Data_Sources.adoc[Web Service Data Source].
+{% endif %}
 
 NOTE: *Native Queries* - Native or direct query execution is not supported through Swagger translator. However, user can use Web Services Translator’s _invokehttp_ method directly to issue a Rest based call and parse results using SQLXML.
 

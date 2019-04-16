@@ -1,8 +1,7 @@
 
 = File Translator
 
-The file translator, known by the type name _file_, exposes stored procedures to leverage file system resources exposed 
-by the link:../admin/File_Data_Sources.adoc[File Data Source] and the link:../admin/Ftp_Data_Sources.adoc[FTP Data Source]. It will commonly be used with the TEXTTABLE or XMLTABLE table functions to use CSV or XML formatted data.
+The file translator, known by the type name _file_, exposes stored procedures to leverage file resources. It will commonly be used with the TEXTTABLE or XMLTABLE table functions to use CSV or XML formatted data.
 
 *Execution Properties*
 
@@ -96,9 +95,17 @@ call deleteFile('path')
 The path should reference an existing file.  If the file does not exist and ExceptionIfFileNotFound is true, then an exception will be thrown.  Or if the file
 cannot be deleted an exception will be thrown.
 
-NOTE： *Native queries* - Native or direct query execution is not supported on the File Translator.
-
+{% if book.targetWildfly %}
 == JCA Resource Adapter
 
-The resource adapter for this translator provided through "File Data Source", Refer to Admin Guide for configuration information.
+See link:../admin/File_Data_Sources.adoc[File Data Source], the link:../admin/Ftp_Data_Sources.adoc[FTP Data Source] and the Admin Guide in general for configuration information.
+{% endif %}
+
+== Native Queries
+
+NOTE: This feature is not applicable for the File translator.
+
+=== Direct Query Procedure
+
+NOTE: This feature is not applicable for the File translator.
 

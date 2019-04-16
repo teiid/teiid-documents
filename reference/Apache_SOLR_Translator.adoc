@@ -34,11 +34,11 @@ An Example VDB that shows Solr translator can be defined as
 <vdb>
 ----
 
-The translator does NOT provide a connection to the Solr. For that purpose, {{ book.productnameFull }} has a JCA adapter that provides a connection to Solr using the SolrJ Java library. To define such connector, see link:../admin/Solr_Data_Sources.adoc[Solr Data Sources] or see an example in "<jboss-as>/docs/teiid/datasources/solr"
-
+{% if book.targetWildfly %}
 == JCA Resource Adapter
 
-The {{ book.productnameFull }} specific Solr Resource Adapter should be used with this translator. See link:../admin/Solr_Data_Sources.adoc[Solr Data Sources] for connecting to a Solr Search Engine.
+The {{ book.productnameFull }} specific Solr Resource Adapter should be used with this translator. See link:../admin/Solr_Data_Sources.adoc[Solr Data Sources] or see an example in "<jboss-as>/docs/teiid/datasources/solr" for connecting to a Solr Search Engine. 
+{% endif %}
 
 == Native Queries
 

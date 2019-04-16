@@ -7,3 +7,5 @@ Commercial development support, production support, and training for {{ book.pro
 
 Before one can delve into {{ book.productnameFull }} it is very important to learn few basic constructs of {{ book.productnameFull }}, like what is VDB? what is Model? etc. For that please read the http://teiid.io/about/basics/[short introduction].
 
+If not otherwise specified versions referenced in this document refer to Teiid project versions.  Teiid or {{ book.productnameFull }} running on various platforms will have both platform and product specific versioning.
+

@@ -5,6 +5,7 @@ The Salesforce translator supports the SELECT, DELETE, INSERT, UPSERT, and UPDAT
 
 == Salesforce API Version Support
 
+{% if book.targetWildfly %}
 === salesforce
 
 The translator, known by the type name *_salesforce_*, provides Salesforce API 34.0 support. The translator must be used with the corresponding Salesforce resource adapter of the same API version. Salesforce API version 34.0 support has been removed.
@@ -20,6 +21,13 @@ The translator, known by the type name of *_salesforce-41_*, provides Salesforce
 === Other API Versions
 
 If you need connectivity to an API version other than what is built in, please utilize the project https://github.com/teiid/salesforce[https://github.com/teiid/salesforce] to generate new resource adapter / translator pair.
+{% else %}
+
+=== salesforce
+
+The translator, known by the type name *_salesforce_*, provides Salesforce API 37.0 and later support.
+
+{% endif %}
 
 == Execution Properties
 
@@ -399,7 +407,9 @@ SELECT x.* FROM
 
 TIP: By default the name of the procedure that executes the queries directly is called native, however user can + set override execution property vdb.xml file to change it.
 
+{% if book.targetWildfly %}
 == JCA Resource Adapter
 
 The resource adapter for this translator is provided through link:../admin/Salesforce_Data_Sources.adoc[Salesforce Data Sources]. Refer to Admin Guide for configuration.
+{% endif %}
 

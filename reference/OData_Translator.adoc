@@ -99,7 +99,9 @@ TIP: *Native Queries* - Native or direct query execution is not supported throug
 
 TIP: *Want to use as Server?* - {{ book.productnameFull }} can not only consume OData based data sources, but it can expose any data source as an Odata based webservice. For more information see link:../client-dev/OData_Support.adoc[OData Support].
 
+{% if book.targetWildfly %}
 == JCA Resource Adapter
 
 The resource adapter for this translator is a link:../admin/Web_Service_Data_Sources.adoc[Web Service Data Source].
+{% endif %}
 

@@ -133,9 +133,11 @@ CREATE FOREIGN TABLE "User" (
 
 respectively if the column name is defined by Column Family, you can use "ColumnNamePattern" as "\{CF}", and if the value for that column exists in the Column Qualifier then you can use "ValueIn" as "\{CQ}". Using import properties you can dictate how the table should be modeled.
 
+{% if book.targetWildfly %}
 == JCA Resource Adapter
 
 The {{ book.productnameFull }} specific Accumulo Resource Adapter should be used with this translator. See link:../admin/Accumulo_Data_Sources.adoc[Accumulo Data Sources] for connecting to a Accumulo Source.
+{% endif %}
 
 == Native Queries
 
