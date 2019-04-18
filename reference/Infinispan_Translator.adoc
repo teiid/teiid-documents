@@ -277,12 +277,19 @@ ProtoFilePath
 - When using DATE/TIMESTAMP/TIME types in {{ book.productnameFull }} metadata, they are by default marshaled into a LONG type in Infinispan.
 - SSL and identity support is not currently available (see TEIID-4904) 
 
-NOTE: *Native Queries* - Native or direct query execution is not supported through Infinispan translator.
-
+{% if book.targetWildfly %}
 == JCA Resource Adapter
 
 The resource adapter for this translator is a link:../admin/Infinispan_Data_Sources.adoc[Infinispan Data Source].
+{% endif %} 
 
+== Native Queries
+
+NOTE: This feature is not applicable for the Infinispan translator.
+
+=== Direct Query Procedure
+
+NOTE: This feature is not applicable for the Infinispan translator.
  
 
 

@@ -16,9 +16,11 @@ Cassandra updates always return an update count of 1 per update regardless of th
 
 Cassandra inserts are functionally upserts, that is if a given row exists it will be updated rather than causing an exception.
 
+{% if book.targetWildfly %}
 == JCA Resource Adapter
 
 The {{ book.productnameFull }} specific Cassandra Resource Adapter should be used with this translator. See link:../admin/Cassandra_Data_Sources.adoc[Cassandra Data Sources] for connecting to a Cassandra cluster.
+{% endif %}
 
 == Native Queries
 

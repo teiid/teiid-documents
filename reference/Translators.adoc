@@ -3,9 +3,11 @@
 
 The {{ book.productnameFull }} Connector Architecture (TCA) provides {{ book.productnameFull }} with a robust mechanism for integrating with external systems. The TCA defines a common client interface between {{ book.productnameFull }} and an external system that includes metadata as to what SQL constructs are supported for pushdown and the ability to import metadata from the external system.
 
-A Translator is the heart of the TCA and acts as the bridge logic between {{ book.productnameFull }} and an external system, which is most commonly accessed through a JCA resource adapter. Refer to the {{ book.productnameFull }} Developers Guide for details on developing custom Translators and JCA resource adapters for use with {{ book.productnameFull }}.
+A Translator is the heart of the TCA and acts as the bridge logic between {{ book.productnameFull }} and an external system.
 
 {% if book.targetWildfly %}
+Refer to the {{ book.productnameFull }} Developers Guide for details on developing custom Translators and JCA resource adapters for use with {{ book.productnameFull }}.
+
 TIP: The TCA is not the same as the JCA, the JavaEE Connector Architecture, although the TCA is designed for use with JCA resource adapters.
 
 A Translator is typically paired with a particular JCA resource adapter. In instances where pooling, environment dependent configuration management, advanced security handling, etc. are not needed, then a JCA resource adapter is not needed. The configuration of JCA ConnectionFactories for needed resource adapters is not part of this guide, please see the {{ book.productnameFull }} Administrator Guide and the kit examples for configuring resource adapters for use in {{ book.asName }}.

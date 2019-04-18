@@ -94,7 +94,9 @@ SELECT X.*
   FROM simpledb_source.native('SELECT firstname, lastname FROM users') n, ARRAYTABLE(n.tuple COLUMNS firstname string, lastname string) AS X
 ----
 
+{% if book.targetWildfly %}
 == JCA Resource Adapter
 
 The {{ book.productnameFull }} specific Amazon SimpleDB Resource Adapter should be used with this translator. See link:../admin/Amazon_SimpleDB_Data_Sources.adoc[Amazon SimpleDB Data Sources] for connecting to SimpleDB.
+{% endif %}
 

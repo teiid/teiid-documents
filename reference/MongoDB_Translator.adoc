@@ -34,6 +34,7 @@ The name of the translator to use in vdb.xml is "_mongodb_". For example:
 <vdb>
 ----
 
+{% if book.targetWildfly %}
 The translator does not provide a connection to the MongoDB. For that purpose, {{ book.productnameFull }} has a JCA adapter that provides a connection to MongoDB using the MongoDB Java Driver. To define such connector, use the following XML fragment in standalone-teiid.xml. See a example in "<jboss-as>/docs/teiid/datasources/mongodb"
 
 [source,xml]
@@ -64,7 +65,11 @@ The translator does not provide a connection to the MongoDB. For that purpose, {
     </resource-adapters>
 ----
 
-The above defines the translator and connector. For more ways to create the connector see link:../admin/MongoDB_Data_Sources.adoc[MongoDB Data Sources]. MongoDB translator can derive the metadata based on existing document collections in some scenarios, however when working with complex documents the interpretation of metadata may be inaccurate, in those situations the user MUST define the metadata. For example, you can define a schema using DDL:
+For more ways to create the connector see link:../admin/MongoDB_Data_Sources.adoc[MongoDB Data Sources]. 
+
+{% endif %}
+
+The MongoDB translator can derive the metadata based on existing document collections in some scenarios, however when working with complex documents the interpretation of metadata may be inaccurate, in those situations the user MUST define the metadata. For example, you can define a schema using DDL:
 
 [source,xml]
 ----
@@ -618,7 +623,6 @@ This translator supports
 * support for LOBs using GridFS
 * Composite primary and foreign keys.
 
-NOTE: *example* - For a full example see https://github.com/teiid/teiid/blob/master/connectors/translator-mongodb/src/test/resources/northwind.ddl[https://github.com/teiid/teiid/blob/master/connectors/translator-mongodb/src/test/resources/northwind.ddl]
 
 == Native Queries
 

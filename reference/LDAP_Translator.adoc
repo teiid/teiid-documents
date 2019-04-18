@@ -280,6 +280,7 @@ connection-jndi-name="java:/ldapDS"/>
 </vdb>
 ----
 
+{% if book.targetWildfly %}
 The translator does not provide a connection to the OpenLDAP. For that purpose, {{ book.productnameFull }} has a JCA adapter that provides a connection to OpenLDAP using the Java Naming API. To define such connector, use the following XML fragment in standalone-teiid.xml. See a example in "<jboss-as>/docs/teiid/datasources/ldap"
 
 [source,xml]
@@ -305,7 +306,10 @@ ldap://localhost:389
 </resource-adapter>
 ----
 
-The above defines the translator and connector. For more ways to create the connector see link:../admin/LDAP_Data_Sources.adoc[LDAP Data Sources], LDAP translator can derive the metadata based on existing Users/Groups in LDAP Server, user need to define the metadata. For example, you can define a schema using DDL:
+For more ways to create the connector see link:../admin/LDAP_Data_Sources.adoc[LDAP Data Sources].  
+{% endif %}
+
+The LDAP translator cannot derive the metadata, the user needs to define the metadata. For example, you can define a schema using DDL:
 
 [source,xml]
 ----
@@ -349,7 +353,9 @@ You must define LDAP Connector properties accurately or the {{ book.productnameF
 
 The Console shows an Exception That Says Error Synchronizing the Server, If you receive an exception when you synchronize the server and your LDAP Connector is the only service that does not start, it means that there was a problem starting the connector. Verify whether you have correctly typed in your connector properties to resolve this issue.
 
+{% if book.targetWildfly %}
 == JCA Resource Adapter
 
 The resource adapter for this translator provided through "LDAP Data Source", Refer to Admin Guide for configuration.
+{% endif %}
 

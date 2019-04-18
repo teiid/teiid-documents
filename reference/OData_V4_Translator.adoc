@@ -7,6 +7,8 @@ NOTE: *What is Odata* - The http://www.odata.org[Open Data Protocol (OData)] Web
 
 Using this specification from OASIS group, with the help from the http://olingo.apache.org/[Olingo] framework, {{ book.productnameFull }} maps OData V4 CSDL (Conceptual Schema Definition Language) document from the OData endpoint provided and converts the OData metadata into {{ book.productnameFull }}’s relational schema. The below table shows the mapping selections in OData V4 Translator from CSDL document
 
+NOTE: *Want to use as OData Server?* - {{ book.productnameFull }} can not only consume OData based data sources, but it can expose any data source as an OData based webservice. For more information see link:../client-dev/OData_Support.adoc[OData Support].
+
 |===
 |OData |Mapped to Relational Entity
 
@@ -53,6 +55,7 @@ The below is sample VDB that can read metadata service from TripPin service on h
 </vdb>
 ----
 
+{% if book.targetWildfly %}
 The required resource-adapter configuration will look like
 
 [source,xml]
@@ -69,8 +72,9 @@ The required resource-adapter configuration will look like
     </connection-definitions>
 </resource-adapter>
 ----
+{% endif %}
 
-Once you configure above resource-adapter and deploy the VDB successfully, then you can connect to the VDB deployed using {{ book.productnameFull }} JDBC driver and issue SQL statements like
+You can connect to the VDB deployed using {{ book.productnameFull }} JDBC driver and issue SQL statements like
 
 [source,sql]
 ----
@@ -150,11 +154,11 @@ Example importer settings to only import tables and views from http://services.o
 
 You can leave this property undefined, as if it does not find one configured the translator will select the default name of the EntityContainer.
 
+{% if book.targetWildfly %}
 === JCA Resource Adapter
 
 The resource adapter for this translator is a link:../admin/Web_Service_Data_Sources.adoc[Web Service Data Source].
+{% endif %}
 
 NOTE: *Native Queries* - Native or direct query execution is not supported through OData translator. However, user can use Web Services Translator’s _invokehttp_ method directly to issue a Rest based call and parse results using SQLXML.
-
-NOTE: *Want to use as OData Server?* - {{ book.productnameFull }} can not only consume OData based data sources, but it can expose any data source as an OData based webservice. For more information see link:../client-dev/OData_Support.adoc[OData Support].
 
