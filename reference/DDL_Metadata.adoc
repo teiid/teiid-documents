@@ -518,7 +518,9 @@ Read more information about virtual procedures at link:../reference/Virtual_Proc
 CREATE VIRTUAL FUNCTION CustomerRank(customerid integer) 
    RETURNS integer AS
    BEGIN
-   ...
+      DECLARE integer result;
+      ...
+      RETURN result;
    END
 ----
 

@@ -200,7 +200,7 @@ The OData WAR file can be configured with following properties in the web.xml fi
 |n/a
 
 |explicit-vdb-version
-|When explicit-vdb-version is true, an explicit vdb version needs to be part of the url to use anything other than the default verion 1 vdb.  When explicit-vdb-version is false, the odata vdb version will be determined just like a JDBC connection.
+|When explicit-vdb-version is true, an explicit vdb version needs to be part of the url to use anything other than the default version 1 vdb.  When explicit-vdb-version is false, the odata vdb version will be determined just like a JDBC connection.
 |true
 
 |===
@@ -275,7 +275,7 @@ Since OData schema model is not a relational schema model, Teiid uses the follow
 |Navigation Property on EntityType
 
 |Procedure
-|FunctionImport, Action Import
+|FunctionImport, ActionImport
 
 |Procedure’s Table Return
 |ComplexType
@@ -284,6 +284,50 @@ Since OData schema model is not a relational schema model, Teiid uses the follow
 Teiid by design does not define any "embedded" ComplexType in the EntityType.
 
 Since OData access is more key based, it is *MANDATORY* that every table Teiid exposes through OData must have a PK or at least one UNIQUE key. A table which does not either of these will be dropped out of the $metadata
+
+Datatype Mapping
+
+|===
+|Teiid Type|OData Type
+|STRING |Edm.String
+|BOOLEAN |Edm.Boolean
+|BYTE |Edm.SByte
+|SHORT |Edm.Int16
+|INTEGER |Edm.Int32
+|LONG |Edm.Int64
+|FLOAT |Edm.Single
+|DOUBLE |Edm.Double
+|BIG_INTEGER |Edm.Decimal
+|BIG_DECIMAL |Edm.Decimal
+|DATE |Edm.Date
+|TIME |Edm.TimeOfDay
+|TIMESTAMP |Edm.DateTimeOffset
+|BLOB |Edm.Stream
+|CLOB |Edm.Stream
+|XML |Edm.Stream
+|VARBINARY |Edm.Binary 
+|===
+
+Geography and Geometry will be mapped to the corresponding Edm.GeometryXXX and Edm.GeographyXXX types based upon the associated {http://www.teiid.org/translator/spatial/2015}type property.  A general mapping to Edm.Geometry or EdmGeography will fail to serialize the values correctly.
+
+Where possible array types will be mapped to a collection type.  However multidimensional arrays are not supported.  Also array/collection values cannot be used as parameters nor in comparisons.
+
+=== Functions And Actions
+
+The mapping of entities and their properties is relatively straight-forward.  The mapping of Teiid procedures to OData Functions and Actions is more involved.  Virtual procedures, source procedure, and virtual functions defined by DDL (not a Java class) are all eligible to be mapped.  Source functions or virtual functions defined by a Java class are currently not mapped to corresponding OData constructs - please log an issue if you need that functionality.  OData does not have an out parameter concept, thus OUT parameters are ignored, and INOUT parameters are treated only as IN.  A result set is mapped to a complex type collection result. An array result will be mapped to a simple type collection.
+
+An OData Function will be used if:
+* The procedure/function has a return value - either scalar or a result set.
+* The procedure/function has no LOB input parameters - currently Clob, Blob, XML, Geometry, Geography, and JSON are considered LOB types.
+* The procedure/function is side effect free - this is determined by the inferred or explicit value of 0 for the model update count.
+
+If any one of those conditions are not met the procedure/function is represented instead by an OData Action.
+
+Note that OData Functions and Actions are called differently.  A Function is called by a GET request where the parameter values are included in the URI.  An Action is called by a POST where the content provides the parameter values.
+
+Currently only unbounded Functions and Actions are supported.
+
+You should always consult the $metadata about Functions and Actions to validate how the procedures/functions were mapped.
 
 == OpenAPI Metadata
 

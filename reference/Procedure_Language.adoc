@@ -29,6 +29,30 @@ Syntax Rules:
 
 * The RETURN clause determines if the result of the command is returnable from the procedure. WITH RETURN is the default. If the command does not return a result set or the procedure does not return a result set, the RETURN clause is ignored. If WITH RETURN is specified, the result set of the command must match the expected result set of the procedure. Only the last successfully executed statement executed WITH RETURN will be returned as the procedure result set.  If there are no returnable result sets and the procedure declares that a result set will be returned, then an empty result set is returned.
 
+NOTE: the INTO clause is used only for inserting into a table.  SELECT ... INTO tbl ... is functionally equivalent to INSERT INTO tbl SELECT ...  If you need to do variable assignments you can do one of the following:
+* use an assignment statement with a scalar subquery:  
+
+[source,sql]
+----
+DECLARE string var = (SELECT col ...);
+----
+
+* use a temporary table:
+
+[source,sql]
+----
+INSERT INTO #temp SELECT col1, col2 ...;
+DECLARE string VARIABLES.RESULT = (SELECT x FROM #temp);
+----
+
+* use an array:
+
+[source,sql]
+----
+DECLARE string[] var = (SELECT (col1, col2) ...);
+DECLARE string col1val = var[1];
+----
+
 == Dynamic SQL Command
 
 Dynamic SQL allows for the execution of an arbitrary SQL command in a virtual procedure. Dynamic SQL is useful in situations where the exact command form is not known prior to execution.
@@ -430,7 +454,17 @@ RETURN [expression];
 Syntax Rules
 
 * If an expression is specified, the procedure must have a return parameter and the value must be implicitly convertable to the expected type.
-* Even if the procedure has a return value, it is not required to specify a return value in a RETURN statement.
+* Even if the procedure has a return parameter, it is not required to specify a return value in a RETURN statement.  A return parameter can still be set via an assignment or simply left as null.
+
+[source,sql]
+.*Sample Usage*
+----
+CREATE VIRTUAL FUNCTION times_two(val integer) 
+   RETURNS integer AS
+   BEGIN
+      RETURN val*2;
+   END
+----
 
 == Error Statement
 
