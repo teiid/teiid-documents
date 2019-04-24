@@ -65,7 +65,7 @@ If you need to connect to Salesforce using Mutual Authentication, follow the dir
 
 more information about CXF configuration file can be found at http://cxf.apache.org/docs/client-http-transport-including-ssl-support.html#ClientHTTPTransport(includingSSLsupport)-ConfiguringSSLSupport[http://cxf.apache.org/docs/client-http-transport-including-ssl-support.html#ClientHTTPTransport(includingSSLsupport)-ConfiguringSSLSupport]
 
-h== OAuth Security with "Refresh Token"
+== OAuth Security with "Refresh Token"
 
 The below layout the directions to use Refresh Token based OAuth Authentication with Salesforce.
 
