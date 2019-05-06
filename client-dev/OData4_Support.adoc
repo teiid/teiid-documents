@@ -1,5 +1,7 @@
 
 = OData Version 4.0 Support
+:toc: manual
+:toc-placement: preamble
 
 Teiid strives to be compliant with the OData specification.  The rest of this chapter highlight some specifics of OData and Teiid's support, but you should also consult http://www.odata.org/documentation/[the specification].
 
@@ -317,11 +319,13 @@ Where possible array types will be mapped to a collection type.  However multidi
 The mapping of entities and their properties is relatively straight-forward.  The mapping of Teiid procedures to OData Functions and Actions is more involved.  Virtual procedures, source procedure, and virtual functions defined by DDL (not a Java class) are all eligible to be mapped.  Source functions or virtual functions defined by a Java class are currently not mapped to corresponding OData constructs - please log an issue if you need that functionality.  OData does not have an out parameter concept, thus OUT parameters are ignored, and INOUT parameters are treated only as IN.  A result set is mapped to a complex type collection result. An array result will be mapped to a simple type collection.
 
 An OData Function will be used if:
+
 * The procedure/function has a return value - either scalar or a result set.
 * The procedure/function has no LOB input parameters - currently Clob, Blob, XML, Geometry, Geography, and JSON are considered LOB types.
 * The procedure/function is side effect free - this is determined by the inferred or explicit value of 0 for the model update count.
 
-If any one of those conditions are not met the procedure/function is represented instead by an OData Action.
+
+If any one of those conditions are not met the procedure/function is represented instead by an OData Action.  However if there is a result set that has a LOB value, then the procedure is not mapped at all.
 
 Note that OData Functions and Actions are called differently.  A Function is called by a GET request where the parameter values are included in the URI.  An Action is called by a POST where the content provides the parameter values.
 
