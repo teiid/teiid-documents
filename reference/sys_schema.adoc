@@ -795,6 +795,14 @@ This table supplies information about the currently connected virtual database, 
 |Description
 |string
 |The description of the VDB
+
+|LoadingTimestamp
+|timestamp
+|The timestamp loading began
+
+|ActiveTimestamp
+|timestamp
+|The timestamp when the vdb became active
 |===
 
 === SYS.spatial_sys_ref
