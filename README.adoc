@@ -1,7 +1,7 @@
 
 link:./Legal_Notice.adoc[Legal Notice]
 
-== {{ book.versionNumber }} Teiid Documentation
+== {{ book.versionNumber }} {{ book.productnameFull }} Documentation
 
 image::cover_small.jpg[Teiid Logo]
 

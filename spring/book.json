@@ -1,7 +1,7 @@
 {
     "variables" : {
-        "versionNumber" : "12.1",
-        "fullVersionNumber": "12.1.0",
+        "versionNumber" : "1.1",
+        "fullVersionNumber": "1.1.0",
         "asVersionNumber" :  "REPLACE ME",
         "asFullVersionNumber" :  "REPLACE ME",
         "asName" :  "REPLACE ME",
@@ -12,7 +12,7 @@
         "archeTypeVersion" : "REPLACE ME",
         "targetWildfly" : false,
         "targetSpring" : true,
-        "productnameFull" : "Teiid"
+        "productnameFull" : "Teiid Spring Boot"
     },
     "plugins": ["collapsible-menu"]
 }
