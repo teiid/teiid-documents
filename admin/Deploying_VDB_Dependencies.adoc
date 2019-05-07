@@ -5,7 +5,7 @@ Apart from deploying the VDB, the user is also responsible for providing all the
 
 Data source instances may be used by single VDB, or may be shared with as other VDBs or other applications. Consider sharing connections to data sources that have heavy-weight and resource constrained.
 
-With the exception of JDBC sources, other supported data sources have a corresponding JCA connector in the Teiid kit. Either directly edit the standalone-teiid.xml or use CLI to create the required data sources by the VDB. Example configurations are provided for all the sources in "<jboss-install>/docs/teiid/datasources" directory. Note that in the _Domain_ mode, you must use CLI or admin-console or AdminAPI to configure the data sources.
+With the exception of JDBC sources, other supported data sources have a corresponding JCA connector in the {{ book.productnameFull }} kit. Either directly edit the standalone-teiid.xml or use CLI to create the required data sources by the VDB. Example configurations are provided for all the sources in "<jboss-install>/docs/teiid/datasources" directory. Note that in the _Domain_ mode, you must use CLI or admin-console or AdminAPI to configure the data sources.
 
 Some data sources may contain passwords or other sensitive information. See the WIKI article https://community.jboss.org/wiki/JBossAS7SecuringPasswords[EncryptingDataSourcePasswords] to not store passwords in plain text.
 

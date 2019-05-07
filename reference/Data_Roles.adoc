@@ -1,7 +1,7 @@
 
 = Data Roles
 
-Data roles, also called entitlements, are sets of permissions defined per VDB that dictate data access (create, read, update, delete). Data roles use a fine-grained permission system that {{ book.productnameFull }} will enforce at runtime and provide audit log entries for access violations - see link:../admin/Logging.adoc[Logging] and link:../dev/Custom_Logging.adoc[Custom Logging] for more.
+Data roles, also called entitlements, are sets of permissions defined per VDB that dictate data access (create, read, update, delete). Data roles use a fine-grained permission system that {{ book.productnameFull }} will enforce at runtime and provide audit log entries for access violations.  {% if book.targetWildfly %}See link:../admin/Logging.adoc[Logging] and link:../dev/Custom_Logging.adoc[Custom Logging] for more.{% endif %}
 
 Prior to applying data roles, you should consider restricting source system access through the fundamental design of your VDB. Foremost, {{ book.productnameFull }} can only access source entries that are represented in imported metadata. You should narrow imported metadata to only what is necessary for use by your VDB.
 

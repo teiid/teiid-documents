@@ -16,20 +16,26 @@ You should attempt to keep the client up-to-date though as fixes and features ar
 URL Components
 
 1.  <vdb-name> - Name of the VDB you are connecting to. Optionally VDB name can also contain version information inside it. For example: "myvdb.2", this is equivalent to supplying the "version=2" connection property defined below. However, use of vdb name in this format and the "version" property at the same time is not allowed.
-2.  mm - defines Teiid JDBC protocol, mms defines a secure channel (see link:SSL_Client_Connections.adoc[SSL Client Connections] for more)
-3.  <host> - defines the server where the Teiid Server is installed. If you are using IPv6 binding address as the host name, place it in square brackets. ex:[::1]
-4.  <port> - defines the port on which the Teiid Server is listening for incoming JDBC connections.
+2.  mm - defines {{ book.productnameFull }} JDBC protocol, mms defines a secure channel (see link:SSL_Client_Connections.adoc[SSL Client Connections] for more)
+3.  <host> - defines the server where the {{ book.productnameFull }} Server is installed. If you are using IPv6 binding address as the host name, place it in square brackets. ex:[::1]
+4.  <port> - defines the port on which the {{ book.productnameFull }} Server is listening for incoming JDBC connections.
 5.  [prop-name=prop-value] - additionally you can supply any number of name value pairs separated by semi-colon [;]. All supported URL properties are defined in the link:Driver_Connection.adoc[connection properties] section. Property values should be URL encoded if they contain reserved characters, e.g. (’?’, '=', ';', etc.)
 
+{% if book.targetWildfly %}
 NOTE: host and port may be a comma separated list to specify link:Using_Multiple_Hosts.adoc[multiple hosts].
+{% endif %}
 
 == Local Connections
 
-To make a link:WildFly_DataSource.adoc[local] in-VM connection, omit the protocol and host/port.
+To make a in-VM connection, omit the protocol and host/port: jdbc:teiid:vdb-name;props
+
+{% if book.targetWildfly %}
+For local WildFly deployments it's preferred to configure the link:WildFly_DataSource.adoc[DataSource] as an in-VM rather than socket based connection.
+{% endif %}
 
 == URL Connection Properties
 
-The following table shows all the supported connection properties that can used with Teiid JDBC Driver URL connection string, or on the Teiid JDBC Data Source class.
+The following table shows all the supported connection properties that can used with {{ book.productnameFull }} JDBC Driver URL connection string, or on the {{ book.productnameFull }} JDBC Data Source class.
 
 .*Connection Properties*
 [cols="2,2,5a"]
@@ -50,7 +56,7 @@ The following table shows all the supported connection properties that can used 
 
 |`autoCommitTxn`
 |`String`
-|Only applies only when "autoCommit" is set to "true". This determines how a executed command needs to be transactionally wrapped inside the Teiid engine to maintain the data integrity.
+|Only applies only when "autoCommit" is set to "true". This determines how a executed command needs to be transactionally wrapped inside the {{ book.productnameFull }} engine to maintain the data integrity.
 
 * ON - Always wrap command in distributed transaction
 * OFF - Never wrap command in distributed transaction
@@ -99,7 +105,7 @@ If true in embedded mode, connections will reconnect to a newer VDB of the same 
 
 |`PassthroughAuthentication`
 |`boolean`
-|Only applies to "local" connections. When this option is set to "true", then Teiid looks for already authenticated security context on the calling thread. If one found it uses that users credentials to create session. Teiid also verifies that the same user is using this connection during the life of the connection. if it finds a different security context on the calling thread, it switches the identity on the connection, if the new user is also eligible to log in to Teiid otherwise connection fails to execute.
+|Only applies to "local" connections. When this option is set to "true", then {{ book.productnameFull }} looks for already authenticated security context on the calling thread. If one found it uses that users credentials to create session. {{ book.productnameFull }} also verifies that the same user is using this connection during the life of the connection. if it finds a different security context on the calling thread, it switches the identity on the connection, if the new user is also eligible to log in to {{ book.productnameFull }} otherwise connection fails to execute.
 
 |`useCallingThread`
 |`boolean`
@@ -116,7 +122,7 @@ will enable backwards compatibility when JDBC3 and older support is still requir
 
 |`jaasName`
 |`String`
-|JAAS configuration name. Only applies when configuring a GSS authentication. Defaults to Teiid. See the Security Guide for configuration required for GSS.
+|JAAS configuration name. Only applies when configuring a GSS authentication. Defaults to {{ book.productnameFull }}. See the Security Guide for configuration required for GSS.
 
 |`kerberosServicePrincipleName`
 |`String`
@@ -139,6 +145,6 @@ can wait by default for up to link:../admin/System_Properties.adoc[org.teiid.cli
 
 |`reportAsViews`
 |`boolean`
-|If DatabaseMetaData will report Teiid views as a VIEW table type. If false then Teiid views will be reported as a TABLE. Default true.
+|If DatabaseMetaData will report {{ book.productnameFull }} views as a VIEW table type. If false then {{ book.productnameFull }} views will be reported as a TABLE. Default true.
 |===
 

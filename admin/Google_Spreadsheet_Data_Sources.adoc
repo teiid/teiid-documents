@@ -9,10 +9,10 @@ Authentication to your google account may be done using OAuth, which requires a 
 |Config property |Description
 
 |ClientId
-|client ID for access.  If not specified, the Teiid default will be used.
+|client ID for access.  If not specified, the {{ book.productnameFull }} default will be used.
 
 |ClientSecret
-|client secret for access.  If not specified, the Teiid default will be used.
+|client secret for access.  If not specified, the {{ book.productnameFull }} default will be used.
 
 |RefreshToken
 |Use guide below to retrieve RefreshToken. Request access to Google Drive and Spreadsheet API.
@@ -34,7 +34,7 @@ The v4 api requires the use of SpreadsheetId and specifying ClientId and ClientS
 
 == Create Authorization Credentials
 
-For v3 connections it is recommended that you create your own authorization credentials rather than relying on the default Teiid client id and client secret.  For v4 connections it is required that you create your own credentials.  Creating your own project will give you greater control over monitoring and controlling API access.
+For v3 connections it is recommended that you create your own authorization credentials rather than relying on the default {{ book.productnameFull }} client id and client secret.  For v4 connections it is required that you create your own credentials.  Creating your own project will give you greater control over monitoring and controlling API access.
 
 You should follow the https://developers.google.com/accounts/docs/OAuth2ForDevices[OAuth2 For Devices Guide] prerequisites.  You should allow the project access to Google Drive API and the Sheets API. 
 
@@ -59,7 +59,7 @@ curl \--data-urlencode code=<AUTHORIZATION_CODE> \
 
 The refresh token will be in the response.
 
-To use the Teiid defaults:
+To use the {{ book.productnameFull }} defaults:
 
 Click on https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive+https%3A%2F%2Fspreadsheets.google.com%2Ffeeds&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&client_id=217138521084.apps.googleusercontent.com[https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive+https%3A%2F%2Fspreadsheets.google.com%2Ffeeds&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&client_id=217138521084.apps.googleusercontent.com]
 

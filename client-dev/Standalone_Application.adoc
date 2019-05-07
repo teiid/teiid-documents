@@ -9,7 +9,7 @@ Sample Code:
 
 [source,java]
 ----
-public class TeiidClient {
+public class {{ book.productnameFull }}Client {
     public Connection getConnection(String user, String password) throws Exception {
         String url = "jdbc:teiid:myVDB@mm://localhost:31000;ApplicationName=myApp";
         return DriverManager.getConnection(url, user, password);
@@ -23,9 +23,9 @@ Sample Code:
 
 [source,java]
 ----
-public class TeiidClient {
+public class {{ book.productnameFull }}Client {
     public Connection getConnection(String user, String password) throws Exception {
-        TeiidDataSource ds = new TeiidDataSource();
+        {{ book.productnameFull }}DataSource ds = new {{ book.productnameFull }}DataSource();
         ds.setUser(user);
         ds.setPassword(password);
         ds.setServerName("localhost");

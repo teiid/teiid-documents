@@ -1,17 +1,17 @@
 = Node.js Integration
 
-link:https://nodejs.org[Node.js] is an open source event driven runtime that can be integrated with Teiid.
+link:https://nodejs.org[Node.js] is an open source event driven runtime that can be integrated with {{ book.productnameFull }}.
 
 == Prerequisites
 
 - Have Node.js installed.  The npm pagckage pg is also required.  Use "
 
-- Your Teiid installation should already be setup for link:../admin/Socket_Transports.adoc[ODBC] access.  This allows the optional support of Node.js 
+- Your {{ book.productnameFull }} installation should already be setup for link:../admin/Socket_Transports.adoc[ODBC] access.  This allows the optional support of Node.js 
 for PostGIS/PostgreSQL to be used.
 
 == Usage
 
-For example if you have VDB called "northwind" deployed on your Teiid server, and it has table called "customers" and you are using default configuration such as
+For example if you have VDB called "northwind" deployed on your {{ book.productnameFull }} server, and it has table called "customers" and you are using default configuration such as
 
 user = 'user'
 password = 'user'

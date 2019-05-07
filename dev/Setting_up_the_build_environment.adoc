@@ -42,5 +42,5 @@ For maven users add the following as your dependencies:
     </dependencies>        
 ----
 
-Where the $\{teiid-version} property should be set to the expected version, such as {{ book.fullVersionNumber }}. You can find Teiid artifacts in the Maven Central Repository.
+Where the $\{teiid-version} property should be set to the expected version, such as {{ book.fullVersionNumber }}. You can find {{ book.productnameFull }} artifacts in the Maven Central Repository.
 

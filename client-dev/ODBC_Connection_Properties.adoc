@@ -1,7 +1,7 @@
 = Configuring Connection Properties with ODBC
 
 When working with ODBC connection, the user can set the connection properties link:Driver_Connection.adoc[Driver Connection#URL Connection Properties] 
-that are available in Teiid by executing the command like below.
+that are available in {{ book.productnameFull }} by executing the command like below.
 
 ----
 SET <property-name> TO <property-value>

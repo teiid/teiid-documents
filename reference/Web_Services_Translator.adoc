@@ -1,7 +1,7 @@
 
 = Web Services Translator
 
-The Web Services translator, known by the type name _ws_, exposes stored procedures for calling web services backed by a {{ book.productnameFull }} WS resource adapter. The WS resource adapter may optionally be configured to point at a specific WSDL.  Results from this translator will commonly be used with the TEXTTABLE or XMLTABLE table functions to use CSV or XML formated data.
+The Web Services translator, known by the type name _ws_, exposes stored procedures for calling web services.  Results from this translator will commonly be used with the TEXTTABLE or XMLTABLE table functions to use CSV or XML formated data.
 
 *Execution Properties* 
 
@@ -55,7 +55,7 @@ Procedure invoke(binding in STRING, action in STRING, request in XML, endpoint i
 
 The binding may be one of null (to use the default) HTTP, SOAP11, or SOAP12. Action with a SOAP binding indicates the SOAPAction value. Action with a HTTP binding indicates the HTTP method (GET, POST, etc.), which defaults to POST.
 
-A null value for the binding or endpoint will use the default value. The default endpoint is specified in the WS resource adapter configuration. The endpoint URL may be absolute or relative. If it’s relative then it will be combined with the default endpoint.
+A null value for the binding or endpoint will use the default value. The default endpoint is specified in the WS source configuration. The endpoint URL may be absolute or relative. If it’s relative then it will be combined with the default endpoint.
 
 Since multiple parameters are not required to have values, it is often more clear to call the invoke procedure with named parameter syntax.
 
@@ -77,7 +77,7 @@ Procedure invokeHttp(action in STRING, request in OBJECT, endpoint in STRING, st
 
 Action indicates the HTTP method (GET, POST, etc.), which defaults to POST.
 
-A null value for endpoint will use the default value. The default endpoint is specified in the WS resource adapter configuration. The endpoint URL may be absolute or relative. If it’s relative then it will be combined with the default endpoint.
+A null value for endpoint will use the default value. The default endpoint is specified in the WS source configuration. The endpoint URL may be absolute or relative. If it’s relative then it will be combined with the default endpoint.
 
 Since multiple parameters are not required to have values, it is often more clear to call the invoke procedure with named parameter syntax.
 
@@ -114,6 +114,8 @@ If the stream parameter is set to true, then the resulting lob value may only be
 == JCA Resource Adapter
 
 The resource adapter for this translator is a link:../admin/Web_Service_Data_Sources.adoc[Web Service Data Source].
+
+The WS resource adapter may optionally be configured to point at a specific WSDL.
 
 NOTE: *WS-Security* - Currently you can only use WSDL based Procedures participate in WS-Security, when resource-adapter is configured with correct CXF configuration.
 {% endif %}

@@ -20,7 +20,7 @@ image:images/teiid-components.png[images/teiid-components.png]
 image:images/teiid-architecture.png[images/teiid-architecture.png]
 {% endif %}
 
-* **Client** - link:../client-dev/Client_Developers_Guide.adoc[Client Develop Guide]
+{% if book.targetWildfly %}* **Client** - link:../client-dev/Client_Developers_Guide.adoc[Client Develop Guide]{% endif %}
 * **Transport** - A Transport managements client connections - security authentication, encryption, etc.
 * **Query Engine** - The Query Engine has several layers / components.  Request processing at a high level:
 
@@ -29,7 +29,7 @@ image:images/teiid-architecture.png[images/teiid-architecture.png]
 3. Buffer Management Controls the bulk of the on and off heap memory that {{ book.productnameFull }} is using.  It prevents consuming too much memory that otherwise might exceed the vm size.
 4. Transaction Management determines when transactions are needed and interacts with the TransactionManager subsystem to coordinate XA transactions.
 
-Source queries are handled by the Data Tier layer which interfaces with the Query Engine and the Connector Layer which utilizes a Translator/Resource Adapter pair to interact directly with a source.  Connectivity is provided for heterogeneous data stores, like Databases/Data warehouse, NoSQL, Hadoop, Data Grid/Cache, File, SaaS, etc. - see link:Data_Sources.adoc[Data Sources].
+Source queries are handled by the Data Tier layer which interfaces with the Query Engine and the Connector Layer which utilizes a Translator to interact directly with a source.  Connectivity is provided for heterogeneous data stores, like Databases/Data warehouse, NoSQL, Hadoop, Data Grid/Cache, File, SaaS, etc.
 
 * **Translator** - {{ book.productnameFull }} has developed a series of Translators, for more details refer to link:Translators.adoc[Translators]. 
 {% if book.targetWildfly %}

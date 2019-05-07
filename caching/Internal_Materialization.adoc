@@ -4,7 +4,10 @@
 
 = Internal Materialization
 
-Internal materialization creates Teiid temporary tables to hold the materialized table. While these tables are not fully durable, they perform well in most circumstances and the data is present at each Teiid instance which removes the single point of failure and network overhead of an external database. Internal materialization also provides built-in facilities for refreshing and monitoring. See link:../admin/Memory_Management.adoc#_limitations[Memory Limitations] regarding size limitations.
+Internal materialization creates {{ book.productnameFull }} temporary tables to hold the materialized table. While these tables are not fully durable, they perform well in most circumstances and the data is present at each {{ book.productnameFull }} instance which removes the single point of failure and network overhead of an external database. Internal materialization also provides built-in facilities for refreshing and monitoring. 
+{% if book.targetWildfly %}
+See link:../admin/Memory_Management.adoc#_limitations[Memory Limitations] regarding size limitations.
+{% endif %}
 
 == View Options
 
@@ -24,7 +27,7 @@ The materialized option must be set for the view to be materialized. The link:Hi
 |false
 
 |teiid_rel:ALLOW_MATVIEW_MANAGEMENT
-|Allow Teiid based management of the ttl and initial load rather than the implicit behavior. 
+|Allow {{ book.productnameFull }} based management of the ttl and initial load rather than the implicit behavior. 
 |true
 |false
 
@@ -49,7 +52,7 @@ The materialized option must be set for the view to be materialized. The link:Hi
 |VDB
 
 |teiid_rel:MATVIEW_WRITE_THROUGH
-|When true Teiid will perform both the underlying update and the corresponding update against the materialization target for an insert/update/delete issued against the view.
+|When true {{ book.productnameFull }} will perform both the underlying update and the corresponding update against the materialization target for an insert/update/delete issued against the view.
 |true
 |false
 
@@ -177,7 +180,7 @@ The `EventDistributor` also exposes the updateMatViewRow as a lower level API fo
 
 Internal materialized view tables will automatically create a unique index for each unique constraint and a non-unique index for each index defined on the materialized view. The primary key (if it exists) of the view will automatically be part of a clustered index.
 
-The secondary indexes are always created as ordered trees - bitmap or hash indexes are not supported. Teiid’s metadata for indexes is currently limited. We are not currently able to capture additional information, sort direction, additional columns to cover, etc. You may workaround some of these limitations though.
+The secondary indexes are always created as ordered trees - bitmap or hash indexes are not supported. {{ book.productnameFull }}’s metadata for indexes is currently limited. We are not currently able to capture additional information, sort direction, additional columns to cover, etc. You may workaround some of these limitations though.
 
 * Function based index are supported, but can only be specified through DDL metadata.  If you are not using DDL metadata, consider adding another column to the view that projects the function expression, then place an index on that new column. Queries to the view will need to be modified as appropriate though to make use of the new column/index.
 * If additional covered columns are needed, they may simply be added to the index columns. This however is only applicable to comparable types. Adding additional columns will increase the amount of space used by the index, but may allow its usage to result in higher performance when only the covered columns are used and the main table is not consulted.

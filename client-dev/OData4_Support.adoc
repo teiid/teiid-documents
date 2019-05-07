@@ -3,7 +3,7 @@
 :toc: manual
 :toc-placement: preamble
 
-Teiid strives to be compliant with the OData specification.  The rest of this chapter highlight some specifics of OData and Teiid's support, but you should also consult http://www.odata.org/documentation/[the specification].
+{{ book.productnameFull }} strives to be compliant with the OData specification.  The rest of this chapter highlight some specifics of OData and {{ book.productnameFull }}'s support, but you should also consult http://www.odata.org/documentation/[the specification].
 
 == How to Access the data?
 
@@ -160,7 +160,7 @@ Accept: application/json
 
 == Security
 
-By default OData access is secured using HTTPBasic authentication. The user will be authenticated against Teiid’s default security domain "teiid-security". Users are expected to have the *odata* role. Be sure to create user with this role when you are using add-user.sh script to create a new user.
+By default OData access is secured using HTTPBasic authentication. The user will be authenticated against {{ book.productnameFull }}’s default security domain "teiid-security". Users are expected to have the *odata* role. Be sure to create user with this role when you are using add-user.sh script to create a new user.
 
 However, if you wish to change the security domain use a deployment-overlay to override the _web.xml_ file in the odata4 file in the _<modules>/org/jboss/teiid/main/deployments_ directory. 
 
@@ -186,7 +186,7 @@ The OData WAR file can be configured with following properties in the web.xml fi
 |
 
 |local-transport-name
-|Teiid Local transport name for connection
+|{{ book.productnameFull }} Local transport name for connection
 |odata
 
 |invalid-xml10-character-replacement
@@ -207,7 +207,7 @@ The OData WAR file can be configured with following properties in the web.xml fi
 
 |===
 
-NOTE: *"Behind Proxy or In Cloud Environments?"* - If the Teiid server is configured behind a proxy server or deployed in cloud environment, or using a load-balancer then the URI of the server which is handling the OData request is different from URI of proxy. To generate valid links in the OData responses configure "proxy-base-uri" property in the web.xml. If this value is available as system property then define the property value like below
+NOTE: *"Behind Proxy or In Cloud Environments?"* - If the {{ book.productnameFull }} server is configured behind a proxy server or deployed in cloud environment, or using a load-balancer then the URI of the server which is handling the OData request is different from URI of proxy. To generate valid links in the OData responses configure "proxy-base-uri" property in the web.xml. If this value is available as system property then define the property value like below
 
 [source,xml]
 ----
@@ -224,7 +224,7 @@ To modify the web.xml, create a {{ book.asDocRoot }}/Deployment+Overlays[deploym
 deployment-overlay add --name=myOverlay --content=/WEB-INF/web.xml=/modified/web.xml --deployments=teiid-odata-odata4.war --redeploy-affected
 ----
 
-Teiid OData server, implements cursoring logic when the result rows exceed the configured batch size. On every request, only _batch-size_ number of rows are returned. Each such request is considered an active cursor, with a specified amount of idle time specified by _skip-token-cache-time_. After the cursor is timed out, the cursor will be closed and remaining results will be cleaned up, and will no longer be available for further queries. Since there is no session based tracking of these cursors, if the request for skiptoken comes after the expired time, the original query will be executed again and tries to reposition the cursor to relative absolute position, however the results are not guaranteed to be same as the underlying sources may have been updated with new information meanwhile.
+{{ book.productnameFull }} OData server, implements cursoring logic when the result rows exceed the configured batch size. On every request, only _batch-size_ number of rows are returned. Each such request is considered an active cursor, with a specified amount of idle time specified by _skip-token-cache-time_. After the cursor is timed out, the cursor will be closed and remaining results will be cleaned up, and will no longer be available for further queries. Since there is no session based tracking of these cursors, if the request for skiptoken comes after the expired time, the original query will be executed again and tries to reposition the cursor to relative absolute position, however the results are not guaranteed to be same as the underlying sources may have been updated with new information meanwhile.
 
 == Limitations
 
@@ -247,16 +247,16 @@ OData access is really where the user comes in, depending upon your programming 
 
 For latest information other frameworks and tools available please see http://www.odata.org/ecosystem/
 
-== OData Metadata (How Teiid interprets the relational schema into OData's $metadata)
+== OData Metadata (How {{ book.productnameFull }} interprets the relational schema into OData's $metadata)
 
-OData defines its schema using Conceptual Schema Definition Language (CSDL). Every VDB, that is deployed in an ACTIVE state in Teiid server exposes its metadata in CSDL format. For example if you want retrieve metadata for your vdb _northwind_, you need to issue a query like
+OData defines its schema using Conceptual Schema Definition Language (CSDL). Every VDB, that is deployed in an ACTIVE state in {{ book.productnameFull }} server exposes its metadata in CSDL format. For example if you want retrieve metadata for your vdb _northwind_, you need to issue a query like
 
 [source]
 ----
 http://localhost:8080/odata4/northwind/NW/$metadata
 ----
 
-Since OData schema model is not a relational schema model, Teiid uses the following semantics to map its relational schema model to OData schema model.
+Since OData schema model is not a relational schema model, {{ book.productnameFull }} uses the following semantics to map its relational schema model to OData schema model.
 
 |===
 |Relational Entity |Mapped OData Entity
@@ -283,14 +283,14 @@ Since OData schema model is not a relational schema model, Teiid uses the follow
 |ComplexType
 |===
 
-Teiid by design does not define any "embedded" ComplexType in the EntityType.
+{{ book.productnameFull }} by design does not define any "embedded" ComplexType in the EntityType.
 
-Since OData access is more key based, it is *MANDATORY* that every table Teiid exposes through OData must have a PK or at least one UNIQUE key. A table which does not either of these will be dropped out of the $metadata
+Since OData access is more key based, it is *MANDATORY* that every table {{ book.productnameFull }} exposes through OData must have a PK or at least one UNIQUE key. A table which does not either of these will be dropped out of the $metadata
 
 Datatype Mapping
 
 |===
-|Teiid Type|OData Type
+|{{ book.productnameFull }} Type|OData Type
 |STRING |Edm.String
 |BOOLEAN |Edm.Boolean
 |BYTE |Edm.SByte
@@ -316,7 +316,7 @@ Where possible array types will be mapped to a collection type.  However multidi
 
 === Functions And Actions
 
-The mapping of entities and their properties is relatively straight-forward.  The mapping of Teiid procedures to OData Functions and Actions is more involved.  Virtual procedures, source procedure, and virtual functions defined by DDL (not a Java class) are all eligible to be mapped.  Source functions or virtual functions defined by a Java class are currently not mapped to corresponding OData constructs - please log an issue if you need that functionality.  OData does not have an out parameter concept, thus OUT parameters are ignored, and INOUT parameters are treated only as IN.  A result set is mapped to a complex type collection result. An array result will be mapped to a simple type collection.
+The mapping of entities and their properties is relatively straight-forward.  The mapping of {{ book.productnameFull }} procedures to OData Functions and Actions is more involved.  Virtual procedures, source procedure, and virtual functions defined by DDL (not a Java class) are all eligible to be mapped.  Source functions or virtual functions defined by a Java class are currently not mapped to corresponding OData constructs - please log an issue if you need that functionality.  OData does not have an out parameter concept, thus OUT parameters are ignored, and INOUT parameters are treated only as IN.  A result set is mapped to a complex type collection result. An array result will be mapped to a simple type collection.
 
 An OData Function will be used if:
 

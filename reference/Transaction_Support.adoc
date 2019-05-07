@@ -1,7 +1,15 @@
 
 = Transaction Support
 
-{{ book.productnameFull }} utilizes XA transactions for participating in global transactions and for demarcating its local and command scoped transactions. http://www.jboss.org/jbosstm/[JBoss Transactions] is used by {{ book.productnameFull }} as its transaction manager. See http://www.jboss.org/jbosstm/docs/index.html[this documentation] for the advanced features provided by JBoss Transactions.
+{{ book.productnameFull }} utilizes XA transactions for participating in global transactions and for demarcating its local and command scoped transactions. 
+
+{% if book.targetWildfly %}
+http://narayana.io/[Narayana] is used by {{ book.productnameFull }} as its transaction manager.
+{% endif %}
+{% if book.targetWildfly %}
+http://narayana.io/[Narayana] is optionally used by {{ book.productnameFull }} as its transaction manager.  In single source, or scenarios utilizing only non-XA sources, then the Spring platform transaction manager may be used.
+{% endif %}
+See http://narayana.io/documentation/index.html[this documentation] for the advanced features provided by Narayana.
 
 .*{{ book.productnameFull }} Transaction Scopes*
 |===

@@ -5,7 +5,7 @@
 
 The JDBC Translator can be extended to handle new JDBC drivers and database versions. This is one of the most common needs of custom Translator development. This chapter outlines the process by which a user can modify the behavior of the JDBC Translator for a new source, rather than starting from scratch.
 
-To design a JDBC Translator for any RDMS that is not already provided by the Teiid, extend the `org.teiid.translator.jdbc.JDBCExecutionFactory` class in the "translator-jdbc" module. There are three types of methods that you can override from the base class to define the behavior of the Translator.
+To design a JDBC Translator for any RDMS that is not already provided by the {{ book.productnameFull }}, extend the `org.teiid.translator.jdbc.JDBCExecutionFactory` class in the "translator-jdbc" module. There are three types of methods that you can override from the base class to define the behavior of the Translator.
 
 |===
 |Extension |Purpose
@@ -46,7 +46,7 @@ The JDBCExecutionFactory provides several methods to modify the java.sql.Stateme
 
 == Adding Function Support
 
-Refer to link:User_Defined_Functions.adoc[User Defined Functions] for adding new functions to Teiid. This example will show you how to declare support for the function and modify how the function is passed to the data source.
+Refer to link:User_Defined_Functions.adoc[User Defined Functions] for adding new functions to {{ book.productnameFull }}. This example will show you how to declare support for the function and modify how the function is passed to the data source.
 
 Following is a summary of all coding steps in supporting a new scalar function:
 
@@ -77,7 +77,7 @@ public class ExtendedJDBCExecutionFactory extends JDBCExecutionFactory
 
 In general, it is a good idea to call super.getSupportedFunctions() to ensure that you retain any function support provided by the translator you are extending.
 
-This may be all that is needed to support a Teiid function if the JDBC data source supports the same syntax as Teiid. The built-in SQL translation will translate most functions as: "function(arg1, arg2,…)".
+This may be all that is needed to support a {{ book.productnameFull }} function if the JDBC data source supports the same syntax as {{ book.productnameFull }}. The built-in SQL translation will translate most functions as: "function(arg1, arg2,…)".
 
 == Using FunctionModifiers
 
@@ -141,7 +141,7 @@ Support for the two functions being registered ("abs" and "concat") must be decl
 
 == Installing Extensions
 
-Once you have developed an extension to the JDBC translator, you must install it into the Teiid Server. The process of packaging or deploying the extended JDBC translators is exactly as any other other translator. Since the RDMS is accessible already through its JDBC driver, there is no need to develop a resource adapter for this source as {{ book.asName }} provides a wrapper JCA connector (DataSource) for any JDBC driver.
+Once you have developed an extension to the JDBC translator, you must install it into the {{ book.productnameFull }} Server. The process of packaging or deploying the extended JDBC translators is exactly as any other other translator. Since the RDMS is accessible already through its JDBC driver, there is no need to develop a resource adapter for this source as {{ book.asName }} provides a wrapper JCA connector (DataSource) for any JDBC driver.
 
 Refer to link:Packaging.html[Packaging] and link:Deployment.adoc[Deployment] for more details.
 

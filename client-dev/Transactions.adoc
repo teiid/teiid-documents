@@ -1,11 +1,11 @@
 
 = Transactions
 
-Teiid supports three types of transactions from a client perspective:
+{{ book.productnameFull }} supports three types of transactions from a client perspective:
 
 1. Global
 2. Local
 3. Request Level
 
-All are implemented by the Teiid Server as XA transactions. See the http://java.sun.com/javaee/technologies/jta/index.jsp[JTA specification] for more on XA Transactions.
+All are implemented by {{ book.productnameFull }} logically as XA transactions. See the http://java.sun.com/javaee/technologies/jta/index.jsp[JTA specification] for more on XA Transactions.
 

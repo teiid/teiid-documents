@@ -1,4 +1,4 @@
-= Teiid Server Transport Security 
+= {{ book.productnameFull }} Server Transport Security 
 
 There are two types of direct remote transports, each with it’s own encryption configuration:
 
@@ -17,13 +17,13 @@ There are two types of direct remote transports, each with it’s own encryption
 
 WARNING: The pg protocol for ODBC access defaults to clear text username password authentication.  You should consider using a security domain that utilizes non-plaintext passwords, kerberos, or SSL.
 
-SSL configuration is part of the _transport_ configuration in the Teiid subsystem.
+SSL configuration is part of the _transport_ configuration in the {{ book.productnameFull }} subsystem.
 
-Other indirect access into Teiid, such as OData or REST via WARs, relies on the container settings for HTTP/HTTPS access.
+Other indirect access into {{ book.productnameFull }}, such as OData or REST via WARs, relies on the container settings for HTTP/HTTPS access.
 
 == Encryption Modes
 
-Teiid supports a couple different encryption modes based on the _mode_ attribute on _ssl_ element.
+{{ book.productnameFull }} supports a couple different encryption modes based on the _mode_ attribute on _ssl_ element.
 
 * *logIn* - This is the default setting for the transports.
 ** JDBC (non-data by default) messages between client and server are encrypted using 128 bit AES with a http://en.wikipedia.org/wiki/Diffie-Hellman_key_exchange[Diffie-Hellman] key that is negotiated per connection. When possible a 2048 bit key exchange will be used otherwise 1024 bit will be used. 
@@ -39,7 +39,7 @@ Oracle/Sun 1.7 JREs are known not to support key lengths over 1024 bits. The lin
 * *anonymous* – No certificates are required, but all communications are still encrypted using the TLS_DH_anon_WITH_AES_128_CBC_SHA SSL cipher suite. In most secure intranet environments, anonymous is suitable to just bulk encrypt traffic without the need to setup SSL certificates. No certificates are exchanged, and settings are not needed for the keystore and truststore properties. JDBC Clients must have 'org.teiid.ssl.allowAnon' set to true (the default) to connect to an anonymous server.  
 
 NOTE: ODBC clients and some VMs, such as IBM, may not have the TLS_DH_anon_WITH_AES_128_CBC_SHA cipher suite available.  
-When the client or server lack the anonymous cipher suite, consider using 1-way with a self-signed certificate.  ODBC clients typically do not require server certificate validation.  Teiid JDBC clients by default validate the server certificate, but can use the org.teiid.ssl.trustAll property to accept any server certificate. 
+When the client or server lack the anonymous cipher suite, consider using 1-way with a self-signed certificate.  ODBC clients typically do not require server certificate validation.  {{ book.productnameFull }} JDBC clients by default validate the server certificate, but can use the org.teiid.ssl.trustAll property to accept any server certificate. 
 
 * *1-way* – The default.  Only authenticates the server to the client. Requires a private key keystore to be created for the server.  If the client is configured to validate the server certificate, the client will need an appropriate truststore configured.
 
@@ -88,7 +88,7 @@ CAUTION: SSLv3 is not recommended due to the POODLE security vulnerability.
 
 * keymanagement-algorithm - Type of key algorithm used. Optional - by default is based upon the VM, e.g. "SunX509"
 
-* keystore/name - The file name of the keystore, which contains the private key of the Server. The file name can be relative resource path available to the Teiid deployer classloader or an absolute file system path. A typical installation would place the keystore file in the conf directory of the profile where Teiid is deployed with a file name relative to the conf path. Typically required if 1-way or 2-way authentication is used.
+* keystore/name - The file name of the keystore, which contains the private key of the Server. The file name can be relative resource path available to the {{ book.productnameFull }} deployer classloader or an absolute file system path. A typical installation would place the keystore file in the conf directory of the profile where {{ book.productnameFull }} is deployed with a file name relative to the conf path. Typically required if 1-way or 2-way authentication is used.
 
 * keystore/password - password for the keystore. Required if the keystore has a password.
 

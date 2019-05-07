@@ -3,7 +3,7 @@
 
 === Single user OAuth authentication
 
-Web Services resource-adapter can be configured to participate in http://oauth.org[OAuth 1.0a and OAuth2] authentication schemes. Using Teiid along with "ws" translator and "web-services" resource adapter once write applications communicating with web sites like http://google.com[Google] and http://twitter.com[Twitter].
+Web Services resource-adapter can be configured to participate in http://oauth.org[OAuth 1.0a and OAuth2] authentication schemes. Using {{ book.productnameFull }} along with "ws" translator and "web-services" resource adapter once write applications communicating with web sites like http://google.com[Google] and http://twitter.com[Twitter].
 
 In order to support OAuth authentication, there is some preparation and configuration work involved. Individual web sites typically provide developer facing REST based APIs for accessing their content on the web sites and also provide ways to register custom applications on user’s behalf, where they can manage the Authorization of services offered by the web site. The first step is to register this custom application on the web site and collect consumer/API keys and secrets. The web-sites will also list the URLS, where to request for various different types of tokens for authorization using these credentials. A typical OAuth authentication flow is defined as below
 
@@ -11,7 +11,7 @@ image:images/deviceflow.png[deviceflow]
 
 _The above image taken from https://developers.google.com/accounts/docs/OAuth2[https://developers.google.com/accounts/docs/OAuth2]_
 
-To accommodate above defined flow, Teiid provides a utility called "teiid-oauth-util.sh" or "teiid-oauth-util.bat" for windows in the "bin" directory of your server installation. By executing this utility, it will ask for various keys/secrets and URLs for the generating the Access Token that is used in the OAuth authentication and in the end output a XML fragment like below.
+To accommodate above defined flow, {{ book.productnameFull }} provides a utility called "teiid-oauth-util.sh" or "teiid-oauth-util.bat" for windows in the "bin" directory of your server installation. By executing this utility, it will ask for various keys/secrets and URLs for the generating the Access Token that is used in the OAuth authentication and in the end output a XML fragment like below.
 
 ----
 $./teiid-oauth-util.sh 
@@ -81,5 +81,5 @@ Then, any query written using the "ws" translator and above resource-adapter wil
 
 In the above configuration a single user is configured to access the web site, however if you want to delegate logged in user’s credential as OAuth authentication, then user needs to extend the above LoginModule
 _(org.teiid.jboss.oauth.OAuth20LoginModule or org.teiid.jboss.oauth.OAuth10LoginModule)_ and automate the process defined in the "teiid-oauth-util.sh" to define the Access Token
-details dynamically. Since this process will be different for different web sites (it involves login and authentication), Teiid will not be able to provide single solution. However, user can extend the login module to provide this feature much more easily since they will be working with targeted web sites.
+details dynamically. Since this process will be different for different web sites (it involves login and authentication), {{ book.productnameFull }} will not be able to provide single solution. However, user can extend the login module to provide this feature much more easily since they will be working with targeted web sites.
 

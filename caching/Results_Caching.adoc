@@ -1,7 +1,7 @@
 
 = Results Caching
 
-Teiid provides the capability to cache the results of specific user queries and virtual procedure calls.  This caching technique can yield significant performance gains if users of the system submit the same queries or execute the same procedures often.
+{{ book.productnameFull }} provides the capability to cache the results of specific user queries and virtual procedure calls.  This caching technique can yield significant performance gains if users of the system submit the same queries or execute the same procedures often.
 
 == Support Summary
 
@@ -27,7 +27,7 @@ info.setProperty("ResultSetCacheMode", "true");
 Connection conn = DriverManager.getConnection(url, info);
 ----
 
-or by adding a link:Hints_and_Options.adoc[Cache Hint] to the query. Note that if either of these mechanisms are used, Teiid must also have result set caching enabled (the default is enabled).
+or by adding a link:Hints_and_Options.adoc[Cache Hint] to the query. Note that if either of these mechanisms are used, {{ book.productnameFull }} must also have result set caching enabled (the default is enabled).
 
 The most basic form of the cache hint, `/*+ cache */`, is sufficient to inform the engine that the results of the non-update command should be cached.
 
@@ -81,14 +81,17 @@ A cached procedure will always produce all of its results prior to allowing thos
 
 == Cache Configuration
 
-By default result set caching is enabled with 1024 maximum entries with a maximum entry age of 2 hours. There are actually 2 caches configured with these settings. One cache holds results that are specific to sessions and is local to each Teiid instance. The other cache holds VDB scoped results and can be replicated. See the teiid subsystem configuration for tuning. The user may also override the default maximum
+By default result set caching is enabled with 1024 maximum entries with a maximum entry age of 2 hours. There are actually 2 caches configured with these settings. One cache holds results that are specific to sessions and is local to each {{ book.productnameFull }} instance. The other cache holds VDB scoped results and can be replicated. See the teiid subsystem configuration for tuning. The user may also override the default maximum
 entry age via the link:Hints_and_Options.adoc[Cache Hint].
 
 Result set caching is not limited to memory. There is no explicit limit on the size of the results that can be cached. Cached results are primarily stored in the _BufferManager_ and are subject to it’s configuration - including the restriction of maximum buffer space.
 
 While the result data is not held in memory, cache keys - including parameter values - may be held in memory. Thus the cache should not be given an unlimited maximum size.
 
-Result set cache entries can be invalidated by data change events. The _max-staleness_ setting determines how long an entry will remain in the case after one of the tables that contributed to the results has been changed. See the link:../dev/Developers_Guide.adoc[Developer’s Guide] for further customization.
+Result set cache entries can be invalidated by data change events. The _max-staleness_ setting determines how long an entry will remain in the case after one of the tables that contributed to the results has been changed. 
+{% if book.targetWildfly %}
+See the link:../dev/Developers_Guide.adoc[Developer’s Guide] for further customization.
+{% endif %}
 
 == Extension Metadata
 
@@ -111,6 +114,7 @@ For example, setting the property in the vdb.xml:
         ...
 ----
 
+{% if book.targetWildfly %}
 == Cache Administration
 
 The result set cache can be cleared through the AdminAPI using the `clearCache` method. The expected cache key is "QUERY_SERVICE_RESULT_SET_CACHE".
@@ -122,11 +126,14 @@ admin.clearCache("QUERY_SERVICE_RESULT_SET_CACHE")
 ----
 
 See the link:../dev/AdminAPI.adoc[AdminAPI] for more on using the AdminAPI.
+{% endif %}
 
 == Limitations
 
-* XML, BLOB, CLOB, and OBJECT type cannot be used as part of the cache key for prepared statement of procedure cache keys.
+* XML, BLOB, CLOB, JSON, Geometry, and OBJECT type cannot be used as part of the cache key for prepared statement of procedure cache keys.
 * The exact SQL string, including the cache hint if present, must match the cached entry for the results to be reused. This allows cache usage to skip parsing and resolving for faster responses.
+{% if book.targetWildfly %}
 * Result set caching is transactional by default using the NON_XA transaction mode. If you want full XA support, then change the configuration to use NON_DURABLE_XA.
 * Clearing the results cache clears all cache entries for all VDBs.
+{% endif %}
 

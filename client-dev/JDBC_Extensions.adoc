@@ -1,5 +1,5 @@
 
 = JDBC Extensions
 
-These are custom extensions to JDBC API from Teiid to support various features.
+These are custom extensions to JDBC API from {{ book.productnameFull }} to support various features.
 

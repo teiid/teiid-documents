@@ -3,7 +3,7 @@
 
 == Developing (Custom) JEE Connectors (Resource Adapters)
 
-This chapter examines how to use facilities provided by the Teiid API to develop a JEE JCA Connector. Please note that these are standard JEE JCA connectors, nothing special needs to be done for Teiid. As an aid to our Translator developers, we provided a base implementation framework. If you already have a JCA Connector or some other mechanism to get data from your source system, you can skip this chapter.
+This chapter examines how to use facilities provided by the {{ book.productnameFull }} API to develop a JEE JCA Connector. Please note that these are standard JEE JCA connectors, nothing special needs to be done for {{ book.productnameFull }}. As an aid to our Translator developers, we provided a base implementation framework. If you already have a JCA Connector or some other mechanism to get data from your source system, you can skip this chapter.
 
 If you are not familiar with JCA API, please read the JCA 1.5 Specification at http://java.sun.com/j2ee/connector/[http://java.sun.com/j2ee/connector/]. There are lot of online tutorials on how to design and build a JCA Connector. The below are high-level steps for creating a very simple connector, however building actual connector that supports transactions, security can get much more complex.
 
@@ -14,14 +14,14 @@ If you are not familiar with JCA API, please read the JCA 1.5 Specification at h
 * Expectation for incoming queries/metadata
 * The processing constructs, or capabilities, supported by information system.
 * Required properties for the connection, such as URL, user name, etc.
-3.  Base classes for all of the required supporting JCA SPI classes are provided by the Teiid API. The JCA CCI support is not provided from Teiid, since Teiid uses the Translator API as it’s common client interface. You will want to extend:
+3.  Base classes for all of the required supporting JCA SPI classes are provided by the {{ book.productnameFull }} API. The JCA CCI support is not provided from {{ book.productnameFull }}, since {{ book.productnameFull }} uses the Translator API as it’s common client interface. You will want to extend:
 * BasicConnectionFactory – Defines the Connection Factory
 * BasicConnection – represents a connection to the source.
 * BasicResourceAdapter – Specifies the resource adapter class
 4.  Package your resource adapter. Refer to link:Packaging_the_Adapter.adoc[Packaging the Adapter].
 5.  Deploy your resource adapter. Refer to link:Packaging_the_Adapter.adoc[Packaging the Adapter].
 
-For sample resource adapter code refer to the Teiid Source code at https://github.com/teiid/teiid/tree/master/connectors/[https://github.com/teiid/teiid/tree/master/connectors/].
+For sample resource adapter code refer to the {{ book.productnameFull }} Source code at https://github.com/teiid/teiid/tree/master/connectors/[https://github.com/teiid/teiid/tree/master/connectors/].
 
 Refer to the JBoss Application Server Connectors documentation at http://docs.jboss.org/jbossas/jboss4guide/r4/html/ch7.chapt.html[http://docs.jboss.org/jbossas/jboss4guide/r4/html/ch7.chapt.html].
 

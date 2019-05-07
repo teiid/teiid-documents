@@ -1,7 +1,7 @@
 
 = Adding Dependent Libraries
 
-Add MANIFEST.MF file in the META-INF directory, and the following line to add the core Teiid API dependencies for resource adapter.
+Add MANIFEST.MF file in the META-INF directory, and the following line to add the core {{ book.productnameFull }} API dependencies for resource adapter.
 
 [source,java]
 ----

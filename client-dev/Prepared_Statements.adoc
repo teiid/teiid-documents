@@ -1,11 +1,11 @@
 
 = Prepared Statements
 
-Teiid provides a standard implementation of `java.sql.PreparedStatement`. PreparedStatements can be very important in speeding up common statement execution, since they allow the server to skip parsing, resolving, and planning of the statement. See the Java documentation for more information on http://download.oracle.com/javase/6/docs/technotes/guides/jdbc/getstart/preparedstatement.html#1000039[PreparedStatement usage].
+{{ book.productnameFull }} provides a standard implementation of `java.sql.PreparedStatement`. PreparedStatements can be very important in speeding up common statement execution, since they allow the server to skip parsing, resolving, and planning of the statement. See the Java documentation for more information on http://download.oracle.com/javase/6/docs/technotes/guides/jdbc/getstart/preparedstatement.html#1000039[PreparedStatement usage].
 
 `PreparedStatement` Considerations
 
-* It is not necessary to pool client side Teiid `PreparedStatements`, since Teiid performs plan caching on the server side.
+* It is not necessary to pool client side {{ book.productnameFull }} `PreparedStatements`, since {{ book.productnameFull }} performs plan caching on the server side.
 * The number of cached plans is configurable (see the Admin Guide), and are purged by the least recently used (LRU).
 * Cached plans are not distributed through a cluster. A new plan must be created for each cluster member.
 * Plans are cached for the entire VDB or for just a particular session. The scope of a plan is detected automatically based upon the functions evaluated during it’s planning process.

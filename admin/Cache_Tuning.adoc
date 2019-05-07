@@ -5,11 +5,11 @@ Caching can be tuned for cached results (including user query results and proced
 
 Cache statistics can be obtained through the Admin Console or the AdaminAPI. The statistics can be used to help tune cache parameters and ensure a hit ratio.
 
-Plans are currently fully held in memory and may have a significant memory footprint. When making extensive use of prepared statements and/or virtual procedures, the size of the plan cache may be increased proportionally to number of gigabytes intended for use by Teiid.
+Plans are currently fully held in memory and may have a significant memory footprint. When making extensive use of prepared statements and/or virtual procedures, the size of the plan cache may be increased proportionally to number of gigabytes intended for use by {{ book.productnameFull }}.
 
 While the result cache parameters control the cache result entries (max number, eviction, etc.), the result batches themselves are accessed through the link:Memory_Management.adoc[BufferManager]. If the size of the result cache is increased, you may need to tune the BufferManager configuration to ensure there is enough buffer space.
 
-Result set and prepared plan caches have their entries invalidated by data and metadata events. By default these events are captured by running commands through Teiid. See the Developers Guide for further customization. 
-Teiid stores compiled forms of update plans or trigger actions with the prepared plan, so that if metadata changes, for example by disabling a trigger, changes may take effect immediately. The default _max-staleness_ for result set caching is 0 seconds or immediate invalidation. 
+Result set and prepared plan caches have their entries invalidated by data and metadata events. By default these events are captured by running commands through {{ book.productnameFull }}. See the Developers Guide for further customization. 
+{{ book.productnameFull }} stores compiled forms of update plans or trigger actions with the prepared plan, so that if metadata changes, for example by disabling a trigger, changes may take effect immediately. The default _max-staleness_ for result set caching is 0 seconds or immediate invalidation. 
 Consider increasing this value to increase result set cache hits. Even with a setting of 0, full transactional consistency is not guaranteed - rather the underlying Infinispan cache must be configured with a transaction mode of XA.
 

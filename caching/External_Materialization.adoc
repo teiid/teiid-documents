@@ -4,11 +4,11 @@
 
 = External Materialization
 
-This document will explain what Teiid External Materialization is and how to use it.
+This document will explain what {{ book.productnameFull }} External Materialization is and how to use it.
 
 == What is it ?
 
-In Teiid, a view is a virtual table based on the computing(loading/transforming/federating) of a complex SQL statement across heterogeneous data sources.   Teiid external materialization process can cache the View data to an external data source systems on a periodic basis.  When a user issues queries against this View, the request will be redirected to this external data source system where cached results will be returned, rather than re-computing results from source systems. Materialization can prove to be time and resource saving if your View transformation is complex and/or access to the source systems is constrained.
+In {{ book.productnameFull }}, a view is a virtual table based on the computing(loading/transforming/federating) of a complex SQL statement across heterogeneous data sources.   {{ book.productnameFull }} external materialization process can cache the View data to an external data source systems on a periodic basis.  When a user issues queries against this View, the request will be redirected to this external data source system where cached results will be returned, rather than re-computing results from source systems. Materialization can prove to be time and resource saving if your View transformation is complex and/or access to the source systems is constrained.
 
 image:images/teiid-external-mat.png[External Materialization]
 
@@ -61,7 +61,7 @@ The following View properties are extension properties that used in the manageme
 |false
 
 |teiid_rel:ALLOW_MATVIEW_MANAGEMENT
-|Allow Teiid based automatic management of load/refresh strategies of View. 
+|Allow {{ book.productnameFull }} based automatic management of load/refresh strategies of View. 
 |true
 |false
 
@@ -76,7 +76,7 @@ The following View properties are extension properties that used in the manageme
 |will be determined based on view transformation
  
 |teiid_rel:MATERIALIZED_STAGE_TABLE - DEPRECATED
-|When MATVIEW_LOAD_SCRIPT property not defined, Teiid loads the cache contents into this table. Required when MATVIEW_LOAD_SCRIPT not defined. Use of this property is deprecated in favor using the "MATVIEW_LOADNUMBER_COLUMN" property.
+|When MATVIEW_LOAD_SCRIPT property not defined, {{ book.productnameFull }} loads the cache contents into this table. Required when MATVIEW_LOAD_SCRIPT not defined. Use of this property is deprecated in favor using the "MATVIEW_LOADNUMBER_COLUMN" property.
 |true		
 |n/a
 
@@ -122,7 +122,7 @@ teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
 |2^63 milliseconds - effectively the table will not refresh, but will be loaded a single time initially
 
 |teiid_rel:MATVIEW_WRITE_THROUGH
-|When true Teiid will perform both the underlying update and the corresponding update against the materialization target for an insert/update/delete issued against the view.
+|When true {{ book.productnameFull }} will perform both the underlying update and the corresponding update against the materialization target for an insert/update/delete issued against the view.
 |true
 |false
 
@@ -275,7 +275,7 @@ TIP: Example VDB based on DDL is defined below for reference.
 
 === Materialization Table Loading
 
-Upon deployment of the VDB to the Teiid server, link:../reference/sysadmin_schema.adoc#_sysadmin_loadmatview[SYSADMIN.loadMatView] used to perform a complete refresh of materialized table, this procedure reads the extension properties defined from <<View Options, View Options>> to customize the load. The following describes the sequence of events that occur inside this procedure
+Upon deployment of the VDB to the {{ book.productnameFull }} server, link:../reference/sysadmin_schema.adoc#_sysadmin_loadmatview[SYSADMIN.loadMatView] used to perform a complete refresh of materialized table, this procedure reads the extension properties defined from <<View Options, View Options>> to customize the load. The following describes the sequence of events that occur inside this procedure
 
 1. Inserts/updates an entry in `teiid_rel:MATVIEW_STATUS_TABLE`, which indicates that the cache is being loaded.
 2. Executes `teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT` if defined.
@@ -299,7 +299,7 @@ The values of StaleCount/Cardinality are used to calculate the percent of varian
 When a view refresh type is defined as "EAGER", the very first time the contents if the materialized view are loaded similar to that of other types using the `SYSADMIN.loadMatView` procedure upon the deployment of the VDB. However, once the contents are loaded, 
 link:../reference/sysadmin_schema.adoc#_sysadmin_updatematview[SYSADMIN.updateMatView] can be used to perform a eager incremental update based on any criteria provided. If you know that certain data points in the source system were changed after last full refresh of the materialized view, you can call this procedure with a criteria based on the view that cover those changed values, and this procedure will update only those affected rows in the materialized table instead of doing full snapshot update. This can save lot of time and resources and also keeps your view materialization cache upto date with source system changes. 
 
-Note: This script is not invoked automatically by Teiid, as the source update events may be occurring outside of Teiid. This procedure needs to be invoked by user, when he/she knows that there is change in the source systems. When CDC technologies like Debezium is used (new feature coming..), this procedure can be automatically invoked to keep the the View contents fresh.  
+Note: This script is not invoked automatically by {{ book.productnameFull }}, as the source update events may be occurring outside of {{ book.productnameFull }}. This procedure needs to be invoked by user, when he/she knows that there is change in the source systems. When CDC technologies like Debezium is used (new feature coming..), this procedure can be automatically invoked to keep the the View contents fresh.  
 
 == Appendix-1: DDL for creating MatView Status Table
 

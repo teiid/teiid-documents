@@ -1,7 +1,7 @@
 
 = Materialized Views
 
-Teiid supports materialized views.  Materialized views are just like other views, but their transformations are pre-computed and stored just like a regular table. When queries are issued against the views through the Teiid Server, the cached results are used.  This saves the cost of accessing all the underlying data sources and re-computing the view transformations each time a query is executed.
+{{ book.productnameFull }} supports materialized views.  Materialized views are just like other views, but their transformations are pre-computed and stored just like a regular table. When queries are issued against the views through the {{ book.productnameFull }} Server, the cached results are used.  This saves the cost of accessing all the underlying data sources and re-computing the view transformations each time a query is executed.
 
 Materialized views are appropriate when the underlying data does not change rapidly, or when it is acceptable to retrieve data that is "stale" within some period of time, or when it is preferred for end-user queries to access staged data rather than placing additional query load on operational sources.
 

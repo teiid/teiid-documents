@@ -3,7 +3,7 @@
 
 == Language
 
-Teiid sends commands to your Translator in object form. These classes are all defined in the "org.teiid.language" package. These objects can be combined to represent any possible command that Teiid may send to the Translator. However, it is possible to notify Teiid that your Translator can only accept certain kinds of constructs via the capabilities defined on the "ExecutionFactory" class. Refer to link:Command_Language.adoc[Translator Capabilities] for more information.
+{{ book.productnameFull }} sends commands to your Translator in object form. These classes are all defined in the "org.teiid.language" package. These objects can be combined to represent any possible command that {{ book.productnameFull }} may send to the Translator. However, it is possible to notify {{ book.productnameFull }} that your Translator can only accept certain kinds of constructs via the capabilities defined on the "ExecutionFactory" class. Refer to link:Command_Language.adoc[Translator Capabilities] for more information.
 
 The language objects all extend from the `LanguageObject` interface. Language objects should be thought of as a tree where each node is a language object that has zero or more child language objects of types that are dependent on the current node.
 
@@ -16,7 +16,7 @@ All commands sent to your Translator are in the form of these language trees, wh
 * `BatchedUpdates`
 * `Call` 
 
-Important components of these commands are expressions, criteria, and joins, which are examined in closer detail below. For more on the classes and interfaces described here, refer to the Teiid JavaDocs http://docs.jboss.org/teiid/7.6/apidocs[http://docs.jboss.org/teiid/7.6/apidocs].
+Important components of these commands are expressions, criteria, and joins, which are examined in closer detail below. For more on the classes and interfaces described here, refer to the {{ book.productnameFull }} JavaDocs http://docs.jboss.org/teiid/7.6/apidocs[http://docs.jboss.org/teiid/7.6/apidocs].
 
 == Expressions
 
@@ -69,7 +69,7 @@ Each `QueryExpression` can be a `Select` describing the expressions (typically `
 
 == SetQuery Structure
 
-A `QueryExpression` can also be a `SetQuery` that represents on of the SQL set operations (UNION, INTERSECT, EXCEPT) on two `QueryExpression`. The all flag may be set to indicate UNION ALL (currently INTERSECT and EXCEPT ALL are not allowed in Teiid)
+A `QueryExpression` can also be a `SetQuery` that represents on of the SQL set operations (UNION, INTERSECT, EXCEPT) on two `QueryExpression`. The all flag may be set to indicate UNION ALL (currently INTERSECT and EXCEPT ALL are not allowed in {{ book.productnameFull }})
 
 == With Structure
 
@@ -103,7 +103,7 @@ This section covers utilities available when using, creating, and manipulating t
 
 The Translator API contains an interface `TypeFacility` that defines data types and provides value translation facilities. This interface can be obtained from calling "getTypeFacility()" method on the "ExecutionFactory" class.
 
-The TypeFacitlity interface has methods that support data type transformation and detection of appropriate runtime or JDBC types.  The TypeFacility.RUNTIME_TYPES and TypeFacility.RUNTIME_NAMES interfaces defines constants for all Teiid runtime data types.  All `Expression` instances define a data type based on this set of types.  These constants are often needed in understanding or creating language interfaces.
+The TypeFacitlity interface has methods that support data type transformation and detection of appropriate runtime or JDBC types.  The TypeFacility.RUNTIME_TYPES and TypeFacility.RUNTIME_NAMES interfaces defines constants for all {{ book.productnameFull }} runtime data types.  All `Expression` instances define a data type based on this set of types.  These constants are often needed in understanding or creating language interfaces.
 
 == Language Manipulation
 
@@ -115,7 +115,7 @@ Some helpful utilities for working with `Condition` objects are provided in the 
 
 == Runtime Metadata
 
-Teiid uses a library of metadata, known as "runtime metadata" for each virtual database that is deployed in Teiid. The runtime metadata is a subset of metadata as defined by models in the Teiid models that compose the virtual database.  Extension metadata may be associated via the OPTIONS clause.  At runtime, using this runtime metadata interface, you get access to those set properties defined during the design time, to define/hint any execution behavior.
+{{ book.productnameFull }} uses a library of metadata, known as "runtime metadata" for each virtual database that is deployed in {{ book.productnameFull }}. The runtime metadata is a subset of metadata as defined by models in the {{ book.productnameFull }} models that compose the virtual database.  Extension metadata may be associated via the OPTIONS clause.  At runtime, using this runtime metadata interface, you get access to those set properties defined during the design time, to define/hint any execution behavior.
 
 Translator gets access to the `RuntimeMetadata` interface at the time of `Excecution` creation. Translators can access runtime metadata by using the interfaces defined in `org.teiid.metadata` package.  This package defines API representing a Schema, Table, Columns and Procedures, and ways to navigate these objects.
 
@@ -163,7 +163,7 @@ The `DelegatingHierarchyVisitor` is a special subclass of the HierarchyVisitor t
 
 == Provided Visitors
 
-The `SQLStringVisitor` is a special visitor that can traverse a tree of language interfaces and output the equivalent Teiid SQL.  This visitor can be used to print language objects for debugging and logging.  The `SQLStringVisitor` does not use the `HierarchyVisitor` described in the last section; it provides both iteration and processing type functionality in a single custom visitor.    
+The `SQLStringVisitor` is a special visitor that can traverse a tree of language interfaces and output the equivalent {{ book.productnameFull }} SQL.  This visitor can be used to print language objects for debugging and logging.  The `SQLStringVisitor` does not use the `HierarchyVisitor` described in the last section; it provides both iteration and processing type functionality in a single custom visitor.    
 
 The `CollectorVisitor` is a handy utility to collect all language objects of a certain type in a tree. Some additional helper methods exist to do common tasks such as retrieving all `ColumnReference`s in a tree, retrieving all groups in a tree, and so on.  
 

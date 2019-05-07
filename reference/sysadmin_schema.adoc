@@ -436,7 +436,10 @@ Set statistics for the given table.
 SYSADMIN.setTableStats(IN tableName string NOT NULL, IN cardinality long NOT NULL)
 ----
 
-NOTE: <<SYSADMIN.setColumnStats, SYSADMIN.setColumnStats>>, <<SYSADMIN.setProperty, SYSADMIN.setProperty>>, <<SYSADMIN.setTableStats, SYSADMIN.setTableStats>> are Metadata Procedures. A MetadataRepository must be configured to make a non-temporary metadata update persistent. See the link:../dev/Developers_Guide.adoc[Developer’s Guide] Runtime Metadata Updates section for more.
+NOTE: <<SYSADMIN.setColumnStats, SYSADMIN.setColumnStats>>, <<SYSADMIN.setProperty, SYSADMIN.setProperty>>, <<SYSADMIN.setTableStats, SYSADMIN.setTableStats>> are Metadata Procedures. 
+{% if book.targetWildfly %}
+A MetadataRepository must be configured to make a non-temporary metadata update persistent. See the link:../dev/Developers_Guide.adoc[Developer’s Guide] Runtime Metadata Updates section for more.
+{% endif %}
 
 === SYSADMIN.matViewStatus
 

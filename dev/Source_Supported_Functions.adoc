@@ -1,7 +1,7 @@
 
 = Source Supported Functions
 
-While Teiid provides an extensive scalar function library, it contains only those functions that can be evaluated within the query engine. In many circumstances, especially for performance, a source function allows for calling a source specific function. The semantics of defining the source function as similar or same to one of defining the UDF.
+While {{ book.productnameFull }} provides an extensive scalar function library, it contains only those functions that can be evaluated within the query engine. In many circumstances, especially for performance, a source function allows for calling a source specific function. The semantics of defining the source function as similar or same to one of defining the UDF.
 
 For example, suppose you want to use the Oracle-specific functions _score_ and _contains_ like:
 
@@ -12,13 +12,14 @@ SELECT score(1), ID, FREEDATA FROM Docs WHERE contains(freedata, 'nick', 1) > 0
 
 The _score_ and _contains_ functions are not part of built-in scalar function library. While you could write your own custom scalar function to mimic their behavior, it’s more likely that you would want to use the actual Oracle functions that are provided by Oracle when using the Oracle Free Text functionality.
 
-In order to configure Teiid to _push_ the above function evaluation to Oracle, Teiid provides a few different ways one can configure their instance.
+In order to configure {{ book.productnameFull }} to _push_ the above function evaluation to Oracle, {{ book.productnameFull }} provides a few different ways one can configure their instance.
 
+{% if book.targetWildfly %}
 == Extending the Translator
 
 The ExecutionFactory.getPushdownFunctions method can be used to describe functions that are valid against all instances of a given translator type. The function names are expected to be prefixed by the translator type, or some other logical grouping, e.g. salesforce.includes. The full name of the function once imported into the system will qualified by the SYS schema, e.g. SYS.salesforce.includes.
 
-Any funcitons added via these mechanisms do not need to be declared in ExecutionFactory.getSupportedFunctions. Any of the additional handling, such as adding a FunctionModifier, covered above is also applicable here. All pushdown functions will have function name set to only the simple name. Schema or other qualification will be removed. Handling, such as function modifiers, can check the function metadata if there is the potential for an ambiguity.
+Any functions added via these mechanisms do not need to be declared in ExecutionFactory.getSupportedFunctions. Any of the additional handling, such as adding a FunctionModifier, covered above is also applicable here. All pushdown functions will have function name set to only the simple name. Schema or other qualification will be removed. Handling, such as function modifiers, can check the function metadata if there is the potential for an ambiguity.
 
 For example, to extend the Oracle Connector
 
@@ -26,11 +27,12 @@ For example, to extend the Oracle Connector
 
 * Optionally register new FunctionModifiers on the start of the ExecutionFactory to handle translation of these functions. Given that the syntax of these functions is same as other typical functions, this probably isn’t needed - the default translation should work.
 
-* Create a new translator JAR containing your custom ExecutionFactory. Refer to link:Packaging.html[Packaging] and link:Deployment.adoc[Deployment] for instructions on using the JAR file. Once this is extended translator is deployed in the Teiid Server, use "myoracle" as translator name instead of the "oracle" in your VDB’s Oracle source configuration.
+* Create a new translator JAR containing your custom ExecutionFactory. Refer to link:Packaging.html[Packaging] and link:Deployment.adoc[Deployment] for instructions on using the JAR file. Once this is extended translator is deployed in the {{ book.productnameFull }} Server, use "myoracle" as translator name instead of the "oracle" in your VDB’s Oracle source configuration.
+{% endif %}
 
 If you source handing of the function can be described by simple parameter substitution into a string, then you may not need to extend the translator for a source specific function. You can use the extension property teiid_rel:native-query to define the syntax handling - see also link:../reference/DDL_Metadata.adoc[DDL Metadata] for functions.
 
-Se defining the metadata link:../reference/DDL_Metadata.adoc[using DDL], you can define your source function in the VDB as
+See defining the metadata link:../reference/DDL_Metadata.adoc[using DDL], you can define your source function in the VDB as
 
 [source,xml]
 ----
@@ -63,6 +65,7 @@ By default when a source can provide metadata, the _Source_ model's metadata is 
 
 The above example uses _NATIVE_ metadata type (_NATIVE_ is the default for source/physical models) first to retrieve schema information from source, then uses _DDL_ metadata type to add additional metadata. Only metadata not available via the NATIVE translator logic would need to be specified via DDL.
 
+{% if book.targetWildfly %}
 Alternatively, if you are using custom _MetadataRepository_ with your VDB, then provide the "function" metadata directly from your implementation. ex.
 
 [source,xml]
@@ -76,4 +79,5 @@ Alternatively, if you are using custom _MetadataRepository_ with your VDB, then 
 ----
 
 In the above example, user can implement _MetadataRepository_ interface and package the implementation class along with its dependencies in a {{ book.asName }} module and supply the module name in the above XML. For more information on how to write a Metadata Repository refer to link:Custom_Metadata_Repository.adoc[Custom Metadata Repository].
+{% endif %}
 

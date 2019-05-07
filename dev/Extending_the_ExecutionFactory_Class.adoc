@@ -1,7 +1,7 @@
 
 = Extending the ExecutionFactory Class
 
-The main class in the translator implementation is ExecutionFactory. A base class is provided in the Teiid API, so a custom translator must extend `org.teiid.translator.ExecutionFactory` to connect and query an enterprise data source. This extended class must provide a no-arg constructor that can be constructed using Java reflection. This Execution Factory will look similar to the following:
+The main class in the translator implementation is ExecutionFactory. A base class is provided in the {{ book.productnameFull }} API, so a custom translator must extend `org.teiid.translator.ExecutionFactory` to connect and query an enterprise data source. This extended class must provide a no-arg constructor that can be constructed using Java reflection. This Execution Factory will look similar to the following:
 
 [source,java]
 ----
@@ -29,7 +29,7 @@ Defines the "Connection" interface that is defined in the resource adapter. This
 
 If the translator requires external configuration, that defines ways for the user to alter the behavior of a program, then define an attribute variable in the class and define "get" and "set" methods for that attribute. Also, annotate each "get" method with `@TranslatorProperty` annotation and provide the metadata about the property.
 
-For example, if you need a property called "foo", by providing the annotation on these properties, the Teiid tooling can automatically interrogate and provide a graphical way to configure your Translator while designing your VDB.
+For example, if you need a property called "foo", by providing the annotation on these properties, the {{ book.productnameFull }} tooling can automatically interrogate and provide a graphical way to configure your Translator while designing your VDB.
 
 [source,java]
 ----
@@ -58,7 +58,7 @@ Only java primitive (int, boolean), primitive object wrapper (java.lang.Integer)
 
 == Initializing the Translator
 
-Override and implement the `start` method (be sure to call "super.start()") if your translator needs to do any initializing before it is used by the Teiid engine. This method will be called by Teiid, once after all the configuration properties set above are injected into the class.
+Override and implement the `start` method (be sure to call "super.start()") if your translator needs to do any initializing before it is used by the {{ book.productnameFull }} engine. This method will be called by {{ book.productnameFull }}, once after all the configuration properties set above are injected into the class.
 
 == Extended Translator Capabilities
 
@@ -131,7 +131,7 @@ These properties can be automatically injected through "import" properties that 
 
 == Extension Metadata Properties
 
-There may be times when implementing a custom translator, the built in metadata about your schema is not enough to process the incoming query due to variance of semantics with your source query. To aid this issue, Teiid provides a mechanism called "Extension Metadata", which is a mechanism to define custom properties and then add those properties on metadata object (table, procedure, function, column, index etc.). For example, in my custom translator a table represents a file on disk. I could define a extension metadata property as
+There may be times when implementing a custom translator, the built in metadata about your schema is not enough to process the incoming query due to variance of semantics with your source query. To aid this issue, {{ book.productnameFull }} provides a mechanism called "Extension Metadata", which is a mechanism to define custom properties and then add those properties on metadata object (table, procedure, function, column, index etc.). For example, in my custom translator a table represents a file on disk. I could define a extension metadata property as
 
 [source,java]
 ----
@@ -180,7 +180,7 @@ Now you have accessed the file name you set during the construction of the Table
 
 == Logging
 
-Teiid provides `org.teiid.logging.LogManager` class for logging purposes. Create a logging context and use the LogManager to log your messages. These will be automatically sent to the main Teiid logs. You can edit the "jboss-log4j.xml" inside "conf" directory of the {{ book.asName }}’s profile to add the custom context. Teiid uses Log4J as its underlying logging system.
+{{ book.productnameFull }} provides `org.teiid.logging.LogManager` class for logging purposes. Create a logging context and use the LogManager to log your messages. These will be automatically sent to the main {{ book.productnameFull }} logs. You can edit the "jboss-log4j.xml" inside "conf" directory of the {{ book.asName }}’s profile to add the custom context. {{ book.productnameFull }} uses Log4J as its underlying logging system.
 
 == Exceptions
 

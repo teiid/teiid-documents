@@ -78,7 +78,7 @@ The execution properties for a translator typically have reasonable defaults. Fo
 |XA
 |===
 
-NOTE: Only a subset of the supports metadata can be set through execution properties. If more control is needed, please consult the link:../dev/Developers_Guide.adoc[Developer’s Guide].
+NOTE: Only a subset of the supports metadata can be set through execution properties on the base ExecutionFactory.  All methods are available on the BaseDelegatingExecutionFactory.
 
 There are no base importer settings.
 

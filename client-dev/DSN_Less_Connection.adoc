@@ -1,7 +1,7 @@
 
 = DSN Less Connection
 
-You can also connect to Teiid VDB using ODBC with out explicitly creating a DSN. However, in these scenarios your application needs, what is called as "DSN less connection string". The below is a sample connection string
+You can also connect to {{ book.productnameFull }} VDB using ODBC with out explicitly creating a DSN. However, in these scenarios your application needs, what is called as "DSN less connection string". The below is a sample connection string
 
 For Windows:
 
@@ -15,5 +15,5 @@ For *nix:
 ODBC;DRIVER={PostgreSQL};DATABASE=<vdb-name>;SERVER=<host-name>;PORT=<port>;Uid=<username>;Pwd=<password>;c4=0;c8=1;            
 ----
 
-See the link:ODBC_Support.adoc#_connection_settings[Teiid supported options].
+See the link:ODBC_Support.adoc#_connection_settings[{{ book.productnameFull }} supported options].
 

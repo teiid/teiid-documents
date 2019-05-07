@@ -1,13 +1,13 @@
 
 = Custom Logging
 
-The Teiid system provides a wealth of information using logging. To control logging level, contexts, and log locations, you should be familiar with container’s `standalone.xml` or `domain.xml` configuration file and check out "logging" subsystem. Refer to the link:../admin/Administrators_Guide.adoc[Administrator’s Guide] for more details about different link:../admin/Logging.adoc[Teiid contexts] available.
+The {{ book.productnameFull }} system provides a wealth of information using logging. To control logging level, contexts, and log locations, you should be familiar with container’s `standalone.xml` or `domain.xml` configuration file and check out "logging" subsystem. Refer to the link:../admin/Administrators_Guide.adoc[Administrator’s Guide] for more details about different link:../admin/Logging.adoc[{{ book.productnameFull }} contexts] available.
 
 If you want a custom log handler, follow the directions to write a custom _http://docs.oracle.com/javase/6/docs/api/java/util/logging/Handler.html[java.util.logging.Handler]_. If you develop a custom logging Handler, the implementation class along should be placed as a jar in "org.jboss.teiid" module and define its name in the module.xml file as part of the module along with any dependencies it may need. See below.
 
 == Command Logging API
 
-If you want to build a custom handler for command logging that will have access to java.util.logging http://docs.oracle.com/javase/6/docs/api/java/util/logging/LogRecord.html[LogRecords] to the "COMMAND_LOG" context, the handler will receive a instance of LogRecord message, this object will contain a parameter of type `org.teiid.logging.CommandLogMessage`. The relevant Teiid classes are defined in the _teiid-api-{{ book.fullVersionNumber }}.jar_. The CommmdLogMessage includes information about vdb, session, command sql, etc. CommandLogMessages are logged at the DEBUG (user queries and source queries on the .SOURCE child context), and TRACE (query plan) levels.
+If you want to build a custom handler for command logging that will have access to java.util.logging http://docs.oracle.com/javase/6/docs/api/java/util/logging/LogRecord.html[LogRecords] to the "COMMAND_LOG" context, the handler will receive a instance of LogRecord message, this object will contain a parameter of type `org.teiid.logging.CommandLogMessage`. The relevant {{ book.productnameFull }} classes are defined in the _teiid-api-{{ book.fullVersionNumber }}.jar_. The CommmdLogMessage includes information about vdb, session, command sql, etc. CommandLogMessages are logged at the DEBUG (user queries and source queries on the .SOURCE child context), and TRACE (query plan) levels.
 
 [source,java]
 .*Sample CommandLogMessage Usage*
@@ -36,7 +36,7 @@ public class CommandHandler extends Handler {
 == Audit Logging API
 
 If you want to build a custom handler for command logging that will have access to java.util.logging http://docs.oracle.com/javase/6/docs/api/java/util/logging/LogRecord.html[LogRecords]
-to the "AUDIT_LOG" context, the handler will receive a instance of LogRecord message, this object will contain a parameter of type `org.teiid.logging.AuditMessage`. The `AuditMessage` includes information about user, the action, and the target(s) of the action. The relevant Teiid classes are defined in the _teiid-api-{{ book.fullVersionNumber }}.jar_. AuditMessages are logged at the DEBUG level. AuditMessages are used for both data role validation and for logon/logoff events. Only logon events will contain `LogonInfo`.
+to the "AUDIT_LOG" context, the handler will receive a instance of LogRecord message, this object will contain a parameter of type `org.teiid.logging.AuditMessage`. The `AuditMessage` includes information about user, the action, and the target(s) of the action. The relevant {{ book.productnameFull }} classes are defined in the _teiid-api-{{ book.fullVersionNumber }}.jar_. AuditMessages are logged at the DEBUG level. AuditMessages are used for both data role validation and for logon/logoff events. Only logon events will contain `LogonInfo`.
 
 [source,java]
 .*Sample AuditMessage Usage*

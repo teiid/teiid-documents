@@ -1,7 +1,7 @@
 
 = Web Service Data Sources
 
-Web service data sources use a Teiid specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. There are many ways to create the file data source, using CLI, admin-console etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
+Web service data sources use a {{ book.productnameFull }} specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. There are many ways to create the file data source, using CLI, admin-console etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
 
 Execute following command using the {{ book.asDocRoot }}/Admin+Guide#AdminGuide-RunningtheCLI[CLI] once you connected to the Server. Make sure you provide the correct endpoint and other properties below. Add any additional properties required by the connector by duplicating the "connection-definitions" command below. Edit the JNDI name to match the JNDI name you used in
 VDB.
@@ -130,7 +130,7 @@ NOTE: It is not required to use the Spring configuration to set just timeouts. T
 
 == Security
 
-To enable the use of WS-Security, the `SecurityType` should be set to WSSecurity. At this time Teiid does not expect a WSDL to describe the service being used. Thus a Spring XML configuration file is not only required, it must instead contain all of the relevant policy configuration. And just as with the general configuration, each data source is limited to specifying only a single port configuration to use.
+To enable the use of WS-Security, the `SecurityType` should be set to WSSecurity. At this time {{ book.productnameFull }} does not expect a WSDL to describe the service being used. Thus a Spring XML configuration file is not only required, it must instead contain all of the relevant policy configuration. And just as with the general configuration, each data source is limited to specifying only a single port configuration to use.
 
 [source,java]
 ----

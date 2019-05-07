@@ -4,9 +4,9 @@ link:http://www.sqlalchemy.org/[SQLAlchemy] is an open source SQL toolkit and OR
 
 == Prerequisites
 
-- Have SQLAlchemy installed installed.  Teiid integration was last tested with version 1.1.6. 
+- Have SQLAlchemy installed installed.  {{ book.productnameFull }} integration was last tested with version 1.1.6. 
 
-- Your Teiid installation should already be setup for link:../admin/Socket_Transports.adoc[ODBC] access.  This allows the built-in support of SQLAlchemy 
+- Your {{ book.productnameFull }} installation should already be setup for link:../admin/Socket_Transports.adoc[ODBC] access.  This allows the built-in support of SQLAlchemy 
 for PostgreSQL to be used.
 
 == Usage
@@ -29,9 +29,9 @@ test = Table('public.test', meta, autoload=True, autoload_with=engine,postgresql
 
 == Limitations
 
-Only a subset of the PostgreSQL dialect is supported.  The primary intent is to allow querying through Teiid.  If there are additional features that are needed, please log an enhancement request.
+Only a subset of the PostgreSQL dialect is supported.  The primary intent is to allow querying through {{ book.productnameFull }}.  If there are additional features that are needed, please log an enhancement request.
 
-Column metadata will not be available for tables that contain the period '.' character.  Depending upon your needs, you may need import settings that use simple Teiid names and not source schema qualified names.
+Column metadata will not be available for tables that contain the period '.' character.  Depending upon your needs, you may need import settings that use simple {{ book.productnameFull }} names and not source schema qualified names.
 
 == Application Support
 
@@ -39,7 +39,7 @@ Column metadata will not be available for tables that contain the period '.' cha
 
 link:http://airbnb.io/superset/[Superset] is an open source data visualization and dashboard builder.  It uses SQLAlchemy to access relational sources.  
 
-Once you have followed the above instructions, you may access a Teiid VDB by adding a Database under the Sources menu.  
+Once you have followed the above instructions, you may access a {{ book.productnameFull }} VDB by adding a Database under the Sources menu.  
 
 The URL will be of the same form shown in the SQLAlchemy integration: postgresql+psycopg2://user:password@host:35432/vdb    
 

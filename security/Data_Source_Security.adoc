@@ -1,13 +1,13 @@
 == Security at the Data Source Level
 
 In some use cases, the user might need to pass-in different credentials to their data sources based on the logged in user rather than using the shared credentials for all the logged users. 
-To support this feature, {{ book.asName }} and Teiid provide multiple login modules to be used in conjunction with Teiid’s main security domain. See this http://community.jboss.org/docs/DOC-9350[document] for details on configuration. 
+To support this feature, {{ book.asName }} and {{ book.productnameFull }} provide multiple login modules to be used in conjunction with {{ book.productnameFull }}’s main security domain. See this http://community.jboss.org/docs/DOC-9350[document] for details on configuration. 
 Note that these directions need to be used in conjunction with the container document.
 
 == CallerIdentity
 
 If client wants to pass in simple text password or a certificate or a custom serialized object as token credential to the data source, the admin can configure the "CallerIdentity" login module. 
-Using this login module a user can pass-in their Teiid security domain login credential to the data source. Here is a sample configuration:
+Using this login module a user can pass-in their {{ book.productnameFull }} security domain login credential to the data source. Here is a sample configuration:
 
 [source,xml]
 .standalone-teiid.xml
@@ -80,7 +80,7 @@ In the datasource configuration, instead of supplying the username/password you 
 When user logs in with a password, the *same* username and password will be also set on the logged in Subject after authentication. 
 These credentials can be extracted by the data source by asking for Subject’s private credentials.
 
-Please note that encoding and decoding of this credential is strictly up to the user as {{ book.asName }} and Teiid will only act as a carrier of the information from login module to connection factory. 
+Please note that encoding and decoding of this credential is strictly up to the user as {{ book.asName }} and {{ book.productnameFull }} will only act as a carrier of the information from login module to connection factory. 
 Using this CallerIdentity module, the connection pool for data source is segmented by Subject.
 
 == Pass Through Identity
@@ -128,7 +128,7 @@ In the datasource configuration, instead of supplying the username/password you 
 
 == OAuth Authentication
 
-Secured Rest services with OAuth authentication can be used in Teiid, however the data sources need to be configured with OAuth Refresh Token or Json Web Token (JWT) based security domains.
+Secured Rest services with OAuth authentication can be used in {{ book.productnameFull }}, however the data sources need to be configured with OAuth Refresh Token or Json Web Token (JWT) based security domains.
 
 === Refresh Token 
 
@@ -240,9 +240,9 @@ The above command will generate resulting XML in the standalone.xml file or doma
 
 === Kerberos Delegation
 
-For using the same kerberos token at Teiid and as well as at the data source level, the token negotiated at the Teiid engine can be passed into data source. The data source must be configured to support this. Major database 
+For using the same kerberos token at {{ book.productnameFull }} and as well as at the data source level, the token negotiated at the {{ book.productnameFull }} engine can be passed into data source. The data source must be configured to support this. Major database 
 vendors like Oracle, MS-SQLServer, DB2, HIVE, Impala support kerberos. Some also support pass through mode. 
-To make delegation work, follow the directions here to setup the Kerberos at Teiid engine level [Kerberos support through GSSAPI] and use the module option delegationCredential:
+To make delegation work, follow the directions here to setup the Kerberos at {{ book.productnameFull }} engine level [Kerberos support through GSSAPI] and use the module option delegationCredential:
 
 ----
 <module-option name="delegationCredential" value="USE"/>
@@ -255,4 +255,4 @@ TIP: When working with Kerberos/GSS security token (GssCredential), some JDBC dr
 
 == Translator Customization
 
-Teiid’s extensible link:../dev/Translator_Development.adoc[Translator framework] also provides hooks for securing access at the DataSource level. The `ExecutionFactory.getConnection` may be overridden to initialize the source connection in any number of ways, such as re-authentication, based upon the Teiid `Subject`, execution payload, session variables, and any of the other relevant information accessible via the `ExecutionContext` and the `CommandContext`. You may even also modify the generated source SQL in any way that is seen fit in the relevant `Execution`.
+{{ book.productnameFull }}’s extensible link:../dev/Translator_Development.adoc[Translator framework] also provides hooks for securing access at the DataSource level. The `ExecutionFactory.getConnection` may be overridden to initialize the source connection in any number of ways, such as re-authentication, based upon the {{ book.productnameFull }} `Subject`, execution payload, session variables, and any of the other relevant information accessible via the `ExecutionContext` and the `CommandContext`. You may even also modify the generated source SQL in any way that is seen fit in the relevant `Execution`.

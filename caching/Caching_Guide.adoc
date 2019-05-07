@@ -1,7 +1,7 @@
 
 = Caching Guide
 
-Teiid provides several capabilities for caching data including: 
+{{ book.productnameFull }} provides several capabilities for caching data including: 
 
 1. Materialized views
 2. ResultSet caching
@@ -9,5 +9,8 @@ Teiid provides several capabilities for caching data including:
 
 These techniques can be used to significantly improve performance in many situations.
 
-With the exception of external materialized views, the cached data is accessed through the BufferManager. For better performance the BufferManager setting should be adjusted to the memory constraints of your installation. See the link:../admin/Cache_Tuning.adoc[Cache Tuning] for more on parameter tuning.
+With the exception of external materialized views, the cached data is accessed through the BufferManager. In some cases the BufferManager setting can be adjusted to the particular memory constraints of your installation. 
+{% if book.targetWildfly %}
+See the link:../admin/Cache_Tuning.adoc[Cache Tuning] for more on parameter tuning.
+{% endif %}
 

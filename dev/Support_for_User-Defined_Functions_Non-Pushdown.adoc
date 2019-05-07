@@ -18,7 +18,7 @@ See link:User_Defined_Functions.adoc[User Defined Functions]. Make sure you prov
 </vdb>
 ----
 
-You must create a Java method that contains the function’s logic. This Java method should accept the necessary arguments, which the Teiid System will pass to it at runtime, and function should return the calculated or altered value.
+You must create a Java method that contains the function’s logic. This Java method should accept the necessary arguments, which the {{ book.productnameFull }} System will pass to it at runtime, and function should return the calculated or altered value.
 
 See link:../reference/DDL_Metadata.adoc[DDL Metadata] for all possible options related to functions defined via DDL.
 
@@ -41,7 +41,7 @@ Code Requirements For UDAFs
 
 Other Considerations
 
-* Any exception can be thrown, but Teiid will rethrow the exception as a `FunctionExecutionException` .
+* Any exception can be thrown, but {{ book.productnameFull }} will rethrow the exception as a `FunctionExecutionException` .
 * You may optionally add an additional `org.teiid.CommandContext` argument as the first parameter. The `CommandContext` interface provides access to information about the current command, such as the executing user, Subject, the vdb, the session id, etc. This `CommandContext` parameter should not be declared in the function metadata.
 
 [source,java]
@@ -122,6 +122,10 @@ public class SessionInfo
 
 The corresponding UDF would be declared as Timestamp sessionCreated().
 
+{% if book.targetSpring %}
+Link to Teiid Spring Book doc TBD
+{% endif %}
+{% if book.targetWildfly %}
 == Post Code Activities
 
 * After coding the functions you should compile the Java code into a Java Archive (JAR) file.
@@ -143,4 +147,4 @@ Create a {{ book.asName }} module with the JAR file under _<jboss-as>/modules_ d
 ----
 
 The lib property value may contain a space delimited list of module names if more than one dependency is needed.
-
+{% endif %}

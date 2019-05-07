@@ -7,7 +7,7 @@ JDBC query execution can indefinitely block the calling thread when a statement 
 .*Non-blocking Prepared Statement Execution*
 ----
 PreparedStatement stmt = c.prepareStatemen(sql);
-TeiidPreparedStatement tStmt = stmt.unwrap(TeiidPreparedStatement.class);
+{{ book.productnameFull }}PreparedStatement tStmt = stmt.unwrap({{ book.productnameFull }}PreparedStatement.class);
 tStmt.submitExecute(new StatementCallback() {
     @Override
     public void onRow(Statement s, ResultSet rs) {
@@ -29,7 +29,7 @@ tStmt.submitExecute(new StatementCallback() {
 
 The non-blocking logic is limited to statement execution only. Other JDBC operations, such as connection creation or batched executions do not yet have non-blocking options.
 
-If you access forward positions in the onRow method (calling next, isLast, isAfterLast, absolute), they may not yet be valid and a `org.teiid.jdbc.AsynchPositioningException` will be thrown. That exception is recoverable if caught or can be avoided by calling `TeiidResultSet.available()` to determine if your desired positioning will be valid.
+If you access forward positions in the onRow method (calling next, isLast, isAfterLast, absolute), they may not yet be valid and a `org.teiid.jdbc.AsynchPositioningException` will be thrown. That exception is recoverable if caught or can be avoided by calling `{{ book.productnameFull }}ResultSet.available()` to determine if your desired positioning will be valid.
 
 == Continuous Execution
 

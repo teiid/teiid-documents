@@ -1,15 +1,15 @@
 
-= Migration Guide From Teiid 9.x to 10.x
+= Migration Guide From {{ book.productnameFull }} 9.x to 10.x
 
-Teiid strives to maintain consistency between all versions, but when necessary breaking configuration and VDB/sql changes are made - and then typically only for major releases. 
+{{ book.productnameFull }} strives to maintain consistency between all versions, but when necessary breaking configuration and VDB/sql changes are made - and then typically only for major releases. 
 
 You should consult the release notes for compatibility and configuration changes from each minor version that you are upgrading over.  This guide expands upon the release notes included in the kit to cover changes since 9.x.
 
-If possible you should make your migration to Teiid 10 by first using Teiid 9.3.  Teiid 9.1 though 9.3 have the same JRE and WildFly requirements.  Teiid 10 requires Java 8 and WildFly 11.  See also link:Migration_Guide_From_Teiid_8.x.adoc[8 to 9 Migration Guide]
+If possible you should make your migration to {{ book.productnameFull }} 10 by first using {{ book.productnameFull }} 9.3.  {{ book.productnameFull }} 9.1 though 9.3 have the same JRE and WildFly requirements.  {{ book.productnameFull }} 10 requires Java 8 and WildFly 11.  See also link:Migration_Guide_From_Teiid_8.x.adoc[8 to 9 Migration Guide]
 
 == Configuration Changes
 
-Teiid Embedded by default will not allow the usage of the ENV function.  Use the EmbeddedConfiguration.setAllowEnvFunction to toggle this behavior.
+{{ book.productnameFull }} Embedded by default will not allow the usage of the ENV function.  Use the EmbeddedConfiguration.setAllowEnvFunction to toggle this behavior.
 
 == Compatibility Changes
 
@@ -21,4 +21,4 @@ The XML Document Model has been removed along with related client properties.  P
 
 == Kitting/Build Changes
 
-The maven coordinates for Teiid artifacts has change from the org.jboss.teiid group to the org.teiid group.  The artifacts are also published directly to maven central, rather than the JBoss nexus repository.  This change was largely motivated by making the Teiid Spring integration less cumbersome.  Note that this does not effect EAP/WildFly module names as those remain org.jboss.teiid.
+The maven coordinates for {{ book.productnameFull }} artifacts has change from the org.jboss.teiid group to the org.teiid group.  The artifacts are also published directly to maven central, rather than the JBoss nexus repository.  This change was largely motivated by making the {{ book.productnameFull }} Spring integration less cumbersome.  Note that this does not effect EAP/WildFly module names as those remain org.jboss.teiid.

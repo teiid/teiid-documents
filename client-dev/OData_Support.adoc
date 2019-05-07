@@ -8,13 +8,13 @@ OData is consistent with the way the Web works - it makes a deep commitment to U
 
 copied from http://odata.org[http://odata.org]
 
-== Teiid Support for OData
+== {{ book.productnameFull }} Support for OData
 
-When a user successfully deploys a VDB into a Teiid Server, the OData protocol support is implicitly provided by the Teiid server without any further configuration. 
+When a user successfully deploys a VDB into a {{ book.productnameFull }} Server, the OData protocol support is implicitly provided by the {{ book.productnameFull }} server without any further configuration. 
 
-OData support is currently not available in the Teiid Embedded profile. 
+OData support is currently not available in the {{ book.productnameFull }} Embedded profile. 
 
 OData support is implemented and deployed through WAR file(s). Access is similar to accessing to any web resources deployed on the container. The war file(s) are located at <container root>/modules/org/jboss/teiid/deployments/*.war.
 
-Teiid provides link:OData4_Support.adoc[OData Version 4.0] support.  Legacy OData Version 2.0 support has been removed, but could be maintained as it's own project - please contact the community if you still need this feature and want to maintain it.  
+{{ book.productnameFull }} provides link:OData4_Support.adoc[OData Version 4.0] support.  Legacy OData Version 2.0 support has been removed, but could be maintained as it's own project - please contact the community if you still need this feature and want to maintain it.  
 

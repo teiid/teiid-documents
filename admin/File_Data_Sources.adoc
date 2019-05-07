@@ -1,7 +1,7 @@
 
 = File Data Sources
 
-File data sources use a Teiid specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. There are many ways to create the file data source, using CLI, admin-console, etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
+File data sources use a {{ book.productnameFull }} specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. There are many ways to create the file data source, using CLI, admin-console, etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
 
 Execute following command using the {{ book.asDocRoot }}/Admin+Guide#AdminGuide-RunningtheCLI[CLI] once you connected to the Server. Make sure you provide the correct directory name and other properties below. Add any additional properties required by the connector by duplicating the "connection-definitions" command below. Edit the JNDI name to match the JNDI name you used in VDB.
 

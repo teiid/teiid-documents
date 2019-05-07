@@ -382,7 +382,7 @@ Using the below syntax, user can define a
 * Source Procedure ("CREATE FOREIGN PROCEDURE") - a stored procedure in source
 * Source Function ("CREATE FOREIGN FUNCTION") - A function that is supported by the source, where {{ book.productnameFull }} will pushdown to source instead of evaluating in {{ book.productnameFull }} engine
 * Virtual Procedure ("CREATE VIRTUAL PROCEDURE") - Similar to stored procedure, however this is defined using the {{ book.productnameFull }}’s Procedure language and evaluated in the {{ book.productnameFull }}’s engine.
-* Function/UDF ("CREATE VIRTUAL FUNCTION") - A user defined function, that can be defined using the {{ book.productnameFull }} procedure language or can have the implementation defined using a link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[JAVA Class].
+* Function/UDF ("CREATE VIRTUAL FUNCTION") - A user defined function, that can be defined using the {{ book.productnameFull }} procedure language or can have the implementation defined using a link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[Java Class].
 
 image:images/create_procedure.jpg[images/create_procedure.jpg]
 

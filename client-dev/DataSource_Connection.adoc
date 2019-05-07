@@ -1,11 +1,11 @@
 
 = DataSource Connection
 
-To use a data source based connection, use `org.teiid.jdbc.TeiidDataSource` as the data source class. The `TeiidDataSource` is also an XADatasource. Teiid DataSource class is also Serializable, so it possible for it to be used with JNDI naming services.
+To use a data source based connection, use `org.teiid.jdbc.TeiidDataSource` as the data source class. The `{{ book.productnameFull }}DataSource` is also an XADatasource. {{ book.productnameFull }} DataSource class is also Serializable, so it possible for it to be used with JNDI naming services.
 
-Teiid supports the XA protocol, XA transactions will be extended to Teiid sources that also support XA.
+{{ book.productnameFull }} supports the XA protocol, XA transactions will be extended to {{ book.productnameFull }} sources that also support XA.
 
-All the properties (except for version, which is known on TeiidDataSource as DatabaseVersion) defined in the link:Driver_Connection.adoc[Driver Connection#URL Connection Properties] have corresponding "set" methods on the `org.teiid.jdbc.TeiidDataSource`. Properties that are assumed from the URL string have additional "set" methods, which are described in the following table.
+All the properties (except for version, which is known on {{ book.productnameFull }}DataSource as DatabaseVersion) defined in the link:Driver_Connection.adoc[Driver Connection#URL Connection Properties] have corresponding "set" methods on the `org.teiid.jdbc.TeiidDataSource`. Properties that are assumed from the URL string have additional "set" methods, which are described in the following table.
 
 .*Datasource Properties*
 |===
@@ -13,11 +13,11 @@ All the properties (except for version, which is known on TeiidDataSource as Dat
 
 |`DatabaseName`
 |`String`
-|The name of a virtual database (VDB) deployed to Teiid. Optionally Database name can also contain "DatabaseVersion" information inside it. For example: "myvdb.2", this is equivalent to supplying the "DatabaseVersion" property set to value of 2. However, use of Database name in this format and use of DatabaseVersion property at the same time is not allowed.
+|The name of a virtual database (VDB) deployed to {{ book.productnameFull }}. Optionally Database name can also contain "DatabaseVersion" information inside it. For example: "myvdb.2", this is equivalent to supplying the "DatabaseVersion" property set to value of 2. However, use of Database name in this format and use of DatabaseVersion property at the same time is not allowed.
 
 |`ServerName`
 |`String`
-|Server hostname where the Teiid runtime installed. If you are using IPv6 binding address as the host name, place it in square brackets. ex:[::1]
+|Server hostname where the {{ book.productnameFull }} runtime installed. If you are using IPv6 binding address as the host name, place it in square brackets. ex:[::1]
 
 |`AlternateServers`
 |`String`

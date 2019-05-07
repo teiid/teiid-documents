@@ -2,11 +2,11 @@
 = Kerberos support through GSSAPI
 
 
-Teiid supports kerberos authentication using GSSAPI for single sign-on applications. This service ticket negotiation based authentication is supported through remote JDBC/ODBC drivers and LocalConnections. Client configuration is different for each client type.
+{{ book.productnameFull }} supports kerberos authentication using GSSAPI for single sign-on applications. This service ticket negotiation based authentication is supported through remote JDBC/ODBC drivers and LocalConnections. Client configuration is different for each client type.
 
 == LocalConnection
 
-Set the JDBC URL property _PassthroughAuthentication_ as true and use JBoss Negotiation for authentication of your web-application with kerberos. When the web application authenticates with the provided kerberos token, the same subject authenticated will be used in Teiid. For details about configuration, check the configuring the https://access.redhat.com/documentation/en/red-hat-jboss-enterprise-application-platform/7.0/how-to-set-up-sso-with-kerberos/how-to-set-up-sso-with-kerberos[SSO with Kerberos in EAP] 
+Set the JDBC URL property _PassthroughAuthentication_ as true and use JBoss Negotiation for authentication of your web-application with kerberos. When the web application authenticates with the provided kerberos token, the same subject authenticated will be used in {{ book.productnameFull }}. For details about configuration, check the configuring the https://access.redhat.com/documentation/en/red-hat-jboss-enterprise-application-platform/7.0/how-to-set-up-sso-with-kerberos/how-to-set-up-sso-with-kerberos[SSO with Kerberos in EAP] 
 
 
 == Server configuration for Remote JDBC/ODBC Connections 
@@ -47,7 +47,7 @@ The above command will generate resulting XML in the standalone.xml file or doma
 </security-domain>    
 ----
 
-=== Configure security domain to secure the Teiid application.
+=== Configure security domain to secure the {{ book.productnameFull }} application.
 
 The second security domain is used to authenticate the individual user to the Kerberos server. You need at least one login module to authenticate the user, and another to search for the roles to apply to the user. The following XML code shows an example SPNEGO security domain. It includes an authorization module to map roles to individual users. You can also use a module which searches for the roles on the authentication server itself. Note the name of security-domain MUST match realm. The following CLI script shows example of creating the login module 
 
@@ -129,7 +129,7 @@ the resulting xml will look like below where \{user-name-based-auth} replaced wi
 
 === Server Transport Configuration 
 
-The above configuration defined security-domains, before you can use these domains for login into Teiid, they need to be associated with Teiid's transport configuration or VDB configuration. Paragraphs below offer both solutions. 
+The above configuration defined security-domains, before you can use these domains for login into {{ book.productnameFull }}, they need to be associated with {{ book.productnameFull }}'s transport configuration or VDB configuration. Paragraphs below offer both solutions. 
 
 ==== Defining a "default" authentication
 
@@ -230,7 +230,7 @@ In your client VM the JAAS configuration for Kerberos authentication needs to be
 
 .*"client.conf"*
 ----
-Teiid {
+{{ book.productnameFull }} {
     com.sun.security.auth.module.Krb5LoginModule required
     useTicketCache=true
     storeKey=true
@@ -265,18 +265,18 @@ or
 -Djava.security.auth.login.config=/path/to/client.conf
 ----
 
-Add the following additional URL connection properties to Teiid JDBC connection string along with URL property. Note that when configured with Kerberos, in order to participate in Kerberos based authentication
-you need to configure "user" property as required by "gss-pattern" or define the "authentication-type" property on the VDB or transport. However, after successful login into security-domain, the user name from GSS login context will be used for representing the session in the Teiid.
+Add the following additional URL connection properties to {{ book.productnameFull }} JDBC connection string along with URL property. Note that when configured with Kerberos, in order to participate in Kerberos based authentication
+you need to configure "user" property as required by "gss-pattern" or define the "authentication-type" property on the VDB or transport. However, after successful login into security-domain, the user name from GSS login context will be used for representing the session in the {{ book.productnameFull }}.
 
 ----
-jaasName=Teiid;user={pattern};kerberosServicePrincipleName=host/testserver@MY_REALM
+jaasName={{ book.productnameFull }};user={pattern};kerberosServicePrincipleName=host/testserver@MY_REALM
 ----
 
-_jassName_ defines the JAAS configuration name in login.config file. This property is optional, if omitted the "Teiid" is used as the default configuration name.
+_jassName_ defines the JAAS configuration name in login.config file. This property is optional, if omitted the "{{ book.productnameFull }}" is used as the default configuration name.
 
 _kerberosServicePrincipleName_ defines service principle that needs to be requested on behalf of the service that is being connected to using the Kerberos principle configured. If this property is omitted the default service principle would be "TEIID/hostname" and hostname is derived from the JDBC connection URL.
 
-NOTE: In order to avoid adding the service principle name to all your JDBC and ODBC clients, Teiid can use the default service principle name as "TEIID/hostname". Create this service ticket in KDC. This also helps if you move your Teiid server one host to another by simply creating a new principle in KDC with new host name. Then you would only required to update hostname in the URL.
+NOTE: In order to avoid adding the service principle name to all your JDBC and ODBC clients, {{ book.productnameFull }} can use the default service principle name as "TEIID/hostname". Create this service ticket in KDC. This also helps if you move your {{ book.productnameFull }} server one host to another by simply creating a new principle in KDC with new host name. Then you would only required to update hostname in the URL.
 
 === ODBC Client Configuration
 
@@ -296,7 +296,7 @@ This will generate a new WAR file in "odata-kerberos/target" directory. Follow t
 
 NOTE: To use Kerberos or any web layer authentication, the OData war must use PassthroughAuthentication=true (which is the default). 
 
-==== Community Teiid Server based on WildFly
+==== Community {{ book.productnameFull }} Server based on WildFly
 
 Replace the <wildfly>/modules/system/layers/dv/org/jboss/teiid/main/deployments/teiid-olingo-odata4.war" file with new WAR file, by executing a command similar to 
 

@@ -1,8 +1,8 @@
 = SAML Based Security For OData Using KeyCloak
 
-This document will provide detailed instructions to enable SAML authentication on Teiid's OData interface using the Keycloak as authentication server (IDP). SAML is standard, so the modified OData WAR should work fine with any other compatible SAML Authorization server, however the configuration may be little different. Please consult their documentation for any such specifics of different authorization server other then KeyCloak.
+This document will provide detailed instructions to enable SAML authentication on {{ book.productnameFull }}'s OData interface using the Keycloak as authentication server (IDP). SAML is standard, so the modified OData WAR should work fine with any other compatible SAML Authorization server, however the configuration may be little different. Please consult their documentation for any such specifics of different authorization server other then KeyCloak.
 
-This examples will show case an example, where Teiid's OData rest interface is secured using SAML using Keycloak as IDP. The VDB accessed by the OData interface, the pass-through of SAML Assertion for OAuth token (SAML Bearer) is not yet available in KeyCloak, when the feature is available then Teiid will support it. However, if you are working with a IDP that supports the SAML Bearer, Teiid does support the mechanism where one can pass the "access-token" from web  layer to the data source layer. See the OAuth example as template and possible configuration needed. (note it is not exactly same, but very similar) 
+This examples will show case an example, where {{ book.productnameFull }}'s OData rest interface is secured using SAML using Keycloak as IDP. The VDB accessed by the OData interface, the pass-through of SAML Assertion for OAuth token (SAML Bearer) is not yet available in KeyCloak, when the feature is available then {{ book.productnameFull }} will support it. However, if you are working with a IDP that supports the SAML Bearer, {{ book.productnameFull }} does support the mechanism where one can pass the "access-token" from web  layer to the data source layer. See the OAuth example as template and possible configuration needed. (note it is not exactly same, but very similar) 
 
 Tested with Keycloak 3.1.0.Final version.
 
@@ -21,7 +21,7 @@ Add two roles "odata" and "user". These are enterprise roles, that will be used 
 
 image:images/roles.png[roles]
 
- * Add a new client called "odata4-saml", this client represents the Teiid's SAML client that we are going to create
+ * Add a new client called "odata4-saml", this client represents the {{ book.productnameFull }}'s SAML client that we are going to create
 
 image:images/saml-main.png[saml-main]
 
@@ -29,10 +29,10 @@ image:images/saml-main.png[saml-main]
 
 image:images/saml-keys.png[saml-keys]
  
-== Install and configure Teiid server
+== Install and configure {{ book.productnameFull }} server
 
-* Download and install Teiid server
-* Download Keycloak SAML adapter for EAP, and unzip over the Teiid server installation. 
+* Download and install {{ book.productnameFull }} server
+* Download Keycloak SAML adapter for EAP, and unzip over the {{ book.productnameFull }} server installation. 
 
 
 Run the following to add Keycloak specific modules to the server 
@@ -43,7 +43,7 @@ $ cd $WILDFLY_HOME
 $ unzip keycloak-saml-wildfly-adapter-dist-${version}.zip
 ---- 
 
-Now, start the Teiid Server and using the jboss-cli.sh file run the following to install the KeyCloak confiuration into the Teiid Server.
+Now, start the {{ book.productnameFull }} Server and using the jboss-cli.sh file run the following to install the KeyCloak confiuration into the {{ book.productnameFull }} Server.
 
 [source,sh]
 ----
@@ -77,13 +77,13 @@ This finishes all the server side changes that are required to make SAML authent
 
 == OData Application WAR 
 
-In order to use SAML authentication, the OData WAR needs to be updated to make use of the OAuth based security domain. By default Teiid installation comes with OData web service WAR file configured with "HTTP Basic" authentication. This WAR needs to either replaced or updated.
+In order to use SAML authentication, the OData WAR needs to be updated to make use of the OAuth based security domain. By default {{ book.productnameFull }} installation comes with OData web service WAR file configured with "HTTP Basic" authentication. This WAR needs to either replaced or updated.
 
 === Build the new OData WAR file that supports SAML.
 
-- To build SAML based OData WAR file, Teiid provides a template maven project, either download or clone the project from https://github.com/teiid/teiid-web-security 
+- To build SAML based OData WAR file, {{ book.productnameFull }} provides a template maven project, either download or clone the project from https://github.com/teiid/teiid-web-security 
 
-- The above link provides templates for creating two WAR files, one WAR file is to create Teiid's OData service with OAuth, the next is for SAML. Choose the SAML one.
+- The above link provides templates for creating two WAR files, one WAR file is to create {{ book.productnameFull }}'s OData service with OAuth, the next is for SAML. Choose the SAML one.
 
 - Replace the "teiid-web-security/teiid-odata-saml-keycloak/src/main/webapp/WEB-INF/keyclock.json" file contents with "installation" script in "keycloak.json" format from Keycloak admin console's "odata4-saml" client application.
 
@@ -97,11 +97,11 @@ The build the WAR files running the maven command
 mvn clean package
 ----
 
-NOTE: You may have to update Teiid and Keycloak versions in the pom.xml file
+NOTE: You may have to update {{ book.productnameFull }} and Keycloak versions in the pom.xml file
 
 The above command will generate a new WAR file for deployment. Follow the below directions to deploy this new WAR file to the server 
 
-==== Community Teiid Server on Wildfly 
+==== Community {{ book.productnameFull }} Server on Wildfly 
 
 Replace the <wildfly>/modules/system/layers/dv/org/jboss/teiid/main/deployments/teiid-olingo-odata4.war" file with new WAR file, by executing a command similar to 
 

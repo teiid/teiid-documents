@@ -1,7 +1,7 @@
 
 = Custom Authorization Validator
 
-In situations where Teiid’s built-in link:../reference/Data_Roles.adoc[Data Roles] mechanism is not sufficient, a custom `org.teiid.PolicyDecider` can be installed via a JBoss module. Note that a PolicyDecider only makes high-level authorization decisions based upon the access context (INSERT, UPDATE, DELETE, etc.), the caller, and the resource (column, table/view, procedure, function, etc.). Data-level column masking and row based security policy information due to its interaction with the Teiid planner cannot be injected via a custom `org.teiid.PolicyDecider`. You may add column masking and row based security permissions via the `org.teiid.MetadataFactory` in custom a `org.teiid.MetadataRepository` or custom translator.
+In situations where {{ book.productnameFull }}’s built-in link:../reference/Data_Roles.adoc[Data Roles] mechanism is not sufficient, a custom `org.teiid.PolicyDecider` can be installed via a JBoss module. Note that a PolicyDecider only makes high-level authorization decisions based upon the access context (INSERT, UPDATE, DELETE, etc.), the caller, and the resource (column, table/view, procedure, function, etc.). Data-level column masking and row based security policy information due to its interaction with the {{ book.productnameFull }} planner cannot be injected via a custom `org.teiid.PolicyDecider`. You may add column masking and row based security permissions via the `org.teiid.MetadataFactory` in custom a `org.teiid.MetadataRepository` or custom translator.
 
 To provide a custom authorization validator, you must extend the `org.teiid.PolicyDecider` interface and build a custom java class. If you are using maven as your build process, you can use following dependencies:
 
@@ -21,14 +21,14 @@ To provide a custom authorization validator, you must extend the `org.teiid.Poli
    </dependencies>
 ----
 
-The _PoilcyDecider_ interface is loaded by the Teiid using the Java’s standard service loader mechanism. For this to work, add the following named file _META-INF/services/org.teiid.PolicyDecider_ with full name of your PolicyDecider implementation class as its contents. for example:
+The _PoilcyDecider_ interface is loaded by the {{ book.productnameFull }} using the Java’s standard service loader mechanism. For this to work, add the following named file _META-INF/services/org.teiid.PolicyDecider_ with full name of your PolicyDecider implementation class as its contents. for example:
 
 .*META-INF/services/org.teiid.PolicyDecider*
 ----
 org.example.auth.MyCustomPolicyDecider
 ----
 
-Now package all these files into a JAR archive file and build JBoss module in _jboss-as/modules_ directory. If your PolicyDecider has any third party dependencies those jar files can also be added as dependencies to the same module. Make sure you list all the files in the _module.xml_ file. Below is sample module.xml file along with Teiid specific dependencies
+Now package all these files into a JAR archive file and build JBoss module in _jboss-as/modules_ directory. If your PolicyDecider has any third party dependencies those jar files can also be added as dependencies to the same module. Make sure you list all the files in the _module.xml_ file. Below is sample module.xml file along with {{ book.productnameFull }} specific dependencies
 
 [source,xml]
 .*module.xml*

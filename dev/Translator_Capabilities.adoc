@@ -397,7 +397,7 @@ The method `ExecutionFactory.requiresCriteria()` should return true if the Trans
 
 The method `ExecutionFactory.getSupportedFunctions()` can be used to specify which system/user defined scalar and user defined aggregate functions the Translator supports. The constants interface `org.teiid.translator.SourceSystemFunctions` contains the string names of all possible built-in pushdown functions, which includes the four standard math operators: +, -, *, and /.
 
-Not all system functions appear in SourceSystemFunctions, since some system functions will always be evaluated in Teiid, are simple aliases to other functions, or are rewritten to a more standard expression.
+Not all system functions appear in SourceSystemFunctions, since some system functions will always be evaluated in {{ book.productnameFull }}, are simple aliases to other functions, or are rewritten to a more standard expression.
 
 This documentation for system functions can be found at link:../reference/Scalar_Functions.adoc[Scalar Functions]. If the Translator states that it supports a function, it must support all type combinations and overloaded forms of that function.
 

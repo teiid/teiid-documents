@@ -1,7 +1,11 @@
 
 = Conformed Tables
 
-A conformed table is a source table that is the same in several physical sources. Unlike link:Multisource_Models.adoc[Multisource Models] which assume a partitioning paradigm, the planner assumes any conformed table may be substituted for another to improve performance. Typically this would be used when reference data exists in multiple sources, but only a single metadata entry is desired to represent the table.
+A conformed table is a source table that is the same in several physical sources. 
+{% if book.targetWildfly %}
+Unlike link:Multisource_Models.adoc[Multisource Models] which assume a partitioning paradigm, the planner assumes any conformed table may be substituted for another to improve performance. 
+{% endif %}
+Typically this would be used when reference data exists in multiple sources, but only a single metadata entry is desired to represent the table.
 
 Conformed tables are defined by adding the
 
@@ -19,7 +23,10 @@ DDL Alter Example
 ALTER FOREIGN TABLE "reference_data" OPTIONS (ADD "teiid_rel:conformed-sources" 'source2,source3');
 ----
 
-There is no expectation that a metadata entry exists on the other schemas. Just as with the multi-source feature, there is then no source specific metadata entry to the conformed sources. Also just as with multi-source planning, the capabilities are assumed to be the same across conformed sources.
+There is no expectation that a metadata entry exists on the other schemas. 
+{% if book.targetWildfly %}
+Just as with the multi-source feature, there is then no source specific metadata entry to the conformed sources. Also just as with multi-source planning, the capabilities are assumed to be the same across conformed sources.
+{% endif %}
 
 The engine will take the list of conformed sources and associate a set of model metadata ids to the corresponding access node. The logic considering joins and subqueries will also consider the conformed sets when making pushdown decisions. The subquery handling will only check for conformed sources for the subquery - not in the parent. So having a conformed table in the subquery will pushdown as expected, but not vice versa.
 

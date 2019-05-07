@@ -1,21 +1,21 @@
 
-= Migration Guide From Teiid 8.x to 9.x
+= Migration Guide From {{ book.productnameFull }} 8.x to 9.x
 
-Teiid strives to maintain consistency between all versions, but when necessary breaking configuration and VDB/sql changes are made - and then typically only for major releases. 
+{{ book.productnameFull }} strives to maintain consistency between all versions, but when necessary breaking configuration and VDB/sql changes are made - and then typically only for major releases. 
 
 You should consult the release notes for compatibility and configuration changes from each minor version that you are upgrading over.  This guide expands upon the release notes included in the kit to cover changes since 8.x.
 
-If possible you should make your migration to Teiid 9 by first using Teiid 8.13.  8.13 is a non-feature transitional release that is effectively Teiid 8.12 running on WildFly 9.0.2.  See also https://docs.jboss.org/author/display/teiid813final/Migration+Guide+From+Teiid+8.12[8.13 Migration Guide]
+If possible you should make your migration to {{ book.productnameFull }} 9 by first using {{ book.productnameFull }} 8.13.  8.13 is a non-feature transitional release that is effectively {{ book.productnameFull }} 8.12 running on WildFly 9.0.2.  See also https://docs.jboss.org/author/display/teiid813final/Migration+Guide+From+{{ book.productnameFull }}+8.12[8.13 Migration Guide]
 
 == JRE Support
 
-Teiid 9.1 uses WildFly 10.0.0. Both the server kit and usage of Teiid Embedded will require Java 1.8+. The client driver may still use a 1.6 runtime.
+{{ book.productnameFull }} 9.1 uses WildFly 10.0.0. Both the server kit and usage of {{ book.productnameFull }} Embedded will require Java 1.8+. The client driver may still use a 1.6 runtime.
 
-Teiid 9.0 uses WildFly 9.0.2. Both the server kit and usage of Teiid Embedded will require Java 1.7+. The client driver may still use a 1.6 runtime.
+{{ book.productnameFull }} 9.0 uses WildFly 9.0.2. Both the server kit and usage of {{ book.productnameFull }} Embedded will require Java 1.7+. The client driver may still use a 1.6 runtime.
 
 == Configuration Changes
 
-You will need to apply your Teiid and other configuration changes starting with a new base configuration for {{ book.asName }}, such as the standalone-teiid.xml included in the kit.  Note that 9999 port has been removed by default.  Admin connections are expected to use either 9990 (http) or 9993 (https).
+You will need to apply your {{ book.productnameFull }} and other configuration changes starting with a new base configuration for {{ book.asName }}, such as the standalone-teiid.xml included in the kit.  Note that 9999 port has been removed by default.  Admin connections are expected to use either 9990 (http) or 9993 (https).
 
 === Security Related
 
@@ -64,7 +64,7 @@ The RoleBasedCredentialMapIdentityLoginModule class has been removed.  Consider 
 
 === Local Transport
 
-The embedded transport was renamed to local to avoid confusion with Teiid embedded.
+The embedded transport was renamed to local to avoid confusion with {{ book.productnameFull }} embedded.
 
 === Behavioral
 
@@ -74,7 +74,7 @@ The resolver’s default behavior was to widen comparisons to string, but 9.0 no
 
 ==== reportAsViews
 
-The JDBC client will report Teiid views in the metadata as table type VIEW rather than TABLE by default.  Use the connection property reportAsViews=false to use pre-9.0 behavior.
+The JDBC client will report {{ book.productnameFull }} views in the metadata as table type VIEW rather than TABLE by default.  Use the connection property reportAsViews=false to use pre-9.0 behavior.
 
 ==== Default Precision/Scale
 
@@ -141,7 +141,7 @@ The drivers for JRE 1.4/1.5 systems have been discontinued. If you still need a 
 
 The OData v2 war based upon odata4j has been removed.  You should utilize the OData v4 war service instead.
 
-The names of the wars have been changed to strip version information - this makes it easier to capture a deployment-overlay in the configuration such that it won't be changed from one Teiid version to the next.
+The names of the wars have been changed to strip version information - this makes it easier to capture a deployment-overlay in the configuration such that it won't be changed from one {{ book.productnameFull }} version to the next.
 
 teiid-odata-odata2.war has become teiid-odata.war
 teiid-olingo-odata4.war has become teiid-olingo-odata4.war

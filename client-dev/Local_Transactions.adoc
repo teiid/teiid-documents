@@ -47,7 +47,7 @@ Any of the following operations will end a local transaction:
 
 === Turning Off JDBC Local Transaction Controls
 
-In some cases, tools or frameworks above Teiid will call setAutoCommit(false), commit() and rollback() even when all access is read-only and no transactions are necessary. In the scope of a local transaction Teiid will start and attempt to commit an XA transaction, possibly complicating configuration or causing performance degradation.
+In some cases, tools or frameworks above {{ book.productnameFull }} will call setAutoCommit(false), commit() and rollback() even when all access is read-only and no transactions are necessary. In the scope of a local transaction {{ book.productnameFull }} will start and attempt to commit an XA transaction, possibly complicating configuration or causing performance degradation.
 
 In these cases, you can override the default JDBC behavior to indicate that these methods should perform no action regardless of the commands being executed. To turn off the use of local transactions, add this property to the JDBC connection URL
 

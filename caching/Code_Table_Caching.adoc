@@ -1,7 +1,7 @@
 
 = Code Table Caching
 
-Teiid provides a short cut to creating an internal materialized view table via the _lookup_ function.
+{{ book.productnameFull }} provides a short cut to creating an internal materialized view table via the _lookup_ function.
 
 The _lookup_ function provides a way to accelerate getting a value out of a table when a key value is provided.  The function automatically caches all of the key/return pairs for the referenced table.  This caching is performed on demand, but will proactively load the results to other members in a cluster. Subsequent lookups against the same table using the same key and return columns will use the cached information.
 

@@ -1,7 +1,7 @@
 
-= Clustering in Teiid
+= Clustering in {{ book.productnameFull }}
 
-Since Teiid is installed in {{ book.asName }}, there is no additional configuration needed beyond what was performed when Teiid is setup in Domain Mode. See the Domain Mode section in the Teiid link:Installation_Guide.adoc[Installation Guide]. Just make sure that you installed Teiid in every {{ book.asName }} node and started all {{ book.asName }} instances in the Domain mode that to be a part of the cluster.
+Since {{ book.productnameFull }} is installed in {{ book.asName }}, there is no additional configuration needed beyond what was performed when {{ book.productnameFull }} is setup in Domain Mode. See the Domain Mode section in the {{ book.productnameFull }} link:Installation_Guide.adoc[Installation Guide]. Just make sure that you installed {{ book.productnameFull }} in every {{ book.asName }} node and started all {{ book.asName }} instances in the Domain mode that to be a part of the cluster.
 
 Typically users create clusters to improve the performance of the system through:
 
@@ -17,5 +17,5 @@ In the _Domain_ mode, the only way a user can deploy any artifacts is using eith
 
 HAProxy may be used for load-balancing and high availability.  A good tutorial is located at link:http://blog.everythingjboss.org/articles/Load-Balancing-JDV-HAProxy/[Load Balancing JDV-HAProxy] or see link:https://github.com/foogaro/jdv-play[Luigi Fugaro's example].
 
-The load balancer should use an algorithm that supports sticky connections as Teiid sessions as specific to the original host.  For HAProxy it is recommended that you use leastconn or source.
+The load balancer should use an algorithm that supports sticky connections as {{ book.productnameFull }} sessions as specific to the original host.  For HAProxy it is recommended that you use leastconn or source.
 

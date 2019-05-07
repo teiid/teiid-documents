@@ -7,7 +7,7 @@ Once all the required code is developed, it is time to package them into a RAR a
 
 * Ant: If you are using "ant" build tool, there is "rar" build task available
 
-* Maven: If you are using maven, use <packaging> element value as "rar". Teiid uses maven, you can look at any of the "connector" projects for sample "pom.xml" file. See `Build Environment` for an example of a pom.xml file.
+* Maven: If you are using maven, use <packaging> element value as "rar". {{ book.productnameFull }} uses maven, you can look at any of the "connector" projects for sample "pom.xml" file. See `Build Environment` for an example of a pom.xml file.
 
 Make sure that the RAR file, under its "META-INF" directory has the "ra.xml" file. If you are using maven refer to http://maven.apache.org/plugins/maven-rar-plugin/[http://maven.apache.org/plugins/maven-rar-plugin/]. In the root of the RAR file, you can embed the JAR file containing your connector code and any dependent library JAR files.
 

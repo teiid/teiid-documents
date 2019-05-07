@@ -7,7 +7,7 @@ The use of global, local, and request level transactions are all mutually exclus
 
 == Enterprise Information System (EIS) Support
 
-The underlying resource adaptors that represent the EIS system and the EIS system itself must support XA transactions if they want to participate in distributed XA transaction through Teiid. If source system does not support the XA, then it can not participate in the distributed transaction. However, the source is still eligible to participate in data integration with out the XA support.
+The underlying data source that represent the EIS system and the EIS system itself must support XA transactions if they want to participate in distributed XA transaction through {{ book.productnameFull }}. If source system does not support the XA, then it can not fully participate in the distributed transaction. However, the source is still eligible to participate in data integration without the XA support.
 
-The participation in the XA transaction is automatically determined based on the resource adaptors XA capability. It is user’s responsibility to make sure that they configure a XA resource when they require them to participate in distributed transaction.
+The participation in the XA transaction is automatically determined based on the source XA capability. It is user’s responsibility to make sure that they configure a XA resource when they require them to participate in distributed transaction.
 

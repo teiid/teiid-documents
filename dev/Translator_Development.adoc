@@ -1,17 +1,21 @@
 
 = Translator (Custom) Development
 
+{% if book.targetWildfly %}
 Below are the high-level steps for creating custom Translators, which is described in this section. This section will cover how to do each of the following steps in detail. It also provides additional information for advanced topics, such as streaming large objects.
 
-For sample Translator code, refer to the Teiid source code at https://github.com/teiid/teiid/tree/master/connectors/[https://github.com/teiid/teiid/tree/master/connectors/].
+For sample Translator code, refer to the {{ book.productnameFull }} source code at https://github.com/teiid/teiid/tree/master/connectors/[https://github.com/teiid/teiid/tree/master/connectors/].
 
 1.  Create a new or reuse an existing Resource Adapter for the EIS system, to be used with this Translator. Refer to link:Developing_JEE_Connectors.adoc[Custom Resource Adapters].
-2.  Decide whether to use the Teiid archetype template to create your initial custom translator project and classes or manually create your environment. Refer to link:Environment_Setup.html[Environment Setup].
+2.  Decide whether to use the {{ book.productnameFull }} archetype template to create your initial custom translator project and classes or manually create your environment. Refer to link:Environment_Setup.html[Environment Setup].
 3.  Implement the required classes defined by the Translator API. Refer to link:Implementing_the_Framework.html[Implementing the Framework]. +
 1) Create an ExecutionFactory – Extend the `org.teiid.translator.ExecutionFactory` class 
 2) Create relevant Executions (and sub-interfaces) – specifies how to execute each type of command
 4.  Define the template for exposing configuration properties. Refer to link:Packaging.adoc[Packaging].
 5.  Deploy your Translator. Refer to link:Deployment.adoc[Deployment].
 6.  Deploy a Virtual Database (VDB) that uses your Translator.
-7.  Execute queries via Teiid.
-
+7.  Execute queries via {{ book.productnameFull }}.
+{% endif %}
+{% if book.targetSpring %}
+See the repository for more on {{ book.docUrl }}/docs/CustomTranslator.adoc[Custom translator].
+{% endif %}

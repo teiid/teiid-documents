@@ -1,7 +1,7 @@
 {
     "variables" : {
-        "versionNumber" : "1.1",
-        "fullVersionNumber": "1.1.0",
+        "versionNumber" : "12.2",
+        "fullVersionNumber": "12.2.0",
         "asVersionNumber" :  "REPLACE ME",
         "asFullVersionNumber" :  "REPLACE ME",
         "asName" :  "REPLACE ME",
@@ -12,7 +12,8 @@
         "archeTypeVersion" : "REPLACE ME",
         "targetWildfly" : false,
         "targetSpring" : true,
-        "productnameFull" : "Teiid Spring Boot"
+        "productnameFull" : "Teiid",
+        "docUrl" : "https://github.com/teiid/teiid-spring-boot/blob/1.0.x"
     },
     "plugins": ["collapsible-menu"]
 }

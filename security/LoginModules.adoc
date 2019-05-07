@@ -1,9 +1,9 @@
 
 == LoginModules
 
-LoginModules are an essential part of the JAAS security framework and provide Teiid customizable user authentication and the ability to reuse existing LoginModules defined for {{ book.asName }}. Refer to the {{ book.asName }} security documentation for information about configuring security in {{ book.asName }}, http://docs.jboss.org/jbossas/admindevel326/html/ch8.chapter.html[http://docs.jboss.org/jbossas/admindevel326/html/ch8.chapter.html].
+LoginModules are an essential part of the JAAS security framework and provide {{ book.productnameFull }} customizable user authentication and the ability to reuse existing LoginModules defined for {{ book.asName }}. Refer to the {{ book.asName }} security documentation for information about configuring security in {{ book.asName }}, http://docs.jboss.org/jbossas/admindevel326/html/ch8.chapter.html[http://docs.jboss.org/jbossas/admindevel326/html/ch8.chapter.html].
 
-Teiid can be configured with multiple named application policies that group together relevant LoginModules. These security-domain names can be referenced on a per vdb.
+{{ book.productnameFull }} can be configured with multiple named application policies that group together relevant LoginModules. These security-domain names can be referenced on a per vdb.
 
 The security-domain attribute under the authentication element in `teiid` subsystem in the `<jboss-install>/standalone/configuration/standalone-teiid.xml` file is used set the security-domain name. For example, in default configuration under `teiid` subsystem you will find
 
@@ -20,7 +20,7 @@ If no domain can authenticate the user, the login attempt will fail. Details of 
 
 === security-domain in VDB
 
-A VDB can be configured to use a security-domain other than the Teiid default security-domain. This configuration is defined in the vdb.xml file, see link:../reference/vdb_properties.adoc[VDB Properties] for more information. The security-domain defined on transport configuration will be used as default security-domain, if a security-domain is not configured for a specific VDB.
+A VDB can be configured to use a security-domain other than the {{ book.productnameFull }} default security-domain. This configuration is defined in the vdb.xml file, see link:../reference/vdb_properties.adoc[VDB Properties] for more information. The security-domain defined on transport configuration will be used as default security-domain, if a security-domain is not configured for a specific VDB.
 
 [source,xml]
 ----
@@ -113,13 +113,13 @@ User and role names are entirely up to the needs of the given deployment. For ex
 
 NOTE: When you configure this security domain, you must provide the empty user.properties and roles.properties files at the correct path defined in the configuration, otherwise the initialization of security domain will endup in failure.
 
-NOTE: Teiid data roles names are independent of JAAS roles. VDB creators can choose whatever name they want for their data roles, which are then mapped at deployment time to JAAS roles.
+NOTE: {{ book.productnameFull }} data roles names are independent of JAAS roles. VDB creators can choose whatever name they want for their data roles, which are then mapped at deployment time to JAAS roles.
 
 == LDAP Based LoginModule
 
 For more complete information to configure a LDAP based login module consult  https://access.redhat.com/documentation/en/red-hat-jboss-enterprise-application-platform/version-6.4/red-hat-jboss-enterprise-application-platform-64-how-to-configure-identity-management/how-to-configure-identity-management[EAP documentation]
 
-Configure LDAP authentication by editing _standalone-teiid.xml_ under 'security' subsystem. Once the security-domain is defined, then edit the 'security-domain' attribute for Teiid’s 'transport' for which you want use this LDAP login.
+Configure LDAP authentication by editing _standalone-teiid.xml_ under 'security' subsystem. Once the security-domain is defined, then edit the 'security-domain' attribute for {{ book.productnameFull }}’s 'transport' for which you want use this LDAP login.
 
 [source,xml]
 .standalone-teiid.xml

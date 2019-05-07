@@ -8,7 +8,7 @@ You may experience situations where you incur performance issues or unexpected r
 
 * When there is an issue start by isolating a problem query as much as possible.  OData, REST, and pg/ODBC access are layered on JDBC.  If not accessing through JDBC, does the issue occur when using JDBC?  If not, then the issue is at the transport layer rather than at the engine level.  In whatever scenario the issue occurs, the particulars matter - what sources, if there is a transaction, load, etc.
 * Don't make too many assumptions 
- ** For example memory consumption can be heavily dependent upon drivers, and a resulting out of memory issue may only be indirectly related to Teiid
+ ** For example memory consumption can be heavily dependent upon drivers, and a resulting out of memory issue may only be indirectly related to {{ book.productnameFull }}
 * Start with the query plan - especially with performance issues
  ** There may be simplifications or changes possible to views and procedures utilized by the user query.
  ** Ensure that relevant costing metadata is set and/or that hints you have provided are being applied as expected.
@@ -28,7 +28,7 @@ If you haven't done so already, you should start by familiarizing yourself with 
 
 The link:../reference/Query_Plans.adoc[final processor plan] is generally what is meant when referring to by “the query plan”.  The plan can be viewed in an XML or a plain text format.
 
-You can also use Teiid Extensions or link:../client-dev/SHOW_Statement.adoc[SQL statements] to get the plan:
+You can also use {{ book.productnameFull }} Extensions or link:../client-dev/SHOW_Statement.adoc[SQL statements] to get the plan:
 
 [source,sql]
 ----
@@ -79,7 +79,7 @@ ProjectNode
 ----
 
 In addition to the execution stats, note there are also cost estimates.  The values for the cost estimates are derived from the statistic values set of each table/column about the row count, number of distinct values, number of null values, etc.
-Unlike systems that own the data, Teiid does not build histograms or other in-depth models of the data.  Theses values are meant to be approximations with nominally distribution assumptions.
+Unlike systems that own the data, {{ book.productnameFull }} does not build histograms or other in-depth models of the data.  Theses values are meant to be approximations with nominally distribution assumptions.
 The costing information from the metadata only matters for physical entities as we'll recompute the higher values in planning after merge virtual and other plan modifications.  
 If you see that join is being implemented inefficiently, then first make sure reasonable costing values are being set on the tables involved.  Statistics can be gathered for some sources at design time or deploy time.  
 In environments that fluctuate rapidly, you may need to issue runtime costing updates via link:../reference/sysadmin_schema.adoc#_foreign_procedures[system procedures].
@@ -88,7 +88,7 @@ Note: if you cardinality values are unknown - shown as 'Node Cardinality: -1.0' 
 
 === Pushdown Inhibited
 
-One of the most common issues that causes performance problems is when not enough of the plan is pushed to a given source leading to too many rows being fetched and/or too much processing in Teiid.
+One of the most common issues that causes performance problems is when not enough of the plan is pushed to a given source leading to too many rows being fetched and/or too much processing in {{ book.productnameFull }}.
 
 Pushdown problems fall into two categories:
 
@@ -116,16 +116,16 @@ LOW Relational Planner SubqueryIn is not supported by source pm1 - e1 IN /*+ NO_
 
 Beyond pushdown being inhibited, other common issues are:
 
-* Slight differences in Teiid/Pushdown results 
- ** for example Teiid produces a different for a given function than the source
+* Slight differences in {{ book.productnameFull }}/Pushdown results 
+ ** for example {{ book.productnameFull }} produces a different for a given function than the source
 * Source query form is not optimal or incorrect
 * There is an unaccounted for type conversion
- ** for example there is no char(n) type in Teiid
+ ** for example there is no char(n) type in {{ book.productnameFull }}
  ** A cast may cause a source index not to be used
 * Join Performance
  ** Costing values not set leading to a non-performant plan.
  ** Use link:../reference/FROM_Clause.adoc[hints] if needed.
- ** Teiid will replace outer with inner joins when possible, but just in case review outer join usage in the user query and view layers
+ ** {{ book.productnameFull }} will replace outer with inner joins when possible, but just in case review outer join usage in the user query and view layers
    
 === XQuery
 

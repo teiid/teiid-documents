@@ -1,5 +1,5 @@
 
 = Other Considerations
 
-When using Teiid in a development environment, you may consider setting the _max-source-rows-allowed_ property to reasonably small level value (e.g. 10000) to prevent large amounts of data from being pulled from sources. Leaving the _exception-on-max-source-rows_ set to "true" will alert the developer through an exception that an attempt was made to retrieve more than the specified number of rows.
+When using {{ book.productnameFull }} in a development environment, you may consider setting the _max-source-rows-allowed_ property to reasonably small level value (e.g. 10000) to prevent large amounts of data from being pulled from sources. Leaving the _exception-on-max-source-rows_ set to "true" will alert the developer through an exception that an attempt was made to retrieve more than the specified number of rows.
 

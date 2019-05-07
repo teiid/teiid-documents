@@ -1,17 +1,17 @@
 = QGIS Integration
 
-link:http://www.qgis.org/[QGIS] is an open source geospatial platform.  It can be integrated with Teiid to serve geospatial
+link:http://www.qgis.org/[QGIS] is an open source geospatial platform.  It can be integrated with {{ book.productnameFull }} to serve geospatial
  data from a variety of sources.
 
 == Prerequisites
 
-- Have QGIS installed.  Teiid integration was last tested with version 2.14. 
+- Have QGIS installed.  {{ book.productnameFull }} integration was last tested with version 2.14. 
 
-- Your Teiid installation should already be setup for link:../admin/Socket_Transports.adoc[ODBC] access.  This allows the built-in support of QGIS 
+- Your {{ book.productnameFull }} installation should already be setup for link:../admin/Socket_Transports.adoc[ODBC] access.  This allows the built-in support of QGIS 
 for PostGIS/PostgreSQL to be used.
 
 - Have a VDB deployed that exposes one or more tables containing an appropriate Geometry column.
-.. The Teiid system table link:../reference/sys_schema.adoc[GEOMETY_COLUMNS] will be used by QGIS.  Please ensure that the relevant 
+.. The {{ book.productnameFull }} system table link:../reference/sys_schema.adoc[GEOMETY_COLUMNS] will be used by QGIS.  Please ensure that the relevant 
 geometry columns have the appropriate srid and coord_dimensions, which may require setting the {http://www.teiid.org/translator/spatial/2015}srid and {http://www.teiid.org/translator/spatial/2015}coord_dimension
 extension property on the geometry column. 
 
@@ -20,8 +20,8 @@ extension property on the geometry column.
 This process will need to be repeated for each VDB schema you are exposing that contains geospatial data.
 
 . In the QGIS GUI browser panel right click on PostGIS and select "New Connection". 
-. Fill in the Teiid server host, ODBC port, database (VDB Name with optional version), user, and password.
-.. If your VDBs contain target schema or table names with % or _, Teiid must be configured to use the same default like escape 
+. Fill in the {{ book.productnameFull }} server host, ODBC port, database (VDB Name with optional version), user, and password.
+.. If your VDBs contain target schema or table names with % or _, {{ book.productnameFull }} must be configured to use the same default like escape 
 character '\' as PostgreSQL to properly respond to metadata queries.  Either the link:../admin/System_Properties.adoc[system property] 
 org.teiid.backslashDefaultMatchEscape must be set to true.
 . Follow the typical QGIS instructions for creating a Layer by browsing to the appropriate schema and selecting a table that exposes a geometry.

@@ -1,8 +1,8 @@
 = OAuth2 Based Security For OData Using KeyCloak
 
-This document will provide detailed instructions to enable OAuth V2 authentication on Teiid's OData interface using the Keycloak as authentication server (IDP). Please note that use a different IDP server will not work with this implementation as OAuth2 implementations are not interoperable. To work with separate IDP than Keycloak consult their documentation, replace the web layer semantics, like the "login-config" in web.xml file etc. Providing the details of other IDP is beyond the scope of this document.
+This document will provide detailed instructions to enable OAuth V2 authentication on {{ book.productnameFull }}'s OData interface using the Keycloak as authentication server (IDP). Please note that use a different IDP server will not work with this implementation as OAuth2 implementations are not interoperable. To work with separate IDP than Keycloak consult their documentation, replace the web layer semantics, like the "login-config" in web.xml file etc. Providing the details of other IDP is beyond the scope of this document.
 
-This examples will show case an example, where Teiid's OData rest interface is secured using OAuth using Keycloak using OpenID Connect. The VDB accessed by the OData interface also depends on another web service which is used as a data source, that is also secured with OAuth using the same Keycloak IDP. The central idea behind this example is to pass the same "access-token" used at OData interface layer to passthrough the Teiid layer to bottom data source layer and gain access to the source.
+This examples will show case an example, where {{ book.productnameFull }}'s OData rest interface is secured using OAuth using Keycloak using OpenID Connect. The VDB accessed by the OData interface also depends on another web service which is used as a data source, that is also secured with OAuth using the same Keycloak IDP. The central idea behind this example is to pass the same "access-token" used at OData interface layer to passthrough the {{ book.productnameFull }} layer to bottom data source layer and gain access to the source.
 
 
 == Download and install Keycloak as a separate web server.
@@ -20,14 +20,14 @@ Add two roles "odata" and "user". These are enterprise roles, that will be used 
 
 image:images/roles.png[roles]
 
- * Add a new client called "odata4-oauth", this client represents the Teiid's OData client that we are going to create
+ * Add a new client called "odata4-oauth", this client represents the {{ book.productnameFull }}'s OData client that we are going to create
 
 image:images/odata-client.png[odata-client]
 
 
 and choose scopes "odata" and "user" for this client. Note that the redirect URI needs to be where the actual service is going to be available. 
 
-NOTE: The client web-service typically defines what roles that logged in user must have in order for to grant the access. In the Keycloak OAuth implementation, these roles are used as "scopes". Note that the "odata4-oauth" client MUST have ALL the scopes that it is going to delegate the access-token for gaining access to bottom data services. In this example Teiid's OData web services requires "odata" role, the bottom web-service requires the "user" role. Since the OData accesses the bottom web-service it requires both the roles.
+NOTE: The client web-service typically defines what roles that logged in user must have in order for to grant the access. In the Keycloak OAuth implementation, these roles are used as "scopes". Note that the "odata4-oauth" client MUST have ALL the scopes that it is going to delegate the access-token for gaining access to bottom data services. In this example {{ book.productnameFull }}'s OData web services requires "odata" role, the bottom web-service requires the "user" role. Since the OData accesses the bottom web-service it requires both the roles.
 
 image:images/odata-client-scope.png[odata-client-scope]
 
@@ -36,10 +36,10 @@ image:images/odata-client-scope.png[odata-client-scope]
 
 image:images/database-client.png[database-client]
  
-== Install and configure Teiid server
+== Install and configure {{ book.productnameFull }} server
 
-* Download and install Teiid server
-* Download Keycloak adapter for the EAP, and unzip over the Teiid server installation or follow Keycloak installtion directions.
+* Download and install {{ book.productnameFull }} server
+* Download Keycloak adapter for the EAP, and unzip over the {{ book.productnameFull }} server installation or follow Keycloak installtion directions.
 
 
 Run the following to add Keycloak specific modules to the server 
@@ -50,7 +50,7 @@ $ cd $WILDFLY_HOME
 $ unzip keycloak-wildfly-adapter-dist-${version}.zip
 ---- 
 
-Now, start the Teiid Server and using the jboss-cli.sh file run the following to install the KeyCloak configuration into the Teiid Server.
+Now, start the {{ book.productnameFull }} Server and using the jboss-cli.sh file run the following to install the KeyCloak configuration into the {{ book.productnameFull }} Server.
 
 [source,sh]
 ----
@@ -102,13 +102,13 @@ This finishes all the server side changes that are required to make OAuth authen
 
 == OData Application WAR 
 
-In order to use OAuth2 authentication, the OData WAR needs to be updated to make use of the OAuth2 based security domain. By default Teiid installation comes with OData web service WAR file configured with "HTTP Basic" authentication. This WAR needs to either replaced or updated.
+In order to use OAuth2 authentication, the OData WAR needs to be updated to make use of the OAuth2 based security domain. By default {{ book.productnameFull }} installation comes with OData web service WAR file configured with "HTTP Basic" authentication. This WAR needs to either replaced or updated.
 
 === Build the new OData WAR file that supports OAuth.
 
-To build OAuth based OData WAR file, Teiid provides a template maven project, either download or clone the project from https://github.com/teiid/teiid-web-security 
+To build OAuth based OData WAR file, {{ book.productnameFull }} provides a template maven project, either download or clone the project from https://github.com/teiid/teiid-web-security 
 
-The above link provides templates for creating two WAR files, one WAR file is to create Teiid's OData service with OAuth, the next is a sample "database-service" for this demo. Please note that "database-service" is to mimic the database service, that will be different in a real use-case, however the steps defined for the access will be same.
+The above link provides templates for creating two WAR files, one WAR file is to create {{ book.productnameFull }}'s OData service with OAuth, the next is a sample "database-service" for this demo. Please note that "database-service" is to mimic the database service, that will be different in a real use-case, however the steps defined for the access will be same.
 
 Replace the "teiid-web-security/teiid-odata-oauth-keycloak/src/main/webapp/WEB-INF/keyclock.json" file contents with "installation" script in "keycloak.json" format from Keycloak admin console's "odata4-client" client application.
 
@@ -131,11 +131,11 @@ Build the WAR files running the maven command
 mvn clean package
 ----
 
-NOTE: You may have to update Teiid and Keycloak versions in the pom.xml file
+NOTE: You may have to update {{ book.productnameFull }} and Keycloak versions in the pom.xml file
 
 The above command will generate a new WAR file for deployment. Follow the below directions to deploy this new WAR file. 
 
-==== Teiid Server on WildFly 
+==== {{ book.productnameFull }} Server on WildFly 
 
 Replace the <wildfly>/modules/system/layers/dv/org/jboss/teiid/main/deployments/teiid-olingo-odata4.war" file with new WAR file, by executing a command similar to 
 
@@ -176,7 +176,7 @@ deployment-overlay add --name=myOverlay --content=/WEB-INF/web.xml=teiid-web-sec
 </vdb>
 ----
 
-Start both Keycloak and Teiid Servers. If both of these servers are in the same machine, then we need to offset the ports of Teiid server such that they will not conflict with that of the Keycloak server. For this example, I started the Teiid server as
+Start both Keycloak and {{ book.productnameFull }} Servers. If both of these servers are in the same machine, then we need to offset the ports of {{ book.productnameFull }} server such that they will not conflict with that of the Keycloak server. For this example, I started the {{ book.productnameFull }} server as
 
 ----
 ./standalone.sh -c standalone-teiid.xml -Djboss.socket.binding.port-offset=100
@@ -186,7 +186,7 @@ where all ports are offset by 100. So the management port is 10090 and default J
 
 === Testing the example
 
-There are two different mechanisms for testing this example. One is purely for testing the using the browser, then other is programatically. Typically using the browser is NOT correct for accessing the Teiid's OData service, but it is shown below for testing purposes.
+There are two different mechanisms for testing this example. One is purely for testing the using the browser, then other is programatically. Typically using the browser is NOT correct for accessing the {{ book.productnameFull }}'s OData service, but it is shown below for testing purposes.
 
 ==== Using the Web Browser
 
@@ -200,7 +200,7 @@ The user will be presented with Keycloak based login page, once the credentials 
 
 === Calling programatically
 
-This process of calling does not need to involve a web-browser, this is typical of scenario where another web-application or mobile application is calling the Teiid's OData web-service to retrieve the data. However in this process, the process of negotiating the "access-token" is externalized and is defined by the IDP, which in this case is Keycloak.
+This process of calling does not need to involve a web-browser, this is typical of scenario where another web-application or mobile application is calling the {{ book.productnameFull }}'s OData web-service to retrieve the data. However in this process, the process of negotiating the "access-token" is externalized and is defined by the IDP, which in this case is Keycloak.
 
 For demonstration purposes we can use CURL to negotiate this token as shown below (client_secret can found the Keycloak admin console under client credentials tab)
 

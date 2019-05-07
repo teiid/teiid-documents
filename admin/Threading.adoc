@@ -1,7 +1,7 @@
 
 == Transport
 
-*max-socket-threads* (default 0) - The max number of threads dedicated to the initial request processing. Zero indicates to use the system default of max available processors. All the access to Teiid (JDBC, ODBC, etc) is controlled by "transport" element in the configuration. Socket threads are configured for each transport. They handle NIO non-blocking IO operations as well as directly servicing any operation that can run without blocking. For longer running operations, the socket threads queue with work the query engine.
+*max-socket-threads* (default 0) - The max number of threads dedicated to the initial request processing. Zero indicates to use the system default of max available processors. All the access to {{ book.productnameFull }} (JDBC, ODBC, etc) is controlled by "transport" element in the configuration. Socket threads are configured for each transport. They handle NIO non-blocking IO operations as well as directly servicing any operation that can run without blocking. For longer running operations, the socket threads queue with work the query engine.
 
 == Query Engine
 
@@ -11,7 +11,7 @@
 
 *thread-count-for-source-concurrency* (default 0) - Should always be smaller than _max-threads_, sets the number of concurrently executing source queries per user request. 0 indicates to use the default calculated value based on 2 * (_max-threads_ / _max-active-plans_). Setting this to 1 forces serial execution of all source queries by the processing thread. Any number greater than 1 limits the maximum number of concurrently execution source requests according. Using the respective defaults, this means that each user request would be allowed 6 concurrently executing source queries. If the default calculated value is not applicable to your workload, for example, if you have queries that generate more concurrent long running source queries, you should adjust this value.
 
-*time-slice-in-milliseconds* (default 2000) - Provides course scheduling of long running processor plans. Plans whose execution exceed a time slice will be re-queued for additional processing to allow for other plans to be initiated. The time slice is from the perspective of the engine processing thread. This value is not honored exactly as the plan may not be at a re-startable point when the time slice expires. This is not a replacement for the thread scheduling performed by Java and the operating system, rather it just ensures that Teiid allows other work to be started if the current set of active plans includes long running queries.
+*time-slice-in-milliseconds* (default 2000) - Provides course scheduling of long running processor plans. Plans whose execution exceed a time slice will be re-queued for additional processing to allow for other plans to be initiated. The time slice is from the perspective of the engine processing thread. This value is not honored exactly as the plan may not be at a re-startable point when the time slice expires. This is not a replacement for the thread scheduling performed by Java and the operating system, rather it just ensures that {{ book.productnameFull }} allows other work to be started if the current set of active plans includes long running queries.
 
 == Async Operations
 

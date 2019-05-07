@@ -62,7 +62,7 @@ apply to all the HTTP communications under this resource adapter.
 
 === Delegation
 
-If in case the user is already logged into Teiid using Kerberos using JDBC/ODBC or used SPNEGO in web-tier and used pass-through authentication into Teiid, then there is no need to negotiate a new token for the Kerberos. The system can delegate the existing token.
+If in case the user is already logged into {{ book.productnameFull }} using Kerberos using JDBC/ODBC or used SPNEGO in web-tier and used pass-through authentication into {{ book.productnameFull }}, then there is no need to negotiate a new token for the Kerberos. The system can delegate the existing token.
 
 To configure for delegation, set up security domain defined exactly as defined in "negotiation", and jboss-cxf-xxx.xml file, however remove the following line from jboss-cxf-xxx.xml file, as it is not going to
 negotiate new token.

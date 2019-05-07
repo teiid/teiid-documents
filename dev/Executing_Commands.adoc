@@ -3,7 +3,7 @@
 
 == Execution Modes
 
-The Teiid query engine uses the "ExecutionFactory" class to obtain the "Execution" interface for the command it is executing. The actual queries themselves are sent to translators in the form of a set of objects, which are further described in Command Language. Refer to link:Command_Language.adoc[Command Language]. Translators are allowed to support any subset of the available execution modes.
+The {{ book.productnameFull }} query engine uses the "ExecutionFactory" class to obtain the "Execution" interface for the command it is executing. The actual queries themselves are sent to translators in the form of a set of objects, which are further described in Command Language. Refer to link:Command_Language.adoc[Command Language]. Translators are allowed to support any subset of the available execution modes.
 
 |===
 |Execution Interface |Command interface(s) |Description
@@ -39,7 +39,7 @@ To see if the user query expects generated keys to be returned, consult the `Com
 
 == Source Hints
 
-The Teiid source meta-hint is used to provide hints directly to source executions via user or transformation queries. See the reference for more on source hints. If specified and applicable, the general and source specific hint will be supplied via the ExecutionContext methods `getGeneralHint` and `getSourceHint`. See the source for the `OracleExecutionFactory` for an example of how this source hint information can be utilized.
+The {{ book.productnameFull }} source meta-hint is used to provide hints directly to source executions via user or transformation queries. See the reference for more on source hints. If specified and applicable, the general and source specific hint will be supplied via the ExecutionContext methods `getGeneralHint` and `getSourceHint`. See the source for the `OracleExecutionFactory` for an example of how this source hint information can be utilized.
 
 == ResultSetExecution
 
@@ -85,12 +85,12 @@ All normal command executions end with the calling of `close()` on the Execution
 
 == Command Cancellation
 
-Commands submitted to Teiid may be aborted in several scenarios:
+Commands submitted to {{ book.productnameFull }} may be aborted in several scenarios:
 
 * Client cancellation via the JDBC API (or other client APIs)
 * Administrative cancellation
 * Clean-up during session termination
 * Clean-up if a query fails during processing Unlike the other execution methods, which are handled in a single-threaded manner, calls to cancel happen asynchronously with respect to the execution thread.
 
-Your connector implementation may choose to do nothing in response to this cancellation message. In this instance, Teiid will call close() on the execution object after current processing has completed. Implementing the cancel() method allows for faster termination of queries being processed and may allow the underlying data source to terminate its operations faster as well.
+Your connector implementation may choose to do nothing in response to this cancellation message. In this instance, {{ book.productnameFull }} will call close() on the execution object after current processing has completed. Implementing the cancel() method allows for faster termination of queries being processed and may allow the underlying data source to terminate its operations faster as well.
 

@@ -1,7 +1,7 @@
 
 = Salesforce Translators
 
-The Salesforce translator supports the SELECT, DELETE, INSERT, UPSERT, and UPDATE operations against a Salesforce.com account. It is designed for use with the {{ book.productnameFull }} Salesforce resource adapter.
+The Salesforce translator supports the SELECT, DELETE, INSERT, UPSERT, and UPDATE operations against a Salesforce.com account.
 
 == Salesforce API Version Support
 

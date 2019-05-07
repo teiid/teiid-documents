@@ -1,22 +1,24 @@
 
-= Connecting to a Teiid Server
+= Connecting to a {{ book.productnameFull }} Server
 
-The Teiid JDBC API provides Java Database Connectivity (JDBC) access to any Virtual Database (VDB) deployed on a Teiid Server. The Teiid JDBC API is compatible with the JDBC 4.0 specification; however, it does not fully support all methods. Advanced features, such as updatable result sets or SQL3 data types, are not supported.
+The {{ book.productnameFull }} JDBC API provides Java Database Connectivity (JDBC) access to a Virtual Database (VDB) deployed on {{ book.productnameFull }}. The {{ book.productnameFull }} JDBC API is compatible with the JDBC 4.0 specification; however, it does not fully support all methods. Advanced features, such as updatable result sets or SQL3 data types, are not supported.
 
-Java client applications connecting to a Teiid Server will need to use Java 1.6 JDK. Previous versions of Java are not supported.
+Java client applications connecting to a {{ book.productnameFull }} Server will need to use at least the Java 1.6 JDK. Previous versions of Java are not supported.
 
-Support for Teiid clients and servers older than version 8 has been dropped from Teiid 10.2 and later.
+{% if book.targetWildfly %}
+Support for {{ book.productnameFull }} clients and servers older than version 8 has been dropped from {{ book.productnameFull }} 10.2 and later.
 
-Before you can connect to the Teiid Server using the Teiid JDBC API, please do following tasks first.
+Before you can connect to the {{ book.productnameFull }} Server using the {{ book.productnameFull }} JDBC API, please do following tasks first.
 
-1.  Install the Teiid Server. See the "Admin Guide" for instructions.
+1.  Install the {{ book.productnameFull }} Server. See the "Admin Guide" for instructions.
 2.  Build a Virtual Database (VDB). Check the "Reference Guide" for instructions on how to build a VDB. If you do not know what VDB is, then start with this http://www.jboss.org/teiid/basics/virtualdatabases.html[document].
-3.  Deploy the VDB into Teiid Server. Check link:../admin/Administrators_Guide.adoc[Administrator’s Guide] for instructions.
-4.  Start the Teiid Server ({{ book.asName }}), if it is not already running.
+3.  Deploy the VDB into {{ book.productnameFull }} Server. Check link:../admin/Administrators_Guide.adoc[Administrator’s Guide] for instructions.
+4.  Start the {{ book.productnameFull }} Server ({{ book.asName }}), if it is not already running.
+{% endif %}
 
-Now that you have the VDB deployed in the Teiid Server, client applications can connect to the Teiid Server and issue SQL queries against deployed VDB using JDBC API. If you are new to JDBC, see Java’s documentation about http://docs.oracle.com/javase/tutorial/jdbc/index.html[JDBC]. Teiid ships with teiid-{{ book.fullVersionNumber }}-jdbc.jar that can be found in the http://teiid.io/teiid_runtimes/teiid_wildfly/downloads/[downloads].
+Once you have the VDB deployed in {{ book.productnameFull }}, client applications can connect to the {{ book.productnameFull }} Server and issue SQL queries against deployed VDB using JDBC API. If you are new to JDBC, see Java’s documentation about http://docs.oracle.com/javase/tutorial/jdbc/index.html[JDBC]. {{ book.productnameFull }} ships with teiid-{{ book.fullVersionNumber }}-jdbc.jar that can be found in the http://teiid.io/teiid_runtimes/teiid_wildfly/downloads/[downloads].
 
-You can also obtain the Teiid JDBC from the JBoss Public Maven Repository https://oss.sonatype.org/content/repositories/releases/ using the coordinates:
+You can also obtain the {{ book.productnameFull }} JDBC from the JBoss Public Maven Repository https://oss.sonatype.org/content/repositories/releases/ using the coordinates:
 
 [source,xml]
 ----
@@ -33,7 +35,7 @@ Important classes in the client JAR:
 * `org.teiid.jdbc.TeiidDriver`- allows JDBC connections using the {{ book.javaVersionUrl }}/docs/api/java/sql/DriverManager.html[DriverManager] class.
 * `org.teiid.jdbc.TeiidDatasource`- allows JDBC connections using the {{ book.javaVersionUrl }}/docs/api/javax/sql/DataSource.html[DataSource] {{ book.javaVersionUrl }}/docs/api/javax/sql/XADataSource.html[XADataSource] class. You should use this class to create managed or XA connections.
 
-Once you have established a connection with the Teiid Server, you can use standard JDBC API classes to interrogate metadata and execute queries.
+Once you have established a connection with the {{ book.productnameFull }} Server, you can use standard JDBC API classes to interrogate metadata and execute queries.
 
 == OpenTracing Support
 
@@ -48,8 +50,8 @@ http://opentracing.io/[OpenTracing] support is optional for the client driver.  
 </dependency>
 ----
 
-where version.opentracing (0.31 for Teiid 11.0) is defined in the project integration bom.  
+where version.opentracing (0.31 for {{ book.productnameFull }} 11.0) is defined in the project integration bom.  
 
-Or you may manually include the opentracing-util, opentracing-api, and opentracing-noop jars as needed by the tooling or other environment where the Teiid client jar is utilized.
+Or you may manually include the opentracing-util, opentracing-api, and opentracing-noop jars as needed by the tooling or other environment where the {{ book.productnameFull }} client jar is utilized.
 
 OpenTracing support in the client and server requires that the respective runtimes have an appropriate tracing client installed and available via the GlobalTracer.

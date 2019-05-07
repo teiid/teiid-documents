@@ -1,7 +1,7 @@
 
-= Implementing the Teiid Framework
+= Implementing the {{ book.productnameFull }} Framework
 
-If you are going to use the Teiid framework for developing a JCA connector, follow these steps. The required classes are in `org.teiid.resource.api` package. Please note that Teiid framework does not make use JCA’s CCI framework, only the JCA’s SPI interfaces.
+If you are going to use the {{ book.productnameFull }} framework for developing a JCA connector, follow these steps. The required classes are in `org.teiid.resource.api` package. Please note that {{ book.productnameFull }} framework does not make use JCA’s CCI framework, only the JCA’s SPI interfaces.
 
 * Define Managed Connection Factory
 * Define the Connection Factory class
@@ -62,7 +62,7 @@ Subject subject = ConnectionContext.getSubject();
 
 This "Subject" object can give access to logged-in user’s credentials and roles that are defined. Note that this may be null.
 
-Note that you can define "security-domain" for this resource adapter, that is separate from the Teiid defined "security-domain" for validating the JDBC end user. However, it is the user's responsibility to make the necessary logins before the Container’s thread accesses this resource adapter, and this can get overly complex.
+Note that you can define "security-domain" for this resource adapter, that is separate from the {{ book.productnameFull }} defined "security-domain" for validating the JDBC end user. However, it is the user's responsibility to make the necessary logins before the Container’s thread accesses this resource adapter, and this can get overly complex.
 
 == Define the Connection class
 
@@ -97,7 +97,7 @@ public class MyConnection extends BasicConnection
 
 If your EIS source can participate in XA transactions, then on your Connection object, override the "getXAResource()" method and provide the "XAResource" object for the EIS system. Refer to link:Implementing_the_Teiid_Framework.adoc[Define the Connection class]. Also, You need to extend the "BasicResourceAdapter" class and provide implementation for method "public XAResource[] getXAResources(ActivationSpec[] specs)" to participate in crash recovery.
 
-Note that, only when the resource adapters are XA capable, then Teiid can make them participate in a distributed transactions. If they are not XA capable, then source can participate in distributed query but will not participate in the transaction. Transaction semantics are defined by how you you configured "connection-factory" in a "resource-adapter". i.e. jta=true/false.
+Note that, only when the resource adapters are XA capable, then {{ book.productnameFull }} can make them participate in a distributed transactions. If they are not XA capable, then source can participate in distributed query but will not participate in the transaction. Transaction semantics are defined by how you you configured "connection-factory" in a "resource-adapter". i.e. jta=true/false.
 
 == Define the configuration properties in a "ra.xml" file
 
@@ -132,5 +132,5 @@ Extended metadata properties
 * $advanced: Notes this as Advanced property
 * $editable: Property can be modified; or read-only
 
-Note that all these are optional properties; however in the absence of this metadata, Teiid tooling may not work as expected.
+Note that all these are optional properties; however in the absence of this metadata, {{ book.productnameFull }} tooling may not work as expected.
 

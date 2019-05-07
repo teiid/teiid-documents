@@ -1,15 +1,15 @@
 
 = Large Objects
 
-This section examines how to use facilities provided by the Teiid API to use large objects such as blobs, clobs, and xml in your Translator.
+This section examines how to use facilities provided by the {{ book.productnameFull }} API to use large objects such as blobs, clobs, and xml in your Translator.
 
 == Data Types
 
-Teiid supports three large object runtime data types:  blob, clob, and xml. A blob is a "binary large object", a clob is a "character larg  object", and "xml" is a "xml document". Columns modeled as a blob, clob, or xml are treated similarly by the translator framework to support memory-safe streaming.  
+{{ book.productnameFull }} supports three large object runtime data types:  blob, clob, and xml. A blob is a "binary large object", a clob is a "character larg  object", and "xml" is a "xml document". Columns modeled as a blob, clob, or xml are treated similarly by the translator framework to support memory-safe streaming.  
 
 == Why Use Large Object Support?
 
-Teiid allows a Translator to return a large object through the Teiid translator API by just returning a reference to the actual large object. Access to that LOB will be streamed as appropriate rather than retrieved all at once.  This is useful for several reasons:
+{{ book.productnameFull }} allows a Translator to return a large object through the {{ book.productnameFull }} translator API by just returning a reference to the actual large object. Access to that LOB will be streamed as appropriate rather than retrieved all at once.  This is useful for several reasons:
 
 1.  Reduces memory usage when returning the result set to the user.
 2.  Improves performance by passing less data in the result set.

@@ -64,10 +64,11 @@ As VDB developer you need to know, how to configure these sources in the {{ book
 {% endif %}
 
 === Translator  
-A Translator (also called DATA WRAPPER) is a component that provides an abstraction layer between {{ book.productnameFull }} Query Engine and physical data source, that knows how to convert {{ book.productnameFull }} issued query commands into source specific commands and execute them using the Resource Adapter. It also have smarts to convert the result data that came from the physical source into a form that {{ book.productnameFull }} Query engine is expecting. For example, when working with a web-service translator, a SQL procedure executed at {{ book.productnameFull }} layer may be converted to a HTTP based call through a translator, and response JSON could be converted to tabular results.
+A Translator (also called DATA WRAPPER) is a component that provides an abstraction layer between {{ book.productnameFull }} Query Engine and physical data source, that knows how to convert {{ book.productnameFull }} issued query commands into source specific commands and execute them. It also have smarts to convert the result data that came from the physical source into a form that {{ book.productnameFull }} Query engine is expecting. For example, when working with a web-service translator, a SQL procedure executed at {{ book.productnameFull }} layer may be converted to a HTTP based call through a translator, and response JSON could be converted to tabular results.
 
 {{ book.productnameFull }} provides various translators as part of the system, or one can be developed using the provided java libraries. For list of available Translators see link:../reference/Translators.adoc[Translators]
 
+{% if book.targetWildfly %}
 IMPORTANT: In a VDB, a source schema *must be* configured with a *correct* Translator and a *valid* resource adapter, to make the system work.
-
+{% endif %}
 

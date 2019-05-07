@@ -1,15 +1,15 @@
 
 = Configuring the Data Source Name (DSN)
 
-See link:ODBC_Support.adoc#_connection_settings[Teiid supported options] for a description of the client configuration.
+See link:ODBC_Support.adoc#_connection_settings[{{ book.productnameFull }} supported options] for a description of the client configuration.
 
 == Windows Installation
 
-Once you have installed the ODBC Driver Client software on your workstation, you have to configure it to connect to a Teiid Runtime. Note that the following instructions are specific to the Microsoft Windows Platform.
+Once you have installed the ODBC Driver Client software on your workstation, you have to configure it to connect to a {{ book.productnameFull }} Runtime. Note that the following instructions are specific to the Microsoft Windows Platform.
 
 To do this, you must have logged into the workstation with administrative rights, and you need to use the Control Panel’s _Data Sources (ODBC)_ applet to add a new data source name.
 
-Each data source name you configure can only access one VDB within a Teiid System. To make more than one VDB available, you need to configure more than one data source name.
+Each data source name you configure can only access one VDB within a {{ book.productnameFull }} System. To make more than one VDB available, you need to configure more than one data source name.
 
 Follow the below steps in creating a data source name (DSN)
 
@@ -25,9 +25,9 @@ image:images/dsnsetup1.png[dsnsetup1.png]
 
 In the _Data Source_ Name edit box, type the name you want to assign to this data source. 
 In the _Database_ edit box, type the name of the virtual database you want to access through this data source.
-In the _Server_ edit box, type the host name or IP address of your Teiid runtime. If connecting via a firewall or NAT address, the firewall address or NAT address should be entered. 
-In the Port edit box, type the port number to which the Teiid System listens for ODBC requests. By default, Teiid listenes for ODBC requests on port 35432
-In the _User Name_ and _Password_ edit boxes, supply the user name and password for the Teiid runtime access. 
+In the _Server_ edit box, type the host name or IP address of your {{ book.productnameFull }} runtime. If connecting via a firewall or NAT address, the firewall address or NAT address should be entered. 
+In the Port edit box, type the port number to which the {{ book.productnameFull }} System listens for ODBC requests. By default, {{ book.productnameFull }} listenes for ODBC requests on port 35432
+In the _User Name_ and _Password_ edit boxes, supply the user name and password for the {{ book.productnameFull }} runtime access. 
 Provide any description about the data source in the _Description_ field.
 
 8.  Click on the _Datasource_ button, you will see this below figure. Configure options as shown.
@@ -38,11 +38,11 @@ Click on "page2" and make sure the options are selected as shown
 
 image:images/dsnsetup3.png[dsnsetup3.png]
 
-9.  Click "save" and you can optionally click "test" to validate your connection if the Teiid is running. You have configured a Teiid’s virtual database as a data source for your ODBC applications. Now you can use applications such as Excel, Access to query the data in the VDB
+9.  Click "save" and you can optionally click "test" to validate your connection if the {{ book.productnameFull }} is running. You have configured a {{ book.productnameFull }}’s virtual database as a data source for your ODBC applications. Now you can use applications such as Excel, Access to query the data in the VDB
 
 == Other *nix Platform Installations
 
-Before you can access Teiid using ODBC on any *nix platforms, you need to either install a ODBC driver manager or verify that one already exists. As the ODBC Driver manager Teiid recommends http://www.unixodbc.org/[unixODBC]. If you are working with RedHat Linux or Fedora you can check the graphical "yum" installer to search, find and install unixODBC. Otherwise you can http://www.unixodbc.org/unixODBC-2.3.0.tar.gz[download] the unixODBC manager here. To install, simply untar the contents of the file to a temporary location and execute the following commands as super user.
+Before you can access {{ book.productnameFull }} using ODBC on any *nix platforms, you need to either install a ODBC driver manager or verify that one already exists. As the ODBC Driver manager {{ book.productnameFull }} recommends http://www.unixodbc.org/[unixODBC]. If you are working with RedHat Linux or Fedora you can check the graphical "yum" installer to search, find and install unixODBC. Otherwise you can http://www.unixodbc.org/unixODBC-2.3.0.tar.gz[download] the unixODBC manager here. To install, simply untar the contents of the file to a temporary location and execute the following commands as super user.
 
 ----
 ./configure
@@ -64,7 +64,7 @@ That should show you all the ODBC drivers installed in your system. Now it is ti
   [<DSN name>]
   Driver = /usr/lib/psqlodbc.so
   Description = PostgreSQL Data Source
-  Servername = <Teiid Host name or ip>
+  Servername = <{{ book.productnameFull }} Host name or ip>
   Port = 35432 
   Protocol = 7.4-1
   UserName = <user-name> 
@@ -90,4 +90,4 @@ isql <DSN-name> [<user-name> <password>] < commands.sql
 
 where "commands.sql" file contains the SQL commands you would like to execute. You can also omit the commands.sql file, then you will be provided with a interactive shell.
 
-TIP: You can also use languages like Perl, Python, C/C++ with ODBC ports to Postgres, or if they have direct Postgres connection modules you can use them too to connect Teiid and issue queries an retrieve results.
+TIP: You can also use languages like Perl, Python, C/C++ with ODBC ports to Postgres, or if they have direct Postgres connection modules you can use them too to connect {{ book.productnameFull }} and issue queries an retrieve results.

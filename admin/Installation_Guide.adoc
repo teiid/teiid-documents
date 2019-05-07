@@ -1,19 +1,19 @@
 
 = Installation Guide
 
-Teiid needs to be installed into an existing {{ book.asVersionNumber }} installation.
+{{ book.productnameFull }} needs to be installed into an existing {{ book.asVersionNumber }} installation.
 
-NOTE: Teiid provides an link:../embedded/Embedded_Guide.adoc[embedded kit], however it should be considered a tech preview as its APIs will likely evolve and there is sparse documentation.
+NOTE: {{ book.productnameFull }} provides an link:../embedded/Embedded_Guide.adoc[embedded kit], however it should be considered a tech preview as its APIs will likely evolve and there is sparse documentation.
 
-== Steps to install Teiid
+== Steps to install {{ book.productnameFull }}
 
 * Download the http://wildfly.org/downloads/[WildFly] application server. Install the server by unzipping into a known location. Ex: /apps/jboss-install
 
-NOTE: You may also choose to use an existing AS installation. However if a previous version of Teiid was already installed, you must remove the old Teiid distribution artifacts before installing the new version.
+NOTE: You may also choose to use an existing AS installation. However if a previous version of {{ book.productnameFull }} was already installed, you must remove the old {{ book.productnameFull }} distribution artifacts before installing the new version.
 
-* Download http://teiid.io/teiid_runtimes/teiid_wildfly/downloads/[Teiid]. Unzip the downloaded artifact inside the {{ book.asName }} installation. Teiid {{ book.versionNumber }} directory structure matches {{ book.asName }} directly - it is just an overlay. This will add necessary modules and configuration files to install Teiid in {{ book.asVersionNumber }} in both _Standalone_ and _Domain_ modes. Teiid provides separate configuration files for both standalone mode and domain mode. Based on mode type you selected to run {{ book.asVersionNumber }} , you may have to run a CLI script to complete the Teiid installation.
+* Download http://teiid.io/teiid_runtimes/teiid_wildfly/downloads/[{{ book.productnameFull }}]. Unzip the downloaded artifact inside the {{ book.asName }} installation. {{ book.productnameFull }} {{ book.versionNumber }} directory structure matches {{ book.asName }} directly - it is just an overlay. This will add necessary modules and configuration files to install {{ book.productnameFull }} in {{ book.asVersionNumber }} in both _Standalone_ and _Domain_ modes. {{ book.productnameFull }} provides separate configuration files for both standalone mode and domain mode. Based on mode type you selected to run {{ book.asVersionNumber }} , you may have to run a CLI script to complete the {{ book.productnameFull }} installation.
 
-The "Domain" mode recommended in a clustered environment to take advantage of clustered caching and cluster safe distribution of events. Teiid’s default configuration for Domain mode through CLI script configured for high availability and clustered caching.
+The "Domain" mode recommended in a clustered environment to take advantage of clustered caching and cluster safe distribution of events. {{ book.productnameFull }}’s default configuration for Domain mode through CLI script configured for high availability and clustered caching.
 
 === Standalone Mode
 
@@ -23,9 +23,9 @@ if you want to start the "standalone" profile, execute the following command
 <jboss-install>/bin/standalone.sh -c=standalone-teiid.xml
 ----
 
-==== Installing Teiid using CLI script
+==== Installing {{ book.productnameFull }} using CLI script
 
-The above is starting {{ book.asName }} in a separate Teiid specific configuration that is based standalone.xml. However, if you already working with a predefined configuration for example default _standalone.xml_ and would like to install Teiid into that configuration, then you can execute the following JBoss CLI script. First, start the server
+The above is starting {{ book.asName }} in a separate {{ book.productnameFull }} specific configuration that is based standalone.xml. However, if you already working with a predefined configuration for example default _standalone.xml_ and would like to install {{ book.productnameFull }} into that configuration, then you can execute the following JBoss CLI script. First, start the server
 
 ----
 <jboss-install>/bin/standalone.sh
@@ -37,13 +37,13 @@ then in a separate console window execute
 <jboss-install>/bin/jboss-cli.sh --file=bin/scripts/teiid-standalone-mode-install.cli
 ----
 
-this will install Teiid subsystem into the running configuration of the {{ book.asVersionNumber }} in standalone mode.
+this will install {{ book.productnameFull }} subsystem into the running configuration of the {{ book.asVersionNumber }} in standalone mode.
 
 Note: If you are using standalone ha or standalone full-ha, you should use the teiid-standalone-ha-mode-install.cli script instead. 
 
 === Domain Mode
 
-To start the server in "Domain" mode, install {{ book.asVersionNumber }} and Teiid {{ book.versionNumber }} on all the servers that are going to be part of the cluster. Select one of the servers as the "master" domain controller, the rest of the servers will be slaves that connect to the "master" domain controller for all the administrative operations. Please refer to {{ book.asVersionNumber }} provided https://docs.jboss.org/author/display/WFLY9/WildFly+9+Cluster+Howto[documentation] for full details.
+To start the server in "Domain" mode, install {{ book.asVersionNumber }} and {{ book.productnameFull }} {{ book.versionNumber }} on all the servers that are going to be part of the cluster. Select one of the servers as the "master" domain controller, the rest of the servers will be slaves that connect to the "master" domain controller for all the administrative operations. Please refer to {{ book.asVersionNumber }} provided https://docs.jboss.org/author/display/WFLY9/WildFly+9+Cluster+Howto[documentation] for full details.
 
 Once you configured all the servers, start the "master" node with following command
 
@@ -59,19 +59,19 @@ and on "slave" nodes
 
 The slave nodes fetch their domain configuration from the "master" node.
 
-Once all the servers are up, complete the installation to run in domain mode by executing the following command against the "master" node. Note that this only needs to be run once per domain (i.e. cluster) install. This script will install Teiid in the *ha* and *full-ha* profiles. It will also re-configure _main-server-group_ to start the _ha_ profile. Once in domain mode, you can not statically deploy resources by dropping them in the _domain/deployments_ folder, so this script will deploy the default resources (file, ldap, salesforce and ws connectors) using the CLI interface.
+Once all the servers are up, complete the installation to run in domain mode by executing the following command against the "master" node. Note that this only needs to be run once per domain (i.e. cluster) install. This script will install {{ book.productnameFull }} in the *ha* and *full-ha* profiles. It will also re-configure _main-server-group_ to start the _ha_ profile. Once in domain mode, you can not statically deploy resources by dropping them in the _domain/deployments_ folder, so this script will deploy the default resources (file, ldap, salesforce and ws connectors) using the CLI interface.
 
 ----
 <jboss-install>/bin/jboss-cli.sh --file=bin/scripts/teiid-domain-mode-install.cli
 ----
 
-Thats it!. {{ book.asName }} and Teiid are now installed and running. See below instructions to customize various other settings.
+Thats it!. {{ book.asName }} and {{ book.productnameFull }} are now installed and running. See below instructions to customize various other settings.
 
-Once VDBs have been deployed, users can now connect their JDBC applications to Teiid. If you need help on connecting your application to Teiid using JDBC check out the link:../client-dev/Client_Developers_Guide.adoc[Client Developer’s Guide].
+Once VDBs have been deployed, users can now connect their JDBC applications to {{ book.productnameFull }}. If you need help on connecting your application to {{ book.productnameFull }} using JDBC check out the link:../client-dev/Client_Developers_Guide.adoc[Client Developer’s Guide].
 
 == Directory Structure Explained
 
-This shows the contents of the Teiid {{ book.versionNumber }} deployment. The directory structure is exactly the same under any JBoss profile.
+This shows the contents of the {{ book.productnameFull }} {{ book.versionNumber }} deployment. The directory structure is exactly the same under any JBoss profile.
 
 .*Directory Structure*
 ----
@@ -99,25 +99,25 @@ This shows the contents of the Teiid {{ book.versionNumber }} deployment. The di
 |Name |Description
 
 |bin/scripts
-|Contains installation and utility CLI scripts for setting up Teiid in different configurations.
+|Contains installation and utility CLI scripts for setting up {{ book.productnameFull }} in different configurations.
 
 |docs/teiid
 |Contains documents, examples, sample data source XML fragments and schema files.
 
 |/standalone/configuration
-|standalone-teiid.xml - Master configuration file for the Teiid system. This file contains the Teiid subsystem, in addition to the standard {{ book.asName }} web profile subsystems
+|standalone-teiid.xml - Master configuration file for the {{ book.productnameFull }} system. This file contains the {{ book.productnameFull }} subsystem, in addition to the standard {{ book.asName }} web profile subsystems
 
 |/domain/configuration/
 | -
  
 |/modules/system/layers/base/org/jboss/teiid/*
-|This directory contains the Teiid modules for {{ book.asVersionNumber }} system
+|This directory contains the {{ book.productnameFull }} modules for {{ book.asVersionNumber }} system
 
 |/modules/system/layers/base/org/jboss/teiid/client
-|This directory contains Teiid client libraries. It has the Teiid JDBC driver jar, "teiid-{{ book.fullVersionNumber }}-jdbc.jar", and also contains "teiid-hibernate-dialect-{{ book.fullVersionNumber }}.jar" that contains Teiid’s Hibernate dialect.
+|This directory contains {{ book.productnameFull }} client libraries. It has the {{ book.productnameFull }} JDBC driver jar, "teiid-{{ book.fullVersionNumber }}-jdbc.jar", and also contains "teiid-hibernate-dialect-{{ book.fullVersionNumber }}.jar" that contains {{ book.productnameFull }}’s Hibernate dialect.
 
 |{standalone or domain}/tmp/teiid
-|This directory under standalone or domain, contains temporary files created by Teiid. These are mostly created by the buffer manager. These files are not needed across a VM restart. Creation of Teiid lob values(for example through SQL/XML) will typically create one file per lob once it exceeds the allowable in memory size of 8KB. In heavy usage scenarios, consider pointing the buffer directory at a partition that is routinely defragmented.
+|This directory under standalone or domain, contains temporary files created by {{ book.productnameFull }}. These are mostly created by the buffer manager. These files are not needed across a VM restart. Creation of {{ book.productnameFull }} lob values(for example through SQL/XML) will typically create one file per lob once it exceeds the allowable in memory size of 8KB. In heavy usage scenarios, consider pointing the buffer directory at a partition that is routinely defragmented.
 
 |{standalone or domain}/data/teiid-data
 |This directory under standalone or domain, contains cached vdb metadata files. Do not edit them manually.

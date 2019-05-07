@@ -3,9 +3,13 @@
 :toc: manual
 :toc-placement: preamble
 
-Some of Teiid’s low-level behavior can be configured via system properties, rather than through configuration files. A typical place to set system properties for {{ book.asName }} launches is in the <install>/bin/<mode>.conf. A property setting has the format `-Dproperty=value`.
+Some of {{ book.productnameFull }}’s low-level behavior can be configured via system or env properties, rather than through configuration files. 
 
-Note with 10.3 environment variables will be checked for a given key before using the system property.  This allows for Teiid client and server code running in Docker or on OpenShift to more easily have the properties below configured.
+{% if book.targetWildfly %}
+A typical place to set system properties for {{ book.asName }} launches is in the <install>/bin/<mode>.conf. A property setting has the format `-Dproperty=value`.
+
+Note with 10.3 environment variables will be checked for a given key before using the system property.  This allows for {{ book.productnameFull }} client and server code running in Docker or on OpenShift to more easily have the properties below configured.
+{% endif %}
 
 == General
 
@@ -17,11 +21,11 @@ Note with 10.3 environment variables will be checked for a given key before usin
 |false
 
 |_org.teiid.useValueCache_
-|Set to true to enable the canonical value cache. Value caching is used dynamically when buffer memory is consumed to reuse identical values and thus reduce the memory consumed by Teiid. There is a computation cost associated with the cache lookup, so enabling this setting is not appropriate for installations handling large volumes of dissimilar data.
+|Set to true to enable the canonical value cache. Value caching is used dynamically when buffer memory is consumed to reuse identical values and thus reduce the memory consumed by {{ book.productnameFull }}. There is a computation cost associated with the cache lookup, so enabling this setting is not appropriate for installations handling large volumes of dissimilar data.
 |false
 
 |_org.teiid.ansiQuotedIdentifiers_
-|Set to false to emulate Teiid 6.x and prior behavior of treating double quoted values without leading identifier parts as string literals, which is not expected by the SQL specification.
+|Set to false to emulate {{ book.productnameFull }} 6.x and prior behavior of treating double quoted values without leading identifier parts as string literals, which is not expected by the SQL specification.
 |true
 
 |_org.teiid.subqueryUnnestDefault_
@@ -37,11 +41,11 @@ Note with 10.3 environment variables will be checked for a given key before usin
 |false
 
 |_org.teiid.comparableLobs_
-|Set to true to allow blob and clob column values to be comparable in Teiid. Source type metadata will determine if the comparison can be pushed down.
+|Set to true to allow blob and clob column values to be comparable in {{ book.productnameFull }}. Source type metadata will determine if the comparison can be pushed down.
 |false
 
 |_org.teiid.comparableObject_
-|Set to true to allow object column values to be comparable in Teiid. Source type metadata will determine if the comparison can be pushed down. The object instances are expected to correctly implement java.lang.Comparable.compareTo. If the instance object is not Comparable, then ClassCastExceptions may the thrown.
+|Set to true to allow object column values to be comparable in {{ book.productnameFull }}. Source type metadata will determine if the comparison can be pushed down. The object instances are expected to correctly implement java.lang.Comparable.compareTo. If the instance object is not Comparable, then ClassCastExceptions may the thrown.
 |false
 
 |_org.teiid.padSpace_
@@ -62,19 +66,19 @@ Clients may override this setting via the loginTimeout connection property.
 |false
 
 |_org.teiid.pushdownDefaultNullOrder_
-|Set to true to mimic 8.1 and prior release behavior of pushing the Teiid’s default null order of nulls low if the source has a different default null order and supports explicit null ordering.
+|Set to true to mimic 8.1 and prior release behavior of pushing the {{ book.productnameFull }}’s default null order of nulls low if the source has a different default null order and supports explicit null ordering.
 |false
 
 |_org.teiid.requireTeiidCollation_
-|Set to true to force all sorts to be in Teiid’s collation (see org.teiid.collationLocale).
+|Set to true to force all sorts to be in {{ book.productnameFull }}’s collation (see org.teiid.collationLocale).
 |false
 
 |_org.teiid.implicitMultiSourceJoin_
-|Set to false to disable Teiid 8.2 and prior release behavior of implicitly partitioning joins between multi-source tables. When set to false and explicit predicate such as tbl1.source_name = tbl2.source_name is required to partition the results of the join.
+|Set to false to disable {{ book.productnameFull }} 8.2 and prior release behavior of implicitly partitioning joins between multi-source tables. When set to false and explicit predicate such as tbl1.source_name = tbl2.source_name is required to partition the results of the join.
 |true
 
 |_org.teiid.maxStringLength_
-|Sets the nominal maximum length of strings in Teiid - most operations in Teiid will truncate strings that are larger than this value. Setting this value can also adjust the max size of lob bytes held in memory. NOTE: sources may not appropriately handle string values that are larger than the source supports.
+|Sets the nominal maximum length of strings in {{ book.productnameFull }} - most operations in {{ book.productnameFull }} will truncate strings that are larger than this value. Setting this value can also adjust the max size of lob bytes held in memory. NOTE: sources may not appropriately handle string values that are larger than the source supports.
 |4000
 
 |===
@@ -86,15 +90,15 @@ WARNING: Strings are always fully held in memory. Do not set this value too high
 
 
 |_org.teiid.assumeMatchingCollation_
-|If false and a translator does not specify a collationLocale, then a sort involving character data for a sort/merge join will not be pushed.  Teiid defaults to the Java UCS-2 collation, which may not match the default collation for sources, particular tables, or columns.  You may set the system property org.teiid.assumeMatchingCollation to true to restore the old default behavior or selectively update the translators to report a collationLocale matching org.teiid.collationLocale (UCS-2 if unset).
+|If false and a translator does not specify a collationLocale, then a sort involving character data for a sort/merge join will not be pushed.  {{ book.productnameFull }} defaults to the Java UCS-2 collation, which may not match the default collation for sources, particular tables, or columns.  You may set the system property org.teiid.assumeMatchingCollation to true to restore the old default behavior or selectively update the translators to report a collationLocale matching org.teiid.collationLocale (UCS-2 if unset).
 |false
 
 |_org.teiid.calendarTimestampDiff_
-|Set to false to use the Teiid 8.2 and old computation of timestampdiff. note that: using the old behavior can result in differing results between pushed and non-pushed versions of timestampdiff for intervals greater than seconds as sources use date part and not approximate interval differences.
+|Set to false to use the {{ book.productnameFull }} 8.2 and old computation of timestampdiff. note that: using the old behavior can result in differing results between pushed and non-pushed versions of timestampdiff for intervals greater than seconds as sources use date part and not approximate interval differences.
 |true
 
 |_org.teiid.compactBufferFiles_
-|Set to true to have Teiid keep the buffer files more compact (minimizing sparse regions).
+|Set to true to have {{ book.productnameFull }} keep the buffer files more compact (minimizing sparse regions).
 |false
 
 |_org.teiid.maxMessageSize_
@@ -110,11 +114,11 @@ WARNING: Strings are always fully held in memory. Do not set this value too high
 |10
 
 |_org.teiid.checkPing_
-|Can be set to false to disable ping checking for remote JDBC connections. Ping checking should only be disabled in specific circumstances, such as when using an external load balancer and not utilizing the Teiid default load balancing logic.  Deprecated as of Teiid 10.2.
+|Can be set to false to disable ping checking for remote JDBC connections. Ping checking should only be disabled in specific circumstances, such as when using an external load balancer and not utilizing the {{ book.productnameFull }} default load balancing logic.  Deprecated as of {{ book.productnameFull }} 10.2.
 |true
 
 |_org.teiid.defaultNullOrder_
-|Can be one of LOW, FIRST, HIGH, LAST. Sets the default null order for the Teiid engine. This will not be used for source ordering unless org.teiid.pushdownDefaultNullOrder is also set.
+|Can be one of LOW, FIRST, HIGH, LAST. Sets the default null order for the {{ book.productnameFull }} engine. This will not be used for source ordering unless org.teiid.pushdownDefaultNullOrder is also set.
 |LOW
 
 |_org.teiid.iso8601Week_
@@ -122,7 +126,7 @@ WARNING: Strings are always fully held in memory. Do not set this value too high
 |true
 
 |_org.teiid.widenComparisonToString_
-|Set to true to enable widening of values to string in comparisons, which was the default behavior prior to Teiid 9. For example with this setting as false timestamp_col < 'a' will produce an exception whereas when set to true it would effectively evaluate cast(timestamp_col as string) < `a'.
+|Set to true to enable widening of values to string in comparisons, which was the default behavior prior to {{ book.productnameFull }} 9. For example with this setting as false timestamp_col < 'a' will produce an exception whereas when set to true it would effectively evaluate cast(timestamp_col as string) < `a'.
 |false
 
 |_org.teiid.aggressiveJoinGrouping_
@@ -205,7 +209,7 @@ If false the non-hidden schema metadata will be visible to any authenticated use
 |true
 
 |_org.teiid.sanitizeMessages_
-|If true query related exception and warnings will have their messages replaced with just the Teiid code. Server side stacktraces will also be removed when sent to the client. This should be enabled if there is a concern about SQL or values being present in the exception/logs. If the log level is increased to debug for the relevant logger, then the sanitizeMessages setting will have no effect.
+|If true query related exception and warnings will have their messages replaced with just the {{ book.productnameFull }} code. Server side stacktraces will also be removed when sent to the client. This should be enabled if there is a concern about SQL or values being present in the exception/logs. If the log level is increased to debug for the relevant logger, then the sanitizeMessages setting will have no effect.
 |false
 
 |===
@@ -213,7 +217,7 @@ If false the non-hidden schema metadata will be visible to any authenticated use
 
 == PostgreSQL Compatibility
 
-NOTE: These affect Teiid globally, and not just through the ODBC transport.
+NOTE: These affect {{ book.productnameFull }} globally, and not just through the ODBC transport.
 
 |===
 |Setting |Description |Default Value
@@ -224,11 +228,11 @@ NOTE: These affect Teiid globally, and not just through the ODBC transport.
 
 |_org.teiid.backslashDefaultMatchEscape_
 |Set to true to use '\' as the default escape character for LIKE and SIMILAR TO predicates when no escape is specified. 
-Otherwise Teiid assumes the SQL specification compliant behavior of treating each non-wildcard character as an exact match character.
+Otherwise {{ book.productnameFull }} assumes the SQL specification compliant behavior of treating each non-wildcard character as an exact match character.
 |false
 
 |_org.teiid.honorDeclareFetchTxn_
-|When false the wrapping begin/commit of a UseDeclareFetch cursor will be ignored as Teiid does not require a transaction.
+|When false the wrapping begin/commit of a UseDeclareFetch cursor will be ignored as {{ book.productnameFull }} does not require a transaction.
 |false
 
 |_org.teiid.pgVersion_

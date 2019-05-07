@@ -1,15 +1,15 @@
 
-= Teiid Console
+= {{ book.productnameFull }} Console
 
-Teiid Console is a web based administrative and monitoring tool for Teiid. Teiid Console is extension of {{ book.asName }} console that is built using GWT based technologies. There are two primary Teiid kits - an overlay for an existing WildFly install, and an all in one that includes the WildFly server and Teiid console.  
+{{ book.productnameFull }} Console is a web based administrative and monitoring tool for {{ book.productnameFull }}. {{ book.productnameFull }} Console is extension of {{ book.asName }} console that is built using GWT based technologies. There are two primary {{ book.productnameFull }} kits - an overlay for an existing WildFly install, and an all in one that includes the WildFly server and {{ book.productnameFull }} console.  
 
 == Installation
 
-If you start with just the overlay, you may separately install the Teiid Console.  Unzip the contents over the {{ book.asName }} root directory and all the required files will be overlayed correctly to install Teiid Console.  See all http://teiid.io/teiid_runtimes/teiid_wildfly/downloads/[downloads] on teiid.io.
+If you start with just the overlay, you may separately install the {{ book.productnameFull }} Console.  Unzip the contents over the {{ book.asName }} root directory and all the required files will be overlayed correctly to install {{ book.productnameFull }} Console.  See all http://teiid.io/teiid_runtimes/teiid_wildfly/downloads/[downloads] on teiid.io.
 
 == Management User 
 
-The Teiid Console, by default is secured, so you would need a management realm user id and password to log in. In the <install>/bin directory, use
+The {{ book.productnameFull }} Console, by default is secured, so you would need a management realm user id and password to log in. In the <install>/bin directory, use
 
 .*Adding a management user in linux*
 ----
@@ -21,30 +21,30 @@ The Teiid Console, by default is secured, so you would need a management realm u
 add-user.bat
 ----
 
-then follow the prompts to create Management Realm user. Once you have created a management user, you need to use these credentials to log in to the Teiid Console. 
+then follow the prompts to create Management Realm user. Once you have created a management user, you need to use these credentials to log in to the {{ book.productnameFull }} Console. 
 
 == Accessing The Console
 
-If you have started your {{ book.asName }} in default mode, then you can access the Teiid Console at http://localhost:9990/console/App.html[http://localhost:9990/console/App.html]. If you have altered the binding or port numbers then modify the address accordingly.
+If you have started your {{ book.asName }} in default mode, then you can access the {{ book.productnameFull }} Console at http://localhost:9990/console/App.html[http://localhost:9990/console/App.html]. If you have altered the binding or port numbers then modify the address accordingly.
 
 == Configuration
 
-Click on the configuration tab at the top of the main console screen.  Under Subsystems click on "Teiid" in left navigation tree. There you have four choices:
+Click on the configuration tab at the top of the main console screen.  Under Subsystems click on "{{ book.productnameFull }}" in left navigation tree. There you have four choices:
 
-* Query Engine - view and configure core Teiid engine properties.
-* Translators - view, add and remove the Translators configured in Teiid.
-* Transports - view, add and remove transports to the Teiid engine.
+* Query Engine - view and configure core {{ book.productnameFull }} engine properties.
+* Translators - view, add and remove the Translators configured in {{ book.productnameFull }}.
+* Transports - view, add and remove transports to the {{ book.productnameFull }} engine.
 * Logging - toggle command / audit / trace logging.
 
 image:images/webconsole2.png[webconsole2.png]
 
-Using this view you can change any configuration value of Teiid. Note that various different configuration properties are sub-divided into different tabs. You can click "Need Help" link on these pages to see the description of each field on the page.
+Using this view you can change any configuration value of {{ book.productnameFull }}. Note that various different configuration properties are sub-divided into different tabs. You can click "Need Help" link on these pages to see the description of each field on the page.
 
 NOTE: *Server Restart* - some properties require you to restart the server before they can take effect.
 
 == Runtime View
 
-Runtime view shows runtime information about WildFly and the subsystems including Teiid. Click on the Runtime tab, select the Standalone Server (or whatever server is appropriate), select Subsystems, then Teiid.
+Runtime view shows runtime information about WildFly and the subsystems including {{ book.productnameFull }}. Click on the Runtime tab, select the Standalone Server (or whatever server is appropriate), select Subsystems, then {{ book.productnameFull }}.
 
 image:images/webconsole1.png[webconsole1.png]
 
@@ -80,7 +80,7 @@ Data Roles panel shows the all the policies that defined in the VDB. For each se
 
 === Requests
 
-This panel shows all the current requests against the selected VDB at the time of VDB selection. You can click "refresh" to get a more up to date requests. The top table in the panel shows the user submitted requests to the teiid engine, when one of those requests are selected, then the bottom table shows all the source level queries that are submitted to the physical sources by Teiid engine.
+This panel shows all the current requests against the selected VDB at the time of VDB selection. You can click "refresh" to get a more up to date requests. The top table in the panel shows the user submitted requests to the teiid engine, when one of those requests are selected, then the bottom table shows all the source level queries that are submitted to the physical sources by {{ book.productnameFull }} engine.
 
 Using this UI, user can also submit a "cancel" request to a user level query. Since "cancel" asynchronous operation, the operation is not guaranteed as query may already been finished, by the time cancel is submitted.
 
@@ -98,13 +98,13 @@ In the `Deployments` view, click `add` and select the VDB to deploy. Also make s
 
 In the `Configuration` view, go to `Subsystem` -> `Datasources` -> `XA/Non-XA`, click `add` and follow the wizard to create JDBC data source. 
 
-If you trying to create connection to Teiid based File, Salesforce or WS based connections, select `Subsystem` -> `Resource Adaptors` and click `add`.
+If you trying to create connection to {{ book.productnameFull }} based File, Salesforce or WS based connections, select `Subsystem` -> `Resource Adaptors` and click `add`.
 
 * _How to add COMMAND Logging?_ 
 
 In the `Configuration` view, go to `Subsystem` -> `Logging`, click view, on `Log Categories` tab, click add `org.teiid.COMMAND_LOG` in `DEBUG` mode. The default log will be in the FILE handler. You can even add other handler if choose to do so.
 
-* _Change Teiid JDBC Port in standalone mode?_ 
+* _Change {{ book.productnameFull }} JDBC Port in standalone mode?_ 
 
 In the `Configuration` view, go to `Socket Binding` click `View`, view the `standard-sockets` select `teiid-jdbc` and edit.
 

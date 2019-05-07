@@ -1,7 +1,7 @@
 
 = SHOW Statement
 
-The SHOW statement can be used to see a varitey of information. The SHOW statement is not yet a language feature of Teiid and is handled only in the JDBC client.
+The SHOW statement can be used to see a varitey of information. The SHOW statement is not yet a language feature of {{ book.productnameFull }} and is handled only in the JDBC client.
 
 SHOW Usage:
 
