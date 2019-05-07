@@ -1,7 +1,7 @@
 
 = Google Spreadsheet Translator
 
-The _google-spreadsheet_ translator is used to connect to a Google Spreadsheet. To use the Google Spreadsheet Translator you need to configure and deploy the Google JCA connector - see the Admin Guide.
+The _google-spreadsheet_ translator is used to connect to a Google Spreadsheet.
 
 The query approach expects the data in the worksheet to be in a specific format. Namely:
 

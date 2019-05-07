@@ -82,7 +82,7 @@
 // ... link:reference/couchbase_translator.adoc[Couchbase Translator]
 ... link:reference/Delegating_Translators.adoc[Delegating Translators]
 ... link:reference/File_Translator.adoc[File Translator]
-// ... link:reference/Google_Spreadsheet_Translator.adoc[Google Spreadsheet Translator]
+ ... link:reference/Google_Spreadsheet_Translator.adoc[Google Spreadsheet Translator]
 // ... link:reference/Infinispan_Translator.adoc[Infinispan Translator]
 ... link:reference/JDBC_Translators.adoc[JDBC Translators]
 .... link:reference/Actian_Vector_Translator.adoc[Actian Vector Translator]
