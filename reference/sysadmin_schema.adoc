@@ -281,6 +281,106 @@ This table provides the StoredProcedures in the virtual database.
 SELECT * FROM SYSADMIN.StoredProcedures
 ----
 
+=== SYSADMIN.Requests
+
+This table provides active requests against the virtual database.
+
+ VDBName string(255) NOT NULL,
+
+|===
+|Column Name |Type |Description
+
+|VDBName
+|string
+|VDB name
+
+|SessionId
+|string
+|session identifier
+
+|ExecutionId
+|long
+|execution identifier
+
+|Command
+|clob
+|The query being executed
+
+|StartTimestamp
+|timestamp
+|Start timestamp
+
+|TransactionId
+|string
+|transaction identifier as reported by the Transaction Manager
+
+|ProcessingState
+|string
+|processing state, can be one of PROCESSING, DONE, CANCELED
+
+|ThreadState
+|string
+|thread state, can be one of RUNNING, QUEUED, IDLE
+|===
+
+=== SYSADMIN.Sessions
+
+This table provides the Sessions active for the virtual database.
+
+|===
+|Column Name |Type |Description
+
+|VDBName
+|string
+|VDB name
+
+|SessionId
+|string
+|session identifier
+
+|UserName
+|string
+|username
+
+|CreatedTime
+|timestamp
+|timestamp of when the session was created
+
+|ApplicationName
+|string
+|application name as reported by the client
+
+|IPAddress
+|string
+|IP Address as reported by the client
+|===
+
+=== SYSADMIN.Transactions
+
+This table provides the active Transactions.
+
+|===
+|Column Name |Type |Description
+
+|TransactionId
+|string
+|transaction identifier as reported by the Transaction Manager
+
+|SessionId
+|string
+|session identifier if a session is currently associated with the transaction
+
+|StartTimestamp
+|timestamp
+|start time of the transaction
+
+|Scope
+|string
+|scope of the transaction, can be one of GLOBAL, LOCAL, REQUEST, INHERITED.  INHERITED means that a Transaction was already associated with the calling thread (embedded usage).  
+|===
+
+Note: Transactions that are not associated with a given session will always be shown.  Transactions that are associated with a session must be for a session with the current VDB.
+
 == Procedures
 
 === SYSADMIN.isLoggable
@@ -491,3 +591,55 @@ Continuing use the `SAMPLEMATVIEW` in Example of <<SYSADMIN.refreshMatViewRow, S
 EXEC SYSADMIN.updateMatView('TestMat', 'SAMPLEMATVIEW', 'id = ''101'' AND a = ''a1''')
 ----
 
+=== SYSADMIN.cancelRequest
+
+Cancel the user request identified by execution id for the given session.
+
+See also SYSADMIN.REQUESTS
+
+[source,sql]
+----
+SYSADMIN.cancelRequest(OUT cancelled boolean NOT NULL RESULT, IN SessionId string NOT NULL, IN executionId long NOT NULL)
+----
+
+[source,sql]
+.*Example Cancel*
+----
+CALL SYSADMIN.cancelRequest('session id', 1)
+----
+
+=== SYSADMIN.terminateSession
+
+Terminate the session with the given identifier.
+
+See also SYSADMIN.SESSIONS
+
+[source,sql]
+----
+SYSADMIN.terminateSession(OUT terminated boolean NOT NULL RESULT, IN SessionId string NOT NULL)
+----
+
+[source,sql]
+.*Example Termination*
+----
+CALL SYSADMIN.terminateSession('session id')
+----
+
+=== SYSADMIN.terminateTransaction
+
+Terminate the transaction associated with the given session by marking the transaction as rollback only.
+
+See also SYSADMIN.TRANSACTIONS
+
+[source,sql]
+----
+SYSADMIN.terminateTransaction(IN sessionid string NOT NULL)
+----
+
+Note: it is currently not possible to cancel a transaction not associtated with a session.
+
+[source,sql]
+.*Example Terminate*
+----
+CALL SYSADMIN.terminateTransaction('session id')
+----
