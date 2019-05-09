@@ -1,7 +1,7 @@
 {
     "variables" : {
-        "versionNumber" : "12.2",
-        "fullVersionNumber": "12.2.0",
+        "versionNumber" : "12.3",
+        "fullVersionNumber": "12.3.0",
         "asVersionNumber" :  "REPLACE ME",
         "asFullVersionNumber" :  "REPLACE ME",
         "asName" :  "REPLACE ME",
