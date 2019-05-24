@@ -7,13 +7,16 @@ Usage:
 
 [source,sql]
 ----
-ARRAYTABLE(expression COLUMNS <COLUMN>, ...) AS name
+ARRAYTABLE([ROW|ROWS] expression COLUMNS <COLUMN>, ...) AS name
 COLUMN := name datatype
 ----
 
 Parameters
 
 * expression - the array to process, which should be a java.sql.Array or java array value.
+* ROW|ROWS - if ROW (the default) is specified, then only a single row will be produced from the given array (typically a one dimensional array).  If ROWS is specified, then multiple rows will be produces.  A multidimensional array will be expected, and one row will be produced for every non-null element of the outer array.
+
+If the expression is null, no rows are produced.
 
 Syntax Rules:
 
