@@ -193,10 +193,11 @@ CREATE [VIRTUAL] SCHEMA {schema-name}
 
 IMPORTANT: If the Schema is defined as "Source Schema", then SERVER configuration *must* be provided, to be able to determine the data source connection to be used when executing queries that belong to this Schema. Providing multiple Server names configure this Schema as "multi-source" model.  See link:./Multisource_Models.adoc[Multisource Models] for more information. 
 
-The below are the typical properties that need to be configured for a Schema in the OPTIONS clause.
+Below are typical properties that can be configured for a Schema in the OPTIONS clause.
 |====
 |Name|Description
-|VISIBILITY|Is Schema visible during metadata interrogation
+|VISIBLE| Set to false to make the Schema not visible to metadata interrogation
+|ANNOTATION| A description of the Schema
 |====
 
 .Example 5: Showing to create a source schema for PostgreSQL server from example above
