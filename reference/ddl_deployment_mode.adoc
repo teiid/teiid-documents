@@ -218,7 +218,7 @@ DROP SCHEMA {schema-name};
 If you are designing a source schema, you can add the TABLES, PROCEDURES manually to represent the data source, however in certain situations this can be tedious, or complicated. For example, if you need to represent 100s of existing tables from your Oracle database in {{ book.productnameFull }}? Or if you are working with MongoDB, how are you going to map a document structure into a TABLE? For this purpose, {{ book.productnameFull }} provides an import metadata command, that can import/create metadata that represents the source. The following command can be used for that purpose with most of the sources (LDAP source is only exception, not providing import)
 
 ----
-IMPORT FOREIGN SCHEMA {foreign-schema-name}  
+IMPORT [FOREIGN SCHEMA {foreign-schema-name}]  
     FROM (SERVER {server-name} | REPOSITORY {repository-name}) 
     INTO {schema-name}
     OPTIONS (<options-clause>)
@@ -227,7 +227,7 @@ IMPORT FOREIGN SCHEMA {foreign-schema-name}
     <key> <value>[,<key>, <value>]*
 ----
 
-foreign-schema-name : Name of schema in external data source to import. Typically most databases are tied to a schema name, like "public", "dbo" or name of the database. If you are working with non-relational source, you can provide a dummy value here.
+foreign-schema-name : Name of schema to import. Typically most databases are tied to a schema name, like "public", "dbo" or name of the database. If you are working with a non-relational source, or a DDL file, you can provide a dummy value here or omit the entire FOREIGN SCHEMA clause.
 server-name: name of the server created above to import metadata from.
 repository-name: Custom/extended "named" repositories from which metadata can be imported. See MetadataRepository interface for more details. {{ book.productnameFull }} provides a built in type called "DDL-FILE" see example below.
 schema-name: The foreign schema name to import from - it's meaning is up to the translator.
@@ -236,24 +236,26 @@ options-clause : The "importer" properties that can be used to refine the import
 
 The below example shows importing metadata from a PostgreSQL using server example above.
 
-.Example 6
+.Example Import
 ----
 -- import from native database
 IMPORT FOREIGN SCHEMA public 
     FROM SERVER pgsql 
     INTO test
-    
--- in archive based vdbs(.vdb) you can provide each schema in a separate file and pull them in main vdb.ddl file as 
-IMPORT FOREIGN SCHEMA public 
-    FROM REPOSITORY DDL-FILE 
-    INTO test OPTIONS ("ddl-file" '/path/to/schema.ddl')
- 
 ----
-
-TIP: The example IMPORT SCHEMA can be used with any custom Metadata Repository, in the REPOSITORY {DDL-FILE}, DDL-FILE represents a particular type of repository.
 
 The above command imports public.customers, public.orders tables using pgsql's connection into a VDB schema test.
 
+.Example Import
+----
+-- in archive based vdbs(.vdb) you can provide schema in separate files and pull them in a main vdb.ddl file as: 
+IMPORT FROM REPOSITORY "DDL-FILE" 
+    INTO test OPTIONS ("ddl-file" '/path/to/schema1.ddl')
+IMPORT FROM REPOSITORY "DDL-FILE" 
+    INTO test OPTIONS ("ddl-file" '/path/to/schema2.ddl')
+----
+
+TIP: The example IMPORT SCHEMA can be used with any custom Metadata Repository, in the REPOSITORY DDL-FILE, DDL-FILE represents a particular type of repository.
 
 === Importing another Virtual Database (VDB Reuse)
 
@@ -437,7 +439,7 @@ GRANT READ ON COLUMN test.Order.amount
 
 == Differences with vdb.xml metadata
 
-Using a .ddl file instead of a .xml file to define a vdb will result in differences in how metadata is loaded when using a full server deploymnet of {{ book.productnameFull }}.
+Using a .ddl file instead of a .xml file to define a vdb will result in differences in how metadata is loaded when using a full server deployment of {{ book.productnameFull }}.
 
 Using a vdb.ddl file does not support:
 * metadata caching at the schema level - although this feature may be added later
