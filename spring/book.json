@@ -12,8 +12,9 @@
         "archeTypeVersion" : "REPLACE ME",
         "targetWildfly" : false,
         "targetSpring" : true,
-        "productnameFull" : "Teiid",
-        "docUrl" : "https://github.com/teiid/teiid-spring-boot/blob/1.0.x"
+        "productnameFull" : "Teiid Spring Boot",
+        "docUrl" : "https://github.com/teiid/teiid-spring-boot/blob/1.0.x",
+        "odataContext" : "odata"
     },
     "plugins": ["collapsible-menu"]
 }

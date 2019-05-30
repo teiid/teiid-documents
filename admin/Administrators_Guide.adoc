@@ -1,4 +1,10 @@
 = Administrator's Guide
 
-This guide is intended for any user who assumes role of a developer/administrator of {{ book.productnameFull }} instance. This guide guides user through installation of {{ book.productnameFull }} Server, configuration of different services and deployment of {{ book.productnameFull }} artifacts such as VDBs. Before one can delve into {{ book.productnameFull }} it is very important to learn few basic constructs of {{ book.productnameFull }}, like what is VDB? what is Model? etc. For that please read the http://teiid.io/about/basics/[short introduction].
+This guide is intended for any user who assumes role of a developer/administrator of a {{ book.productnameFull }} instance. 
+
+{% if book.targetWildfly %}
+This guide guides user through installation of {{ book.productnameFull }}, configuration of different services and deployment of {{ book.productnameFull }} artifacts such as VDBs.
+{% endif %} 
+
+Before one can delve into {{ book.productnameFull }} it is very important to learn few basic constructs of {{ book.productnameFull }}, like what is VDB? what is Model? etc. For that please read the http://teiid.io/about/basics/[short introduction].
 

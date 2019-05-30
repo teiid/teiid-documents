@@ -1,9 +1,13 @@
 
 = Socket Transports
 
-{{ book.productnameFull }} separates the configuration of its socket transports for JDBC and ODBC. Typical installations will not need to adjust the default thread and buffer size settings. The default values for _input-buffer-size_ and _output-buffer-size_ are set to 0, which will use the system default. Before adjusting these values, keep in mind that each JDBC/ODBC connection will create a new socket. Setting these values to a large buffer size should only be done if the number of clients are constrained. All JDBC/ODBC socket operations are non-blocking, so setting the number of _max-socket-threads_ higher than the maximum effective parallelism of the machine should not result in greater performance. The default value 0 indicates the system default of 2 * available processors will be used.
+{{ book.productnameFull }} separates the configuration of its socket transports for JDBC and pg/ODBC.  You have the option of also configuring secure versions of these transports.  Typical installations will not need to adjust the default thread and other low level settings. 
+
+{% if book.targetWildfly %}
+The default values for _input-buffer-size_ and _output-buffer-size_ are set to 0, which will use the system default. Before adjusting these values, keep in mind that each JDBC/ODBC connection will create a new socket. Setting these values to a large buffer size should only be done if the number of clients are constrained. All JDBC/ODBC socket operations are non-blocking, so setting the number of _max-socket-threads_ higher than the maximum effective parallelism of the machine should not result in greater performance. The default value 0 indicates the system default of 2 * available processors will be used.
 
 NOTE: If you are using more than the 2 default socket transports on a machine with a high number of actual or virtual cores, you may need to consider manually configuring the max threads for each to transport to cut down on the number of threads created.
+{% endif %}
 
 JDBC clients may need to adjust low-level transport values, in addition to link:../client-dev/SSL_Client_Connections.adoc[SSL Client Connection] properties via a teiid-client-settings.properties file. This file also contains buffer, socket pooling, and maxObjectSize (effectively the maximum response size) settings.
 

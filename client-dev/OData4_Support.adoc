@@ -9,11 +9,13 @@
 
 For example, if you have a vdb by name _northwind_ deployed that has a _customers_ table in a _NW_ model, then you can access that table with an HTTP GET via the URL:
 
+{% if book.targetWildfly %}
 NOTE: The user "MUST" have a role called "odata" to access odata endpoint. When adding a user with "bin/add-user.sh" script make sure this role is added to the user, who is going to use the endpoint.
+{% endif %}
 
 [source]
 ----
-http://localhost:8080/odata4/northwind/NW/customers
+http://localhost:8080/{{ book.odataContext }}/customers
 ----
 
 this would be akin to making a JDBC/ODBC connection and issuing the SQL:
@@ -33,7 +35,7 @@ Users can submit predicates with along their query to filter the results:
 
 [source]
 ----
-http://localhost:8080/odata4/northwind/NW/customers?$filter=name eq 'bob'
+http://localhost:8080/{{ book.odataContext }}/customers?$filter=name eq 'bob'
 ----
 
 NOTE: Spaces around 'eq' are for readability of the example only; in real URLs they must be percent-encoded as %20. OData mandates percent encoding for all spaces in URLs. http://docs.oasis-open.org/odata/odata/v4.0/odata-v4.0-part2-url-conventions.html
@@ -49,14 +51,14 @@ To request the result to be formatted in a specific format, add the query option
 
 [source]
 ----
-http://localhost:8080/odata4/northwind/NW/customers?$format=JSON
+http://localhost:8080/{{ book.odataContext }}/customers?$format=JSON
 ----
 
 Query options can be combined as needed. For example format with a filter:
 
 [source]
 ----
-http://localhost:8080/odata4/northwind/NW/customers?$filter=name eq 'bob'&$format=xml
+http://localhost:8080/{{ book.odataContext }}/customers?$filter=name eq 'bob'&$format=xml
 ----
 
 OData allows for querying navigations from one entity to another. A navigation is similar to the foreign key relationships in relational databases. 
@@ -65,7 +67,7 @@ For example, if the _customers_ table has an exported key to the _orders_ table 
 
 [source,xml]
 ----
-http://localhost:8080/odata4/northwind/NW/customers(1234)/customer_fk?$filter=orderdate gt datetime'2012-12-31T21:23:38Z'
+http://localhost:8080/{{ book.odataContext }}/customers(1234)/customer_fk?$filter=orderdate gt datetime'2012-12-31T21:23:38Z'
 ----
 
 this would be akin to making a JDBC/ODBC connection and issuing the SQL:
@@ -81,7 +83,7 @@ NOTE: *More Comprehensive Documentation about ODATA* - For detailed protocol acc
 Odata allows you to call your exposed stored procedure methods via odata.
 
 ----
-http://localhost:8080/odata4/northwind/NW/getcustomersearch(id=120,firstname='micheal')
+http://localhost:8080/{{ book.odataContext }}/getcustomersearch(id=120,firstname='micheal')
 ----
 
 === Not seeing all the rows?
@@ -90,7 +92,7 @@ See the link:#_configuration[configuration section] below for more details. Gene
 
 [source,xml]
 ----
-http://localhost:8080/odata4/northwind/NW/customers?$skiptoken=xxx
+http://localhost:8080/{{ book.odataContext }}/customers?$skiptoken=xxx
 ----
 
 === "EntitySet Not Found" error?
@@ -158,6 +160,7 @@ Content-Type: application/json
 Accept: application/json
 ----
 
+{% if book.targetWildfly %}
 == Security
 
 By default OData access is secured using HTTPBasic authentication. The user will be authenticated against {{ book.productnameFull }}’s default security domain "teiid-security". Users are expected to have the *odata* role. Be sure to create user with this role when you are using add-user.sh script to create a new user.
@@ -165,9 +168,24 @@ By default OData access is secured using HTTPBasic authentication. The user will
 However, if you wish to change the security domain use a deployment-overlay to override the _web.xml_ file in the odata4 file in the _<modules>/org/jboss/teiid/main/deployments_ directory. 
 
 OData WAR can also support Kerberos, SAML and OAuth2 authentications, for configuring the these security schemes please see link:../security/Security_Guide.adoc[Security Guide]
+{% endif %}
 
 == Configuration
 
+{% if book.targetSpring %}
+The OData interfaces supports some customization via properties prefixed with "spring.teiid.odata.".
+
+|batch-size
+|Number of rows to send back each time, -1 returns all rows
+|256
+
+|skiptoken-cache-time
+|Time interval between the results being recycled/expired between $skiptoken requests
+|300000
+
+
+{% endif %}
+{% if book.targetWildfly %}
 The OData WAR file can be configured with following properties in the web.xml file.
 
 |===
@@ -223,8 +241,9 @@ To modify the web.xml, create a {{ book.asDocRoot }}/Deployment+Overlays[deploym
 ----
 deployment-overlay add --name=myOverlay --content=/WEB-INF/web.xml=/modified/web.xml --deployments=teiid-odata-odata4.war --redeploy-affected
 ----
+{% endif %}
 
-{{ book.productnameFull }} OData server, implements cursoring logic when the result rows exceed the configured batch size. On every request, only _batch-size_ number of rows are returned. Each such request is considered an active cursor, with a specified amount of idle time specified by _skip-token-cache-time_. After the cursor is timed out, the cursor will be closed and remaining results will be cleaned up, and will no longer be available for further queries. Since there is no session based tracking of these cursors, if the request for skiptoken comes after the expired time, the original query will be executed again and tries to reposition the cursor to relative absolute position, however the results are not guaranteed to be same as the underlying sources may have been updated with new information meanwhile.
+{{ book.productnameFull }} OData server implements cursoring logic when the result rows exceed the configured batch size. On every request, only _batch-size_ number of rows are returned. Each such request is considered an active cursor, with a specified amount of idle time specified by _skip-token-cache-time_. After the cursor is timed out, the cursor will be closed and remaining results will be cleaned up, and will no longer be available for further queries. Since there is no session based tracking of these cursors, if the request for skiptoken comes after the expired time, the original query will be executed again and tries to reposition the cursor to relative absolute position, however the results are not guaranteed to be same as the underlying sources may have been updated with new information meanwhile.
 
 == Limitations
 
@@ -249,11 +268,11 @@ For latest information other frameworks and tools available please see http://ww
 
 == OData Metadata (How {{ book.productnameFull }} interprets the relational schema into OData's $metadata)
 
-OData defines its schema using Conceptual Schema Definition Language (CSDL). Every VDB, that is deployed in an ACTIVE state in {{ book.productnameFull }} server exposes its metadata in CSDL format. For example if you want retrieve metadata for your vdb _northwind_, you need to issue a query like
+OData defines its schema using Conceptual Schema Definition Language (CSDL). A VDB in an ACTIVE state in {{ book.productnameFull }} exposes its metadata in CSDL format. For example if you want retrieve metadata for your vdb, you need to issue a query like
 
 [source]
 ----
-http://localhost:8080/odata4/northwind/NW/$metadata
+http://localhost:8080/{{ book.odataContext }}/$metadata
 ----
 
 Since OData schema model is not a relational schema model, {{ book.productnameFull }} uses the following semantics to map its relational schema model to OData schema model.
@@ -335,18 +354,18 @@ You should always consult the $metadata about Functions and Actions to validate 
 
 == OpenAPI Metadata
 
-An https://issues.jboss.org/browse/TEIID-5555[experimental feature] is available to automatically provide an https://www.openapis.org/[OpenAPI] / Swagger 2.0 metadata via base-url/vdb/schema/[swagger|openapi].json 
+An https://issues.jboss.org/browse/TEIID-5555[experimental feature] is available to automatically provide a Swagger 2.0 / https://www.openapis.org/[OpenAPI] metadata via [swagger|openapi].json rather than $metadata.
 
 [source]
 .*Example Swagger 2.0 URL*
 ----
-http://localhost:8080/odata4/northwind/NW/swagger.json
+http://localhost:8080/{{ book.odataContext }}/swagger.json
 ----
 
 [source]
 .*Example OpenAPI 3.0 URL*
 ----
-http://localhost:8080/odata4/northwind/NW/openapi.json
+http://localhost:8080/{{ book.odataContext }}/openapi.json
 ----
 
 WARNING: Due to all of the possible query options and expansions this metadata will be significantly larger than the OData EDM representation.

@@ -32,13 +32,19 @@ driver on same machine that the application is running on and then
 create a Data Source Name (DSN) that represents a connection profile for
 your {{ book.productnameFull }} VDB.
 
+{% if book.targetWildfly %}
 For a windows client, see the link:Installing_the_ODBC_Driver_Client.adoc[Windows Installation Guide].
+{% endif %}
 
 == Configuration
 
-WARNING: By default {{ book.productnameFull }} supports plain text password authentication for ODBC. If the client/server are not configured to use SSL or GSS authentication, the password will be sent in plain text over the network. If you need secure passwords in transit and are not using SSL, then consider installing a security domain that will accept safe password values from the client (for example encrypted or hashed).
+WARNING: By default {{ book.productnameFull }} supports plain text password authentication for pg/ODBC. If the client/server are not configured to use SSL or GSS authentication, the password will be sent in plain text over the network. 
+
+{% if book.wildFly %}
+If you need secure passwords in transit and are not using SSL, then consider installing a security domain that will accept safe password values from the client (for example encrypted or hashed).
 
 See the link:../security/Security_Guide.adoc[Security Guide] for details on configuring SSL for and using Kerberos with the pg transport.
+{% endif %}
 
 For a windows client, see the link:Configuring_the_Data_Source_Name_DSN.adoc[Configuring the Data Source Name].
 
@@ -46,7 +52,7 @@ See also link:DSN_Less_Connection.adoc[DSN Less Connection].
 
 === Connection Settings
 
-All the available pg driver connection options with their descriptions that can be used are defined here http://psqlodbc.projects.pgfoundry.org/docs/config.html[http://psqlodbc.projects.pgfoundry.org/docs/config.html]. When using these properties on the connection string, their property names are defined here http://psqlodbc.projects.pgfoundry.org/docs/config-opt.html[http://psqlodbc.projects.pgfoundry.org/docs/config-opt.html].
+All the available pg driver connection options with their descriptions that can be used are defined here https://odbc.postgresql.org/docs/config.html. When using these properties on the connection string, their property names are defined here https://odbc.postgresql.org/docs/config-opt.html.
 
 However {{ book.productnameFull }} does not honor all properties, and some, such as Updatable Cursors, will cause query failures.
 
@@ -61,7 +67,7 @@ However {{ book.productnameFull }} does not honor all properties, and some, such
 |It is recommended that "Use serverside prepare" is enabled and "Parse Statements"/"Disallow Premature" are disabled
 
 |SSL mode
-|See link:../security/Security_Guide.adoc[Security Guide]
+|May be needed if you are connecting to a secured pg transport port.  {% if book.targetWildfly %}See link:../security/Security_Guide.adoc[Security Guide]{% endif %}
 
 |Use Declare/Fetch cursors & Fetch Max Count
 |Should be used to better manage resources when large result sets are used

@@ -1,11 +1,15 @@
 
 = Logging
 
+{% if book.targetSpring %}
+The {{ book.productnameFull }} system provides a wealth of information via logging.  Typically these logs are logged to the console.  It will be up to your application which logging mechanism, logback, log4j, etc. is responsible for the logging configuration.
+{% endif %}
+{% if book.targetWildfly %}
 The {{ book.productnameFull }} system provides a wealth of information via logging. To control logging level, contexts, and log locations, you should be familiar with http://logging.apache.org/log4j/[log4j] and the container’s _standalone-teiid.xml_ or _domain-teiid.xml_ configuration files depending upon the start up mode of {{ book.asName }}.
 
 All the logs produced by {{ book.productnameFull }} are prefixed by "org.teiid". This makes it extremely easy to control of of {{ book.productnameFull }} logging from a single context. Note however that changes to the log configuration file manually require a restart to take affect. CLI based log context modifications are possible, however details are beyond the scope of this document.
 
-If you expect a high volume of logging information or use expensive custom audit/command loggers, it is a good idea to use an aynch appender to minimize the performance impact. For example you can use a configuration snippet like the one below to insert an asynch handler in front of the target appender.
+If you expect a high volume of logging information or use expensive custom audit/command loggers, it is a good idea to use an async appender to minimize the performance impact. For example you can use a configuration snippet like the one below to insert an async handler in front of the target appender.
 
 [source,xml]
 ----
@@ -34,6 +38,7 @@ If you expect a high volume of logging information or use expensive custom audit
     </handlers>
 </logger>
 ----
+{% endif %}
 
 == Logging Contexts
 
@@ -82,7 +87,7 @@ While all of {{ book.productnameFull }}’s logs are prefixed with _"org.teiid"_
 |Admin API logs.
 
 |org.teiid.ODBC
-|ODBC logs.
+|pg/ODBC logs.
 |===
 
 == Command Logging
@@ -103,8 +108,7 @@ With this information being captured, the overall query execution time in {{ boo
 
 To enable command logging to the default log location, simply enable the DETAIL level of logging for the org.teiid.COMMAND_LOG context.
 
-NOTE: *"Want to log to a database?"* - If you would like to log Command log messages to any database, then look at the https://github.com/teiid/teiid-extensions[https://github.com/teiid/teiid-extensions] project. The installation zip file is available in {{ book.productnameFull }} downloads page.
-
+{% if book.targetWildfly %}
 To enable command logging to an alternative file location, configure a separate file appender for the DETAIL logging of the org.teiid.COMMAND_LOG context. An example of this is shown below and can also be found in the standalone-teiid.xml distributed with {{ book.productnameFull }}.
 
 [source,xml]
@@ -127,6 +131,7 @@ To enable command logging to an alternative file location, configure a separate 
 ----
 
 See the link:../dev/Developers_Guide.adoc[Developer’s Guide] to develop a link:../dev/Custom_Logging.adoc[custom logging solution] if file based logging, or any other built-in Log4j logging, is not sufficient.
+{% endif %}
 
 The following is an example of a data source command and what one would look like when printed to the command log:
 
@@ -160,20 +165,17 @@ Audit logging captures important security events. This includes the enforcement 
 
 To enable audit logging to the default log location, simply enable the DEBUG level of logging for the org.teiid.AUDIT_LOG context.
 
-NOTE: *"Want to log to a database?"* - If you would like to log Audit log messages to any database, then look at the https://github.com/teiid/teiid-extensions[https://github.com/teiid/teiid-extensions] project. The installation zip file will be available in {{ book.productnameFull }} downloads page.
-
-To enable audit logging to an alternative file location, configure a separate file appender for the DETAIL logging of the org.teiid.AUDIT_LOG context. See the link:../dev/Developers_Guide.adoc[Developer’s Guide] to develop a link:../dev/Custom_Logging.adoc[custom logging solution] if file based, or any other built-in Log4j, logging is not sufficient.
-
 == Additional Logging Information
 
 Once a session has been created, each log made by {{ book.productnameFull }} will include the session id and vdb name/version in the MDC (mapped diagnostic context) with keys of teiid-session and teiid-vdb respectively.
 
 Any log in the scope of a query will include the request id in the MDC with key of teiid-request.
 
+{% if book.targetWildfly %}
 Custom loggers, or format patterns, can take advantage of this information to better correlate log entries. See for example {{ book.productnameFull }} default _standalone-teiid.xml_ that uses a pattern format which includes the session id prior to the message:
 
 [source,xml]
 ----
 <pattern-formatter pattern="%d{HH:mm:ss,SSS} %-5p [%c] (%t) %X{teiid-session} %s%E%n"/>
 ----
-
+{% endif %}

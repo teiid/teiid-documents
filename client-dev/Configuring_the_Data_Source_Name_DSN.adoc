@@ -26,7 +26,7 @@ image:images/dsnsetup1.png[dsnsetup1.png]
 In the _Data Source_ Name edit box, type the name you want to assign to this data source. 
 In the _Database_ edit box, type the name of the virtual database you want to access through this data source.
 In the _Server_ edit box, type the host name or IP address of your {{ book.productnameFull }} runtime. If connecting via a firewall or NAT address, the firewall address or NAT address should be entered. 
-In the Port edit box, type the port number to which the {{ book.productnameFull }} System listens for ODBC requests. By default, {{ book.productnameFull }} listenes for ODBC requests on port 35432
+In the Port edit box, type the port number to which the {{ book.productnameFull }} System listens for ODBC requests. By default, {{ book.productnameFull }} listens for ODBC requests on port 35432
 In the _User Name_ and _Password_ edit boxes, supply the user name and password for the {{ book.productnameFull }} runtime access. 
 Provide any description about the data source in the _Description_ field.
 
