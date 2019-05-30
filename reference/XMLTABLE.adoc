@@ -6,7 +6,7 @@ Usage:
 
 [source,sql]
 ----
-XMLTABLE([<NSP>,] xquery-expression [<PASSING>] [COLUMNS <COLUMN>, ... )] AS name
+XMLTABLE([<NSP>,] xquery-expression [<PASSING>] [COLUMNS <COLUMN>, ... ]) AS name
 ----
 
 [source,sql]

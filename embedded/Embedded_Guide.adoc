@@ -89,7 +89,7 @@ If you do not need XML type support including XPath and SQL/XML functions like X
 </dependency>
 ----
 
-Some geospatial support requires additional depedencies.  If you need no or minimal support (no geojson nor projection), then you may also choose to exclude this from the runtime by using excludes:
+Some geospatial support requires additional dependencies.  If you need no or minimal support (no geojson nor projection), then you may also choose to exclude this from the runtime by using excludes:
 
 [source,xml]
 ----
@@ -99,7 +99,23 @@ Some geospatial support requires additional depedencies.  If you need no or mini
     <exclusions>
         <exclusion>
             <groupId>org.teiid</groupId>
-           <artifactId>teiid-optional-geo</artifactId>
+            <artifactId>teiid-optional-geo</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+----
+
+Some json support requires additional dependencies.  If you need no or minimal support (no jsonpath support), then you may also choose to exclude this from the runtime by using excludes:
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.teiid</groupId>
+    <artifactId>teiid-runtime</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>org.teiid</groupId>
+            <artifactId>teiid-optional-json</artifactId>
         </exclusion>
     </exclusions>
 </dependency>

@@ -34,6 +34,8 @@ Example Syntax:
 
 * FROM link:OBJECTTABLE.adoc[OBJECTTABLE…]
 
+* FROM link:JSONTABLE.adoc[JSONTABLE…]
+
 * FROM (link:Subqueries.adoc#_inline_views[SELECT …]
 
 == From Clause Hints

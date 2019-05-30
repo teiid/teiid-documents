@@ -1,0 +1,68 @@
+= JSONTABLE
+
+The JSONTABLE function uses link:https://github.com/json-path/JsonPath[JsonPath] to produce tabular output. The JSONTABLE function is implicitly a nested table and may be correlated to preceding FROM clause entries.
+
+Usage:
+
+[source,sql]
+----
+JSONTABLE(value, path [, nullLeafOnMissing] COLUMNS <COLUMN>, ... ) AS name
+----
+
+[source,sql]
+----
+COLUMN := name (FOR ORDINALITY | (datatype [PATH string]))
+----
+
+See also link:JSON_Functions.adoc#_jsonpath_support[JsonPath Support]
+
+Parameters
+
+* value is a clob containing a valid json document. 
+
+* If nullLeafOnMissing is false (the default), then a path that evaluates to a leaf that is missing will throw an exception.  If nullLeafOnMissing is true, then a null value will be returned.
+
+* The path string should be a valid JsonPath. If an array value is returned, then each non-null element will be used to generate a row.  Otherwise a single non-null item will be used to create a single row.
+
+* A FOR ORDINALITY column is typed as integer and will return the 1-based item number as its value.
+
+* Each non-ordinality column specifies a type and optionally a PATH.
+
+* If PATH is not specified, then the path will be generated from the column name: @['name'] - which will look for an object key value matching name.  If PATH is specified, it must begin with @, which means that the path will be processed relative the the current row context item.
+
+Syntax Rules:
+
+* The columns names must not contain duplicates.
+
+* Array types are not yet supported.
+
+Examples
+
+Use of passing, returns 1 row [1]:
+
+[source,sql]
+----
+select * from jsontable('{"a": {"id":1}}}', '$.a' COLUMNS id integer) x
+----
+
+As a nested table:
+
+[source,sql]
+----
+select x.* from t, jsontable(t.doc, '$.x.y' COLUMNS first string, second FOR ORDINALITY) x
+----
+
+With more complicated paths:
+
+[source,sql]
+----
+select x.* from jsontable('[{"firstName": "John", "lastName": "Wayne", "children": []}, {"firstName": "John", "lastName": "Adams", "children":["Sue","Bob"]}]', '$.*' COLUMNS familyName string path '@.lastName', children integer path '@.children.length()' ) x
+----
+
+== Differences With XMLTABLE
+
+Processing of JSON to tabular results was previously recommended through the use of XMLTABLE with JSONTOXML.  For most tasks JSONTABLE provides a simpler syntax.  However there are some differences to consider:
+
+* JSONTABLE parses the JSON completely, the processes it.  XMLTABLE support streaming processing to reduce the memory overhead.
+* JsonPath is not as powerful as XQuery - there are a lot of functions and operations available in XQuery/XPath that are not available in JsonPath.
+* JsonPath does not allow for parent references in the column paths - there is no ability to reference the root or any part of the parent hierarchy (.. in XPath).

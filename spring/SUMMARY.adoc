@@ -183,6 +183,7 @@
 ..... link:reference/ARRAYTABLE.adoc[ARRAYTABLE]
 ..... link:reference/OBJECTTABLE.adoc[OBJECTTABLE]
 ..... link:reference/TEXTTABLE.adoc[TEXTTABLE]
+..... link:reference/JSONTABLE.adoc[JSONTABLE]
 .... link:reference/WHERE_Clause.adoc[WHERE Clause]
 .... link:reference/GROUP_BY_Clause.adoc[GROUP BY Clause]
 .... link:reference/HAVING_Clause.adoc[HAVING Clause]

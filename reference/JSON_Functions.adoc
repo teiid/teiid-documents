@@ -5,7 +5,9 @@
 
 JSON functions provide functionality for working with http://www.json.org/[JSON] (JavaScript Object Notation) data.
 
-== Sample Data For Examples
+== JSON Construction
+
+=== Sample Data For Examples
 
 Examples provided with XML functions use the following table structure
 
@@ -52,7 +54,173 @@ with Data
 |USA
 |===
 
-== JSONTOXML
+=== JSONARRAY
+
+Returns a JSON array.
+
+[source,sql]
+----
+JSONARRAY(value...)
+----
+
+value is any object link:JSON_Functions.adoc#_conversion_to_json[convertable to a JSON] value. Return value is json.
+
+Null values will be included in the result as null literals.
+
+mixed value example
+
+[source,sql]
+----
+jsonArray('a"b', 1, null, false, {d'2010-11-21'})
+----
+
+Would return
+
+[source,sql]
+----
+["a\"b",1,null,false,"2010-11-21"]
+----
+
+Using JSONARRAY on a Table
+
+[source,sql]
+----
+SELECT JSONARRAY(CustomerId, CustomerName)       
+FROM   Customer c
+WHERE  c.CustomerID >= 88;
+==========================================================
+[88,"Wellington Importadora"]
+[89,"White Clover Markets"]
+----
+
+
+=== JSONOBJECT
+
+Returns a JSON object.
+
+[source,sql]
+----
+JSONARRAY(value [as name] ...)
+----
+
+value is any object link:JSON_Functions.adoc#_conversion_to_JSON[convertable to a JSON] value. Return value is json.
+
+Null values will be included in the result as null literals.
+
+If a name is not supplied and the expression is a column reference, the column name will be used otherwise exprN will be used where N is the 1-based index of the value in the JSONARRAY expression.
+
+mixed value example
+
+[source,sql]
+----
+jsonObject('a"b' as val, 1, null as "null")
+----
+
+Would return
+
+[source,sql]
+----
+{"val":"a\"b","expr2":1,"null":null}
+----
+
+Using JSONOBJECT on a Table
+
+[source,sql]
+----
+SELECT JSONOBJECT(CustomerId, CustomerName)       
+FROM   Customer c
+WHERE  c.CustomerID >= 88;
+==========================================================
+{"CustomerId":88, "CustomerName":"Wellington Importadora"}
+{"CustomerId":89, "CustomerName":"White Clover Markets"}
+----
+
+Another example
+
+[source,sql]
+----
+SELECT JSONOBJECT(JSONOBJECT(CustomerId, CustomerName) as Customer)       
+FROM   Customer c
+WHERE  c.CustomerID >= 88;
+==========================================================
+{"Customer":{"CustomerId":88, "CustomerName":"Wellington Importadora"}}
+{"Customer":{"CustomerId":89, "CustomerName":"White Clover Markets"}}
+----
+
+Another example
+
+[source,sql]
+----
+SELECT JSONOBJECT(JSONARRAY(CustomerId, CustomerName) as Customer)       
+FROM   Customer c
+WHERE  c.CustomerID >= 88;
+==========================================================
+{"Customer":[88, "Wellington Importadora"]}
+{"Customer":[89, "White Clover Markets"]}
+----
+
+
+=== JSONPARSE
+
+Validates and returns a JSON result.
+
+[source,sql]
+----
+JSONPARSE(value, wellformed)
+----
+
+value is blob with an appropriate JSON binary encoding (UTF-8, UTF-16, or UTF-32) or a clob. wellformed is a boolean indicating that validation should be skipped. Return value is json.
+
+A null for either input will return null.
+
+json parse of a simple literal value
+
+[source,sql]
+----
+jsonParse('{"Customer":{"CustomerId":88, "CustomerName":"Wellington Importadora"}}', true)
+----
+
+
+=== JSONARRAY_AGG
+
+creates a JSON array result as a Clob including null value. This is similar to JSONARRAY but aggregates its contents into single object
+
+[source,sql]
+----
+SELECT JSONARRAY_AGG(JSONOBJECT(CustomerId, CustomerName))       
+FROM   Customer c
+WHERE  c.CustomerID >= 88;
+==========================================================
+[{"CustomerId":88, "CustomerName":"Wellington Importadora"}, {"CustomerId":89, "CustomerName":"White Clover Markets"}]
+----
+
+You can also wrap array as
+
+[source,sql]
+----
+SELECT JSONOBJECT(JSONARRAY_AGG(JSONOBJECT(CustomerId as id, CustomerName as name)) as Customer)      
+FROM   Customer c
+WHERE  c.CustomerID >= 88;
+==========================================================
+{"Customer":[{"id":89,"name":"Wellington Importadora"},{"id":100,"name":"White Clover Markets"}]}
+----
+
+
+=== Conversion to JSON
+
+A straight-forward specification compliant conversion is used for converting values into their appropriate JSON document form.
+
+* null values are included as the null literal.
+* values parsed as JSON or returned from a JSON construction function (JSONPARSE, JSONARRAY, JSONARRAY_AGG) will be directly appended into a JSON result.
+* boolean values are included as true/false literals
+* numeric values are included as their default string conversion - in some circumstances if not a number or +-infinity results are allowed, invalid json may be obtained.
+* string values are included in their escaped/quoted form.
+* binary values are not implicitly convertable to JSON values and require a specific prior to inclusion in JSON.
+* all other values will be included as their string conversion in the appropriate escaped/quoted form.
+
+== JSON Processing
+
+=== JSONTOXML
 
 Returns an xml document from JSON.
 
@@ -145,167 +313,74 @@ XML:
 
 NOTE: prior releases defaulted incorrectly to using _uXXXX_ escaping rather than _xXXXX_.  If you need to rely on that behavior see the org.teiid.useXMLxEscape system property.
 
-== JSONARRAY
+=== JsonPath Support
 
-Returns a JSON array.
+JsonPath support is provided by link:https://github.com/json-path/JsonPath[Jayway JsonPath].  Please note that it uses 0, not 1 based indexing.  Also please familiarize yourself with the expected returns for various path expressions.  If for example a row JsonPath expression is expected to provide an array, make sure that it's the array you want and not an array or an array that would automatically be returned by an indefinite path expression.
 
-[source,sql]
-----
-JSONARRAY(value...)
-----
+If you encounter a situation where path names use reserved characters, such as '.', then you must use the bracketed JsonPath notation as that allows for any key, e.g. $['.key'].
 
-value is any object link:JSON_Functions.adoc#_conversion_to_json[convertable to a JSON] value. Return value is json.
+See also link:JSONTABLE.adoc[JSONTABLE].
 
-Null values will be included in the result as null literals.
+=== JSONPATHVALUE
 
-mixed value example
+Extracts a single json value as a string.
 
 [source,sql]
 ----
-jsonArray('a"b', 1, null, false, {d'2010-11-21'})
+JSONPATHVALUE(value, path [, nullLeafOnMissing])
+----
+
+value is a clob Json document, path is a JsonPath string, nullLeafOnMissing is a boolean. Return value is a string value of the resulting json.
+
+If nullLeafOnMissing is false (the default), then a path that evaluates to a leaf that is missing will throw an exception.  If nullLeafOnMissing is true, then a null value will be returned.
+
+If the value is an array produced by an indefinite path expression, then only the first value will be returned.
+
+[source,sql]
+----
+jsonPathValue('{"key":"value"}' '$.missing', true)
 ----
 
 Would return
 
 [source,sql]
 ----
-["a\"b",1,null,false,"2010-11-21"]
+null
 ----
-
-Using JSONARRAY on a Table
 
 [source,sql]
 ----
-SELECT JSONARRAY(CustomerId, CustomerName)       
-FROM   Customer c
-WHERE  c.CustomerID >= 88;
-==========================================================
-[88,"Wellington Importadora"]
-[89,"White Clover Markets"]
-----
-
-
-== JSONOBJECT
-
-Returns a JSON object.
-
-[source,sql]
-----
-JSONARRAY(value [as name] ...)
-----
-
-value is any object link:JSON_Functions.adoc#_conversion_to_JSON[convertable to a JSON] value. Return value is json.
-
-Null values will be included in the result as null literals.
-
-If a name is not supplied and the expression is a column reference, the column name will be used otherwise exprN will be used where N is the 1-based index of the value in the JSONARRAY expression.
-
-mixed value example
-
-[source,sql]
-----
-jsonObject('a"b' as val, 1, null as "null")
+jsonPathValue('[{"key":"value1"}, {"key":"value2"}]' '$..key')
 ----
 
 Would return
 
 [source,sql]
 ----
-{"val":"a\"b","expr2":1,"null":null}
+value1
 ----
 
-Using JSONOBJECT on a Table
+=== JSONQUERY
+
+Evaluate a JsonPath expression against a Json document and return the Json result.
 
 [source,sql]
 ----
-SELECT JSONOBJECT(CustomerId, CustomerName)       
-FROM   Customer c
-WHERE  c.CustomerID >= 88;
-==========================================================
-{"CustomerId":88, "CustomerName":"Wellington Importadora"}
-{"CustomerId":89, "CustomerName":"White Clover Markets"}
+JSONQUERY(value, path [, nullLeafOnMissing])
 ----
 
-Another example
+value is a clob Json document, path is a JsonPath string, nullLeafOnMissing is a boolean. Return value is a json value.
+
+If nullLeafOnMissing is false (the default), then a path that evaluates to a leaf that is missing will throw an exception.  If nullLeafOnMissing is true, then a null value will be returned.
 
 [source,sql]
 ----
-SELECT JSONOBJECT(JSONOBJECT(CustomerId, CustomerName) as Customer)       
-FROM   Customer c
-WHERE  c.CustomerID >= 88;
-==========================================================
-{"Customer":{"CustomerId":88, "CustomerName":"Wellington Importadora"}}
-{"Customer":{"CustomerId":89, "CustomerName":"White Clover Markets"}}
+jsonPathValue('[{"key":"value1"}, {"key":"value2"}]' '$..key')
 ----
 
-Another example
+Would return
 
 [source,sql]
 ----
-SELECT JSONOBJECT(JSONARRAY(CustomerId, CustomerName) as Customer)       
-FROM   Customer c
-WHERE  c.CustomerID >= 88;
-==========================================================
-{"Customer":[88, "Wellington Importadora"]}
-{"Customer":[89, "White Clover Markets"]}
+["value1","value2"]
 ----
-
-
-== JSONPARSE
-
-Validates and returns a JSON result.
-
-[source,sql]
-----
-JSONPARSE(value, wellformed)
-----
-
-value is blob with an appropriate JSON binary encoding (UTF-8, UTF-16, or UTF-32) or a clob. wellformed is a boolean indicating that validation should be skipped. Return value is json.
-
-A null for either input will return null.
-
-json parse of a simple literal value
-
-[source,sql]
-----
-jsonParse('{"Customer":{"CustomerId":88, "CustomerName":"Wellington Importadora"}}', true)
-----
-
-
-== JSONARRAY_AGG
-
-creates a JSON array result as a Clob including null value. This is similar to JSONARRAY but aggregates its contents into single object
-
-[source,sql]
-----
-SELECT JSONARRAY_AGG(JSONOBJECT(CustomerId, CustomerName))       
-FROM   Customer c
-WHERE  c.CustomerID >= 88;
-==========================================================
-[{"CustomerId":88, "CustomerName":"Wellington Importadora"}, {"CustomerId":89, "CustomerName":"White Clover Markets"}]
-----
-
-You can also wrap array as
-
-[source,sql]
-----
-SELECT JSONOBJECT(JSONARRAY_AGG(JSONOBJECT(CustomerId as id, CustomerName as name)) as Customer)      
-FROM   Customer c
-WHERE  c.CustomerID >= 88;
-==========================================================
-{"Customer":[{"id":89,"name":"Wellington Importadora"},{"id":100,"name":"White Clover Markets"}]}
-----
-
-
-== Conversion to JSON
-
-A straight-forward specification compliant conversion is used for converting values into their appropriate JSON document form.
-
-* null values are included as the null literal.
-* values parsed as JSON or returned from a JSON construction function (JSONPARSE, JSONARRAY, JSONARRAY_AGG) will be directly appended into a JSON result.
-* boolean values are included as true/false literals
-* numeric values are included as their default string conversion - in some circumstances if not a number or +-infinity results are allowed, invalid json may be obtained.
-* string values are included in their escaped/quoted form.
-* binary values are not implicitly convertable to JSON values and require a specific prior to inclusion in JSON.
-* all other values will be included as their string conversion in the appropriate escaped/quoted form.
-
