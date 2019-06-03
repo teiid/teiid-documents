@@ -13,11 +13,19 @@ for example to turn on the result set caching you can issue
 SET resultSetCacheMode TO 'true'
 ----
 
-Another option is to set this as VDB property in vdb.xml file as 
+Another option is to set this as VDB property in the vdb file as 
 
+[source,sql]
+----
+CREATE DATABASE vdb OPTIONS ("connection.partialResultsMode" true);
+----
+
+{% if book.targetWildfly %}
+Or in an XML VDB:
 ----
 <vdb name="...">
     <property name="connection.resultSetCacheMode" value="true"/>
     ...
 </vdb>
 ----
+{% endif %}

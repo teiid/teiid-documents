@@ -5,7 +5,7 @@ During translator development, a translator developer can define three (3) diffe
 
 == Translator Override Properties
 
-On the "ExecutionFactory" class a translator developer can define any number of "getter/setter" methods with the @TranslatorProperty annotation. These properties (also referred to a execution properties) can be used for extending the capabilities of the translator. It is important to define default values for all these properties, as these properties are being defined to change the default behavior of the translator. If needed, the values for these properties are supplied in "vdb.xml" file during the deploy time when the translator is used to represent vdb’s model. A sample example is given below:
+On the "ExecutionFactory" class a translator developer can define any number of "getter/setter" methods with the @TranslatorProperty annotation. These properties (also referred to a execution properties) can be used for extending the capabilities of the translator. It is important to define default values for all these properties, as these properties are being defined to change the default behavior of the translator. If needed, the values for these properties are supplied in the vdb during the deploy time when the translator is used to represent vdb’s model. A sample example is given below:
 
 [source,java]
 ----
@@ -18,8 +18,21 @@ public void setCopyLobs(boolean copyLobs) {
     this.copyLobs = copyLobs;
 ----
 
-at runtime these properties can be defined in vdb.xml as
+at runtime these properties can be defined in the vdb as
 
+[source,sql]
+----
+CREATE DATABASE vdb;
+USE DATABASE vdb;
+CREATE FOREIGN DATA WRAPPER "my-translator";
+CREATE FOREIGN DATA WRAPPER "my-translator-override" TYPE "my-translator" OPTIONS (CopyLobs 'true');
+CREATE SERVER connector FOREIGN DATA WRAPPER "my-translator-override";
+CREATE SCHEMA PM1 SERVER connector;
+SET SCHEMA PM1;
+IMPORT FROM SERVER connector INTO PM1;
+----
+
+{% if book.targetWildfly %}
 [source,java]
 ----
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -32,6 +45,7 @@ at runtime these properties can be defined in vdb.xml as
     </translator>
 </vdb>
 ----
+{% endif %}
 
 == Metadata Import Properties
 
@@ -64,8 +78,22 @@ public MyMetadataProcessor implements MetadataProcessor<MyConnection> {
 }
 ----
 
-Below is an example showing how to use import properties with a vdb.xml file
+Below is an example showing how to use import properties with a vdb file
 
+[source,sql]
+----
+CREATE DATABASE vdb;
+USE DATABASE vdb;
+CREATE FOREIGN DATA WRAPPER "my-translator";
+CREATE SERVER connector FOREIGN DATA WRAPPER "my-translator";
+CREATE SCHEMA PM1 SERVER connector OPTIONS ("importer.HeaderRowNumber" '12');
+SET SCHEMA PM1;
+IMPORT FROM SERVER connector INTO PM1 OPTIONS ("importer.HeaderRowNumber" '12');
+----
+
+Note that the import properties in DDL may be on either the SERVER or the IMPORT statement.
+
+{% if book.targetWildfly %}
 [source,xml]
 ----
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -76,6 +104,7 @@ Below is an example showing how to use import properties with a vdb.xml file
     </model>
 </vdb>
 ----
+{% endif %}
 
 == Extension Metadata Properties
 

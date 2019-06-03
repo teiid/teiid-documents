@@ -5,15 +5,15 @@
 * _domain-ddl_
 
 * _schema-ddl_
-
+{% if book.targetWildfly %}
 * _cache-metadata_
 
 Can be "true" or "false". defaults to "false" for -vdb.xml deployments otherwise "true". If "false", {{ book.productnameFull }} will obtain metadata once for every launch of the vdb. "true" will save a file containing the metadata into the PROFILE/data/teiid directory
-
+{% endif %}
 * _query-timeout_ 
 
 Sets the default query timeout in milliseconds for queries executed against this VDB. 0 indicates that the server default query timeout should be used. Defaults to 0. Will have no effect if the server default query timeout is set to a lesser value. Note that clients can still set their own timeouts that will be managed on the client side.
-
+{% if book.targetWildfly %}
 * _lib_ 
 
 Set to a list of modules for the vdb classpath for user defined function loading. See also link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[Support for User-Defined Functions (Non-Pushdown)].
@@ -28,15 +28,22 @@ Set to the security domain to use if a specific security domain is applicable to
 ----
 
 NOTE: An admin needs to configure a matching "custom-security" login module in standalone-teiid.xml configuration file before the VDB is deployed.
-
+{% endif %}
 * _connection.XXX_ 
 
 For use by the ODBC transport and OData to set default connection/execution properties. See link:../client-dev/Driver_Connection.adoc[Driver Connection] for all properties. Note these are set on the connection after it has been established.
 
+[source,sql]
+----
+CREATE DATABASE vdb OPTIONS ("connection.partialResultsMode" true);
+----
+
+{% if book.targetWildfly %}
 [source,xml]
 ----
    <property name="connection.partialResultsMode" value="true" />
 ----
+{% endif %}
 
 * _authentication-type_ 
 

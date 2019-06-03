@@ -23,8 +23,22 @@ The above may not satisfy every user’s needs. The document structure in MongoD
 
 == Usage
 
-The name of the translator to use in vdb.xml is "_mongodb_". For example:
+The name of the translator to use in a vdb is "_mongodb_". For example:
 
+[source,sql]
+----
+CREATE DATABASE nothwind;
+USE DATABASE nothwind;
+CREATE FOREIGN DATA WRAPPER mongodb;
+CREATE SERVER local FOREIGN DATA WRAPPER mongodb OPTIONS ("jndi-name" 'java:/mongoDS');
+CREATE SCHEMA northwind SERVER local;
+
+SET SCHEMA northwind;
+IMPORT FROM SERVER local INTO northwind;
+----
+
+{% if book.targetWildfly %}
+Or as an xml vdb:
 [source,xml]
 ----
 <vdb name="nothwind" version="1">
@@ -34,7 +48,6 @@ The name of the translator to use in vdb.xml is "_mongodb_". For example:
 <vdb>
 ----
 
-{% if book.targetWildfly %}
 The translator does not provide a connection to the MongoDB. For that purpose, {{ book.productnameFull }} has a JCA adapter that provides a connection to MongoDB using the MongoDB Java Driver. To define such connector, use the following XML fragment in standalone-teiid.xml. See a example in "<jboss-as>/docs/teiid/datasources/mongodb"
 
 [source,xml]

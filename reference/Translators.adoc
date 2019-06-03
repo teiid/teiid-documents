@@ -84,10 +84,11 @@ There are no base importer settings.
 
 == Override Execution Properties
 
-For all translators, you may override Execution Properties in the _vdb.xml_ file.
+For all translators, you may override Execution Properties in the main vdb file.
 
 Example Overriding of Translator Property
 
+{% if book.targetWildfly %}
 [source,xml]
 ----
 <model name="ora">
@@ -98,8 +99,24 @@ Example Overriding of Translator Property
      <property name="RequiresCriteria" value="true"/>
 </translator>
 ----
+{% endif %}
 
-The above XML fragment is overriding the _oracle_ translator and altering the behavior of _RequiresCriteria_ property to true. Note that the modified translator is only available in the scope of this VDB.
+[source,sql]
+----
+CREATE FOREIGN DATA WRAPPER oracle;
+
+CREATE FOREIGN DATA WRAPPER "oracle-override" TYPE oracle OPTIONS (RequiresCriteria 'true');
+
+CREATE SERVER ora FOREIGN DATA WRAPPER "oracle-override" OPTIONS ("jndi-name" 'java:/oracle');
+
+CREATE SCHEMA ora SERVER ora;
+
+SET SCHEMA ora;
+
+IMPORT FROM SERVER ora INTO ora;
+----
+
+The above is overriding the _oracle_ translator and altering the behavior of _RequiresCriteria_ property to true. Note that the modified translator is only available in the scope of this VDB.
 As many properties as desired may be overriden together.
 
 See also link:vdb_guide.adoc[VDB Definition].

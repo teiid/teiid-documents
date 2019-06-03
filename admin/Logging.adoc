@@ -42,7 +42,7 @@ If you expect a high volume of logging information or use expensive custom audit
 
 == Logging Contexts
 
-While all of {{ book.productnameFull }}’s logs are prefixed with _"org.teiid"_, there are more specific contexts depending on the functional area of the system. Note that logs originating from third-party code, including integrated org.jboss components, will be logged through their respective contexts and not through _"org.teiid"_. See the table below for information on contexts relevant to {{ book.productnameFull }}. See the container’s _standalone-teiid.xml_ for a more complete listing of logging contexts used in the container.
+While all of {{ book.productnameFull }}’s logs are prefixed with _"org.teiid"_, there are more specific contexts depending on the functional area of the system. Note that logs originating from third-party code, including integrated org.jboss components, will be logged through their respective contexts and not through _"org.teiid"_. See the table below for information on contexts relevant to {{ book.productnameFull }}.
 
 |===
 |Context |Description

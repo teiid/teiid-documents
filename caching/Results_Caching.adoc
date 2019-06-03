@@ -102,10 +102,26 @@ You can use the extension metadata property
 {http://www.teiid.org/ext/relational/2012}data-ttl
 ----
 
-as a model property or on a source table to indicate a default TTL. A negative value means no TTL, 0 means do not cache, and a positive number indicates the time to live in milliseconds. If no TTL is specified on the table, then the schema will be checked. The TTL for the cache entry will be taken as the least positive value among all TTLs. Thus setting this value as a model property can quickly disable any caching against a particular source.
+as a schema/model property or on a source table to indicate a default TTL. A negative value means no TTL, 0 means do not cache, and a positive number indicates the time to live in milliseconds. If no TTL is specified on the table, then the schema will be checked. The TTL for the cache entry will be taken as the least positive value among all TTLs. Thus setting this value as a model property can quickly disable any caching against a particular source.
 
-For example, setting the property in the vdb.xml:
+For example, setting the property in the vdb:
 
+[source,sql]
+----
+CREATE DATABASE vdbname;
+USE DATABASE vdbname;
+...
+CREATE SCHEMA PM1 SERVER connector OPTIONS ("teiid_rel:data-ttl" 0);
+...
+----
+
+<vdb name="vdbname" version="1">
+    <model name="Customers">
+        <property name="teiid_rel:data-ttl" value="0"/>
+        ...
+----
+
+{% if book.targetWildfly %}
 [source,xml]
 ----
 <vdb name="vdbname" version="1">
@@ -114,7 +130,6 @@ For example, setting the property in the vdb.xml:
         ...
 ----
 
-{% if book.targetWildfly %}
 == Cache Administration
 
 The result set cache can be cleared through the AdminAPI using the `clearCache` method. The expected cache key is "QUERY_SERVICE_RESULT_SET_CACHE".

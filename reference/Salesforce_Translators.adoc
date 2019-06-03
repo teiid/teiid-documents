@@ -287,7 +287,7 @@ See the description of the http://www.salesforce.com/us/developer/docs/api/index
 
 === Bulk Insert Queries
 
-SalesForce translator also supports bulk insert statements using JDBC batch semantics or SELECT INTO semantics. The batch size is determined by the execution property _MaxBulkInsertBatchSize_, which can be overridden in the vdb.xml file. The default value of the batch is 2048. The bulk insert feature uses the async REST based API exposed by Salesforce for execution for better performance.
+SalesForce translator also supports bulk insert statements using JDBC batch semantics or SELECT INTO semantics. The batch size is determined by the execution property _MaxBulkInsertBatchSize_, which can be overridden in the vdb file. The default value of the batch is 2048. The bulk insert feature uses the async REST based API exposed by Salesforce for execution for better performance.
 
 === Bulk Selects
 
@@ -405,7 +405,7 @@ SELECT x.* FROM
  ARRAYTABLE(w.tuple COLUMNS "update_count" integer) AS x
 ----
 
-TIP: By default the name of the procedure that executes the queries directly is called native, however user can + set override execution property vdb.xml file to change it.
+TIP: By default the name of the procedure that executes the queries directly is called native, however user can + set override execution property vdb file to change it.
 
 {% if book.targetWildfly %}
 == JCA Resource Adapter
