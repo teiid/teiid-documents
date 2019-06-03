@@ -6,17 +6,21 @@ install:
     - cd wildfly
     - gitbook install
     - cd ..
+    - cd spring
+    - gitbook install
+    - cd ..
     - sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()"
     
 script: 
     - gitbook build wildfly content
     - gitbook pdf wildfly teiid-documents.pdf
+    - gitbook build spring sb
 
 after_success: |
     if [ -n "$GITHUB_API_KEY" ]; then
     git checkout --orphan $TRAVIS_BRANCH-gh-pages
     git rm -rf .
-    git add -f --ignore-errors --all content teiid-documents.pdf
+    git add -f --ignore-errors --all sb content teiid-documents.pdf
     git -c user.name='travis' -c user.email='travis' commit -m 'ci publishing'
     git push -f -q https://$GITHUB_USER:$GITHUB_API_KEY@github.com/$TRAVIS_REPO_SLUG $TRAVIS_BRANCH-gh-pages
     git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*" 1>/dev/null
