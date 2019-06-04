@@ -161,8 +161,15 @@ These optimizations are also applied when using the multi-source feature as well
 Partition-wise joins take a join of unions and convert the plan into a union of joins - such that only matching partitions are joined against one another.  
 See also link:http://blog.everythingjboss.info/articles/Partitioned-Union-JDV/[a blog on the join optimization].
 
-If you want a partition-wise join to be performed implicit without the need for an explicit join predicate on the partitioning column, set the model property implicit_partition.columnName to name of the partitioning column used on each partitioned view in the model/schema.
+If you want a partition-wise join to be performed implicit without the need for an explicit join predicate on the partitioning column, set the model/schema property implicit_partition.columnName to name of the partitioning column used on each partitioned view in the model/schema.
 
+[source,xml]
+----
+CREATE VIRTUAL SCHEMA all_customers SERVER server OPTIONS ("implicit_partition.columnName" 'theColumn');
+----
+
+{% if book.targetWildfly %}
+In an XML VDB:
 [source,xml]
 ----
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -171,6 +178,7 @@ If you want a partition-wise join to be performed implicit without the need for 
         <property name="implicit_partition.columnName" value="theColumn"/>
     ...
 ----  
+{% endif %}
  
 == Standard Relational Techniques
 

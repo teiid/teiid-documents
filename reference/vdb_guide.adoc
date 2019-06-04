@@ -6,36 +6,22 @@ image:images/vdb.png[vdb]
 
 A VDB typically contains multiple schema components (also called as models), and each schema contains the metadata (tables, procedures, functions). There are two (2) different types of schemas  
  
-* Source Schema (also called Physical or Foreign schema), which represents an external/remote data sources like Relational database (Oracle, DB2, MySQL..), Files(CSV, Excel..), Web-Services(SOAP, REST) etc.
+* Foreign Schema (also called Source or Physical schema), which represents an external/remote data sources like Relational database (Oracle, DB2, MySQL..), Files(CSV, Excel..), Web-Services(SOAP, REST) etc.
 
 * Virtual Schema. This is a view layer or logical schema layer, that is defined using schema objects from Foreign Schemas. For example, creating a view table using multiple foreign tables from different sources, thus hiding the complexities of definition of the view from user.
 
-One important thing to note is, a VDB ONLY contains metadata, NEVER copies/has the actual data. Any usecase involving {{ book.productnameFull }} MUST have a VDB to begin with. So, it is very important to learn how a VDB can be designed/developed.
+One important thing to note is, a VDB ONLY contains metadata. Any usecase involving {{ book.productnameFull }} MUST have a VDB to begin with. So, it is very important to learn how a VDB can be designed/developed.
 
 Below is an example VDB, that is using a single foreign schema component defining a connection to PostgreSQL database.
 
-.Example: 1
-[source,xml]
-----
-<vdb name="my-example" version="1">
-    <model name="test" type="PHYSICAL">
-        <property name="importer.schemaName" value="public"/>
-        <property name="importer.useFullSchemaName" value="false"/>
-        <property name="importer.tableTypes" value="TABLE,VIEW"/>         
-        <source name="pqsql" translator-name="postgresql" connection-jndi-name="java:/postgres-ds"/>           
-    </model>
-</vdb>
-----
+It uses a variation of DDL that utilizes the SQL-MED specification.
 
-Another variation of the VDB using completely DDL and using SQL-MED specification.
-
-.Example: 2
 [source,sql]
 ----
-CREATE DATABASE my_example VERSION '1.0.0';
-USE DATABASE my_example VERSION '1.0.0'; 
+CREATE DATABASE my_example;
+USE DATABASE my_example; 
 CREATE FOREIGN DATA WRAPPER postgresql;
-CREATE SERVER pgsql TYPE 'postgresql-9.4-1201.jdbc41.jar' 
+CREATE SERVER pgsql 
     VERSION 'one' FOREIGN DATA WRAPPER postgresql 
     OPTIONS (
         "jndi-name" 'java:/postgres-ds'
@@ -47,9 +33,24 @@ IMPORT FOREIGN SCHEMA public FROM SERVER pgsql INTO test
         importer.tableTypes 'TABLE,VIEW'
 );
 ----
-Both formats define the same VDB.
 
-There is lot to be explained from above examples, in the following sections, we will go into detail about each of those lines. Before that we need to learn about further fractions in the _Source Schema_ component. 
+{% if book.targetWildfly %}
+Or as an XML vdb:
+[source,xml]
+----
+<vdb name="my-example" version="1">
+    <model name="test" type="PHYSICAL">
+        <property name="importer.schemaName" value="public"/>
+        <property name="importer.useFullSchemaName" value="false"/>
+        <property name="importer.tableTypes" value="TABLE,VIEW"/>         
+        <source name="pqsql" translator-name="postgresql" connection-jndi-name="java:/postgres-ds"/>           
+    </model>
+</vdb>
+----
+Both formats define the same VDB.
+{% endif %}
+
+In the following sections we will go into detail about exactly this example VDB is defining. Before that we need to learn about further fractions in the _Source Schema_ component. 
 
 == External Data Sources 
 A "source schema" component in VDB as shown in above example is a collection schema objects as tables, procedures and functions that represent an external data source's metadata locally. In the above example, it did not define any such schema objects directly, but will instead import them from the server.  Details of the connection to the external data source were provided through "jndi-name", which is a named connection reference to a external data source.   

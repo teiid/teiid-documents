@@ -22,7 +22,7 @@ The execution properties for a translator typically have reasonable defaults. Fo
 |Name |Description |Default
 
 |Immutable
-|Set to true to indicate that the source never changes.
+|Set to true to indicate that the source never changes. The transactional support will be reported as NONE, and update commands will fail.
 |false
 
 |RequiresCriteria
@@ -88,19 +88,6 @@ For all translators, you may override Execution Properties in the main vdb file.
 
 Example Overriding of Translator Property
 
-{% if book.targetWildfly %}
-[source,xml]
-----
-<model name="ora">
-     <source name="ora" translator-name="oracle-override" connection-jndi-name="java:/oracle"/>
-</model>
-
-<translator name="oracle-override" type="oracle">
-     <property name="RequiresCriteria" value="true"/>
-</translator>
-----
-{% endif %}
-
 [source,sql]
 ----
 CREATE FOREIGN DATA WRAPPER oracle;
@@ -115,6 +102,20 @@ SET SCHEMA ora;
 
 IMPORT FROM SERVER ora INTO ora;
 ----
+
+{% if book.targetWildfly %}
+Or as an XML vdb:
+[source,xml]
+----
+<model name="ora">
+     <source name="ora" translator-name="oracle-override" connection-jndi-name="java:/oracle"/>
+</model>
+
+<translator name="oracle-override" type="oracle">
+     <property name="RequiresCriteria" value="true"/>
+</translator>
+----
+{% endif %}
 
 The above is overriding the _oracle_ translator and altering the behavior of _RequiresCriteria_ property to true. Note that the modified translator is only available in the scope of this VDB.
 As many properties as desired may be overriden together.

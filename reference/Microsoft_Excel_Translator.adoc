@@ -33,6 +33,21 @@ The below shows an example of a VDB, that shows a exposing a Excel Document.
 
 [source,xml]
 ----
+CREATE DATABASE excelvdb;
+USE DATABASE excelvdb;
+CREATE FOREIGN DATA WRAPPER excel;
+CREATE SERVER connector FOREIGN DATA WRAPPER excel OPTIONS ("jndi-name" 'java:/fileDS');
+CREATE SCHEMA excel SERVER connector;
+SET SCHEMA excel;
+IMPORT FROM SERVER connector INTO excel OPTIONS (
+    "importer.headerRowNumber" '1',
+    "importer.ExcelFileName" 'names.xls');
+----
+
+{% if book.targetWildfly %}
+As an XML VDB:
+[source,xml]
+----
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <vdb name="excelvdb" version="1">
     <model name="excel">
@@ -42,6 +57,7 @@ The below shows an example of a VDB, that shows a exposing a Excel Document.
     </model>
 </vdb>
 ----
+{% endif %}
 
 "connection-jndi-name" in above represents connection to Excel document.
 
@@ -104,6 +120,25 @@ Metadata Extension Properties are the properties that are defined on the schema 
 
 The below shows an example table that is defined using the Extension Metadata Properties.
 
+[source,sql]
+----
+CREATE DATABASE excelvdb;
+USE DATABASE excelvdb;
+CREATE FOREIGN DATA WRAPPER excel;
+CREATE SERVER connector FOREIGN DATA WRAPPER excel OPTIONS ("jndi-name" 'java:/fileDS');
+CREATE SCHEMA excel SERVER connector;
+SET SCHEMA excel;
+CREATE FOREIGN TABLE Person (
+                ROW_ID integer OPTIONS (SEARCHABLE 'All_Except_Like', "teiid_excel:CELL_NUMBER" 'ROW_ID'),
+                FirstName string OPTIONS (SEARCHABLE 'Unsearchable', "teiid_excel:CELL_NUMBER" '1'),
+                LastName string OPTIONS (SEARCHABLE 'Unsearchable', "teiid_excel:CELL_NUMBER" '2'),
+                Age integer OPTIONS (SEARCHABLE 'Unsearchable', "teiid_excel:CELL_NUMBER" '3'),
+                CONSTRAINT PK0 PRIMARY KEY(ROW_ID)
+             ) OPTIONS ("NAMEINSOURCE" 'Sheet1',"teiid_excel:FILE" 'names.xlsx', "teiid_excel:FIRST_DATA_ROW_NUMBER" '2')
+----
+
+{% if book.targetWildfly %}
+As an XML VDB:
 [source,xml]
 ----
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -122,6 +157,7 @@ The below shows an example table that is defined using the Extension Metadata Pr
     </model>
 </vdb>
 ----
+{% endif %}
 
 NOTE: *"Extended capabilities using ROW_ID column"* - If you define column, that has extension metadata property "CELL_NUMBER" with value "ROW_ID", then that column value contains the row information from Excel document. You can mark this column as Primary Key. You can use this column in SELECT statements with a restrictive set of capabilities including: comparison predicates, IN predicates and LIMIT. All other columns can *not* be used as predicates in a query.
 

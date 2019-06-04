@@ -19,6 +19,19 @@ The file translator, known by the type name _file_, exposes stored procedures t
 
 TIP: See link:Translators.adoc#_override_execution_properties[override an execution property] and the example below to set the properties.
 
+VDB DDL Override Example
+[source,sql]
+----
+CREATE SERVER "file-override" 
+    FOREIGN DATA WRAPPER file 
+    OPTIONS(
+        Encoding 'ISO-8859-1', "ExceptionIfFileNotFound" false
+    );
+    
+CREATE SCHEMA file SERVER "file-override";
+----
+
+{% if book.targetWildfly %}
 VDB XML Override Example
 [source,xml]
 ----
@@ -31,6 +44,7 @@ VDB XML Override Example
     <property name="ExceptionIfFileNotFound" value="false"/>
 </translator>
 ----
+{% endif %}
 
 == Usage
 

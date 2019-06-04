@@ -18,7 +18,7 @@ This section examines how to use facilities provided by the {{ book.productnameF
 
 == Handling Large Objects
 
-The Translator API automatically handles large objects (Blob/Clob/SQLXML) through the creation of special purpose wrapper objects when it retrieves results.
+The Translator API automatically handles large objects (Blob/Clob/SQLXML/Geometry/JSON) through the creation of special purpose wrapper objects when it retrieves results.
 
 Once the wrapped object is returned, the streaming of LOB is automatically supported. These LOB objects then can for example appear in client results, in user defined functions, or sent to other translators.
 

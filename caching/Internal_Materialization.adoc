@@ -185,7 +185,13 @@ The secondary indexes are always created as ordered trees - bitmap or hash index
 * Function based index are supported, but can only be specified through DDL metadata.  If you are not using DDL metadata, consider adding another column to the view that projects the function expression, then place an index on that new column. Queries to the view will need to be modified as appropriate though to make use of the new column/index.
 * If additional covered columns are needed, they may simply be added to the index columns. This however is only applicable to comparable types. Adding additional columns will increase the amount of space used by the index, but may allow its usage to result in higher performance when only the covered columns are used and the main table is not consulted.
 
+{% if book.targetWildfly %}
 == Clustering Considerations
 
 Each member in a cluster maintains its own copy of each materialized table and associated indexes. An attempt is made to ensure each member receives the same full refresh events as the others. Full consistency for updatable materialized views however is not guaranteed. Periodic full refreshes of updatable materialized view tables helps ensure consistency among members.
+{% endif %}
+{% if book.targetSpring %}
+== Running Multiple Instances
 
+Each instance will maintain its own copy of each materialized table and associated indexes as their is no built-in mechanism for clustering provide with {{ book.productnameFull }}.
+{% endif %}

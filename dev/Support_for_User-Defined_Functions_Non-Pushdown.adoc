@@ -7,6 +7,18 @@ To define a non-pushdown function, a Java function must be provided that matches
 
 See link:User_Defined_Functions.adoc[User Defined Functions]. Make sure you provide the JAVA code implementation details in the properties dialog for the UDF. You can define a UDF or UDAF (User Defined Aggregate Function) as shown below.
 
+[source,sql]
+----
+CREATE DATABASE "{vdb-name}";
+USE DATABASE "{vdb-name}";
+CREATE VIRTUAL SCHEMA "{model-name}";
+SET SCHEMA "{model-name}";
+CREATE VIRTUAL FUNCTION celsiusToFahrenheit(celsius decimal) RETURNS decimal OPTIONS (JAVA_CLASS 'org.something.TempConv',  JAVA_METHOD 'celsiusToFahrenheit');
+CREATE VIRTUAL FUNCTION sumAll(arg integer) RETURNS integer OPTIONS (JAVA_CLASS 'org.something.SumAll',  JAVA_METHOD 'addInput', AGGREGATE 'true', VARARGS 'true', "NULL-ON-NULL" 'true');
+----
+
+{% if book.targetWildfly %}
+As an XML VDB:
 [source,xml]
 ----
 <vdb name="{vdb-name}" version="1">
@@ -17,6 +29,7 @@ See link:User_Defined_Functions.adoc[User Defined Functions]. Make sure you prov
     </model>
 </vdb>
 ----
+{% endif %}
 
 You must create a Java method that contains the function’s logic. This Java method should accept the necessary arguments, which the {{ book.productnameFull }} System will pass to it at runtime, and function should return the calculated or altered value.
 

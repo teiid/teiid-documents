@@ -115,13 +115,8 @@ CREATE SCHEMA PM1 SERVER connector OPTIONS ("teiid_rel:data-ttl" 0);
 ...
 ----
 
-<vdb name="vdbname" version="1">
-    <model name="Customers">
-        <property name="teiid_rel:data-ttl" value="0"/>
-        ...
-----
-
 {% if book.targetWildfly %}
+As an XML VDB:
 [source,xml]
 ----
 <vdb name="vdbname" version="1">

@@ -32,6 +32,7 @@ CREATE VIEW v1 (col1 mychar) as select 'value';
 ...
 ----
 
+{% if book.targetWildfly %}
 XML VDB Example
 [source,xml]
 ----
@@ -40,6 +41,7 @@ XML VDB Example
     <property name="domain-ddl" value="CREATE DOMAIN ssn AS VARCHAR(9); CREATE DOMAIN myint AS integer not null;" />
     ...
 ----
+{% endif %}
 
 When the system metadata is queried the type for the column will be shown as the domain name.
 

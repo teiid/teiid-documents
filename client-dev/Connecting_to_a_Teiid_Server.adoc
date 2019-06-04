@@ -18,7 +18,7 @@ Before you can connect to the {{ book.productnameFull }} Server using the {{ boo
 
 Once you have the VDB deployed in {{ book.productnameFull }}, client applications can connect to the {{ book.productnameFull }} Server and issue SQL queries against deployed VDB using JDBC API. If you are new to JDBC, see Java’s documentation about http://docs.oracle.com/javase/tutorial/jdbc/index.html[JDBC]. {{ book.productnameFull }} ships with teiid-{{ book.fullVersionNumber }}-jdbc.jar that can be found in the http://teiid.io/teiid_runtimes/teiid_wildfly/downloads/[downloads].
 
-You can also obtain the {{ book.productnameFull }} JDBC from the JBoss Public Maven Repository https://oss.sonatype.org/content/repositories/releases/ using the coordinates:
+You can also obtain the {{ book.productnameFull }} JDBC from the Maven Repository https://oss.sonatype.org/content/repositories/releases/ using the coordinates:
 
 [source,xml]
 ----

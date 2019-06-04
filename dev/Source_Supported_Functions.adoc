@@ -34,6 +34,19 @@ If you source handing of the function can be described by simple parameter subst
 
 See defining the metadata link:../reference/DDL_Metadata.adoc[using DDL], you can define your source function in the VDB as
 
+[source,sql]
+----
+CREATE DATABASE "{vdb-name}";
+USE DATABASE "{vdb-name}";
+CREATE FOREIGN DATA WRAPPER oracle;
+CREATE SERVER AccountsDB FOREIGN DATA WRAPPER oracle OPTIONS ("jndi-name" 'java:/oracleDS');
+CREATE SCHEMA "{model-name}" SERVER AccountsDB;
+SET SCHEMA "{model-name}";
+CREATE FOREIGN FUNCTION SCORE (val integer) RETURNS integer;
+----
+
+{% if book.targetWildfly %}
+In an XML VDB:
 [source,xml]
 ----
 <vdb name="{vdb-name}" version="1">
@@ -47,9 +60,23 @@ See defining the metadata link:../reference/DDL_Metadata.adoc[using DDL], you ca
     </model>
 </vdb>
 ----
+{% endif %}
 
 By default when a source can provide metadata, the _Source_ model's metadata is automatically retrieved from the source if they were JDBC, File, WebService. The File and WebService sources are static, so one can not add additional metadata on them. However on the JDBC sources you can retrieve the metadata from source and then user can append additional metadata on top of them. For example
 
+----
+CREATE DATABASE "{vdb-name}";
+USE DATABASE "{vdb-name}";
+CREATE FOREIGN DATA WRAPPER oracle;
+CREATE SERVER AccountsDB FOREIGN DATA WRAPPER oracle OPTIONS ("jndi-name" 'java:/oracleDS');
+CREATE SCHEMA "{model-name}" SERVER AccountsDB;
+SET SCHEMA "{model-name}";
+IMPORT FROM AccountsDB INTO "{model-name}";
+CREATE FOREIGN FUNCTION SCORE (val integer) RETURNS integer;
+----
+
+{% if book.targetWildfly %}
+In an XML VDB:
 [source,xml]
 ----
 <vdb name="{vdb-name}" version="1">
@@ -62,6 +89,7 @@ By default when a source can provide metadata, the _Source_ model's metadata is 
     </model>
 </vdb>
 ----
+{% endif %}
 
 The above example uses _NATIVE_ metadata type (_NATIVE_ is the default for source/physical models) first to retrieve schema information from source, then uses _DDL_ metadata type to add additional metadata. Only metadata not available via the NATIVE translator logic would need to be specified via DDL.
 

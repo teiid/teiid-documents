@@ -177,6 +177,15 @@ WARNING: The default import settings will crawl all available metadata. This imp
 
 Example importer settings to only import tables and views from my-schema. See also link:vdb_guide.adoc[VDB Guide]
 
+[source,sql]
+----
+SET SCHEMA ora;
+
+IMPORT FOREIGN SCHEMA "my-schema" FROM SERVER ora INTO ora OPTIONS ("importer.tableTypes" 'TABLE,VIEW');
+----
+
+{% if book.targetWildfly %}
+Or in an xml vdb:
 [source,xml]
 ----
 <model ...
@@ -186,6 +195,7 @@ Example importer settings to only import tables and views from my-schema. See al
   ...
 </model>
 ----
+{% endif %}
 
 == Native Queries
 

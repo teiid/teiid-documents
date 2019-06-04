@@ -83,7 +83,7 @@ Limitations:
 * Similar to PostgreSQL, {{ book.productnameFull }} defaults to ON COMMIT PRESERVE ROWS. No other ON COMMIT action is supported at this time.
 * The "drop behavior" option is not supported in the drop statement.
 * Temp tables are not fail-over safe.
-* Non-inlined lob values (xml, clob, blob) are tracked by reference rather than by value in a temporary table. Lob values from external sources that are inserted in a temporary table may become unreadable when the associated statement or connection is closed.
+* Non-inlined lob values (xml, clob, blob, json, geometry) are tracked by reference rather than by value in a temporary table. Lob values from external sources that are inserted in a temporary table may become unreadable when the associated statement or connection is closed.
 
 == Foreign Temporary Tables
 
