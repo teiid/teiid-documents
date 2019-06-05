@@ -11,12 +11,7 @@ You may also use permissions to filter and mask results, and constrain/check upd
 
 CREATE, READ, UPDATE, DELETE (CRUD) permissions can be set for any resource path in a VDB. A resource path can be as specific as the fully qualified name of a column or as general a top level model (schema) name. Permissions granted to a particular path apply to it and any resource paths that share the same partial name. For example, granting read to "model" will also grant read to "model.table", "model.table.column", etc. Allowing or denying a particular action is determined by searching for permissions from the most to least specific resource paths. The first permission found with a specific allow or deny will be used. Thus it is possible to set very general permissions at high-level resource path names and to override only as necessary at more specific resource paths.
 
-Permission grants are only needed for resources that a role needs access
-to. Permissions are also only applied to the columns/tables/procedures
-in the user query - not to every resource accessed transitively through
-view and procedure definitions. It is important therefore to ensure that
-permission grants are applied consistently across models that access the
-same resources.
+Permission grants are only needed for resources that a role needs access to. Permissions are also only applied to the columns/tables/procedures in the user query - not to every resource accessed transitively through view and procedure definitions. It is important therefore to ensure that permission grants are applied consistently across models that access the same resources.
 
 NOTE: Unlike previous versions of {{ book.productnameFull }}, non-visible models are accessible by user queries. To restrict user access at a model level, at least one data role should be created to enable data role checking. In turn that role can be mapped to any authenticated user and should not grant permissions to models that should be inaccessible.
 
@@ -81,11 +76,18 @@ A permission against a fully qualified table/view/procedure may also specify a c
 
 A condition is applied conjunctively to update/delete/select where clauses against the affected resource. Those queries will therefore only ever be effective against the subset of rows that pass the condition, i.e. "SELECT * FROM TBL WHERE blah *AND condition*". The condition will be present regardless of how the table/view is used in the query, whether via a union, join, etc.
 
-Inserts and updates against physical tables affected by a condition are further validated so that the insert/change values must pass the condition (evaluate to true) for the insert/update to succeed - this is effectively the same a SQL constraint. This will happen for all styles of insert/update - insert with query expression, bulk insert/update, etc. Inserts/updates against views are not checked with regards to the constraint. You may disable the insert/update constraint check by setting the condition constraint flag to false. This is typically only needed in circumstances when the condition cannot always be evaluated. However disabling the condition as a constraint simply drops the condition from consideration when logically evaluating the constraint. Any other condition constraints will still be evaluated.
+[source,sql]
+.Example Condition
+----
+GRANT SELECT ON TABLE modelName.tblName CONDITION 'foo=bar' TO superuser;
+----
+
+Inserts and updates against physical tables affected by a condition are further validated so that the insert/change values must pass the condition (evaluate to true) for the insert/update to succeed - this is effectively the same a SQL constraint. This will happen for all styles of insert/update - insert with query expression, bulk insert/update, etc. Inserts/updates against views are not checked with regards to the constraint. You may disable the insert/update constraint check by indicating the condition is not a constraint. This is typically only needed in circumstances when the condition cannot always be evaluated. However disabling the condition as a constraint simply drops the condition from consideration when logically evaluating the constraint. Any other condition constraints will still be evaluated.
 
 [source,sql]
+.Example DDL non-constraint condition
 ----
-GRANT SELECT ON TABLE modelName.tblName CONDITION CONSTRAINT 'foo=bar' TO superuser;
+GRANT SELECT ON TABLE modelName.tblName CONDITION NOT CONSTRAINT 'foo=bar' TO superuser;
 ----
 
 {% if book.targetWildfly %}
