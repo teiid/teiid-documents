@@ -82,7 +82,8 @@ In an XML VDB:
 <vdb name="{vdb-name}" version="1">
     <model name="{model-name}" type="PHYSICAL">
         <source name="AccountsDB" translator-name="oracle" connection-jndi-name="java:/oracleDS"/>
-        <metadata type="NATIVE,DDL"><![CDATA[
+        <metadata type="NATIVE"/>
+        <metadata type="DDL"><![CDATA[
            CREATE FOREIGN FUNCTION SCORE (val integer) RETURNS integer;
          ]]>
         </metadata>
