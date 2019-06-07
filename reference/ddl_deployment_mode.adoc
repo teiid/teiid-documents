@@ -23,7 +23,7 @@ CREATE FOREIGN DATA WRAPPER postgresql;
 CREATE SERVER pgsql  
     VERSION 'one' FOREIGN DATA WRAPPER postgresql 
     OPTIONS (
-        "jndi-name" 'java:/postgres-ds'
+        "resource-name" 'java:/postgres-ds'
     );
     
 CREATE SCHEMA test SERVER pgsql;
@@ -141,7 +141,7 @@ For all available translators see link:Translators.adoc[Translators]
 CREATE SERVER pgsql
     FOREIGN DATA WRAPPER postgresql 
     OPTIONS (
-        "jndi-name" 'java:/postgres-ds' 
+        "resource-name" 'java:/postgres-ds' 
     );
 ----
 
@@ -295,9 +295,9 @@ Here we will show DDL support to create these Data Roles and corresponding permi
 .BNF for Create Data Role
 [source,sql]
 ----
-CREATE ROLE {data-role}  
-    [WITH JAAS ROLE {enterprise-role}(,{enterprise-role})*] 
-    [WITH ANY AUTHENTICATED]
+CREATE ROLE {data-role} WITH 
+    FOREIGN ROLE {enterprise-role}(,{enterprise-role})* 
+    | ANY AUTHENTICATED
 ----
 
 data-role: Data role referenced in the VDB
@@ -307,7 +307,7 @@ WITH ANY AUTHENTICATED: When present, this data-role is given to any user who is
 .Example: Create Data Role
 [source,sql]
 ----
-CREATE ROLE readWrite WITH JASS ROLE developer,analyst;
+CREATE ROLE readWrite WITH FOREIGN ROLE developer,analyst;
 
 CREATE ROLE readOnly WITH ANY AUTHENTICATED;
 ----
@@ -386,7 +386,7 @@ GRANT INSERT, READ, UPDATE ON TABLE test.Customer TO RoleA;
 .Example : Give all permissions to user with "admin" enterprise role
 [source,sql]
 ---- 
-CREATE ROLE everything WITH JAAS ROLE admin;
+CREATE ROLE everything WITH FOREIGN ROLE admin;
 ...
 GRANT ALL PRIVILEGES TO everything;
 ----

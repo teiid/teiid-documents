@@ -36,7 +36,7 @@ The below shows an example of a VDB, that shows a exposing a Excel Document.
 CREATE DATABASE excelvdb;
 USE DATABASE excelvdb;
 CREATE FOREIGN DATA WRAPPER excel;
-CREATE SERVER connector FOREIGN DATA WRAPPER excel OPTIONS ("jndi-name" 'java:/fileDS');
+CREATE SERVER connector FOREIGN DATA WRAPPER excel OPTIONS ("resource-name" 'java:/fileDS');
 CREATE SCHEMA excel SERVER connector;
 SET SCHEMA excel;
 IMPORT FROM SERVER connector INTO excel OPTIONS (
@@ -125,7 +125,7 @@ The below shows an example table that is defined using the Extension Metadata Pr
 CREATE DATABASE excelvdb;
 USE DATABASE excelvdb;
 CREATE FOREIGN DATA WRAPPER excel;
-CREATE SERVER connector FOREIGN DATA WRAPPER excel OPTIONS ("jndi-name" 'java:/fileDS');
+CREATE SERVER connector FOREIGN DATA WRAPPER excel OPTIONS ("resource-name" 'java:/fileDS');
 CREATE SCHEMA excel SERVER connector;
 SET SCHEMA excel;
 CREATE FOREIGN TABLE Person (

@@ -24,7 +24,7 @@ CREATE FOREIGN DATA WRAPPER postgresql;
 CREATE SERVER pgsql 
     VERSION 'one' FOREIGN DATA WRAPPER postgresql 
     OPTIONS (
-        "jndi-name" 'java:/postgres-ds'
+        "resource-name" 'java:/postgres-ds'
     );
 CREATE SCHEMA test SERVER pgsql;
 IMPORT FOREIGN SCHEMA public FROM SERVER pgsql INTO test 
@@ -53,13 +53,13 @@ Both formats define the same VDB.
 In the following sections we will go into detail about exactly this example VDB is defining. Before that we need to learn about further fractions in the _Source Schema_ component. 
 
 == External Data Sources 
-A "source schema" component in VDB as shown in above example is a collection schema objects as tables, procedures and functions that represent an external data source's metadata locally. In the above example, it did not define any such schema objects directly, but will instead import them from the server.  Details of the connection to the external data source were provided through "jndi-name", which is a named connection reference to a external data source.   
+A "source schema" component in VDB as shown in above example is a collection schema objects as tables, procedures and functions that represent an external data source's metadata locally. In the above example, it did not define any such schema objects directly, but will instead import them from the server.  Details of the connection to the external data source were provided through "resource-name", which is a named connection reference to a external data source.   
 
 For the purposes of {{ book.productnameFull }}, connecting and issuing queries to fetch the metadata from these external data sources, {{ book.productnameFull }} defines/provides two types of resources.
 
 {% if book.targetWildfly %}
 === Resource Adapter
-A resource adapter (also called as SERVER) is connection object to the external data source. In the case of relational database this can be achieved through a JDBC connection, or in the case of a File this may be a reference to file's location. The resource-adapter provides a unified interface to define a connection in the {{ book.productnameFull }}. A resource adapter also provides way to natively issue commands and gather results. {{ book.productnameFull }} provides variety of resource adaptors to many different systems or one can be developed for new/custom data source. A resource adapters connection is represented above as the "jndi-name".
+A resource adapter (also called as SERVER) is connection object to the external data source. In the case of relational database this can be achieved through a JDBC connection, or in the case of a File this may be a reference to file's location. The resource-adapter provides a unified interface to define a connection in the {{ book.productnameFull }}. A resource adapter also provides way to natively issue commands and gather results. {{ book.productnameFull }} provides variety of resource adaptors to many different systems or one can be developed for new/custom data source. A resource adapters connection is represented above as the "resource-name".
 
 As VDB developer you need to know, how to configure these sources in the {{ book.productnameFull }}. In {{ book.asName }} Server these are defined as JCA components. In {{ book.productnameFull }} embedded, the developer has to define the connections to these sources programmatically.  Check out link:../admin/Administrators_Guide.adoc[Administrator's Guide] on how to configure these in {{ book.asName }}, or embedded examples, if you are working with {{ book.productnameFull }} Embedded.
 {% endif %}

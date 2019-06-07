@@ -94,7 +94,7 @@ CREATE FOREIGN DATA WRAPPER oracle;
 
 CREATE FOREIGN DATA WRAPPER "oracle-override" TYPE oracle OPTIONS (RequiresCriteria 'true');
 
-CREATE SERVER ora FOREIGN DATA WRAPPER "oracle-override" OPTIONS ("jndi-name" 'java:/oracle');
+CREATE SERVER ora FOREIGN DATA WRAPPER "oracle-override" OPTIONS ("resource-name" 'java:/oracle');
 
 CREATE SCHEMA ora SERVER ora;
 

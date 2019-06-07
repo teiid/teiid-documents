@@ -76,7 +76,7 @@ From previous example this represents
 CREATE SERVER pgsql 
     VERSION 'one' FOREIGN DATA WRAPPER postgresql 
     OPTIONS (
-        "jndi-name" 'java:/postgres-ds'
+        "resource-name" 'java:/postgres-ds'
     );
 ----
 

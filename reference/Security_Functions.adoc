@@ -18,7 +18,7 @@ _roleName_ must be a string, the return type is boolean.
 
 The two argument form is provided for backwards compatibility. roleType is a string and must be `data'.
 
-Role names are case-sensitive and only match {{ book.productnameFull }} link:Data_Roles.adoc[Data Roles]. JAAS roles/groups names are not valid for this function - unless there is corresponding data role with the same name.
+Role names are case-sensitive and only match {{ book.productnameFull }} link:Data_Roles.adoc[Data Roles]. Foreign/JAAS roles/groups names are not valid for this function - unless there is corresponding data role with the same name.
 
 == MD5
 
