@@ -357,15 +357,17 @@ You should always consult the $metadata about Functions and Actions to validate 
 An https://issues.jboss.org/browse/TEIID-5555[experimental feature] is available to automatically provide a Swagger 2.0 / https://www.openapis.org/[OpenAPI] metadata via [swagger|openapi].json rather than $metadata.
 
 [source]
-.*Example Swagger 2.0 URL*
+.*Example OpenAPI 2.0 URLs*
 ----
 http://localhost:8080/{{ book.odataContext }}/swagger.json
+http://localhost:8080/{{ book.odataContext }}/openapi.json
+http://localhost:8080/{{ book.odataContext }}/openapi.json?version=2
 ----
 
 [source]
 .*Example OpenAPI 3.0 URL*
 ----
-http://localhost:8080/{{ book.odataContext }}/openapi.json
+http://localhost:8080/{{ book.odataContext }}/openapi.json?version=3
 ----
 
 WARNING: Due to all of the possible query options and expansions this metadata will be significantly larger than the OData EDM representation.
