@@ -10,7 +10,7 @@
 For example, if you have a vdb by name _northwind_ deployed that has a _customers_ table in a _NW_ model, then you can access that table with an HTTP GET via the URL:
 
 {% if book.targetWildfly %}
-NOTE: The user "MUST" have a role called "odata" to access odata endpoint. When adding a user with "bin/add-user.sh" script make sure this role is added to the user, who is going to use the endpoint.
+All users are granted an odata role by default, which allows all authenticated users to access odata end points.  In previous versions of Teiid this role had to be manually assigned.  If you still want that behavior remove the Identity login module from the teiid-security security domain that is granting the odata role.
 {% endif %}
 
 [source]
@@ -163,7 +163,7 @@ Accept: application/json
 {% if book.targetWildfly %}
 == Security
 
-By default OData access is secured using HTTPBasic authentication. The user will be authenticated against {{ book.productnameFull }}’s default security domain "teiid-security". Users are expected to have the *odata* role. Be sure to create user with this role when you are using add-user.sh script to create a new user.
+By default OData access is secured using HTTPBasic authentication. The user will be authenticated against {{ book.productnameFull }}’s default security domain "teiid-security".
 
 However, if you wish to change the security domain use a deployment-overlay to override the _web.xml_ file in the odata4 file in the _<modules>/org/jboss/teiid/main/deployments_ directory. 
 
