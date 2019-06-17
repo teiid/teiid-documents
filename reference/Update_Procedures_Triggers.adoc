@@ -97,7 +97,7 @@ For example, for a view with columns A, B, C:
 
 |`UPDATE VT SET C = 2`
 |CHANGING.A = false, CHANGING.B = false, CHANGING.C = true
-|===
+|====
 
 ==== Key Variables
 
