@@ -42,6 +42,10 @@ See link:Web_Services_Translator.adoc[Web Services Translator] for access to:
 
 See the link:OData_Translator.adoc[OData Translator]
 
+== OpenAPI / Swagger
+
+See the link:OpenAPI_Translator.adoc[OpenAPI] and link:Swagger_Translator.adoc[Swagger] Translators
+
 == Big Data/No SQL/Search Engines/JCR and Other Sources
 
 * link:Actian_Vector_Translator.adoc[Actian Vector]

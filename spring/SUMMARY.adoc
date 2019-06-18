@@ -275,6 +275,7 @@
 // ... link:reference/OData_Translator.adoc[OData Translator]
 // ... link:reference/OData_V4_Translator.adoc[OData V4 Translator]
 // ... link:reference/Swagger_Translator.adoc[Swagger Translator]
+// ... link:reference/OpenAPI_Translator.adoc[OpenAPI Translator]
 // ... link:reference/OLAP_Translator.adoc[OLAP Translator]
 ... link:reference/Salesforce_Translators.adoc[Salesforce Translators]
 // ... link:reference/SAP_Gateway_Translator.adoc[SAP Gateway Translator]
