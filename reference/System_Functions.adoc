@@ -137,7 +137,7 @@ The previous value for the key or null will be returned. A set has no effect on 
 
 == GENERATED_KEY
 
-Get a column value from the generated keys of the last insert statement returning a generated key.
+Get a column value from the generated keys of the last insert statement of this session returning a generated key.
 
 Typically this function will only be used within the scope of procedure to determine a generated key value from an insert.  It should not be expected that all inserts provide generated keys as not all sources support returning generated keys.
 
