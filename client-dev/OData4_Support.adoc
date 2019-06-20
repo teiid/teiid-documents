@@ -341,10 +341,9 @@ An OData Function will be used if:
 
 * The procedure/function has a return value - either scalar or a result set.
 * The procedure/function has no LOB input parameters - currently Clob, Blob, XML, Geometry, Geography, and JSON are considered LOB types.
-* The procedure/function is side effect free - this is determined by the inferred or explicit value of 0 for the model update count.
+* The procedure/function is side effect free - this is determined by an explicit value of 0 for the update count.  For example: CREATE VIRTUAL PROCEDURE ... OPTIONS (UPDATECOUNT 0) AS BEGIN ...
 
-
-If any one of those conditions are not met the procedure/function is represented instead by an OData Action.  However if there is a result set that has a LOB value, then the procedure is not mapped at all.
+If any one of those conditions are not met the procedure/function is represented instead by an OData Action.  However if there is a result set that has a LOB value, then the procedure is not mapped at all as multiple streaming values cannot be returned.
 
 Note that OData Functions and Actions are called differently.  A Function is called by a GET request where the parameter values are included in the URI.  An Action is called by a POST where the content provides the parameter values.
 
