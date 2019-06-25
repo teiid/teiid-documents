@@ -1,7 +1,9 @@
 
 = {{ book.productnameFull }} Console
 
-{{ book.productnameFull }} Console is a web based administrative and monitoring tool for {{ book.productnameFull }}. {{ book.productnameFull }} Console is extension of {{ book.asName }} console that is built using GWT based technologies. There are two primary {{ book.productnameFull }} kits - an overlay for an existing WildFly install, and an all in one that includes the WildFly server and {{ book.productnameFull }} console.  
+{{ book.productnameFull }} Console is a web based administrative and monitoring tool for {{ book.productnameFull }}. {{ book.productnameFull }} Console is extension of {{ book.asName }} console that is built using GWT based technologies. There are two primary {{ book.productnameFull }} kits - an overlay for an existing WildFly install, and an all in one that includes the {{ book.asName }} server and {{ book.productnameFull }} console.
+
+The Web Console is now maintenance only.  New work related to web tooling will be alligned with OpenShift efforts.
 
 == Installation
 
