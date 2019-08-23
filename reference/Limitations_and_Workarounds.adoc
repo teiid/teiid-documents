@@ -1,5 +1,5 @@
 
 = Limitations and Workarounds
 
-* The client setting of transaction isolation level is not propogated to the connectors. The transaction isolation level can be set on each XA connector, however this isolation level is fixed and cannot be changed at runtime for specific connections/commands.
+* The client setting of transaction isolation level is only propagated to JDBC connectors. The default transaction isolation level can be set on each XA connector.
 
