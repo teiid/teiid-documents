@@ -86,13 +86,13 @@
 |DATE
 
 |time
-|datetime, representing a single time (hours, minutes, seconds, milliseconds)
+|datetime, representing a single time (hours, minutes, seconds)
 |java.sql.Time
 |TIME
 |TIME
 
 |timestamp
-|datetime, representing a single date and time (year, month, day, hours, minutes, seconds, milliseconds, nanoseconds)
+|datetime, representing a single date and time (year, month, day, hours, minutes, seconds, fractional seconds)
 |java.sql.Timestamp
 |TIMESTAMP
 |TIMESTAMP
