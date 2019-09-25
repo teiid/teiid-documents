@@ -1,0 +1,13 @@
+
+= Deployment
+
+A translator JAR file can be deployed into {{ book.productnameFull }} Server in two different ways
+
+== As {{ book.asName }} module
+
+Create a module under "jboss-as/modules" directory and define the translator name and module name in the teiid subsystem in _standalone-teiid.xml_ file or _domain-teiid.xml_ file and restart the server. The dependent {{ book.productnameFull }} or any other java class libraries must be defined in module.xml file of the module. For production profiles this is recommended.
+
+== As JAR deployment
+
+For development time or quick deployment you can deploy the translator JAR using the CLI or AdminAPI or admin console programs. When you deploy in JAR form the dependencies to {{ book.productnameFull }} java libraries and any other third party libraries must be defined under _META-INF/MANIFEST.MF_ file.
+

@@ -1,0 +1,21 @@
+
+= Clustering in {{ book.productnameFull }}
+
+Since {{ book.productnameFull }} is installed in {{ book.asName }}, there is no additional configuration needed beyond what was performed when {{ book.productnameFull }} is setup in Domain Mode. See the Domain Mode section in the {{ book.productnameFull }} link:Installation_Guide.adoc[Installation Guide]. Just make sure that you installed {{ book.productnameFull }} in every {{ book.asName }} node and started all {{ book.asName }} instances in the Domain mode that to be a part of the cluster.
+
+Typically users create clusters to improve the performance of the system through:
+
+* *Load Balancing*: Take look at <<HAProxy>> below and in the link:../client-dev/Using_Multiple_Hosts.adoc[Client Developer’s Guide] on how to use simple load balancing between multiple nodes.
+* *Fail Over*: Take look at the link:../client-dev/Using_Multiple_Hosts.adoc[Client Developer’s Guide] on how to use fail over between multiple nodes.
+* *Distributed Caching*: This is automatically done for you once you configure it as specified above. 
+* *Event distribution*: metadata and data modifications will be distributed to all cluster members.
+
+In the _Domain_ mode, the only way a user can deploy any artifacts is using either CLI or using the Admin API. Copying VDB directly into the "deployments" directory is not supported.
+
+[[HAProxy]]
+== HAProxy
+
+HAProxy may be used for load-balancing and high availability.  A good tutorial is located at link:http://blog.everythingjboss.org/articles/Load-Balancing-JDV-HAProxy/[Load Balancing JDV-HAProxy] or see link:https://github.com/foogaro/jdv-play[Luigi Fugaro's example].
+
+The load balancer should use an algorithm that supports sticky connections as {{ book.productnameFull }} sessions as specific to the original host.  For HAProxy it is recommended that you use leastconn or source.
+

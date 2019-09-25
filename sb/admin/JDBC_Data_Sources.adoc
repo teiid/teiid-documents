@@ -1,0 +1,53 @@
+
+= JDBC Data Sources
+
+The following is an example highlighting configuring an Oracle data source. The process is nearly identical regardless of the database vendor. Typically the JDBC jar and the configuration like connection URL and user credentials change.
+
+There are configuration templates for all the data sources in the "<jboss-install>/docs/teiid/datasources" directory. A complete description how a data source can be added into {{ book.asName }} is also described https://docs.jboss.org/author/display/WFLY10/DataSource+configuration[here]. The below we present two different ways to create a datasource.
+
+== Deploying a single JDBC Jar File
+
+First step in configuring the data source is deploying the required JDBC jar file. For example, if you are trying to create a Oracle data source, first you need to deploy the "ojdbc6.jar" file first. Execute following command using the {{ book.asDocRoot }}/Admin+Guide#AdminGuide-RunningtheCLI[CLI] once you connected to the Server.
+
+----
+   deploy /path/to/ojdbc6.jar
+----
+
+TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalone mode, you can also manually copy this ’ojdbc6.jar" to the "<jboss-install>/standalone/deployments" directory, to automatically deploy without using the CLI tool.
+
+== Creating a module for the Driver
+
+You may also create a module to have more control over the handling of the driver.  In cases where the driver is not contained in a single file, this may be preferable to creating a "uber" jar as the dependencies can be managed separately.
+
+Creating a module for a driver is no different than any other container module.  You just include the necessary jars as resources in the module and reference other modules as dependencies. 
+
+[source,xml]
+----
+<module xmlns="urn:jboss:module:1.0" name="com.mysql">  
+  <resources>  
+    <resource-root path="mysql-connector-java-5.1.21.jar"/>  
+  </resources>  
+  <dependencies>  
+    <module name="javax.api"/>
+    ...  
+  </dependencies>  
+</module>
+----
+
+== Create Data Source
+
+Now that you have the JDBC driver deployed or the module created, it is time to create a data source using this driver. There are many ways to create the datasource using CLI, admin-console etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
+
+Execute following command using {{ book.asDocRoot }}/Admin+Guide#AdminGuide-RunningtheCLI[CLI] once you connected to the Server. Make sure you provide the correct URL and user credentials and edit the JNDI name to match the JNDI name you used in VDB.
+
+[source,java]
+----
+/subsystem=datasources/data-source=oracel-ds:add(jndi-name=java:/OracleDS, driver-name=ojdbc6.jar, connection-url=jdbc:oracle:thin:{host}:1521:orcl,user-name={user}, password={password})
+/subsystem=datasources/data-source=oracel-ds:enable
+----
+
+The driver-name will match the name of jar or module that you deployed for the driver. 
+
+TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in *"<jboss-install>/docs/teiid/datasources/oracle" directory under "datasources" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
+
+

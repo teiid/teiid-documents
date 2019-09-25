@@ -1,0 +1,140 @@
+
+= {{ book.asName }} DataSource
+
+{{ book.productnameFull }} can be configured as a JDBC data source in a {{ book.asName }} Server to be accessed from JNDI or injected into your JEE applications. Deploying {{ book.productnameFull }} as data source in {{ book.asName }} is exactly same as deploying any other RDBMS resources like Oracle or DB2.
+
+Defining as data source is not limited to {{ book.asName }}, you can also deploy as data source in Glassfish, Tomcat, Websphere, Weblogic etc servers, however their configuration files are different than {{ book.asName }}. Consult the respective documentation of the environment in which you are deploying.
+
+A special case exists if the {{ book.productnameFull }} instance you are connecting to is in the same VM as the {{ book.asName }} instance. If that matches you deployment, then follow the <<Local JDBC Connection, Local JDBC Connection>> instructions
+
+Installation Steps
+
+1. If you are working with an AS instance that already has {{ book.productnameFull }} installed then required module / jar files are already installed. If the AS instance does not have {{ book.productnameFull }} installed, then you should create a module for the client jar. Under the path module/org/jboss/teiid/client add the client jar and a module.xml defined as:
+ 
+[source,xml]
+.*Sample {{ book.productnameFull }} Client Module*
+----
+<module xmlns="urn:jboss:module:1.1" name="org.jboss.teiid.client">
+    <resources>
+        <resource-root path="teiid-{version}-jdbc.jar"/>
+    </resources>
+ 
+    <dependencies>
+        <module name="javax.api"/>
+        <module name="javax.transaction.api"/>
+    </dependencies>
+</module>
+----
+
+NOTE: Prior to {{ book.productnameFull }} 8.12.3 a module dependency on sun.jdk was also required.
+
+2. Use the CLI or edit the `standalone-teiid.xml` or `domain-teiid.xml` file and add a datasource into the "datasources" subsystem.
+
+Based on the type of deployment (XA, driver, or local), the contents of this will be different. See the following sections for more. The data source will then be accessible through the JNDI name specified in the below configuration.
+
+== DataSource Connection
+
+Make sure you know the correct DatabaseName, ServerName, Port number and credentials that are specific to your deployment environment.
+
+[source,xml]
+.*Sample XADataSource in the {{ book.asName }} using the {{ book.productnameFull }} DataSource class org.teiid.jdbc.TeiidDataSource*
+----
+<datasources>
+        <xa-datasource jndi-name="java:/teiidDS" pool-name="teiidDS" enabled="true" use-java-context="true" use-ccm="true">
+
+            <xa-datasource-property name="PortNumber">31000</xa-datasource-property>
+            <xa-datasource-property name="DatabaseName">{db-name}</xa-datasource-property>
+            <xa-datasource-property name="ServerName">{host}</xa-datasource-property>
+
+            <driver>teiid</driver>
+            <xa-pool>
+                <min-pool-size>10</min-pool-size>
+                <max-pool-size>20</max-pool-size>
+                <is-same-rm-override>true</is-same-rm-override>
+                <prefill>false</prefill>
+                <use-strict-min>false</use-strict-min>
+                <flush-strategy>FailingConnectionOnly</flush-strategy>
+                <no-tx-separate-pools/>
+            </xa-pool>
+            <security>
+                <user-name>{user}</user-name>
+                <password>{password}</password>
+            </security>
+        </xa-datasource>
+        <drivers>
+            <driver name="teiid" module="org.jboss.teiid.client">
+                <driver-class>org.teiid.jdbc.TeiidDriver</driver-class>
+                <xa-datasource-class>org.teiid.jdbc.TeiidDataSource</xa-datasource-class>
+            </driver>
+        </drivers>
+    </datasources>
+----
+
+== Driver based connection
+
+You can also use {{ book.productnameFull }}’s JDBC driver class `org.teiid.jdbc.TeiidDriver` to create a data source
+
+[source,xml]
+----
+<datasources>
+        <datasource jndi-name="java:/teiidDS" pool-name="teiidDS">
+            <connection-url>jdbc:teiid:{vdb}@mm://{host}:31000</connection-url>
+            <driver>teiid</driver>
+            <pool>
+                <prefill>false</prefill>
+                <use-strict-min>false</use-strict-min>
+                <flush-strategy>FailingConnectionOnly</flush-strategy>
+            </pool>
+            <security>
+                <user-name>{user}</user-name>
+                <password>{password}</password>
+            </security>
+        </datasource>
+        <drivers>
+            <driver name="teiid" module="org.jboss.teiid.client">
+                <driver-class>org.teiid.jdbc.TeiidDriver</driver-class>
+                <xa-datasource-class>org.teiid.jdbc.TeiidDataSource</xa-datasource-class>
+            </driver>
+        </drivers>
+    </datasources>
+----
+
+== Local JDBC Connection
+
+If you are deploying your client application on the same {{ book.asName }} instance as the {{ book.productnameFull }} runtime is installed, then you will want to configure the connection to by-pass making a socket based JDBC connection. By using a slightly different data source configuration to make a "local" connection, the JDBC API will lookup a local {{ book.productnameFull }} runtime in the same VM.
+
+WARNING: Since DataSources start before {{ book.productnameFull }} VDBs are deployed, leave the min pool size of 0 for local connections. 
+Otherwise errors may occur on the startup of the {{ book.productnameFull }} DataSource.  Also note that local connections specifying a VDB version will wait for their VDB to be loaded before allowing a connection.
+See link:Driver_Connection.adoc[loginTimeout] and the link:../admin/System_Properties.adoc[org.teiid.clientVdbLoadTimeoutMillis] system property.
+
+WARNING: Do not include any additional copy of {{ book.productnameFull }} jars in the application classload that is utilizing the local connection.  Even if the exact same version of the client jar is included in your application classloader, you will fail to connect to the local connection with a class cast exception.
+
+NOTE: By default local connections use their calling thread to perform processing operations rather than using an engine thread while the calling thread is blocked. To disable this behavior set the connection property _useCallingThreads=false_. The default is true, and is recommended in transactional queries.
+
+[source,xml]
+.*Local data source*
+----
+<datasources>
+        <datasource jndi-name="java:/teiidDS" pool-name="teiidDS">
+            <connection-url>jdbc:teiid:{vdb}</connection-url>
+            <driver>teiid-local</driver>
+            <pool>
+                <prefill>false</prefill>
+                <use-strict-min>false</use-strict-min>
+                <flush-strategy>FailingConnectionOnly</flush-strategy>
+            </pool>
+            <security>
+                <user-name>{user}</user-name>
+                <password>{password}</password>
+            </security>
+        </datasource>
+        <drivers>
+            <driver name="teiid-local" module="org.jboss.teiid">
+                <driver-class>org.teiid.jdbc.TeiidDriver</driver-class>
+                <xa-datasource-class>org.teiid.jdbc.TeiidDataSource</xa-datasource-class>
+            </driver>
+        </drivers>
+    </datasources>
+----
+
+This is essentially the same as the XA configuration, but _"ServerName"_ and _"PortNumber"_ are not specified. Local connections have additional features such as using link:Driver_Connection.adoc[PassthroughAuthentication]

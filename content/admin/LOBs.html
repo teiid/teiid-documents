@@ -1,0 +1,4411 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>LOBs · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="Other_Considerations.html" />
+    
+    
+    <link rel="prev" href="Socket_Transports.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../Legal_Notice.html">
+            
+                <a href="../Legal_Notice.html">
+            
+                    
+                    Legal Notice
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="Administrators_Guide.html">
+            
+                <a href="Administrators_Guide.html">
+            
+                    
+                    Administrator’s Guide
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="Installation_Guide.html">
+            
+                <a href="Installation_Guide.html">
+            
+                    
+                    Installation Guide
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1.1" data-path="Dockerize_Teiid.html">
+            
+                <a href="Dockerize_Teiid.html">
+            
+                    
+                    Dockerize Teiid
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="Deploying_VDBs.html">
+            
+                <a href="Deploying_VDBs.html">
+            
+                    
+                    Deploying VDBs
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.2.1" data-path="Deploying_VDB_Dependencies.html">
+            
+                <a href="Deploying_VDB_Dependencies.html">
+            
+                    
+                    Deploying VDB Dependencies
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.2.1.1" data-path="Accumulo_Data_Sources.html">
+            
+                <a href="Accumulo_Data_Sources.html">
+            
+                    
+                    Accumulo Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.2" data-path="Amazon_SimpleDB_Data_Sources.html">
+            
+                <a href="Amazon_SimpleDB_Data_Sources.html">
+            
+                    
+                    Amazon SimpleDB Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.3" data-path="Cassandra_Data_Sources.html">
+            
+                <a href="Cassandra_Data_Sources.html">
+            
+                    
+                    Cassandra Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.4" data-path="Couchbase_Data_Sources.html">
+            
+                <a href="Couchbase_Data_Sources.html">
+            
+                    
+                    Couchbase Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.5" data-path="File_Data_Sources.html">
+            
+                <a href="File_Data_Sources.html">
+            
+                    
+                    File Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.6" data-path="Ftp_Data_Sources.html">
+            
+                <a href="Ftp_Data_Sources.html">
+            
+                    
+                    Ftp/Ftps Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.7" data-path="Google_Spreadsheet_Data_Sources.html">
+            
+                <a href="Google_Spreadsheet_Data_Sources.html">
+            
+                    
+                    Google Spreadsheet Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.8" data-path="Infinispan_Data_Sources.html">
+            
+                <a href="Infinispan_Data_Sources.html">
+            
+                    
+                    Infinispan HotRod Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.9" data-path="JDBC_Data_Sources.html">
+            
+                <a href="JDBC_Data_Sources.html">
+            
+                    
+                    JDBC Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.10" data-path="LDAP_Data_Sources.html">
+            
+                <a href="LDAP_Data_Sources.html">
+            
+                    
+                    LDAP Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.11" data-path="MongoDB_Data_Sources.html">
+            
+                <a href="MongoDB_Data_Sources.html">
+            
+                    
+                    MongoDB Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.12" data-path="Phoenix_Data_Sources.html">
+            
+                <a href="Phoenix_Data_Sources.html">
+            
+                    
+                    Phoenix Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.13" data-path="PI_Data_Sources.html">
+            
+                <a href="PI_Data_Sources.html">
+            
+                    
+                    OSISoft PI Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.14" data-path="Salesforce_Data_Sources.html">
+            
+                <a href="Salesforce_Data_Sources.html">
+            
+                    
+                    Salesforce Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.15" data-path="Solr_Data_Sources.html">
+            
+                <a href="Solr_Data_Sources.html">
+            
+                    
+                    Solr Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.16" data-path="Web_Service_Data_Sources.html">
+            
+                <a href="Web_Service_Data_Sources.html">
+            
+                    
+                    Web Service Data Sources
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.2.1.16.1" data-path="Kerberos_with_REST_based_Services.html">
+            
+                <a href="Kerberos_with_REST_based_Services.html">
+            
+                    
+                    Kerberos with REST based Services
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.16.2" data-path="OAuth_Authentication_With_REST_Based_Services.html">
+            
+                <a href="OAuth_Authentication_With_REST_Based_Services.html">
+            
+                    
+                    OAuth Authentication With REST Based Services
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.2" data-path="VDB_Versioning.html">
+            
+                <a href="VDB_Versioning.html">
+            
+                    
+                    VDB Versioning
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="Logging.html">
+            
+                <a href="Logging.html">
+            
+                    
+                    Logging
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="Clustering_in_Teiid.html">
+            
+                <a href="Clustering_in_Teiid.html">
+            
+                    
+                    Clustering in Teiid
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.5" data-path="Monitoring.html">
+            
+                <a href="Monitoring.html">
+            
+                    
+                    Monitoring
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6" data-path="Performance_Tuning.html">
+            
+                <a href="Performance_Tuning.html">
+            
+                    
+                    Performance Tuning
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.6.1" data-path="Memory_Management.html">
+            
+                <a href="Memory_Management.html">
+            
+                    
+                    Memory Management
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6.2" data-path="Threading.html">
+            
+                <a href="Threading.html">
+            
+                    
+                    Threading
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6.3" data-path="Cache_Tuning.html">
+            
+                <a href="Cache_Tuning.html">
+            
+                    
+                    Cache Tuning
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6.4" data-path="Socket_Transports.html">
+            
+                <a href="Socket_Transports.html">
+            
+                    
+                    Socket Transports
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3.6.5" data-path="LOBs.html">
+            
+                <a href="LOBs.html">
+            
+                    
+                    LOBs
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6.6" data-path="Other_Considerations.html">
+            
+                <a href="Other_Considerations.html">
+            
+                    
+                    Other Considerations
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7" data-path="Teiid_Console.html">
+            
+                <a href="Teiid_Console.html">
+            
+                    
+                    Teiid Console
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8" data-path="System_Properties.html">
+            
+                <a href="System_Properties.html">
+            
+                    
+                    System Properties
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9" data-path="Teiid_Management_CLI.html">
+            
+                <a href="Teiid_Management_CLI.html">
+            
+                    
+                    Teiid Management CLI
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.10" data-path="Diagnosing_Issues.html">
+            
+                <a href="Diagnosing_Issues.html">
+            
+                    
+                    Diagnosing Issues
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.11" data-path="Migration_Guide_From_Teiid_11.x.html">
+            
+                <a href="Migration_Guide_From_Teiid_11.x.html">
+            
+                    
+                    Migration Guide From Teiid 11.x
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.12" data-path="Migration_Guide_From_Teiid_10.x.html">
+            
+                <a href="Migration_Guide_From_Teiid_10.x.html">
+            
+                    
+                    Migration Guide From Teiid 10.x
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.13" data-path="Migration_Guide_From_Teiid_9.x.html">
+            
+                <a href="Migration_Guide_From_Teiid_9.x.html">
+            
+                    
+                    Migration Guide From Teiid 9.x
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.14" data-path="Migration_Guide_From_Teiid_8.x.html">
+            
+                <a href="Migration_Guide_From_Teiid_8.x.html">
+            
+                    
+                    Migration Guide From Teiid 8.x
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../caching/Caching_Guide.html">
+            
+                <a href="../caching/Caching_Guide.html">
+            
+                    
+                    Caching Guide
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="../caching/Results_Caching.html">
+            
+                <a href="../caching/Results_Caching.html">
+            
+                    
+                    Results Caching
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="../caching/Materialized_Views.html">
+            
+                <a href="../caching/Materialized_Views.html">
+            
+                    
+                    Materialized Views
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.2.1" data-path="../caching/External_Materialization.html">
+            
+                <a href="../caching/External_Materialization.html">
+            
+                    
+                    External Materialization
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2.2" data-path="../caching/Internal_Materialization.html">
+            
+                <a href="../caching/Internal_Materialization.html">
+            
+                    
+                    Internal Materialization
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="../caching/Code_Table_Caching.html">
+            
+                <a href="../caching/Code_Table_Caching.html">
+            
+                    
+                    Code Table Caching
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="../caching/Translator_Results_Caching.html">
+            
+                <a href="../caching/Translator_Results_Caching.html">
+            
+                    
+                    Translator Results Caching
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5" data-path="../caching/Hints_and_Options.html">
+            
+                <a href="../caching/Hints_and_Options.html">
+            
+                    
+                    Hints and Options
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="../caching/Programmatic_Control.html">
+            
+                <a href="../caching/Programmatic_Control.html">
+            
+                    
+                    Programmatic Control
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../client-dev/Client_Developers_Guide.html">
+            
+                <a href="../client-dev/Client_Developers_Guide.html">
+            
+                    
+                    Client Developer’s Guide
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="../client-dev/JDBC_Support.html">
+            
+                <a href="../client-dev/JDBC_Support.html">
+            
+                    
+                    JDBC Support
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1.1" data-path="../client-dev/Connecting_to_a_Teiid_Server.html">
+            
+                <a href="../client-dev/Connecting_to_a_Teiid_Server.html">
+            
+                    
+                    Connecting to a Teiid Server
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1.1.1" data-path="../client-dev/Driver_Connection.html">
+            
+                <a href="../client-dev/Driver_Connection.html">
+            
+                    
+                    Driver Connection
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.1.2" data-path="../client-dev/DataSource_Connection.html">
+            
+                <a href="../client-dev/DataSource_Connection.html">
+            
+                    
+                    DataSource Connection
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.1.3" data-path="../client-dev/Standalone_Application.html">
+            
+                <a href="../client-dev/Standalone_Application.html">
+            
+                    
+                    Standalone Application
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.1.4" data-path="../client-dev/WildFly_DataSource.html">
+            
+                <a href="../client-dev/WildFly_DataSource.html">
+            
+                    
+                    WildFly DataSource
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.1.5" data-path="../client-dev/Using_Multiple_Hosts.html">
+            
+                <a href="../client-dev/Using_Multiple_Hosts.html">
+            
+                    
+                    Using Multiple Hosts
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.1.6" data-path="../client-dev/SSL_Client_Connections.html">
+            
+                <a href="../client-dev/SSL_Client_Connections.html">
+            
+                    
+                    SSL Client Connections
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.1.7" data-path="../client-dev/Additional_Socket_Client_Settings.html">
+            
+                <a href="../client-dev/Additional_Socket_Client_Settings.html">
+            
+                    
+                    Additional Socket Client Settings
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.2" data-path="../client-dev/Prepared_Statements.html">
+            
+                <a href="../client-dev/Prepared_Statements.html">
+            
+                    
+                    Prepared Statements
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.3" data-path="../client-dev/ResultSet_Limitations.html">
+            
+                <a href="../client-dev/ResultSet_Limitations.html">
+            
+                    
+                    ResultSet Limitations
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.4" data-path="../client-dev/JDBC_Extensions.html">
+            
+                <a href="../client-dev/JDBC_Extensions.html">
+            
+                    
+                    JDBC Extensions
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1.4.1" data-path="../client-dev/Statement_Extensions.html">
+            
+                <a href="../client-dev/Statement_Extensions.html">
+            
+                    
+                    Statement Extensions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.4.2" data-path="../client-dev/Partial_Results_Mode.html">
+            
+                <a href="../client-dev/Partial_Results_Mode.html">
+            
+                    
+                    Partial Results Mode
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.4.3" data-path="../client-dev/Non-blocking_Statement_Execution.html">
+            
+                <a href="../client-dev/Non-blocking_Statement_Execution.html">
+            
+                    
+                    Non-blocking Statement Execution
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.4.4" data-path="../client-dev/ResultSet_Extensions.html">
+            
+                <a href="../client-dev/ResultSet_Extensions.html">
+            
+                    
+                    ResultSet Extensions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.4.5" data-path="../client-dev/Connection_Extensions.html">
+            
+                <a href="../client-dev/Connection_Extensions.html">
+            
+                    
+                    Connection Extensions
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.5" data-path="../client-dev/Unsupported_JDBC_Methods.html">
+            
+                <a href="../client-dev/Unsupported_JDBC_Methods.html">
+            
+                    
+                    Unsupported JDBC Methods
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1.5.1" data-path="../client-dev/Unsupported_Classes_and_Methods_in_java.sql.html">
+            
+                <a href="../client-dev/Unsupported_Classes_and_Methods_in_java.sql.html">
+            
+                    
+                    Unsupported Classes and Methods in "java.sql"
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.5.2" data-path="../client-dev/Unsupported_Classes_and_Methods_in_javax.sql.html">
+            
+                <a href="../client-dev/Unsupported_Classes_and_Methods_in_javax.sql.html">
+            
+                    
+                    Unsupported Classes and Methods in "javax.sql"
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="../client-dev/ODBC_Support.html">
+            
+                <a href="../client-dev/ODBC_Support.html">
+            
+                    
+                    ODBC Support
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.2.1" data-path="../client-dev/Installing_the_ODBC_Driver_Client.html">
+            
+                <a href="../client-dev/Installing_the_ODBC_Driver_Client.html">
+            
+                    
+                    Installing the ODBC Driver Client
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2.2" data-path="../client-dev/Configuring_the_Data_Source_Name_DSN.html">
+            
+                <a href="../client-dev/Configuring_the_Data_Source_Name_DSN.html">
+            
+                    
+                    Configuring the Data Source Name (DSN)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2.3" data-path="../client-dev/DSN_Less_Connection.html">
+            
+                <a href="../client-dev/DSN_Less_Connection.html">
+            
+                    
+                    DSN Less Connection
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2.4" data-path="../client-dev/ODBC_Connection_Properties.html">
+            
+                <a href="../client-dev/ODBC_Connection_Properties.html">
+            
+                    
+                    ODBC Connection Properties
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.3" data-path="../client-dev/OData_Support.html">
+            
+                <a href="../client-dev/OData_Support.html">
+            
+                    
+                    OData Support
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.3.1" data-path="../client-dev/OData4_Support.html">
+            
+                <a href="../client-dev/OData4_Support.html">
+            
+                    
+                    OData Version 4.0 Support
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.4" data-path="../client-dev/Using_Teiid_with_Hibernate.html">
+            
+                <a href="../client-dev/Using_Teiid_with_Hibernate.html">
+            
+                    
+                    Using Teiid with Hibernate
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.5" data-path="../client-dev/Using_Teiid_with_EclipseLink.html">
+            
+                <a href="../client-dev/Using_Teiid_with_EclipseLink.html">
+            
+                    
+                    Using Teiid with EclipseLink
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.6" data-path="../client-dev/GeoServer_Integration.html">
+            
+                <a href="../client-dev/GeoServer_Integration.html">
+            
+                    
+                    GeoServer Integration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.7" data-path="../client-dev/QGIS_Integration.html">
+            
+                <a href="../client-dev/QGIS_Integration.html">
+            
+                    
+                    QGIS Integration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.8" data-path="../client-dev/SQLAlchemy_Integration.html">
+            
+                <a href="../client-dev/SQLAlchemy_Integration.html">
+            
+                    
+                    SQLAlchemy Integration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.9" data-path="../client-dev/Node_Integration.html">
+            
+                <a href="../client-dev/Node_Integration.html">
+            
+                    
+                    Node.js Integration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.10" data-path="../client-dev/ADONET_Integration.html">
+            
+                <a href="../client-dev/ADONET_Integration.html">
+            
+                    
+                    ADO.NET Integration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.11" data-path="../client-dev/Reauthentication.html">
+            
+                <a href="../client-dev/Reauthentication.html">
+            
+                    
+                    Reauthentication
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.12" data-path="../client-dev/Execution_Properties.html">
+            
+                <a href="../client-dev/Execution_Properties.html">
+            
+                    
+                    Execution Properties
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.13" data-path="../client-dev/SET_Statement.html">
+            
+                <a href="../client-dev/SET_Statement.html">
+            
+                    
+                    SET Statement
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.14" data-path="../client-dev/SHOW_Statement.html">
+            
+                <a href="../client-dev/SHOW_Statement.html">
+            
+                    
+                    SHOW Statement
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.15" data-path="../client-dev/Transactions.html">
+            
+                <a href="../client-dev/Transactions.html">
+            
+                    
+                    Transactions
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.15.1" data-path="../client-dev/Local_Transactions.html">
+            
+                <a href="../client-dev/Local_Transactions.html">
+            
+                    
+                    Local Transactions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.15.2" data-path="../client-dev/Request_Level_Transactions.html">
+            
+                <a href="../client-dev/Request_Level_Transactions.html">
+            
+                    
+                    Request Level Transactions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.15.3" data-path="../client-dev/Using_Global_Transactions.html">
+            
+                <a href="../client-dev/Using_Global_Transactions.html">
+            
+                    
+                    Using Global Transactions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.15.4" data-path="../client-dev/Restrictions.html">
+            
+                <a href="../client-dev/Restrictions.html">
+            
+                    
+                    Restrictions
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="../dev/Developers_Guide.html">
+            
+                <a href="../dev/Developers_Guide.html">
+            
+                    
+                    Developer’s Guide
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="../dev/Developing_JEE_Connectors.html">
+            
+                <a href="../dev/Developing_JEE_Connectors.html">
+            
+                    
+                    Developing JEE Connectors
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1.1" data-path="../dev/Archetype_Template_Connector_Project.html">
+            
+                <a href="../dev/Archetype_Template_Connector_Project.html">
+            
+                    
+                    Archetype Template Connector Project
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.1.2" data-path="../dev/Implementing_the_Teiid_Framework.html">
+            
+                <a href="../dev/Implementing_the_Teiid_Framework.html">
+            
+                    
+                    Implementing the Teiid Framework
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1.2.1" data-path="../dev/ra.xml_file_Template.html">
+            
+                <a href="../dev/ra.xml_file_Template.html">
+            
+                    
+                    ra.xml file Template
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.1.3" data-path="../dev/Packaging_the_Adapter.html">
+            
+                <a href="../dev/Packaging_the_Adapter.html">
+            
+                    
+                    Packaging the Adapter
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1.3.1" data-path="../dev/Adding_Dependent_Libraries.html">
+            
+                <a href="../dev/Adding_Dependent_Libraries.html">
+            
+                    
+                    Adding Dependent Libraries
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.1.4" data-path="../dev/Deploying_the_Adapter.html">
+            
+                <a href="../dev/Deploying_the_Adapter.html">
+            
+                    
+                    Deploying the Adapter
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="../dev/Translator_Development.html">
+            
+                <a href="../dev/Translator_Development.html">
+            
+                    
+                    Translator Development
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.2.1" data-path="../dev/Environment_Setup.html">
+            
+                <a href="../dev/Environment_Setup.html">
+            
+                    
+                    Environment Setup
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.2.1.1" data-path="../dev/Setting_up_the_build_environment.html">
+            
+                <a href="../dev/Setting_up_the_build_environment.html">
+            
+                    
+                    Setting up the build environment
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.1.2" data-path="../dev/Archetype_Template_Translator_Project.html">
+            
+                <a href="../dev/Archetype_Template_Translator_Project.html">
+            
+                    
+                    Archetype Template Translator Project
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2" data-path="../dev/Implementing_the_Framework.html">
+            
+                <a href="../dev/Implementing_the_Framework.html">
+            
+                    
+                    Implementing the Framework
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.2.2.1" data-path="../dev/Caching_API.html">
+            
+                <a href="../dev/Caching_API.html">
+            
+                    
+                    Caching API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2.2" data-path="../dev/Command_Language.html">
+            
+                <a href="../dev/Command_Language.html">
+            
+                    
+                    Command Language
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2.3" data-path="../dev/Connections_to_Source.html">
+            
+                <a href="../dev/Connections_to_Source.html">
+            
+                    
+                    Connections to Source
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2.4" data-path="../dev/Dependent_Join_Pushdown.html">
+            
+                <a href="../dev/Dependent_Join_Pushdown.html">
+            
+                    
+                    Dependent Join Pushdown
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2.5" data-path="../dev/Executing_Commands.html">
+            
+                <a href="../dev/Executing_Commands.html">
+            
+                    
+                    Executing Commands
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2.6" data-path="../dev/Extending_the_ExecutionFactory_Class.html">
+            
+                <a href="../dev/Extending_the_ExecutionFactory_Class.html">
+            
+                    
+                    Extending the ExecutionFactory Class
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2.7" data-path="../dev/Large_Objects.html">
+            
+                <a href="../dev/Large_Objects.html">
+            
+                    
+                    Large Objects
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2.8" data-path="../dev/Translator_Capabilities.html">
+            
+                <a href="../dev/Translator_Capabilities.html">
+            
+                    
+                    Translator Capabilities
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2.9" data-path="../dev/Translator_Properties.html">
+            
+                <a href="../dev/Translator_Properties.html">
+            
+                    
+                    Translator Properties
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.3" data-path="../dev/Extending_The_JDBC_Translator.html">
+            
+                <a href="../dev/Extending_The_JDBC_Translator.html">
+            
+                    
+                    Extending The JDBC Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.4" data-path="../dev/Delegating_Translator.html">
+            
+                <a href="../dev/Delegating_Translator.html">
+            
+                    
+                    Delegating Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.5" data-path="../dev/Packaging.html">
+            
+                <a href="../dev/Packaging.html">
+            
+                    
+                    Packaging
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.2.5.1" data-path="../dev/Adding_Dependent_Modules.html">
+            
+                <a href="../dev/Adding_Dependent_Modules.html">
+            
+                    
+                    Adding Dependent Modules
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.6" data-path="../dev/Deployment.html">
+            
+                <a href="../dev/Deployment.html">
+            
+                    
+                    Deployment
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="../dev/User_Defined_Functions.html">
+            
+                <a href="../dev/User_Defined_Functions.html">
+            
+                    
+                    User Defined Functions
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.3.1" data-path="../dev/Source_Supported_Functions.html">
+            
+                <a href="../dev/Source_Supported_Functions.html">
+            
+                    
+                    Source Supported Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3.2" data-path="../dev/Support_for_User-Defined_Functions_Non-Pushdown.html">
+            
+                <a href="../dev/Support_for_User-Defined_Functions_Non-Pushdown.html">
+            
+                    
+                    Support for User-Defined Functions(Non-Pushdown)
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.3.2.1" data-path="../dev/Archetype_Template_UDF_Project.html">
+            
+                <a href="../dev/Archetype_Template_UDF_Project.html">
+            
+                    
+                    Archethype Template UDF Project
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="../dev/AdminAPI.html">
+            
+                <a href="../dev/AdminAPI.html">
+            
+                    
+                    AdminAPI
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="../dev/Custom_Logging.html">
+            
+                <a href="../dev/Custom_Logging.html">
+            
+                    
+                    Custom Logging
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="../dev/Runtime_Updates.html">
+            
+                <a href="../dev/Runtime_Updates.html">
+            
+                    
+                    Runtime Updates
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.7" data-path="../dev/Custom_Metadata_Repository.html">
+            
+                <a href="../dev/Custom_Metadata_Repository.html">
+            
+                    
+                    Custom Metadata Repository
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.8" data-path="../dev/PreParser.html">
+            
+                <a href="../dev/PreParser.html">
+            
+                    
+                    PreParser
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.8.1" data-path="../dev/Archetype_Template_PreParser_Project.html">
+            
+                <a href="../dev/Archetype_Template_PreParser_Project.html">
+            
+                    
+                    Archethype Template PreParser Project
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="../embedded/Embedded_Guide.html">
+            
+                <a href="../embedded/Embedded_Guide.html">
+            
+                    
+                    Embedded Guide
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="../embedded/Logging_in_Teiid_Embedded.html">
+            
+                <a href="../embedded/Logging_in_Teiid_Embedded.html">
+            
+                    
+                    Logging in Teiid Embedded
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="../embedded/Secure_Embedded_with_PicketBox.html">
+            
+                <a href="../embedded/Secure_Embedded_with_PicketBox.html">
+            
+                    
+                    Secure Embedded with PicketBox
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="../reference/Reference_Guide.html">
+            
+                <a href="../reference/Reference_Guide.html">
+            
+                    
+                    Reference Guide
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="../reference/Data_Sources.html">
+            
+                <a href="../reference/Data_Sources.html">
+            
+                    
+                    Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2" data-path="../reference/vdb_guide.html">
+            
+                <a href="../reference/vdb_guide.html">
+            
+                    
+                    Virtual Databases
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.2.1" data-path="../reference/developing_vdb.html">
+            
+                <a href="../reference/developing_vdb.html">
+            
+                    
+                    Developing a Virtual Database
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2.2" data-path="../reference/ddl_deployment_mode.html">
+            
+                <a href="../reference/ddl_deployment_mode.html">
+            
+                    
+                    DDL VDB
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2.3" data-path="../reference/xml_deployment_mode.html">
+            
+                <a href="../reference/xml_deployment_mode.html">
+            
+                    
+                    Using XML & DDL
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2.4" data-path="../reference/vdb_properties.html">
+            
+                <a href="../reference/vdb_properties.html">
+            
+                    
+                    VDB Properties
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2.5" data-path="../reference/DDL_Metadata.html">
+            
+                <a href="../reference/DDL_Metadata.html">
+            
+                    
+                    Schema Object DDL
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2.6" data-path="../reference/DDL_Domain.html">
+            
+                <a href="../reference/DDL_Domain.html">
+            
+                    
+                    Domain DDL
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2.7" data-path="../reference/Multisource_Models.html">
+            
+                <a href="../reference/Multisource_Models.html">
+            
+                    
+                    MultiSource Models
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2.8" data-path="../reference/Metadata_Repositories.html">
+            
+                <a href="../reference/Metadata_Repositories.html">
+            
+                    
+                    Metadata Repositories
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2.9" data-path="../reference/REST_Service_Through_VDB.html">
+            
+                <a href="../reference/REST_Service_Through_VDB.html">
+            
+                    
+                    REST Service Through VDB
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2.10" data-path="../reference/VDB_Reuse.html">
+            
+                <a href="../reference/VDB_Reuse.html">
+            
+                    
+                    VDB Reuse
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3" data-path="../reference/SQL_Support.html">
+            
+                <a href="../reference/SQL_Support.html">
+            
+                    
+                    SQL Support
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.3.1" data-path="../reference/Identifiers.html">
+            
+                <a href="../reference/Identifiers.html">
+            
+                    
+                    Identifiers
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.2" data-path="../reference/Expressions.html">
+            
+                <a href="../reference/Expressions.html">
+            
+                    
+                    Expressions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.3" data-path="../reference/Criteria.html">
+            
+                <a href="../reference/Criteria.html">
+            
+                    
+                    Criteria
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.4" data-path="../reference/Scalar_Functions.html">
+            
+                <a href="../reference/Scalar_Functions.html">
+            
+                    
+                    Scalar Functions
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.3.4.1" data-path="../reference/Numeric_Functions.html">
+            
+                <a href="../reference/Numeric_Functions.html">
+            
+                    
+                    Numeric Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.4.2" data-path="../reference/String_Functions.html">
+            
+                <a href="../reference/String_Functions.html">
+            
+                    
+                    String Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.4.3" data-path="../reference/Date_Time_Functions.html">
+            
+                <a href="../reference/Date_Time_Functions.html">
+            
+                    
+                    Date_Time Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.4.4" data-path="../reference/Type_Conversion_Functions.html">
+            
+                <a href="../reference/Type_Conversion_Functions.html">
+            
+                    
+                    Type Conversion Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.4.5" data-path="../reference/Choice_Functions.html">
+            
+                <a href="../reference/Choice_Functions.html">
+            
+                    
+                    Choice Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.4.6" data-path="../reference/Decode_Functions.html">
+            
+                <a href="../reference/Decode_Functions.html">
+            
+                    
+                    Decode Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.4.7" data-path="../reference/Lookup_Function.html">
+            
+                <a href="../reference/Lookup_Function.html">
+            
+                    
+                    Lookup Function
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.4.8" data-path="../reference/System_Functions.html">
+            
+                <a href="../reference/System_Functions.html">
+            
+                    
+                    System Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.4.9" data-path="../reference/XML_Functions.html">
+            
+                <a href="../reference/XML_Functions.html">
+            
+                    
+                    XML Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.4.10" data-path="../reference/JSON_Functions.html">
+            
+                <a href="../reference/JSON_Functions.html">
+            
+                    
+                    JSON Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.4.11" data-path="../reference/Security_Functions.html">
+            
+                <a href="../reference/Security_Functions.html">
+            
+                    
+                    Security Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.4.12" data-path="../reference/Spatial_Functions.html">
+            
+                <a href="../reference/Spatial_Functions.html">
+            
+                    
+                    Spatial Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.4.13" data-path="../reference/Miscellaneous_Functions.html">
+            
+                <a href="../reference/Miscellaneous_Functions.html">
+            
+                    
+                    Miscellaneous Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.4.14" data-path="../reference/Nondeterministic_Function_Handling.html">
+            
+                <a href="../reference/Nondeterministic_Function_Handling.html">
+            
+                    
+                    Nondeterministic Function Handling
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.5" data-path="../reference/DML_Commands.html">
+            
+                <a href="../reference/DML_Commands.html">
+            
+                    
+                    DML Commands
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.3.5.1" data-path="../reference/Set_Operations.html">
+            
+                <a href="../reference/Set_Operations.html">
+            
+                    
+                    Set Operations
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.5.2" data-path="../reference/Subqueries.html">
+            
+                <a href="../reference/Subqueries.html">
+            
+                    
+                    Subqueries
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.5.3" data-path="../reference/WITH_Clause.html">
+            
+                <a href="../reference/WITH_Clause.html">
+            
+                    
+                    WITH Clause
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.5.4" data-path="../reference/SELECT_Clause.html">
+            
+                <a href="../reference/SELECT_Clause.html">
+            
+                    
+                    SELECT Clause
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.5.5" data-path="../reference/FROM_Clause.html">
+            
+                <a href="../reference/FROM_Clause.html">
+            
+                    
+                    FROM Clause
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.3.5.5.1" data-path="../reference/XMLTABLE.html">
+            
+                <a href="../reference/XMLTABLE.html">
+            
+                    
+                    XMLTABLE
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.5.5.2" data-path="../reference/ARRAYTABLE.html">
+            
+                <a href="../reference/ARRAYTABLE.html">
+            
+                    
+                    ARRAYTABLE
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.5.5.3" data-path="../reference/OBJECTTABLE.html">
+            
+                <a href="../reference/OBJECTTABLE.html">
+            
+                    
+                    OBJECTTABLE
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.5.5.4" data-path="../reference/TEXTTABLE.html">
+            
+                <a href="../reference/TEXTTABLE.html">
+            
+                    
+                    TEXTTABLE
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.5.5.5" data-path="../reference/JSONTABLE.html">
+            
+                <a href="../reference/JSONTABLE.html">
+            
+                    
+                    JSONTABLE
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.5.6" data-path="../reference/WHERE_Clause.html">
+            
+                <a href="../reference/WHERE_Clause.html">
+            
+                    
+                    WHERE Clause
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.5.7" data-path="../reference/GROUP_BY_Clause.html">
+            
+                <a href="../reference/GROUP_BY_Clause.html">
+            
+                    
+                    GROUP BY Clause
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.5.8" data-path="../reference/HAVING_Clause.html">
+            
+                <a href="../reference/HAVING_Clause.html">
+            
+                    
+                    HAVING Clause
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.5.9" data-path="../reference/ORDER_BY_Clause.html">
+            
+                <a href="../reference/ORDER_BY_Clause.html">
+            
+                    
+                    ORDER BY Clause
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.5.10" data-path="../reference/LIMIT_Clause.html">
+            
+                <a href="../reference/LIMIT_Clause.html">
+            
+                    
+                    LIMIT Clause
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.5.11" data-path="../reference/INTO_Clause.html">
+            
+                <a href="../reference/INTO_Clause.html">
+            
+                    
+                    INTO Clause
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.5.12" data-path="../reference/OPTION_Clause.html">
+            
+                <a href="../reference/OPTION_Clause.html">
+            
+                    
+                    OPTION Clause
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.6" data-path="../reference/DDL_Commands.html">
+            
+                <a href="../reference/DDL_Commands.html">
+            
+                    
+                    DDL Commands
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.3.6.1" data-path="../reference/Temp_Tables.html">
+            
+                <a href="../reference/Temp_Tables.html">
+            
+                    
+                    Temp Tables
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.6.2" data-path="../reference/Alter_View.html">
+            
+                <a href="../reference/Alter_View.html">
+            
+                    
+                    Alter View
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.6.3" data-path="../reference/Alter_Procedure.html">
+            
+                <a href="../reference/Alter_Procedure.html">
+            
+                    
+                    Alter Procedure
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.6.4" data-path="../reference/Alter_Trigger.html">
+            
+                <a href="../reference/Alter_Trigger.html">
+            
+                    
+                    Alter Trigger
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.7" data-path="../reference/Procedures.html">
+            
+                <a href="../reference/Procedures.html">
+            
+                    
+                    Procedures
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.3.7.1" data-path="../reference/Procedure_Language.html">
+            
+                <a href="../reference/Procedure_Language.html">
+            
+                    
+                    Procedure Language
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.7.2" data-path="../reference/Virtual_Procedures.html">
+            
+                <a href="../reference/Virtual_Procedures.html">
+            
+                    
+                    Virtual Procedures
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.7.3" data-path="../reference/Update_Procedures_Triggers.html">
+            
+                <a href="../reference/Update_Procedures_Triggers.html">
+            
+                    
+                    Update Procedures
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.8" data-path="../reference/Comments.html">
+            
+                <a href="../reference/Comments.html">
+            
+                    
+                    Comments
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4" data-path="../reference/Datatypes.html">
+            
+                <a href="../reference/Datatypes.html">
+            
+                    
+                    Datatypes
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.4.1" data-path="../reference/Supported_Types.html">
+            
+                <a href="../reference/Supported_Types.html">
+            
+                    
+                    Supported Types
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.2" data-path="../reference/Type_Conversions.html">
+            
+                <a href="../reference/Type_Conversions.html">
+            
+                    
+                    Type Conversions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.3" data-path="../reference/Special_Conversion_Cases.html">
+            
+                <a href="../reference/Special_Conversion_Cases.html">
+            
+                    
+                    Special Conversion Cases
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.4" data-path="../reference/Escaped_Literal_Syntax.html">
+            
+                <a href="../reference/Escaped_Literal_Syntax.html">
+            
+                    
+                    Escaped Literal Syntax
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.5" data-path="../reference/Updatable_Views.html">
+            
+                <a href="../reference/Updatable_Views.html">
+            
+                    
+                    Updatable Views
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.5.1" data-path="../reference/Key-preserved_Table.html">
+            
+                <a href="../reference/Key-preserved_Table.html">
+            
+                    
+                    preserved Table
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.6" data-path="../reference/Transaction_Support.html">
+            
+                <a href="../reference/Transaction_Support.html">
+            
+                    
+                    Transaction Support
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.6.1" data-path="../reference/AutoCommitTxn_Execution_Property.html">
+            
+                <a href="../reference/AutoCommitTxn_Execution_Property.html">
+            
+                    
+                    AutoCommitTxn Execution Property
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.6.2" data-path="../reference/Updating_Model_Count.html">
+            
+                <a href="../reference/Updating_Model_Count.html">
+            
+                    
+                    Updating Model Count
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.6.3" data-path="../reference/JDBC_and_Transactions.html">
+            
+                <a href="../reference/JDBC_and_Transactions.html">
+            
+                    
+                    JDBC and Transactions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.6.4" data-path="../reference/Transactional_Behavior_with_JBoss_Data_Source_Types.html">
+            
+                <a href="../reference/Transactional_Behavior_with_JBoss_Data_Source_Types.html">
+            
+                    
+                    Transactional Behavior with JBoss Data Source Types
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.6.5" data-path="../reference/Limitations_and_Workarounds.html">
+            
+                <a href="../reference/Limitations_and_Workarounds.html">
+            
+                    
+                    Limitations and Workarounds
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.7" data-path="../reference/Data_Roles.html">
+            
+                <a href="../reference/Data_Roles.html">
+            
+                    
+                    Data Roles
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.7.1" data-path="../reference/Permissions.html">
+            
+                <a href="../reference/Permissions.html">
+            
+                    
+                    Permissions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.7.2" data-path="../reference/Role_Mapping.html">
+            
+                <a href="../reference/Role_Mapping.html">
+            
+                    
+                    Role Mapping
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.7.3" data-path="../reference/XML_Definition.html">
+            
+                <a href="../reference/XML_Definition.html">
+            
+                    
+                    XML Definition
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.7.4" data-path="../reference/Customizing.html">
+            
+                <a href="../reference/Customizing.html">
+            
+                    
+                    Customizing
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.8" data-path="../reference/System_Schema.html">
+            
+                <a href="../reference/System_Schema.html">
+            
+                    
+                    System Schema
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.8.1" data-path="../reference/sys_schema.html">
+            
+                <a href="../reference/sys_schema.html">
+            
+                    
+                    SYS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.8.2" data-path="../reference/sysadmin_schema.html">
+            
+                <a href="../reference/sysadmin_schema.html">
+            
+                    
+                    SYSADMIN
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9" data-path="../reference/Translators.html">
+            
+                <a href="../reference/Translators.html">
+            
+                    
+                    Translators
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.9.1" data-path="../reference/Amazon_S3_Translator.html">
+            
+                <a href="../reference/Amazon_S3_Translator.html">
+            
+                    
+                    Amazon S3 Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.2" data-path="../reference/Amazon_SimpleDB_Translator.html">
+            
+                <a href="../reference/Amazon_SimpleDB_Translator.html">
+            
+                    
+                    Amazon SimpleDB Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.3" data-path="../reference/Apache_Accumulo_Translator.html">
+            
+                <a href="../reference/Apache_Accumulo_Translator.html">
+            
+                    
+                    Apache Accumulo Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.4" data-path="../reference/Apache_SOLR_Translator.html">
+            
+                <a href="../reference/Apache_SOLR_Translator.html">
+            
+                    
+                    Apache SOLR Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.5" data-path="../reference/Cassandra_Translator.html">
+            
+                <a href="../reference/Cassandra_Translator.html">
+            
+                    
+                    Cassandra Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.6" data-path="../reference/couchbase_translator.html">
+            
+                <a href="../reference/couchbase_translator.html">
+            
+                    
+                    Couchbase Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.7" data-path="../reference/Delegating_Translators.html">
+            
+                <a href="../reference/Delegating_Translators.html">
+            
+                    
+                    Delegating Translators
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.8" data-path="../reference/File_Translator.html">
+            
+                <a href="../reference/File_Translator.html">
+            
+                    
+                    File Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.9" data-path="../reference/Google_Spreadsheet_Translator.html">
+            
+                <a href="../reference/Google_Spreadsheet_Translator.html">
+            
+                    
+                    Google Spreadsheet Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.10" data-path="../reference/Infinispan_Translator.html">
+            
+                <a href="../reference/Infinispan_Translator.html">
+            
+                    
+                    Infinispan Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11" data-path="../reference/JDBC_Translators.html">
+            
+                <a href="../reference/JDBC_Translators.html">
+            
+                    
+                    JDBC Translators
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.9.11.1" data-path="../reference/Actian_Vector_Translator.html">
+            
+                <a href="../reference/Actian_Vector_Translator.html">
+            
+                    
+                    Actian Vector Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.2" data-path="../reference/Apache_Phoenix_Translator.html">
+            
+                <a href="../reference/Apache_Phoenix_Translator.html">
+            
+                    
+                    Apache Phoenix Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.3" data-path="../reference/Cloudera_Impala_Translator.html">
+            
+                <a href="../reference/Cloudera_Impala_Translator.html">
+            
+                    
+                    Cloudera Impala Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.4" data-path="../reference/DB2_Translator.html">
+            
+                <a href="../reference/DB2_Translator.html">
+            
+                    
+                    DB2 Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.5" data-path="../reference/Derby_Translator.html">
+            
+                <a href="../reference/Derby_Translator.html">
+            
+                    
+                    Derby Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.6" data-path="../reference/Exasol_Translator.html">
+            
+                <a href="../reference/Exasol_Translator.html">
+            
+                    
+                    Exasol Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.7" data-path="../reference/Greenplum_Translator.html">
+            
+                <a href="../reference/Greenplum_Translator.html">
+            
+                    
+                    Greenplum Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.8" data-path="../reference/H2_Translator.html">
+            
+                <a href="../reference/H2_Translator.html">
+            
+                    
+                    H2 Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.9" data-path="../reference/Hive_Translator.html">
+            
+                <a href="../reference/Hive_Translator.html">
+            
+                    
+                    Hive Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.10" data-path="../reference/HSQL_Translator.html">
+            
+                <a href="../reference/HSQL_Translator.html">
+            
+                    
+                    HSQL Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.11" data-path="../reference/Informix_Translator.html">
+            
+                <a href="../reference/Informix_Translator.html">
+            
+                    
+                    Informix Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.12" data-path="../reference/Ingres_Translators.html">
+            
+                <a href="../reference/Ingres_Translators.html">
+            
+                    
+                    Ingres Translators
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.13" data-path="../reference/Intersystems_Cache_Translator.html">
+            
+                <a href="../reference/Intersystems_Cache_Translator.html">
+            
+                    
+                    Intersystems Cache Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.14" data-path="../reference/JDBC_ANSI_Translator.html">
+            
+                <a href="../reference/JDBC_ANSI_Translator.html">
+            
+                    
+                    JDBC ANSI Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.15" data-path="../reference/JDBC_Simple_Translator.html">
+            
+                <a href="../reference/JDBC_Simple_Translator.html">
+            
+                    
+                    JDBC Simple Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.16" data-path="../reference/MetaMatrix_Translator.html">
+            
+                <a href="../reference/MetaMatrix_Translator.html">
+            
+                    
+                    MetaMatrix Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.17" data-path="../reference/Microsoft_Access_Translators.html">
+            
+                <a href="../reference/Microsoft_Access_Translators.html">
+            
+                    
+                    Microsoft Access Translators
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.18" data-path="../reference/Microsoft_SQL_Server_Translator.html">
+            
+                <a href="../reference/Microsoft_SQL_Server_Translator.html">
+            
+                    
+                    Microsoft SQL Server Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.19" data-path="../reference/ModeShape_Translator.html">
+            
+                <a href="../reference/ModeShape_Translator.html">
+            
+                    
+                    ModeShape Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.20" data-path="../reference/MySQL_Translators.html">
+            
+                <a href="../reference/MySQL_Translators.html">
+            
+                    
+                    MySQL Translators
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.21" data-path="../reference/Netezza_Translator.html">
+            
+                <a href="../reference/Netezza_Translator.html">
+            
+                    
+                    Netezza Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.22" data-path="../reference/Oracle_Translator.html">
+            
+                <a href="../reference/Oracle_Translator.html">
+            
+                    
+                    Oracle Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.23" data-path="../reference/OSISoft_PI_Translator.html">
+            
+                <a href="../reference/OSISoft_PI_Translator.html">
+            
+                    
+                    OSISoft PI Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.24" data-path="../reference/PostgreSQL_Translator.html">
+            
+                <a href="../reference/PostgreSQL_Translator.html">
+            
+                    
+                    PostgreSQL Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.25" data-path="../reference/PrestoDB_Translator.html">
+            
+                <a href="../reference/PrestoDB_Translator.html">
+            
+                    
+                    PrestoDB Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.26" data-path="../reference/Redshift_Translator.html">
+            
+                <a href="../reference/Redshift_Translator.html">
+            
+                    
+                    Redshift Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.27" data-path="../reference/SAP_Hana_Translator.html">
+            
+                <a href="../reference/SAP_Hana_Translator.html">
+            
+                    
+                    SAP Hana Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.28" data-path="../reference/SAPIQ_Translator.html">
+            
+                <a href="../reference/SAPIQ_Translator.html">
+            
+                    
+                    SAP IQ Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.29" data-path="../reference/Sybase_Translator.html">
+            
+                <a href="../reference/Sybase_Translator.html">
+            
+                    
+                    Sybase Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.30" data-path="../reference/Teiid_Translator.html">
+            
+                <a href="../reference/Teiid_Translator.html">
+            
+                    
+                    Teiid Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.31" data-path="../reference/Teradata_Translator.html">
+            
+                <a href="../reference/Teradata_Translator.html">
+            
+                    
+                    Teradata Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.11.32" data-path="../reference/Vertica_Translator.html">
+            
+                <a href="../reference/Vertica_Translator.html">
+            
+                    
+                    Vertica Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.12" data-path="../reference/JPA_Translator.html">
+            
+                <a href="../reference/JPA_Translator.html">
+            
+                    
+                    JPA Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.13" data-path="../reference/LDAP_Translator.html">
+            
+                <a href="../reference/LDAP_Translator.html">
+            
+                    
+                    LDAP Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.14" data-path="../reference/Loopback_Translator.html">
+            
+                <a href="../reference/Loopback_Translator.html">
+            
+                    
+                    Loopback Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.15" data-path="../reference/Microsoft_Excel_Translator.html">
+            
+                <a href="../reference/Microsoft_Excel_Translator.html">
+            
+                    
+                    Microsoft Excel Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.16" data-path="../reference/MongoDB_Translator.html">
+            
+                <a href="../reference/MongoDB_Translator.html">
+            
+                    
+                    MongoDB Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.17" data-path="../reference/OData_Translator.html">
+            
+                <a href="../reference/OData_Translator.html">
+            
+                    
+                    OData Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.18" data-path="../reference/OData_V4_Translator.html">
+            
+                <a href="../reference/OData_V4_Translator.html">
+            
+                    
+                    OData V4 Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.19" data-path="../reference/Swagger_Translator.html">
+            
+                <a href="../reference/Swagger_Translator.html">
+            
+                    
+                    Swagger Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.20" data-path="../reference/OpenAPI_Translator.html">
+            
+                <a href="../reference/OpenAPI_Translator.html">
+            
+                    
+                    OpenAPI Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.21" data-path="../reference/OLAP_Translator.html">
+            
+                <a href="../reference/OLAP_Translator.html">
+            
+                    
+                    OLAP Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.22" data-path="../reference/Salesforce_Translators.html">
+            
+                <a href="../reference/Salesforce_Translators.html">
+            
+                    
+                    Salesforce Translators
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.23" data-path="../reference/SAP_Gateway_Translator.html">
+            
+                <a href="../reference/SAP_Gateway_Translator.html">
+            
+                    
+                    SAP Gateway Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.24" data-path="../reference/Web_Services_Translator.html">
+            
+                <a href="../reference/Web_Services_Translator.html">
+            
+                    
+                    Web Services Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10" data-path="../reference/Federated_Planning.html">
+            
+                <a href="../reference/Federated_Planning.html">
+            
+                    
+                    Federated Planning
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.10.1" data-path="../reference/Planning_Overview.html">
+            
+                <a href="../reference/Planning_Overview.html">
+            
+                    
+                    Planning Overview
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.2" data-path="../reference/Query_Planner.html">
+            
+                <a href="../reference/Query_Planner.html">
+            
+                    
+                    Query Planner
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.3" data-path="../reference/Query_Plans.html">
+            
+                <a href="../reference/Query_Plans.html">
+            
+                    
+                    Query Plans
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.4" data-path="../reference/Federated_Optimizations.html">
+            
+                <a href="../reference/Federated_Optimizations.html">
+            
+                    
+                    Federated Optimizations
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.5" data-path="../reference/Subquery_Optimization.html">
+            
+                <a href="../reference/Subquery_Optimization.html">
+            
+                    
+                    Subquery Optimization
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.6" data-path="../reference/XQuery_Optimization.html">
+            
+                <a href="../reference/XQuery_Optimization.html">
+            
+                    
+                    XQuery Optimization
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.7" data-path="../reference/Federated_Failure_Modes.html">
+            
+                <a href="../reference/Federated_Failure_Modes.html">
+            
+                    
+                    Federated Failure Modes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.8" data-path="../reference/Conformed_Tables.html">
+            
+                <a href="../reference/Conformed_Tables.html">
+            
+                    
+                    Conformed Tables
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.11" data-path="../reference/Architecture.html">
+            
+                <a href="../reference/Architecture.html">
+            
+                    
+                    Architecture
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.11.1" data-path="../reference/Terminology.html">
+            
+                <a href="../reference/Terminology.html">
+            
+                    
+                    Terminology
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.11.2" data-path="../reference/Data_Management.html">
+            
+                <a href="../reference/Data_Management.html">
+            
+                    
+                    Data Management
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.11.3" data-path="../reference/Query_Termination.html">
+            
+                <a href="../reference/Query_Termination.html">
+            
+                    
+                    Query Termination
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.11.4" data-path="../reference/Processing.html">
+            
+                <a href="../reference/Processing.html">
+            
+                    
+                    Processing
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.12" data-path="../reference/BNF_for_SQL_Grammar.html">
+            
+                <a href="../reference/BNF_for_SQL_Grammar.html">
+            
+                    
+                    BNF for SQL Grammar
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="../security/Security_Guide.html">
+            
+                <a href="../security/Security_Guide.html">
+            
+                    
+                    Security Guide
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.1" data-path="../security/LoginModules.html">
+            
+                <a href="../security/LoginModules.html">
+            
+                    
+                    LoginModules
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.2" data-path="../security/Teiid_Server_Transport_Security.html">
+            
+                <a href="../security/Teiid_Server_Transport_Security.html">
+            
+                    
+                    Teiid Server Transport Security
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.3" data-path="../security/JDBC_ODBC_SSL_SelfSigned.html">
+            
+                <a href="../security/JDBC_ODBC_SSL_SelfSigned.html">
+            
+                    
+                    JDBC/ODBC SSL connection using self-signed SSL certificates
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.4" data-path="../security/Data_Source_Security.html">
+            
+                <a href="../security/Data_Source_Security.html">
+            
+                    
+                    Data Source Security
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.5" data-path="../security/Kerberos_support_through_GSSAPI.html">
+            
+                <a href="../security/Kerberos_support_through_GSSAPI.html">
+            
+                    
+                    Kerberos support through GSSAPI
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.6" data-path="../security/Custom_Authorization_Validator.html">
+            
+                <a href="../security/Custom_Authorization_Validator.html">
+            
+                    
+                    Custom Authorization Validator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.7" data-path="../security/SAML_Based_Security_For_OData.html">
+            
+                <a href="../security/SAML_Based_Security_For_OData.html">
+            
+                    
+                    SAML Based Security For OData
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.8" data-path="../security/OAuth2_Based_Security_For_OData_Using_KeyCloak.html">
+            
+                <a href="../security/OAuth2_Based_Security_For_OData_Using_KeyCloak.html">
+            
+                    
+                    OAuth2 Based Security For OData Using KeyCloak
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.9" data-path="../security/SAML_Based_Security_For_OData_Using_KeyCloak.html">
+            
+                <a href="../security/SAML_Based_Security_For_OData_Using_KeyCloak.html">
+            
+                    
+                    SAML Based Security For OData Using KeyCloak
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >LOBs</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="lobs">LOBs</h1>
+<div class="paragraph">
+<p>LOBs and XML documents are streamed from the Teiid Server to the Teiid JDBC API.&#xA0;&#xA0; Normally, these values are not materialized in the server memory - avoiding potential out-of-memory issues. When using style sheets and non-streaming XQuery whole XML documents must be materialized on the server. Even when using the XMLQuery or XMLTable functions and document projection is applied, memory issues may occur for large documents.</p>
+</div>
+<div class="paragraph">
+<p>LOBs are broken into pieces when being created and streamed.&#xA0; The maximum size of each piece when fetched by the client can be configured with the <em>&quot;lob-chunk-size-in-kb&quot;</em> property on Teiid configuration. The default value is 100 KB. When dealing with extremely large LOBs, you may consider increasing this value to decrease the amount of round-trips to stream the result. Setting the value too high may cause the server or client to have memory issues.</p>
+</div>
+<div class="paragraph">
+<p>Source LOB values (LOBs from physical sources) are typically accessed by reference, rather than having the value copied to a temporary location. Thus care must be taken to ensure that source LOBs are returned in a memory-safe manner. This caution is more for the source driver vendors to not to consume VM memory for LOBs. Translators via the copyLobs property can instead copy lob values to a temporary location.</p>
+</div>
+<div class="paragraph">
+<p>Cached lobs will be copied rather than relying on the reference to the source lob.</p>
+</div>
+<div class="paragraph">
+<p>Temporary lobs created by Teiid will be cleaned up when the result set or statement is closed. To rely on implicit garbage collection based cleanup instead of statement close, the Teiid session variable clean_lobs_onclose can be set to false (by issuing the query &quot;SELECT teiid_session_set(&apos;clean_lobs_onclose&apos;, false)&quot; - which can be done for example via the new connection sql in the datasource definition). This can be used for local client scenarios that relied on the implicit behavior.</p>
+</div>
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="Socket_Transports.html" class="navigation navigation-prev " aria-label="Previous page: Socket Transports">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="Other_Considerations.html" class="navigation navigation-next " aria-label="Next page: Other Considerations">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"LOBs","level":"1.3.6.5","depth":3,"next":{"title":"Other Considerations","level":"1.3.6.6","depth":3,"path":"admin/Other_Considerations.adoc","ref":"admin/Other_Considerations.adoc","articles":[]},"previous":{"title":"Socket Transports","level":"1.3.6.4","depth":3,"path":"admin/Socket_Transports.adoc","ref":"admin/Socket_Transports.adoc","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{"asFullVersionNumber":"17.0.0.Final","versionNumber":"12.3","copyrightYear":"2019","asDocRoot":"https://docs.jboss.org/author/display/WFLY/Documentation","productnameFull":"Teiid","archeTypeVersion":"12.0.0","asVersionNumber":"WildFly 17.0.0","fullVersionNumber":"12.3.0","copyrightHolder":"Red Hat, Inc.","odataContext":"odata4/northwind/NW","targetWildfly":true,"javaVersionUrl":"https://docs.oracle.com/javase/11/","asName":"WildFly","targetSpring":false},"plugins":["collapsible-menu"],"pluginsConfig":{"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"admin/LOBs.adoc","mtime":"2019-09-25T13:54:37.724Z","type":"asciidoc"},"gitbook":{"version":"3.2.3","time":"2019-09-25T13:55:43.199Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-collapsible-menu/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

@@ -1,0 +1,101 @@
+
+= Metadata Repositories
+
+Traditionally the metadata for a Virtual Database is supplied to {{ book.productnameFull }} engine through a VDB archive file. A number of _MetadataRepository_ instances contribute to the loading of the metadata.  Built-in metadata repositories include the following:
+
+== NATIVE
+
+This is only applicable on source models (and is also the default), when used the metadata for the model is retrieved from the source database itself.
+
+[source,xml]
+.*Sample vdb.xml file*
+----
+<vdb name="{vdb-name}" version="1">
+    <model name="{model-name}" type="PHYSICAL">
+        <source name="AccountsDB" translator-name="oracle" connection-jndi-name="java:/oracleDS"/>
+        <metadata type="NATIVE"></metadata>
+    </model>
+</vdb>
+----
+
+== DDL
+
+[source,xml]
+.*Sample vdb.xml file*
+----
+<vdb name="{vdb-name}" version="1">
+    <model name="{model-name}" type="PHYSICAL">
+        <source name="AccountsDB" translator-name="oracle" connection-jndi-name="java:/oracleDS"/>
+        <metadata type="DDL">
+          **DDL Here**
+        </metadata>
+    </model>
+</vdb>
+----
+
+This is applicable to both source and view models. See link:DDL_Metadata.adoc[DDL Metadata] for more information on how to use this feature.
+
+== DDL-FILE
+
+[source,xml]
+.*Sample vdb.xml file*
+----
+<vdb name="{vdb-name}" version="1">
+    <model name="{model-name}" type="PHYSICAL">
+        <source name="AccountsDB" translator-name="oracle" connection-jndi-name="java:/oracleDS"/>
+        <metadata type="DDL-FILE">/accounts.ddl</metadata>
+    </model>
+</vdb>
+----
+
+DDL is applicable to both source and view models in zip VDB deployments. See link:DDL_Metadata.adoc[DDL Metadata] for more information on how to use this feature.
+
+== UDF (11.2+)
+
+[source,xml]
+.*Sample vdb.xml file*
+----
+<vdb name="{vdb-name}" version="1">
+    <model name="{model-name}" type="VIRTUAL">
+        <property name="importer.schemaName" value="org.foo.Class"/>
+        <metadata type="UDF"></metadata>
+    </model>
+</vdb>
+----
+
+[source,ddl]
+.*Sample ddl file*
+----
+CREATE DATABASE {vdb-name} VERSION '1';
+USE DATABASE {vdb-name} VERSION '1';
+CREATE VIRTUAL SCHEMA {model-name};
+IMPORT FOREIGN SCHEMA "org.foo.Class" FROM REPOSITORY UDF INTO {model-name};
+----
+
+The logic will import all static functions that return non-void results, or import the user defined aggregate function if
+the class implements the UserDefinedAggregate interface.
+
+== Chaining Repositories
+
+When defining the metadata type for a model, multiple metadata elements can be used. All the repository instances defined are consulted in the order configured to gather the metadata for the given model. For example:
+
+[source,xml]
+.*Sample vdb.xml file*
+----
+<vdb name="{vdb-name}" version="1">
+    <model name="{model-name}" type="PHYSICAL">
+        <source name="AccountsDB" translator-name="oracle" connection-jndi-name="java:/oracleDS"/>
+        <metadata type="NATIVE"/>
+        <metadata type="DDL">
+          **DDL Here**
+        </metadata>
+    </model>
+</vdb>
+----
+
+NOTE: For the above model, _NATIVE_ importer is first used, then DDL importer used to add additional metadata to _NATIVE_ imported metadata.
+
+=== Custom
+
+See link:../dev/Custom_Metadata_Repository.adoc[Custom Metadata Repository]
+

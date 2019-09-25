@@ -1,0 +1,48 @@
+
+= DataSource Connection
+
+To use a data source based connection, use `org.teiid.jdbc.TeiidDataSource` as the data source class. The `{{ book.productnameFull }}DataSource` is also an XADatasource. {{ book.productnameFull }} DataSource class is also Serializable, so it possible for it to be used with JNDI naming services.
+
+{{ book.productnameFull }} supports the XA protocol, XA transactions will be extended to {{ book.productnameFull }} sources that also support XA.
+
+All the properties (except for version, which is known on {{ book.productnameFull }}DataSource as DatabaseVersion) defined in the link:Driver_Connection.adoc[Driver Connection#URL Connection Properties] have corresponding "set" methods on the `org.teiid.jdbc.TeiidDataSource`. Properties that are assumed from the URL string have additional "set" methods, which are described in the following table.
+
+.*Datasource Properties*
+|===
+|Property Name |Type |Description
+
+|`DatabaseName`
+|`String`
+|The name of a virtual database (VDB) deployed to {{ book.productnameFull }}. Optionally Database name can also contain "DatabaseVersion" information inside it. For example: "myvdb.2", this is equivalent to supplying the "DatabaseVersion" property set to value of 2. However, use of Database name in this format and use of DatabaseVersion property at the same time is not allowed.
+
+|`ServerName`
+|`String`
+|Server hostname where the {{ book.productnameFull }} runtime installed. If you are using IPv6 binding address as the host name, place it in square brackets. ex:[::1]
+
+|`AlternateServers`
+|`String`
+|Optional delimited list of host:port entries. See the link:Using_Multiple_Hosts.adoc[Using Multiple Hosts] for more information. If you are using IPv6 binding address as the host name, place them in square brackets. ex:[::1]
+
+|`AdditionalProperties`
+|`String`
+|Optional setting of properties that has the same format as the property string in a connection URL.
+
+|`PortNumber`
+|`integer`
+|Port number on which the Server process is listening on.
+
+|`secure`
+|`boolean`
+|Secure connection. Flag to indicate to use SSL (mms) based connection between client and server
+
+|`DatabaseVersion`
+|`integer`
+|VDB version
+
+|`DataSourceName`
+|`String`
+|Name given to this data source
+|===
+
+NOTE: *Additional Properties* - All the properties from link:Driver_Connection.adoc[URL Connection Properties] can be used on DataSource using the _AdditionalProperties_ setter method if the corresponding setter method is not already available. For example, you can add _"useCallingThread"_ property as `<xa-datasource-property name="AdditionalProperties">useCallingThread=false</xa-datasource-property>`
+
