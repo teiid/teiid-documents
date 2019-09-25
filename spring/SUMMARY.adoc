@@ -144,6 +144,7 @@
 
 . link:reference/Reference_Guide.adoc[Reference Guide]
 // .. link:reference/Data_Sources.adoc[Data Sources]
+.. link:reference/Release_Notes.adoc[Release Notes]
 .. link:reference/vdb_guide.adoc[Virtual Databases]
 //... link:reference/developing_vdb.adoc[Developing a Virtual Database]
 //... link:reference/ddl_deployment_mode.adoc[DDL VDB]

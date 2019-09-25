@@ -143,6 +143,7 @@
 .. link:embedded/Secure_Embedded_with_PicketBox.adoc[Secure Embedded with PicketBox]
 
 . link:reference/Reference_Guide.adoc[Reference Guide]
+.. link:reference/Release_Notes.adoc[Release Notes]
 .. link:reference/Data_Sources.adoc[Data Sources]
 .. link:reference/vdb_guide.adoc[Virtual Databases]
 ... link:reference/developing_vdb.adoc[Developing a Virtual Database]
