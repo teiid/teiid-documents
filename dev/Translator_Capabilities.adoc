@@ -83,6 +83,10 @@ The following table lists the capabilities that can be specified in the `Executi
 |
 |Translator can support a table that returns a table in the FROM clause.
 
+|ProcedureParameterExpression
+|
+|Translator can support an expression, not just a literal, as a procedure parameter.
+
 |BetweenCriteria
 |
 |Not currently used - between criteria is rewriten as compound comparisions.
