@@ -7,6 +7,8 @@ Teiid {{ book.fullVersionNumber }} adds performance features, microservice enabl
 
 == Highlights
 
+* https://issues.jboss.org/browse/TEIID-3522[TEIID-3522] added support for some OData aggregation via the apply option - including top level aggregation (aggregate), grouping (groupby), and filtering (filter).  
+
 == Compatibility Issues
 
 * Support for named parameter syntax using param=value has been deprecated, since it is ambiguous with a comparison predicate boolean value expression. param**=>**value should be used instead.
