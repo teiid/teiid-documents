@@ -9,7 +9,8 @@ install:
     - cd spring
     - gitbook install
     - cd ..
-    - sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()"
+    - wget https://download.calibre-ebook.com/3.48.0/calibre-3.48.0-x86_64.txz
+    - sudo mkdir -p /opt/calibre && sudo rm -rf /opt/calibre/* && sudo tar xvf calibre-3.48.0-x86_64.txz -C /opt/calibre && sudo /opt/calibre/calibre_postinstall
     
 script: 
     - gitbook build wildfly content
