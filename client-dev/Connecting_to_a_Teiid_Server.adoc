@@ -3,7 +3,7 @@
 
 The {{ book.productnameFull }} JDBC API provides Java Database Connectivity (JDBC) access to a Virtual Database (VDB) deployed on {{ book.productnameFull }}. The {{ book.productnameFull }} JDBC API is compatible with the JDBC 4.0 specification; however, it does not fully support all methods. Advanced features, such as updatable result sets or SQL3 data types, are not supported.
 
-Java client applications connecting to a {{ book.productnameFull }} Server will need to use at least the Java 1.6 JDK. Previous versions of Java are not supported.
+Java client applications connecting to a {{ book.productnameFull }} Server will need to use at least the Java 1.8 JDK. Previous versions of Java are not supported.  You may attempt to use a client driver from a previous Teiid version that supported the target JRE.
 
 {% if book.targetWildfly %}
 Support for {{ book.productnameFull }} clients and servers older than version 8 has been dropped from {{ book.productnameFull }} 10.2 and later.

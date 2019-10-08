@@ -25,6 +25,7 @@ Teiid {{ book.fullVersionNumber }} adds performance features, microservice enabl
 
 * https://issues.jboss.org/browse/TEIID-5819[TEIID-5819] References to any Teiid *-swagger artifact should use openapi in both the artifact name and group instead.
 * https://issues.jboss.org/browse/TEIID-1323[TEIID-1323] The protected method SQLConverstion.generateSqlForStoredProcedure is now expected to append directly to the working buffer.
+* https://issues.jboss.org/browse/TEIID-5565[TEIID-5565] The Teiid Java client now requires Java 8 and above.
 
 === from 12.2
 
