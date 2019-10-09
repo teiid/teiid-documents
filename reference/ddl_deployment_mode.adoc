@@ -29,7 +29,6 @@ CREATE SERVER pgsql
 CREATE SCHEMA test SERVER pgsql;
 IMPORT FOREIGN SCHEMA public FROM SERVER pgsql INTO test 
     OPTIONS(
-        importer.useFullSchemaName false, 
         importer.tableTypes 'TABLE,VIEW'
 );
 ----

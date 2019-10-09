@@ -130,8 +130,8 @@ to a 0-argument {{ book.productnameFull }} function name_nextval.
 |null
 
 |useFullSchemaName
-|When false, directs the importer to use just the object name as the {{ book.productnameFull }} name - Note: when false importing from multiple schemas may lead to objects with duplicate names when importing from multiple schemas, which results in an exception.  When true the {{ book.productnameFull }} name will be formed using the catalog and schema names as directed by the useCatalogName and useQualifiedName properties.  This option does not affect the name in source property.
-|true
+|When false, directs the importer to use just the object name as the {{ book.productnameFull }} name.  It is expected that all objects will come from the same foreign schema.  When true (not recommended) the {{ book.productnameFull }} name will be formed using the catalog and schema names as directed by the useCatalogName and useQualifiedName properties and it will be allowed for objects to come from multiple foreign schema.  This option does not affect the name in source property.
+|false (only change when importing from mulitple foreign schema)
 
 |useQualifiedName
 |true will use name qualification for both the {{ book.productnameFull }} name and name in source as further refined by the useCatalogName and useFullSchemaName properties.  Set to false to disable all qualification for both the {{ book.productnameFull }} name and the name in source, which effectively ignores the useCatalogName and useFullSchemaName properties.  WARNING: when false this may lead to objects with duplicate names when importing from multiple schemas, which results in an exception.

@@ -356,7 +356,6 @@ The below VDB defines three models, one "Source" model that defines your source 
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <vdb name="example" version="1">
     <model name="Source">
-        <property name="importer.useFullSchemaName" value="false" />
         <source name="source" translator-name="h2" connection-jndi-name="java:/my-ds" />
     </model>
     

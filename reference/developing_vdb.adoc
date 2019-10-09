@@ -101,7 +101,6 @@ Schema component is defined, but it has no metadata. i.e tables, procedures or f
 ----
 IMPORT FOREIGN SCHEMA public FROM SERVER pgsql INTO test 
     OPTIONS(
-        importer.useFullSchemaName false, 
         importer.tableTypes 'TABLE,VIEW'
 );
 ----
