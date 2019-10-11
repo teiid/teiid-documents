@@ -12,6 +12,8 @@ Typically users create clusters to improve the performance of the system through
 
 In the _Domain_ mode, the only way a user can deploy any artifacts is using either CLI or using the Admin API. Copying VDB directly into the "deployments" directory is not supported.
 
+NOTE: some load balancers have timeouts that cannot be adjusted.  You may need to adjust the tcp_keepalive_time on your client OS.  The default is typically 2 hours, which is much too long in many cases.  See http://coryklein.com/tcp/2015/11/25/custom-configuration-of-tcp-socket-keep-alive-timeouts.html[Custom Configuration of TCP Socket Keep-Alive Timeouts].
+
 [[HAProxy]]
 == HAProxy
 
