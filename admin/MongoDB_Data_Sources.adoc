@@ -22,7 +22,7 @@ All the properties that are defined on the RAR file are
 |Property Name |Description |Required |Default
 
 |RemoteServerList
-|A comma separated list of server locations. Each location can contain an optional port, of the format host:port
+|A comma separated list of server locations. Each location can contain an optional port, of the format host:port. The property may also contain a full standard (mongodb://) or seedlist (mongodb+srv://) connection string.
 |true
 |
 
