@@ -212,7 +212,7 @@ The OData WAR file can be configured with following properties in the web.xml fi
 |
  
 |proxy-base-uri
-|Defines the proxy server’s URI to be used in OData responses.
+|Defines the proxy server’s URI to be used in OData responses.  Only needs to be set if your proxy does not support the Forwarded nor the X-Forwarded headers.
 |n/a
 
 |connection.XXX
@@ -225,7 +225,7 @@ The OData WAR file can be configured with following properties in the web.xml fi
 
 |===
 
-NOTE: *"Behind Proxy or In Cloud Environments?"* - If the {{ book.productnameFull }} server is configured behind a proxy server or deployed in cloud environment, or using a load-balancer then the URI of the server which is handling the OData request is different from URI of proxy. To generate valid links in the OData responses configure "proxy-base-uri" property in the web.xml. If this value is available as system property then define the property value like below
+NOTE: *"Behind Proxy or In Cloud Environments?"* - If the {{ book.productnameFull }} server is configured behind a proxy server or deployed in cloud environment, or using a load-balancer that does not support the Forwarded nor X-Forwarded headers, then the URI of the server which is handling the OData request is different from URI of proxy. To generate valid links in the OData responses configure "proxy-base-uri" property in the web.xml. If this value is available as system property then define the property value like below
 
 [source,xml]
 ----
