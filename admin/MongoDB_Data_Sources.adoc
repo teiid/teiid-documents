@@ -22,7 +22,7 @@ All the properties that are defined on the RAR file are
 |Property Name |Description |Required |Default
 
 |RemoteServerList
-|A comma separated list of server locations. Each location can contain an optional port, of the format host:port. The property may also contain a full standard (mongodb://) or seedlist (mongodb+srv://) connection string.
+|A comma separated list of server locations. Each location can contain an optional port, of the format host:port. The property may also contain a full standard (mongodb://) or seedlist (mongodb+srv://) connection URI string.  If a full connection string is used, then none of the other configuration properties will be used nor are required.  However the database should be specified in the URI. 
 |true
 |
 
@@ -37,8 +37,8 @@ All the properties that are defined on the RAR file are
 |none
 
 |Database
-|MongoDB database name
-|true
+|MongoDB database name - required if not suing a full connection URI in the RemoteServerList
+|false
 |none
 
 |SecurityType
