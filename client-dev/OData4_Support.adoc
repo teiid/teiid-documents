@@ -268,7 +268,7 @@ For latest information other frameworks and tools available please see http://ww
 
 == OData Metadata (How {{ book.productnameFull }} interprets the relational schema into OData's $metadata)
 
-OData defines its schema using Conceptual Schema Definition Language (CSDL). A VDB in an ACTIVE state in {{ book.productnameFull }} exposes its metadata in CSDL format. For example if you want retrieve metadata for your vdb, you need to issue a query like
+OData defines its schema using Conceptual Schema Definition Language (CSDL). A VDB in an ACTIVE state in {{ book.productnameFull }} exposes its visible metadata in CSDL format. For example if you want retrieve metadata for your vdb, you need to issue a request like:
 
 [source]
 ----
@@ -304,7 +304,16 @@ Since OData schema model is not a relational schema model, {{ book.productnameFu
 
 {{ book.productnameFull }} by design does not define any "embedded" ComplexType in the EntityType.
 
-Since OData access is more key based, it is *MANDATORY* that every table {{ book.productnameFull }} exposes through OData must have a PK or at least one UNIQUE key. A table which does not either of these will be dropped out of the $metadata
+Since OData access is more key based, it is *MANDATORY* that every table {{ book.productnameFull }} exposes through OData must have a PK or at least one UNIQUE key. A table which does not either of these will be dropped out of the $metadata.
+
+Since all data roles are not consulted in the construction of the OData metadata there are times when tables or procedures will need to be specifically hidden.  This can be done in the vdb via a "teiid_odata:visible" extension metadata property on the object.
+
+[source,sql]
+----
+create foreign table HIDDEN (id long primary key, ...) OPTIONS ("teiid_odata:visible" false);
+---- 
+
+With teiid_odata:visible set to false the OData layer will not expose the given object.
 
 Datatype Mapping
 
