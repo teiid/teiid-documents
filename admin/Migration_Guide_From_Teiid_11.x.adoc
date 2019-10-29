@@ -71,7 +71,7 @@ The configuration property names for the buffer manager have been refined to gre
 |
 |===
 
-This change introduced a new version of the WildFly xml configuraiton for {{ book.productnameFull }}.  Older xml and cli are still compatible and are automatically converted to the new configuration.  You should not mix the usage of new and old properties.
+This change introduced a new version of the WildFly xml configuration for {{ book.productnameFull }}.  Older xml and cli are still compatible and are automatically converted to the new configuration.  You should not mix the usage of new and old properties.
 
 == Compatibility Changes
 

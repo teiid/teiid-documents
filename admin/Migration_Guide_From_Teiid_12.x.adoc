@@ -1,0 +1,20 @@
+
+= Migration Guide From {{ book.productnameFull }} 12.x to 13.x
+
+{{ book.productnameFull }} strives to maintain consistency between all versions, but when necessary breaking configuration and VDB/sql changes are made - and then typically only for major releases. 
+
+You should consult the release notes for compatibility and configuration changes from each minor version that you are upgrading over.  This guide expands upon the release notes included in the kit to cover changes since 12.x.
+
+If possible you should make your migration to {{ book.productnameFull }} 13 by first using {{ book.productnameFull }} 12.2.x.  {{ book.productnameFull }} 13 requires Java 8 and WildFly 17.
+
+== Configuration Changes
+
+=== System Properties
+
+== Compatibility Changes
+
+SET NAMESPACE should no longer be used.  An exception will be thrown if the a custom namepsace or prefix is defined - only built-in namespaces/prefixes are allowed.  Methods and constants related to namespaces have been removed.  For now SYS.PROPERTIES will present built-in keys in both the old FQN format "{http...}key" and the new prefix format "teiid_...:key" so that existing SQL queries will work, but the legacy format will be removed in the next major release. 
+
+== Kitting/Build Changes
+
+=== WildFly/JEE Restructuring
