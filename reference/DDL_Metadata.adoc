@@ -565,58 +565,46 @@ TIP: Until {{ book.productnameFull }} provides higher-level metadata support for
 
 == Extension Metadata
 
-When defining the extension metadata in the case of Custom Translators, the properties on tables/views/procedures/columns can define namespace for the properties such that they will not collide with the {{ book.productnameFull }} specific properties. The property should be prefixed with alias of the Namespace. Prefixes starting with teiid_ are reserved for use by {{ book.productnameFull }}.
+When defining the extension metadata in the case of Custom Translators, the properties on tables/views/procedures/columns can be whatever you need.  It is recommended that you use a consistent prefix that denotes what the properties relate to. Prefixes starting with teiid_ are reserved for use by {{ book.productnameFull }}.  Property keys are not case sensitive when accessed via the runtime APIs - but they are case sensitive when accessing SYS.PROPERTIES.
 
-image:images/create_namespace.jpg[images/create_namespace.jpg]
+WARNING: The usage of SET NAMESPACE for custom prefixes or namespaces is no longer allowed.  Support for SET NAMESPACE will be removed altogether in the next major version. 
 
 [source,sql]
-.*Example of Namespace*
 ----
-SET NAMESPACE 'http://custom.uri' AS foo
-
 CREATE VIEW MyView (...) 
-  OPTIONS ("foo:mycustom-prop" 'anyvalue')
+  OPTIONS ("my-translator:mycustom-prop" 'anyvalue')
 ----
 
-=== Built-in Namespace Prefixes
+=== Built-in Prefixes
 
 |===
-|Prefix |URI |Description
+|Prefix |Description
 
 |teiid_rel
-|http://www.teiid.org/ext/relational/2012[http://www.teiid.org/ext/relational/2012]
-|Relational extensions. Uses include function and native query metadata
+|Relational Extensions. Uses include function and native query metadata
 
 |teiid_sf
-|http://www.teiid.org/translator/salesforce/2012[http://www.teiid.org/translator/salesforce/2012]
-|Salesforce extensions.
+|Salesforce Extensions.
 
 |teiid_mongo
-|http://www.teiid.org/translator/mongodb/2013[http://www.teiid.org/translator/mongodb/2013]
 |MongoDB Extensions
 
 |teiid_odata
-|http://www.jboss.org/teiiddesigner/ext/odata/2012[http://www.jboss.org/teiiddesigner/ext/odata/2012]
 |OData Extensions
 
 |teiid_accumulo
-|http://www.teiid.org/translator/accumulo/2013[http://www.teiid.org/translator/accumulo/2013]
-|Accumulo extensions
+|Accumulo Extensions
 
 |teiid_excel
-|http://www.teiid.org/translator/excel/2014[http://www.teiid.org/translator/excel/2014]
 |Excel Extensions
 
 |teiid_ldap
-|http://www.teiid.org/translator/ldap/2015[http://www.teiid.org/translator/ldap/2015]
 |LDAP Extensions
 
 |teiid_rest
-|http://teiid.org/rest[http://teiid.org/rest]
 |REST Extensions
 
 |teiid_pi
-|http://www.teiid.org/translator/pi/2016[http://www.teiid.org/translator/pi/2016]
 |PI Database Extensions
 
 |===
