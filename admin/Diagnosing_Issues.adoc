@@ -28,7 +28,7 @@ If you haven't done so already, you should start by familiarizing yourself with 
 
 The link:../reference/Query_Plans.adoc[final processor plan] is generally what is meant when referring to by “the query plan”.  The plan can be viewed in an XML or a plain text format.
 
-You can also use {{ book.productnameFull }} Extensions or link:../client-dev/SHOW_Statement.adoc[SQL statements] to get the plan:
+You can also use {{ book.productnameFull }} Extensions, or link:../client-dev/SHOW_Statement.adoc[SET/SHOW statements]:
 
 [source,sql]
 ----
@@ -36,6 +36,13 @@ SET SHOWPLAN ON
 SELECT ...
 SHOW PLAN  
 ----
+
+or an link:../reference/Explain_Statement.adoc[Explain Statement]:
+
+[source,sql]
+----
+EXPLAIN SELECT ...
+----  
 
 Once you have the plan, you can:
 

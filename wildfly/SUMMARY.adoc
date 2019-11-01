@@ -203,6 +203,7 @@
 .... link:reference/Virtual_Procedures.adoc[Virtual Procedures]
 .... link:reference/Update_Procedures_Triggers.adoc[Update Procedures]
 ... link:reference/Comments.adoc[Comments]
+... link:reference/Explain_Statement.adoc[Explain Statement]
 .. link:reference/Datatypes.adoc[Datatypes]
 ... link:reference/Supported_Types.adoc[Supported Types]
 ... link:reference/Type_Conversions.adoc[Type Conversions]

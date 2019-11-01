@@ -1,0 +1,32 @@
+= Explain Statement
+
+You may use an EXPLAIN statement to obtain a query plan.  This is built into the language support and is the preferred mechanism when using the pg/ODBC transport.  If you are using a Teiid JDBC client, you may also use link:../client_dev/SET_Statement.adoc[SET/SHOW statements].
+
+Usage:
+
+[source,sql]
+----
+EXPLAIN [(explainOption [, ...])] statement
+
+explainOption := 
+      ANALYZE [TRUE|FALSE] 
+    | FORMAT {TEXT|YAML|XML}
+----
+ 
+If no options are specified the default it provide the plan in text format without executing the query.  
+
+If ANALYZE or ANALYZE TRUE is specified, then the statement will actually be executed - unless the client has already turned on the NOEXEC option.  The resulting plan will include runtime node statistics from the fully executed statement - all side effects, including updates, will still occur.  You may need to use a transaction to rollback any unwanted side effects.
+
+While this is superficially the same syntax as Postgresql, the plan provided in the various formats is the same that has been provided by Teiid in prior versions.
+
+See also link:Query_Plans.adoc[Query Plans] for interpreting the results. 
+
+Example
+
+[source,sql]
+----
+EXPLAIN (analyze) select * from really_complicated_view
+----
+
+Will return a text formatted plan from an actual run of the given statement.
+

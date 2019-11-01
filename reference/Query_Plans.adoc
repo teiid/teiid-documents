@@ -13,6 +13,8 @@ You can get a query plan any time you execute a command. The SQL options availab
 
 With the above options, the query plan is available from the Statement object by casting to the `org.teiid.jdbc.TeiidStatement` interface or by using the link:../client-dev/SHOW_Statement.adoc[SHOW PLAN statement].
 
+Alternatively you may use the link:Explain_Statement.adoc[Explain Statement].
+
 [source,java]
 .**Retrieving a Query Plan Using {{ book.productnameFull }} Extensions**
 ----
@@ -32,6 +34,13 @@ ResultSet rs = statement.executeQuery("select ...");
 ResultSet planRs = statement.executeQuery("show plan");
 planRs.next();
 System.out.println(planRs.getString("PLAN_XML"));
+----
+
+[source,java]
+.**Retrieving a Query Plan Using Explain**
+----
+ResultSet rs = statement.executeQuery("explain select ...");
+System.out.println(rs.getString("QUERY PLAN"));
 ----
 
 The query plan is made available automatically in several of {{ book.productnameFull }}’s tools.
