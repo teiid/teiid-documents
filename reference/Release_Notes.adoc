@@ -8,6 +8,7 @@ Teiid {{ book.fullVersionNumber }} adds performance features, microservice enabl
 == Highlights
 
 * https://issues.jboss.org/browse/TEIID-3522[TEIID-3522] added support for some OData aggregation via the apply option - including top level aggregation (aggregate), grouping (groupby), and filtering (filter).  
+* https://issues.jboss.org/browse/TEIID-5492[TEIID-5492] added support for an EXPLAIN statement.
 
 == Compatibility Issues
 
@@ -262,6 +263,10 @@ See the Admin Guide for more on configuration and installation.
 == Thirdparty Library Updates
 
 The following components have been updated:
+
+=== From 12.3
+
+* The infinispan-hotrod translator/resource adapter were updated to Infinispan 10.0.1.
 
 === From 12.1
 
