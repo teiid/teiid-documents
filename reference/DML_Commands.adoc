@@ -175,6 +175,7 @@ Syntax Rules:
 * Input values are passed via criteria. Values can be passed by '=','is null', or 'in' predicates. Disjuncts are not allowed. It is also not possible to pass the value of a non-comparable column through an equality predicate.
 * The procedure view automatically has an access pattern on its IN and IN_OUT parameters which allows it to be planned correctly as a dependent join when necessary or fail when sufficient criteria cannot be found.
 * Procedures containing duplicate names between the parameters (IN, IN_OUT, OUT, RETURN) and result set columns cannot be used in a procedural relational command.
+* If tehre is already a table/view with the same name as the procedure, then it cannot be invoked via procedural relational syntax.
 * Default values for IN, IN_OUT parameters are not used if there is no criteria present for a given input. Default values are only valid for link:DML_Commands.adoc#_execute_command[named procedure syntax].
 
 Multiple Execution

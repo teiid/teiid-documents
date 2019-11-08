@@ -15,7 +15,7 @@ _Syntax Rules:_
 * Identifiers in double quotes can have any contents. The double quote character can it’s be escaped with an additional double quote. e.g. "some", " id"
 * Because different data sources organize tables in different ways, some prepending catalog or schema or user information, {{ book.productnameFull }} allows table specification to be a dot-delimited construct.
 
-NOTE: When a table specification contains a dot resolving will allow for the match of a partial name against any number of the end segments in the name. e.g. a table with the fully-qualified name vdbname."sourcescema.sourcetable" would match the partial name sourcetable.
+NOTE: When a table specification contains a dot resolving will allow for the match of a partial name against any number of the end segments in the name. e.g. a table with the fully-qualified name vdbname."sourceschema.sourcetable" would match the partial name sourcetable.
 
 * Columns, column aliases, and schemas cannot contain a dot '.' character.
 * Identifiers, even when quoted, are not case-sensitive in {{ book.productnameFull }}.

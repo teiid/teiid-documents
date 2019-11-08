@@ -6,6 +6,8 @@
 The DDL for schema objects is common to both link:xml_deployment_mode.adoc[XML] and link:ddl_deployment_mode.adoc[DDL] VDBs.
 {% endif %}
 
+Tables and views exist in the same namespace in a schema.  Indexes are not considered schema scoped objects, but are rather scoped to the table/view they are defined against.  Procedures and functions are defined in separate namespaces, but a function that is defined by virtual procedure language exists as both a function and a procedure of the same name.  Domain types are not schema scoped - they are scoped to the entire vdb. 
+
 == Data Types
 
 The BNF for Data Types refer to link:../reference/BNF_for_SQL_Grammar.adoc#parseDataTypePrimary[Data Types]
