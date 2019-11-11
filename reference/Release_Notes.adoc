@@ -29,6 +29,7 @@ Teiid {{ book.fullVersionNumber }} adds performance features, microservice enabl
 * https://issues.jboss.org/browse/TEIID-1323[TEIID-1323] The protected method SQLConverstion.generateSqlForStoredProcedure is now expected to append directly to the working buffer.
 * https://issues.jboss.org/browse/TEIID-5565[TEIID-5565] The Teiid Java client now requires Java 8 and above.
 * https://issues.jboss.org/browse/TEIID-5557[TEIID-5557] The default for the JDBC importer useFullSchemaName is now false.  It is generally expected to import from only a single foreign schema.  Set useFullSchemaName to true to preserve the legacy behavior.  There is also an env/system property org.teiid.translator.jdbc.useFullSchemaNameDefault that can be used to preserve the legacy behavior.
+* https://issues.jboss.org/browse/TEIID-5840[TEIID-5840] https://issues.jboss.org/browse/TEIID-5841[TEIID-5841] Grant / revoke targets are now resolved at deployment time and will be checked in a more strict manner.  See the migration guide and/or the issues for more.  The PolicyDecider was changed to reference the metadata objects rather than just strings.
 
 === from 12.2
 

@@ -13,7 +13,17 @@ If possible you should make your migration to {{ book.productnameFull }} 13 by f
 
 == Compatibility Changes
 
+=== SET NAMESPACE
+
 SET NAMESPACE should no longer be used.  An exception will be thrown if the a custom namepsace or prefix is defined - only built-in namespaces/prefixes are allowed.  Methods and constants related to namespaces have been removed.  For now SYS.PROPERTIES will present built-in keys in both the old FQN format "{http...}key" and the new prefix format "teiid_...:key" so that existing SQL queries will work, but the legacy format will be removed in the next major release. 
+
+=== Security Changes
+
+The target of GRANT/REVOKE statements will be validated against the metadata to ensure.  Previous versions allowed the target to be any string.
+
+The default data role enforcement will now check the strict hierarchy of a schema object, rather than every potential name part.  In previous versions a table with a name containing "." such as "long.table.name" could have resulted in checks against permissions specified against the partial table names "long.table" and "long" as well.  Now the will be a check only against the full table name, and then the schema.
+
+The PolicyDecider was changed to reference the metadata objects rather than just strings.  Any custom implementation will need to updated accordingly.
 
 == Kitting/Build Changes
 
