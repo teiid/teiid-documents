@@ -27,4 +27,6 @@ The PolicyDecider was changed to reference the metadata objects rather than just
 
 == Kitting/Build Changes
 
+The teiid-admin module/jar has been combined with teiid-api.  Any references in custom development to teiid-admin should be replaces with teiid-api.
+
 === WildFly/JEE Restructuring
