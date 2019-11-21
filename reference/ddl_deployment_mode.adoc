@@ -74,13 +74,15 @@ See link:Data_Sources.adoc[Data Sources] for more.
 ----
 CREATE FOREIGN ( DATA WRAPPER | TRANSLATOR ) {translator-name} 
     [ TYPE {base-translator-type} ] 
-    OPTIONS ( <options-clause>)
+    [ OPTIONS ( <options-clause>) ]
 
 <options-clause> ::= 
     <key> <value>[,<key>, <value>]*
 ----
 
-Optional _TYPE_ is used to create "override" translator. The _OPTIONS_ clause is used to provide the "execution-properties" of a specific translator defined in either in {translator-name} or {base-translator-name}. These names *MUST* match with available Translators in the system. link:Translators.adoc[Translators} documents all the available translators. 
+Optional _TYPE_ is used to create "override" translator.  It is not required to define translators already known to the engine with a CREATE - for example CREATE FOREIGN DATA WRAPPER oracle OPTIONS ... - will effectively be ignored.
+
+The _OPTIONS_ clause is used to provide the "execution-properties" of a specific translator defined in either in {translator-name} or {base-translator-name}. These names *MUST* match with available Translators in the system. link:Translators.adoc[Translators} documents all the available translators. 
 
 For all available translators see link:Translators.adoc[Translators]
 
@@ -89,7 +91,7 @@ For all available translators see link:Translators.adoc[Translators]
 ----
 CREATE FOREIGN DATA WRAPPER oracle-override TYPE oracle OPTIONS (useBindVariables false);
 ----
-The above example creates a translator override with an example showing turning off the prepared statements. 
+The above example creates a translator override with an example showing turning off the prepared statements.
 
 Additional management support to alter, delete a translator
 ----
@@ -121,7 +123,7 @@ CREATE SERVER {source-name} [TYPE '{source-type}']
 |source-name | Name given to the source's connection.
 |source-type | For JDBC connection, the driver name or resource-adapter name. 
 |translator-name| Name of the translator to be used with this server.
-|options| All connection properties for the connection.
+|options| All connection properties for the connection.  Currently only resource-name is supported as a way to specify the environmentally dependent name of the source, for example java:/source, so that the source-name can be anything. 
 |====
 
 For all available translators see link:Translators.adoc[Translators] 
