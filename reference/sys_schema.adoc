@@ -875,15 +875,6 @@ If client logic expects actual values, such as integration with link:../client-d
 
 == Procedures
 
-=== SYS.getXMLSchemas
-
-DEPRECATED: Returns a resultset with a single column, schema, containing the schemas as xml.
-
-[source,sql]
-----
-SYS.getXMLSchemas(IN document string NOT NULL) RETURNS TABLE (schema xml)
-----
-
 === SYS.ArrayIterate
 
 Returns a resultset with a single column with a row for each value in the array.
