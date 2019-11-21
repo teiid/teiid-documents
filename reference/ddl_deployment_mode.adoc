@@ -19,7 +19,6 @@ IMPORTANT: The VDB name pattern must adhere to "-vdb.ddl" for the {{ book.produc
 CREATE DATABASE my_example VERSION '1.0.0';
 USE DATABASE my_example VERSION '1.0.0'; 
 
-CREATE FOREIGN DATA WRAPPER postgresql;
 CREATE SERVER pgsql  
     VERSION 'one' FOREIGN DATA WRAPPER postgresql 
     OPTIONS (
@@ -83,15 +82,9 @@ CREATE FOREIGN ( DATA WRAPPER | TRANSLATOR ) {translator-name}
 
 Optional _TYPE_ is used to create "override" translator. The _OPTIONS_ clause is used to provide the "execution-properties" of a specific translator defined in either in {translator-name} or {base-translator-name}. These names *MUST* match with available Translators in the system. link:Translators.adoc[Translators} documents all the available translators. 
 
-.Example 1: Example creating translator
-[source,sql]  
-----
-CREATE FOREIGN DATA WRAPPER postgresql;
-----
-
 For all available translators see link:Translators.adoc[Translators]
 
-. Example 2: Example creating Override Translator
+.Example creating Override Translator
 [source,sql]
 ----
 CREATE FOREIGN DATA WRAPPER oracle-override TYPE oracle OPTIONS (useBindVariables false);

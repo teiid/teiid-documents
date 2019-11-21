@@ -11,7 +11,6 @@ To use this translator, you need to define this translator in the VDB. What foll
 ----
 CREATE DATABASE myvdb;
 USE DATABASE myvdb;
-CREATE FOREIGN DATA WRAPPER delegator;
 CREATE FOREIGN DATA WRAPPER "hive-delegator" TYPE delegator OPTIONS (delegateName 'hive', supportsOrderBy 'false');
 CREATE SERVER source FOREIGN DATA WRAPPER "hive-delegator" OPTIONS ("resource-name" 'java:hive-ds');
 CREATE SCHEMA mymodel SERVER source;
@@ -82,8 +81,6 @@ Now deploy this translator in {{ book.productnameFull }} engine. Then in your vd
 ----
 CREATE DATABASE myvdb VERSION '1';
 USE DATABASE myvdb VERSION '1';
-CREATE FOREIGN DATA WRAPPER interceptor;
-CREATE FOREIGN DATA WRAPPER "oracle-interceptor";
 CREATE FOREIGN DATA WRAPPER "orcle-interceptor" TYPE interceptor OPTIONS (delegateName 'oracle');
 CREATE SERVER source FOREIGN DATA WRAPPER "oracle-interceptor" OPTIONS ("resource-name" 'java:oracle-ds');
 CREATE SCHEMA mymodel SERVER source;

@@ -24,7 +24,6 @@ at runtime these properties can be defined in the vdb as
 ----
 CREATE DATABASE vdb;
 USE DATABASE vdb;
-CREATE FOREIGN DATA WRAPPER "my-translator";
 CREATE FOREIGN DATA WRAPPER "my-translator-override" TYPE "my-translator" OPTIONS (CopyLobs 'true');
 CREATE SERVER connector FOREIGN DATA WRAPPER "my-translator-override";
 CREATE SCHEMA PM1 SERVER connector;
@@ -84,7 +83,6 @@ Below is an example showing how to use import properties with a vdb file
 ----
 CREATE DATABASE vdb;
 USE DATABASE vdb;
-CREATE FOREIGN DATA WRAPPER "my-translator";
 CREATE SERVER connector FOREIGN DATA WRAPPER "my-translator";
 CREATE SCHEMA PM1 SERVER connector OPTIONS ("importer.HeaderRowNumber" '12');
 SET SCHEMA PM1;

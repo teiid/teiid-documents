@@ -42,15 +42,6 @@ USE DATABASE my_example VERSION '1.0.0';
 === Step 2: Configuring a Source(s)
 When working with external sources, there are few extra steps need to be followed, as not all the software components required for the connection nor configuration are automatically provided by {{ book.productnameFull }}.
 
-==== Step 2A: Find the Translator
-* First find out if the support for the source is provided in {{ book.productnameFull }}. Look at {{ book.productnameFull }} documentation and supported translators. Pick the names of translator(s) you will be using. From previous example this represents
-
-----
-CREATE FOREIGN DATA WRAPPER postgresql;
-----
-
-here "postgresql" is our translator name, as example assumes we are going to query a PostgreSQL database. 
-
 ==== Step 2B: Find the module to connect to External Source 
 * Typically all relational databases are connected using their JDBC drivers. Find out if the external source has a JDBC driver? if this source has JDBC driver, then acquire the driver jar file.
 * Once the driver is acquired, then make sure this driver is *Type 4* driver, and then deploy this driver into {{ book.productnameFull }} server using either web-console application or CLI admin-console. The below example shows deploying the Oracle driver in {{ book.productnameFull }} Server based on WildFly using CLI admin-console. If driver is *not* Type 4, it can be still used, but more set up is needed.

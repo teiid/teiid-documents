@@ -38,7 +38,6 @@ See defining the metadata link:../reference/DDL_Metadata.adoc[using DDL], you ca
 ----
 CREATE DATABASE "{vdb-name}";
 USE DATABASE "{vdb-name}";
-CREATE FOREIGN DATA WRAPPER oracle;
 CREATE SERVER AccountsDB FOREIGN DATA WRAPPER oracle OPTIONS ("resource-name" 'java:/oracleDS');
 CREATE SCHEMA "{model-name}" SERVER AccountsDB;
 SET SCHEMA "{model-name}";
@@ -67,7 +66,6 @@ By default when a source can provide metadata, the _Source_ model's metadata is 
 ----
 CREATE DATABASE "{vdb-name}";
 USE DATABASE "{vdb-name}";
-CREATE FOREIGN DATA WRAPPER oracle;
 CREATE SERVER AccountsDB FOREIGN DATA WRAPPER oracle OPTIONS ("resource-name" 'java:/oracleDS');
 CREATE SCHEMA "{model-name}" SERVER AccountsDB;
 SET SCHEMA "{model-name}";

@@ -20,7 +20,6 @@ It uses a variation of DDL that utilizes the SQL-MED specification.
 ----
 CREATE DATABASE my_example;
 USE DATABASE my_example; 
-CREATE FOREIGN DATA WRAPPER postgresql;
 CREATE SERVER pgsql 
     VERSION 'one' FOREIGN DATA WRAPPER postgresql 
     OPTIONS (

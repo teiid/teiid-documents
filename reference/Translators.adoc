@@ -90,8 +90,6 @@ Example Overriding of Translator Property
 
 [source,sql]
 ----
-CREATE FOREIGN DATA WRAPPER oracle;
-
 CREATE FOREIGN DATA WRAPPER "oracle-override" TYPE oracle OPTIONS (RequiresCriteria 'true');
 
 CREATE SERVER ora FOREIGN DATA WRAPPER "oracle-override" OPTIONS ("resource-name" 'java:/oracle');
