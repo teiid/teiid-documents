@@ -34,10 +34,6 @@ The translator, known by the type name *_salesforce_*, provides Salesforce API 3
 |===
 |Name |Description |Default
 
-|ModelAuditFields
-|Add Audit Fields To Model (the import property takes precedence)
-|false
-
 |MaxBulkInsertBatchSize
 |Batch Size to use to insert bulk inserts
 |2048
@@ -75,12 +71,12 @@ The Salesforce translator can import metadata.
 |false
 
 |ModelAuditFields
-|Add Audit Fields To Model
+|Add Audit Fields To Model.  This includes CreatedXXX, LastModifiedXXX, and SystemModstamp fields.
 |false
-|n/a
+|false
 |===
 
-NOTE： When both _includeTables_ and _excludeTables patterns are present during the import, the _includeTables_ pattern matched first, then the _excludePatterns_ will be applied.
+NOTE： When both _includeTables_ and _excludeTables_ patterns are present during the import, the _includeTables_ pattern matched first, then the _excludePatterns_ will be applied.
 
 NOTE: If you need connectivity to an API version other than what is built in, you may try to use an existing connectivity pair, but in some circumstances - especially accessing a later remote api from an older java api - this is not possible and results in what appears to be hung connections.  Please raise an issue if you cannot successfully access a specific API version.
 

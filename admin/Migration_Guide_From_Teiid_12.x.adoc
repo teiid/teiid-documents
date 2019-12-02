@@ -9,6 +9,8 @@ If possible you should make your migration to {{ book.productnameFull }} 13 by f
 
 == Configuration Changes
 
+The salesforce translators no longer support the ModelAuditFields execution property - the import property should be used instead.
+
 === System Properties
 
 == Compatibility Changes
