@@ -7,9 +7,9 @@ Some of {{ book.productnameFull }}’s low-level behavior can be configured via 
 
 {% if book.targetWildfly %}
 A typical place to set system properties for {{ book.asName }} launches is in the <install>/bin/<mode>.conf. A property setting has the format `-Dproperty=value`.
-
-Note with 10.3 environment variables will be checked for a given key before using the system property.  This allows for {{ book.productnameFull }} client and server code running in Docker or on OpenShift to more easily have the properties below configured.
 {% endif %}
+
+With 13.0 environment variables will be checked after the corresponding system property.  This allows for {{ book.productnameFull }} client and server code running in Docker or on OpenShift to be easily configured.  The environment property key will be checked by converting it first to upper snake case - which replaces lower case with upper case, any period with _ and separates words with _.  For example org.teiid.allowNanInfinity would check the environment key ORG_TEIID_ALLOW_NAN_INFINITY.
 
 == General
 
