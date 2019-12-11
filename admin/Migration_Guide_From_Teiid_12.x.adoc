@@ -11,8 +11,6 @@ If possible you should make your migration to {{ book.productnameFull }} 13 by f
 
 The salesforce translators no longer support the ModelAuditFields execution property - the import property should be used instead.
 
-=== System Properties
-
 == Compatibility Changes
 
 === SET NAMESPACE
@@ -30,5 +28,3 @@ The PolicyDecider was changed to reference the metadata objects rather than just
 == Kitting/Build Changes
 
 The teiid-admin module/jar has been combined with teiid-api.  Any references in custom development to teiid-admin should be replaces with teiid-api.
-
-=== WildFly/JEE Restructuring
