@@ -362,7 +362,7 @@ You should always consult the $metadata about Functions and Actions to validate 
 
 == OpenAPI Metadata
 
-An https://issues.jboss.org/browse/TEIID-5555[experimental feature] is available to automatically provide a Swagger 2.0 / https://www.openapis.org/[OpenAPI] metadata via [swagger|openapi].json rather than $metadata.
+An https://issues.redhat.com/browse/TEIID-5555[experimental feature] is available to automatically provide a Swagger 2.0 / https://www.openapis.org/[OpenAPI] metadata via [swagger|openapi].json rather than $metadata.
 
 [source]
 .*Example OpenAPI 2.0 URLs*

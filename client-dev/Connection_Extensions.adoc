@@ -4,5 +4,5 @@
 {{ book.productnameFull }} connections (defined by the `org.teiid.jdbc.TeiidConnection` interface) support the changeUser method to reauthenticate a given connection. If the reauthentication is successful the current connection my be used with the given identity. Existing statements/result sets are still available for use under the old identity. 
 
 {% if book.targetWildfly %}
-See the JBossAS issue https://issues.jboss.org/browse/JBAS-1429[JBAS-1429] for more on using reauthentication support with JCA.
+See the JBossAS issue https://issues.redhat.com/browse/JBAS-1429[JBAS-1429] for more on using reauthentication support with JCA.
 {% endif %}

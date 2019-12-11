@@ -16,4 +16,4 @@ See the link:http://www.npgsql.org/doc/connection-string-parameters.html[documen
 
 == Known Limitations
 
-- link:https://issues.jboss.org/browse/TEIID-5220[TEIID-5220] prevents displaying the metadata of tables and views, but does not affect querying.  Certain tools, such as PowerBi, may have options to turn of the need to perform metadata introspection.
+- link:https://issues.redhat.com/browse/TEIID-5220[TEIID-5220] prevents displaying the metadata of tables and views, but does not affect querying.  Certain tools, such as PowerBi, may have options to turn of the need to perform metadata introspection.

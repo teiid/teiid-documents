@@ -19,11 +19,11 @@ There are no google-spreadsheet importer settings, but it can provide metadata f
 
 WARNING: A sheet with a header that is defined in {{ book.productnameFull }}, which later has all data rows removed is no longer valid for access through {{ book.productnameFull }}.  The google api will treat the header as a data row at that point and thus queries will no longer be valid.
 
-WARNING: Non-string fields are updated using the canonical {{ book.productnameFull }} SQL value - in cases where the spreadsheet is using a non-conforming locale, consider disallowing updates.  See also link:https://issues.jboss.org/browse/TEIID-4854[TEIID-4854] and the allTypesUpdatable import property below.
+WARNING: Non-string fields are updated using the canonical {{ book.productnameFull }} SQL value - in cases where the spreadsheet is using a non-conforming locale, consider disallowing updates.  See also link:https://issues.redhat.com/browse/TEIID-4854[TEIID-4854] and the allTypesUpdatable import property below.
 
 == Importer Properties 
 
-* _allTypesUpdatable_- Set to true to mark all columns as updatable. Set to false to enable update only on string/boolean columns, which are not affected by link:https://issues.jboss.org/browse/TEIID-4854[TEIID-4854]. Defaults to true.
+* _allTypesUpdatable_- Set to true to mark all columns as updatable. Set to false to enable update only on string/boolean columns, which are not affected by link:https://issues.redhat.com/browse/TEIID-4854[TEIID-4854]. Defaults to true.
 
 {% if book.targetWildfly %}
 == JCA Resource Adapter

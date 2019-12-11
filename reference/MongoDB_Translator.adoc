@@ -444,7 +444,7 @@ Comment
 
 Here as you can see the Customer table contents are embedded along with other table’s data where they were referenced. This creates duplicated data where multiple of these embedded documents are managed automatically in the MongoDB translator.
 
-NOTE: All the SELECT, INSERT, DELETE operations that are generated against the tables with "teiid_mongo:EMBEDDABLE" property are atomic, except for UPDATES, as there can be multiple operations involved to update all the copies. Since there are no transactions in MongoDB, {{ book.productnameFull }} plans to provide automatic compensating transaction framework around this in future releases https://issues.jboss.org/browse/TEIID-2957[TEIID-2957].
+NOTE: All the SELECT, INSERT, DELETE operations that are generated against the tables with "teiid_mongo:EMBEDDABLE" property are atomic, except for UPDATES, as there can be multiple operations involved to update all the copies. Since there are no transactions in MongoDB, {{ book.productnameFull }} plans to provide automatic compensating transaction framework around this in future releases https://issues.redhat.com/browse/TEIID-2957[TEIID-2957].
 
 === MANY-2-ONE Mapping.
 

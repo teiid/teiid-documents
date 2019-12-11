@@ -7,5 +7,5 @@ The Informix Translator, known by the type name *_informix_*, is for use with an
 
 == Known Issues
 
-https://issues.jboss.org/browse/TEIID-3808[TEIID-3808] - The Informix driver handling of timezone information is inconsistent - even if the databaseTimezone translator property is set. Consider ensuring that the Informix server and the application server are in the same timezone.
+https://issues.redhat.com/browse/TEIID-3808[TEIID-3808] - The Informix driver handling of timezone information is inconsistent - even if the databaseTimezone translator property is set. Consider ensuring that the Informix server and the application server are in the same timezone.
 

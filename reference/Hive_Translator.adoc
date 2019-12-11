@@ -19,7 +19,7 @@ NOTE: The Hive importer does not have concept of catalog or source schema, nor d
 
 == Import Properties
 
-* _trimColumnNames_- For Hive 0.11.0 and later the the DESCRIBE command metadata is https://issues.jboss.org/browse/TEIID-2524[inappropriately returned with padding], set to true to strip trim white space from column names. Defaults to false.
+* _trimColumnNames_- For Hive 0.11.0 and later the the DESCRIBE command metadata is https://issues.redhat.com/browse/TEIID-2524[inappropriately returned with padding], set to true to strip trim white space from column names. Defaults to false.
 
 * _useDatabaseMetaData_- For Hive 0.13.0 and later the normal JDBC DatabaseMetaData facilities are sufficient to perform an import. Set to true to use the normal import logic with the option to import index information disabled. Defaults to false. When true, trimColumnNames has no effect.
 

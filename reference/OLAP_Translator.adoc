@@ -41,5 +41,5 @@ The invokeMdx procedure is the direct query procedure for the OLAP translator. I
 
 The resource adapter for this translator provided through data source in {{ book.asName }}, Refer to Admin Guide for "JDBC Data Sources" configuration section. Two sample xml files are provided for accessing OLAP servers in the teiid-examples section. One is Mondrian specific, when Mondrian server is deployed in the same {{ book.asName }} as {{ book.productnameFull }} (mondrian-ds.xml). To access any other OLAP servers using XMLA interface, the data source for them can be created using them example template olap-xmla-ds.xml
 
-NOTE: Due to a classloading change with Mondrian 3.6 and later, a workaround is needed to use a later driver - https://issues.jboss.org/browse/TEIID-4617[TEIID-4617] The olap translator module.xml under modules/system/layers/dv/org/jboss/teiid/translator/olap/main/ needs to have a dependency to the Mondrian driver module.
+NOTE: Due to a classloading change with Mondrian 3.6 and later, a workaround is needed to use a later driver - https://issues.redhat.com/browse/TEIID-4617[TEIID-4617] The olap translator module.xml under modules/system/layers/dv/org/jboss/teiid/translator/olap/main/ needs to have a dependency to the Mondrian driver module.
 {% endif %}

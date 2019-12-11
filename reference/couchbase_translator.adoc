@@ -22,7 +22,7 @@ Use the translator override mechanism to supply the following properties.
 |Name |Description |Default
 
 |UseDouble
-|Use double rather than allowing for more precise types, such as long, bigdecimal, and biginteger.  This affects both import and execution.  See https://issues.jboss.org/browse/TEIID-5077[the issue] that describes problems with Couchbase and precision loss.
+|Use double rather than allowing for more precise types, such as long, bigdecimal, and biginteger.  This affects both import and execution.  See https://issues.redhat.com/browse/TEIID-5077[the issue] that describes problems with Couchbase and precision loss.
 |false
 |===
 
