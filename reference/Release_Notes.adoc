@@ -270,6 +270,7 @@ The following components have been updated:
 === From 12.3
 
 * The infinispan-hotrod translator/resource adapter were updated to Infinispan 10.0.1.
+* Olingo was upgraded to 4.7
 
 === From 12.1
 
