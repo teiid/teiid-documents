@@ -27,19 +27,19 @@ All the properties that are defined on the RAR file are
 |n/a
 
 |UserName
-|If remote server is secured, this property used as username to login
+|If remote server is secured, this property is used as username to login
 |No
 |n/a
 
 |Password
-|If remote server is secured, this property used as password to login
+|If remote server is secured, this property is used as password to login
 |No
 |n/a
 
 |SaslMechanism
-|If remote server is secured, this property defines the type of security. Allowed values are "CRAM-MD5", "DIGEST-MD5", "PLAIN", "EXTERNAL". "EXTERNAL" is when certificate based security at use, all others use username/password.
+|"EXTERNAL" is when certificate based security at use, all others use username/password.
 |No
-|n/a
+|The default mechanism of Hotrod.
 
 |AuthenticationRealm
 |Realm to use for authentication.
@@ -68,6 +68,21 @@ All the properties that are defined on the RAR file are
 
 |KeyStorePassword
 |When "EXTERNAL" SaslMechnism used, use this property to define keystore  password. Alternatively JAVA system property "javax.net.ssl.keyStorePassword" can also be defined instead.
+|No
+|n/a
+
+|CacheName
+|The default cache name.
+|No
+|default
+
+|CacheTemplate
+|If a cache needs to be created the template name to use.
+|No
+|n/a
+
+|TransactionMode
+|The transaction mode expected for cache access.  Can be one of: FULL_XA, NON_DURABLE_XA, NON_XA
 |No
 |n/a
 
