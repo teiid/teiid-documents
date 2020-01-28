@@ -25,6 +25,7 @@ Teiid {{ book.fullVersionNumber }} adds performance features, microservice enabl
 
 === from 12.3
 
+* https://issues.jboss.org/browse/TEIID-5881[TEIID-5881] The Infinispan cache aliasing feature has been deprecated.  If you are using infinipsan for materialization, you'll need to switch to a different load strategy.
 * https://issues.jboss.org/browse/TEIID-5819[TEIID-5819] References to any Teiid *-swagger artifact should use openapi in both the artifact name and group instead.
 * https://issues.jboss.org/browse/TEIID-1323[TEIID-1323] The protected method SQLConverstion.generateSqlForStoredProcedure is now expected to append directly to the working buffer.
 * https://issues.jboss.org/browse/TEIID-5565[TEIID-5565] The Teiid Java client now requires Java 8 and above.
