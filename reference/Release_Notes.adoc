@@ -7,8 +7,7 @@ Teiid {{ book.fullVersionNumber }} adds performance features, microservice enabl
 
 == Highlights
 
-* https://issues.redhat.com/browse/TEIID-3522[TEIID-3522] added support for some OData aggregation via the apply option - including top level aggregation (aggregate), grouping (groupby), and filtering (filter).  
-* https://issues.redhat.com/browse/TEIID-5492[TEIID-5492] added support for an EXPLAIN statement.
+* https://issues.redhat.com/browse/TEIID-5874 added support for transactional Infinispan/JDG access.  Support for cache aliasing was removed.
 
 == Compatibility Issues
 
