@@ -176,7 +176,7 @@ It will only effect the random values returned by the {{ book.productnameFull }}
 
 == Parsing Numeric Datatypes from Strings
 
-{{ book.productnameFull }} offers a set of functions you can use to parse numbers from strings. For each string, you need to provide the formatting of the string. These functions use the convention established by the java.text.DecimalFormat class to define the formats you can use with these functions. You can learn more about how this class defines numeric string formats by visiting the Sun Java Web site at the following {{ book.javaVersionUrl }}/docs/api/java/text/DecimalFormat.html[URL for Sun Java].
+{{ book.productnameFull }} offers a set of functions you can use to parse numbers from strings. For each string, you need to provide the formatting of the string. These functions use the convention established by the java.text.DecimalFormat class to define the formats you can use with these functions. You can learn more about how this class defines numeric string formats by visiting the {{ book.javaVersionUrl }}/docs/api/java.base/java/text/DecimalFormat.html[Java Documentation Web site].
 
 For example, you could use these function calls, with the formatting string that adheres to the java.text.DecimalFormat convention, to parse strings and return the datatype you need:
 
@@ -211,7 +211,7 @@ For example, you could use these function calls, with the formatting string that
 
 == Formatting Numeric Datatypes as Strings
 
-{{ book.productnameFull }} offers a set of functions you can use to convert numeric datatypes into strings. For each string, you need to provide the formatting. These functions use the convention established within the java.text.DecimalFormat class to define the formats you can use with these functions. You can learn more about how this class defines numeric string formats by visiting the Sun Java Web site at the following {{ book.javaVersionUrl }}/docs/api/java/text/DecimalFormat.html[URL for Sun Java] .
+{{ book.productnameFull }} offers a set of functions you can use to convert numeric datatypes into strings. For each string, you need to provide the formatting. These functions use the convention established within the java.text.DecimalFormat class to define the formats you can use with these functions. You can learn more about how this class defines numeric string formats by visiting the {{ book.javaVersionUrl }}/docs/api/java.base/java/text/DecimalFormat.html[Java Documentation Web site].
 
 For example, you could use these function calls, with the formatting string that adheres to the java.text.DecimalFormat convention, to format the numeric datatypes into strings:
 

@@ -34,6 +34,7 @@ Once the pull request is committed the published content will be updated automat
 You may need test locally, to make sure the changes are correct, to do this install https://github.com/GitbookIO/gitbook[gitbook], then execute the following commands from the checkout location:
 
 ----
+$ cd wildfly
 $ gitbook install
 $ gitbook serve -w
 ----
