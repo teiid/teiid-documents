@@ -8,7 +8,7 @@ Java client applications connecting to a {{ book.productnameFull }} Server will 
 {% if book.targetWildfly %}
 Support for {{ book.productnameFull }} clients and servers older than version 8 has been dropped from {{ book.productnameFull }} 10.2 and later.
 
-Before you can connect to the {{ book.productnameFull }} Server using the {{ book.productnameFull }} JDBC API, please do following tasks first.
+Before you can connect to the {{ book.productnameFull }} Server using the {{ book.productnameFull }} JDBC API, please do following tasks.
 
 1.  Install the {{ book.productnameFull }} Server. See the "Admin Guide" for instructions.
 2.  Build a Virtual Database (VDB). Check the "Reference Guide" for instructions on how to build a VDB. If you do not know what VDB is, then start with this http://www.jboss.org/teiid/basics/virtualdatabases.html[document].

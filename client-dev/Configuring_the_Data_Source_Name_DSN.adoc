@@ -52,7 +52,7 @@ make install
 
 Check http://www.unixodbc.org/[unixODBC] website site for more information, if you run into any issues during the installation.
 
-Now, to o verify that PostgreSQL driver installed correctly from earlier step, execute the following command
+Now, to verify that PostgreSQL driver installed correctly from earlier step, execute the following command
 
 ----
 odbcinst -q -d
