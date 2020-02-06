@@ -3,7 +3,7 @@
 
 Date and time functions return or operate on dates, times, or timestamps.
 
-Parse and format Date/Time functions use the convention established within the java.text.SimpleDateFormat class to define the formats you can use with these functions. You can learn more about how this class defines formats by visiting the {{ book.javaVersionUrl }}/docs/api/java/text/SimpleDateFormat.html[Javadocs for SimpleDateFormat].
+Parse and format Date/Time functions use the convention established within the java.text.SimpleDateFormat class to define the formats you can use with these functions. You can learn more about how this class defines formats by visiting the {{ book.javaVersionUrl }}/docs/api/java.base/java/text/SimpleDateFormat.html[Javadocs for SimpleDateFormat].
 
 |===
 |Function |Definition |Datatype Constraint
@@ -224,7 +224,7 @@ of the integer range from a pushed down timestampdiff.
 
 == Parsing Date Datatypes from Strings
 
-{{ book.productnameFull }} does not implicitly convert strings that contain dates presented in different formats, such as '19970101' and '31/1/1996' to date-related datatypes. You can, however, use the parseDate, parseTime, and parseTimestamp functions, described in the next section, to explicitly convert strings with a different format to the appropriate datatype. These functions use the convention established within the java.text.SimpleDateFormat class to define the formats you can use with these functions. You can learn more about how this class defines date and time string formats by visiting the http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html[Javadocs for SimpleDateFormat]. Note that the format strings will be locale specific to your Java default locale.
+{{ book.productnameFull }} does not implicitly convert strings that contain dates presented in different formats, such as '19970101' and '31/1/1996' to date-related datatypes. You can, however, use the parseDate, parseTime, and parseTimestamp functions, described in the next section, to explicitly convert strings with a different format to the appropriate datatype. These functions use the convention established within the java.text.SimpleDateFormat class to define the formats you can use with these functions. You can learn more about how this class defines date and time string formats by visiting the {{ book.javaVersionUrl }}/docs/api/java.base/java/text/SimpleDateFormat.html[Javadocs for SimpleDateFormat]. Note that the format strings will be locale specific to your Java default locale.
 
 For example, you could use these function calls, with the formatting string that adheres to the java.text.SimpleDateFormat convention, to parse strings and return the datatype you need:
 
