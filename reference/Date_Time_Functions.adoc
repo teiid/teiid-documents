@@ -49,7 +49,7 @@ Parse and format Date/Time functions use the convention established within the j
 |x in {date, timestamp}, returns double
 
 |EXTRACT(YEAR\|MONTH\|DAY
-\|HOUR\|MINUTE\|SECOND\|QUARTER\EPOCH FROM x)
+\|HOUR\|MINUTE\|SECOND\|QUARTER\|EPOCH FROM x)
 |Return the given field value from the date value x. Produces the same result as the associated YEAR, MONTH, DAYOFMONTH, HOUR, MINUTE, SECOND, QUARTER, EPOCH functions. In {{ book.productnameFull }} all date values are in the timezone of the server.
 |x in {date, time, timestamp}, epoch returns double, the others return integer
 
@@ -65,11 +65,11 @@ Parse and format Date/Time functions use the convention established within the j
 |Format timestamp x using format y
 |x is timestamp, y is string, returns string
 
-|FROM_MILLIS (millis)
+|FROM_MILLIS(millis)
 |Return the Timestamp value for the given milliseconds  
 |long UTC timestamp in milliseconds
 
-|FROM_UNIXTIME (unix_timestamp)
+|FROM_UNIXTIME(unix_timestamp)
 |Return the Unix timestamp as a String value with the default format of yyyy/mm/dd hh:mm:ss
 |long Unix timestamp (in seconds)
 
@@ -81,11 +81,11 @@ Parse and format Date/Time functions use the convention established within the j
 |Return minute
 |x in {time, timestamp}, returns integer
 
-|MODIFYTIMEZONE (timestamp, startTimeZone, endTimeZone)
+|MODIFYTIMEZONE(timestamp, startTimeZone, endTimeZone)
 |Returns a timestamp based upon the incoming timestamp adjusted for the differential between the start and end time zones.  i.e. if the server is in GMT-6, then modifytimezone({ts '2006-01-10 04:00:00.0'},'GMT-7', 'GMT-8') will return the timestamp {ts '2006-01-10 05:00:00.0'} as read in GMT-6.  The value has been adjusted 1 hour ahead to compensate for the difference between GMT-7 and GMT-8.
 |startTimeZone and endTimeZone are strings, returns a timestamp
 
-|MODIFYTIMEZONE (timestamp, endTimeZone)
+|MODIFYTIMEZONE(timestamp, endTimeZone)
 |Return a timestamp in the same manner as modifytimezone(timestamp, startTimeZone, endTimeZone), but will assume that the startTimeZone is the same as the server process.
 |Timestamp is a timestamp; endTimeZone is a string, returns a timestamp
 
