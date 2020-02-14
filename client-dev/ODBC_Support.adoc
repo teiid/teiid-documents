@@ -1,4 +1,5 @@
 
+[id="client-dev-ODBC_Support-ODBC-Support"]
 = ODBC Support
 
 Open Database Connectivity (ODBC) is a standard database access method developed by the SQL Access group in 1992. ODBC, just like JDBC in Java, allows consistent client access regardless of which database management system (DBMS) is handling the data. ODBC uses a driver to translate the application’s data queries into commands that the DBMS understands. For this to work, both the application and the DBMS must be ODBC-compliant – that is, the application must be capable of issuing ODBC commands and the DBMS must be capable of responding to them.
@@ -18,6 +19,7 @@ Postgres ODBC drivers 9.5 and later do not require this special property as the 
 
 Compatibility was last ensured with the 9.6 Postgres ODBC driver.  You are encouraged to use later client versions when needed and report any issues to the community.
 
+[id="client-dev-ODBC_Support-Known-Limitations"]
 == Known Limitations:
 
 * Updateable cursors are not supported. You will receive parsing errors containing the pg system column ctid if this feature is not disabled.
@@ -25,6 +27,7 @@ Compatibility was last ensured with the 9.6 Postgres ODBC driver.  You are encou
 * The {{ book.productnameFull }} object type will map to the PostgreSQL UNKNOWN type, which cannot be serialized by the ODBC layer. Cast/Convert should be used to provide a type hint when appropriate - for example teiid_session_set returns an object value. "SELECT teiid_session_set('x', 'y')" will fail, but "SELECT cast(teiid_session_set('x', 'y') as string)" will succeed.
 * Multi-dimensional arrays are not supported.
 
+[id="client-dev-ODBC_Support-Installation"]
 == Installation
 
 Before an application can use ODBC, you must first install the ODBC
@@ -36,6 +39,7 @@ your {{ book.productnameFull }} VDB.
 For a windows client, see the link:Installing_the_ODBC_Driver_Client.adoc[Windows Installation Guide].
 {% endif %}
 
+[id="client-dev-ODBC_Support-Configuration"]
 == Configuration
 
 WARNING: By default {{ book.productnameFull }} supports plain text password authentication for pg/ODBC. If the client/server are not configured to use SSL or GSS authentication, the password will be sent in plain text over the network. 
@@ -50,6 +54,7 @@ For a windows client, see the link:Configuring_the_Data_Source_Name_DSN.adoc[Con
 
 See also link:DSN_Less_Connection.adoc[DSN Less Connection].
 
+[id="client-dev-ODBC_Support-Connection-Settings"]
 === Connection Settings
 
 All the available pg driver connection options with their descriptions that can be used are defined here https://odbc.postgresql.org/docs/config.html. When using these properties on the connection string, their property names are defined here https://odbc.postgresql.org/docs/config-opt.html.
@@ -79,6 +84,7 @@ Settings that manipulate datatypes, metadata, or optimizations such as "Show Sys
 
 Any other setting that does have a client side affect, such as "LF <-> CR/LF conversion", may be used if desired but there is currently no server side usage of the setting.
 
+[id="client-dev-ODBC_Support--bookproductnameFull-Connection-Settings"]
 ==== {{ book.productnameFull }} Connection Settings
 
 Most {{ book.productnameFull }} specific connection properties do not map to ODBC client connection settings. If you find yourself in this situation and cannot use post connection SET statements, then the VDB itself may take default link:ODBC_Connection_Properties.adoc[connection properties] for ODBC. Use VDB properties of the form connection.XXX to control things like partial results mode, result set caching, etc.

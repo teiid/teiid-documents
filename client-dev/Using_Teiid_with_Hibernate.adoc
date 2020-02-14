@@ -1,6 +1,8 @@
 
+[id="client-dev-Using_Teiid_with_Hibernate-Using-bookproductnameFull-with-Hibernate"]
 = Using {{ book.productnameFull }} with Hibernate
 
+[id="client-dev-Using_Teiid_with_Hibernate-Configuration"]
 == Configuration
 
 For the most part, interacting with {{ book.productnameFull }} VDBs (Virtual Databases) through Hibernate is no different from working with any other type of data source.  First, depending on where your Hibernate application will reside, either in the same VM as the {{ book.productnameFull }} Runtime or on a separate VM, will determine which jar’s are used. 
@@ -69,8 +71,10 @@ Note also that since your VDBs will likely contain multiple source and view mode
 </class>
 ----
 
+[id="client-dev-Using_Teiid_with_Hibernate-Identifier-Generation"]
 == Identifier Generation
 
+[id="client-dev-Using_Teiid_with_Hibernate-SEQUENCE-Based-Identity-Generation"]
 === SEQUENCE Based Identity Generation
 If you want use SEQUENCE based Identity generation with {{ book.productnameFull }}, this is supported through the {{ book.productnameFull }}Dialect. When you define a JPA Entity
 
@@ -113,6 +117,7 @@ OPTIONS ("teiid_rel:native-query" 'SELECT customer_seq.NEXTVAL FROM dual', DETER
 
 Then when the Customer entity is inserted, the sequence is used.
 
+[id="client-dev-Using_Teiid_with_Hibernate-TABLE-Based-Idenity-Generation"]
 === TABLE Based Idenity Generation
 If you want use TABLE based Identity generation with {{ book.productnameFull }}, this is supported through the {{ book.productnameFull }}Dialect. When you define a JPA Entity like
 
@@ -152,9 +157,11 @@ INSERT INTO IDGENERATOR(IDKEY, IDVALUE) VALUES ('customer', 100);
 
 such that the IDKEY matches and IDVALUE has a initializer value.
 
+[id="client-dev-Using_Teiid_with_Hibernate-IDENTITY-Based-identity-generation"]
 === IDENTITY Based identity generation
 * GUID and Identity (using generated key retrieval) identifier generation strategy are directly supported.
 
+[id="client-dev-Using_Teiid_with_Hibernate-Limitations"]
 == Limitations
 
 * Many Hibernate use cases assume a data source has the ability (with proper user permissions) to process Data Definition Language (DDL) statements like CREATE TABLE and DROP TABLE as well as Data Manipulation Language (DML) statements like SELECT, UPDATE, INSERT and DELETE. {{ book.productnameFull }} can handle a broad range of DML, but does not directly support DDL against a particular source.

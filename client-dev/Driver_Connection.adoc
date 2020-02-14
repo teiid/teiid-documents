@@ -1,4 +1,5 @@
 
+[id="client-dev-Driver_Connection-Driver-Connection"]
 = Driver Connection
 
 Use *org.teiid.jdbc.TeiidDriver* as the driver class.
@@ -25,6 +26,7 @@ URL Components
 NOTE: host and port may be a comma separated list to specify link:Using_Multiple_Hosts.adoc[multiple hosts].
 {% endif %}
 
+[id="client-dev-Driver_Connection-Local-Connections"]
 == Local Connections
 
 To make a in-VM connection, omit the protocol and host/port: jdbc:teiid:vdb-name;props
@@ -33,6 +35,7 @@ To make a in-VM connection, omit the protocol and host/port: jdbc:teiid:vdb-name
 For local WildFly deployments it's preferred to configure the link:WildFly_DataSource.adoc[DataSource] as an in-VM rather than socket based connection.
 {% endif %}
 
+[id="client-dev-Driver_Connection-URL-Connection-Properties"]
 == URL Connection Properties
 
 The following table shows all the supported connection properties that can used with {{ book.productnameFull }} JDBC Driver URL connection string, or on the {{ book.productnameFull }} JDBC Data Source class.

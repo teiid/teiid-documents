@@ -1,4 +1,5 @@
 
+[id="client-dev-Connecting_to_a_Teiid_Server-Connecting-to-a-bookproductnameFull-Server"]
 = Connecting to a {{ book.productnameFull }} Server
 
 The {{ book.productnameFull }} JDBC API provides Java Database Connectivity (JDBC) access to a Virtual Database (VDB) deployed on {{ book.productnameFull }}. The {{ book.productnameFull }} JDBC API is compatible with the JDBC 4.0 specification; however, it does not fully support all methods. Advanced features, such as updatable result sets or SQL3 data types, are not supported.
@@ -37,6 +38,7 @@ Important classes in the client JAR:
 
 Once you have established a connection with the {{ book.productnameFull }} Server, you can use standard JDBC API classes to interrogate metadata and execute queries.
 
+[id="client-dev-Connecting_to_a_Teiid_Server-OpenTracing-Support"]
 == OpenTracing Support
 
 http://opentracing.io/[OpenTracing] support is optional for the client driver.  For remote connections to propagate the span the driver must have the appropriate OpenTracing jars in its classpath.  This can be done via a maven dependency:

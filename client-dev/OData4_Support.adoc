@@ -1,10 +1,12 @@
 
+[id="client-dev-OData4_Support-OData-Version-40-Support"]
 = OData Version 4.0 Support
 :toc: manual
 :toc-placement: preamble
 
 {{ book.productnameFull }} strives to be compliant with the OData specification.  The rest of this chapter highlight some specifics of OData and {{ book.productnameFull }}'s support, but you should also consult http://www.odata.org/documentation/[the specification].
 
+[id="client-dev-OData4_Support-How-to-Access-the-data"]
 == How to Access the data?
 
 For example, if you have a vdb by name _northwind_ deployed that has a _customers_ table in a _NW_ model, then you can access that table with an HTTP GET via the URL:
@@ -29,6 +31,7 @@ NOTE: Use correct case (upper or lower) in the resource path.  Unlike SQL, the n
 
 The returned results from OData query can be in Atom/AtomPub XML or JSON format. JSON results are returned by default.
 
+[id="client-dev-OData4_Support-Query-Basics"]
 == Query Basics
 
 Users can submit predicates with along their query to filter the results:
@@ -79,6 +82,7 @@ SELECT o.* FROM NW.orders o join NW.customers c on o.customer_id = c.id where c.
 
 NOTE: *More Comprehensive Documentation about ODATA* - For detailed protocol access you can read the specification at http://odata.org[http://odata.org]. You can also read this very useful web resource http://msdn.microsoft.com/en-us/library/ff478141.aspx[for an example] of accessing an OData server.
 
+[id="client-dev-OData4_Support-How-to-execute-a-stored-procedure"]
 === How to execute a stored procedure?
 Odata allows you to call your exposed stored procedure methods via odata.
 
@@ -86,6 +90,7 @@ Odata allows you to call your exposed stored procedure methods via odata.
 http://localhost:8080/{{ book.odataContext }}/getcustomersearch(id=120,firstname='micheal')
 ----
 
+[id="client-dev-OData4_Support-Not-seeing-all-the-rows"]
 === Not seeing all the rows?
 
 See the link:#_configuration[configuration section] below for more details. Generally batching is being utilized, which tooling should understand automatically, and additional queries with a $skiptoken query option specified are needed:
@@ -95,6 +100,7 @@ See the link:#_configuration[configuration section] below for more details. Gene
 http://localhost:8080/{{ book.odataContext }}/customers?$skiptoken=xxx
 ----
 
+[id="client-dev-OData4_Support-EntitySet-Not-Found-error"]
 === "EntitySet Not Found" error?
 
 When you issue the above query are you seeing a message similar to below?
@@ -108,6 +114,7 @@ Then, it means that either you supplied the model-name/table-name combination wr
 
 It is possible that the entity is not part of the link:#_odata_metadata[metadata], such as when a table does not have any PRIMARY KEY or UNIQUE KEY(s).
 
+[id="client-dev-OData4_Support-How-to-update-your-data"]
 == How to update your data?
 
 Using the OData protocol it is possible to perform CREATE/UPDATE/DELETE operations along with READ operations shown above. These operations use different HTTP methods.
@@ -161,6 +168,7 @@ Accept: application/json
 ----
 
 {% if book.targetWildfly %}
+[id="client-dev-OData4_Support-Security"]
 == Security
 
 By default OData access is secured using HTTPBasic authentication. The user will be authenticated against {{ book.productnameFull }}’s default security domain "teiid-security".
@@ -170,6 +178,7 @@ However, if you wish to change the security domain use a deployment-overlay to o
 OData WAR can also support Kerberos, SAML and OAuth2 authentications, for configuring the these security schemes please see link:../security/Security_Guide.adoc[Security Guide]
 {% endif %}
 
+[id="client-dev-OData4_Support-Configuration"]
 == Configuration
 
 {% if book.targetSpring %}
@@ -245,6 +254,7 @@ deployment-overlay add --name=myOverlay --content=/WEB-INF/web.xml=/modified/web
 
 {{ book.productnameFull }} OData server implements cursoring logic when the result rows exceed the configured batch size. On every request, only _batch-size_ number of rows are returned. Each such request is considered an active cursor, with a specified amount of idle time specified by _skip-token-cache-time_. After the cursor is timed out, the cursor will be closed and remaining results will be cleaned up, and will no longer be available for further queries. Since there is no session based tracking of these cursors, if the request for skiptoken comes after the expired time, the original query will be executed again and tries to reposition the cursor to relative absolute position, however the results are not guaranteed to be same as the underlying sources may have been updated with new information meanwhile.
 
+[id="client-dev-OData4_Support-Limitations"]
 == Limitations
 
 The following feature limitations currently apply.
@@ -254,6 +264,7 @@ The following feature limitations currently apply.
 * data-aggregation extension to specification is not supported.
 * $it usage is limited to only primitive collection properties
 
+[id="client-dev-OData4_Support-Client-Tools-for-Access"]
 == Client Tools for Access
 
 OData access is really where the user comes in, depending upon your programming model and needs there are various ways you write your access layer into OData. The following are some suggestions:
@@ -266,6 +277,7 @@ OData access is really where the user comes in, depending upon your programming 
 
 For latest information other frameworks and tools available please see http://www.odata.org/ecosystem/
 
+[id="client-dev-OData4_Support-OData-Metadata-How-bookproductnameFull-interprets-the-relational-schema-into-ODatas-metadata"]
 == OData Metadata (How {{ book.productnameFull }} interprets the relational schema into OData's $metadata)
 
 OData defines its schema using Conceptual Schema Definition Language (CSDL). A VDB in an ACTIVE state in {{ book.productnameFull }} exposes its visible metadata in CSDL format. For example if you want retrieve metadata for your vdb, you need to issue a request like:
@@ -342,6 +354,7 @@ Geography and Geometry will be mapped to the corresponding Edm.GeometryXXX and E
 
 Where possible array types will be mapped to a collection type.  However multidimensional arrays are not supported.  Also array/collection values cannot be used as parameters nor in comparisons.
 
+[id="client-dev-OData4_Support-Functions-And-Actions"]
 === Functions And Actions
 
 The mapping of entities and their properties is relatively straight-forward.  The mapping of {{ book.productnameFull }} procedures to OData Functions and Actions is more involved.  Virtual procedures, source procedure, and virtual functions defined by DDL (not a Java class) are all eligible to be mapped.  Source functions or virtual functions defined by a Java class are currently not mapped to corresponding OData constructs - please log an issue if you need that functionality.  OData does not have an out parameter concept, thus OUT parameters are ignored, and INOUT parameters are treated only as IN.  A result set is mapped to a complex type collection result. An array result will be mapped to a simple type collection.
@@ -360,6 +373,7 @@ Currently only unbounded Functions and Actions are supported.
 
 You should always consult the $metadata about Functions and Actions to validate how the procedures/functions were mapped.
 
+[id="client-dev-OData4_Support-OpenAPI-Metadata"]
 == OpenAPI Metadata
 
 An https://issues.redhat.com/browse/TEIID-5555[experimental feature] is available to automatically provide a Swagger 2.0 / https://www.openapis.org/[OpenAPI] metadata via [swagger|openapi].json rather than $metadata.

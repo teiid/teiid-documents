@@ -1,7 +1,9 @@
+[id="client-dev-GeoServer_Integration-GeoServer-Integration"]
 = GeoServer Integration
 
 link:http://geoserver.org/[GeoServer] is an open source server for geospatial data.  It can be integrated with {{ book.productnameFull }} to serve geospatial data from a variety of sources.
 
+[id="client-dev-GeoServer_Integration-Prerequisites"]
 == Prerequisites
 
 - Have GeoServer installed.  By default this will be in a different container than the {{ book.productnameFull }} WildFly instance, but it should be possible to
@@ -14,6 +16,7 @@ deploy into the same WildFly instance.  {{ book.productnameFull }} integration w
 geometry columns have the appropriate srid and coord_dimensions, which may require setting the {http://www.teiid.org/translator/spatial/2015}srid and {http://www.teiid.org/translator/spatial/2015}coord_dimension
 extension property on the geometry column. 
 
+[id="client-dev-GeoServer_Integration-GeoServer-Configuration"]
 == GeoServer Configuration
 
 This process will need to be repeated for each VDB schema you are exposing that contains geospatial data.
@@ -30,6 +33,7 @@ configure just this GeoServer connection pool.
 .. Note that the PostGIS function ST_Estimated_Extent is not supported by {{ book.productnameFull }} and the execution will be shown in the logs as an error
 when selecting to compute the bounding box from the data.  
 
+[id="client-dev-GeoServer_Integration-Additional-Considerations"]
 == Additional Considerations
 
 - If you are integrating a PostgreSQL source, you must not re-expose the geometry_columns or geography_columns tables.

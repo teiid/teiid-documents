@@ -1,4 +1,5 @@
 
+[id="client-dev-Client_Developers_Guide-Client-Developers-Guide"]
 = Client Developer's Guide
 
 This guide intended for developers that are trying to write 3rd party applications that interact with {{ book.productnameFull }}. This will guide you through connection mechanisms, extensions to JDBC API, ODBC, SSL etc. Before one can delve into {{ book.productnameFull }} it is very important to learn few basic constructs of {{ book.productnameFull }}, like what is VDB? what is Model? etc. For that please read the http://teiid.io/about/basics/[short introduction].

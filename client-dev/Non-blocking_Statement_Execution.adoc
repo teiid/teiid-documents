@@ -1,4 +1,5 @@
 
+[id="client-dev-Non-blocking_Statement_Execution-Non-blocking-Statement-Execution"]
 = Non-blocking Statement Execution
 
 JDBC query execution can indefinitely block the calling thread when a statement is executed or a resultset is being iterated. In some situations you may not wish to have your calling threads held in these blocked states. When using embedded/local connections, you may optionally use the `org.teiid.jdbc.TeiidStatement` and `org.teiid.jdbc.TeiidPreparedStatement` interfaces to execute queries with a callback `org.teiid.jdbc.StatementCallback` that will be notified of statement events, such as an available row, an exception, or completion. Your calling thread will be free to perform other work. The callback will be executed by an engine processing thread as needed. If your results processing is itself blocking and you want query processing to be concurrent with results processing, then your callback should implement onRow handling in a multi-threaded manner to allow the engine thread to continue.
@@ -31,6 +32,7 @@ The non-blocking logic is limited to statement execution only. Other JDBC operat
 
 If you access forward positions in the onRow method (calling next, isLast, isAfterLast, absolute), they may not yet be valid and a `org.teiid.jdbc.AsynchPositioningException` will be thrown. That exception is recoverable if caught or can be avoided by calling `{{ book.productnameFull }}ResultSet.available()` to determine if your desired positioning will be valid.
 
+[id="client-dev-Non-blocking_Statement_Execution-Continuous-Execution"]
 == Continuous Execution
 
 The `RequestOptions` object may be used to specify a special type of continuous asynch execution via the `continuous` or `setContinuous` methods. In continuous mode the statement will be continuously re-executed. This is intended for consuming real-time or other data streams processed through a SQL plan. A continuous query will only terminate on an error or when the statement is explicitly closed. The SQL for a continuous query is no different than any other statement. Care should be taken to ensure that retrievals from non-continuous sources is appropriately cached for reuse, such as by using materialized views or session scoped temp tables.

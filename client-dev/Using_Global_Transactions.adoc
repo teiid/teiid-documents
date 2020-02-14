@@ -1,4 +1,5 @@
 
+[id="client-dev-Using_Global_Transactions-Using-Global-Transactions"]
 = Using Global Transactions
 
 Global or client XA transactions are only applicable to JDBC clients. They all the client to coordinate multiple resources in a single transaction. To take advantage of XA transactions on the client side, use the `{{ book.productnameFull }}DataSource` (or {{ book.productnameFull }} Embedded with transaction detection enabled).

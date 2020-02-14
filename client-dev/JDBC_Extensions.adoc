@@ -1,4 +1,5 @@
 
+[id="client-dev-JDBC_Extensions-JDBC-Extensions"]
 = JDBC Extensions
 
 These are custom extensions to JDBC API from {{ book.productnameFull }} to support various features.
