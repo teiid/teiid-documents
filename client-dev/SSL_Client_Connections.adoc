@@ -1,4 +1,5 @@
 
+[id="client-dev-SSL_Client_Connections-Client-SSL-Settings"]
 == Client SSL Settings
 
 The following sections define the properties required for each SSL mode. Note that when connecting to {{ book.productnameFull }} Server with SSL enabled, you _MUST_ use the _"mms"_ protocol, instead of "mm" in the JDBC connection URL, for example
@@ -17,6 +18,7 @@ There are two different sets of properties that a client can configure to enable
 See also the link:../security/Teiid_Server_Transport_Security.adoc[{{ book.productnameFull }} Server Transport Security] chapter if you are responsible for configuring the server as well.
 {% endif %}
 
+[id="client-dev-SSL_Client_Connections-Option-1-Java-SSL-properties"]
 === Option 1: Java SSL properties
 
 These are standard Java defined system properties to configure the SSL under any JVM, {{ book.productnameFull }} is not unique in its use of SSL. Provide the following system properties to the client VM process.
@@ -39,6 +41,7 @@ These are standard Java defined system properties to configure the SSL under any
 -Djavax.net.ssl.keyStroreType=<keystore type> (optional)
 ----
 
+[id="client-dev-SSL_Client_Connections-Option-2-bookproductnameFull-Specific-Properties"]
 === Option 2: {{ book.productnameFull }} Specific Properties
 
 Use this option when the above "javax" based properties are already in use by the host process. For example if your client application is a Tomcat process that is configured for https protocol and the above Java based properties are already in use, and importing {{ book.productnameFull }}-specific certificate keys into those https certificate keystores is not allowed.

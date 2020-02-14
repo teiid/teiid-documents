@@ -1,4 +1,5 @@
 
+[id="client-dev-Additional_Socket_Client_Settings-Additional-Socket-Client-Settings"]
 = Additional Socket Client Settings
 
 A "teiid-client-settings.properties" file can be used to configure {{ book.productnameFull }} low level and link:SSL_Client_Connections.html[SSL] socket connection properties. Currently only a single properties file is expected per driver/classloader combination. A sample "teiid-client-settings.properties" file can be found inside the "teiid-<version>-client.jar" file at the root called "teiid-client-settings.orig.properties". To customize the settings, extract this file, make a copy, change the property values accordingly, and place this file in the client application’s classpath before the "teiid-<version>-client.jar" file. Typically clients will not need to adjust the non-SSL properties. For reference the properties are:

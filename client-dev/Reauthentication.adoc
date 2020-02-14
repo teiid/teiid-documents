@@ -1,4 +1,5 @@
 
+[id="client-dev-Reauthentication-Reauthentication"]
 = Reauthentication
 
 {{ book.productnameFull }} allows for connections to be reauthenticated so that the identity on the connection can be changed rather than creating a whole new connection.  If using JDBC, see the changeUser link:Connection_Extensions.adoc[Connection extension].  If using ODBC, or simply need a statement based mechanism for reauthentication, see also the link:SET_Statement.adoc[SET Statement] for SESSION AUTHORIZATION.

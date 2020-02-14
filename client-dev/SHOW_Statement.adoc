@@ -1,4 +1,5 @@
 
+[id="client-dev-SHOW_Statement-SHOW-Statement"]
 = SHOW Statement
 
 The SHOW statement can be used to see a varitey of information. The SHOW statement is not yet a language feature of {{ book.productnameFull }} and is handled only in the JDBC client.

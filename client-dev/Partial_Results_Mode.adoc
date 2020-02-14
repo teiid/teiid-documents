@@ -1,4 +1,5 @@
 
+[id="client-dev-Partial_Results_Mode-Partial-Results-Mode"]
 = Partial Results Mode
 
 The {{ book.productnameFull }} Server supports a "partial results" query mode. This mode changes the behavior of the query processor so the server returns results even when some data sources are unavailable.

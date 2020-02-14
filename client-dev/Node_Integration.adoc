@@ -1,7 +1,9 @@
+[id="client-dev-Node_Integration-Nodejs-Integration"]
 = Node.js Integration
 
 link:https://nodejs.org[Node.js] is an open source event driven runtime that can be integrated with {{ book.productnameFull }}.
 
+[id="client-dev-Node_Integration-Prerequisites"]
 == Prerequisites
 
 - Have Node.js installed.  The npm pagckage pg is also required.  Use "
@@ -9,6 +11,7 @@ link:https://nodejs.org[Node.js] is an open source event driven runtime that can
 - Your {{ book.productnameFull }} installation should already be setup for link:../admin/Socket_Transports.adoc[ODBC] access.  This allows the optional support of Node.js 
 for PostGIS/PostgreSQL to be used.
 
+[id="client-dev-Node_Integration-Usage"]
 == Usage
 
 For example if you have VDB called "northwind" deployed on your {{ book.productnameFull }} server, and it has table called "customers" and you are using default configuration such as

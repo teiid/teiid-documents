@@ -1,8 +1,10 @@
 
+[id="client-dev-Standalone_Application-Standalone-Application"]
 = Standalone Application
 
 To use either Driver or DataSource based connections, add the client JAR to your Java client application’s classpath. See the simple client example in the kit for a full Java sample of the following.
 
+[id="client-dev-Standalone_Application-Driver-Connection"]
 == Driver Connection
 
 Sample Code:
@@ -17,6 +19,7 @@ public class {{ book.productnameFull }}Client {
 }
 ----
 
+[id="client-dev-Standalone_Application-Datasource-Connection"]
 === Datasource Connection
 
 Sample Code:

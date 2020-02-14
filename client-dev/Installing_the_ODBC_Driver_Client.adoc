@@ -1,8 +1,10 @@
 
+[id="client-dev-Installing_the_ODBC_Driver_Client-Installing-the-ODBC-Driver-Client"]
 = Installing the ODBC Driver Client
 
 A PostgreSQL ODBC driver needed to make the ODBC connection to {{ book.productnameFull }} is _not_ bundled with the {{ book.productnameFull }} distribution. The appropriate driver needs be http://www.postgresql.org/ftp/odbc/versions/[downloaded] directly from the PostgreSQL web site. The _8.04.200_ version of the ODBC driver was extensively tested for compatibility.
 
+[id="client-dev-Installing_the_ODBC_Driver_Client-Microsoft-Windows"]
 == Microsoft Windows
 
 1.  Download at least the ODBC 8.4 driver from the http://ftp.postgresql.org/pub/odbc/versions/msi[PostgreSQL download site]. If you are looking for 64-bit Windows driver download the driver from http://code.google.com/p/visionmap/wiki/psqlODBC[here]. Later versions of the driver may be used the 9.0-9.5 clients have been used extensively by the {{ book.productnameFull }} community.  There are no active issues against 9.6 and later, but they have not yet seen as much use - if you encounter an issue, please create a JIRA.
@@ -34,6 +36,7 @@ image:images/winsetup5.png[winsetup5.png]
 
 Click "Finish" to complete.
 
+[id="client-dev-Installing_the_ODBC_Driver_Client-Other-nix-Platform-Installations"]
 == Other *nix Platform Installations
 
 For all other platforms other than Microsoft Windows, the ODBC driver needs built from the source files provided. Download the ODBC driver source files from http://wwwmaster.postgresql.org/download/mirrors-ftp/odbc/versions/src/psqlodbc-08.04.0200.tar.gz[the PostgreSQL download site]. Untar the files to a temporary location. For example: "~/tmp/pgodbc". Build and install the driver by running the commands below.

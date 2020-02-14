@@ -1,7 +1,9 @@
+[id="client-dev-ADONET_Integration-ADONet-Integration"]
 = ADO.Net Integration
 
 link:http://www.npgsql.org/[Npgsql] is an open source ADO.NET Data Provider for PostgreSQL.  It can be integrated with {{ book.productnameFull }} to provide access from programs written in C#, Visual Basic, F#.
 
+[id="client-dev-ADONET_Integration-Prerequisites"]
 == Prerequisites
 
 - Install the Npgsql using the .msi Windows installer.  {{ book.productnameFull }} integration was last tested with version 3.2.6. 
@@ -10,10 +12,12 @@ link:http://www.npgsql.org/[Npgsql] is an open source ADO.NET Data Provider for 
 
 - Have a VDB deployed.
 
+[id="client-dev-ADONET_Integration-Npgsql-Configuration"]
 == Npgsql Configuration
 
 See the link:http://www.npgsql.org/doc/connection-string-parameters.html[documentation] for supported connection parameters.  Not all configuration parameters have been tested for use with {{ book.productnameFull }}.
 
+[id="client-dev-ADONET_Integration-Known-Limitations"]
 == Known Limitations
 
 - link:https://issues.redhat.com/browse/TEIID-5220[TEIID-5220] prevents displaying the metadata of tables and views, but does not affect querying.  Certain tools, such as PowerBi, may have options to turn of the need to perform metadata introspection.

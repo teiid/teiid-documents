@@ -1,10 +1,13 @@
 
+[id="client-dev-Restrictions-Restrictions"]
 = Restrictions
 
+[id="client-dev-Restrictions-Application-Restrictions"]
 == Application Restrictions
 
 The use of global, local, and request level transactions are all mutually exclusive. Request level transactions only apply when not in a global or local transaction. Any attempt to mix global and local transactions concurrently will result in an exception.
 
+[id="client-dev-Restrictions-Enterprise-Information-System-EIS-Support"]
 == Enterprise Information System (EIS) Support
 
 The underlying data source that represent the EIS system and the EIS system itself must support XA transactions if they want to participate in distributed XA transaction through {{ book.productnameFull }}. If source system does not support the XA, then it can not fully participate in the distributed transaction. However, the source is still eligible to participate in data integration without the XA support.
