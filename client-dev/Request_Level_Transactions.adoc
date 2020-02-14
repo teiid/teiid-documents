@@ -1,4 +1,5 @@
 
+[id="client-dev-Request_Level_Transactions-Request-Level-Transactions"]
 = Request Level Transactions
 
 Request level transactions are used when the request is not in the scope of a global or local transaction, which implies "autoCommit" is "true". In a request level transaction, your application does not need to explicitly call commit or rollback, rather every command is assumed to be its own transaction that will automatically be committed or rolled back by the server.
@@ -13,6 +14,7 @@ You can set your transaction wrapping to one of the following modes:
 2.  _OFF_: This mode never automatically wraps a command in a transaction or check whether it needs to wrap a command. This mode can be dangerous as it will allow multiple source updates outside of a transaction without an error. This mode has best performance for applications that do not use updates or transactions.
 3.  _DETECT_: This mode assumes that the user does not know to execute multiple source updates in a transaction. The {{ book.productnameFull }} Server checks every command to see whether it is a multiple source update and wraps it in a transaction. If it is single source then uses the source level command transaction. You can set the transaction mode as a property when you establish the Connection or on a per-query basis using the execution properties. For more information on execution properties, see the section link:Execution_Properties.adoc[Execution Properties]
 
+[id="client-dev-Request_Level_Transactions-Multiple-Insert-Batches"]
 == Multiple Insert Batches
 
 When issuing an INSERT with a query expression (or the deprecated SELECT INTO), multiple insert batches handled by separate source INSERTS may be processed by the {{ book.productnameFull }} server. Care should be taken to ensure that targeted sources support XA or that compensating actions are taken in the event of a failure.

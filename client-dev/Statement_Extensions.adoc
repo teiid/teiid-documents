@@ -1,4 +1,5 @@
 
+[id="client-dev-Statement_Extensions-Statement-Extensions"]
 = Statement Extensions
 
 The {{ book.productnameFull }} statement extension interface, `org.teiid.jdbc.TeiidStatement`, provides functionality beyond the JDBC standard. To use the extension interface, simply cast or unwap the statement returned by the Connection. The following methods are provided on the extension interface:

@@ -1,8 +1,10 @@
 
+[id="client-dev-Local_Transactions-Local-Transactions"]
 = Local Transactions
 
 A Local transaction from a client perspective affects only a single resource, but can coordinate multiple statements.
 
+[id="client-dev-Local_Transactions-JDBC-Specific"]
 == JDBC Specific
 
 The `Connection` class uses the `autoCommit` flag to explicitly control local transactions. By default, autoCommit is set to `true`, which indicates request level or implicit transaction control. 
@@ -45,6 +47,7 @@ Any of the following operations will end a local transaction:
 3.  Connection.rollback()
 4.  A transaction will be rolled back automatically if it times out.
 
+[id="client-dev-Local_Transactions-Turning-Off-JDBC-Local-Transaction-Controls"]
 === Turning Off JDBC Local Transaction Controls
 
 In some cases, tools or frameworks above {{ book.productnameFull }} will call setAutoCommit(false), commit() and rollback() even when all access is read-only and no transactions are necessary. In the scope of a local transaction {{ book.productnameFull }} will start and attempt to commit an XA transaction, possibly complicating configuration or causing performance degradation.
@@ -58,6 +61,7 @@ disableLocalTxn=true
 
 TIP: Turning off local transactions can be dangerous and can result in inconsistent results (if reading data) or inconsistent data in data stores (if writing data). For safety, this mode should be used only if you are certain that the calling application does not need local transactions.
 
+[id="client-dev-Local_Transactions-Transaction-Statements"]
 == Transaction Statements
 
 Transaction control statements, which are also applicable to ODBC clients, explicitly control the local transaction boundaries. The relevant statements are:

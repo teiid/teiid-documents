@@ -1,4 +1,5 @@
 
+[id="client-dev-SET_Statement-SET-Statement"]
 = SET Statement
 
 Execution properties may also be set on the connection by using the SET statement. The SET statement is not yet a language feature of {{ book.productnameFull }} and is handled only in the JDBC client.  Since a JDBC clients backs the pg/ODBC transport, it will work there as well.

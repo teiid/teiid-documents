@@ -1,4 +1,5 @@
 
+[id="client-dev-Unsupported_JDBC_Methods-Unsupported-JDBC-Methods"]
 = Unsupported JDBC Methods
 
 Based upon the JDBC in JDK 1.6, this appendix details only those JDBC methods that {{ book.productnameFull }} does not support. Unless specified below, {{ book.productnameFull }} supports all other JDBC Methods.

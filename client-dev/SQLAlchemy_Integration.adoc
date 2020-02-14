@@ -1,7 +1,9 @@
+[id="client-dev-SQLAlchemy_Integration-SQLAlchemy-Integration"]
 = SQLAlchemy Integration
 
 link:http://www.sqlalchemy.org/[SQLAlchemy] is an open source SQL toolkit and ORM for Python.  
 
+[id="client-dev-SQLAlchemy_Integration-Prerequisites"]
 == Prerequisites
 
 - Have SQLAlchemy installed installed.  {{ book.productnameFull }} integration was last tested with version 1.1.6. 
@@ -9,6 +11,7 @@ link:http://www.sqlalchemy.org/[SQLAlchemy] is an open source SQL toolkit and OR
 - Your {{ book.productnameFull }} installation should already be setup for link:../admin/Socket_Transports.adoc[ODBC] access.  This allows the built-in support of SQLAlchemy 
 for PostgreSQL to be used.
 
+[id="client-dev-SQLAlchemy_Integration-Usage"]
 == Usage
 
 You should be able to use a SQLAlchemy engine for querying.  Reflective import of most table metadata is also supported.
@@ -27,14 +30,17 @@ meta = MetaData()
 test = Table('public.test', meta, autoload=True, autoload_with=engine,postgresql_ignore_search_path=True)
 ----
 
+[id="client-dev-SQLAlchemy_Integration-Limitations"]
 == Limitations
 
 Only a subset of the PostgreSQL dialect is supported.  The primary intent is to allow querying through {{ book.productnameFull }}.  If there are additional features that are needed, please log an enhancement request.
 
 Column metadata will not be available for tables that contain the period '.' character.  Depending upon your needs, you may need import settings that use simple {{ book.productnameFull }} names and not source schema qualified names.
 
+[id="client-dev-SQLAlchemy_Integration-Application-Support"]
 == Application Support
 
+[id="client-dev-SQLAlchemy_Integration-Superset"]
 === Superset
 
 link:http://airbnb.io/superset/[Superset] is an open source data visualization and dashboard builder.  It uses SQLAlchemy to access relational sources.  

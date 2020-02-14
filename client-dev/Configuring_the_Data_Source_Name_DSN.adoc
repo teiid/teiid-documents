@@ -1,8 +1,10 @@
 
+[id="client-dev-Configuring_the_Data_Source_Name_DSN-Configuring-the-Data-Source-Name-DSN"]
 = Configuring the Data Source Name (DSN)
 
 See link:ODBC_Support.adoc#_connection_settings[{{ book.productnameFull }} supported options] for a description of the client configuration.
 
+[id="client-dev-Configuring_the_Data_Source_Name_DSN-Windows-Installation"]
 == Windows Installation
 
 Once you have installed the ODBC Driver Client software on your workstation, you have to configure it to connect to a {{ book.productnameFull }} Runtime. Note that the following instructions are specific to the Microsoft Windows Platform.
@@ -40,6 +42,7 @@ image:images/dsnsetup3.png[dsnsetup3.png]
 
 9.  Click "save" and you can optionally click "test" to validate your connection if the {{ book.productnameFull }} is running. You have configured a {{ book.productnameFull }}’s virtual database as a data source for your ODBC applications. Now you can use applications such as Excel, Access to query the data in the VDB
 
+[id="client-dev-Configuring_the_Data_Source_Name_DSN-Other-nix-Platform-Installations"]
 == Other *nix Platform Installations
 
 Before you can access {{ book.productnameFull }} using ODBC on any *nix platforms, you need to either install a ODBC driver manager or verify that one already exists. As the ODBC Driver manager {{ book.productnameFull }} recommends http://www.unixodbc.org/[unixODBC]. If you are working with RedHat Linux or Fedora you can check the graphical "yum" installer to search, find and install unixODBC. Otherwise you can http://www.unixodbc.org/unixODBC-2.3.0.tar.gz[download] the unixODBC manager here. To install, simply untar the contents of the file to a temporary location and execute the following commands as super user.

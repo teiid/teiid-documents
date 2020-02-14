@@ -1,14 +1,17 @@
 
+[id="client-dev-Using_Multiple_Hosts-Using-Multiple-Hosts"]
 = Using Multiple Hosts
 
 A group of {{ book.productnameFull }} Servers in the same {{ book.asName }} cluster may be connected using failover and load-balancing features.
 
+[id="client-dev-Using_Multiple_Hosts-External-HA-Load-Balancers"]
 == External HA / Load Balancers
 
 You may choose to use an external tcp load balancer, such as https://www.haproxy.org/[haproxy]. The {{ book.productnameFull }} driver/DataSource should then typically be configured to just use the single host/port of your load balancer.
 
 Even if you configure the load balancer to redirect when there is a failed host, that will not maintain the {{ book.productnameFull }} session state.  If you wish to keep the connection alive, then use the _autoFailover_ feature discussed below.  Otherwise the other {{ book.productnameFull }} Client Features are not necessary when using an external load balancer.
 
+[id="client-dev-Using_Multiple_Hosts--bookproductnameFull-Client-Features"]
 == {{ book.productnameFull }} Client Features
 
 To enable theses features in their simplest form, the client needs to specify multiple host name and port number combinations on the URL connection string.
@@ -23,6 +26,7 @@ If you are using a DataSource to connect to {{ book.productnameFull }} Server, u
 
 The client will randomly pick one the {{ book.productnameFull }} server from the list and establish a session with that server. If that server cannot be contacted, then a connection will be attempted to each of the remaining servers in random order. This allows for both connection time fail-over and random server selection load balancing.
 
+[id="client-dev-Using_Multiple_Hosts-Fail-Over"]
 === Fail Over
 
 Post connection fail over will be used if the _autoFailover_ connection property on JDBC URL is set to true. Post connection failover works by sending a ping, at most every second, to test the connection prior to use. If the ping fails, a new instance will be selected prior to the operation being attempted.

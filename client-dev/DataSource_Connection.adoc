@@ -1,4 +1,5 @@
 
+[id="client-dev-DataSource_Connection-DataSource-Connection"]
 = DataSource Connection
 
 To use a data source based connection, use `org.teiid.jdbc.TeiidDataSource` as the data source class. The `{{ book.productnameFull }}DataSource` is also an XADatasource. {{ book.productnameFull }} DataSource class is also Serializable, so it possible for it to be used with JNDI naming services.

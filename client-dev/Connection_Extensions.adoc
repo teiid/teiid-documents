@@ -1,4 +1,5 @@
 
+[id="client-dev-Connection_Extensions-Connection-Extensions"]
 = Connection Extensions
 
 {{ book.productnameFull }} connections (defined by the `org.teiid.jdbc.TeiidConnection` interface) support the changeUser method to reauthenticate a given connection. If the reauthentication is successful the current connection my be used with the given identity. Existing statements/result sets are still available for use under the old identity. 
