@@ -1,11 +1,14 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="sap-hana-translator"]
 
-= SAP Hana Translator (hana)
+= SAP HANA translator (hana)
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+Also see common xref:jdbc-translators[JDBC translators] information.
 
-The SAP Hana Translator, known by the name of *_hana_*, is for use with SAP Hana.
+The SAP HANA translator, known by the name of *_hana_*, is for use with SAP HANA.
 
-== Known Issues
-
-https://issues.redhat.com/browse/TEIID-3805[TEIID-3805] - The pushdown of the substring function is inconsistent with the {{ book.productnameFull }} substring function when the from index exceeds the length of the string. SAP Hana will return an empty string, while {{ book.productnameFull }} produces a null value.
-
+.Known issues
+https://issues.redhat.com/browse/TEIID-3805[TEIID-3805]:: The pushdown of the SUBSTRING function is inconsistent 
+with the {{ book.productnameFull }} SUBSTRING function when the FROM index exceeds the length of the string. 
+SAP HANA will return an empty string, while {{ book.productnameFull }} produces a null value.

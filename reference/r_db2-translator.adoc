@@ -1,12 +1,17 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="db2-translator"]
+= Db2 Translator (db2)
 
-= DB2 Translator (db2)
+Also see common xref:jdbc-translators[JDBC Translators] information.
 
-Also see common link:JDBC_Translators.html[JDBC Translator Information]
+The Db2 translator, known by the type name *_db2_*, is for use with IBM Db2 V8 or later, or IBM Db2 for i V5.4 or later.
 
-The DB2 Translator, known by the type name *_db2_*, if for use with DB2 8 or later and DB2 for i 5.4 or later.
+.Db2 execution properties
 
-DB2 specific execution properties:
-
-* _DB2ForI_- indicates that the the DB2 instance is DB2 for i. Defaults to false.
-* _supportsCommonTableExpressions_- indicates that the DB2 instance supports Common Table Expressions. Defaults to true. Some older versions, or instances running in a conversion mode, of DB2 lack full common table expression support and may need support disabled.
-
+DB2ForI:: Indicates that the the Db2 instance is Db2 for i. 
+Defaults to `false`.
+supportsCommonTableExpressions:: Indicates that the Db2 instance supports common table expressions (CTEs). 
+Defaults to `true`. 
+Common table expression are not fully supported on some older versions of Db2, and on instances of Db2 that run in a conversion mode. 
+If you encounter errors working with CTEs in these environments, disable the CTE support.

@@ -1,0 +1,14 @@
+// Module included in the following assemblies:
+// as_update-commands.adoc
+[id=delete-command]
+= DELETE command
+
+The DELETE command is used to remove records from a table. 
+The operation results in 1 or more records being deleted, or in no records being deleted if none match the criteria.
+
+.Example syntax
+
+[source,sql]
+----
+DELETE FROM table [[AS] alias] [WHERE criteria]
+----

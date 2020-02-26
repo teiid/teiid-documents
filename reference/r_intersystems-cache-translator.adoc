@@ -1,7 +1,8 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="intersystems-cache-translator"]
+= Intersystems Caché translator (intersystems-cache)
 
-= Intersystems Cache Translator (intersystems-cache)
+Also see common xref:jdbc-translators[JDBC Translators] information.
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
-
-The Intersystem Cache Translator, known by the type name *_intersystems-cache_*, is for use with Intersystems Cache Object database (only relational aspect of it).
-
+The Intersystem Caché translator, known by the type name *_intersystems-cache_*, is for use with Intersystems Caché Object database (relational aspects only).

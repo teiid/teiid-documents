@@ -1,7 +1,9 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="jdbc-simple-translator"]
+= JDBC simple translator (jdbc-simple)
 
-= JDBC Simple Translator (jdbc-simple)
+Also see common xref:jdbc-translators[JDBC Translators] information.
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
-
-The JDBC Simple translator, known by the type name *_jdbc-simple_*, is the same as link:JDBC_ANSI_Translator.adoc[jdbc-ansi], except disables support for nearly all pushdown constructs for maximum compatibility.
-
+The JDBC Simple translator, known by the type name *_jdbc-simple_*, is the same as the xref:jdbc-ansi-translator[jdbc-ansi-translator], 
+except that it disables support for nearly all pushdown constructs for maximum compatibility.

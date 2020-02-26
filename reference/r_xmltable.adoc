@@ -1,8 +1,13 @@
+// Module included in the following assemblies:
+// as_from-clause.adoc
+[id=xmltable]
 = XMLTABLE
 
-The XMLTABLE function uses XQuery to produce tabular output. The XMLTABLE function is implicitly a nested table and may be correlated to preceding FROM clause entries. XMLTABLE is part of the SQL/XML 2006 specification.
+The XMLTABLE function uses XQuery to produce tabular output. 
+The XMLTABLE function is implicitly a nested table and it can be used within FROM clauses. 
+XMLTABLE is part of the SQL/XML 2006 specification.
 
-Usage:
+.Usage
 
 [source,sql]
 ----
@@ -14,75 +19,80 @@ XMLTABLE([<NSP>,] xquery-expression [<PASSING>] [COLUMNS <COLUMN>, ... ]) AS nam
 COLUMN := name (FOR ORDINALITY | (datatype [DEFAULT expression] [PATH string]))
 ----
 
-See link:XML_Functions.adoc#_xmlelement[XMLELEMENT] for the definition of NSP - XMLNAMESPACES.
+For the definition of NSP - XMLNAMESPACES, see _XMLELEMENT_ in xref:xmlelement[XML functions].
+For the definition of PASSING, see _XMLQUERY_ in xref:xmlquery[XML functions].
 
-See link:XML_Functions.adoc#_xmlquery[XMLQUERY] for the definition of PASSING.
+NOTE: See also xref:xquery-optimization[XQuery optimization].
 
-See also link:XML_Functions.adoc#_xmlquery[XMLQUERY]
+.Parameters
 
-NOTE: See also link:XQuery_Optimization.adoc[XQuery Optimization]
+* The optional XMLNAMESPACES clause specifies the namepaces that you can use in the XQuery and COLUMN path expressions.
 
-Parameters
+* The xquery-expression must be a valid XQuery. 
+Each sequence item returned by the xquery is used to create a row of values as defined by the COLUMNS clause.
 
-* The optional XMLNAMESPACES clause specifies the namepaces for use in the XQuery and COLUMN path expressions.
+* If COLUMNS is not specified, that is equivalent to a COLUMNS clause that returns the entire item as an XML value, as in the following example: 
++
+```
+"COLUMNS OBJECT_VALUE XML PATH '."'
+```
 
-* The xquery-expression should be a valid XQuery. Each sequence item returned by the xquery will be used to create a row of values as defined by the COLUMNS clause.
+* FOR ORDINALITY columns are typed as integers and return 1-based item numbers as their value.
 
-* If COLUMNS is not specified, then that is the same as having the COLUMNS clause: "COLUMNS OBJECT_VALUE XML PATH '."', which returns the entire item as an XML value.
+* Each non-ordinality column specifies a type, and optionally specifies a PATH and a DEFAULT expression.
 
-* A FOR ORDINALITY column is typed as integer and will return the 1-based item number as its value.
+* If PATH is not specified, then the path is the same as the column name. 
 
-* Each non-ordinality column specifies a type and optionally a PATH and a DEFAULT expression.
+.Syntax Rules
 
-* If PATH is not specified, then the path will be the same as the column name. 
+* You can specify only 1 FOR ORDINALITY column.
 
-Syntax Rules:
+* Columns names must not contain duplicates.
 
-* Only 1 FOR ORDINALITY column may be specified.
-
-* The columns names must not contain duplicates.
-
-* The blob datatype is supported, but there is only built-in support for xs:hexBinary values.  For xs:base64Binary, use a workaround of a PATH that uses the explicit value constructor "xs:base64Binary(<path>)".
+* blob datatypes are supported, but there is built-in support  only for xs:hexBinary values. 
+For xs:base64Binary, use a workaround of a PATH that uses the following explicit value constructor: `xs:base64Binary(<path>)`.
 
 * The column expression must evaluate to a single value if a non-array type is expected.
 
-* If an array type is specified then an array will be returned unless there are no elements in the sequence, in which case a null value is returned.
+* If an array type is specified, then an array is returned, unless there are no elements in the sequence, in which case a null value is returned.
 
-* An empty element is not a valid null value as it is effectively the empty string.  The xsi:nil attribute should be used to define convey a null valued element.
+* An empty element is not a valid null value, because its value is effectively an empty string.  
+Use the `xsi:nil` attribute to specify a null value for an element.
 
-Examples
+.XMLTABLE examples
 
-Use of passing, returns 1 row [1]:
+Use of PASSING, returns 1 row [1]::
 
 [source,sql]
 ----
 select * from xmltable('/a' PASSING xmlparse(document '<a id="1"/>') COLUMNS id integer PATH '@id') x
 ----
 
-As a nested table:
+As a nested table::
 
 [source,sql]
 ----
 select x.* from t, xmltable('/x/y' PASSING t.doc COLUMNS first string, second FOR ORDINALITY) x
 ----
 
-Invalid multi-value:
+Invalid multi-value::
 
 [source,sql]
 ----
 select * from xmltable('/a' PASSING xmlparse(document '<a><b id="1"/><b id="2"/></a>') COLUMNS id integer PATH 'b/@id') x
 ----
 
-Array multi-value:
+Array multi-value::
 
 [source,sql]
 ----
 select * from xmltable('/a' PASSING xmlparse(document '<a><b id="1"/><b id="2"/></a>') COLUMNS id integer[] PATH 'b/@id') x
 ----
 
-Nil element.  Without the nil attribute an exception would be thrown converting b to an integer value.
+Nil element::
 
 [source,sql]
 ----
 select * from xmltable('/a' PASSING xmlparse(document '<a xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><b xsi:nil="true"/></a>') COLUMNS id integer PATH 'b') x
 ----
+NOTE: In the preceding example, an exception would be thrown if the `nil` attribute (`xsi:nil="true"`) were not specified, converting `b` to an integer value.

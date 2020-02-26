@@ -1,4 +1,27 @@
+// Assembly included in the following assemblies:
+// as_sql-support.adoc
 
-= Scalar Functions
+[id="scalar-functions"]
+= Scalar functions
 
-{{ book.productnameFull }} provides an extensive set of built-in scalar functions. See also link:DML_Commands.adoc[SQL Support] and link:Datatypes.adoc[Datatypes]. In addition, {{ book.productnameFull }} provides the capability for user defined functions or UDFs. See the Developers Guide for adding UDFs. Once added UDFs may be called just like any other function.
+{{ book.productnameFull }} provides an extensive set of built-in scalar functions. 
+For more information, see xref:dml-commands[DML commands] and xref:datatypes[Data types]. 
+In addition, {{ book.productnameFull }} provides the capability for user-defined functions or UDFs. 
+For information about adding UDFs, see _User-defined functions_ in the Translator Development Guide. 
+After you add UDFs, you can call them in the same way that you call other functions.
+
+include::r_numeric-functions.adoc[leveloffset=+1]
+include::r_string-functions.adoc[leveloffset=+1]
+include::r_date-time-functions.adoc[leveloffset=+1]
+include::r_type-conversion-functions.adoc[leveloffset=+1]
+include::r_choice-functions.adoc[leveloffset=+1]
+include::r_decode-functions.adoc[leveloffset=+1]
+include::r_lookup-functions.adoc[leveloffset=+1]
+include::r_system-functions.adoc[leveloffset=+1]
+include::r_xml-functions.adoc[leveloffset=+1]
+include::r_json-functions.adoc[leveloffset=+1]
+include::r_security-functions.adoc[leveloffset=+1]
+include::r_json-functions.adoc[leveloffset=+1]
+include::r_spatial-functions.adoc[leveloffset=+1]
+include::r_misc-functions.adoc[leveloffset=+1]
+include::c_nondeterministic-function-handling.adoc[leveloffset=+1]

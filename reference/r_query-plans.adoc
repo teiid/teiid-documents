@@ -1,22 +1,30 @@
+// Module included in the following assemblies:
+// as_federated-planning.adoc
+[id="query-plans"]
+= Query plans
 
-= Query Plans
+When integrating information using a federated query planner it is useful to view the query plans 
+to better understand how information is being accessed and processed, and to troubleshoot problems.
 
-When integrating information using a federated query planner it is useful to view the query plans to better understand how information is being accessed and processed, and to troubleshoot problems.
+A query plan (also known as an execution or processing plan) is a set of instructions created 
+by a query engine for executing a command submitted by a user or application. 
+The purpose of the query plan is to execute the user’s query in as efficient a way as possible.
 
-A query plan (also known as an execution or processing plan) is a set of instructions created by a query engine for executing a command submitted by a user or application. The purpose of the query plan is to execute the user’s query in as efficient a way as possible.
+.Getting a query plan
 
-== Getting a Query Plan
+You can get a query plan any time you execute a command. 
+The following SQL options are available:
 
-You can get a query plan any time you execute a command. The SQL options available are as follows:
-
-*SET SHOWPLAN [ON|DEBUG]*- Returns the processing plan or the plan and the full planner link:Query_Planner.adoc#_reading_a_debug_plan[Debug Log]. See also the link:../client-dev/SET_Statement.adoc[SET Statement].
-
-With the above options, the query plan is available from the Statement object by casting to the `org.teiid.jdbc.TeiidStatement` interface or by using the link:../client-dev/SHOW_Statement.adoc[SHOW PLAN statement].
-
-Alternatively you may use the link:Explain_Statement.adoc[Explain Statement].
+*SET SHOWPLAN [ON|DEBUG]*- Returns the processing plan or the plan and the full planner debug log.
+For more information, see _Reading a debug plan_ in xref:query-planner[Query planner] and _SET statement_ in the Client Developer's Guide.
+//insert link to Client guide
+With the above options, the query plan is available from the Statement object by casting 
+to the `org.teiid.jdbc.TeiidStatement` interface or by using the SHOW PLAN statement. For more information, 
+see _SHOW Statement_ in the Client Developer's Guide. 
+Alternatively you may use the EXPLAIN statement. For more information, see, xref:explain-statement[Explain statement].
 
 [source,java]
-.**Retrieving a Query Plan Using {{ book.productnameFull }} Extensions**
+.**Retrieving a query plan using {{ book.productnameFull }} extensions**
 ----
 statement.execute("set showplan on");
 ResultSet rs = statement.executeQuery("select ...");
@@ -26,7 +34,7 @@ System.out.println(queryPlan);
 ----
 
 [source,java]
-.**Retrieving a Query Plan Using Statements**
+.**Retrieving a query plan using statements**
 ----
 statement.execute("set showplan on");
 ResultSet rs = statement.executeQuery("select ...");
@@ -37,7 +45,7 @@ System.out.println(planRs.getString("PLAN_XML"));
 ----
 
 [source,java]
-.**Retrieving a Query Plan Using Explain**
+.**Retrieving a query plan using explain**
 ----
 ResultSet rs = statement.executeQuery("explain select ...");
 System.out.println(rs.getString("QUERY PLAN"));
@@ -45,85 +53,109 @@ System.out.println(rs.getString("QUERY PLAN"));
 
 The query plan is made available automatically in several of {{ book.productnameFull }}’s tools.
 
-== Analyzing a Query Plan
+.Analyzing a query plan
 
-Once a query plan has been obtained you will most commonly be looking for:
+After you obtain a query plan, you can examine it for the following items:
 
-* Source pushdown – what parts of the query that got pushed to each source
+* Source pushdown -- What parts of the query that got pushed to each source
 ** Ensure that any predicates especially against indexes are pushed
 
-* Joins - as federated joins can be quite expensive
-** Join ordering - typically influenced by costing
+* Joins -- As federated joins can be quite expensive
+** Join ordering -- Typically influenced by costing
 ** Join criteria type mismatches.
-** Join algorithm used - merge, enhanced merge, nested loop, etc.
+** Join algorithm used -- Merge, enhanced merge, nested loop, and so forth.
 
 * Presence of federated optimizations, such as dependent joins.
 
-* Ensure hints have the desired affects - see link:../caching/Hints_and_Options.adoc[Hints and Options], hints in the link:FROM_Clause.adoc[FROM Clause], link:Subquery_Optimization.adoc[Subquery Optimization], and link:Federated_Optimizations.adoc[Federated Optimizations].
+* Ensure hints have the desired affects. For more information about using hints, see the following additional 
+resources:
+** _Hints and Options_ in the Caching Guide.
+//insert link to Caching Guide
+** _FROM clause hints_ in xref:from-clause[FROM clause].
+** xref:subquery-optimization.[Subquery optimization].
+** xref:federated-optimizations[Federated optimizations].
 
-All of the above information can be determined from the processing plan. You will typically be interested in analyzing the textual form of the final processing plan. To understand why particular decisions are made for debugging or support you will want to obtain the full debug log which will contain the intermediate planning steps as well as annotations as to why specific pushdown decisions are made.
+You can determine all of information in the preceding list from the processing plan. You will typically 
+be interested in analyzing the textual form of the final processing plan. To understand why 
+particular decisions are made for debugging or support you will want to obtain the full debug 
+log which will contain the intermediate planning steps as well as annotations as to why specific pushdown decisions are made.
 
-A query plan consists of a set of nodes organized in a tree structure. If you are executing a procedure, the overall query plan will contain additional information related the surrounding procedural execution.
+A query plan consists of a set of nodes organized in a tree structure. If you are executing 
+a procedure, the overall query plan will contain additional information related the surrounding procedural execution.
 
-In a procedural context the ordering of child nodes implies the order of execution. In most other situation, child nodes may be executed in any order even in parallel. Only in specific optimizations, such as dependent join, will the children of a join execute serially.
+In a procedural context the ordering of child nodes implies the order of execution. 
+In most other situation, child nodes may be executed in any order even in parallel. Only in specific 
+optimizations, such as dependent join, will the children of a join execute serially.
 
-== Relational Query Plans
+.Relational query plans
 
-Relational plans represent the processing plan that is composed of nodes representing building blocks of logical relational operations. Relational processing plans differ from logical debug relational plans in that they will contain additional operations and execution specifics that were chosen by the optimizer.
+Relational plans represent the processing plan that is composed of nodes representing building blocks 
+of logical relational operations. Relational processing plans differ from logical debug relational 
+plans in that they will contain additional operations and execution specifics that were chosen by the optimizer.
 
 The nodes for a relational query plan are:
 
-* Access - Access a source. A source query is sent to the connection factory associated with the source. (For a dependent join, this node is called Dependent Access.)
-* Dependent Procedure Access - Access a stored procedure on a source using multiple sets of input values.
-* Batched Update - Processes a set of updates as a batch.
-* Project - Defines the columns returned from the node. This does not alter the number of records returned.
-* Project Into - Like a normal project, but outputs rows into a target table.
-* Insert Plan Execution - Similar to a project into, but executes a plan rather than a source query. Typically created when executing an insert into view with a query expression.
-* Window Function Project - Like a normal project, but includes window functions.
-* Select - Select is a criteria evaluation filter node (WHERE / HAVING).
-* Join - Defines the join type, join criteria, and join strategy (merge or nested loop).
-* Union All - There are no properties for this node, it just passes rows through from it’s children. Depending upon other factors, such as if there is a transaction or the source query concurrency allowed, not all of the union children will execute in parallel.
-* Sort - Defines the columns to sort on, the sort direction for each column, and whether to remove duplicates or not.
-* Dup Remove - Removes duplicate rows. The processing uses a tree structure to detect duplicates so that results will effectively stream at the cost of IO operations.
-* Grouping - Groups sets of rows into groups and evaluates aggregate functions.
-* Null - A node that produces no rows. Usually replaces a Select node where the criteria is always false (and whatever tree is underneath). There are no properties for this node.
-* Plan Execution - Executes another sub plan. Typically the sub plan will be a non-relational plan.
-* Dependent Procedure Execution - Executes a sub plan using multiple sets of input values.
-* Limit - Returns a specified number of rows, then stops processing. Also processes an offset if present.
-* XML Table - Evaluates XMLTABLE. The debug plan will contain more information about the XQuery/XPath with regards to their optimization - see the XQuery section below or link:XQuery_Optimization.adoc[XQuery Optimization].
-* Text Table - Evaluates TEXTTABLE
-* Array Table - Evaluates ARRAYTABLE
-* Object Table - Evaluates OBJECTTABLE
+* Access -- Access a source. A source query is sent to the connection factory associated with the source. 
+(For a dependent join, this node is called Dependent Access.)
+* Dependent procedure access -- Access a stored procedure on a source using multiple sets of input values.
+* Batched update -- Processes a set of updates as a batch.
+* Project -- Defines the columns returned from the node. This does not alter the number of records returned.
+* Project into -- Like a normal project, but outputs rows into a target table.
+* Insert plan execution -- Similar to a project into, but executes a plan rather than a source query. 
+Typically created when executing an insert into view with a query expression.
+* Window function project -- Like a normal project, but includes window functions.
+* Select -- Select is a criteria evaluation filter node (WHERE / HAVING).
+* Join -- Defines the join type, join criteria, and join strategy (merge or nested loop).
+* Union all -- There are no properties for this node, it just passes rows through from it’s children. 
+Depending upon other factors, such as if there is a transaction or the source query concurrency allowed, 
+not all of the union children will execute in parallel.
+* Sort -- Defines the columns to sort on, the sort direction for each column, and whether to remove duplicates or not.
+* Dup remove -- Removes duplicate rows. The processing uses a tree structure to detect duplicates so 
+that results will effectively stream at the cost of IO operations.
+* Grouping -- Groups sets of rows into groups and evaluates aggregate functions.
+* Null -- A node that produces no rows. Usually replaces a Select node where the criteria is 
+always false (and whatever tree is underneath). There are no properties for this node.
+* Plan execution -- Executes another sub plan. Typically the sub plan will be a non-relational plan.
+* Dependent procedure execution -- Executes a sub plan using multiple sets of input values.
+* Limit -- Returns a specified number of rows, then stops processing. Also processes an offset if present.
+* XML table -- Evaluates XMLTABLE. The debug plan will contain more information about the XQuery/XPath 
+with regards to their optimization. For more information, see xref:xquer-_optimization[XQuery optimization].
+* Text table - Evaluates TEXTTABLE
+* Array table - Evaluates ARRAYTABLE
+* Object table - Evaluates OBJECTTABLE
 
-=== Node Statistics
+.Node statistics
 
-Every node has a set of statistics that are output. These can be used to determine the amount of data flowing through the node. Before execution a processor plan will not contain node statistics. Also the statistics are updated as the plan is processed, so typically you’ll want the final statistics after all rows have been processed by the client.
+Every node has a set of statistics that are output. These can be used to determine the amount 
+of data flowing through the node. Before execution a processor plan will not contain node statistics. 
+Also the statistics are updated as the plan is processed, so typically you’ll want the 
+final statistics after all rows have been processed by the client.
 
 |===
 |Statistic |Description |Units
 
-|Node Output Rows
-|Number of records output from the node
+|Node output rows
+|Number of records output from the node.
 |count
 
-|Node Next Batch Process Time
-|Time processing in this node only
+|Node next batch process time
+|Time processing in this node only.
 |millisec
 
-|Node Cumulative Next Batch Process Time
-|Time processing in this node + child nodes
+|Node cumulative next batch process time
+|Time processing in this node + child nodes.
 |millisec
 
-|Node Cumulative Process Time
-|Elapsed time from beginning of processing to end
+|Node cumulative process time
+|Elapsed time from beginning of processing to end.
 |millisec
 
-|Node Next Batch Calls
-|Number of times a node was called for processing
+|Node next batch calls
+|Number of times a node was called for processing.
 |count
 
-|Node Blocks
-|Number of times a blocked exception was thrown by this node or a child
+|Node blocks
+|Number of times a blocked exception was thrown by this node or a child.
 |count
 |===
 
@@ -132,26 +164,31 @@ In addition to node statistics, some nodes display cost estimates computed at th
 |===
 |Cost Estimates |Description |Units
 
-|Estimated Node Cardinality
-|Estimated number of records that will be output from the node; -1 if unknown
+|Estimated node cardinality
+|Estimated number of records that will be output from the node; -1 if unknown.
 |count
 |===
 
 The root node will display additional information.
 
 |===
-|Top level Statistics |Description |Units
+|Top level statistics |Description |Units
 
 |Data Bytes Sent
-|The size of the serialized data result (row and lob values) sent to the client
+|The size of the serialized data result (row and lob values) sent to the client.
 |bytes
 |===
 
-=== Reading a Processor Plan
+.Reading a processor plan
 
-The query processor plan can be obtained in a plain text or xml format. The plan text format is typically easier to read, while the xml format is easier to process by tooling. When possible tooling should be used to examine the plans as the tree structures can be deeply nested.
+The query processor plan can be obtained in a plain text or XML format. The plan text 
+format is typically easier to read, while the XML format is easier to process by tooling. 
+When possible tooling should be used to examine the plans as the tree structures can be deeply nested.
 
-Data flows from the leafs of the tree to the root. Sub plans for procedure execution can be shown inline, and are differentiated by different indentation. Given a user query of `SELECT pm1.g1.e1, pm1.g2.e2, pm1.g3.e3 from pm1.g1 inner join (pm1.g2 left outer join pm1.g3 on pm1.g2.e1=pm1.g3.e1) on pm1.g1.e1=pm1.g3.e1`, the text for a processor plan that does not push down the joins would look like:
+Data flows from the leafs of the tree to the root. Sub plans for procedure execution 
+can be shown inline, and are differentiated by different indentation. Given a user query of 
+`SELECT pm1.g1.e1, pm1.g2.e2, pm1.g3.e3 from pm1.g1 inner join (pm1.g2 left outer join pm1.g3 on pm1.g2.e1=pm1.g3.e1) on pm1.g1.e1=pm1.g3.e1`, 
+the text for a processor plan that does not push down the joins would look like:
 
 [source,xml]
 ----
@@ -209,9 +246,13 @@ ProjectNode
     2: pm1.g3.e3
 ----
 
-Note that the nested join node is using a merge join and expects the source queries from each side to produce the expected ordering for the join. The parent join is an enhanced sort join which can delay the decision to perform sorting based upon the incoming rows. Note that the outer join from the user query has been modified to an inner join since none of the null inner values can be present in the query result.
+Note that the nested join node is using a merge join and expects the source queries 
+from each side to produce the expected ordering for the join. The parent join is an 
+enhanced sort join which can delay the decision to perform sorting based upon the incoming rows. 
+Note that the outer join from the user query has been modified to an inner join since none 
+of the null inner values can be present in the query result.
 
-The same plan in xml form looks like:
+The preceding plan can also be represented in in XML format as in the following example:
 
 [source,xml]
 ----
@@ -327,7 +368,9 @@ The same plan in xml form looks like:
 </node>
 ----
 
-Note that the same information appears in each of the plan forms. In some cases it can actually be easier to follow the simplified format of the debug plan final processor plan. From the link:Query_Planner.adoc#_reading_a_debug_plan[Debug Log] the same plan as above would appear as:
+Note that the same information appears in each of the plan forms. In some cases it can 
+actually be easier to follow the simplified format of the debug plan final processor plan. 
+The following output shows how the debug log represents the plan in the preceding XML example:
 
 [source,xml]
 ----
@@ -341,44 +384,44 @@ ProjectNode(0) output=[pm1.g1.e1, pm1.g2.e2, pm1.g3.e3] [pm1.g1.e1, pm1.g2.e2, p
     AccessNode(5) output=[pm1.g2.e1, pm1.g2.e2] SELECT g_0.e1 AS c_0, g_0.e2 AS c_1 FROM pm1.g2 AS g_0 ORDER BY c_0
 ----
 
-=== Node Properties
+.Node Properties
 
-==== Common
+.Common
 
-* Output Columns - what columns make up the tuples returned by this node
-* Data Bytes Sent - how many data byte, not including messaging overhead, were sent by this query
-* Planning Time - the amount of time in milliseconds spent planning the query
+* Output columns - what columns make up the tuples returned by this node.
+* Data bytes sent - how many data byte, not including messaging overhead, were sent by this query.
+* Planning time - the amount of time in milliseconds spent planning the query.
 
-==== Relational
+.Relational
 
-* Relational Node ID - matches the node ids seen in the debug log Node(id)
-* Criteria - the boolean expression used for filtering
-* Select Columns - the columns that define the projection
-* Grouping Columns - the columns used for grouping
-* Grouping Mapping - shows the mapping of aggregate and grouping column internal names to their expression form
-* Query - the source query
-* Model Name - the model name
-* Sharing ID - nodes sharing the same source results will have the same sharing id
-* Dependent Join - if a dependent join is being used
-* Join Strategy - the join strategy (Nested Loop, Sort Merge, Enhanced Sort, etc.)
-* Join Type - the join type (Left Outer Join, Inner Join, Cross Join)
-* Join Criteria - the join predicates
-* Execution Plan - the nested execution plan
-* Into Target - the insertion target
-* Upsert - if the insert is an upsert
-* Sort Columns - the columns for sorting
-* Sort Mode - if the sort performs another function as well, such as distinct removal
-* Rollup - if the group by has the rollup option
-* Statistics - the processing statistics
-* Cost Estimates - the cost/cardinality estimates including dependent join cost estimates
-* Row Offset - the row offset expression
-* Row Limit - the row limit expression
-* With - the with clause
-* Window Functions - the window functions being computed
-* Table Function - the table function (XMLTABLE, OBJECTTABLE, TEXTTABLE, etc.)
-* Streaming - if the XMLTABLE is using stream processing
+* Relational node ID -- Matches the node ids seen in the debug log Node(id).
+* Criteria -- The Boolean expression used for filtering.
+* Select columns -- he columns that define the projection.
+* Grouping columns -- The columns used for grouping.
+* Grouping mapping -- Shows the mapping of aggregate and grouping column internal names to their expression form.
+* Query -- The source query.
+* Model name -- The model name.
+* Sharing ID -- Nodes sharing the same source results will have the same sharing id.
+* Dependent join -- If a dependent join is being used.
+* Join strategy -- The join strategy (Nested Loop, Sort Merge, Enhanced Sort, and so forth).
+* Join type -- The join type (Left Outer Join, Inner Join, Cross Join).
+* Join criteria -- The join predicates.
+* Execution plan -- The nested execution plan.
+* Into target -- The insertion target.
+* Upsert -- If the insert is an upsert.
+* Sort columns -- The columns for sorting.
+* Sort mode -- If the sort performs another function as well, such as distinct removal.
+* Rollup -- If the group by has the rollup option.
+* Statistics -- The processing statistics.
+* Cost estimates -- The cost/cardinality estimates including dependent join cost estimates.
+* Row offset -- The row offset expression.
+* Row limit -- The row limit expression.
+* With -- The with clause.
+* Window functions -- The window functions being computed.
+* Table function -- The table function (XMLTABLE, OBJECTTABLE, TEXTTABLE, and so forth).
+* Streaming -- If the XMLTABLE is using stream processing.
 
-==== Procedure
+.Procedure
 
 * Expression
 * Result Set
@@ -387,7 +430,8 @@ ProjectNode(0) output=[pm1.g1.e1, pm1.g2.e2, pm1.g3.e3] [pm1.g1.e1, pm1.g2.e2, p
 * Then
 * Else
 
-== Other Plans
+.Other plans
 
-Procedure execution (including instead of triggers) use intermediate and final plan forms that include relational plans. Generally the structure of the xml/procedure plans will closely match their logical forms. It’s the nested relational plans that will be of interest when analyzing performance issues.
-
+Procedure execution (including instead of triggers) use intermediate and final plan forms 
+that include relational plans. Generally the structure of the XML/procedure plans will 
+closely match their logical forms. It’s the nested relational plans that will be of interest when analyzing performance issues.

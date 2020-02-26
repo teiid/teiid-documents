@@ -1,0 +1,20 @@
+// Module included in the following assemblies:
+// as_procedure-language.adoc
+[id="continue-statement"]
+= Continue statement
+
+A `CONTINUE` statement is used inside a `LOOP` or `WHILE` construct to continue with the next loop by skipping over the rest of the statements in the loop. 
+It must be used inside a `LOOP` or `WHILE` statement.
+
+.Usage
+
+[source,sql]
+----
+CONTINUE [label];
+
+----
+
+.Syntax rules
+
+* If the label is specified, it must exist on a containing `LOOP` or `WHILE` statement.
+* If no label is specified, the statement will affect the closest containing `LOOP` or `WHILE` statement.

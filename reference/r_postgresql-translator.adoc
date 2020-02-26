@@ -1,15 +1,31 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="postgresql-translator"]
 
-= PostgreSQL Translator (postgresql)
+= PostgreSQL translator (postgresql)
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+Also see common xref:jdbc-translators[JDBC translators] information.
 
-The PostgreSQL Translator, known by the type name *_postgresql_*, is for use with 8.0 or later clients and 7.1 or later server.
+The PostgreSQL translator, known by the type name *_postgresql_*, is for use with the following PostgreSQL client and server versions:
+* Client -- 8.0 or later
+* Server -- 7.1 or later.
 
-== Execution Properties
+.Execution properties
+PostgreSQL-specific execution properties:
 
-PostgreSQL specific execution properties:
+PostGisVersion:: Indicates the PostGIS version in use. Defaults to 0, which means that PostGIS is not installed. 
+Will be set automatically if the database version is not set.
+ProjSupported:: Boolean indicating if Proj is support for PostGis. 
+Will be set automatically if the database version is not set.
 
-* _PostGisVersion_- indicate the PostGIS version in use. Defaults to 0 meaning PostGIS is not installed. Will be set automatically if the database version is not set.
-* _ProjSupported_- boolean indicating if Proj is support for PostGis. Will be set automatically if the database version is not set.
+[NOTE] 
+====
+Some driver versions of PostgreSQL will not associate columns to "INDEX" type tables.  
+The current version of {{ book.productnameFull }} omits such tables automatically. 
 
-NOTE: Some driver versions of PostgreSQL will not associate columns to "INDEX" type tables.  Later versions of {{ book.productnameFull }} will omit these tables automatically.  Older versions of {{ book.productnameFull }} may need the importer.tableType property or other filtering set.
+ifndef::dv-product[]
+
+Older versions of {{ book.productnameFull }} may need the importer.tableType property or other filtering set.
+
+endif::[]
+====

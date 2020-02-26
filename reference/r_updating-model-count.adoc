@@ -1,9 +1,12 @@
-
+// Module included in the following assemblies:
+// as_as_transaction-support.adoc
+[id="updating-model-count"]
 = Updating Model Count
 
-The term "updating model count" refers to the number of times any model is updated during the execution of a command. It is used to determine whether a transaction, of any scope, is required to safely execute the command.
+The term "updating model count" refers to the number of times any model is updated during the execution of a command. 
+It is used to determine whether a transaction, of any scope, is required to safely execute the command.
 
-.*Updating Model Count Settings*
+.*Updating model count settings*
 |===
 |Count |Description
 
@@ -11,7 +14,10 @@ The term "updating model count" refers to the number of times any model is updat
 |No updates are performed by this command.
 
 |1
-|Indicates that only one model is updated by this command (and its subcommands). Also the success or failure of that update corresponds to the success of failure of the command. It should not be possible for the update to succeed while the command fails. Execution is not considered transactionally unsafe.
+|Indicates that only one model is updated by this command (and its subcommands). 
+The success or failure of that update corresponds to the success or failure of the command. 
+It should not be possible for the update to succeed while the command fails. 
+Execution is not considered transactionally unsafe.
 
 |*
 |Any number greater than 1 indicates that execution is transactionally unsafe and an XA transaction will be required.

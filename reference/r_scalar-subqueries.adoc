@@ -1,0 +1,9 @@
+// Module included in the following assemblies:
+// as_expressions.adoc
+[id="scalar-subqueries"]
+= Scalar subqueries
+
+Subqueries can be used to produce a single scalar value in the SELECT, WHERE, or HAVING clauses only. 
+A scalar subquery must have a single column in the SELECT clause and should return either 0 or 1 row. 
+If no rows are returned, null will be returned as the scalar subquery value. For information about other types of subqueries, 
+see xref:subqueries[Subqueries].

@@ -1,17 +1,17 @@
-
+// Assembly included in the following assemblies:
+//master.adoc
+[id="federated-planning"]
 = Federated Planning
 
-{{ book.productnameFull }} at its core is a federated relational query engine. This query engine allows you to treat all of your data sources as one virtual database and access them in a single SQL query. This allows you to focus on building your application, not on hand-coding joins, and other relational operations, between data sources.
+At its core, {{ book.productnameFull }} is a federated, relational query engine. 
+This query engine allows you to treat all of your data sources as one virtual database, and access them through a single SQL query. 
+As a result, instead of focusing on hand-coding joins, you can focus on building your application, and on running other relational operations between data sources.
 
-
-== Child Pages
-
-* link:Planning_Overview.adoc[Planning Overview]
-* link:Query_Planner.adoc[Query Planner]
-* link:Query_Plans.adoc[Query Plans]
-* link:Federated_Optimizations.adoc[Federated Optimizations]
-* link:Subquery_Optimization.adoc[Subquery Optimization]
-* link:XQuery_Optimization.adoc[XQuery Optimization]
-* link:Federated_Failure_Modes.adoc[Federated Failure Modes]
-* link:Conformed_Tables.adoc[Conformed Tables]
-
+include::r_planning-overview.adoc[leveloffset=+1]
+include::r_query-planner.adoc[leveloffset=+1]
+include::r_query-plans.adoc[leveloffset=+1]
+include::r_federated-optimizations.adoc[leveloffset=+1]
+include::r_subquery-optimization.adoc[leveloffset=+1]
+include::r_xquery-optimization.adoc[leveloffset=+1]
+include::r_federated-failure-modes.adoc[leveloffset=+1]
+include::r_conformed-tables.adoc[leveloffset=+1]

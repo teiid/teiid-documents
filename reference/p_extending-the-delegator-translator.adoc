@@ -1,0 +1,81 @@
+// Module included in the following assemblies:
+// as_delegator-translators.adoc
+[id="extending-the-delegator-translator"]
+
+= Extending the delegator translator
+ 
+You can create a delegating translator by extending the `org.teiid.translator.BaseDelegatingExecutionFactory`. 
+After your classes are packaged as a custom translator, you can wire another translator instance into your 
+delegating translator at runtime in order to intercept all of the calls to the delegate. 
+This base class does not provide any functionality on its own, other than delegation. 
+You can hard code capabilities into the translator instead of defining them as part of the DDL configuration. 
+You can also override methods to provide alternate behavior. 
+
+.*Execution properties*  
+
+|===
+|Name |Description |Default
+|delegateName |Translator instance name to delegate to. |n/a
+
+|cachePattern|Regex pattern of queries that should be cached using the translator caching API. |n/a
+
+|cacheTtl|Time to live in milliseconds for queries matching the cache pattern. |n/a
+|===
+ 
+
+For example, if you use the _oracle_ translator in your virtual database, and you want to intercept calls that go through the translator, 
+you could write a custom delegating translator, as in the following example: 
+
+[source,java]
+----
+@Translator(name="interceptor", description="interceptor")
+public class InterceptorExecutionFactory extends org.teiid.translator.BaseDelegatingExecutionFactory{
+    @Override
+    public void getMetadata(MetadataFactory metadataFactory, C conn) throws TranslatorException {
+        // do intercepting code here..
+
+        // If you want call the original delegate, do not call if do not need to.
+        // but if you did not call the delegate fullfill the method contract
+        super.getMetadata(metadataFactory, conn);
+
+        // do more intercepting code here..
+    }
+}
+----
+
+You could then deploy this translator in the {{ book.productnameFull }} engine. 
+Then in your DDL file, define an interceptor translator as in the following example:
+
+[source,sql]
+----
+CREATE DATABASE myvdb VERSION '1';
+USE DATABASE myvdb VERSION '1';
+CREATE FOREIGN DATA WRAPPER "oracle-interceptor" TYPE interceptor OPTIONS (delegateName 'oracle');
+CREATE SERVER source FOREIGN DATA WRAPPER "oracle-interceptor" OPTIONS ("resource-name" 'java:oracle-ds');
+CREATE SCHEMA mymodel SERVER source;
+SET SCHEMA mymodel;
+IMPORT FROM SERVER source INTO mymodel;
+----
+
+{% if book.targetWildfly %}
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<vdb name="myvdb" version="1">
+
+    <model name="mymodel">
+        <source name="source" translator-name="oracle-interceptor" connection-jndi-name="java:oracle-ds"/>
+    </model>
+
+    <!-- the below it is called translator overriding, where you can set different properties -->
+    <translator name="orcle-interceptor" type="interceptor" >
+        <property name="delegateName" value="oracle" />
+   </translator>
+</vdb>
+----
+{% endif %}
+
+We have defined a "translator" override called `oracle-interceptor`, which is based on the custom translator "interceptor" from above, 
+and supplied the translator it needs to delegate to "oracle" as its delegateName. 
+Then, we used this override translator `oracle-interceptor` in the VDB. 
+Future calls going into this VDB model’s translator are intercepted by your code to do whatever you want to do.

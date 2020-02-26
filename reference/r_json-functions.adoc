@@ -1,15 +1,17 @@
-
-= JSON Functions
+// Module included in the following assemblies:
+// as_scalar-functions.adoc
+[id="json-functions"]
+= JSON functions
 :toc: manual
 :toc-placement: preamble
 
 JSON functions provide functionality for working with http://www.json.org/[JSON] (JavaScript Object Notation) data.
 
-== JSON Construction
+.JSON construction
 
-=== Sample Data For Examples
+.Sample data for examples
 
-Examples provided with XML functions use the following table structure
+Examples provided with XML functions use the following table structure:
 
 [source,sql]
 ----
@@ -54,7 +56,7 @@ with Data
 |USA
 |===
 
-=== JSONARRAY
+.JSONARRAY
 
 Returns a JSON array.
 
@@ -63,7 +65,9 @@ Returns a JSON array.
 JSONARRAY(value...)
 ----
 
-value is any object link:JSON_Functions.adoc#_conversion_to_json[convertable to a JSON] value. Return value is json.
+`value` is any object that can be converted to a JSON value.
+For more information, see xref:json-functions[JSON functions]. 
+Return value is JSON.
 
 Null values will be included in the result as null literals.
 
@@ -81,7 +85,7 @@ Would return
 ["a\"b",1,null,false,"2010-11-21"]
 ----
 
-Using JSONARRAY on a Table
+.Using JSONARRAY on a Table
 
 [source,sql]
 ----
@@ -94,7 +98,7 @@ WHERE  c.CustomerID >= 88;
 ----
 
 
-=== JSONOBJECT
+.JSONOBJECT
 
 Returns a JSON object.
 
@@ -103,11 +107,14 @@ Returns a JSON object.
 JSONARRAY(value [as name] ...)
 ----
 
-value is any object link:JSON_Functions.adoc#_conversion_to_JSON[convertable to a JSON] value. Return value is json.
+`value` is any object that can be converted to a JSON value.
+For more information, see xref:json-functions[JSON functions]. 
+Return value is JSON.
 
 Null values will be included in the result as null literals.
 
-If a name is not supplied and the expression is a column reference, the column name will be used otherwise exprN will be used where N is the 1-based index of the value in the JSONARRAY expression.
+If a name is not supplied and the expression is a column reference, the column name will be used otherwise 
+exprN will be used where N is the 1-based index of the value in the JSONARRAY expression.
 
 mixed value example
 
@@ -160,7 +167,7 @@ WHERE  c.CustomerID >= 88;
 ----
 
 
-=== JSONPARSE
+.JSONPARSE
 
 Validates and returns a JSON result.
 
@@ -169,11 +176,12 @@ Validates and returns a JSON result.
 JSONPARSE(value, wellformed)
 ----
 
-value is blob with an appropriate JSON binary encoding (UTF-8, UTF-16, or UTF-32) or a clob. wellformed is a boolean indicating that validation should be skipped. Return value is json.
+`value` is blob with an appropriate JSON binary encoding (UTF-8, UTF-16, or UTF-32) or a clob. 
+wellformed is a boolean indicating that validation should be skipped. Return value is JSON.
 
 A null for either input will return null.
 
-json parse of a simple literal value
+JSON parse of a simple literal value
 
 [source,sql]
 ----
@@ -181,7 +189,7 @@ jsonParse('{"Customer":{"CustomerId":88, "CustomerName":"Wellington Importadora"
 ----
 
 
-=== JSONARRAY_AGG
+.JSONARRAY_AGG
 
 creates a JSON array result as a Clob including null value. This is similar to JSONARRAY but aggregates its contents into single object
 
@@ -205,40 +213,42 @@ WHERE  c.CustomerID >= 88;
 {"Customer":[{"id":89,"name":"Wellington Importadora"},{"id":100,"name":"White Clover Markets"}]}
 ----
 
+[[conversion-to-json]]
+.Conversion to JSON
 
-=== Conversion to JSON
+A straight-forward, specification-compliant conversion is used for converting values into their appropriate JSON document form.
 
-A straight-forward specification compliant conversion is used for converting values into their appropriate JSON document form.
+* Null values are included as the null literal.
+* Values parsed as JSON or returned from a JSON construction function (JSONPARSE, JSONARRAY, JSONARRAY_AGG) will be directly appended into a JSON result.
+* Boolean values are included as true/false literals.
+* Numeric values are included as their default string conversion - in some circumstances if not a 
+number or +-infinity results are allowed, invalid JSON may be obtained.
+* String values are included in their escaped/quoted form.
+* Binary values are not implicitly convertable to JSON values and require a specific prior to inclusion in JSON.
+* All other values will be included as their string conversion in the appropriate escaped/quoted form.
 
-* null values are included as the null literal.
-* values parsed as JSON or returned from a JSON construction function (JSONPARSE, JSONARRAY, JSONARRAY_AGG) will be directly appended into a JSON result.
-* boolean values are included as true/false literals
-* numeric values are included as their default string conversion - in some circumstances if not a number or +-infinity results are allowed, invalid json may be obtained.
-* string values are included in their escaped/quoted form.
-* binary values are not implicitly convertable to JSON values and require a specific prior to inclusion in JSON.
-* all other values will be included as their string conversion in the appropriate escaped/quoted form.
+.JSON Processing
 
-== JSON Processing
+.JSONTOXML
 
-=== JSONTOXML
-
-Returns an xml document from JSON.
+Returns an XML document from JSON.
 
 [source,sql]
 ----
 JSONTOXML(rootElementName, json)
 ----
 
-rootElementName is a string, json is in {clob, blob}. Return value is xml.
+`rootElementName` is a string, `json` is in {clob, blob}. Return value is XML.
 
-The appropriate UTF encoding (8, 16LE. 16BE, 32LE, 32BE) will be detected for JSON blobs. If another encoding is used, see the to_chars function.
+The appropriate UTF encoding (8, 16LE. 16BE, 32LE, 32BE) will be detected for JSON blobs. 
+If another encoding is used, see the TO_CHARS function in xref:string-functions[String functions].
 
 The result is always a well-formed XML document.
 
 The mapping to XML uses the following rules:
 
 * The current element name is initially the rootElementName, and becomes the object value name as the JSON structure is traversed.
-* All element names must be valid xml 1.1 names. Invalid names are fully escaped according to the SQLXML specification.
+* All element names must be valid XML 1.1 names. Invalid names are fully escaped according to the SQLXML specification.
 * Each object or primitive value will be enclosed in an element with the current name.
 * Unless an array value is the root, it will not be enclosed in an additional element.
 * Null values will be represented by an empty element with the attribute xsi:nil="true"
@@ -311,28 +321,36 @@ XML:
 </root>
 ----
 
-NOTE: prior releases defaulted incorrectly to using _uXXXX_ escaping rather than _xXXXX_.  If you need to rely on that behavior see the org.teiid.useXMLxEscape system property.
+NOTE: prior releases defaulted incorrectly to using _uXXXX_ escaping rather than _xXXXX_. 
+If you need to rely on that behavior see the org.teiid.useXMLxEscape system property.
 
-=== JsonPath Support
+.JsonPath Support
 
-JsonPath support is provided by link:https://github.com/json-path/JsonPath[Jayway JsonPath].  Please note that it uses 0, not 1 based indexing.  Also please familiarize yourself with the expected returns for various path expressions.  If for example a row JsonPath expression is expected to provide an array, make sure that it's the array you want and not an array or an array that would automatically be returned by an indefinite path expression.
+JsonPath support is provided by https://github.com/json-path/JsonPath[Jayway JsonPath]. 
+Please note that it uses 0-based indexing, rather than 1-based indexing. 
+Be sure that you are familiar with the expected returns for various path expressions. 
+For example, if a row JsonPath expression is expected to provide an array, 
+make sure that it's the array that you want, and not an array that would be returned automatically by an indefinite path expression.
 
-If you encounter a situation where path names use reserved characters, such as '.', then you must use the bracketed JsonPath notation as that allows for any key, e.g. $['.key'].
+If you encounter a situation where path names use reserved characters, such as '.', 
+then you must use the bracketed JsonPath notation as that allows for any key, e.g. $['.key'].
 
-See also link:JSONTABLE.adoc[JSONTABLE].
+For more information, see xref:jsontable[JSONTABLE].
 
-=== JSONPATHVALUE
+.JSONPATHVALUE
 
-Extracts a single json value as a string.
+Extracts a single JSON value as a string.
 
 [source,sql]
 ----
 JSONPATHVALUE(value, path [, nullLeafOnMissing])
 ----
 
-value is a clob Json document, path is a JsonPath string, nullLeafOnMissing is a boolean. Return value is a string value of the resulting json.
+`value` is a clob JSON document, `path` is a JsonPath string, and `nullLeafOnMissing` is a Boolean. 
+Return value is a string value of the resulting JSON.
 
-If nullLeafOnMissing is false (the default), then a path that evaluates to a leaf that is missing will throw an exception.  If nullLeafOnMissing is true, then a null value will be returned.
+If `nullLeafOnMissing` is false (the default), then a path that evaluates to a leaf that is missing 
+will throw an exception. If `nullLeafOnMissing` is true, then a null value will be returned.
 
 If the value is an array produced by an indefinite path expression, then only the first value will be returned.
 
@@ -360,18 +378,20 @@ Would return
 value1
 ----
 
-=== JSONQUERY
+.JSONQUERY
 
-Evaluate a JsonPath expression against a Json document and return the Json result.
+Evaluate a JsonPath expression against a JSON document and return the JSON result.
 
 [source,sql]
 ----
 JSONQUERY(value, path [, nullLeafOnMissing])
 ----
 
-value is a clob Json document, path is a JsonPath string, nullLeafOnMissing is a boolean. Return value is a json value.
+`value` is a clob JSON document, `path` is a JsonPath string, and `nullLeafOnMissing` is a Boolean. 
+Return value is a JSON value.
 
-If nullLeafOnMissing is false (the default), then a path that evaluates to a leaf that is missing will throw an exception.  If nullLeafOnMissing is true, then a null value will be returned.
+If `nullLeafOnMissing` is false (the default), then a path that evaluates to a leaf that is missing 
+will throw an exception. If `nullLeafOnMissing` is true, then a null value will be returned.
 
 [source,sql]
 ----

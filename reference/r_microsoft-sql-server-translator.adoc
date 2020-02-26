@@ -1,25 +1,37 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="microsoft-sql-server-translator"]
 
-= Microsoft SQL Server Translator (sqlserver)
+= Microsoft SQL Server translator (sqlserver)
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+Also see common xref:jdbc-translators[JDBC translators] information.
 
-The Microsoft SQL Server Translator, known by the type name *_sqlserver_*, is for use with SQL Server 2000 or later. A SQL Server JDBC driver version 2.0 or later (or compatible e.g. JTDS 1.2 or later) should be used.  The SQL Server DatabaseVersion property may be set to 2000, 2005, 2008, or 2012, but otherwise expects a standard version number - e.g. "10.0".
+The Microsoft SQL Server translator, known by the type name *_sqlserver_*, is for use with SQL Server 2000 or later. 
+A SQL Server JDBC driver version 2.0 or later (or a compatible driver such as, JTDS 1.2 or later) should be used. 
+The SQL Server `DatabaseVersion` property can be set to `2000`, `2005`, `2008`, or `2012`, but otherwise expects a standard version number, for example, `10.0`.
 
-== Sequence Support
+.Sequence support
+{% if book.targetWildfly or book.targetSpring %}
 
-With {{ book.productnameFull }} 8.5+ sequence operations may be modeled as link:DDL_Metadata.adoc[source functions].
+With {{ book.productnameFull }} 8.5+, sequence operations may be modeled as xref:ddl-metadata[source functions].
 
-With {{ book.productnameFull }} 10.0+ sequences may be imported automatically link:JDBC_Translators.adoc[import properties].
+With {{ book.productnameFull }} 10.0+, sequences may be imported automatically xref:jdbc-translators[import properties].
+
+
+{% if book.Product %}
+Sequences can be imported automatically. 
+For more information, see the table of _Importer properties_ in xref:jdbc-translators[JDBC Translators].
+{% endif %}
 
 [source,sql]
-.*Example:Sequence Native Query*
+.*Example: Sequence native query*
 ----
 CREATE FOREIGN FUNCTION seq_nextval () returns integer OPTIONS ("teiid_rel:native-query" 'NEXT VALUE FOR seq');
 ----
 
-== Execution Properties
+.Execution properties
 
 SQL Server specific execution properties:
 
-* _JtdsDriver_- indicates that the open source JTDS driver is being used. Defaults to false.
-
+JtdsDriver:: Specifies that use of the open source JTDS driver. 
+Defaults to false.

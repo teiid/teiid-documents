@@ -1,27 +1,34 @@
-
+// Module included in the following assemblies:
+// as_transaction-support.adoc
+[id="transaction-support"]
 = AutoCommitTxn Execution Property
 
-Since user level commands may execute multiple source commands, users can specify the AutoCommitTxn execution property to control the transactional behavior of a user command when not in a local or global transaction.
+User level commands can execute multiple source commands. 
+To control the transactional behavior of a user command when not in a local or global transaction, you can specify the AutoCommitTxn execution property. 
 
 .*AutoCommitTxn Settings*
 |===
 |Setting |Description
 
 |OFF
-|Do not wrap each command in a transaction. Individual source commands may commit or rollback regardless of the success or failure of the overall command.
+|Do not wrap each command in a transaction. 
+Individual source commands may commit or rollback regardless of the success or failure of the overall command.
 
 |ON
 |Wrap each command in a transaction. This mode is the safest, but may introduce performance overhead.
 
 |DETECT
-|This is the default setting. Will automatically wrap commands in a transaction, but only if the command seems to be transactionally unsafe.
+|This is the default setting. 
+Will automatically wrap commands in a transaction, but only if the command seems to be transactionally unsafe.
 |===
 
-The concept of command safety with respect to a transaction is determined by {{ book.productnameFull }} based upon command type, the transaction isolation level, and available metadata. A wrapping transaction is not needed if:
+The concept of command safety with respect to a transaction is determined by {{ book.productnameFull }} based upon command type, 
+the transaction isolation level, and available metadata. 
+A wrapping transaction is not needed if the following criteria are true:
 
-* If a user command is fully pushed to the source.
-* If the user command is a SELECT (including XML) and the transaction isolation is not REPEATABLE_READ nor SERIALIABLE.
-* If the user command is a stored procedure and the transaction isolation is not REPEATABLE_READ nor SERIALIABLE and the link:Updating_Model_Count.adoc[Updating Model Count] is zero.
+* The user command is fully pushed to the source.
+* The user command is a SELECT (including XML) and the transaction isolation is not REPEATABLE_READ nor SERIALIABLE.
+* The user command is a stored procedure, the transaction isolation is not REPEATABLE_READ nor SERIALIABLE, 
+and the updating model count is zero. For more information, see xref:updating-model-count[Updating model count].
 
 The update count may be set on all procedures as part of the procedure metadata in the model.
-

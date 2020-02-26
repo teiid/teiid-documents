@@ -1,129 +1,14 @@
-
-= Temp Tables
+// Assembly included in the following assemblies:
+// as_sql-support.adoc
+[id="temp-tables"]
+= Temporary Tables
 :toc: manual
 :toc-placement: preamble
 
-{{ book.productnameFull }} supports creating temporary(or "temp") tables. Temp tables are dynamically created, but are treated as any other physical table.
+{{ book.productnameFull }} supports creating temporary (_temp_) tables. 
+Temporary tables are created dynamically, but are treated as any other physical table.
 
-== Local Temporary Tables
-
-Local temporary tables can be defined implicitly by referencing them in a INSERT statement or explicitly with a CREATE TABLE statement. Implicitly created temp tables must have a name that starts with `#`.
-
-[source,sql]
-.*Explicit Creation syntax*
-----
-CREATE LOCAL TEMPORARY TABLE name (column type [NOT NULL], ... [PRIMARY KEY (column, ...)]) [ON COMMIT PRESERVE ROWS]
-----
-
-* Use the SERIAL data type to specify a NOT NULL and auto-incrementing INTEGER column. The starting value of a SERIAL column is 1.
-
-[source,sql]
-.*Implicit Creation syntax*
-----
-INSERT INTO #name (column, ...) VALUES (value, ...) 
-INSERT INTO #name [(column, ...)] select c1, c2 from t
-----
-
-If #x doesn’t exist, it will be defined using the given column names and types from the value expressions, or the target column names (in not supplied, the column names will match the derived column names from the query), and the types from the query derived columns.
-
-NOTE: {{ book.productnameFull }}’s interpretation of local is different than the SQL specification and other database vendors. Local means that the scope of temp table will be either to the session or the block of a virtual procedure that creates it. Upon exiting the block or the termination of the session the table is dropped. Session and any other temporary tables created in calling procedures are not visible to called procedures. If a temporary table of the same name is created in a called procedure a new instance is created.
-
-[source,sql]
-.*Drop syntax*
-----
-DROP TABLE name
-----
-
-=== Example
-
-The following example is a series of statements that loads a temporary table with data from 2 sources, and with a manually inserted record, and then uses that temp table in a subsequent query.
-
-[source,sql]
-----
-CREATE LOCAL TEMPORARY TABLE TEMP (a integer, b integer, c integer); 
-SELECT * INTO temp FROM Src1; 
-SELECT * INTO temp FROM Src2; 
-INSERT INTO temp VALUES (1,2,3); 
-SELECT a,b,c FROM Src3, temp WHERE Src3.a = temp.b; 
-----
-
-See link:Virtual_Procedures.adoc[Virtual Procedures] for more on local temporary table usage.
-
-== Global Temporary Tables
-
-Global temporary tables are created via the metadata supplied to {{ book.productnameFull }} at deploy time. Unlike local temporary tables, they cannot be created at runtime. A global temporary tables share a common definition via a schema entry, but each session has a new instance of the temporary table created upon it’s first use. The table is then dropped when the session ends. There is no explicit drop support. A common use for a global temporary table is to pass results into and out of procedures.
-
-[source,sql]
-.*Creation syntax*
-----
-CREATE GLOBAL TEMPORARY TABLE name (column type [NOT NULL], ... [PRIMARY KEY (column, ...)]) OPTIONS (UPDATABLE 'true')
-----
-
-* If the SERIAL data type is used, then each session’s instance of the global temporary table will use it’s own sequence.
-
-See the CREATE TABLE link:DDL_Metadata.html[DDL statement] for all syntax options.
-
-Currently UPDATABLE must be explicitly specified for the temporary table to be updated.
-
-== Global and Local Temporary Table Features
-
-Primary Key Support:
-
-* All key columns must be comparable.
-* Use of a primary key creates a clustered index that supports search improvements for comparison, in, like, and order by.
-* Null is an allowable primary key value, but there must be only 1 row that has an all null key.
-
-Transaction Support:
-
-* Temp tables support a READ_UNCOMMITED transaction isolation level. There are no locking mechanisms available to support higher isolation levels and the result of a rollback may be inconsistent across multiple transactions. If concurrent transactions are not associated with the same local temporary table or session, then the transaction isolation level is effectively SERIALIZABLE. If you want full consistency with local temporary tables, then only use a connection with 1 transaction at a time. This mode of operation is ensured by connection pooling that tracks connections by transaction.
-
-Limitations:
-
-* With the CREATE TABLE syntax only basic table definition (column name, type, and nullable information) and an optional primary key are supported. For global temporary tables additional metadata in the create statement is effectively ignored when creating the temporary table instance - but may still be utilized by planning similar to any other table entry.
-* Similar to PostgreSQL, {{ book.productnameFull }} defaults to ON COMMIT PRESERVE ROWS. No other ON COMMIT action is supported at this time.
-* The "drop behavior" option is not supported in the drop statement.
-* Temp tables are not fail-over safe.
-* Non-inlined lob values (xml, clob, blob, json, geometry) are tracked by reference rather than by value in a temporary table. Lob values from external sources that are inserted in a temporary table may become unreadable when the associated statement or connection is closed.
-
-== Foreign Temporary Tables
-
-Unlike {{ book.productnameFull }} local or global temporary tables, a foreign temporary table is a reference to a source table that is created at runtime rather than during the metadata load.
-
-A foreign temporary table requires explicit creation syntax:
-
-[source,sql]
-----
-CREATE FOREIGN TEMPORARY TABLE name ... ON schema
-----
-
-Where the table creation body syntax is the same as a standard CREATE FOREIGN TABLE link:DDL_Metadata.html[DDL statement]. In general, usage of DDL OPTION clauses may be required to properly access the source table, including setting the name in source, updatability, native types, etc.
-
-The schema name must specify an existing schema/model in the VDB. The table will be accessed as if it is on that source, however within {{ book.productnameFull }} the temporary table will still be scoped the same as a non-foreign temporary table. This means that the foreign temporary table will not belong to a {{ book.productnameFull }} schema and will be scoped to the session or procedure block where created.
-
-The DROP syntax for a foreign temporary table is the same as for a non-foreign temporary table.
-
-NOTE: Neither a CREATE nor a corresponding DROP of a foreign temporary table issue a pushdown command, rather this mechanism simply exposes a source table for use within {{ book.productnameFull }} on a temporary basis.
-
-There are two usage scenarios for a FOREIGN TEMPORARY TABLE. The first is to dynamically access additional tables on the source. The other is to replace the usage of a {{ book.productnameFull }} local temporary table for performance reasons. The usage pattern for the latter case would look like:
-
-[source,sql]
-----
-//- create the source table
-source.native("CREATE GLOBAL TEMPORARY TABLE name IF NOT EXISTS ... ON COMMIT DELETE ROWS");
-//- bring the table into {{ book.productnameFull }}
-CREATE FOREIGN TEMPORARY TABLE name ... OPTIONS (UPDATABLE true)
-//- use the table
-...
-//- forget the table
-DROP TABLE name
-----
-
-Note the usage of the native procedure to pass source specific CREATE ddl to the source. {{ book.productnameFull }} does not currently attempt to pushdown a source creation of a temporary table based upon the CREATE statement. Some other mechanism, such as the native procedure shown above, must be used to first create the table. Also note the table is explicitly marked as updatable, since DDL defined tables are not updatable by default.
-
-The source’s handling of temporary tables must also be understood to make this work as intended. Sources that use the same GLOBAL table definition for all sessions while scoping the data to be session specific (such as Oracle) or sources that support session scoped temporary tables (such as PostgreSQL) will work if accessed under a transaction. A transaction is necessary because:
-
-* the source on commit behavior (most likely DELETE ROWS or DROP) will ensure clean-up. Keep in mind that a {{ book.productnameFull }} drop does not issue a source command and is not guaranteed to occur (in some exception cases, loss of db connectivity, hard shutdown, etc.).
-* the source pool when using track connections by transaction will ensure that multiple uses of that source by {{ book.productnameFull }} will use the same connection/session and thus the same temporary table and data.
-
-TIP: Since {{ book.productnameFull }} does not yet support the ON COMMIT clause it’s important to consider that the source table ON COMMIT behavior will likely be different that the default, PRESERVE ROWS, for {{ book.productnameFull }} local temporary tables.
-
+include::r_local-temporary-tables.adoc[leveloffset=+1]
+include::r_global-temporary-tables.adoc[leveloffset=+1]
+include::r_global-and-local-temp-table-features.adoc[leveloffset=+1]
+include::r_foreign-temporary-tables.adoc[leveloffset=+1]

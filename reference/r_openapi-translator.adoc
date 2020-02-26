@@ -1,17 +1,28 @@
+// Module included in the following assemblies:
+// as_translators.adoc
+[id="openapi-translator"]
+= OpenAPI translator
 
-= OpenAPI Translator
+The OpenAPI translator, known by the type name _"openapi"_ exposes OpenAPI data sources via relational concepts 
+and uses the {{ book.productnameFull }} WS resource adapter for making web service calls.
 
-The OpenAPI translator, known by the type name _"openapi"_ exposes OpenAPI data sources via realational concepts and uses the {{ book.productnameFull }} WS resource adapter for making web service calls.
-
-NOTE: *What is OpenAPI* - https://www.openapis.org/[[OpenAPI] is a simple yet powerful representation of your RESTful API. With the largest ecosystem of API tooling on the planet, thousands of developers are supporting OpenAPI in almost every modern programming language and deployment environment. With a OpenAPI-enabled API, you get interactive documentation, client SDK generation and discoverability.
+.What is OpenAPI?
+https://www.openapis.org/[[OpenAPI] is a simple yet powerful representation of your RESTful API. 
+With the largest ecosystem of API tooling on the planet, thousands of developers are supporting OpenAPI 
+in almost every modern programming language and deployment environment. 
+With an OpenAPI-enabled API, you get interactive documentation, client SDK generation, and discoverability.
 
 This translator is compatible with OpenAPI/Swagger v2 and OpenAPI v3.
 
-== Usage
+.Usage
 
-Usage of a OpenAPI source is similar any other translator in {{ book.productnameFull }}. The metadata import is supported through the translator. the metadata is imported from source system's metadata file and then exposed as stored procedures in {{ book.productnameFull }}. The source system can be queried by executing these stored procedures in {{ book.productnameFull }} system.
+Usage of a OpenAPI source is similar any other translator in {{ book.productnameFull }}. 
+The metadata import is supported through the translator. 
+The metadata is imported from source system's metadata file and then exposed as stored procedures in {{ book.productnameFull }}. 
+The source system can be queried by executing these stored procedures in {{ book.productnameFull }} system.
 
-NOTE: Parameter order is guaranteed by the swagger libraries.  However it is recommended that you call procedures using named, rather than positional parameters, if you rely upon the native import. 
+NOTE: Although parameter order is guaranteed by the Swagger libraries, if you rely upon the native import, 
+it is best if you call procedures using named, rather than positional parameters. 
 
 The below is sample VDB that can read metadata from Petstore reference service on http://petstore.swagger.io/ site.
 
@@ -42,7 +53,8 @@ The required resource-adapter configuration will look like
 </resource-adapter>
 ----
 
-Once you configure above resource-adapter and deploy the VDB successfully, then you can connect to the VDB deployed using {{ book.productnameFull }} JDBC driver and issue SQL statements like
+After you configure the preceding resource-adapter and deploy the VDB successfully, 
+then you can connect to the VDB deployed using {{ book.productnameFull }} JDBC driver and issue SQL statements such as the following:
 
 [source,sql]
 ----
@@ -51,32 +63,31 @@ EXEC getPetById(1461159803)
 EXEC deletePet('', 1461159803)
 ----
 
-== Configuration of Translator
+.Configuration of translator
 
-=== Execution Properties
+.Execution properties
 
-Execution properties extend/limit the functionality of the translator based on the physical source capabilities. Sometimes default properties need to adjusted for proper execution of the translator.
+Execution properties extend/limit the functionality of the translator based on the physical source capabilities. 
+Sometimes default properties must be adjusted for proper execution of the translator.
 
-*Execution Properties*
+*Execution properties*
 
 none
 
 
-=== Importer Properties
+.Importer properties
 
-Importer properties define the behavior of the translator during the metadata import from the physical source.
-
-*Importer Properties*
+The following table lists the importer properties that define the behavior of the translator during the import of from the physical source.
 
 |===
 |Name |Description |Default
 
 |metadataUrl
-|URL from which to obtain the OpenAPI metadata.  May be a local file using a file: URL.
+|URL from which to obtain the OpenAPI metadata. May be a local file using a file: URL.
 |true
 
 |server
-|The server to use.  Otherwise the first server listed will be used.
+|The server to use. Otherwise the first server listed will be used.
 |null
 
 |preferredProduces
@@ -90,16 +101,18 @@ Importer properties define the behavior of the translator during the metadata im
 |===
 
 {% if book.targetWildfly %}
-=== JCA Resource Adapter
+.JCA resource adapter
 
 The resource adapter for this translator is a link:../admin/Web_Service_Data_Sources.adoc[Web Service Data Source].
 {% endif %}
 
-NOTE: *Native Queries* - Native or direct query execution is not supported through OpenAPI translator. However, user can use Web Services Translator’s _invokehttp_ method directly to issue a Rest based call and parse results using SQLXML.
+TIP: *Native queries* - Native or direct query execution is not supported through the OpenAPI translator. 
+However, you can use the _invokehttp_ method of the Web services translator to issue REST-based calls, and then use SQLXML to parse results.
 
-=== Limitations
-- "application/xml" mime type in both "Accept" and "Content-Type" is currently not supported
-- File, Map properties are currently not supported, thus any multi-part payloads are not supported
-- Security metadata is currently not supported
-- Custom properties that start with "x-" are not supported.
-- Schema with "allof", "multipleof", "items" from JSON schema are not supported
+
+.Limitations
+- `application/xml` MIME type in both `Accept` and `Content-Type` is currently not supported.
+- File, Map properties are currently not supported, thus any multi-part payloads are not supported.
+- Security metadata is currently not supported.
+- Custom properties that start with `x-` are not supported.
+- Schema with `allof`, `multipleof`, `items` from JSON schema are not supported.

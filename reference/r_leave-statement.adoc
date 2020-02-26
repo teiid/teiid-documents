@@ -1,0 +1,17 @@
+// Module included in the following assemblies:
+// as_procedure-language.adoc
+[id="leave-statement"]
+= Leave statement
+
+A `LEAVE` statement is used inside a compound, `LOOP`, or `WHILE` construct to leave to the specified level.
+
+.Usage
+
+[source,sql]
+----
+LEAVE label;
+----
+
+.Syntax rules
+
+* The label must exist on a containing compound statement, `LOOP`, or `WHILE` statement.
