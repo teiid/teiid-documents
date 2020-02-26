@@ -1,26 +1,36 @@
-
+// Module included in the following assemblies:
+// as_sql-support.adoc
+[id="identifiers"]
 = Identifiers
 
-SQL commands contain references to tables and columns. These references are in the form of identifiers, which uniquely identify the tables and columns in the context of the command. All queries are processed in the context of a virtual database, or VDB. Because information can be federated across multiple sources, tables and columns must be scoped in some manner to avoid conflicts. This scoping is provided by schemas, which contain the information for each data source or set of views.
+SQL commands contain references to tables and columns. These references are in the form of 
+identifiers, which uniquely identify the tables and columns in the context of the command. 
+All queries are processed in the context of a virtual database, or VDB. 
+Because information can be federated across multiple sources, tables and columns must be scoped in some manner to avoid conflicts. 
+This scoping is provided by schemas, which contain the information for each data source or set of views.
 
-Fully-qualified table and column names are of the following form, where
-the separate `parts' of the identifier are delimited by periods.
+Fully-qualified table and column names are of the following form, where the separate `parts' of the identifier are delimited by periods.
 
 * TABLE: <schema_name>.<table_spec>
 * COLUMN: <schema_name>.<table_spec>.<column_name>
 
-_Syntax Rules:_
+.Syntax rules
 
-* Identifiers can consist of alphanumeric characters, or the underscore (_) character, and must begin with an alphabetic character. Any Unicode character may be used in an identifier.
-* Identifiers in double quotes can have any contents. The double quote character can it’s be escaped with an additional double quote. e.g. "some", " id"
-* Because different data sources organize tables in different ways, some prepending catalog or schema or user information, {{ book.productnameFull }} allows table specification to be a dot-delimited construct.
+* Identifiers can consist of alphanumeric characters, or the underscore (`_`) character, and must begin with an alphabetic character. 
+Any Unicode character may be used in an identifier.
+* Identifiers in double quotes can have any contents. 
+The double quote character can be used if is escaped with an additional double quote; for example, `"some "" id"`
+* Because different data sources organize tables in different ways, with some prepending catalog, schema, or user information, 
+{{ book.productnameFull }} allows table specification to be a dot-delimited construct.
 
-NOTE: When a table specification contains a dot resolving will allow for the match of a partial name against any number of the end segments in the name. e.g. a table with the fully-qualified name vdbname."sourceschema.sourcetable" would match the partial name sourcetable.
+NOTE: When a table specification contains a dot resolving will allow for the match of a partial 
+name against any number of the end segments in the name. e.g. a table with the fully-qualified 
+name `vdbname."sourceschema.sourcetable"` would match the partial name `sourcetable`.
 
-* Columns, column aliases, and schemas cannot contain a dot '.' character.
+* Columns, column aliases, and schemas cannot contain a dot (`.`) character.
 * Identifiers, even when quoted, are not case-sensitive in {{ book.productnameFull }}.
 
-Some examples of valid fully-qualified table identifiers are:
+Some examples of valid, fully-qualified table identifiers are:
 
 * MySchema.Portfolios
 * "MySchema.Portfolios"
@@ -32,11 +42,16 @@ Some examples of valid fully-qualified column identifiers are:
 * "MySchema.Portfolios"."portfolioID"
 * MySchema.MyCatalog.dbo.Authors.lastName
 
-Fully-qualified identifiers can always be used in SQL commands. Partially- or unqualified forms can also be used, as long as the resulting names are unambiguous in the context of the command. Different forms of qualification can be mixed in the same query.
+Fully-qualified identifiers can always be used in SQL commands. 
+Partially- or unqualified forms can also be used, as long as the resulting names are unambiguous in the context of the command. 
+Different forms of qualification can be mixed in the same query.
 
-If you use an alias containing a '.' character, it is a known issue that the alias name will be treated the same as a qualified name and may conflict with fully qualified object names.
+If you use an alias containing a period (`.`) character, it is a known issue that the alias 
+name will be treated the same as a qualified name and may conflict with fully qualified object names.
 
-== Reserved Words
+.Reserved words
 
-{{ book.productnameFull }}’s reserved words include the standard SQL 2003 Foundation, SQL/MED, and SQL/XML reserved words, as well as {{ book.productnameFull }} specific words such as BIGINTEGER, BIGDECIMAL, or MAKEDEP. See the link:BNF_for_SQL_Grammar.adoc[BNF for SQL Grammar] Reserved Keywords and Reserved Keywords For Future Use sections for all reserved words.
-
+Reserved words in {{ book.productnameFull }} include the standard SQL 2003 Foundation, SQL/MED, and SQL/XML reserved words, 
+as well as {{ book.productnameFull }} specific words such as BIGINTEGER, BIGDECIMAL, or MAKEDEP. 
+For more information about reserved words, see the _Reserved Keywords_ and _Reserved Keywords For Future Use_ sections 
+in xref:bnf-for-sql-grammar[BNF for SQL grammar].

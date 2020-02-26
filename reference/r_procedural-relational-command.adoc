@@ -1,0 +1,53 @@
+
+// Module included in the following assemblies:
+// as_update-commands.adoc
+[id="procedural-relational-command"]
+
+= Procedural relational command
+
+Procedural relational commands use the syntax of a SELECT to emulate an EXEC. 
+In a procedural relational command, a procedure group name is used in a FROM clause in place of a table. 
+That procedure is executed in place of a normal table access if all of the necessary input values 
+can be found in criteria against the procedure. 
+Each combination of input values that is found in the criteria results in the execution of the procedure.
+
+.Example syntax
+
+[source,sql]
+----
+select * from proc
+----
+
+[source,sql]
+----
+select output_param1, output_param2 from proc where input_param1 = 'x'
+----
+
+[source,sql]
+----
+select output_param1, output_param2 from proc, table where input_param1 = table.col1 and input_param2 = table.col2
+----
+
+.Syntax rules
+* The procedure as a table projects the same columns as an EXEC with the addition of the input parameters. 
+For procedures that do not return a result set, IN_OUT columns are projected as two columns: 
+** One to represents the output value.
+** One with the name {column name}_IN that represents the input of the parameter.
+* Input values are passed via criteria. 
+Values can be passed by `=`, `is null`, or as `in` predicates. 
+Disjuncts are not allowed. 
+It is also not possible to pass the value of a non-comparable column through an equality predicate.
+* The procedure view automatically has an access pattern on its IN and IN_OUT parameters.
+The access pattern allows the procedure view to be planned correctly as a dependent join when necessary, 
+or to fail when sufficient criteria cannot be found.
+* Procedures that contain duplicate names between the parameters (IN, IN_OUT, OUT, RETURN) and the result 
+set columns cannot be used in a procedural relational command.
+* If there is already a table or view with the same name as the procedure, then it cannot be invoked via procedural relational syntax.
+* Default values for IN or IN_OUT parameters are not used if there is no criteria present for a given input. 
+Default values are only valid for named procedure syntax. For more information, see xref:execute-command[EXECUTE].
+
+NOTE: The preceding issues do not apply when you use a nested table reference. 
+For more information, see _Nested table reference_ in xref:from-clause[FROM clause].
+
+.Multiple execution
+The use of `in` or join criteria can result in a procedure being executed multiple times.

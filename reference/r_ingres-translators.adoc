@@ -1,15 +1,13 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="ingres-translator"]
 
-= Ingres Translators (ingres / ingres93)
+= Ingres translators (ingres / ingres93)
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+Also see common xref:jdbc-translators[JDBC Translators] information.
 
-The Ingres translation is supported by 2 translators.
+Ingres translation is supported by 2 translators.
 
-== ingres
+ingres:: The Ingres translator, known by the type name *_ingres_*, is for use with Ingres 2006 or later.
 
-The Ingres Translator, known by the type name *_ingres_*, is for use with Ingres 2006 or later.
-
-== ingres93
-
-The Ingres93 Translator, known by the type name *_ingres93_*, is for use with Ingres 9.3 or later.
-
+ingres93:: The Ingres93 translator, known by the type name *_ingres93_*, is for use with Ingres 9.3 or later.

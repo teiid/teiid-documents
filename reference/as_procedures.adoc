@@ -1,5 +1,10 @@
-
+// Assembly included in the following assemblies:
+// as_sql-support.adoc
+[id="procedures"]
 = Procedures
 
 {{ book.productnameFull }} supports calling foreign procedures and defining virtual procedures and triggers using a procedure language. 
 
+include::as_procedure-language.adoc[leveloffset=+1]
+include::r_virtual-procedures.adoc[leveloffset=+1]
+include::r_update-procedure-triggers.adoc[leveloffset=+1]

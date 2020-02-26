@@ -1,0 +1,23 @@
+// Module included in the following assemblies:
+// as_update-commands.adoc
+[id="anonymous-procedure-block"]
+= Anonymous procedure block
+
+You can execute a procedure language block as a user command. 
+This can be an advantage in situations in which a virtual procedure does not exist, but a set of processes can be carried out on the server side.
+For more information about the language for defining virtual procedures, see xref:procedure-language[Procedure language].
+
+.Example syntax
+
+[source,sql]
+----
+begin insert into pm1.g1 (e1, e2) select ?, ?; select rowcount; end;
+----
+
+.Syntax rules
+* `in` parameters are supported with prepared/callable statement parameters, as shown in the preceding example, which uses `?` parameter.
+* `out` parameters are not supported. As a workaround, you can use session variables as needed.
+* A return parameter is not supported.
+* A single result will be returned if any of the statements returns a result set. 
+All returnable result sets must have a matching number of columns and types. 
+To indicate that a statement is not intended to provide a result set, use the WITHOUT RETURN clause.

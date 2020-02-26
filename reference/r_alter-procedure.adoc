@@ -1,16 +1,17 @@
+// Module included in the following assemblies:
+// as_ddl-commands.adoc
+[id="alter-procedure"]
+= Alter procedure
 
-= Alter Procedure
-
-Usage:
+.Usage
 
 [source,sql]
 ----
 ALTER PROCEDURE name AS block
 ----
 
-Syntax Rules:
+.Syntax rules
 
-* The alter block should not include `CREATE VIRTUAL PROCEDURE`
+* The ALTER block should not include `CREATE VIRTUAL PROCEDURE`.
 
-* The alter block may be prefixed with a cache hint for cached procedures.
-
+* You can prefix the ALTER block with a cache hint for cached procedures.

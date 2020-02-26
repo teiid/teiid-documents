@@ -1,24 +1,42 @@
+// Module included in the following assemblies:
+// as_scalar-functions.adoc
+[id="lookup-function"]
+= Lookup function
 
-= Lookup Function
-
-The Lookup function provides a way to speed up access to values from a reference table. The Lookup function automatically caches all key and return column pairs declared in the function for the referenced table. Subsequent lookups against the same table using the same key and return columns will use the cached values. This caching accelerates response time to queries that use lookup tables, also known in business terminology as code or reference tables.
+The Lookup function provides a way to speed up access to values from a reference table. 
+The Lookup function automatically caches all key and return column pairs declared in the function for the referenced table. 
+Subsequent lookups against the same table using the same key and return columns will use the cached values. 
+This caching accelerates response time to queries that use lookup tables, also known in business terminology as code or reference tables.
 
 [source,sql]
 ----
 LOOKUP(codeTable, returnColumn, keyColumn, keyValue)
 ----
 
-In the lookup table codeTable, find the row where keyColumn has the value keyValue and return the associated returnColumn value or null, if no matching keyValue is found. codeTable must be a string literal that is the fully-qualified name of the target table. returnColumn and keyColumn must also be string literals and match corresponding column names in the codeTable. The keyValue can be any expression that must match the datatype of the keyColumn. The return datatype matches that of returnColumn.
+In the lookup table codeTable, find the row where keyColumn has the value keyValue and return the associated returnColumn value or null, 
+if no matching keyValue is found. 
+codeTable must be a string literal that is the fully-qualified name of the target table. 
+returnColumn and keyColumn must also be string literals and match corresponding column names in the codeTable. 
+The keyValue can be any expression that must match the datatype of the keyColumn. 
+The return datatype matches that of returnColumn.
 
 [source,sql]
-.*Country Code Lookup*
+.*Country code lookup*
 ----
 lookup('ISOCountryCodes', 'CountryCode', 'CountryName', 'United States')
 ----
 
-An ISOCountryCodes table is used to translate a country name to an ISO country code. One column, CountryName, represents the keyColumn. A second column, CountryCode, represents the returnColumn, containing the ISO code of the country. Hence, the usage of the lookup function here will provide a CountryName, shown above as `United States', and expect a CountryCode value in response.
+An ISOCountryCodes table is used to translate a country name to an ISO country code. 
+One column, CountryName, represents the keyColumn. A second column, CountryCode, represents the returnColumn, 
+containing the ISO code of the country. 
+Hence, the usage of the lookup function here will provide a CountryName, shown above as `United States', and expect a CountryCode value in response.
 
-When you call this function for any combination of codeTable, returnColumn, and keyColumn for the first time, the {{ book.productnameFull }} System caches the result. The {{ book.productnameFull }} System uses this cache for all queries, in all sessions, that later access this lookup table. You should generally not use the lookup function for data that is subject to updates or may be session/user specific - including row based security and column masking effects. See the link:../caching/Code_Table_Caching.adoc[Caching Guide] for more on the caching aspects of the Lookup function.
+When you call this function for any combination of codeTable, returnColumn, and keyColumn for the first time, 
+the {{ book.productnameFull }} System caches the result. 
+The {{ book.productnameFull }} System uses this cache for all queries, in all sessions, that later access this lookup table. 
+You should generally not use the lookup function for data that is subject to updates or may be session/user specific, 
+including row-based security and column masking effects. 
+For more information about caching in the Lookup function, see the link:../caching/Code_Table_Caching.adoc[Caching Guide] .
 
-The keyColumn is expected to contain unique values for its corresponding codeTable. If the keyColumn contains duplicate values, an exception will be thrown.
-
+The keyColumn is expected to contain unique values for its corresponding codeTable. 
+If the keyColumn contains duplicate values, an exception will be thrown.

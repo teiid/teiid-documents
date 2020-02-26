@@ -1,9 +1,11 @@
-
+// Module included in the following assemblies:
+// as_dml-commands.adoc
+[id="having-clause"]
 = HAVING Clause
 
-The HAVING clause operates exactly as a WHERE clause although it operates on the output of a GROUP BY. It supports the same syntax as the WHERE clause.
+The HAVING clause operates exactly as a WHERE clause, although it operates on the output of a GROUP BY. 
+It supports the same syntax as the WHERE clause.
 
-Syntax Rules:
+.Syntax Rules
 
-* Expressions used in the group by clause must either contain an aggregate function: COUNT, AVG, SUM, MIN, MAX. or be one of the grouping expressions.
-
+* Expressions used in the GROUP BY clause must contain either an aggregate function (COUNT, AVG, SUM, MIN, MAX), or be one of the grouping expressions.

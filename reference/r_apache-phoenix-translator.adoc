@@ -1,20 +1,33 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="apache-phoenix-translator"]
+= Apache Phoenix Translator (phoenix)
 
-= Apache HBase Translator (phoenix)
+Also see common xref:jdbc_translators[JDBC Translators] information.
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+The Apache Phoenix translator, known by the type name *_phoenix_*, exposes querying functionality to http://hbase.apache.org/[HBase] tables. 
+http://phoenix.apache.org/[Apache Phoenix] is a JDBC SQL interface for HBase that is required for this translator as it pushes down commands into 
+http://phoenix.apache.org/language/index.html[Phoenix SQL].
 
-The Apache Phoenix Translator, known by the type name *_phoenix_*, exposes querying functionality to http://hbase.apache.org/[HBase] Tables. http://phoenix.apache.org/[Apache Phoenix] is a JDBC SQL interface for HBase that is required for this translator as it pushes down commands into http://phoenix.apache.org/language/index.html[Phoenix SQL].
+The translator is also known by the deprecated name *_hbase_*. 
+The name change reflects that the translator is specific to Phoenix and that there could be other translators introduced in the future to connect to HBase.
 
-The translator is also known by the deprecated name *_hbase_*.  The name change reflects that the translator is specific to phoenix and there may be other translators introduced in the future that also connect to HBase.
+Do not use the `DatabaseTimezone` property with this translator.
 
-The DatabaseTimezone property should not be used with this translator.
+The HBase translator doesn’t support Join commands. 
+Phoenix uses the HBase Table Row ID as the Primary Key, which map to . 
+This Translator is developed with Phoenix 4.3 or greater for HBase 0.98.1 or greater.
 
-The HBase Translator doesn’t support Joins. Phoenix uses the HBase Table Row ID as the Primary Key, which map to . This Translator is developed with Phoenix 4.3+ for HBase 0.98.1+.
-
-NOTE: The translator implements INSERT/UPDATE through the Phoenix UPSERT operation. This means you can see different behavior than with standard INSERT/UPDATE - such as repeated inserts will not throw a duplicate key exception, but will instead update the row in question.
+NOTE: The translator implements INSERT/UPDATE through the Phoenix UPSERT operation. 
+This means you can see different behavior than with standard INSERT/UPDATE. 
+For example, repeated inserts will not throw a duplicate key exception, but will instead update the row in question.
 
 NOTE: Due to Phoenix driver limitations the importer will not look for unique constraints and defaults to not importing foreign keys.
 
-NOTE: The translator supports offset and other features starting with Phoenix 4.8. The Phoenix driver hard codes the server version in PhoenixDatabaseMetaData, and does not otherwise provide a way to detect the server version at runtime.  If a newer driver is used with an older server, please set the database version translator property manually.
+NOTE: The translator supports offset and other features starting with Phoenix 4.8. 
+The Phoenix driver hard codes the server version in `PhoenixDatabaseMetaData`, and does not otherwise provide a way to detect the server version at runtime. 
+If a newer driver is used with an older server, set the database version translator property manually.
 
-WARNING: The Phoenix driver does not have robust handling of time values.  If your time values are normalized to use a date component of 1970-01-01, then the default handling will work correctly.  If not, then the time column should be modeled as timestamp instead.
+WARNING: The Phoenix driver does not have robust handling of time values. 
+If your time values are normalized to use a date component of 1970-01-01, then the default handling will work correctly. 
+If not, then the time column should be modeled as timestamp instead.

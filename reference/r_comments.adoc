@@ -1,7 +1,9 @@
-
+// Reference module included in the following assemblies:
+// as_sql-support.adoc
+[id="comments"]
 = Comments
 
-{{ book.productnameFull }} supports multi-line comments enclosed with /* */:
+{{ book.productnameFull }} supports multi-line comments enclosed with `/* */`.
 
 [source,sql]
 ----
@@ -10,12 +12,11 @@ comment
 comment... */
 ----
 
-And single line comments:
+You can also add single line comments:
 
 [source,sql]
 ----
 SELECT ... -- comment
 ----
 
-Comment nesting is supported.
-
+You can also nest comments.

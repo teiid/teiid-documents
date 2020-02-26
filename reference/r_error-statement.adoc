@@ -1,0 +1,28 @@
+// Module included in the following assemblies:
+// as_procedure-language.adoc
+[id="return-statement"]
+= Error statement
+
+An `ERROR` statement declares that the procedure has entered an error state and should abort. 
+This statement will also roll back the current transaction, if one exists. 
+Any valid expression can be specified after the `ERROR` keyword.
+
+.Usage
+
+[source,sql]
+----
+ERROR message;
+----
+
+[source,sql]
+.*Example: Error statement*
+----
+ERROR 'Invalid input value: ' || nvl(Acct.GetBalance.AcctID, 'null');
+----
+
+An `ERROR` statement is equivalent to:
+
+[source,sql]
+----
+RAISE SQLEXCEPTION message;
+----

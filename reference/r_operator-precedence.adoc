@@ -1,0 +1,30 @@
+// Module included in the following assemblies:
+// as_sql-support.adoc
+[id="operator-precedence"]
+= Operator precedence
+
+{{ book.productnameFull }} parses and evaluates operators with higher precedence before those with lower precedence. 
+Operators with equal precedence are left-associative (left-to-right). 
+The following table lists operator precedence from high to low:
+
+|===
+|Operator |Description
+
+|`[]`
+|array element reference
+
+|`+`,`-`
+|positive/negative value expression
+
+|`*`,`/`
+|multiplication/division
+
+|`+`,`-`
+|addition/subtraction
+
+|`\|\|`
+|concat
+
+|criteria
+|For information, see xref:criteria[Criteria].
+|===

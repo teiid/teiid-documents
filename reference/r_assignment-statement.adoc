@@ -1,0 +1,36 @@
+// Module included in the following assemblies:
+// as_procedure-language.adoc
+[id="assignment-statement"]
+= Assignment statement
+
+An assignment statement assigns a value to a variable by evaluating an expression.
+
+.Usage
+
+[source,sql]
+----
+<variable reference> = <expression>;
+----
+
+.Example syntax
+
+[source,sql]
+----
+myString = 'Thank you';
+VARIABLES.x = (SELECT Column1 FROM MySchema.MyTable);
+----
+
+Valid variables for assignment include any in-scope variable that has been declared with a declaration statement, 
+or the procedure `in_out` and `out` parameters. 
+`In_out` and `out` parameters can be accessed by their fully qualified names.
+
+.Example: Out parameter
+
+[source,sql]
+----
+CREATE VIRTUAL PROCEDURE proc (OUT STRING x, INOUT STRING y) AS
+BEGIN
+  proc.x = 'some value ' || proc.y;
+  y = 'some new value';
+END
+----

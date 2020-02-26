@@ -1,0 +1,10 @@
+// Module included in the following assemblies:
+// as_expressions.adoc
+[id="column-identifiers]
+
+= Column Identifiers
+
+Column identifiers are used to specify the output columns in SELECT statements, the 
+columns and their values for INSERT and UPDATE statements, and criteria used in WHERE 
+and FROM clauses. They are also used in GROUP BY, HAVING, and ORDER BY clauses. The syntax 
+for column identifiers was defined in the Identifiers section above.

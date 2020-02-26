@@ -1,35 +1,51 @@
+// Module included in the following assemblies:
+// as_from-clause.adoc
+[id=objecttable]
 
 = OBJECTTABLE
 
-The OBJECTTABLE function processes an object input to produce tabular output. The function itself defines what columns it projects. The OBJECTTABLE function is implicitly a nested table and may be correlated to preceding FROM clause entries.
+The OBJECTTABLE function processes an object input to produce tabular output. 
+The function itself defines what columns it projects. 
+The OBJECTTABLE function is implicitly a nested table and can be used within FROM clauses.
 
-Usage:
+.Usage
 
 [source,sql]
 ----
 OBJECTTABLE([LANGUAGE lang] rowScript [PASSING val AS name ...] COLUMNS colName colType colScript [DEFAULT defaultExpr] ...) AS id
 ----
 
-Parameters
+.Parameters
 
-* lang - an optional string literal that is the case sensitive language name of the scripts to be processed. The script engine must be available via a JSR-223 ScriptEngineManager lookup. {% if book.targetWildfly %}
-In some instances this may mean making additional modules available to your vdb, which can be done via the same process as adding modules/libraries link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[for UDFs].
+lang:: An optional string literal that is the case sensitive language name of the scripts to be processed. 
+The script engine must be available via a JSR-223 ScriptEngineManager lookup. 
+{% if book.targetWildfly %}
+In some instances this may mean making additional modules available to your vdb, 
+which can be done via the same process as adding modules/libraries link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[for UDFs].
 {% endif %}
-If a LANGUAGE is not specified, the default of 'teiid_script' (see below) will be used.
-* name - an identifier that will bind the val expression value into the script context.
-* rowScript is a string literal specifying the script to create the row values. for each non-null item the Iterator produces the columns will be evaluated.
-* colName/colType are the id/data type of the column, which can optionally be defaulted with the DEFAULT clause expression defaultExpr.
-* colScript is a string literal specifying the script that evaluates to the column value.
+If a LANGUAGE is not specified, the default 'teiid_script' is used.
+name:: An identifier that binds the `val` expression value into the script context.
+rowScript:: A string literal that specifies the script to create the row values. 
+For each non-null item that the Iterator produces, the columns are evaluated.
+colName/colType:: ID/data type of the column, which can optionally be defaulted with the DEFAULT clause expression `defaultExpr`.
+colScript:: A string literal that specifies the script that evaluates to the column value.
 
-Syntax Rules:
+.Syntax rules
 
-* The columns names must be not contain duplicates.
-* {{ book.productnameFull }} will place several special variables in the script execution context. The CommandContext is available as teiid_context. Additionally the colScripts may access teiid_row and teiid_row_number.  teiid_row is the current row object produced by the row script.  teiid_row_number is the current 1-based row number.
-* rowScript is evaluated to an Iterator. If the results is already an Iterator, it is used directly. If the evaluation result is an Iteratable, Array, or Array type, then an Iterator will be obtained. Any other Object will be treated as an Iterator of a single item). In all cases null row values will be skipped.
+* Columns names cannot contain duplicates.
+* {{ book.productnameFull }} places several special variables in the script execution context. 
+The CommandContext is available as `teiid_context`. 
+Additionally the `colScripts` may access `teiid_row` and `teiid_row_number`. 
+`teiid_row` is the current row object produced by the row script. `teiid_row_number` is the current 1-based row number.
+* `rowScript` is evaluated to an Iterator. 
+If the results is already an Iterator, it is used directly. 
+If the evaluation result is an Iteratable, Array, or Array type, then an Iterator is obtained. 
+Any other Object will be treated as an Iterator of a single item. 
+In all cases null row values are skipped.
 
-NOTE: While there is no restriction what can be used as a PASSING variable names you should choose names that can be referenced as identifiers in the target language.
+NOTE: Although there are no restrictions on naming PASSING variables, it is best to choose names that you can reference as identifiers in the target language.
 
-Examples
+.OBJECTTABLE examples
 
 * Accessing special variables:
 
@@ -40,17 +56,38 @@ SELECT x.* FROM OBJECTTABLE('teiid_context' COLUMNS "user" string 'teiid_row.use
 
 The result would be a row with two columns containing the user name and 1 respectively.
 
-NOTE: Due to their mostly unrestricted access to Java functionality, usage of languages other than teiid_script is restricted by default. A VDB must declare all allowable languages by name in the allowed-languages link:vdb_properties.adoc[VDB Properties] using a comma separated list. The names are case sensitive names and should be separated without whitespace.  Without this property it is not possible to use OBJECTTABLE even from within view definitions that are not subject to normal permission checks.
+[NOTE]
+====
+Languages other than teiid_script generally permit unrestricted access to Java functionality. 
+As a result, by default, their use is restricted. 
+You can override the restrictions by declaring allowable languages by name in the `allowed-languages` property. 
+To use OBJECTTABLE, even from within view definitions that are not normally subject to permission checks, 
+you must define the `allowed-languages` property.
+You must also set language access rights for user accounts to enable users to process OBJECTTABLE functions. 
 
-Data roles can define the link:Permissions.adoc[language permission].
+* For more information about about teiid_script, see the next section. 
+* For more information about enabling the use of languages other than teiid_script, see _allowed-languages_ in xref:vdb-properties[Virtual database properties].
+* For more information about setting user account permission, see _User query permissions_ in xref:permissions[Permissions]. 
+====
 
 *teiid_script*
 
-teiid_script is a simple scripting expression language that allows access to passing and special variables as well as any non-void 0-argument methods on objects and indexed values on arrays/lists. A teiid_script expression begins by referencing the passing or special variable. Then any number of `.' accessors may be chained to evaluate the expression to a different value. Methods may be accessed by their property names, for example foo rather than getFoo. If the object both a `getFoo()` and `foo()` method, then the accessor foo references `fo ()` and getFoo should be used to call the getter. An array or list index may be accessed using a 1-based positive integral value - using the same '.' accessor syntax. The same logic as the system function array_get is used meaning that null will be returned rather than exception if the index is out of bounds.
+teiid_script is a simple scripting expression language that allows access to passing and special variables, 
+and to non-void 0-argument methods on objects and indexed values on arrays/lists. 
+A teiid_script expression begins by referencing the passing or special variable. 
+Then, any number of `.` accessors can be chained to evaluate the expression to a different value. 
+Methods may be accessed by their property names, for example, foo rather than getFoo. 
+If the object includes both a `getFoo()` and `foo()` method, then the accessor `foo` references `foo ()`, 
+and `getFoo` should be used to call the getter. 
+An array or list index is accessed using a 1-based positive integral value, using the same `.` accessor syntax. 
+The same logic as the system function `array_get` is used. 
+That is, if the index is out of bounds, `null` is returned, rather than an exception.
 
-teiid_script is effectively dynamically typed as typing is performed at runtime. If a accessor does not exist on the object or if the method is not accessible, then an exception will be raised. If at any point in the accessor chain evaluates to a null value, then null will be returned.
+teiid_script is effectively dynamically typed as typing is performed at runtime. 
+If an accessor does not exist on the object, or if the method is not accessible, then an exception is raised. 
+If any point in the accessor chain evaluates to a null value, then null will be returned.
 
-Examples
+.teiid_script examples
 
 * To get the VDB description string:
 
@@ -64,4 +101,3 @@ teiid_context.session.vdb.description
 ----
 teiid_context.session.vdb.description.toCharArray.1
 ----
-

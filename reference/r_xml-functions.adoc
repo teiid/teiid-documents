@@ -1,11 +1,15 @@
+// Module included in the following assemblies:
+// as_scalar-functions.adoc
+[id="xml-functions"]
 
-= XML Functions
+= XML functions
 :toc: manual
 :toc-placement: preamble
 
-XML functions provide functionality for working with XML data. See also the link:JSON_Functions.adoc[JSONTOXML function].
+XML functions provide functionality for working with XML data. 
+For more information, see _JSONTOXML_ in xref:json-functions[JSON functions].
 
-== Sample Data For Examples
+.Sample data for examples
 
 Examples provided with XML functions use the following table structure
 
@@ -52,7 +56,7 @@ with Data
 |USA
 |===
 
-== XMLCAST
+.XMLCAST
 
 Cast to or from XML.
 
@@ -61,9 +65,10 @@ Cast to or from XML.
 XMLCAST(expression AS type)
 ----
 
-Expression or type must be XML. The return value will be typed as type. This is the same functionality as XMLTABLE uses to convert values to the desired runtime type - with the exception that array type targets are not supported with XMLCAST.
+Expression or type must be XML. The return value will be typed as type. This is the same functionality 
+as XMLTABLE uses to convert values to the desired runtime type - with the exception that array type targets are not supported with XMLCAST.
 
-== XMLCOMMENT
+.XMLCOMMENT
 
 Returns an xml comment.
 
@@ -74,7 +79,7 @@ XMLCOMMENT(comment)
 
 Comment is a string. Return value is xml.
 
-== XMLCONCAT
+.XMLCONCAT
 
 Returns an XML with the concatenation of the given xml types.
 
@@ -100,8 +105,8 @@ WHERE  c.CustomerID = 87;
 ==========================================================
 <name>Wartian Herkku</name><a>b</a>
 ----
-
-== XMLELEMENT
+[[xmlelement]]
+.XMLELEMENT
 
 Returns an XML element with the given name and content.
 
@@ -114,16 +119,23 @@ ATTR:=XMLATTRIBUTES(exp [AS name] [, exp [AS name]]*)
 NSP:=XMLNAMESPACES((uri AS prefix | DEFAULT uri | NO DEFAULT))+
 ----
 
-If the content value is of a type other than xml, it will be escaped when added to the parent element. Null content values are ignored. Whitespace in XML or the string values of the content is preserved, but no whitespace is added between content values.
+If the content value is of a type other than xml, it will be escaped when added to the parent element. 
+Null content values are ignored. Whitespace in XML or the string values of the content is preserved, 
+but no whitespace is added between content values.
 
-XMLNAMESPACES is used provide namespace information. NO DEFAULT is equivalent to defining the default namespace to the null uri - xmlns="". Only one DEFAULT or NO DEFAULT namespace item may be specified. The namespace prefixes xmlns and xml are reserved.
+XMLNAMESPACES is used provide namespace information. NO DEFAULT is equivalent to defining the default namespace to the null uri - xmlns="". 
+Only one DEFAULT or NO DEFAULT namespace item may be specified. 
+The namespace prefixes xmlns and xml are reserved.
 
-If a attribute name is not supplied, the expression must be a column reference, in which case the attribute name will be the column name. Null attribute values are ignored.
+If a attribute name is not supplied, the expression must be a column reference, in which case the attribute name will be the column name. 
+Null attribute values are ignored.
 
-Name, prefix are identifiers. uri is a string literal. content can be any type. Return value is xml. The return value is valid for use in places where a document is expected.
+Name, prefix are identifiers. uri is a string literal. content can be any type. 
+Return value is xml. 
+The return value is valid for use in places where a document is expected.
 
 [source,sql]
-.*Simple Example*
+.*Simple example*
 ----
 SELECT XMLELEMENT("name", CustomerName)
 FROM   Customer c
@@ -134,7 +146,7 @@ WHERE  c.CustomerID = 87;
 ----
 
 [source,sql]
-.*Multiple Columns*
+.*Multiple columns*
 ----
 SELECT XMLELEMENT("customer", 
           XMLELEMENT("name", c.CustomerName),
@@ -147,7 +159,7 @@ WHERE  c.CustomerID = 87;
 ----
 
 [source,sql]
-.*Columns as Attributes*
+.*Columns as attributes*
 ----
 SELECT XMLELEMENT("customer", 
           XMLELEMENT("name", c.CustomerName,
@@ -164,7 +176,7 @@ WHERE  c.CustomerID = 87;
 <customer><name contact="Pirkko Koskitalo" id="87">Wartian Herkku</name></customer>
 ----
 
-== XMLFOREST
+.XMLFOREST
 
 Returns an concatenation of XML elements for each content item.
 
@@ -173,13 +185,17 @@ Returns an concatenation of XML elements for each content item.
 XMLFOREST(content [AS name] [, <NSP>] [, content [AS name]]*)
 ----
 
-See link:XML_Functions.adoc#_xmlelement[XMLELEMENT] for the definition of NSP - XMLNAMESPACES
+For the definition of NSP - XMLNAMESPACES, see See _XMLELEMENT_ in xref:xml-functions[XML functions]. 
 
-Name is an identifier. Content can be any type. Return value is xml.
+Name is an identifier. 
+Content can be any type. 
+Return value is XML.
 
-If a name is not supplied for a content item, the expression must be a column reference, in which case the element name will be a partially escaped version of the column name.
+If a name is not supplied for a content item, the expression must be a column reference, in which case 
+the element name will be a partially escaped version of the column name.
 
-You can use XMLFORREST to simplify the declaration of multiple XMLELEMENTS, XMLFOREST function allows you to process multiple columns at once
+You can use the XMLFOREST to simplify the declaration of multiple XMLELEMENTS.
+The XMLFOREST function allows you to process multiple columns at once.
 
 [source,sql]
 .*Example*
@@ -196,7 +212,7 @@ WHERE  c.CustomerID = 87;
 <customer><name>Wartian Herkku</name><contact>Pirkko Koskitalo</contact></customer>
 ----
 
-== XMLAGG
+.XMLAGG
 
 XMLAGG is an aggregate function, that takes a collection of XML elements and returns an aggregated XML document.
 
@@ -205,7 +221,9 @@ XMLAGG is an aggregate function, that takes a collection of XML elements and ret
 XMLAGG(xml)
 ----
 
-From above example in XMLElement, each row in the Customer table table will generate row of XML if there are multiple rows matching the criteria. That will generate a valid XML, but it will not be well formed, because it lacks the root element. XMLAGG can used to correct that
+From above example in XMLElement, each row in the Customer table table will generate row of XML if there are 
+multiple rows matching the criteria. That will generate a valid XML, but it will not be well formed, because 
+it lacks the root element. XMLAGG can used to correct that
 
 [source,sql]
 .*Example*
@@ -228,7 +246,7 @@ FROM   Customer c
 </customers>
 ----
 
-== XMLPARSE
+.XMLPARSE
 
 Returns an XML type representation of the string value expression.
 
@@ -252,7 +270,7 @@ Will return a SQLXML with contents
 <customer><name>Wartian Herkku</name><contact>Pirkko Koskitalo</contact></customer>
 ----
 
-== XMLPI
+.XMLPI
 
 Returns an xml processing instruction.
 
@@ -263,7 +281,8 @@ XMLPI([NAME] name [, content])
 
 Name is an identifier. Content is a string. Return value is xml.
 
-== XMLQUERY
+[[xmlquery]]
+.XMLQUERY
 
 Returns the XML result from evaluating the given xquery.
 
@@ -274,23 +293,29 @@ XMLQUERY([<NSP>] xquery [<PASSING>] [(NULL|EMPTY) ON EMPTY]]
 PASSING:=PASSING exp [AS name] [, exp [AS name]]*
 ----
 
-See link:XML_Functions.adoc#_xmlelement[XMLELEMENT] for the definition of NSP - XMLNAMESPACES
+For the definition of NSP - XMLNAMESPACES, see _XMLELEMENT_ in xref:xml-functions[XML functions].
 
 Namespaces may also be directly declared in the xquery prolog.
 
-The optional PASSING clause is used to provide the context item, which does not have a name, and named global variable values. If the xquery uses a context item and none is provided, then an exception will be raised. Only one context item may be specified and should be an XML type. All non-context non-XML passing values will be converted to an appropriate XML type. Null will be returned if the context item evaluates to null.
+The optional PASSING clause is used to provide the context item, which does not have a name, and named global variable values. 
+If the xquery uses a context item and none is provided, then an exception will be raised. 
+Only one context item may be specified and should be an XML type. 
+All non-context non-XML passing values will be converted to an appropriate XML type. 
+Null will be returned if the context item evaluates to null.
 
-The ON EMPTY clause is used to specify the result when the evaluted sequence is empty. EMPTY ON EMPTY, the default, returns an empty XML result. NULL ON EMPTY returns a null result.
+The ON EMPTY clause is used to specify the result when the evaluted sequence is empty. 
+EMPTY ON EMPTY, the default, returns an empty XML result. 
+NULL ON EMPTY returns a null result.
 
 xquery in string. Return value is xml.
 
 XMLQUERY is part of the SQL/XML 2006 specification.
 
-See also link:FROM_Clause.adoc#_xmltable[FROM Clause#XMLTABLE]
+For more information, see XMLTABLE in xref:from-clause[FROM clause].
 
-NOTE: See also link:XQuery_Optimization.adoc[XQuery Optimization]
+NOTE: See also xref:xquery-optimization[XQuery optimization].
 
-== XMLEXISTS
+.XMLEXISTS
 
 Returns true if a non-empty sequence would be returned by evaluating the given xquery.
 
@@ -301,32 +326,43 @@ XMLEXISTS([<NSP>] xquery [<PASSING>]]
 PASSING:=PASSING exp [AS name] [, exp [AS name]]*
 ----
 
-See link:XML_Functions.adoc#_xmlelement[XMLELEMENT] for the definition of NSP - XMLNAMESPACES
+For the definition of NSP - XMLNAMESPACES, see _XMLELEMENT_ in xref:xml-functions[XML functions].
 
-Namespaces may also be directly declared in the xquery prolog.
+Namespaces can also be directly declared in the xquery prolog.
 
-The optional PASSING clause is used to provide the context item, which does not have a name, and named global variable values. If the xquery uses a context item and none is provided, then an exception will be raised. Only one context item may be specified and should be an XML type. All non-context non-XML passing values will be converted to an appropriate XML type. Null/Unknown will be returned if the context item evaluates to null.
+The optional PASSING clause is used to provide the context item, which does not have a name, and named global variable values. 
+If the xquery uses a context item and none is provided, then an exception will be raised. 
+Only one context item may be specified and should be an XML type. 
+All non-context non-XML passing values will be converted to an appropriate XML type. 
+Null/Unknown will be returned if the context item evaluates to null.
 
 xquery in string. Return value is boolean.
 
 XMLEXISTS is part of the SQL/XML 2006 specification.
 
-NOTE: See also link:XQuery_Optimization.adoc[XQuery Optimization]
+NOTE: See also xref:xquery-optimization[XQuery optimization].
 
-== XMLSERIALIZE
+.XMLSERIALIZE
 
-Returns a character type representation of the xml expression.
+Returns a character type representation of the XML expression.
 
 [source,sql]
 ----
 XMLSERIALIZE([(DOCUMENT|CONTENT)] xml [AS datatype] [ENCODING enc] [VERSION ver] [(INCLUDING|EXCLUDING) XMLDECLARATION])
 ----
 
-Return value matches datatype.  If no datatype is specified, then clob will be assumed.
+Return value matches datatype. If no datatype is specified, then clob will be assumed.
 
-The type may be character (string, varchar, clob) or binary (blob, varbinar). CONTENT is the default. If DOCUMENT is specified and the xml is not a valid document or fragment, then an exception is raised.
+The type may be character (string, varchar, clob) or binary (blob, varbinar). 
+CONTENT is the default. 
+If DOCUMENT is specified and the XML is not a valid document or fragment, then an exception is raised.
 
-The encoding enc is specified as an identifier.  A character serialization may not specify an encoding.  The version ver is specified as a string literal.  If a particular XMLDECLARATION is not specified, then the result will have a declaration only if performing a non UTF-8/UTF-16 or non version 1.0 document serialization or the underlying xml has an declaration.  If CONTENT is being serialized, then the declaration will be omitted if the value is not a document or element.
+The encoding enc is specified as an identifier. 
+A character serialization may not specify an encoding. 
+The version ver is specified as a string literal. 
+If a particular XMLDECLARATION is not specified, then the result will have a declaration only if performing a non UTF-8/UTF-16, 
+or non version 1.0 document serialization or the underlying XML has an declaration. 
+If CONTENT is being serialized, then the declaration will be omitted if the value is not a document or element.
 
 See the following example that produces a BLOB of XML in UTF-16 including the appropriate byte order mark of FE FF and XML declaration.
 
@@ -336,7 +372,7 @@ See the following example that produces a BLOB of XML in UTF-16 including the ap
 XMLSERIALIZE(DOCUMENT value AS BLOB ENCODING "UTF-16" INCLUDING XMLDECLARATION)
 ----
 
-== XMLTEXT
+.XMLTEXT
 
 Returns xml text.
 
@@ -345,9 +381,9 @@ Returns xml text.
 XMLTEXT(text)
 ----
 
-text is a string. Return value is xml.
+text is a string. Return value is XML.
 
-== XSLTRANSFORM
+.XSLTRANSFORM
 
 Applies an XSL stylesheet to the given document.
 
@@ -356,22 +392,27 @@ Applies an XSL stylesheet to the given document.
 XSLTRANSFORM(doc, xsl)
 ----
 
-Doc, xsl in {string, clob, xml}. Return value is a clob.
+Doc, XSL in {string, clob, xml}. Return value is a clob.
 
 If either argument is null, the result is null.
 
-== XPATHVALUE
+.XPATHVALUE
 
-Applies the XPATH expression to the document and returns a string value for the first matching result. For more control over the results and XQuery, use the link:XML_Functions.adoc#_xmlquery[XMLQUERY] function.
+Applies the XPATH expression to the document and returns a string value for the first matching result. 
+For more control over the results and XQuery, use the XMLQUERY function. 
+For more information, see _XMLQUERY_ in xref:xml-functions[XML functions].
 
 [source,sql]
 ----
 XPATHVALUE(doc, xpath)
 ----
 
-Doc in {string, clob, blob, xml}. xpath is string. Return value is a string.
+Doc in {string, clob, blob, xml}. 
+xpath is string. 
+Return value is a string.
 
-Matching a non-text node will still produce a string result, which includes all descendant text nodes. If a single element is matched that is marked with xsi:nil, then null will be returned.
+Matching a non-text node will still produce a string result, which includes all descendant text nodes. 
+If a single element is matched that is marked with xsi:nil, then null will be returned.
 
 When the input document utilizes namespaces, it is sometimes necessary to specify XPATH that ignores namespaces:
 
@@ -392,9 +433,8 @@ xpathValue(value, '/*[local-name()="return"]')
 
 Results in `Hello World`
 
-== Examples
 
-=== Generating hierarchical XML from flat data structure
+.Example: Generating hierarchical XML from flat data structure
 
 With following table and its contents
 
@@ -432,5 +472,4 @@ select xmlelement(name "root", xmlagg(p))
    from (select xmlelement(name "x", x, xmlagg(xmlelement(name "y", y)) as p from tbl group by x)) as v
 ----
 
-another useful link of examples can be found http://oracle-base.com/articles/misc/sqlxml-sqlx-generating-xml-content-using-sql.php[here]
-
+For more examples, see http://oracle-base.com/articles/misc/sqlxml-sqlx-generating-xml-content-using-sql.php 

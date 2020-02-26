@@ -1,15 +1,16 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="microsoft-access-translator"]
 
-= Microsoft Access Translators
+= Microsoft Access translators
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+Also see common xref:jdbc-translators[JDBC Translators] information.
 
-== access
+access:: The Microsoft Access translator known by the type name *_access_* is for use with Microsoft Access 2003 or later via the JDBC-ODBC bridge.
++
+If you are using the default native metadata import, or the {{ book.productnameFull }} connection importer, 
+the importer defaults to `importKeys=false` and `excludeTables=.*[.]MSys.*` to avoid issues with the metadata provided by the JDBC ODBC bridge. 
+You might need to adjust these values if you use a different JDBC driver.
 
-The Microsoft Access Translator known by the type name *_access_* is for use with Microsoft Access 2003 or later via the JDBC-ODBC bridge.
-
-If you are using the default native metadata import or the {{ book.productnameFull }} connection importer the importer defaults to importKeys=false and excludeTables=.*[.]MSys.* to avoid issues with the metadata provided by the JDBC ODBC bridge. You may need to adjust these values if you use a different JDBC driver.
-
-== ucanaccess
-
-The Microsoft Access Translator known by the type name *_ucanaccess_* is for use with Microsoft Access 2003 or later via the for the http://ucanaccess.sourceforge.net/site.html[UCanAccess driver].
-
+ucanaccess:: The Microsoft Access translator known by the type name *_ucanaccess_* is for use with Microsoft Access 2003 
+or later via the http://ucanaccess.sourceforge.net/site.html[UCanAccess driver].

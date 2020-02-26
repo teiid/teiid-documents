@@ -1,0 +1,19 @@
+// Module included in the following assemblies:
+// as_procedure-language.adoc
+[id="break-statement"]
+= Break statement
+
+A `BREAK` statement is used inside a `LOOP` or `WHILE` construct to break from the loop. 
+It must be used inside a `LOOP` or `WHILE` statement.
+
+.Usage
+
+[source,sql]
+----
+BREAK [label];
+----
+
+.Syntax rules
+
+* If the label is specified, it must exist on a containing `LOOP` or `WHILE` statement.
+* If no label is specified, the statement will affect the closest containing `LOOP` or `WHILE` statement.

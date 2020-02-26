@@ -1,7 +1,19 @@
-
+// Assembly included in the following assemblies:
+// as_sql-support.adoc
+[id="ddl-commands"]
 = DDL Commands
 
-{{ book.productnameFull }} supports a subset of DDL at runtime to create/drop temporary tables and to manipulate procedure and view definitions. It is not currently possible to arbitrarily drop/create non-temporary metadata entries.  See link:DDL_Metadata.adoc[DDL Metadata] for DDL used within a VDB to define schemas.
+{{ book.productnameFull }} supports a subset of DDL to create or drop temporary tables and to manipulate procedure and view definitions at runtime. 
+It is not currently possible to arbitrarily drop or create non-temporary metadata entries. 
+For information about the DDL statements that you can use to define schemas in a virtual database, see xref:ddl-metadata[DDL metadata].
 
-NOTE: A `MetadataRepository` must be configured to make a non-temporary metadata update persistent. See the Developers Guide Runtime Metadata Updates section for more.
+{% if book.targetWildfly %}
+To make non-temporary metadata updates persistent, you must configure a `MetadataRepository`. 
+For more information, see _Runtime Metadata Updates_ in the Developer's Guide.
+{% endif %}
 
+
+include::as_temp-tables.adoc[leveloffset=+1]
+include::r_alter-view.adoc[leveloffset=+1]
+include::r_alter-procedure.adoc[leveloffset=+1]
+include::r_alter-trigger.adoc[leveloffset=+1]

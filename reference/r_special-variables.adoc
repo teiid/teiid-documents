@@ -1,0 +1,22 @@
+// Module included in the following assemblies:
+// as_procedure-language.adoc
+[id="special-variables"]
+= Special variables
+
+`VARIABLES.ROWCOUNT` integer variable will contain the numbers of rows affected by the last INSERT, UPDATE, or DELETE command statement executed. 
+Inserts that are processed by dynamic SQL with an `into` clause will also update the `ROWCOUNT`.
+
+.Usage
+
+[source,sql]
+.*Sample usage*
+----
+...
+UPDATE FOO SET X = 1 WHERE Y = 2;
+DECLARE INTEGER UPDATED = VARIABLES.ROWCOUNT;
+...
+----
+
+Non-update command statements (`WITH` or `WITHOUT RETURN`) will reset the `ROWCOUNT` to 0.
+
+NOTE: To ensure you are getting the appropriate `ROWCOUNT` value, save the `ROWCOUNT` to a variable immediately after the command statement.

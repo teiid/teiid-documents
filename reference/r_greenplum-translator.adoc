@@ -1,7 +1,9 @@
-
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="greenplum-translator"]
 = Greenplum Translator (greenplum)
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+Also see common xref:jdbc-translators[JDBC Translators] information.
 
-The Greenplum Translator, known by the type name *_greenplum_*, is for use with the Greenplum database. This translator is an extension of the link:PostgreSQL_Translator.adoc[PostgreSQL Translator] and inherits its options.
-
+The Greenplum translator, known by the type name *_greenplum_*, is for use with the Greenplum database.
+This translator is an extension of the xref:postgresql-translator[PostgreSQL translator], and inherits its options.

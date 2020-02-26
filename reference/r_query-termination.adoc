@@ -1,15 +1,37 @@
 
-= Query Termination
+// Module included in the following assemblies:
+// as_architecture.adoc
+[id="query-termination"]
+= Query termination
 
-== Canceling Queries
+.Canceling queries
 
-When a query is canceled, processing will be stopped in the query engine and in all connectors involved in the query. The semantics of what a connector does in response to a cancellation command is dependent on the connector implementation. For example, JDBC connectors will asynchronously call cancel on the underlying JDBC driver, which may or may not actually support this method.
+When a query is canceled, processing will be stopped in the query engine and in all 
+connectors involved in the query. The semantics of what a connector does in response 
+to a cancellation command depends on the connector implementation. For example, 
+JDBC connectors will asynchronously call cancel on the underlying JDBC driver, which 
+might or might not support this method.
 
-== User Query Timeouts
+.User query timeouts
 
-User query timeouts in {{ book.productnameFull }} can be managed on the client-side or the server-side. Timeouts are only relevant for the first record returned. If the first record has not been received by the client within the specified timeout period, a `cancel' command is issued to the server for the request and no results are returned to the client. The cancel command is issued asynchronously without the client’s intervention.
+User query timeouts in {{ book.productnameFull }} can be managed on the client-side 
+or the server-side. Timeouts are only relevant for the first record returned. 
+If the first record has not been received by the client within the specified timeout period, 
+a `cancel` command is issued to the server for the request and no results are returned 
+to the client. The cancel command is issued asynchronously without the client’s intervention.
 
-The JDBC API uses the query timeout set by the `java.sql.Statement.setQueryTimeout` method. You may also set a default statement timeout via the connection property "QUERYTIMEOUT". ODBC clients may also utilize QUERYTIMEOUT as an execution property via a set statement to control the default timeout setting. See the Client Developers Guide for more on connection/execution properties and set statements.
+The JDBC API uses the query timeout set by the `java.sql.Statement.setQueryTimeout` method. 
+You can also set a default statement timeout via the connection property "QUERYTIMEOUT". 
+ODBC clients can also use QUERYTIMEOUT as an execution property via a set statement 
+to control the default timeout setting. See the Client Developer's Guide for more on 
+connection/execution properties and set statements.
+//Conditionalize link to the Client guide in preceding sentence 
 
-Server-side timeouts start when the query is received by the engine. There may be a skew from the when the client issued the query due to network latency or server load that may slow the processing of IO work. The timeout will be cancelled if the first result is sent back before the timeout has ended. See the link:vdb_guide.adoc[VDBs] section for more on setting the query-timeout VDB property. See the Admin Guide for more on modifying the file to set default query timeout for all queries.
-
+Server-side timeouts start when the query is received by the engine. Network latency or server load
+can delays the processing of I/O work after a client issues the query. The timeout will 
+be cancelled if the first result is sent back before the timeout has ended. 
+For more information about setting the `query-timeout` property for a virtual database, 
+see xref:vdb_guide.adoc[Virtual database properties]. For more information about modifying 
+system properties to set a default query timeout for all queries, see _System properties_ 
+in the Administrator's Guide.
+//Conditionalize link to Admin guide in preceding sentence

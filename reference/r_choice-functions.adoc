@@ -1,27 +1,28 @@
-
-= Choice Functions
+// Module included in the following assemblies:
+// as_scalar-functions.adoc
+[id="choice-functions"]
+= Choice functions
 
 Choice functions provide a way to select from two values based on some characteristic of one of the values.
 
 |===
-|Function |Definition |Datatype Constraint
+|Function |Definition |Datatype constraint
 
 |COALESCE(x,y+)
-|Returns the first non-null parameter
-|x and all y’s can be any compatible types
+|Returns the first non-null parameter.
+|x and all y’s can be any compatible types.
 
 |IFNULL(x,y)
-|If x is null, return y; else return x
-|x, y, and the return type must be the same type but can be any type
+|If x is null, return y; else return x.
+|x, y, and the return type must be the same type but can be any type.
 
 |NVL(x,y)
-|If x is null, return y; else return x
-|x, y, and the return type must be the same type but can be any type
+|If x is null, return y; else return x.
+|x, y, and the return type must be the same type but can be any type.
 
 |NULLIF(param1, param2)
-|Equivalent to case when (param1 = param2) then null else param1
-|param1 and param2 must be compatable comparable types
+|Equivalent to case when (param1 = param2) then null else param1.
+|param1 and param2 must be compatable comparable types.
 |===
 
 IFNULL and NVL are aliases of each other. They are the same function.
-

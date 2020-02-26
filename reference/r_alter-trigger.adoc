@@ -1,17 +1,21 @@
+// Module included in the following assemblies:
+// as_ddl-commands.adoc
+[id="alter-trigger"]
+= Alter trigger
 
-= Alter Trigger
-
-Usage:
+.Usage
 
 [source,sql]
 ----
 ALTER TRIGGER ON name INSTEAD OF INSERT|UPDATE|DELETE (AS FOR EACH ROW block) | (ENABLED|DISABLED)
 ----
 
-Syntax Rules:
+.Syntax rules
 
-* The target, name, must be an updatable view.
+* The target `name` must be an updatable view.
 
-* Triggers are not yet true schema objects. They are scoped only to their view and have no name.
+* Triggers are not true schema objects. 
+They are scoped only to their view and have no name.
 
-* An link:Update_Procedures_Triggers.adoc[Update Procedures (Triggers)] must already exist for the given trigger event.
+* Update procedures must already exist for the given trigger event.
+For more information, see xref:update-procedures-triggers[Triggers].

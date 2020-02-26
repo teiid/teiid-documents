@@ -1,0 +1,6 @@
+// Module included in the following assemblies:
+// as_expressions.adoc
+[id="parameter-references"]
+= Parameter references
+Parameters are specified using a `?` symbol. You can use parameters only with `PreparedStatement` or 
+`CallableStatements` in JDBC. Each parameter is linked to a value specified by 1-based index in the JDBC API.

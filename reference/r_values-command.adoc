@@ -1,0 +1,22 @@
+// Module included in the following assemblies:
+// as_dml-commands.adoc
+[id="values-command"]
+= VALUES command
+
+The VALUES command is used to construct a simple table.
+
+.Example syntax
+
+[source,sql]
+----
+VALUES (value,...)
+----
+
+[source,sql]
+----
+VALUES (value,...), (valueX,...) ...
+----
+
+A VALUES command with a single value set is equivalent to `SELECT value, …`. 
+A VALUES command with multiple values sets is equivalent to a UNION ALL of simple SELECTs,
+for example `SELECT value, …. UNION ALL SELECT valueX, …`.

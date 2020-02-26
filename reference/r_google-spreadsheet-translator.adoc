@@ -1,75 +1,96 @@
+// Module included in the following assemblies:
+// as_translators.adoc
+[id="google-spreadsheet-translator"]
+= Google spreadsheet translator
 
-= Google Spreadsheet Translator
+The _google-spreadsheet_ translator is used to connect to a Google Sheets spreadsheet.
 
-The _google-spreadsheet_ translator is used to connect to a Google Spreadsheet.
+The query approach expects that the data in the worksheet has the following characteristics:
 
-The query approach expects the data in the worksheet to be in a specific format. Namely:
+* All columns that contains data can be queried.
+* Any column with an empty cell has the value retrieved as null. 
+However, differentiating between null string and empty string values may not always be possible as Google treats them interchangeably. 
+Where possible, the translator may provide a warning or throw an exception if it cannot differentiate between null and empty strings.
+* If the first row is present and contains string values, then the row is assumed to represent the column labels.
 
-* Any column that has data is queryable.
-* Any column with an empty cell has the value retrieved as null.  However differentiating between null string and empty string values may not
-always be possible as google treats them interchanably.  Where possible the translator may provide a warning or throw an exception if there may be
-a confusion of null vs. empty strings.
-* If the first row is present and contains string values, then it will be assumed to represent the column labels.
+If you are using the default native metadata import, the metadata for your Google account (worksheets and information about columns in worksheets) is loaded upon translator start up. 
+If you make any changes in data types, it is advisable to restart your virtual database.
 
-If you are using the default native metadata import, the metadata for your Google account (worksheets and information about columns in worksheets) are loaded upon translator start up. If you make any changes in data types, it is advisable to restart your vdb.
+The translator supports queries against a single sheet. 
+It supports ordering, aggregation, basic predicates, and most of the functions supported by the spreadsheet query language.
 
-The translator supports queries against a single sheet. It supports ordering, aggregation, basic predicates, and most of the functions supported by the spreadsheet query language.
+The google-spreadsheet translator does not provide importer settings, but it can provide metadata for VDBs.
 
-There are no google-spreadsheet importer settings, but it can provide metadata for VDBs.
+WARNING: If you remove all data rows from a sheet with a header that is defined in {{ book.productnameFull }}, you can no longer access the sheet through {{ book.productnameFull }}. 
+The Google API will treat the header as a data row at that point, and queries to it will no longer be valid.
 
-WARNING: A sheet with a header that is defined in {{ book.productnameFull }}, which later has all data rows removed is no longer valid for access through {{ book.productnameFull }}.  The google api will treat the header as a data row at that point and thus queries will no longer be valid.
+WARNING: Non-string fields are updated using the canonical {{ book.productnameFull }} SQL value. 
+In cases where the spreadsheet is using a non-conforming locale, consider disallowing updates. 
+For more information, see link:https://issues.redhat.com/browse/TEIID-4854[TEIID-4854] and the following information about the `allTypesUpdatable` import property.
 
-WARNING: Non-string fields are updated using the canonical {{ book.productnameFull }} SQL value - in cases where the spreadsheet is using a non-conforming locale, consider disallowing updates.  See also link:https://issues.redhat.com/browse/TEIID-4854[TEIID-4854] and the allTypesUpdatable import property below.
+.Importer properties
 
-== Importer Properties 
-
-* _allTypesUpdatable_- Set to true to mark all columns as updatable. Set to false to enable update only on string/boolean columns, which are not affected by link:https://issues.redhat.com/browse/TEIID-4854[TEIID-4854]. Defaults to true.
+* _allTypesUpdatable_- Set to true to mark all columns as updatable. 
+Set to false to enable update only on string or Boolean columns that are not affected by link:https://issues.redhat.com/browse/TEIID-4854[TEIID-4854]. 
+Defaults to true.
 
 {% if book.targetWildfly %}
-== JCA Resource Adapter
+.JCA resource adapter
 
 The {{ book.productnameFull }} specific Google Spreadsheet Data Sources Resource Adapter should be used with this translator.
 {% endif %}
 
-== Native Queries
+.Native queries
 
-Google spreadsheet source procedures may be created using the teiid_rel:native-query extension - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The procedure will invoke the native-query similar to an native procedure call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality. See the link:Google_Spreadsheet_Translator.adoc#_select[Select] format below.
+Google spreadsheet source procedures may be created using the `teiid_rel:native-query` extension. 
+For more information, see _Parameterizable native queries_ in xref:translators[Translators]. 
+The procedure will invoke the native-query similar to an native procedure call, with the benefits that the query is predetermined, 
+and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality. 
+For more information, see the _Select_ section that follows.
 
-=== Direct Query Procedure
+.Direct query procedure
 
-NOTE: This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:Translators.adoc#_override_execution_properties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
+NOTE: This feature is turned off by default, because of the security risk in permitting any command to execute against the data source. 
+To enable this feature, set the property _SupportsDirectQueryProcedure_ to true. 
+For more information, see _Override execution properties_ in xref:translators[Translators]. 
 
-TIP: By default the name of the procedure that executes the queries directly is called *native*. link:Translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
+TIP: By default the name of the procedure that executes the queries directly is called *native*. 
+You can change its name by overriding the execution property _DirectQueryProcedureName_. 
+For more information, see _Override execution properties_ in xref:translators[Translators]. 
 
-The Google spreadsheet translator provides a procedure to execute any ad-hoc query directly against the source without any {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s execution results are not known to {{ book.productnameFull }}, they are returned as an object array. link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications. {{ book.productnameFull }} exposes this procedure with a simple query structure as below:
+The Google spreadsheet translator provides a procedure to execute any ad-hoc query directly against the source without any {{ book.productnameFull }} parsing or resolving. 
+Because the metadata of this procedure’s execution results are not known to {{ book.productnameFull }}, they are returned as an object array. 
+You can use ARRAYTABLE to construct tabular output for consumption by client applications. For more information, see xref:arraytable[ARRAYTABLE].
 
-=== Select
+{{ book.productnameFull }} exposes this procedure with a simple query structure as shown in the following example:
+
+.Select
 
 [source,sql]
-.*Select Example*
+.*Select example*
 ----
 SELECT x.* FROM (call google_source.native('worksheet=People;query=SELECT A, B, C')) w,
  ARRAYTABLE(w.tuple COLUMNS "id" string , "type" string, "name" String) AS x
 ----
 
-the first argument takes semi-colon(;) separated name value pairs of following properties to execute the procedure:
+The first argument takes semicolon-separated (;) name-value pairs of the following properties to execute the procedure:
 
 |===
 |Property |Description |Required
 
 |worksheet
-|Google spreadsheet name
+|Google spreadsheet name.
 |yes
 
 |query
-|spreadsheet query
+|Spreadsheet query.
 |yes
 
 |limit
-|number rows to fetch
+|Number of rows to fetch.
 |no
 
 |offset
-|offset of rows to fetch from limit or beginning
+|Offset of rows to fetch from limit or beginning.
 |no
 |===

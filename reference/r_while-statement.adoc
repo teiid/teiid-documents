@@ -1,0 +1,18 @@
+// Module included in the following assemblies:
+// as_procedure-language.adoc
+[id="while-statement"]
+= While statement
+
+A `WHILE` statement is an iterative control construct that is used to execute a statement repeatedly whenever a specified condition is met.
+
+.Usage
+
+[source,sql]
+----
+[label :] WHILE <criteria>
+    statement
+----
+
+.Syntax rules
+
+* The label must not be the same as any label that is used in statements that contain this one.
