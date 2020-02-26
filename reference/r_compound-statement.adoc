@@ -1,0 +1,92 @@
+// Module included in the following assemblies:
+// as_procedure-language.adoc
+[id="compound-statement"]
+= Compound statement
+
+A compound statement or block logically groups a series of statements. 
+Temporary tables and variables that are created in a compound statement are local only to that block, and are destroyed when exiting the block.
+
+.Usage
+
+[source,sql]
+----
+[label :] BEGIN [[NOT] ATOMIC]
+    statement*
+[EXCEPTION ex
+    statement*
+]
+END
+----
+
+NOTE: When a block is expected by an `IF`, `LOOP`, `WHILE`, and so forth, a single statement is also accepted by the parser. 
+Even though the block `BEGIN` or `END` are not expected, the statement will execute as if wrapped in a `BEGIN` or `END` pair.
+
+.Syntax rules
+
+* If `NOT ATOMIC` or no `ATOMIC` clause is specified, the block will be executed non-atomically.
+* If the `ATOMIC` clause is specified, the block must execute atomically. 
+If a transaction is already associated with the thread, no additional action will be taken; savepoints or sub-transactions are not currently used. 
+If the higher level transaction is used, and the block does not complete -- regardless of the presence of exception handling -- 
+the transaction will be marked as rollback only. 
+Otherwise, a transaction will be associated with the execution of the block. 
+Upon successful completion of the block the transaction will be committed.
+* The label must not be the same as any label that is used in statements that contain this one.
+* Variable assignments and the implicit result cursor are unaffected by rollbacks. 
+If a block does not complete successfully, its assignments will still take affect.
+
+.Exception handling
+If an `EXCEPTION` clause is used within a compound statement, any processing exception emitted from 
+statements will be caught with the flow of execution transferring to `EXCEPTION` statements. 
+Any block-level transaction started by this block will commit if the exception handler successfully completes. 
+If another exception, or the original exception, is emitted from the exception handler, the transaction will rollback. 
+Any temporary tables or variables specific to the BLOCK will not be available to the exception handler statements.
+
+NOTE: Only processing exceptions, which are typically caused by errors originating at the sources or 
+with function execution, are caught. A low-level internal {{ book.productnameFull }} error or Java `RuntimeException` will not be caught.
+
+To aid in the processing of a caught exception, the `EXCEPTION` clause specifies a group name that exposes the significant fields of the exception. 
+The following table shows the variables that an exception group contains:
+
+|===
+|Variable |Type |Description
+
+|STATE
+|string
+|The SQL State
+
+|ERRORCODE
+|integer
+|The error or vendor code. In the case of {{ book.productnameFull }} internal exceptions this will be the integer suffix of the TEIIDxxxx code.
+
+|TEIIDCODE
+|string
+|The full {{ book.productnameFull }} event code. Typically TEIIDxxxx.
+
+|EXCEPTION
+|object
+|The exception being caught, will be an instance of `TeiidSQLException`.
+
+|CHAIN
+|object
+|The chained exception or cause of the current exception.
+|===
+
+NOTE: {{ book.productnameFull }} does not yet fully comply with the ANSI SQL specification on SQL State usage. 
+For {{ book.productnameFull }} errors without an underlying SQLException cause, it is best to use the {{ book.productnameFull }} code.
+
+The exception group name might not be the same as any higher level exception group or loop cursor name.
+
+[source,sql]
+.*Example exception group handling*
+----
+BEGIN
+    DECLARE EXCEPTION e = SQLEXCEPTION 'this is bad' SQLSTATE 'xxxxx';
+    RAISE variables.e;
+EXCEPTION e
+    IF (e.state = 'xxxxx')
+        //in this trivial example, we'll always hit this branch and just log the exception
+        RAISE SQLWARNING e.exception;
+    ELSE
+        RAISE e.exception;
+END
+----

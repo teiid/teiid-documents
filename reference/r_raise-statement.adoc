@@ -1,0 +1,28 @@
+// Module included in the following assemblies:
+// as_procedure-language.adoc
+[id="raise-statement"]
+= Raise statement
+
+A `RAISE` statement is used to raise an exception or warning. 
+When raising an exception, this statement will also roll back the current transaction, if one exists.
+
+.Usage
+
+[source,sql]
+----
+RAISE [SQLWARNING] exception;
+----
+
+Where exception may be a variable reference to an exception or an exception expression.
+
+.Syntax rules
+
+* If `SQLWARNING` is specified, the exception will be sent to the client as a warning and the procedure will continue to execute.
+* A null warning will be ignored. 
+A null non-warning exception will still cause an exception to be raised.
+
+[source,sql]
+.*Example raise statement*
+----
+RAISE SQLWARNING SQLEXCEPTION 'invalid' SQLSTATE '05000';
+----

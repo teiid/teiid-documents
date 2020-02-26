@@ -1,30 +1,37 @@
+// Module included in the following assemblies:
+// as_dml-commands.adoc
+[id=with-clause]
+= WITH clause
 
-= WITH Clause
+{{ book.productnameFull }} supports non-recursive common table expressions via the WITH clause. 
+You can reference WITH clause items as tables in subsequent WITH clause items, and in the main query. 
+You can think of the WITH clause as providing query-scoped temporary tables.
 
-{{ book.productnameFull }} supports non-recursive common table expressions via the WITH clause.  WITH clause items may be referenced as tables in subsequent with clause items and in the main query. The WITH clause can be thought of as providing query scoped temporary tables.
-
-Usage:
+.Usage
 
 [source,sql]
 ----
 WITH name [(column, ...)] AS [/*+ no_inline|materialize */] (query expression) ...
 ----
 
-Syntax Rules:
-
+.Syntax rules
 * All of the projected column names must be unique. If they are not unique, then the column name list must be provided.
 * If the columns of the WITH clause item are declared, then they must match the number of columns projected by the query expression.
-* Each with clause item must have a unique name.
-* The optional no_inline hint indicates to the optimizer that the query expression should not be substituted as an inline view where referenced.
+* Each WITH clause item must have a unique name.
+* The optional `no_inline` hint indicates to the optimizer that the query expression should not be substituted as an inline view where referenced.
 It is possible with no_inline for multiple evaluations of the common table as needed by source queries.
-* The optional materialize hint requires that the common table be created as a temporary table in {{ book.productnameFull }}.  This forces a single evaluation of the 
-common table.
+* The optional `materialize` hint requires that the common table be created as a temporary table in {{ book.productnameFull }}. 
+This forces a single evaluation of the common table.
 
-NOTE: The WITH clause is also subject to optimization and it’s entries may not be processed if they are not needed in the subsequent query.
+NOTE: The WITH clause is also subject to optimization and its entries might not be processed 
+if they are not needed in the subsequent query.
 
-NOTE: Common tables are aggressively inlined to enhance the possibility of pushdown.  If a common table is only referenced a single time in the main query it will likely be inlined.  In some situations, such as when using a common table to prevent n-many processing of a non-pushdown correlated subquery, you may need to include the no_inline or materialize hint.
+NOTE: Common tables are aggressively inlined to enhance the possibility of pushdown. 
+If a common table is only referenced a single time in the main query, it is likely to be inlined. 
+In some situations, such as when you use a common table to prevent n-many-processing of a 
+non-pushdown, correlated subquery, you might need to include the `no_inline` or `materialize` hint.
 
-Examples:
+.Examples
 
 [source,sql]
 ----
@@ -36,30 +43,34 @@ WITH n (x) AS (select col from tbl) select x from n, n as n1
 WITH n (x) AS /*+ no_inline */ (select col from tbl) select x from n, n as n1
 ----
 
-== Recursive Common Table Expressions
+.Recursive common table expressions
 
-A recursive common table expression is a special form of a common table expression that is allowed to refer to itself to build the full common table result in a recursive or iterative fashion.
+A recursive common table expression is a special form of a common table expression 
+that is allowed to refer to itself to build the full common table result in a recursive or iterative fashion.
 
-Usage:
+.Usage
 
 [source,sql]
 ----
 WITH name [(column, ...)] AS (anchor query expression UNION [ALL] recursive query expression) ...
 ----
 
-The recursive query expression is allowed to refer to the common table by name. Processing flows with The anchor query expression executed first. The results will be added to the common table and will be referenced for the execution of the recursive query expression. The process will be repeated against the new results until there are no more intermediate results.
+The recursive query expression is allowed to refer to the common table by name. 
+The anchor query expression is executed first during processing. 
+Results are added to the common table and are referenced for the execution of the recursive query expression. 
+The process is repeated against the new results until there are no more intermediate results.
 
-NOTE: A non terminating recursive common table expression can lead to excessive processing.
+IMPORTANT: Non-terminating, recursive common table expressions can lead to excessive processing.
 
-To prevent runaway processing of a recursive common table expression, processing is by default limited to 10000 iterations. Recursive common table expressions that are pushed down are not subject to this limit, but may be subject to other source specific limits. The limit can be modified by setting the session variable teiid.maxRecusion to a larger integer value. Once the max has been exceeded an exception will be thrown.
+By default, to prevent runaway processing of a recursive common table expression, processing is limited to 10000 iterations. 
+Recursive common table expressions that are pushed down are not subject to this limit, but could be subject to other source-specific limits. 
+You can modify the limit by setting the session variable `teiid.maxRecursion` to a larger integer value. 
+After the limit is exceeded, an exception is thrown.
 
-Example:
+The following example fails, because the recursion limit is reached before processing completes.
 
 [source,sql]
 ----
 SELECT teiid_session_set('teiid.maxRecursion', 25);
 WITH n (x) AS (values('a') UNION select chr(ascii(x)+1) from n where x < 'z') select * from n
 ----
-
-This will fail to process as the recursion limit will be reached before processing completes.
-

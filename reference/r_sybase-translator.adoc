@@ -1,29 +1,40 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="sybase-translator"]
 
-= Sybase Translator (sybase)
+= Sybase translator (sybase)
 
-The Sybase Translator, known by the type name *_sybase_*, is for use with Sybase version 12.5 or later.
+Also see common xref:jdbc-translators[JDBC Translators] information.
 
-If using the the default native import and no import properties are specified (not recommended, see import properties below), then exceptions can be thrown retrieving system table information. You should specify a schemaName, or schemaPattern, or use excludeTables to exclude system tables if this occurs.
+The Sybase translator, known by the type name *_sybase_*, is for use with SAP ASE (Adaptive Server Enterprise), formerly
+known as Sybase SQL Server, version 12.5 or later.
 
-If the name in source metadata contains quoted identifiers (such as required by reserved words or words containing characters that would not otherwise be allowed) and you are using a jconnect Sybase driver, you must first configure the connection pool to enable *quoted_identifier*:
+If you use the default native import, you can avoid exceptions during the retrieval of system table information, if you specify import properties. 
+If errors occur when retrieving table information, specify a `schemaName` or `schemaPattern`, or use `excludeTables` to exclude system tables. 
+For more information about using import properties, see _Importer properties_ in xref:jdbc-translator[JDBC translators].
 
-Driver URL with SQLINITSTRING
+If the name in the source metadata contains quoted identifiers (such as reserved words, or words that contain characters 
+that would not otherwise be allowed), and you are using a jConnect Sybase driver, you must first configure the connection pool to enable *quoted_identifier*:
+
+.Example: Driver URL with SQLINITSTRING
 
 [source,sql]
 ----
 jdbc:sybase:Tds:host.at.some.domain:5000/db_name?SQLINITSTRING=set quoted_identifier on
 ----
 
-If you are a jconnect Sybase driver and will target the source for dependent joins, you should allow the translator to send more values by setting the JCONNECT_VERSION. Otherwise you will get exceptions with statements that have more than 481 bind values:
+IMPORTANT: If you are using a jConnect Sybase driver and will target the source for dependent joins, set the `JCONNECT_VERSION`
+to `6` or later to increase the number of values that the translator can send. 
+If you do not set the `JCONNECT_VERSION`, an exception occurs with statements that have more than 481 bind values.
 
-Driver URL with JCONNECT_VERSION
+.Example: Driver URL with JCONNECT_VERSION
 
 [source,sql]
 ----
 jdbc:sybase:Tds:host.at.some.domain:5000/db_name?SQLINITSTRING=set quoted_identifier on&JCONNECT_VERSION=6
 ----
 
-Sybase specific execution properties:
+.Execution properties specific to Sybase
 
-* _JtdsDriver_- indicates that the open source JTDS driver is being used. Defaults to false.
-
+JtdsDriver_:: Indicates that the open source JTDS driver is being used. 
+Defaults to false.

@@ -1,18 +1,20 @@
-
-= SYS Schema
+// Module included in the following assemblies:
+// as_system-schema.adoc
+[id-"sys-schema"]
+= SYS schema
 :toc: manual
 :toc-placement: preamble
 
 System schema for public information and actions.
 
-== Tables/Views
+.Tables/Views
 
-=== SYS.Columns
+.SYS.Columns
 
 This table supplies information about all the elements (columns, tags, attributes, etc) in the virtual database.
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |VDBName
 |string
@@ -20,7 +22,7 @@ This table supplies information about all the elements (columns, tags, attribute
 
 |SchemaName
 |string
-|Schema Name
+|Schema name
 
 |TableName
 |string
@@ -156,15 +158,15 @@ This table supplies information about all the elements (columns, tags, attribute
 
 |ColumnSize
 |string
-|If numeric the precision, if character the length, and if date/time then the string length of a literal value
+|If numeric, the precision, if character, the length, and if date/time, then the string length of a literal value.
 |===
 
-=== SYS.DataTypes
+.SYS.DataTypes
 
 This table supplies information on datatypes.
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |Name
 |string
@@ -251,12 +253,12 @@ This table supplies information on datatypes.
 |literal suffix
 |===
 
-=== SYS.KeyColumns
+.SYS.KeyColumns
 
 This table supplies information about the columns referenced by a key.
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |VDBName
 |string
@@ -264,7 +266,7 @@ This table supplies information about the columns referenced by a key.
 
 |SchemaName
 |string
-|Schema Name
+|Schema name
 
 |TableName
 |string
@@ -299,12 +301,12 @@ This table supplies information about the columns referenced by a key.
 |Parent Table unique ID
 |===
 
-=== SYS.Keys
+.SYS.Keys
 
 This table supplies information about primary, foreign, and unique keys.
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |VDBName
 |string
@@ -312,9 +314,9 @@ This table supplies information about primary, foreign, and unique keys.
 
 |SchemaName
 |string
-|Schema Name
+|Schema name
 
-|Table Name
+|Table name
 |string
 |Table name
 
@@ -367,12 +369,12 @@ This table supplies information about primary, foreign, and unique keys.
 |Array of column positions within the key table
 |===
 
-=== SYS.ProcedureParams
+.SYS.ProcedureParams
 
 This supplies information on procedure parameters.
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |VDBName
 |string
@@ -380,7 +382,7 @@ This supplies information on procedure parameters.
 
 |SchemaName
 |string
-|Schema Name
+|Schema name
 
 |ProcedureName
 |string
@@ -440,19 +442,19 @@ This supplies information on procedure parameters.
 
 |ColumnSize
 |string
-|If numeric the precision, if character the length, and if date/time then the string length of a literal value
+|If numeric, the precision, if character, the length, and if date/time, then the string length of a literal value.
 
 |DefaultValue
 |string
 |Default value
 |===
 
-=== SYS.Procedures
+.SYS.Procedures
 
 This table supplies information about the procedures in the virtual database.
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |VDBName
 |string
@@ -460,7 +462,7 @@ This table supplies information about the procedures in the virtual database.
 
 |SchemaName
 |string
-|Schema Name
+|Schema name
 
 |Name
 |string
@@ -488,12 +490,12 @@ This table supplies information about the procedures in the virtual database.
 |===
 
 
-=== SYS.FunctionParams
+.SYS.FunctionParams
 
 This supplies information on function parameters.
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |VDBName
 |string
@@ -501,7 +503,7 @@ This supplies information on function parameters.
 
 |SchemaName
 |string
-|Schema Name
+|Schema name
 
 |FunctionName
 |string
@@ -561,15 +563,15 @@ This supplies information on function parameters.
 
 |ColumnSize
 |string
-|If numeric the precision, if character the length, and if date/time then the string length of a literal value
+|If numeric, the precision, if character, the length, and if date/time, then the string length of a literal value.
 |===
 
-=== SYS.Functions
+.SYS.Functions
 
 This table supplies information about the functions in the virtual database.
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |VDBName
 |string
@@ -577,7 +579,7 @@ This table supplies information about the functions in the virtual database.
 
 |SchemaName
 |string
-|Schema Name
+|Schema name
 
 |Name
 |string
@@ -600,12 +602,13 @@ This table supplies information about the functions in the virtual database.
 |Does the function accept variable arguments
 |===
 
-=== SYS.Properties
+.SYS.Properties
 
-This table supplies user-defined properties on all objects based on metamodel extensions. Normally, this table is empty if no metamodel extensions are being used.
+This table supplies user-defined properties on all objects based on metamodel extensions. 
+Normally, this table is empty if no metamodel extensions are being used.
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |Name
 |string
@@ -624,44 +627,44 @@ This table supplies user-defined properties on all objects based on metamodel ex
 |Clob Value
 |===
 
-=== SYS.ReferenceKeyColumns
+.SYS.ReferenceKeyColumns
 
 This table supplies informaton about column's key reference.
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |PKTABLE_CAT
 |string
-|VDB Name
+|VDB name
 
 |PKTABLE_SCHEM
 |string
-|Schema Name
+|Schema name
 
 |PKTABLE_NAME
 |string
-|Table/View Name
+|Table/View name
 
 |PKCOLUMN_NAME
 |string
-|Column Name
+|Column name
 
 |FKTABLE_CAT
 |string
-|VDB Name
+|VDB name
 
 |FKTABLE_SCHEM
 |string
-|Schema Name
+|Schema name
 
 |FKTABLE_NAME
 |string
-|Table/View Name
+|Table/View name
 
 |FKCOLUMN_NAME
 |string
-|Column Name
+|Column name
 
 |KEY_SEQ
 |short
@@ -677,7 +680,7 @@ This table supplies informaton about column's key reference.
 
 |FK_NAME
 |string
-|FK Name
+|FK name
 
 |PK_NAME
 |string
@@ -689,12 +692,12 @@ This table supplies informaton about column's key reference.
 
 |===
 
-=== SYS.Schemas
+.SYS.Schemas
 
 This table supplies information about all the schemas in the virtual database, including the system schema itself (System).
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |VDBName
 |string
@@ -721,12 +724,12 @@ This table supplies information about all the schemas in the virtual database, i
 |URI for the primary metamodel describing the model used for this schema
 |===
 
-=== SYS.Tables
+.SYS.Tables
 
-This table supplies information about all the groups (tables, views, documents, etc) in the virtual database.
+This table supplies information about all the groups (tables, views, documents, and so forth) in the virtual database.
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |VDBName
 |string
@@ -777,12 +780,12 @@ This table supplies information about all the groups (tables, views, documents, 
 |Parent Schema unique ID
 |===
 
-=== SYS.VirtualDatabases
+.SYS.VirtualDatabases
 
 This table supplies information about the currently connected virtual database, of which there is always exactly one (in the context of a connection).
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |Name
 |string
@@ -805,12 +808,12 @@ This table supplies information about the currently connected virtual database, 
 |The timestamp when the vdb became active
 |===
 
-=== SYS.spatial_sys_ref
+.SYS.spatial_sys_ref
 
 See also the http://postgis.net/docs/using_postgis_dbmanagement.html#spatial_ref_sys[PostGIS Documentation]
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |srid
 |integer
@@ -833,12 +836,12 @@ See also the http://postgis.net/docs/using_postgis_dbmanagement.html#spatial_ref
 |For use with the Proj4 library
 |===
 
-=== SYS.GEOMETRY_COLUMNS
+.SYS.GEOMETRY_COLUMNS
 
 See also the http://postgis.net/docs/using_postgis_dbmanagement.html#geometry_columns[PostGIS Documentation]
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |F_TABLE_CATALOG
 |string
@@ -869,13 +872,15 @@ See also the http://postgis.net/docs/using_postgis_dbmanagement.html#geometry_co
 |Geometry type name
 |===
 
-Note: The coord_dimension and srid properties are determined from the {http://www.teiid.org/translator/spatial/2015}coord_dimension and {http://www.teiid.org/translator/spatial/2015}srid 
-extension properties on the column.  When possible these values will be set automatically by the relevant importer.  If they are not set, they will be reported as 2 and 0 respectively.
-If client logic expects actual values, such as integration with link:../client-dev/GeoServer_Integration.adoc[GeoServer], then you may need to set these values manually. 
+Note: The `coord_dimension` and `srid properties` are determined from the `{http://www.teiid.org/translator/spatial/2015}coord_dimension` and `{http://www.teiid.org/translator/spatial/2015}srid` 
+extension properties on the column.  
+When possible, these values are set automatically by the relevant importer. 
+If the values are not set, they will be reported as `2` and `0`, respectively.
+If client logic expects actual values, such as integration with link:../client-dev/GeoServer_Integration.adoc[GeoServer], you can set these values manually. 
 
-== Procedures
+.Procedures
 
-=== SYS.ArrayIterate
+.SYS.ArrayIterate
 
 Returns a resultset with a single column with a row for each value in the array.
 
@@ -885,7 +890,7 @@ SYS.ArrayIterate(IN val object[]) RETURNS TABLE (col object)
 ----
 
 [source,sql]
-.*Example ArrayIterate*
+.*Example: ArrayIterate*
 ----
 select array_get(cast(x.col as string[]), 2) from (exec arrayiterate((('a', 'b'),('c','d')))) x
 ----

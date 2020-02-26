@@ -1,0 +1,18 @@
+// Module included in the following assemblies:
+// as_procedure-language.adoc
+[id="loop-statement"]
+= Loop Statement
+
+A LOOP statement is an iterative control construct that is used to cursor through a result set.
+
+.Usage
+
+[source,sql]
+----
+[label :] LOOP ON <select statement> AS <cursorname>
+    statement
+----
+
+.Syntax rules
+
+* The label must not be the same as any label that is used in statements that contain this one.

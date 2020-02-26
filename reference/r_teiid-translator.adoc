@@ -1,7 +1,9 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="teiid-translator"]
 
-= {{ book.productnameFull }} Translator (teiid)
+= {{ book.productnameFull }} translator (teiid)
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+Also see common xref:jdbc-translators[JDBC translators] information.
 
-The {{ book.productnameFull }} Translator, known by the type name *_teiid_*, is for use with {{ book.productnameFull }} 6.0 or later.
-
+Use the Teiid translator, known by the type name *_teiid_*, when creating a virtual database from a Teiid data source.

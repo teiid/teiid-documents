@@ -1,32 +1,36 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="my-sql-server-translator"]
+= MySQL translator (mysql/mysql5)
 
-= MySQL Translator (mysql/mysql5)
+Also see common xref:jdbc-translators[JDBC translators] information.
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+Translation of MySQL and MariaDB is supported by the following translators.
 
-MySQL/MariaDB translation is supported by 2 translators.
+mysql:: The MySQL translator, known by the type name *_mysql_*, is for use with MySQL version 4.x.
 
-== mysql
+mysql5:: The MySQL5 translator, known by the type name *_mysql5_*, is for use with MySQL version 5 or later.
 
-The Mysql translator, known by the type name *_mysql_*, is for use with MySQL version 4.x.
+The translator also supports the translation of other compatible MySQL derivatives such as MariaDB.
 
-== mysql5
+.Usage
 
-The Mysql5 translator, known by the type name *_mysql5_*, is for use with MySQL version 5 or later.
-
-Also supports compatible MySQL derivatives including MariaDB.
-
-== Usage
-
-The MySQL Translators expect the database or session to be using ANSI mode. If the database is not using ANSI mode, an initialization query should be used on the pool to set ANSI mode:
+The MySQL translators expect the database or session to be using ANSI mode. 
+If the database is not using ANSI mode, you can set ANSI mode on the pool by submitting the following initialization query:
 
 [source,sql]
 ----
 set SESSION sql_mode = 'ANSI'
 ----
 
-If you may deal with null timestamp values, then set the connection property zeroDateTimeBehavior=convertToNull. Otherwise you’ll get conversion errors in {{ book.productnameFull }} that `0000-00-00 00:00:00' cannot be converted to a timestamp.
+When data includes null timestamp values, {{ book.productnameFull }} generates the following conversion error:
+ `0000-00-00 00:00:00 cannot be converted to a timestamp`.
+To avoid error, if you expect data with null timestamp values, set the connection property `zeroDateTimeBehavior=convertToNull`. 
 
-WARNING: If retrieving large result sets, you should consider setting the connection property useCursorFetch=true, otherwise MySQL will fully fetch result sets into memory on the {{ book.productnameFull }} instance.
+WARNING: If you must retrieve large result sets, consider setting the connection property `useCursorFetch=true`. Otherwise MySQL will fully fetch 
+result sets into memory on the {{ book.productnameFull }} instance.
 
-NOTE: MySQL reports TINYINT(1) columns as a JDBC BIT type - however the value range is not actually restricted and may cause issues if for example you are relying on -1 being recognized as a true value.  
-If not using the native importer, you should change affected source BOOLEAN columns to have a native type of "TINYINT(1)" rather than BIT so that the translator can appropriately handle the boolean conversion. 
+NOTE: MySQL reports TINYINT(1) columns as a JDBC BIT type - however the value range is not actually restricted and may cause 
+issues if for example you are relying on -1 being recognized as a true value.  
+If not using the native importer, change the BOOLEAN columns in the affected source to have 
+a native type of "TINYINT(1)" rather than BIT so that the translator can appropriately handle the Boolean conversion. 

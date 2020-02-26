@@ -1,21 +1,33 @@
-
-= JDBC Translators
+// Assembly included in the following assemblies:
+// r_translators.adoc
+[id="jdbc-translators"]
+= JDBC translators
 :toc: manual
 :toc-placement: preamble
 
-The JDBC translators bridge between SQL semantic and data type differences between {{ book.productnameFull }} and a target RDBMS. {{ book.productnameFull }} has a range of specific translators that target the most popular open source and proprietary databases.
+The JDBC translators bridge the SQL semantics and data type differences between {{ book.productnameFull }} and a target RDBMS.
+{{ book.productnameFull }} has a range of specific translators that target the most popular open source and proprietary relational databases.
 
-== Usage
+.Usage
 
-Usage of a JDBC source is straight-forward. Using {{ book.productnameFull }} SQL, the source may be queried as if the tables and procedures were local to the {{ book.productnameFull }} system.
+Usage of a JDBC source is straight-forward. 
+Using {{ book.productnameFull }} SQL, the source can be queried as if the tables and procedures were local to the {{ book.productnameFull }} system.
 
-If you are using a relational data source, or a data source that has a JDBC driver, and you do not find a specific translator available for that data source type, then start with the link:JDBC_ANSI_Translator.adoc[JDBC ANSI Translator]. The JDBC ANSI Translator should enable you to perform the SQL basics. If there specific data source capabilities that are not available, then consider using the link:../dev/Translator_Development.adoc[Translator Development] to create what you need. Or log a https://jira.jboss.org/jira/browse/Teiid[Teiid Jira] with your requirements.
+If you are using a relational data source, or a data source that has a JDBC driver, and you do not find a specific translator available for that data source type, 
+then start with the xref:jdbc-ansi-translator[JDBC ANSI translator]. 
+The JDBC ANSI translator should enable you to perform the SQL basics. 
+If there specific data source capabilities that are not available, you can define a custom translator that does what you need. 
+For more information, see link:../dev/Translator_Development.adoc[Translator Development]. 
 
-=== Type Conventions
+.Type conventions
 
-UID types including UUID, GUID, or UNIQUEIDENTIFIER are typically mapped to the {{ book.productnameFull }} string type.  Be aware that the source will treat UID strings as non-case sensitive, but they will be in {{ book.productnameFull }}.  The source may also not support the implicit conversion to the string type, thus usage in functions expecting a string value may fail at the source.  Please log an issue if you encounter this situation.  
+UID types including UUID, GUID, or UNIQUEIDENTIFIER are typically mapped to the {{ book.productnameFull }} string type. 
+JDBC data sources treat UID strings as non-case sensitive, but they are case-sensitive in {{ book.productnameFull }}. 
+The source may also not support the implicit conversion to the string type, thus usage in functions expecting a string value may fail at the source. 
 
-== Execution Properties - shared by all JDBC Translators
+The following table lists the execution properties that are shared by all JDBC translators.
+
+.Execution properties -- Shared by all JDBC translators
 
 |===
 |Name |Description |Default
@@ -26,44 +38,68 @@ UID types including UUID, GUID, or UNIQUEIDENTIFIER are typically mapped to the 
 
 |DatabaseVersion
 |The specific database version. Used to further tune pushdown support.
-|The base supported version or derived from the DatabaseMetadata.getDatabaseProductVersion string. Automatic detection requires a Connection. If there are circumstances where you are getting an exception from capabilities being unavailable (most likely due to an issue obtaining a Connection), then set DatabaseVersion property. Use the JDBCExecutionFactory.usesDatabaseVersion() method to control whether your translator requires a connection to determine capabilities.
+|The base supported version, or the version that is derived from the DatabaseMetadata.getDatabaseProductVersion string. 
+Automatic detection requires a connection.
+If there are circumstances where you are getting an exception due to capabilities being unavailable (for example, because a connection is not available), 
+then set `DatabaseVersion` property. 
+Use the `JDBCExecutionFactory.usesDatabaseVersion()`` method to control whether your translator requires a connection to determine capabilities.
 
 |TrimStrings
-|true to trim trailing whitespace from fixed length character strings. Note that {{ book.productnameFull }} only has a string, or varchar, type that treats trailing whitespace as meaningful.
+|`true` trims trailing whitespace from fixed length character strings. 
+Note that {{ book.productnameFull }} only has a string, or varchar, type that treats trailing whitespace as meaningful.
 |false
 
 |RemovePushdownCharacters
-|Set to a regular expression to remove characters that not allowed or undesirable for the source.  For example "[\u0000]" will remove the null character which is problematic for sources such as PostgreSQL and Oracle.  Note that this does effectively change the meaning of the affected string literals and bind values, which must be carefully considered.
+|Set to a regular expression to remove characters that not allowed or undesirable for the source. 
+For example `[\u0000]` will remove the null character, which is problematic for sources such as PostgreSQL and Oracle. 
+Note that this does effectively change the meaning of the affected string literals and bind values, which must be carefully considered.
 |
 
 |UseBindVariables
-|true to indicate that PreparedStatements should be used and that literal values in the source query should be replace with bind variables. If false only LOB values will trigger the use of PreparedStatements.
+|`true` indicates that PreparedStatements should be used and that literal values in the source query should be replace with bind variables. 
+If `false` only LOB values will trigger the use of PreparedStatements.
 |true
 
 |UseCommentsInSourceQuery
-|This will embed a leading comment with session/request id in the source SQL for informational purposes. Can be customized with the CommentFormat property.
+|This will embed a leading comment with session/request id in the source SQL for informational purposes. 
+Can be customized with the CommentFormat property.
 |false
 
 |CommentFormat
-|http://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html[MessageFormat] string to be used if UseCommentsInSourceQuery is enabled. Available properties: 0 - session id string, 1 - parent request id string, 2 - request part id string, 3 - execution count id string, 4 - user name string, 5 - vdb name string, 6 - vdb version integer, 7 - is transactional boolean
-|/*teiid sessionid:\{0}, requestid:\{1}.\{2}*/
+a| http://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html[MessageFormat] string to be used if `UseCommentsInSourceQuery` is enabled. 
+You can set the format to one of the following values: 
+
+* 0 - Session ID string.
+* 1 - Parent request ID string.
+* 2 - Request part ID string. 
+* 3 - Execution count ID string.
+* 4 - User name string.
+* 5 - VDB name string.
+* 6 - VDB version integer.
+* 7 - Is transactional boolean.
+|`/\*teiid sessionid:\\{0}, requestid:\\{1}.\\{2}*/`
 
 |MaxPreparedInsertBatchSize
 |The max size of a prepared insert batch.
 |2048
 
 |StructRetrieval
-|Struct retrieval mode can be one of OBJECT - getObject value returned, COPY - returned as a `SerialStruct`, ARRAY - returned as an `Array`)
+a|Specify one of the following Struct retrieval modes:
+
+* OBJECT - `getObject` value returned.
+* COPY - Returned as a `SerialStruct`.
+* ARRAY - Returned as an array.
 |OBJECT
 
 |EnableDependentJoins
-|For sources that support temporary tables (DB2, Derby, H2, HSQL 2.0+, MySQL 5.0+, Oracle, PostgreSQL, SQLServer, SQP IQ, Sybase) allow dependent join pushdown
+|Allow dependent join pushdown for sources that support temporary tables (DB2, Derby, H2, HSQL 2.0+, MySQL 5.0+, Oracle, PostgreSQL, SQLServer, SQP IQ, Sybase). 
 |false
 |===
 
-== Importer Properties - shared by all JDBC Translators
+.Importer properties -- Shared by all JDBC translators
 
-When specifying the importer property, it must be prefixed with "importer.". Example: importer.tableTypes
+When specifying the importer property, it must be prefixed with `importer.`. 
+Example: `importer.tableTypes`
 
 |===
 |Name |Description |Default
@@ -73,7 +109,8 @@ When specifying the importer property, it must be prefixed with "importer.". Exa
 |null
 
 |schemaName
-|Recommended setting to import from a single schema.  The schema name will be converted into an escaped pattern - overriding schemaPattern if it is also set.
+|Recommended setting to import from a single schema.  
+The schema name will be converted into an escaped pattern,overriding schemaPattern if it is also set.
 |null
 
 |schemaPattern
@@ -89,94 +126,129 @@ When specifying the importer property, it must be prefixed with "importer.". Exa
 |null
 
 |tableTypes
-|Comma separated list - without spaces - of imported table types. See DatabaseMetaData.getTables [1]
+|Comma separated list -- without spaces -- of imported table types. See `DatabaseMetaData.getTables` [1]
 |null
 
 |excludeTables 
-|A case-insensitive regular expression that when matched against a fully qualified table name [2] will exclude it from import.  Applied after table names are retrieved.  Use a negative look-ahead (?!<inclusion pattern>).* to act as an inclusion filter.
+|A case-insensitive regular expression that when matched against a fully qualified table name [2] will exclude it from import. 
+Applied after table names are retrieved. 
+Use a negative look-ahead (?!<inclusion pattern>).* to act as an inclusion filter.
 |null 
 
 |excludeProcedures 
-|A case-insensitive regular expression that when matched against a fully qualified procedure name [2] will exclude it from import.  Applied after procedure names are retrieved.  Use a negative look-ahead (?!<inclusion pattern>).* to act as an inclusion filter.
+|A case-insensitive regular expression that when matched against a fully qualified procedure name [2] will exclude it from import. 
+Applied after procedure names are retrieved. 
+Use a negative look-ahead (?!<inclusion pattern>).* to act as an inclusion filter.
 |null 
 
 |importKeys
-|true to import primary and foreign keys - NOTE foreign keys to tables that are not imported will be ignored
+|`true` to import primary and foreign keys. 
+
+NOTE: Foreign keys to tables that are not imported will be ignored.
+
 |true
 
 |autoCreateUniqueConstraints
-|true to create a unique constraint if one is not found for a foreign keys
+|`true` to create a unique constraint if one is not found for a foreign keys
 |true
 
 |importIndexes
-|true to import index/unique key/cardinality information
+|`true` to import index/unique key/cardinality information
 |false
 
 |importApproximateIndexes
-|true to import approximate index information. See DatabaseMetaData.getIndexInfo [1].  WARNING: setting to false may cause lengthy import times.
+|`true` to import approximate index information. 
+See DatabaseMetaData.getIndexInfo [1]. 
+
+WARNING: Setting to `false` may cause lengthy import times.
+
 |true
 
 |importProcedures
-|true to import procedures and procedure columns - Note that it is not always possible to import procedure result set columns due to database limitations. It is also not currently possible to import overloaded procedures.
+|`true` to import procedures and procedure columns - Note that it is not always possible to import procedure result set columns due to database limitations. 
+It is also not currently possible to import overloaded procedures.
 |false
 
 |importSequences
-|true to import sequences.  Note supported only for DB2, Oracle, PostgreSQL, SQL Server, and H2.  A matching sequence will be imported
-to a 0-argument {{ book.productnameFull }} function name_nextval.
+|`true` to import sequences. Supported only for Db2, Oracle, PostgreSQL, SQL Server, and H2. A matching sequence will be imported
+to a 0-argument {{ book.productnameFull }} function `name_nextval`.
 |false
 
 |sequenceNamePattern
-|like pattern string to use when importing sequences.  Null or % will match all.
+|LIKE pattern string to use when importing sequences. 
+Null or `%` will match all.
 |null
 
 |useFullSchemaName
-|When false, directs the importer to use just the object name as the {{ book.productnameFull }} name.  It is expected that all objects will come from the same foreign schema.  When true (not recommended) the {{ book.productnameFull }} name will be formed using the catalog and schema names as directed by the useCatalogName and useQualifiedName properties and it will be allowed for objects to come from multiple foreign schema.  This option does not affect the name in source property.
-|false (only change when importing from mulitple foreign schema)
+|When `false`, directs the importer to use only the object name as the {{ book.productnameFull }} name. 
+It is expected that all objects will come from the same foreign schema. When `true` (not recommended) the {{ book.productnameFull }} name 
+will be formed using the catalog and schema names as directed by the `useCatalogName` and `useQualifiedName` properties, and it 
+will be allowed for objects to come from multiple foreign schema. This option does not affect the name in source property.
+|false (only change when importing from multiple foreign schema).
 
 |useQualifiedName
-|true will use name qualification for both the {{ book.productnameFull }} name and name in source as further refined by the useCatalogName and useFullSchemaName properties.  Set to false to disable all qualification for both the {{ book.productnameFull }} name and the name in source, which effectively ignores the useCatalogName and useFullSchemaName properties.  WARNING: when false this may lead to objects with duplicate names when importing from multiple schemas, which results in an exception.
+|`true` will use name qualification for both the {{ book.productnameFull }} name and name in source as further refined 
+by the `useCatalogName` and `useFullSchemaName` properties. 
+Set to `false` to disable all qualification for both the {{ book.productnameFull }} name and the name in source, 
+which effectively ignores the `useCatalogName` and `useFullSchemaName` properties.  
+
+WARNING: When you set this option to `false`, it can lead to objects with duplicate names when importing from multiple schemas, which results in an exception.
+
 |true (rarely needs changed)
 
 |useCatalogName
-|true will use any non-null/non-empty catalog name as part of the name in source, e.g. "catalog"."schema"."table"."column", and in the {{ book.productnameFull }} runtime name if applicable. false will not use the catalog name in either the name in source nor the {{ book.productnameFull }} runtime name.  Only required to be set to false for sources that do not support a catalog concept, but return a non-null/non-empty catalog name in their metadata - such as HSQL.
+|`true` will use any non-null/non-empty catalog name as part of the name in source, e.g. "catalog"."schema"."table"."column", 
+and in the {{ book.productnameFull }} runtime name if applicable. `false` will not use the catalog name in either the name 
+in source nor the {{ book.productnameFull }} runtime name. Only required to be set to `false` for sources such as HSQL that do not support a catalog concept, 
+but return a non-null/non-empty catalog name in their metadata.
 |true (rarely needs changed)
 
 |widenUnsignedTypes
-|true to convert unsigned types to the next widest type. For example SQL Server reports tinyint as an unsigned type. With this option enabled, tinyint would be imported as a short instead of a byte.
+|`true` to convert unsigned types to the next widest type. For example, SQL Server reports `tinyint` as an unsigned type. 
+With this option enabled, 
+`tinyint` would be imported as a short instead of a byte.
 |true
 
 |useIntegralTypes
-|true to use integral types rather than decimal when the scale is 0. 
+|`true` to use integral types rather than decimal when the scale is 0. 
 |false
 
 |quoteNameInSource
-|false will override the default and direct {{ book.productnameFull }} to create source queries using unquoted identifiers.
+|`false` will override the default and direct {{ book.productnameFull }} to create source queries using unquoted identifiers.
 |true
 
 |useAnyIndexCardinality
-|true will use the maximum cardinality returned from DatabaseMetaData.getIndexInfo. importKeys or importIndexes needs to be enabled for this setting to have an effect. This allows for better stats gathering from sources that don’t support returning a statistical index.
+|`true` will use the maximum cardinality returned from `DatabaseMetaData.getIndexInfo`. `importKeys` or `importIndexes` needs to be enabled for 
+this setting to have an effect. 
+This allows for better stats gathering from sources that don’t support returning a statistical index.
 |false
 
 |importStatistics
-|true will use database dependent logic to determine the cardinality if none is determined. Not yet supported by all database types - currently only supported by Oracle and MySQL.
+|`true` will use database dependent logic to determine the cardinality if none is determined. Not yet supported by all database types -- 
+currently only supported by Oracle and MySQL.
 |false
 
 |importRowIdAsBinary
-|true will import RowId columns as varbinary values.
+|`true` will import `RowId` columns as varbinary values.
 |false
 
 |importLargeAsLob
-|true will import character and binary types larger than the {{ book.productnameFull }} max as clob or blob respectively.  If you experience memory issues even with the property enabled, you should use the copyLob execution property as well. 
+|`true` will import character and binary types larger than the {{ book.productnameFull }} max as CLOB or BLOB respectively. 
+If you experience memory issues even with the property enabled, you should use the `copyLob` execution property as well. 
 |false
 |===
 
-[1] JavaDoc for {{ book.javaVersionUrl }}/docs/api/java.sql/java/sql/DatabaseMetaData.html[DatabaseMetaData] +
-[2] The fully qualified name for exclusion is based upon the settings of the translator and the particulars of the database. All of the applicable name parts used by the translator settings (see useQualifiedName and useCatalogName) including catalog, schema, table will be combined as catalogName.schemaName.tableName with no quoting. For example Oracle does not report a catalog, so the name used with default settings for comparison would be just schemaName.tableName.
+[1] JavaDoc for {{ book.javaVersionUrl }}/docs/api/java/sql/DatabaseMetaData.html[DatabaseMetaData] +
+[2] The fully qualified name for exclusion is based upon the settings of the translator and the particulars of the database. 
+All of the applicable name parts used by the translator settings (see `useQualifiedName` and `useCatalogName`) including catalog, 
+schema, table will be combined as `catalogName.schemaName.tableName` with no quoting. For example, Oracle does not report a catalog, 
+so the name used with default settings for comparison would be just `schemaName.tableName`.
 
-WARNING: The default import settings will crawl all available metadata. This import process is time consuming and full metadata import is not needed in most situations. Most commonly you’ll want to limit the import by at least schemaName or schemaPattern and tableTypes.
+WARNING: The default import settings will crawl all available metadata. 
+This import process is time-consuming, and full metadata import is not needed in most situations. 
+Most commonly you’ll want to limit the import by at least `schemaName` or `schemaPattern` and `tableTypes`.
 
-Example importer settings to only import tables and views from my-schema. See also link:vdb_guide.adoc[VDB Guide]
-
+.Example: Importer settings to import only tables and views from my-schema. 
 [source,sql]
 ----
 SET SCHEMA ora;
@@ -197,51 +269,106 @@ Or in an xml vdb:
 ----
 {% endif %}
 
-== Native Queries
+For more information about importer settings, see xref:virtual-databases[Virtual databases].
 
-Physical tables, functions, and procedures may optionally have native queries associated with them.  No validation of the native query is performed, it is simply used in a straight-forward manner to generate the source SQL.  For a physical table setting the teiid_rel:native-query extension metadata will execute the native query as an inline view in the source query.  This feature should only be used against sources that support inline views.  The native query is used as is and is not treated as a parameterized string. For example on a physical table y with nameInSource="x" and teiid_rel:native-query="select c from g", the {{ book.productnameFull }} source query"SELECT c FROM y" would generate the SQL query "SELECT c FROM (select c from g) as x".  Note that the column names in the native query must match the nameInSource of the physical table columns for the resulting SQL to be valid.
 
-For physical procedures you may also set the teiid_rel:native-query extension metadata to a desired query string with the added ability to positionally reference IN parameters - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries].  The teiid_rel:non-prepared extension metadata property may be set to false to turn off parameter binding.  Note this option should be used with caution as inbound may allow for SQL injection attacks if not properly validated.  The native query does not need to call a stored procedure.  Any SQL that returns a result set positionally matching the result set expected by the physical stored procedure metadata will work.  For example on a stored procedure x with teiid_rel:native-query="select c from g where c1 = $1 and c2 = `$$1"', the {{ book.productnameFull }} source query "CALL x(?)" would generate the SQL query "select c from g where c1 = ? and c2 = `$1"'.  Note that ? in this example will be replaced with the actual value bound to parameter 1.
+.Native queries
 
-=== Direct Query Procedure
+Physical tables, functions, and procedures may optionally have native queries associated with them. 
+No validation of the native query is performed, it is simply used in a straight-forward manner to generate the source SQL. 
+For a physical table setting the `teiid_rel:native-query` extension metadata will execute the native query as an inline view in the source query. 
+This feature should only be used against sources that support inline views. 
+The native query is used as is and is not treated as a parameterized string. 
+For example, on a physical table `y` with `nameInSource="x"`` and `teiid_rel:native-query="select c from g"`, the {{ book.productnameFull }} source 
+query `"SELECT c FROM y"` would generate the SQL query `"SELECT c FROM (select c from g) as x"`. 
+Note that the column names in the native query must match the `nameInSource` of the physical table columns for the resulting SQL to be valid.
 
-This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:Translators.adoc#_override_execution_properties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
+For physical procedures you may also set the `teiid_rel:native-query` extension metadata to a desired query string with 
+the added ability to positionally reference IN parameters . For more information, see _Parameterizable native queries_ in 
+xref:translators[Translators]. 
+The `teiid_rel:non-prepared` extension metadata property can be set to `false` to turn off parameter binding.  
 
-By default the name of the procedure that executes the queries directly is *native*. link:Translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
+Be careful in setting this option, because inbound allows for SQL injection attacks if not properly validated. 
+The native query does not need to call a stored procedure. 
+Any SQL that returns a result set that positionally matches the result set that is expected by the physical stored procedure metadata will work. 
+For example on a stored procedure `x` with `teiid_rel:native-query="select c from g where c1 = $1 and c2 = `$$1"'`, the {{ book.productnameFull }} source 
+query ``"CALL x(?)"`` would generate the SQL query ``"select c from g where c1 = ? and c2 = `$1"'``.  
+Note that `?` in this example will be replaced with the actual value bound to parameter 1.
 
-The JDBC translator provides a procedure to execute any ad-hoc SQL query directly against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as an object array. link:ARRAYTABLE.html[ARRAYTABLE] can be used construct tabular output for consumption by client applications.
+.Direct query procedure
+
+This feature is turned off by default, because of the inherent security risk in allowing any command to be run against the source. 
+To enable this feature, override the execution property called _SupportsDirectQueryProcedure_ and set it to `true`. 
+For more information, see _Override execution properties_ in xref:translators[Translators].
+
+By default, the name of the procedure that executes the queries directly is *native*. 
+To change the name, override the execution property _DirectQueryProcedureName_.
+
+The JDBC translator provides a procedure to execute any ad-hoc SQL query directly against the source without {{ book.productnameFull }} parsing or resolving. 
+Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as an object array. 
+ARRAYTABLE can be used construct tabular output for consumption by client applications. For more information, see xref:arraytable[arraytable].
 
 [source,sql]
-.*Select Example*
+.*SELECT example*
 ----
 SELECT x.* FROM (call jdbc_source.native('select * from g1')) w,
  ARRAYTABLE(w.tuple COLUMNS "e1" integer , "e2" string) AS x
 ----
 
 [source,sql]
-.*Insert Example*
+.*INSERT example*
 ----
 SELECT x.* FROM (call jdbc_source.native('insert into g1 (e1,e2) values (?, ?)', 112, 'foo')) w,
  ARRAYTABLE(w.tuple COLUMNS "update_count" integer) AS x
 ----
 
 [source,sql]
-.*Update Example*
+.*UPDATE example*
 ----
 SELECT x.* FROM (call jdbc_source.native('update g1 set e2=? where e1 = ?','blah', 112)) w,
  ARRAYTABLE(w.tuple COLUMNS "update_count" integer) AS x
 ----
 
 [source,sql]
-.*Delete Example*
+.*DELETE example*
 ----
 SELECT x.* FROM (call jdbc_source.native('delete from g1 where e1 = ?', 112)) w,
  ARRAYTABLE(w.tuple COLUMNS "update_count" integer) AS x
 ----
 
 {% if book.targetWildfly %}
-== JCA Resource Adapter
+.JCA resource adapter
 
-The resource adapter for this translator provided through data source in {{ book.asName }}, See to Admin Guide section link:../client-dev/WildFly_DataSource.adoc[{{ book.asName }} Data Sources] for configuration.
+The resource adapter for this translator provided through data source in {{ book.asName }}, 
+See to Admin Guide section link:../client-dev/WildFly_DataSource.adoc[{{ book.asName }} Data Sources] for configuration.
 {% endif %}
 
+include::r_actian-vector-translator.adoc[leveloffset=+1]
+include::r_apache-phoenix-translator.adoc[leveloffset=+1]
+include::r_cloudera-impala-translator.adoc[leveloffset=+1]
+include::r_db2-translator.adoc[leveloffset=+1]
+include::r_derby-translator`.adoc[leveloffset=+1]
+include::r_exasol-translator.adoc[leveloffset=+1]
+include::r_greenplum-translator.adoc[leveloffset=+1]
+include::r_h2-translator.adoc[leveloffset=+1]
+include::r_hive-translator.adoc[leveloffset=+1]
+include::r_hsql-translator.adoc[leveloffset=+1]
+include::r_informix-translator.adoc[leveloffset=+1]
+include::r_ingres-translators.adoc[leveloffset=+1]
+include::r_intersystems-cache-translator.adoc[leveloffset=+1]
+include::r_jdbc-ansi-translator.adoc[leveloffset=+1]
+include::r_jdbc-simple-translator.adoc[leveloffset=+1]
+include::r_microsoft-access-translators.adoc[leveloffset=+1]
+include::r_mirosoft-sql-server-translator.adoc[leveloffset=+1]
+include::r_mysql-translators.adoc[leveloffset=+1]
+include::r_netezza-translator.adoc[leveloffset=+1]
+include::r_oracle-translator.adoc[leveloffset=+1]
+include::r_postgresql-translator.adoc[leveloffset=+1]
+include::r_prestodb-translator.adoc[leveloffset=+1]
+include::r_redshift-translator.adoc[leveloffset=+1]
+include::r_sap-hana-translator.adoc[leveloffset=+1]
+include::r_sap-iq-translator.adoc[leveloffset=+1]
+include::r_sybase-translator.adoc[leveloffset=+1]
+include::r_teiid-translator.adoc[leveloffset=+1]
+include::r_teradata-translator.adoc[leveloffset=+1]
+include::r_vertica-translator.adoc[leveloffset=+1]

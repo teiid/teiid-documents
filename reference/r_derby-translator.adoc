@@ -1,7 +1,8 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="derby-translator"]
+= Derby translator (derby)
 
-= Derby Translator (derby)
+Also see common xref:jdbc-translators[JDBC Translators] information.
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
-
-The Derby Translator, known by the type name *_derby_*, is for use with Derby 10.1 or later.
-
+The Derby translator, known by the type name *_derby_*, is for use with Derby 10.1 or later.

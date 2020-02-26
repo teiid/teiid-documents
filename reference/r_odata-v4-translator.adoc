@@ -1,16 +1,33 @@
+// Module included in the following assemblies:
+// as_translators.adoc
+[id="odata-v4-translator"]
+= OData V4 translator
 
-= OData V4 Translator
+The OData V4 translator, known by the type name _"odata4"_ exposes the OData Version 4 data sources and uses the {{ book.productnameFull }} 
+web services resource adapter for making web service calls. 
+This translator is extension of _Web Services Translator_. 
+The OData V4 translator is not for use with older OData V1-3 sources. 
+Use the OData translator (_"odata"_) for older OData sources.
 
-The OData V4 translator, known by the type name _"odata4"_ exposes the OData Version 4 data sources and uses the {{ book.productnameFull }} WS resource adapter for making web service calls. This translator is extension of _Web Services Translator_.  Do not use the OData V4 translator against older OData V1-3 sources, instead just use the OData translator.
+.What is OData
+The http://www.odata.org[Open Data Protocol (OData)] Web protocol is for querying and updating data that provides 
+a way to unlock your data and free it from silos that exist in applications today. 
+OData does this by applying and building upon Web technologies such as HTTP, Atom Publishing Protocol (AtomPub), 
+and JSON to provide access to information from a variety of applications, services, and stores. 
+OData is being used to expose and access information from a variety of sources including, but not limited to, 
+relational databases, file systems, content management systems and traditional Web sites.
 
-NOTE: *What is Odata* - The http://www.odata.org[Open Data Protocol (OData)] Web protocol is for querying and updating data that provides a way to unlock your data and free it from silos that exist in applications today. OData does this by applying and building upon Web technologies such as HTTP, Atom Publishing Protocol (AtomPub) and JSON to provide access to information from a variety of applications, services, and stores. OData is being used to expose and access information from a variety of sources including, but not limited to, relational databases, file systems, content management systems and traditional Web sites.
+Using this specification from the OASIS group, with the help from the http://olingo.apache.org/[Olingo] framework, 
+{{ book.productnameFull }} maps OData V4 CSDL (Conceptual Schema Definition Language) document from the OData endpoint 
+provided and converts the OData metadata into {{ book.productnameFull }}’s relational schema. 
+The following table shows the mapping selections in the OData V4 translator from a CSDL document
 
-Using this specification from OASIS group, with the help from the http://olingo.apache.org/[Olingo] framework, {{ book.productnameFull }} maps OData V4 CSDL (Conceptual Schema Definition Language) document from the OData endpoint provided and converts the OData metadata into {{ book.productnameFull }}’s relational schema. The below table shows the mapping selections in OData V4 Translator from CSDL document
-
-NOTE: *Want to use as OData Server?* - {{ book.productnameFull }} can not only consume OData based data sources, but it can expose any data source as an OData based webservice. For more information see link:../client-dev/OData_Support.adoc[OData Support].
+.Using OData as a server
+NOTE: {{ book.productnameFull }} can not only consume OData-based data sources, but it can expose any data source as an OData based web service. 
+For more information see _OData Support_ in the http://teiid.github.io/teiid-documents/master/sb/client-dev/Client_Developers_Guide.html[Client Developer's Guide].
 
 |===
-|OData |Mapped to Relational Entity
+|OData |Mapped to relational entity
 
 |EntitySet
 |Table
@@ -31,18 +48,23 @@ NOTE: *Want to use as OData Server?* - {{ book.productnameFull }} can not only c
 |Table [4]
 |===
 
-[1] Only if the EntityType is exposed as the EntitySet in the Entity Container 
-[2] Only if the complex type is used as property in the exposed EntitySet. This table will be designed as child table with foreign key [1 to 1] or [1 to many] relationship to the parent +
-[3] If the return type is EntityType or ComplexType, the procedure is designed to return a table 
+[1] Only if the EntityType is exposed as the EntitySet in the Entity container. 
+[2] Only if the complex type is used as property in the exposed EntitySet. This table will be designed as child table 
+with foreign key [1-to-1] or [1-to-many] relationship to the parent. +
+[3] If the return type is EntityType or ComplexType, the procedure is designed to return a table. 
 [4] Navigation properties are exposed as tables. The table will be created with foreign key relationship to the parent.
 
 All CRUD operations will be appropriately mapped to the resulting entity based on the SQL submitted to the OData translator.
 
-== Usage
+.Usage
 
-Usage of a OData source is similar a JDBC translator. The metadata import is supported through the translator, once the metadata is imported from source system and exposed in relational terms, then this source can be queried as if the EntitySets, Function Imports and Action Imports were local to the {{ book.productnameFull }} system.
+Usage of a OData source is similar a JDBC translator. 
+The metadata import is supported through the translator, once the metadata is imported from source system and exposed in relational terms, 
+then this source can be queried as if the EntitySets, Function Imports and Action Imports were local to the {{ book.productnameFull }} system.
 
-It is not recommended to define your own metadata using {{ book.productnameFull }} DDL for complex services as there are several extension metadata properties required for proper functioning.  On non-string properties a NATIVE_TYPE property is expected and should specify the ful EDM type name - "Edm.xxx".  
+It is not recommended to define your own metadata using {{ book.productnameFull }} DDL for complex services.
+There are several extension metadata properties required to enable proper functioning. 
+On non-string properties, a `NATIVE_TYPE` property is expected and should specify the full EDM type name - `Edm.xxx`.  
 
 The below is sample VDB that can read metadata service from TripPin service on http://odata.org[http://odata.org] site.
 
@@ -84,13 +106,12 @@ SELECT * FROM trippin.People p INNER JOIN trippin.People_Friends pf ON p.UserNam
 EXEC GetNearestAirport(lat, lon) ;
 ----
 
-== Configuration of Translator
+.Configuration of translator
 
-=== Execution Properties
+.Execution properties
 
-Execution properties extend/limit the functionality of the translator based on the physical source capabilities. Sometimes default properties need to adjusted for proper execution of the translator.
-
-*Execution Properties*
+Sometimes default properties need to adjusted for proper execution of the translator.
+The following execution properties extend or limit the functionality of the translator based on the physical source capabilities.  
 
 |===
 |Name |Description |Default
@@ -120,7 +141,11 @@ Execution properties extend/limit the functionality of the translator based on t
 |true
 |===
 
-Sometimes it’s possible that the odata server you are querying does not fully implement all OData specification features. If your OData implementation does not support a certain feature, then turn off the corresponding capability using "execution Properties", so that {{ book.productnameFull }} will not pushdown invalid queries to the translator. For example, to turn off $filter you add following to your vdb.xml
+The OData server that you connect to might not fully implement the entire 
+OData specification. If the server's OData implementation does not support a feature, 
+set "execution properties" to turn off the corresponding capability, so that {{ book.productnameFull }} 
+does not push down invalid queries to the translator. 
+
 
 [source,xml]
 ----
@@ -131,11 +156,8 @@ Sometimes it’s possible that the odata server you are querying does not fully 
 
 then use "odata-override" as the translator name on your source model.
 
-=== Importer Properties
-
-Importer properties define the behavior of the translator during the metadata import from the physical source.
-
-*Importer Properties*
+.Importer properties
+The following table lists the importer properties that define the behavior of the translator during metadata import from the physical source.
 
 |===
 |Name |Description |Default
@@ -145,20 +167,22 @@ Importer properties define the behavior of the translator during the metadata im
 |null
 |===
 
-Example importer settings to only import tables and views from http://services.odata.org/V4/(S(nivess3y23eyhit4jbppgtdj))/TripPinServiceRW/$metadata[Trippin] service exposed on odata.org
+Example importer settings to only import tables and views from http://services.odata.org/V4/(S(nivess3y23eyhit4jbppgtdj))/TripPinServiceRW/$metadata[Trippin] 
+service exposed on odata.org
 
 [source,xml]
 ----
 <property name="importer.schemaNamespace" value="Microsoft.OData.SampleService.Models.TripPin"/>
 ----
 
-You can leave this property undefined, as if it does not find one configured the translator will select the default name of the EntityContainer.
+You can leave this property undefined. If the translator does not detect a configured instance of the property, 
+it specifies the default name of the EntityContainer.
 
 {% if book.targetWildfly %}
-=== JCA Resource Adapter
+.JCA resource adapter
 
 The resource adapter for this translator is a link:../admin/Web_Service_Data_Sources.adoc[Web Service Data Source].
 {% endif %}
 
-NOTE: *Native Queries* - Native or direct query execution is not supported through OData translator. However, user can use Web Services Translator’s _invokehttp_ method directly to issue a Rest based call and parse results using SQLXML.
-
+TIP: *Native queries* - Native or direct query execution is not supported through the OData translator. 
+However, you can use the _invokehttp_ method of the Web services translator to issue REST-based calls, and then use SQLXML to parse results.

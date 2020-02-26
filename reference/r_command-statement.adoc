@@ -1,0 +1,67 @@
+// Module included in the following assemblies:
+// as_ddl-commands.adoc
+[id="command-statement"]
+= Command statement
+
+A command statement executes a DML command, DDL command, or dynamic SQL against one or more data sources.
+For more information, see xref:dml-commands[DML commands] and xref:ddl-commands[DDL commands].
+ 
+.Usage
+
+[source,sql]
+----
+command [(WITH|WITHOUT) RETURN];
+----
+
+[source,sql]
+.*Example command statements*
+----
+SELECT * FROM MySchema.MyTable WHERE ColA > 100 WITHOUT RETURN;
+INSERT INTO MySchema.MyTable (ColA,ColB) VALUES (50, 'hi');
+----
+
+.Syntax rules
+
+* EXECUTE command statements may access IN/OUT, OUT, and RETURN parameters. 
+To access the return value the statement will have the form `var = EXEC proc...`. 
+To access OUT or IN/OUT values named parameter syntax must be used. 
+For example, `EXEC proc(in_param=>'1', out_param=>var)` will assign the value of the out parameter to the variable var. 
+It is expected that the datatype of a parameter is implicitly convertible to the data type of the variable.
+For more information about EXECUTE command statements, see xref:execute-command[EXECUTE command].
+
+* The RETURN clause determines if the result of the command is returnable from the procedure. 
+WITH RETURN is the default. 
+If the command does not return a result set, or the procedure does not return a result set, the RETURN clause is ignored. 
+If WITH RETURN is specified, the result set of the command must match the expected result set of the procedure. 
+Only the last successfully executed statement executed WITH RETURN will be returned as the procedure result set. 
+If there are no returnable result sets and the procedure declares that a result set will be returned, then an empty result set is returned.
+
+[NOTE]
+====
+The INTO clause is used only for inserting into a table.  
+`SELECT ... INTO table ...`` is functionally equivalent to `INSERT INTO table SELECT ...`` 
+If you need to assign variables, you can use one of the following methods:
+
+Use an assignment statement with a scalar subquery::
+
+[source,sql]
+----
+DECLARE string var = (SELECT col ...);
+----
+
+Use a temporary table::
+
+[source,sql]
+----
+INSERT INTO #temp SELECT col1, col2 ...;
+DECLARE string VARIABLES.RESULT = (SELECT x FROM #temp);
+----
+
+Use an array::
+
+[source,sql]
+----
+DECLARE string[] var = (SELECT (col1, col2) ...);
+DECLARE string col1val = var[1];
+----
+====

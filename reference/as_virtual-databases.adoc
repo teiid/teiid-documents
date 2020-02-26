@@ -1,20 +1,31 @@
-= Virtual Databases
+// Assembly included in the following assemblies:
+// as_dv_reference.adoc
+[id="virtual-databases"]
+= Virtual databases
 
-A virtual database (or VDB) is a metadata container for components used to integrate data from multiple data sources, so that they can be accessed in an integrated manner through a single, uniform API. 
+A virtual database (VDB) is a metadata container for components used to integrate data from multiple data sources, 
+so that they can be accessed in an integrated manner through a single, uniform API. 
 
-image:images/vdb.png[vdb]
+image:images/vdb.png[Virtual database]
 
-A VDB typically contains multiple schema components (also called as models), and each schema contains the metadata (tables, procedures, functions). There are two (2) different types of schemas  
+A virtual database typically contains multiple schema components (also called as models), and each schema contains 
+the metadata (tables, procedures, functions). 
+There are two different types of schemas:  
  
-* Foreign Schema (also called Source or Physical schema), which represents an external/remote data sources like Relational database (Oracle, DB2, MySQL..), Files(CSV, Excel..), Web-Services(SOAP, REST) etc.
+Foreign schema:: Also called a _source_ or _physical_ schema, a foreign schema represents external or remote data sources, 
+such as a relational database, such as Oracle, Db2, or MySQL; files, such as CSV or Microsoft Excel; or web services, such as SOAP or REST.
 
-* Virtual Schema. This is a view layer or logical schema layer, that is defined using schema objects from Foreign Schemas. For example, creating a view table using multiple foreign tables from different sources, thus hiding the complexities of definition of the view from user.
+Virtual schema:: A view layer, or logical schema layer that is defined using schema objects from _foreign schemas_. 
+For example, when you create a view table that aggregates multiple foreign tables from different sources, 
+the resulting view shields users from the complexities of the data sources that define the view.
 
-One important thing to note is, a VDB ONLY contains metadata. Any usecase involving {{ book.productnameFull }} MUST have a VDB to begin with. So, it is very important to learn how a VDB can be designed/developed.
+One important thing to note is, a virtual database contains only metadata. 
+Any use case involving {{ book.productnameFull }} must have a virtual database model to begin with. 
+So, it is important to learn how to design and develop a VDB.
 
-Below is an example VDB, that is using a single foreign schema component defining a connection to PostgreSQL database.
+The following example of a virtual database model, defines a single foreign schema component that makes a connection to a PostgreSQL database.
 
-It uses a variation of DDL that utilizes the SQL-MED specification.
+The SQL DDL commands in the example implement the SQL/MED specification.
 
 [source,sql]
 ----
@@ -49,26 +60,51 @@ Or as an XML vdb:
 Both formats define the same VDB.
 {% endif %}
 
-In the following sections we will go into detail about exactly this example VDB is defining. Before that we need to learn about further fractions in the _Source Schema_ component. 
+The following sections describe in greater detail how the statements in the preceding example are used to define a virtual database. 
+Before that we need to learn about the different elements of the _source schema_ component. 
 
-== External Data Sources 
-A "source schema" component in VDB as shown in above example is a collection schema objects as tables, procedures and functions that represent an external data source's metadata locally. In the above example, it did not define any such schema objects directly, but will instead import them from the server.  Details of the connection to the external data source were provided through "resource-name", which is a named connection reference to a external data source.   
+.External data sources 
+As shown in preceding example, the "source schema" component of a virtual database is a collection of schema objects, 
+tables, procedures and functions, that represent an external data source's metadata locally. 
+In the example, schema objects are not defined directly, but are imported from the server.  
+Details of the connection to the external data source are provided through a `resource-name`, which is a named connection reference to a external data source.   
 
-For the purposes of {{ book.productnameFull }}, connecting and issuing queries to fetch the metadata from these external data sources, {{ book.productnameFull }} defines/provides two types of resources.
+For the purposes of {{ book.productnameFull }}, connecting and issuing queries to fetch the metadata 
+from these external data sources, {{ book.productnameFull }} defines/provides two types of resources.
 
 {% if book.targetWildfly %}
-=== Resource Adapter
-A resource adapter (also called as SERVER) is connection object to the external data source. In the case of relational database this can be achieved through a JDBC connection, or in the case of a File this may be a reference to file's location. The resource-adapter provides a unified interface to define a connection in the {{ book.productnameFull }}. A resource adapter also provides way to natively issue commands and gather results. {{ book.productnameFull }} provides variety of resource adaptors to many different systems or one can be developed for new/custom data source. A resource adapters connection is represented above as the "resource-name".
+.Resource adapter
+A resource adapter (also called as SERVER) is connection object to the external data source. 
+In the case of relational database this can be achieved through a JDBC connection, or in the case 
+of a File this may be a reference to file's location. 
+The resource-adapter provides a unified interface to define a connection in the {{ book.productnameFull }}. 
+A resource adapter also provides way to natively issue commands and gather results. 
+{{ book.productnameFull }} provides variety of resource adaptors to many different systems or one can be developed for new/custom data source. 
+A resource adapters connection is represented above as the "resource-name".
 
-As VDB developer you need to know, how to configure these sources in the {{ book.productnameFull }}. In {{ book.asName }} Server these are defined as JCA components. In {{ book.productnameFull }} embedded, the developer has to define the connections to these sources programmatically.  Check out link:../admin/Administrators_Guide.adoc[Administrator's Guide] on how to configure these in {{ book.asName }}, or embedded examples, if you are working with {{ book.productnameFull }} Embedded.
+As VDB developer you need to know, how to configure these sources in the {{ book.productnameFull }}. 
+In {{ book.asName }} Server these are defined as JCA components. 
+In {{ book.productnameFull }} embedded, the developer has to define the connections to these sources programmatically.  
+Check out link:../admin/Administrators_Guide.adoc[Administrator's Guide] on how to configure 
+these in {{ book.asName }}, or embedded examples, if you are working with {{ book.productnameFull }} Embedded.
 {% endif %}
 
-=== Translator  
-A Translator (also called DATA WRAPPER) is a component that provides an abstraction layer between {{ book.productnameFull }} Query Engine and physical data source, that knows how to convert {{ book.productnameFull }} issued query commands into source specific commands and execute them. It also have smarts to convert the result data that came from the physical source into a form that {{ book.productnameFull }} Query engine is expecting. For example, when working with a web-service translator, a SQL procedure executed at {{ book.productnameFull }} layer may be converted to a HTTP based call through a translator, and response JSON could be converted to tabular results.
+.Translator  
+A translator, also known as a `DATA WRAPPER`, is a component that provides an abstraction layer between the {{ book.productnameFull }} query engine 
+and a physical data source. 
+The translator knows how to convert query commands from {{ book.productnameFull }} into source-specific commands and execute them. 
+The translator also has the intelligence to convert data that the physical source returns into a form that 
+the {{ book.productnameFull }} query engine can process. 
+For example, when working with a web service translator, the translator converts SQL procedures from the {{ book.productnameFull }} 
+layer into HTTP calls, and JSON responses are converted to tabular results.
 
-{{ book.productnameFull }} provides various translators as part of the system, or one can be developed using the provided java libraries. For list of available Translators see link:../reference/Translators.adoc[Translators]
+{{ book.productnameFull }} provides various translators as part of the system, or one can be developed by using the provided java libraries. 
+For information about the available translators, see xref:translators[Translators].
 
 {% if book.targetWildfly %}
 IMPORTANT: In a VDB, a source schema *must be* configured with a *correct* Translator and a *valid* resource adapter, to make the system work.
 {% endif %}
 
+include::r_vdb-properties.adoc[leveloffset=+1]
+include::r_ddl_metadata-for-schema-objects.adoc[leveloffset=+1]
+include::r_ddl-metadata-for-domains.adoc[leveloffset=+1]

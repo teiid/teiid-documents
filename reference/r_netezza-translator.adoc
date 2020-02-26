@@ -1,17 +1,19 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="netezza-translator"]
+= Netezza translator (netezza)
 
-= Netezza Translator (netezza)
+Also see common xref:jdbc-translators[JDBC translators] information.
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+The Netezza translator, known by the type name *_netezza_*, is for use with any version of the IBM Netezza appliance.
 
-The Netezza Translator, known by the type name *_netezza_*, is for use with any Netezza version.
+.Usage
+The current vendor-supplied JDBC driver for Netezza performs poorly with single transactional updates. 
+It is best to perform batched updates whenever possible.
 
-== Usage
+.Execution properties
+Netezza-specific execution properties:
 
-The current Netezza vendor supplied JDBC driver performs poorly with single transactional updates. As is generally the case when possible use batched updates.
-
-== Execution Properties
-
-Netezza specific execution properties:
-
-* _SqlExtensionsInstalled_- indicates that SQL Extensions, including support for REGEXP_LIKE, are installed. All other REGEXP functions are then available as pushdown functions. Defaults to false.
-
+SqlExtensionsInstalled:: Indicates that SQL Extensions, including support for `REGEXP_LIKE`, are installed. 
+All other REGEXP functions are then available as pushdown functions. 
+Defaults to false.

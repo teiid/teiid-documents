@@ -1,0 +1,131 @@
+// Module included in the following assemblies:
+// as_procedure-language.adoc
+[id="dynamic-sql-command"]
+= Dynamic SQL command
+
+Dynamic SQL allows for the execution of an arbitrary SQL command in a virtual procedure. 
+Dynamic SQL is useful in situations where the exact command form is not known prior to execution.
+
+.Usage
+
+[source,sql]
+----
+EXECUTE IMMEDIATE <sql expression> AS <variable> <type> [, <variable> <type>]* [INTO <variable>] [USING <variable>=<expression> [,<variable>=<expression>]*] [UPDATE <literal>]
+----
+
+.Syntax rules
+
+* The SQL expression must be a CLOB or string value of less than 262144 characters.
+* The `AS` clause is used to define the projected symbols names and types returned by the executed SQL string. 
+The `AS` clause symbols will be matched positionally with the symbols returned by the executed SQL string. 
+Non-convertible types or too few columns returned by the executed SQL string will result in an error.
+* The `INTO` clause will project the dynamic SQL into the specified temp table. 
+With the `INTO` clause specified, the dynamic command will actually execute a statement that behaves like an INSERT with a QUERY EXPRESSION. 
+If the dynamic SQL command creates a temporary table with the `INTO` clause, then the `AS` clause is required to define the table’s metadata.
+* The `USING` clause allows the dynamic SQL string to contain variable references that are bound at runtime to specified values. 
+This allows for some independence of the SQL string from the surrounding procedure variable names and input names. 
+In the dynamic command `USING` clause, each variable is specified by short name only. 
+However, in the dynamic SQL the `USING` variable must be fully qualified to `DVAR`. 
+The `USING` clause is only for values that will be used in the dynamic SQL as valid expressions. 
+It is not possible to use the `USING` clause to replace table names, keywords, and so forth. 
+This makes using symbols equivalent in power to normal bind (?) expressions in prepared statements. 
+The `USING` clause helps reduce the amount of string manipulation needed. 
+If a reference is made to a USING symbol in the SQL string that is not bound to a value in the `USING` clause, an exception will occur.
+* The `UPDATE` clause is used to specify the updating model count.  
+Accepted values are (0,1,*). 
+0 is the default value if the clause is not specified.
+For more information, see xref:updating-model-count[Updating model count].
+
+[source,sql]
+.*Example: Dynamic SQL*
+----
+...
+/* Typically complex criteria would be formed based upon inputs to the procedure.
+ In this simple example the criteria is references the using clause to isolate
+ the SQL string from referencing a value from the procedure directly */
+
+DECLARE string criteria = 'Customer.Accounts.Last = DVARS.LastName';
+
+/* Now we create the desired SQL string */
+DECLARE string sql_string = 'SELECT ID, First || " " || Last AS Name, Birthdate FROM Customer.Accounts WHERE ' || criteria;
+
+/* The execution of the SQL string will create the #temp table with the columns (ID, Name, Birthdate).
+  Note that we also have the USING clause to bind a value to LastName, which is referenced in the criteria. */
+EXECUTE IMMEDIATE sql_string AS ID integer, Name string, Birthdate date INTO #temp USING LastName='some name';
+
+/* The temp table can now be used with the values from the Dynamic SQL */
+loop on (SELCT ID from #temp) as myCursor
+...
+----
+
+Here is an example showing a more complex approach to building criteria for the dynamic SQL string. 
+In short, the virtual procedure `AccountAccess.GetAccounts` has the inputs `ID`, `LastName`, and `bday`. 
+If a value is specified for `ID` it will be the only value used in the dynamic SQL criteria. 
+Otherwise, if a value is specified for `LastName` the procedure will detect if the value is a search string. 
+If `bday` is specified in addition to `LastName`, it will be used to form compound criteria with `LastName`.
+
+[source,sql]
+.*Example: Dynamic SQL with USING clause and dynamically built criteria string*
+----
+...
+DECLARE string crit = null;
+
+IF (AccountAccess.GetAccounts.ID IS NOT NULL)
+ crit = '(Customer.Accounts.ID = DVARS.ID)';
+ELSE IF (AccountAccess.GetAccounts.LastName IS NOT NULL)
+BEGIN
+ IF (AccountAccess.GetAccounts.LastName == '%')
+   ERROR "Last name cannot be %";
+ ELSE IF (LOCATE('%', AccountAccess.GetAccounts.LastName) < 0)
+   crit = '(Customer.Accounts.Last = DVARS.LastName)';
+ ELSE
+   crit = '(Customer.Accounts.Last LIKE DVARS.LastName)';
+ IF (AccountAccess.GetAccounts.bday IS NOT NULL)
+   crit = '(' || crit || ' and (Customer.Accounts.Birthdate = DVARS.BirthDay))';
+END
+ELSE
+ ERROR "ID or LastName must be specified.";
+
+EXECUTE IMMEDIATE 'SELECT ID, First || " " || Last AS Name, Birthdate FROM Customer.Accounts WHERE ' || crit USING ID=AccountAccess.GetAccounts.ID, LastName=AccountAccess.GetAccounts.LastName, BirthDay=AccountAccess.GetAccounts.Bday;
+...
+----
+
+.Dynamic SQL limitations and workarounds
+
+The use of the dynamic SQL command results in an assignment statement that requires the use of a temporary table.
+
+[source,sql]
+.*Example assignment*
+----
+EXECUTE IMMEDIATE <expression> AS x string INTO #temp;
+DECLARE string VARIABLES.RESULT = (SELECT x FROM #temp);
+----
+
+The construction of appropriate criteria will be cumbersome if parts of the criteria are not present. 
+For example if `criteria` were already NULL, then the following example results in `criteria` remaining NULL.
+
+[source,sql]
+.*Example: Dangerous NULL handling*
+----
+...
+criteria = '(' || criteria || ' and (Customer.Accounts.Birthdate = DVARS.BirthDay))';
+----
+
+It is best to ensure that the criteria is not NULL prior its usage. 
+If this is not possible, a you can specify a default, as shown in the following example.
+
+[source,sql]
+.*Example: NULL handling*
+----
+...
+criteria = '(' || nvl(criteria, '(1 = 1)') || ' and (Customer.Accounts.Birthdate = DVARS.BirthDay))';
+----
+
+If the dynamic SQL is an `UPDATE`, `DELETE`, or `INSERT` command, the rowcount of the statement can be obtained from the rowcount variable.
+
+[source,sql]
+.*Example: AS and INTO clauses*
+----
+/* Execute an update */
+EXECUTE IMMEDIATE <expression>;
+----

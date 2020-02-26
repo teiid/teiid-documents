@@ -1,19 +1,22 @@
+// Module included in the following assemblies:
+// as_dml-commands.adoc
+[id="set-operations"]
+= Set operations
 
-= Set Operations
+{{ book.productnameFull }} supports the UNION, UNION ALL, INTERSECT, and EXCEPT set operations 
+as ways of combining the results of query expressions.
 
-{{ book.productnameFull }} supports the UNION, UNION ALL, INTERSECT, EXCEPT set operation as a way of combining the results of query expressions.
-
-Usage:
+.Usage:
 
 [source,sql]
 ----
 queryExpression (UNION|INTERSECT|EXCEPT) [ALL] queryExpression [ORDER BY...]
 ----
 
-Syntax Rules:
+.Syntax Rules:
 
 * The output columns will be named by the output columns of the first set operation branch.
-* Each SELECT must have the same number of output columns and compatible data types for each relative column. Data type conversion will be performed if data types are inconsistent and implicit conversions exist.
+* Each SELECT must have the same number of output columns and compatible data types for each relative column. 
+Data type conversion will be performed if data types are inconsistent and implicit conversions exist.
 * If UNION, INTERSECT, or EXCEPT is specified without all, then the output columns must be comparable types.
 * INTERSECT ALL, and EXCEPT ALL are currently not supported.
-

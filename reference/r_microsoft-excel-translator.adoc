@@ -1,16 +1,21 @@
+// Assembly included in the following assemblies:
+// as_translators.adoc
+[id="microsoft-excel-translator"]
+= Microsoft Excel translator
 
-= Microsoft Excel Translator
+The Microsoft Excel Translator, known by the type name _excel_, exposes querying functionality to a Microsoft Excel document. 
+This translator provides an easy way read a Excel spreadsheet and provide the contents of the spreadsheet in a tabular form that 
+can be integrated with other sources in {{ book.productnameFull }}.
 
-The Microsoft Excel Translator, known by the type name _excel_, exposes querying functionality to Excel document. Microsoft Excel is a popular spreadsheet software that is used by all the organizations across the globe for simple reporting purposes. This translator provides an easy way read a Excel spreadsheet and provide contents of the spreadsheet in the tabular form that can be integrated with other sources in {{ book.productnameFull }}.
+NOTE: This translator works on all platforms, including Windows and Linux. The translator uses Apache POI libraries to 
+access the Excel documents which are platform independent.
 
-NOTE: *"Does it only work on Windows?"* -  No, it works on all platforms, including Windows and Linux. This translator uses Apache POI libraries to access the Excel documents which are platform independent.
+.Translation mapping
 
-== Usage
-
-The below table describes how Excel translator interprets the data in Excel document into relational terms.
+The following table describes how Excel translator interprets the data in Excel document into relational terms.
 
 |===
-|Excel Term |Relational Term
+|Excel Term |Relational term
 
 |Workbook
 |schema
@@ -25,11 +30,13 @@ The below table describes how Excel translator interprets the data in Excel docu
 |Column Definition or Data of a column
 |===
 
-Excel translator supports "source metadata" feature, where given Excel workbook, it can introspect and build the schema based on the Sheets defined inside it. There are options available for you guide, to be able to detect header columns and data columns in a work sheet to define the correct metadata of a table.
+The Excel translator supports the "source metadata" feature, where for a given Excel workbook, it can introspect and build the schema 
+based on the worksheets that are defined within it. 
+There are options available to detect header columns and data columns in a worksheet to define the correct metadata of a table.
 
-== VDB Example
+.DDL example
 
-The below shows an example of a VDB, that shows a exposing a Excel Document.
+The following example shows how to expose an Excel spreadsheet in a virtual database.
 
 [source,xml]
 ----
@@ -56,13 +63,17 @@ As an XML VDB:
     </model>
 </vdb>
 ----
+
+`connection-jndi-name` in the preceding example represents the connection to the Excel document.
 {% endif %}
 
-"connection-jndi-name" in above represents connection to Excel document.
 
-NOTE: *"Headers in Document?"* - If you have headers in the Excel document, you can guide the import process to select the cell headers as the column names in the table creation process. See "Import Properties" section below on defining the "import" properties.
 
-=== Import Properties
+.Headers in document 
+If the Excel document contains headers, you can guide the import process to select the cell headers as the column names in the table creation process. 
+For information about defining import properties, see the following table, and also see _Importer Properties_ in xref:jdbc-translators[JDBC translators].
+
+.Import properties
 
 Import properties guide the schema generation part during the deployment of the VDB. This can be used in a native import.
 
@@ -70,36 +81,44 @@ Import properties guide the schema generation part during the deployment of the 
 |Property Name |Description |Default
 
 |importer.excelFileName
-|Defines the name of the Excel Document to import metadata. This can be defined as a file pattern (*.xls), however when defined as pattern all files must be of same format and the translator will choose an arbitrary file to import metadata from. Use file pattern to read data from multiple Excel documents in the same directory, in single file case choose the absolute name.
-|required
+|Defines the name of the Excel Document to import metadata. 
+This can be defined as a file pattern (*.xls), however when defined as pattern all files must be of same format, 
+and the translator will choose an arbitrary file to import metadata from. 
+Use file patterns to read data from multiple Excel documents in the same directory. 
+In the case of a single file, specify the absolute name.
+|Required
 
 |importer.headerRowNumber
-|Defines the cell header information to be used as column names
-|optional, default is first data row of sheet
+|Defines the cell header information to be used as column names.
+|Optional, default is first data row of sheet
 
 |importer.dataRowNumber
-|Defines the row number where the data rows start
-|optional, default is first data row of sheet
+|Defines the row number where the data rows start.
+|Optional. Default is first data row of sheet.
 |=== 
 
-It is highly recommended that you define all the above importer properties, such that information inside the Excel Document is correctly interpreted.
+To enable information in the Excel spreadsheet to be interpreted correctly, it is best to define all the preceding importer properties.
 
 NOTE: Purely numerical cells in a column contain containing mixed types will have a string form matching their decimal representation, 
-thus integral values will have .0 appended.  If you need the exact text representation, then cell must be a string value which can be 
-forced by putting a single quote ' in front of the numeric text of the cell, or by putting a single space in front of the numeric text. 
+thus integral values will have `.0` appended. 
+If you need the exact text representation, then the cell must be a string value. 
+You can force a string value by preceding the numeric text of a cell with a single quote (`'`), or a single space. 
  
-=== Translator Extension Properties
+.Translator extension properties
 
-Excel specific execution properties:
+* Excel specific execution properties
++
+FormatStrings:: Format non-string cell values in a string column according to the worksheet format. Defaults to false.
 
-* _FormatStrings_- Format non-string cell values in a string column according to the worksheet format. Defaults to false.
-
-=== Metadata Extension Properties
-
-Metadata Extension Properties are the properties that are defined on the schema artifacts like Table, Column, Procedure etc, to describe how the translator needs to interact or interpret with source systems. All the properties are defined with namespace 'http://www.teiid.org/translator/excel/2014[http://www.teiid.org/translator/excel/2014\]', which also has a recognized alias 'teiid_excel'.
+* Metadata extension properties
++
+Properties that are defined on schema artifacts, such as Table, Column, Procedure and so forth.
+These properties describe how the translator interacts with or interprets source systems. All the properties are defined with 
+the following namespace: 
+`"http://www.teiid.org/translator/excel/2014[http://www.teiid.org/translator/excel/2014\]"`, which also has a recognized alias `teiid_excel`.
 
 |===
-|Property Name |Schema Item Property Belongs To |Description |Mandatory
+|Property Name |Schema item property belongs to |Description |Mandatory
 
 |FILE
 |Table
@@ -108,16 +127,16 @@ Metadata Extension Properties are the properties that are defined on the schema 
 
 |FIRST_DATA_ROW_NUMBER
 |Table
-|Defines the row number where records start in the sheet (applies to every sheet)
-|optional
+|Defines the row number where records start in the sheet (applies to every sheet).
+|Optional
 
 |CELL_NUMBER
 |Column of Table
-|Defines cell number to use for reading data of particular column
+|Defines cell number to use for reading data of particular column.
 |Yes
 |===
 
-The below shows an example table that is defined using the Extension Metadata Properties.
+The following example shows a table that is defined by using the extension metadata properties.
 
 [source,sql]
 ----
@@ -157,28 +176,36 @@ As an XML VDB:
 ----
 {% endif %}
 
-NOTE: *"Extended capabilities using ROW_ID column"* - If you define column, that has extension metadata property "CELL_NUMBER" with value "ROW_ID", then that column value contains the row information from Excel document. You can mark this column as Primary Key. You can use this column in SELECT statements with a restrictive set of capabilities including: comparison predicates, IN predicates and LIMIT. All other columns can *not* be used as predicates in a query.
+.Extended capabilities using ROW_ID column
+If you define a column that has extension metadata property `CELL_NUMBER` with value `ROW_ID`, then that column value contains the row information from Excel document. 
+You can mark this column as Primary Key. 
+You can use this column in `SELECT` statements with a restrictive set of capabilities including: comparison predicates, `IN` predicates and `LIMIT`. 
+All other columns cannot be used as predicates in a query.
 
-TIP: User does not have to depend upon "source metadata" import to create the schema represented by Excel document, they can manually create a source table and add the appropriate extension properties to make a fully functional model. If you introspect the schema model created by the import, it would look like above.
+TIP: Importing source metadata is not the only way to create the schema of an Excel document. 
+You can also create a source table manually, and then add the extension properties that you need to create a fully functional model. 
+Metadata imports result in schema models similar to the one in the preceding example.
 
-With 10.3+ the Excel translator does support updates with a couple of limitations:
-* The ROW_ID can not be directly modified or used as an insert value.
-* Update and insert values must be literals.
-* Updates are not transactional - the write lock is only held while writing the file and not over the entire update, thus it is possible for one update to overwrite another.
+The Excel translator processes updates with the following limitations:
 
-The ROW_ID of an inserted row can be returned as a generated key.
+* The `ROW_ID` cannot be directly modified or used as an insert value.
+* UPDATE and INSERT values must be literals.
+* UPDATEs are not transactional. 
+That is, the write lock is held while the file is written, but not throughout the entire update. 
+As a result, it is possible for one update to overwrite another.
+
+The `ROW_ID` of an inserted row can be returned as a generated key.
 
 {% if book.targetWildfly %}
-== JCA Resource Adapter
+.JCA resource adapter
 
 See link:../admin/File_Data_Sources.adoc[File Data Source], the link:../admin/Ftp_Data_Sources.adoc[FTP Data Source] and the Admin Guide in general for configuration information.
 {% endif %}
 
-== Native Queries
+.Native queries
 
 NOTE: This feature is not applicable for the Excel translator.
 
-=== Direct Query Procedure
+.Direct query procedure
 
 NOTE: This feature is not applicable for the Excel translator.
-

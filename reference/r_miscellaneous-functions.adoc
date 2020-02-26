@@ -1,13 +1,15 @@
-
-= Miscellaneous Functions
+// Module included in the following assemblies:
+// as_scalar-functions.adoc
+[id="miscellaneous-functions"]
+= Miscellaneous functions
 :toc: manual
 :toc-placement: preamble
 
 Documents additional functions and those contributed by other projects.
 
-== Array functions
+.Array functions
 
-=== array_get
+.array_get
 
 Returns the object value at a given array index.
 
@@ -16,43 +18,48 @@ Returns the object value at a given array index.
 array_get(array, index)
 ----
 
-array is the object type, index must be an integer, and the return type is object.
+`array` is the object type, `index` must be an integer, and the return type is an object.
 
-1-based indexing is used. The actual array value should be a java.sql.Array or java array type. A null will be returned if either argument is null or if the index is out of bounds.
+1-based indexing is used. 
+The actual array value should be a java.sql.Array or java array type. 
+A null is returned if either argument is null, or if the index is out of bounds.
 
-=== array_length
+.array_length
 
-Returns the length for a given array
+Returns the length for a given array.
 
 [source,sql]
 ----
 array_length(array)
 ----
 
-array is the object type, and the return type is integer.
+`array` is the object type, and the return type is integer.
 
-The actual array value should be a java.sql.Array or java array type. An exception will be thrown if the array value is the wrong type.
+The actual array value should be a java.sql.Array or java array type. 
+An exception is thrown if the array value is the wrong type.
 
-== Other Functions
+.Other functions
 
-=== uuid
+.uuid
 
-Retuns a universally unique identifier.
+Returns a universally unique identifier.
 
 [source,sql]
 ----
 uuid()
 ----
 
-the return type is string.
+The return type is string.
 
-Generates a type 4 (pseudo randomly generated) UUID using a cryptographically strong random number generator. The format is XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX where each X is a hex digit.
+Generates a type 4 (pseudo randomly generated) UUID using a cryptographically strong random number generator. 
+The format is XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX where each X is a hex digit.
 
-== Data Quality Functions
+.Data quality functions
 
-Data Quality functions are contributed by the https://sourceforge.net/projects/dataquality/[ODDQ Project].  The functions are prefixed with 'osdq.', but may be called without the prefix.  
+Data Quality functions are contributed by the https://sourceforge.net/projects/dataquality/[ODDQ Project]. 
+The functions are prefixed with `osdq.`, but can be called without the prefix.  
 
-=== osdq.random
+.osdq.random
 
 Returns the randomized string. For example, `jboss teiid` may randomize to `jtids soibe`.
 
@@ -61,119 +68,122 @@ Returns the randomized string. For example, `jboss teiid` may randomize to `jtid
 random(sourceValue)
 ----
 
-The sourceValue is the string that need to randomize.
+The `sourceValue` is the string to be randomized.
 
-=== osdq.digit
+.osdq.digit
 
-Returns digit characters of the string. For example, `a1 b2 c3 d4` will become `1234`
+Returns digit characters of the string. For example, `a1 b2 c3 d4` becomes `1234`.
 
 [source,sql]
 ----
 digit(sourceValue)
 ----
 
-The sourceValue is the string that need to digit.
+The `sourceValue` is the string from which you want to extract digit characters.
 
-=== osdq.whitespaceIndex
+.osdq.whitespaceIndex
 
-Returns the index of the first whitespace, For example, `jboss teiid` will return `5`.
+Returns the index of the first whitespace. For example, `jboss teiid` will return `5`.
 
 [source,sql]
 ----
 whitespaceIndex(sourceValue)
 ----
 
-The sourceValue is the string that need to find whitespace index.
+The sourceValue is the string from which you want to find the whitespace index.
 
-=== osdq.validCreditCard
+.osdq.validCreditCard
 
-Check whether a Credit Card number is a valid Credit Card number, return `true` if matches credit card logic and checksum.
+Check whether a credit card number is valid. Returns `true` if it matches credit card logic and checksum.
 
 [source,sql]
 ----
 validCreditCard(cc)
 ----
 
-The cc is the Credit Card number string that need to check.
+`cc` is the credit card number string to check.
 
-=== osdq.validSSN
+.osdq.validSSN
 
-Check whether a SSN number is a valid SSN number, return `true` if matches ssn logic.
+Check whether a social security number (SSN) is valid. Returns `true` if it matches SSN logic.
 
 [source,sql]
 ----
 validSSN(ssn)
 ----
 
-The ssn is the SSN number string that need to check.
+`ssn` is the social security number string to check.
 
-=== osdq.validPhone
+.osdq.validPhone
 
-Check whether a phone number is a valid phone number, return `true` if matches phone logic that  more than 8 character less than 12 character, can't start with 000.
+Check whether a phone number is valid. 
+Returns `true` if the number matches phone logic. 
+Numbers must contain more than 8, but less than 12 characters, and cannot start with `000`.
 
 [source,sql]
 ----
 validPhone(phone)
 ----
 
-The phone is the phone number string need to check.
+``phone` is the phone number string need to check.
 
-=== osdq.validEmail
+.osdq.validEmail
 
-Check whether a email address is a valid email address, return `true` if valid.
+Check whether an email address is valid.
+Returns `true` if valid.
 
 [source,sql]
 ----
 validEmail(email)
 ----
 
-The email is the email adress string that need to check.
+`email` is the email address string to check.
 
-=== osdq.cosineDistance
+.osdq.cosineDistance
 
-Returns the float distance between two string which base on Cosine Similarity algorithm.
+Returns the float distance between two strings based on the Cosine Similarity algorithm.
 
 [source,sql]
 ----
 cosineDistance(a, b)
 ----
 
-The a and b are strings that need to calculate the distance.
+`a` and `b` are strings for which you want to calculate the distance.
 
-=== osdq.jaccardDistance
+.osdq.jaccardDistance
 
-Returns the float distance between two string which base on Jaccard similarity algorithm.
+Returns the float distance between two strings, based on the Jaccard similarity algorithm.
 
 [source,sql]
 ----
 jaccardDistance(a, b) 
 ----
 
-The a and b are strings that need to calculate the distance.
+The `a` and `b` are strings for which you want to calculate the distance.
 
-=== osdq.jaroWinklerDistance
+.osdq.jaroWinklerDistance
 
-Returns the float distance between two string which base on Jaro-Winkler algorithm.
+Returns the float distance between two strings based on the Jaro-Winkler algorithm.
 
 [source,sql]
 ----
 jaroWinklerDistance(a, b)
 ----
 
-The a and b are strings that need to calculate the distance.
+The `a` and `b` are strings for which you want to calculate the distance.
 
-=== osdq.levenshteinDistance
+.osdq.levenshteinDistance
 
-Returns the float distance between two string which base on Levenshtein algorithm.
+Returns the float distance between two strings based on the Levenshtein algorithm.
 
 [source,sql]
 ----
 levenshteinDistance(a, b)
 ----
 
-The a and b are strings that need to calculate the distance.
+The `a` and `b` are strings for which you want to calculate the distance.
 
-=== osdq.intersectionFuzzy
+.osdq.intersectionFuzzy
 
 Returns the set of unique elements from the first set with cosine distance less than the specified value to every member of the second set.
 
@@ -182,9 +192,9 @@ Returns the set of unique elements from the first set with cosine distance less 
 intersectionFuzzy(a, b)
 ----
 
-The a and b are string arrays.  c is a float representing the distance, such that 0.0 or less will match any and > 1.0 will match exact.
+`a` and `b` are string arrays. `c` is a float representing the distance, such that 0.0 or less will match any and > 1.0 will match exact.
 
-=== osdq.minusFuzzy
+.osdq.minusFuzzy
 
 Returns the set of unique elements from the first set with cosine distance less than the specified value to every member of the second set.
 
@@ -193,15 +203,16 @@ Returns the set of unique elements from the first set with cosine distance less 
 minusFuzzy(a, b, c)
 ----
 
-The a and b are string arrays.  c is a float representing the distance, such that 0.0 or less will match any and > 1.0 will match exact.
+`a` and `b` are string arrays. `c` is a float representing the distance, such that 0.0 or less will match any and > 1.0 will match exact.
 
-=== osdq.unionFuzzy
+.osdq.unionFuzzy
 
-Returns the set of unique elements that contains members from the first set and members of the second set that have a cosine distance less than the specified value to every member of the first set.
+Returns the set of unique elements that contains members from the first set and members of the second set 
+that have a cosine distance less than the specified value to every member of the first set.
 
 [source,sql]
 ----
 unionFuzzy(a, b, c)
 ----
 
-The a and b are string arrays.  c is a float representing the distance, such that 0.0 or less will match any and > 1.0 will match exact.
+`a` and `b` are string arrays. `c` is a float representing the distance, such that 0.0 or less will match any and > 1.0 will match exact.

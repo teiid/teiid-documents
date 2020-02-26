@@ -1,51 +1,58 @@
+// Module included in the following assemblies:
+// as_translators.adoc
+[id="salesforce-translator"]
+= Salesforce translators
 
-= Salesforce Translators
+The Salesforce translator supports the `SELECT`, `DELETE`, `INSERT`, `UPSERT,` and `UPDATE` operations against a Salesforce.com account.
 
-The Salesforce translator supports the SELECT, DELETE, INSERT, UPSERT, and UPDATE operations against a Salesforce.com account.
-
-== Salesforce API Version Support
+.Salesforce API version support
 
 {% if book.targetWildfly %}
-=== salesforce
+.salesforce
 
-The translator, known by the type name *_salesforce_*, provides Salesforce API 34.0 support. The translator must be used with the corresponding Salesforce resource adapter of the same API version. Salesforce API version 34.0 support has been removed.
+The translator, known by the type name *_salesforce_*, provides Salesforce API 34.0 support. The translator must be used 
+with the corresponding Salesforce resource adapter of the same API version. Salesforce API version 34.0 support has been removed.
 
-=== salesforce-34
+.salesforce-34
 
-The translator, known by the type name of *_salesforce-34_*, provides Salesforce API 34.0 support. The translator must be used with the corresponding Salesforce resource adapter of the same API version.
+The translator, known by the type name of *_salesforce-34_*, provides Salesforce API 34.0 support. The translator 
+must be used with the corresponding Salesforce resource adapter of the same API version.
 
-=== salesforce-41
+.salesforce-41
 
-The translator, known by the type name of *_salesforce-41_*, provides Salesforce API 41.0 support. The translator must be used with the corresponding Salesforce resource adapter of the same API version.
+The translator, known by the type name of *_salesforce-41_*, provides Salesforce API 41.0 support. The translator 
+must be used with the corresponding Salesforce resource adapter of the same API version.
 
-=== Other API Versions
+.Other API versions
 
-If you need connectivity to an API version other than what is built in, please utilize the project https://github.com/teiid/salesforce[https://github.com/teiid/salesforce] to generate new resource adapter / translator pair.
+If you need connectivity to an API version other than what is built in, please utilize the 
+project https://github.com/teiid/salesforce[https://github.com/teiid/salesforce] to generate new resource adapter / translator pair.
 {% else %}
 
-=== salesforce
+.salesforce
 
 The translator, known by the type name *_salesforce_*, provides Salesforce API 37.0 and later support.
 
 {% endif %}
 
-== Execution Properties
+.Execution properties
 
 |===
 |Name |Description |Default
 
 |MaxBulkInsertBatchSize
-|Batch Size to use to insert bulk inserts
+|Batch Size to use to insert bulk inserts.
 |2048
 
 |SupportsGroupBy
-|Supports Group By Pushdown. Set to false to have {{ book.productnameFull }} process group by aggregations, such as those returning more than 2000 rows which error in SOQL.
+|Supports Group By Pushdown. Set to false to have {{ book.productnameFull }} process group by aggregations, 
+such as those returning more than 2000 rows which error in SOQL.
 |true
 |===
 
 The Salesforce translator can import metadata.
 
-== Import Properties
+.Import properties
 
 |===
 |Property Name |Description |Required |Default
@@ -56,12 +63,14 @@ The Salesforce translator can import metadata.
 |true
 
 |excludeTables
-|A case-insensitive regular expression that when matched against a table name will exclude it from import. Applied after table names are retrieved. Use a negative look-ahead (?!<inclusion pattern>).* to act as an inclusion filter.
+|A case-insensitive regular expression that when matched against a table name will exclude it from import. 
+Applied after table names are retrieved. Use a negative look-ahead (?!<inclusion pattern>).* to act as an inclusion filter.
 |false
 |n/a
 
 |includeTables
-|A case-insensitive regular expression that when matched against a table name will be included during import. Applied after table names are retrieved from source.
+|A case-insensitive regular expression that when matched against a table name will be included during import. 
+Applied after table names are retrieved from source.
 |false
 |n/a
 
@@ -76,12 +85,19 @@ The Salesforce translator can import metadata.
 |false
 |===
 
-NOTE： When both _includeTables_ and _excludeTables_ patterns are present during the import, the _includeTables_ pattern matched first, then the _excludePatterns_ will be applied.
+NOTE： When both _includeTables_ and _excludeTables_ patterns are present during the import, 
+the _includeTables_ pattern matched first, then the _excludePatterns_ will be applied.
 
-NOTE: If you need connectivity to an API version other than what is built in, you may try to use an existing connectivity pair, but in some circumstances - especially accessing a later remote api from an older java api - this is not possible and results in what appears to be hung connections.  Please raise an issue if you cannot successfully access a specific API version.
+NOTE: If you need connectivity to an API version other than what is built in, you may 
+try to use an existing connectivity pair, but in some circumstances - especially 
+accessing a later remote api from an older Java API - this is not possible and results 
+in what appears to be hung connections. 
 
-=== Extension Metadata Properties
-Salesforce is not relational database, however {{ book.productnameFull }} provides ways to map Saleforce data into relational constructs like Tables and Procedures. You can define a foreign Table using DDL in {{ book.productnameFull }} VDB, which maps to Salesforce's SObject. At runtime, to interpret this table back to a SObject, {{ book.productnameFull }} decorates or tags this table definition with additional metadata. For example, a table is defined as
+.Extension metadata properties
+Salesforce is not relational database, however {{ book.productnameFull }} provides ways to map Saleforce data into relational constructs like Tables and Procedures. 
+You can define a foreign table using DDL in {{ book.productnameFull }} VDB, which maps to Salesforce's SObject. 
+At runtime, to interpret this table back to a SObject, {{ book.productnameFull }} decorates or tags this table definition with additional metadata. 
+For example, a table is defined as in the following example:
 
 [source,sql]
 ----
@@ -97,19 +113,20 @@ CREATE FOREIGN TABLE Pricebook2 (
 	  "teiid_sf:Supports Query" 'TRUE');
 ----
 
-In the above the property in OPTIONS clause with property "teiid_sf:Supports Query" annotating that this tables supports SELECT commands. The below are list of metadata extension properties that can be used on Salesforce schema.
+In the preceding example, the property in the `OPTIONS` clause with the property `"teiid_sf:Supports Query"` set to `TRUE` indicates that 
+this table supports `SELECT` commands. The following table lists the metadata extension properties that can be used in a Salesforce schema.
 
 |===
 |Property Name |Description |Required |Default| Applies To
 
 |Supports Query
-|The table supports SELECT commands
+|The table supports SELECT commands.
 |false
 |true
 |Table
 
 |Supports Retrieve
-|The table supports retrieval of results as result of SELECT commands
+|The table supports retrieval of results as result of SELECT commands.
 |false
 |true
 |Table
@@ -117,20 +134,32 @@ In the above the property in OPTIONS clause with property "teiid_sf:Supports Que
 |===
 
 
-== SQL Processing
+.SQL processing
 
-Salesforce does not provide the same set of functionality as a relational database. For example, Salesforce does not support arbitrary joins between tables. However, working in combination with the {{ book.productnameFull }} Query Planner, the Salesforce connector supports nearly all of the SQL syntax supported by the {{ book.productnameFull }}.
+Salesforce does not provide the same set of functionality as a relational database. 
+For example, Salesforce does not support arbitrary joins between tables. 
+However, working in combination with the {{ book.productnameFull }} Query Planner, the Salesforce connector 
+supports nearly all of the SQL syntax supported by the {{ book.productnameFull }}.
 
-The Salesforce Connector executes SQL commands by "pushing down" the command to Salesforce whenever possible, based on the supported capabilities. {{ book.productnameFull }} will automatically provide additional database functionality when the Salesforce Connector does not explicitly provide support for a given SQL construct. In cases where certain SQL capabilities cannot be pushed down to Salesforce, {{ book.productnameFull }} will push down the capabilities that are supported, and fetch a set of data from Salesforce. Then, {{ book.productnameFull }} will evaluate the additional capabilities, creating a subset of the original data set. Finally, {{ book.productnameFull }} will pass the result to the client.
+The Salesforce Connector executes SQL commands by "pushing down" the command to Salesforce 
+whenever possible, based on the supported capabilities. {{ book.productnameFull }} will automatically 
+provide additional database functionality when the Salesforce Connector does not explicitly provide 
+support for a given SQL construct. 
+In cases where certain SQL capabilities cannot be pushed down to Salesforce, {{ book.productnameFull }} will push down the capabilities that are supported, 
+and fetch a set of data from Salesforce. Then, {{ book.productnameFull }} will evaluate the additional capabilities, 
+creating a subset of the original data set. 
+Finally, {{ book.productnameFull }} will pass the result to the client.
 
-If you are issuing queries with a group by clause and receive an error for salesforce related to queryMore not being supported, you may either add limits or set the execution property SupportsGroupBy to false.
+If you are issuing queries with a GROUP BY clause, and receive an error for Salesforce related 
+to `queryMore` not being supported, you can either add limits, or set the execution property `SupportsGroupBy` to `false`.
 
 [source,sql]
 ----
 SELECT array_agg(Reports) FROM Supervisor where Division = 'customer support';
 ----
 
-Neither Salesforce nor the Salesforce Connector support the array_agg() scalar, but they do support CompareCriteriaEquals, so the query that is passed to Salesforce by the connector will be transformed to this query.
+Neither Salesforce nor the Salesforce Connector support the array_agg() scalar, but they do support 
+CompareCriteriaEquals, so the query that is passed to Salesforce by the connector will be transformed to this query.
 
 [source,sql]
 ----
@@ -146,7 +175,9 @@ In some cases multiple calls to the Salesforce application will be made to suppo
 DELETE From Case WHERE Status = 'Closed';
 ----
 
-The API in Salesforce to delete objects only supports deleting by ID. In order to accomplish this the Salesforce connector will first execute a query to get the IDs of the correct objects, and then delete those objects. So the above DELETE command will result in the following two commands.
+The API in Salesforce to delete objects only supports deleting by ID. In order to accomplish this, 
+the Salesforce connector will first execute a query to get the IDs of the correct objects, and then delete those objects. 
+So the above DELETE command will result in the following two commands.
 
 [source,sql]
 ----
@@ -156,13 +187,19 @@ DELETE From Case where ID IN (<result of query>);
 
 NOTE： The Salesforce API DELETE call is not expressed in SQL, but the above is an equivalent SQL expression.
 
-It’s useful to be aware of unsupported capabilities, in order to avoid fetching large data sets from Salesforce and making you queries as performant as possible. See all Supported Capabilities.
+It’s useful to be aware of unsupported capabilities, in order to avoid fetching large data sets from 
+Salesforce and making you queries as performant as possible. See all Supported Capabilities.
 
-=== Selecting from Multi-Select Picklists
+.Selecting from multi-select picklists
 
-A multi-select picklist is a field type in Salesforce that can contain multiple values in a single field. Query criteria operators for fields of this type in SOQL are limited to EQ, NE, includes and excludes. The full Salesforce documentation for selecting from mullti-select picklists can be found at the following link http://www.salesforce.com/us/developer/docs/soql_sosl/Content/sforce_api_calls_soql_querying_multiselect_picklists.htm[Querying Mulit-select Picklists]
+A multi-select picklist is a field type in Salesforce that can contain multiple values in a single field. 
+Query criteria operators for fields of this type in SOQL are limited to EQ, NE, includes and excludes. 
+For the Salesforce documentation about how to select from multi-select picklists, 
+see http://www.salesforce.com/us/developer/docs/soql_sosl/Content/sforce_api_calls_soql_querying_multiselect_picklists.htm[Querying Multi-select Picklists]
 
-{{ book.productnameFull }} SQL does not support the includes or excludes operators, but the Salesforce connector provides user defined function definitions for these operators that provided equivalent functionality for fields of type multi-select. The definition for the functions is:
+{{ book.productnameFull }} SQL does not support the includes or excludes operators, but the Salesforce 
+connector provides user defined function definitions for these operators that provided equivalent 
+functionality for fields of type multi-select. The definition for the functions is:
 
 [source,sql]
 ----
@@ -194,13 +231,18 @@ SELECT * FROM Issue WHERE Status = 'current;critical';
 SELECT * FROM Issue WHERE Status != 'current;working';
 ----
 
-=== Selecting All Objects
+.Selecting all objects
 
-The Salesforce connector supports the calling the queryAll operation from the Salesforce API. The queryAll operation is equivalent to the query operation with the exception that it returns data about all current and deletedobjects in the system.
+The Salesforce connector supports the calling the queryAll operation from the Salesforce API. 
+The queryAll operation is equivalent to the query operation with the exception that it returns data about all current and deletedobjects in the system.
 
-The connector determines if it will call the query or queryAll operation via reference to the isDeleted property present on each Salesforce object, and modeled as a column on each table generated by the importer. By default this value is set to False when the model is generated and thus the connector calls query. Users are free to change the value in the model to True, changing the default behaviour of the connector to be queryAll.
+The connector determines if it will call the query or queryAll operation via reference to the isDeleted property 
+present on each Salesforce object, and modeled as a column on each table generated by the importer. 
+By default this value is set to False when the model is generated and thus the connector calls query. 
+Users are free to change the value in the model to True, changing the default behaviour of the connector to be queryAll.
 
-The behavior is different if isDeleted is used as a parameter in the query. If the isDeleted column is used as a parameter in the query, and the value is 'true' the connector will call queryAll.
+The behavior is different if isDeleted is used as a parameter in the query. If the isDeleted column 
+is used as a parameter in the query, and the value is 'true' the connector will call queryAll.
 
 [source,sql]
 ----
@@ -214,7 +256,7 @@ If the isDeleted column is used as a parameter in the query, and the value is 'f
 select * from Contact where isDeleted = false;
 ----
 
-=== Selecting Updated Objects
+.Selecting updated objects
 
 If the option is selected when importing metadata from Salesforce, a GetUpdated procedure is generated in the model with the following structure:
 
@@ -228,9 +270,10 @@ returns
     ID string
 ----
 
-See the description of the http://www.salesforce.com/us/developer/docs/api/Content/sforce_api_calls_getupdated.htm[GetUpdated] operation in the Salesforce documentation for usage details.
+See the description of the http://www.salesforce.com/us/developer/docs/api/Content/sforce_api_calls_getupdated.htm[GetUpdated] 
+operation in the Salesforce documentation for usage details.
 
-=== Selecting Deleted Objects
+.Selecting deleted objects
 
 If the option is selected when importing metadata from Salesforce, a GetDeleted procedure is generated in the model with the following structure:
 
@@ -246,11 +289,14 @@ returns
     DeletedDate datetime
 ----
 
-See the description of the http://www.salesforce.com/us/developer/docs/api/Content/sforce_api_calls_getdeleted.htm[GetDeleted] operation in the Salesforce documentation for usage details.
+See the description of the http://www.salesforce.com/us/developer/docs/api/Content/sforce_api_calls_getdeleted.htm[GetDeleted] 
+operation in the Salesforce documentation for usage details.
 
-=== Relationship Queries
+.Relationship queries
 
-Salesforce does not support joins like a relational database, but it does have support for queries that include parent-to-child or child-to-parent relationships between objects. These are termed Relationship Queries. The SalesForce connector supports Relationship Queries through Outer Join syntax.
+Salesforce does not support joins like a relational database, but it does have support for queries that include 
+parent-to-child or child-to-parent relationships between objects. These are termed Relationship Queries. 
+The SalesForce connector supports Relationship Queries through Outer Join syntax.
 
 [source,sql]
 ----
@@ -258,7 +304,8 @@ SELECT Account.name, Contact.Name from Contact LEFT OUTER JOIN Account
 on Contact.Accountid = Account.id
 ----
 
-This query shows the correct syntax to query a SalesForce model with to produce a relationship query from child to parent. It resolves to the following query to SalesForce.
+This query shows the correct syntax to query a SalesForce model with to produce a relationship query from child to parent. 
+It resolves to the following query to SalesForce.
 
 [source,sql]
 ----
@@ -271,7 +318,8 @@ select Contact.Name, Account.Name from Account Left outer Join Contact
 on Contact.Accountid = Account.id
 ----
 
-This query shows the correct syntax to query a SalesForce model with to produce a relationship query from parent to child. It resolves to the following query to SalesForce.
+This query shows the correct syntax to query a SalesForce model with to produce a relationship query from 
+parent to child. It resolves to the following query to SalesForce.
 
 [source,sql]
 ----
@@ -279,15 +327,19 @@ SELECT Account.Name, (SELECT Contact.Name FROM
 Account.Contacts) FROM Account
 ----
 
-See the description of the http://www.salesforce.com/us/developer/docs/api/index_Left.htm#StartTopic=Content/sforce_api_calls_soql_relationships.htm[Relationship Queries] operation in the SalesForce documentation for limitations.
+See the description of the http://www.salesforce.com/us/developer/docs/api/index_Left.htm#StartTopic=Content/sforce_api_calls_soql_relationships.htm[Relationship Queries] 
+operation in the SalesForce documentation for limitations.
 
-=== Bulk Insert Queries
+.Bulk insert queries
 
-SalesForce translator also supports bulk insert statements using JDBC batch semantics or SELECT INTO semantics. The batch size is determined by the execution property _MaxBulkInsertBatchSize_, which can be overridden in the vdb file. The default value of the batch is 2048. The bulk insert feature uses the async REST based API exposed by Salesforce for execution for better performance.
+SalesForce translator also supports bulk insert statements using JDBC batch semantics or SELECT INTO semantics. 
+The batch size is determined by the execution property _MaxBulkInsertBatchSize_, which can be overridden in the vdb file. 
+The default value of the batch is 2048. The bulk insert feature uses the async REST based API exposed by Salesforce for execution for better performance.
 
-=== Bulk Selects
+.Bulk selects
 
-When quering large tables (typically over 10,000,000 records) or if experiencing timeouts with just result batching, {{ book.productnameFull }} can issue queries to Salesforce using the bulk API.  When using a bulk select, PK chunking will be enabled if supported by the query.
+When querying tables with more than 10,000,000 records, or if experiencing timeouts with just result batching, 
+{{ book.productnameFull }} can issue queries to Salesforce using the bulk API. When using a bulk select, primary key (PK) chunking will be enabled if supported by the query.
 
 The use of the bulk api requires a source hint in the query:
 
@@ -302,7 +354,7 @@ The default chunk size of 100,000 records will be used.
 
 Note: this feature is only supported by Salsforce API equal to greater than 28.
 
-== Supported Capabilities
+.Supported capabilities
 
 The following are the capabilities supported by the Salesforce Connector. These SQL constructs will be pushed down to Salesforce.
 
@@ -321,28 +373,39 @@ The following are the capabilities supported by the Salesforce Connector. These 
 * Basic Aggregates
 * OuterJoins with join criteria KEY
 
-== Native Queries
+.Native Queries
 
-Salesforce procedures may optionally have native queries associated with them - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The operation prefix (select;, insert;, update;, delete; - see below for more) must be present in the native-query, but it will not be issued as part of the query to the source.
-
-[source,sql]
-.*Example DDL for a SF native procedure*
-----
-CREATE FOREIGN PROCEDURE proc (arg1 integer, arg2 string) OPTIONS ("teiid_rel:native-query" 'search;SELECT ... complex SOQL ... WHERE col1 = $1 and col2 = $2') returns (col1 string, col2 string, col3 timestamp);
-----
-
-=== Direct Query Procedure
-
-This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:Translators.adoc#_override_execution_properties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
-
-TIP: By default the name of the procedure that executes the queries directly is *native*. link:Translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
-
-The Salesforce translator provides a procedure to execute any ad-hoc SOQL query directly against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as an object array. link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications. {{ book.productnameFull }} exposes this procedure with a simple query structure as follows:
-
-=== Select
+Salesforce procedures may optionally have native queries associated with them. For more information, 
+see _Parameterizable native queries_ in xref:translators[Translators]. 
+The operation prefix (select;, insert;, update;, delete; - see below for more) must be present 
+in the native-query, but it will not be issued as part of the query to the source.
 
 [source,sql]
-.*Select Example*
+.*Example DDL for a Salesforce native procedure*
+----
+CREATE FOREIGN PROCEDURE proc (arg1 integer, arg2 string) OPTIONS ("teiid_rel:native-query" 'search;SELECT ... complex SOQL ... WHERE col1 = $1 and col2 = $2') 
+returns (col1 string, col2 string, col3 timestamp);
+----
+
+.Direct query procedure
+
+This feature is turned off by default because of the security risk this exposes to execute any command against the source. 
+To enable direct query procedures, set the execution property called `SupportsDirectQueryProcedure` to `true`. For more information, 
+see _Override the execution properties_ in xref:Translators[].
+
+TIP: By default the name of the procedure that executes the queries directly is called *native*. For information about how to change the 
+default name, see _Override the execution properties_ in xref:Translators[].
+
+The Salesforce translator provides a procedure to execute any ad-hoc SOQL query directly 
+against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of 
+this procedure’s results are not known to {{ book.productnameFull }}, they are returned as an object array. 
+xref:arraytable[ARRAYTABLE] can be used construct tabular output for consumption by client applications. 
+{{ book.productnameFull }} exposes this procedure with a simple query structure as follows:
+
+.Select
+
+[source,sql]
+.*Select example*
 ----
 SELECT x.* FROM (call sf_source.native('search;SELECT Account.Id, Account.Type, Account.Name FROM Account')) w,
  ARRAYTABLE(w.tuple COLUMNS "id" string , "type" string, "name" String) AS x
@@ -350,11 +413,12 @@ SELECT x.* FROM (call sf_source.native('search;SELECT Account.Id, Account.Type, 
 
 from the above code, the "search" keyword followed by a query statement.
 
-NOTE: The SOQL is treated as a parameterized native query so that parameter values may be inserted in the query string properly - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]
+NOTE: The SOQL is treated as a parameterized native query so that parameter values may be inserted in the query 
+string properly. For more information, see _Parameterizable native queries_ in xref:translators[Translators]. 
+The results returned by search may contain the object Id as the first column value regardless of whether it was selected. 
+Also queries that select columns from multiple object types will not be correct.
 
-The results returned by search may contain the object Id as the first column value regardless of whether it was selected. Also queries that select columns from multiple object types will not be correct.
-
-=== Delete
+.Delete
 
 [source,sql]
 .*Delete Example*
@@ -365,17 +429,18 @@ SELECT x.* FROM (call sf_source.native('delete;', 'id1', 'id2')) w,
 
 form the above code, the "delete;" keyword followed by the ids to delete as varargs.
 
-=== Create or Update
+.Create or update
 
 [source,sql]
-.*Create Example*
+.*Create example*
 ----
 SELECT x.* FROM
  (call sf_source.native('create;type=table;attributes=one,two,three', 'one', 2, 3.0)) w,
  ARRAYTABLE(w.tuple COLUMNS "update_count" integer) AS x
 ----
 
-form the above code, the "create" or "update" keyword must be followed by the following properties. Attributes must be matched positionally by the procedure variables - thus in the example attribute two will be set to 2.
+form the above code, the "create" or "update" keyword must be followed by the following properties. 
+Attributes must be matched positionally by the procedure variables - thus in the example attribute two will be set to 2.
 
 |===
 |Property Name |Description |Required
@@ -394,18 +459,19 @@ The values for each attribute is specified as separate argument to the "native" 
 Update is similar to create, with one more extra property called "id", which defines identifier for the record.
 
 [source,sql]
-.*Update Example*
+.*Update example*
 ----
 SELECT x.* FROM
  (call sf_source.native('update;id=pk;type=table;attributes=one,two,three', 'one', 2, 3.0)) w,
  ARRAYTABLE(w.tuple COLUMNS "update_count" integer) AS x
 ----
 
-TIP: By default the name of the procedure that executes the queries directly is called native, however user can + set override execution property vdb file to change it.
+TIP: By default the name of the procedure that executes the queries directly is called native, 
+however you can add set an override execution property in the DDL file to change it.
 
 {% if book.targetWildfly %}
-== JCA Resource Adapter
+.JCA resource adapter
 
-The resource adapter for this translator is provided through link:../admin/Salesforce_Data_Sources.adoc[Salesforce Data Sources]. Refer to Admin Guide for configuration.
+The resource adapter for this translator is provided through Salesforce data sources. For configuration information, see _Salesforce Data Sources_ 
+in the http://teiid.github.io/teiid-documents/master/content/admin/Administrators_Guide.html[Administrator's Guide].
 {% endif %}
-

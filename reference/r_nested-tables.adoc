@@ -1,0 +1,33 @@
+// Module included in the following assemblies:
+// as_from-clause.adoc
+[id="nested-tables"]
+= Nested tables
+
+Nested tables can appear in a `FROM` clause with the `TABLE` keyword. 
+They are an alternative to using a view with normal join semantics. 
+The columns projected from a command contained in a nested table can be used in join criteria, WHERE clauses, 
+and other contexts where you can use FROM clause projected columns.
+
+A nested table can have correlated references to preceding `FROM` clause column references as long as `INNER` and `LEFT OUTER` joins are used. 
+This is especially useful in cases where then nested expression is a procedure or function call.
+
+.Valid nested table example
+
+[source,sql]
+----
+select * from t1, TABLE(call proc(t1.x)) t2
+----
+
+.Invalid nested table example
+The following nested table example is invalid, because `t1` appears after the nested table in the FROM clause:
+
+[source,sql]
+----
+select * from TABLE(call proc(t1.x)) t2, t1
+----
+
+.Multiple execution
+[NOTE]
+====
+Using a correlated nested table can result in multiple executions of the table expression -- one for each correlated row.
+====

@@ -1,7 +1,10 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="sap-iq-translator"]
 
-= SAP IQ Translator (sap-iq)
+= SAP IQ translator (sap-iq)
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+Also see common xref:jdbc-translators[JDBC translators] information.
 
-The SAP IQ Translator, known by the type name *_sap-iq_*, is for use with Sybase/SAP IQ version 15.1 or later.  The translator name *_sybaseiq_* has been deprecated.
-
+The SAP IQ translator, known by the type name *_sap-iq_*, is for use with SAP IQ version 15.1 or later. 
+The translator name *_sybaseiq_* has been deprecated.
