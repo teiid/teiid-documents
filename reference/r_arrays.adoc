@@ -1,0 +1,44 @@
+// Module included in the following assemblies:
+// as_expressions.adoc
+[id="arrays"]
+= Arrays
+Array values may be constructed using parentheses around an expression list with an optional trailing comma, 
+or with an explicit ARRAY constructor.
+
+[source,sql]
+.*Example: Empty arrays*
+----
+() 
+(,) 
+ARRAY[]
+----
+
+[source,sql]
+.*Example: Single element array*
+----
+(expr,) 
+ARRAY[expr]
+----
+
+NOTE: A trailing comma is required for the parser to recognize a single element expression as an array with parentheses, 
+rather than a simple nested expression.
+
+[source,sql]
+.*Example: General array syntax*
+----
+(expr, expr ... [,]) 
+ARRAY[expr, ...]
+----
+
+If all of the elements in the array have the same type, the array will have a matching base type. 
+If the element types differ the array base type will be object.
+
+An array element reference takes the form of:
+
+[source,sql]
+----
+array_expr[index_expr]
+----
+
+`index_expr` must resolve to an integer value. 
+This syntax is effectively the same as the `array_get` system function and expects 1-based indexing.

@@ -1,7 +1,15 @@
+// Assembly included in the following assemblies:
+// as_dv_reference.adoc
+[id="datatypes"]
+= Data types
 
-= Datatypes
+The {{ book.productnameFull }} type system is based on Java/JDBC types.  
+The runtime object is represented by the corresponding Java class, such as Long, Integer, Boolean, String, and so forth.
+For more information, see xref:supported-types[Supported types].
+You can use domain types to extend the type system. 
+For more information, see xref:ddl-metadata-for-domains[DDL metadata for domains].
 
-The {{ book.productnameFull }} link:Supported_Types.adoc[type system] is based upon Java/JDBC types.  
-The runtime object will be represented by the corresponding Java class, such as Long, Integer, Boolean, String, etc.
-
-The type system can be extended using link:DDL_Domain.adoc[domain types].
+include::r_supported-types.adoc[leveloffset=+1]
+include::r_type-conversions.adoc[leveloffset=+1]
+include::r_special-conversion-cases.adoc[leveloffset=+1]
+include::r_escaped-literal-syntax.adoc[leveloffset=+1]

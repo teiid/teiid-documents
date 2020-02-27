@@ -1,0 +1,29 @@
+// Module included in the following assemblies:
+// as_procedure-language.adoc
+[id="return-statement"]
+= Return statement
+
+A `RETURN` statement gracefully exits the procedure and optionally returns a value.
+
+.Usage
+
+[source,sql]
+----
+RETURN [expression];
+----
+
+.Syntax rules
+
+* If an expression is specified, the procedure must have a return parameter and the value must be implicitly convertible to the expected type.
+* Even if the procedure has a return parameter, it is not required to specify a return value in a `RETURN` statement. 
+A return parameter can be set through an assignment or it can be left as null.
+
+[source,sql]
+.*Sample usage*
+----
+CREATE VIRTUAL FUNCTION times_two(val integer) 
+   RETURNS integer AS
+   BEGIN
+      RETURN val*2;
+   END
+----

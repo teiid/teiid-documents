@@ -1,0 +1,24 @@
+// Module included in the following assemblies:
+// as_temp-tables.adoc
+[id="global-temp-tables"]
+= Global temporary tables
+
+Global temporary tables are created from the metadata that you supply to {{ book.productnameFull }} at deployment time. 
+Unlike local temporary tables, you cannot create global temporary tables at runtime. 
+Your global temporary tables share a common definition through a schema entry.
+However, a new instance of the temporary table is created in each session. 
+The table is then dropped when the session ends. 
+There is no explicit drop support. 
+A common use for a global temporary table is to pass results into and out of procedures.
+
+[source,sql]
+.*Creation syntax*
+----
+CREATE GLOBAL TEMPORARY TABLE name (column type [NOT NULL], ... [PRIMARY KEY (column, ...)]) OPTIONS (UPDATABLE 'true')
+----
+
+If you use the SERIAL data type, then each session’s instance of the global temporary table will have its own sequence.
+
+You must explicitly specify UPDATABLE if you want to update the temporary table.
+
+For information about syntax options, see the `CREATE TABLE` DDL statements in xref:ddl-metadata-for-schema-objects[DDL metadata for schema objects].

@@ -1,29 +1,41 @@
-
+// Assembly included in the following assemblies:
+// as_dv_reference.adoc
+[id="updatable-views"]
 = Updatable Views
 
-Any view may be marked as updatable. In many circumstances the view definition may allow the view to be inherently updatable without the need to manually define a trigger to handle INSERT/UPDATE/DELETE operations.
+Any view can be marked as _updatable_. 
+In many circumstances the view definition allows the view to be inherently updatable 
+without the need to manually define a trigger to handle `INSERT/UPDATE/DELETE` operations.
 
 An inherently updatable view cannot be defined with a query that has:
 
-* A set operation (INTERSECT, EXCEPT, UNION).
+* A set operation (`INTERSECT`, `EXCEPT`, `UNION`).
 
-* SELECT DISTINCT
+* `SELECT DISTINCT`.
 
-* Aggregation (aggregate functions, GROUP BY, HAVING)
+* Aggregation (aggregate functions, `GROUP BY`, `HAVING`).
 
-* A LIMIT clause
+* A `LIMIT` clause.
 
-A UNION ALL can define an inherently updatable view only if each of the UNION branches is itself inherently updatable. A view defined by a UNION ALL can support inherent INSERTs if it is a link:Federated_Optimizations.adoc#_partitioned_union[Federated Optimizations#Partitioned Union] and the INSERT specifies values that belong to a single partition.
+A `UNION ALL` can define an inherently updatable view only if each of the UNION branches are themselves inherently updatable. 
+A view defined by a `UNION ALL` can support inherent `INSERTs` if it is a partitioned union, and the `INSERT` specifies values that belong to a single partition.
+For more information, see _partitioned union_ in xref:federated-optimizations[Federated optimizations].
 
 Any view column that is not mapped directly to a column is not updatable and cannot be targeted by an UPDATE set clause or be an INSERT column.
 
-If a view is defined by a join query or has a WITH clause it may still be inherently updatable. However in these situations there are further restrictions and the resulting query plan may execute multiple statements. For a non-simple query to be updatable, it is required:
+If a view is defined by a join query or has a `WITH` clause it might still be inherently updatable. 
+However, in these situations there are further restrictions, and the resulting query plan may execute multiple statements. 
+For a non-simple query to be updatable, the following criteria apply:
 
-* An INSERT/UPDATE can only modify a single link:Key-preserved_Table.html[Key-preserved Table].
+* An `INSERT/UPDATE` can only modify a single key-preserved table.
 
-* To allow DELETE operations there must be only a single link:Key-preserved_Table.html[Key-preserved Table].
+* To allow `DELETE` operations, there must be only a single key-preserved table.
++
+For information about key-preserved tables, see xref:key-preserved-tables[Key-preserved tables].
 
-If the default handling is not available or you wish to have an alternative implementation of an INSERT/UPDATE/DELETE, then you may use link:Update_Procedures_Triggers.adoc[Update Procedures (Triggers)] to define procedures to handle the respective operations.
+If the default handling is not available or if you want to have an alternative implementation of an `INSERT/UPDATE/DELETE`, 
+you can use update procedures, or triggers, to define procedures to handle the respective operations. 
+For more information see xref:update_procedures_triggers[Update procedures (Triggers)].
 
 Consider the following example of an inherently updatable denormalized view:
 
@@ -36,7 +48,15 @@ create foreign table child_table (pk_col integer primary key, name string, fk_co
 create view denormalized options (updatable true) as select c.fk_col, c.name as child_name, p.name from parent_table as p, child_table as c where p.pk_col = c.fk_col;
 ----
  
-A query such as "insert into denormalized (fk_col, child_name) values (1, 'a')" would succeed against this view as it targets a single key-preserved table - child_table.  However "insert into denormalized (name) values ('a')" would fail as it maps to a parent_table which is not key preserved as there can be multiple rows for each parent_table key.  Also an insert against just parent_table may not be visible to the view - as there may be no child entities associated either.
+A query such as `insert into denormalized (fk_col, child_name) values (1, 'a')` would succeed against this view, 
+because it targets a single key-preserved table, `child_table`.  
+However, `insert into denormalized (name) values ('a')` would fail, because it maps to a `parent_table` that can have multiple rows for each `parent_table` key.
+In other words, it is not _key-preserved_.
  
-Not all scenarios will work.  Referencing the above example, an "insert into denormalized (pk_col, child_name) values (1, 'a')" with a view that is defined using the p.pk_col will fail as the logic doesn't yet consider the equivalency of the key values.  If you encounter a scenario that needs support, please log an issue.
+Also, an `INSERT` against `parent_table` alone might not be visible to the view, because there might be no child entities associated either.
+ 
+Not all scenarios will work. 
+Referencing the preceding example, an `insert into denormalized (pk_col, child_name) values (1, 'a')` 
+with a view that is defined using the `p.pk_col` will fail, because the logic doesn't yet consider the equivalency of the key values. 
 
+include::r_key-preserved-tables.adoc[leveloffset=+1]

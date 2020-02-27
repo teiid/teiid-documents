@@ -1,20 +1,39 @@
+// Module included in the following assemblies:
+// as_dml-commands.adoc
+[id="into-clause"]
+= INTO clause
 
-= INTO Clause
+WARNING: Usage of the INTO Clause for inserting into a table has been been deprecated. 
+An INSERT with a query command should be used instead. For information about using INSERT, see xref:insert-command[INSERT command].
 
-WARNING: Usage of the INTO Clause for inserting into a table has been been deprecated. An INSERT with a query command should be used instead.
+{% if book.targetSpring or book.targetWildfly %}
+When the into clause is specified with a SELECT, the results of the query are inserted into the specified table. 
+This is often used to insert records into a temporary table. The INTO clause immediately precedes the FROM clause.
 
-When the into clause is specified with a SELECT, the results of the query are inserted into the specified table. This is often used to insert records into a temporary table. The INTO clause immediately precedes the FROM clause.
-
-Usage:
+.Usage
 
 [source,sql]
 ----
 INTO table FROM ...
 ----
 
-Syntax Rules:
+.Syntax rules
 
 * The INTO clause is logically applied last in processing, after the ORDER BY and LIMIT clauses.
 
-* {{ book.productnameFull }}’s support for SELECT INTO is similar to MS SQL Server. The target of the INTO clause is a table where the result of the rest select command will be inserted. SELECT INTO should not be used UNION query.
-
+* {{ book.productnameFull }}’s support for SELECT INTO is similar to Microsoft SQL Server. The target of the 
+INTO clause is a table where the result of the SELECT command will be inserted. 
++
+For example, the following statement:
++
+[source,sql]
+----
+SELECT col1, col2 INTO targetTable FROM sourceTable
+----
++
+inserts `col1` and `col2` from the `sourceTable` into the `targetTable`.  
+* You cannot combine SELECT INTO with a UNION query.
++
+That is, you cannot select the results from a `sourceTable UNION` query for insertion 
+into a `targetTable`.
+{% endif %}

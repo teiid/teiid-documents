@@ -1,9 +1,13 @@
-
+// Module included in the following assemblies:
+// as_from-clause.adoc
+[id=arraytable]
 = ARRAYTABLE
 
-The ARRAYTABLE function processes an array input to produce tabular output. The function itself defines what columns it projects. The ARRAYTABLE function is implicitly a nested table and may be correlated to preceding FROM clause entries.
+The ARRAYTABLE function processes an array input to produce tabular output. 
+The function itself defines what columns it projects. 
+The ARRAYTABLE function is implicitly a nested table and can be used within FROM clauses.
 
-Usage:
+.Usage
 
 [source,sql]
 ----
@@ -11,18 +15,20 @@ ARRAYTABLE([ROW|ROWS] expression COLUMNS <COLUMN>, ...) AS name
 COLUMN := name datatype
 ----
 
-Parameters
+.Parameters
 
-* expression - the array to process, which should be a java.sql.Array or java array value.
-* ROW|ROWS - if ROW (the default) is specified, then only a single row will be produced from the given array (typically a one dimensional array).  If ROWS is specified, then multiple rows will be produces.  A multidimensional array will be expected, and one row will be produced for every non-null element of the outer array.
+expression:: The array to process, which should be a java.sql.Array or java array value.
+ROW|ROWS:: If ROW (the default) is specified, then only a single row is produced from the given array (typically a one dimensional array). 
+If ROWS is specified, then multiple rows are produced. 
+A multidimensional array is expected, and one row is produced for every non-null element of the outer array.
 
 If the expression is null, no rows are produced.
 
-Syntax Rules:
+.Syntax rules
 
-* The columns names must be not contain duplicates.
+* Columns names cannot contain duplicates.
 
-Examples
+.Array table examples
 
 * As a nested table:
 
@@ -31,14 +37,16 @@ Examples
 select x.* from (call source.invokeMDX('some query')) r, arraytable(r.tuple COLUMNS first string, second bigdecimal) x
 ----
 
-ARRAYTABLE is effectively a shortcut for using the link:Miscellaneous_Functions.adoc#_array_get[Miscellaneous Functions#array_get] function in a nested table. For example
+ARRAYTABLE is effectively a shortcut for using the `array_get` function in a nested table. 
+
+For example, the following ARRAYTABLE function:
 
 [source,sql]
 ----
 ARRAYTABLE(val COLUMNS col1 string, col2 integer) AS X
 ----
 
-is the same as
+is the same as the following statement which uses an `array_get` function:
 
 [source,sql]
 ----

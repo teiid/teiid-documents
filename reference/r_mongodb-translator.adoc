@@ -1,29 +1,57 @@
-
+// Module included in the following assemblies:
+// as_translators.adoc
+[id="mongotdb-translator"]
 = MongoDB Translator
 :toc: manual
 :toc-placement: preamble
 
-The MongoDB translator, known by the type name _mongodb_, provides a relational view of data that resides in a MongoDB database. This translator is capable of converting {{ book.productnameFull }} SQL queries into MongoDB based queries. It supports a full range of SELECT, INSERT, UPDATE and DELETE calls.
+The MongoDB translator, known by the type name _mongodb_, provides a relational view of data that resides in a MongoDB database. 
+This translator is capable of converting {{ book.productnameFull }} SQL queries into MongoDB based queries. 
+It supports a full range of SELECT, INSERT, UPDATE and DELETE calls.
 
-MongoDB is a document based "schema-less" database with it own query language - it does not map perfectly with relational concepts or the SQL query language. More and more systems are using a MongoDB kind of NOSQL store for scalability and performance. For example, applications like storing audit logs or managing web site data fits well with MongoDB, and does not require using a structural database like Oracle, Postgres etc. MongoDB uses JSON documents as its primary storage unit, and those documents can have additional embedded documents inside the parent document. By using embedded documents it co-locates the related information to achieve de-normalization that typically requires either duplication of data or joins to achieve querying in a relational database.
+MongoDB is a document based "schema-less" database with it own query language. 
+It does not map perfectly with relational concepts or the SQL query language. 
+More and more systems are using NOSQL stores such as MongoDB to improve scalability and performance. 
+For example, applications like storing audit logs, or managing web site data, are well-suited to MongoDB, 
+and do not require the structure of relational databases. 
+MongoDB uses JSON documents as its primary storage unit, and those documents can have additional embedded documents inside the parent document. 
+By using embedded documents, MongoDB co-locates related information to achieve de-normalization that typically requires 
+either duplicate data or joins to achieve querying in a relational database.
 
-To make MongoDB work with {{ book.productnameFull }} the challenge for the MongoDB translator is "How to design a MongoDB store that can achieve the balance between relational and document based storage?" In our opinion the advantages of "schema-less" design are great at development time, not much at runtime except in few special situations. "Schema-less" can also be a problem with migration of application versions and the ability to query and make use of returned information effectively.
+For MongoDB to work with {{ book.productnameFull }} the challenge for the MongoDB translator is to design a MongoDB store that can 
+achieve the balance between relational and document based storage. 
+The advantages of "schema-less" design are great at development time.
+But "schema-less" design can pose problems during migration between application versions, and when querying data, and making effective use of the returned information.
 
-Since it is hard and may be impossible in certain situations to derive a schema based on existing the MongoDB collection(s), {{ book.productnameFull }} approaches the problem in reverse compared to other translators. When working with MongoDB, {{ book.productnameFull }} requires the user to define the MongoDB schema upfront using {{ book.productnameFull }} metadata. Since {{ book.productnameFull }} only allows relational schema as its metadata, the user needs to define their MongoDB schema in relational terms using tables, procedures, and functions. For the purposes of MongoDB, the {{ book.productnameFull }} metadata has been extended to support extension properties that can be defined on the table to convert it into a MongoDB based document. These extension properties let users define, how a MongoDB document is structured and stored. Based on the relationships (primary-key, foreign-key) defined on a table, and the cardinality (ONE-to-ONE, ONE-to-MANY, MANY-to-ONE) relations between tables are mapped such that related information can be embedded along with the parent document for co-location (see the de-normalization comment above). Thus a relational schema based design, but document based storage in MongoDB. 
+Since it is hard and may be impossible in certain situations to derive a schema based on existing the MongoDB collection(s), {{ book.productnameFull }} 
+approaches the problem in reverse compared to other translators. 
+When working with MongoDB, {{ book.productnameFull }} requires you to define the MongoDB schema upfront, by using {{ book.productnameFull }} metadata. 
+Because {{ book.productnameFull }} only allows relational schema as its metadata, you must define your MongoDB schema in relational terms, 
+using tables, procedures, and functions. 
+For the purposes of MongoDB, the {{ book.productnameFull }} metadata has been extended to support extension properties that can be defined on a table 
+to convert it into a MongoDB based document. 
+These extension properties let you define how a MongoDB document is structured and stored. 
+Based on the relationships (primary-key, foreign-key) that are defined on a table, and their cardinality (ONE-to-ONE, ONE-to-MANY, MANY-to-ONE), 
+relations between tables are mapped such that related information can be embedded along with the parent document for co-location 
+(as mentioned earlier in this topic). 
+Thus, a relational schema-based design, but document-based storage in MongoDB. 
 
-== Who is the primary audience for this translator?
+.Who is the primary audience for the MongoDB translator?
 
-The above may not satisfy every user’s needs. The document structure in MongoDB can be more complex than what {{ book.productnameFull }} can currently define. We hope this will eventually catch up in future versions of {{ book.productnameFull }}. This is currently designed for:
+The above may not satisfy every user’s needs. The document structure in MongoDB can be more complex than what {{ book.productnameFull }} 
+can currently define. We hope this will eventually catch up in future versions of {{ book.productnameFull }}. This is currently designed for:
 
-1. Users that are using relational databases and would like to move/migrate their data to MongoDB to take advantages scaling and performance with out modifying the end user applications currently running.
+* Users who are using relational databases and would like to move/migrate their data to MongoDB to take advantage of scaling and performance 
+without modifying end user applications that they currently run.
 
-2. Users that are starting out with MongoDB and do not have experience with MongoDB, but are seasoned SQL developers. This provides a low barrier of entry compared to using MongoDB directly as an application developer.
+* Users who are seasoned SQL developers, but do not have experience with MongoDB. 
+This provides a low barrier of entry compared to using MongoDB directly as an application developer.
 
-3. Integrate other enterprise data sources with MongoDB based data.
+* Users who want to integrate MongoDB-based data with data from other enterprise data sources.
 
-== Usage
+.Usage
 
-The name of the translator to use in a vdb is "_mongodb_". For example:
+The name of the translator to use in a virtual database DDL is "_mongodb_". For example:
 
 [source,sql]
 ----
@@ -47,7 +75,9 @@ Or as an xml vdb:
 <vdb>
 ----
 
-The translator does not provide a connection to the MongoDB. For that purpose, {{ book.productnameFull }} has a JCA adapter that provides a connection to MongoDB using the MongoDB Java Driver. To define such connector, use the following XML fragment in standalone-teiid.xml. See a example in "<jboss-as>/docs/teiid/datasources/mongodb"
+The translator does not provide a connection to the MongoDB database. 
+For that purpose, {{ book.productnameFull }} has a JCA adapter that provides a connection to MongoDB using the MongoDB Java Driver. 
+To define such a connector, use the following XML fragment in standalone-teiid.xml. See a example in "<jboss-as>/docs/teiid/datasources/mongodb"
 
 [source,xml]
 ----
@@ -77,11 +107,15 @@ The translator does not provide a connection to the MongoDB. For that purpose, {
     </resource-adapters>
 ----
 
-For more ways to create the connector see link:../admin/MongoDB_Data_Sources.adoc[MongoDB Data Sources]. 
+For information about more ways to create the connector see _MongoDB data sources_ in the 
+xref:http://teiid.github.io/teiid-documents/master/sb/admin/Administrators_Guide.html[Administrator's Guide]. 
 
 {% endif %}
 
-The MongoDB translator can derive the metadata based on existing document collections in some scenarios, however when working with complex documents the interpretation of metadata may be inaccurate, in those situations the user MUST define the metadata. For example, you can define a schema using DDL:
+The MongoDB translator can derive the metadata based on existing document collections in some scenarios.
+However, when working with complex documents the interpretation of metadata can be inaccurate.
+In such cases, you must define the metadata. 
+For example, you can define a schema using DDL, as shown in the following example:
 
 [source,xml]
 ----
@@ -99,14 +133,13 @@ The MongoDB translator can derive the metadata based on existing document collec
 <vdb>
 ----
 
-when INSERT operation below executed against table using {{ book.productnameFull }},
+When the following INSERT operation is executed against a table using {{ book.productnameFull }},
+the MongoDB translator creates a document in the MongoDB:
 
 [source,sql]
 ----
     INSERT INTO Customer(customer_id, FirstName, LastName) VALUES (1, 'John', 'Doe');
 ----
-
-MongoDB translator will create a below document in the MongoDB
 
 [source,sql]
 ----
@@ -118,7 +151,9 @@ MongoDB translator will create a below document in the MongoDB
 }
 ----
 
-If a PRIMARY KEY is defined on the table as
+If a PRIMARY KEY is defined on the table, then that column name is automatically used as `"_id"` field in the MongoDB collection, 
+and then the document structure is stored in the MongoDB, as shown in the following examples:
+
 
 [source,sql]
 ----
@@ -129,7 +164,6 @@ If a PRIMARY KEY is defined on the table as
     ) OPTIONS(UPDATABLE 'TRUE');
 ----
 
-then that column name is automatically used as "_id" field in the MongoDB collection, then document structure is stored in the MongoDB as
 
 [source,sql]
 ----
@@ -140,7 +174,7 @@ then that column name is automatically used as "_id" field in the MongoDB collec
 }
 ----
 
-If you defined the composite PRIMARY KEY on Customer table as
+If you defined the composite PRIMARY KEY on Customer table, the document structure that results is shown in the following example: 
 
 [source,sql]
 ----
@@ -151,8 +185,6 @@ If you defined the composite PRIMARY KEY on Customer table as
         PRIMARY KEY (FirstName, LastName)
     ) OPTIONS(UPDATABLE 'TRUE');
 ----
-
-the document structure will be
 
 [source,sql]
 ----
@@ -165,9 +197,11 @@ the document structure will be
 }
 ----
 
-== Data Types
+.Data types
 
-MongoDB translator supports automatic mapping of {{ book.productnameFull }} data types into MongoDB data types, including the support for Blobs, Clobs and XML. The LOB support is based on GridFS in MongoDB. Arrays are in the form of
+The MongoDB translator supports automatic mapping of {{ book.productnameFull }} data types into MongoDB data types, including the support for BLOBS, CLOBS and XML. 
+The LOB support is based on GridFS in MongoDB. 
+Arrays are in the following form:
 
 [source,sql]
 ----
@@ -179,15 +213,17 @@ MongoDB translator supports automatic mapping of {{ book.productnameFull }} data
 }
 ----
 
-are supported. User can get individual items in the array using function array_get, or can transform the array into tabular structure using ARRATTABLE.
+Users can get individual items in the array using the function `array_get`, or can transform the array into tabular structure using ARRAYTABLE.
 
 NOTE: Note that even though embedded documents can also be in arrays, the handling of embedded documents is different from array with scalar values.
 
-Regular Expressions, MongoDB::Code, MongoDB::MinKey, MongoDB::MaxKey, MongoDB::OID is not currently supported.
+NOTE: Regular Expressions, MongoDB::Code, MongoDB::MinKey, MongoDB::MaxKey, and MongoDB::OID are not currently supported.
 
-NOTE: Documents that contain values of mixed types for the same key, for example "key" is a string value in one document and an integer in another, the column must be marked as unsearchable as MongoDB will not correct match predicates against the column.  See also the importer.sampleSize property.  
+NOTE: In documents that contain values of mixed types for the same key, you must mark the column as unsearchable, or MongoDB will not correctly match predicates 
+against the column. A key is used as a mixed type of it is represented as a string value in one document, and an integer in another. 
+For more information, see the `importer.sampleSize property` in the following table.  
 
-== Importer Properties
+.Importer Properties
 
 Importer properties define the behavior of the translator during the metadata import from the physical source.
 
@@ -197,35 +233,58 @@ Importer properties define the behavior of the translator during the metadata im
 |Name |Description |Default
 
 |excludeTables
-|Regular expression to exclude the tables from import
+|Regular expression to exclude the tables from import.
 |null
 
 |includeTables
-|Regular expression to include the tables from import
+|Regular expression to include the tables from import.
 |null
 
 |sampleSize
-|Number of documents to sample to determine the structure - if documents have different fields or fields with different types, this should be greater than 1.
+|Number of documents to sample to determine the structure.
+If documents have different fields, or fields with different types, this should be greater than 1.
 |1
 |===
 
-== Extension Metadata Properties To Build Complex Documents
+.MongoDB metadata extension properties for building complex documents
 
-Using the above DDL or any other metadata facility, a user can map a table in a relational store into a document in MongoDB, however to make effective use of MongoDB, you need to be able to build complex documents, that can co-locate related information, so that data can queried in a single MongoDB query. Otherwise, since MongoDB does not support join relationships like relational database, you need to issue multiple queries to retrieve and join data manually. The power of MongoDB comes from its "embedded" documents and its support of complex data types like arrays and use of the aggregation framework to be able to query them. This translator provides way to achieve that goals.
+Using the preceding DDL, or any other metadata facility, you can map a table in a relational store into a document in MongoDB. 
+However, to make effective use of MongoDB, you must be able to build complex documents that can co-locate related information, 
+so that data can queried in a single MongoDB query. 
+Because MongoDB does not support join relationships like a relational database, unless you can build complex documents, 
+you would have to issue multiple queries to retrieve data and then join it manually. 
+The power of MongoDB comes from its "embedded" documents, its support of complex data types, such as arrays, and its use of an aggregation framework 
+to query them. 
+This translator provides a way to achieve the goals.
 
-When you do not define the complex embedded documents in MongoDB, {{ book.productnameFull }} can step in for join processing and provide that functionality, however if you want to make use of the power of MongoDB itself in querying the data and avoid bringing the unnecessary data and improve performance, you need to look into building these complex documents.
+When you do not define the complex embedded documents in MongoDB, {{ book.productnameFull }} can step in for join processing and provide that functionality. 
+However, if you want to make use of the power of MongoDB itself in querying the data and avoid bringing the unnecessary data and improve performance, 
+you need to look into building these complex documents.
 
-MongoDB translator defines two additional metadata properties along with other link:DDL_Metadata.adoc[{{ book.productnameFull }} metadata properties] to aid in building the complex "embedded" documents. You can use the following metadata properties in your DDL.
+MongoDB translator defines two additional metadata properties along with other Teiid metadata properties to aid in building the complex "embedded" documents. 
+For more information about {{ book.productnameFull }} schema metadata, see xref:ddl-metadata-for-schema-objects[]. 
+You can use the following metadata properties in your DDL:
 
-* *teiid_mongo:EMBEDDABLE* - Means that data defined in this table is allowed to be included as an "embeddable" document in *any* parent document. The parent document is referenced by the foreign key relationships. In this scenario, {{ book.productnameFull }} maintains more than one copy of the data in MongoDB store, one in its own collection and also a copy in each of the parent tables that have relationship to this table. You can even nest embeddable table inside another embeddable table with some limitations. Use this property on table, where table can exist, encompass all its relations on its own. For example, a "Category" table that defines a "Product"’s category is independent of Product, which can be embeddable in "Products" table.
+teiid_mongo:EMBEDDABLE:: Means that data defined in this table is allowed to be included as an "embeddable" document in *any* parent document. 
+The parent document is referenced by the foreign key relationships. 
+In this scenario, {{ book.productnameFull }} maintains more than one copy of the data in MongoDB store, one in its own collection, 
+and also a copy in each of the parent tables that have relationship to this table. 
+You can even nest embeddable table inside another embeddable table with some limitations. 
+Use this property on table, where table can exist, encompass all its relations on its own. 
+For example, a "Category" table that defines a "Product"’s category is independent of Product, which can be embeddable in "Products" table.
 
-* *teiid_mongo:MERGE* - Means that data of this table is merged with the defined parent table. There is only a single copy of the data that is embedded in the parent document. Parent document is defined using the foreign key relationships.
+teiid_mongo:MERGE:: Means that data of this table is merged with the defined parent table. 
+There is only a single copy of the data that is embedded in the parent document. 
+Parent document is defined using the foreign key relationships.
 
 Using the above properties and FOREIGN KEY relationships, we will illustrate how to build complex documents in MongoDB.
 
-NOTE: *Usage* - Please note a given table can contain either the "teiid_mongo:EMBEDDABLE" property or the "teiid_mongo:MERGE" property defining the type of nesting in MongoDB. A table is not allowed to have both properties.
+.Usage
+NOTE: A given table can contain either the `teiid_mongo:EMBEDDABLE` property or the `teiid_mongo:MERGE` 
+property defining the type of nesting in MongoDB. 
+You cannot use both properties within one table.
 
-=== ONE-2-ONE Mapping
+.ONE-2-ONE Mapping
 
 If your current DDL structure representing ONE-2-ONE relationship is like
 
@@ -247,7 +306,7 @@ If your current DDL structure representing ONE-2-ONE relationship is like
      ) OPTIONS(UPDATABLE 'TRUE');
 ----
 
-by default, this will produce two different collections in MongoDB, like with sample data it will look like
+By default, this will produce two different collections in MongoDB, like with sample data it will look like
 
 [source,sql]
 ----
@@ -269,7 +328,7 @@ Address
 }
 ----
 
-You can enhance the storage in MongoDB to a single collection by using "teiid_mongo:MERGE’ extension property on the table’s OPTIONS clause
+You can enhance the storage in MongoDB to a single collection by using `teiid_mongo:MERGE` extension property on the table’s OPTIONS clause.
 
 [source,sql]
 ----
@@ -308,15 +367,18 @@ Customer
 }
 ----
 
-With the above both tables are merged into a single collection that can be queried together using the JOIN clause in the SQL command. Since the existence of child/additional record has no meaning with out parent table using the "_teiid_mongo:MERGE_" extension property is right choice in this situation.
+With the above both tables are merged into a single collection that can be queried together using the JOIN clause in the SQL command. 
+Since the existence of child/additional record has no meaning with out parent table using the "_teiid_mongo:MERGE_" extension property is right choice in this situation.
 
-NOTE: Note that the Foreign Key defined on child table, must refer to Primary Keys on both parent and child tables to form a One-2-One relationship.
+NOTE: The Foreign Key defined on a child table must refer to Primary Keys on both the parent and child tables to form a One-2-One relationship.
 
-=== ONE-2-MANY Mapping.
+.ONE-2-MANY Mapping.
 
-Typically there can be more than two (2) tables involved in this relationship. If MANY side is only associated *single* table, then use "teiid_mongo:MERGE" property on MANY side of table and define ONE as the parent. If associated with more than single table then use "teiid_mongo:EMBEDDABLE".
+Typically there can be more than two (2) tables involved in this relationship. 
+If MANY side is only associated *single* table, then use `teiid_mongo:MERGE` property on MANY side of table and define ONE as the parent. 
+If associated with more than single table then use `teiid_mongo:EMBEDDABLE`.
 
-For example if you have DDL like
+For example, if you define a virtual database as in the following DDL:
 
 [source,sql]
 ----
@@ -335,7 +397,8 @@ For example if you have DDL like
     ) OPTIONS(UPDATABLE 'TRUE');
 ----
 
-in the above a Single Customer can have MANY Orders. There are two options to define the how we store the MongoDB document. If in your schema, the Customer table’s CustomerId is *only* referenced in Order table (i.e. Customer information used for only Order purposes), you can use
+then a Single Customer can have MANY Orders. There are two options to define the how we store the MongoDB document. 
+If in your schema, the Customer table’s CustomerId is *only* referenced in Order table (i.e. Customer information used for only Order purposes), you can use
 
 [source,sql]
 ----
@@ -442,17 +505,22 @@ Comment
 }
 ----
 
-Here as you can see the Customer table contents are embedded along with other table’s data where they were referenced. This creates duplicated data where multiple of these embedded documents are managed automatically in the MongoDB translator.
+Here as you can see the Customer table contents are embedded along with other table’s data where they were referenced. 
+This creates duplicated data where multiple of these embedded documents are managed automatically in the MongoDB translator.
 
-NOTE: All the SELECT, INSERT, DELETE operations that are generated against the tables with "teiid_mongo:EMBEDDABLE" property are atomic, except for UPDATES, as there can be multiple operations involved to update all the copies. Since there are no transactions in MongoDB, {{ book.productnameFull }} plans to provide automatic compensating transaction framework around this in future releases https://issues.redhat.com/browse/TEIID-2957[TEIID-2957].
+NOTE: All the SELECT, INSERT, DELETE operations that are generated against the tables with "teiid_mongo:EMBEDDABLE" 
+property are atomic, except for UPDATES, as there can be multiple operations involved to update all the copies. 
+Since there are no transactions in MongoDB, {{ book.productnameFull }} plans to provide automatic compensating transaction 
+framework around this in future releases https://issues.redhat.com/browse/TEIID-2957[TEIID-2957].
 
-=== MANY-2-ONE Mapping.
+.MANY-2-ONE Mapping.
 
 This is same as ONE-2-MANY, see above to define relationships.
 
-NOTE: A parent table can have multiple "embedded" and as well as "merge" documents inside it, it not limited so either one or other. However, please note that MongoDB imposes document size is limited can not exceed 16MB.
+NOTE: A parent table can have multiple "embedded" and as well as "merge" documents inside it, it not limited so 
+either one or other. However, please note that MongoDB imposes document size is limited can not exceed 16MB.
 
-=== MANY-2-MANY Mapping.
+.MANY-2-MANY Mapping.
 
 This can also mapped with combination of "teiid_mongo:MERGE" and "teiid_mongo:EMBEDDABLE" properties (partially). For example if DDL looks like
 
@@ -547,10 +615,14 @@ Products
 }
 ----
 
-=== Limitations
+.Limitations
 
-* Currently nested embedding of documents has limited support due to capabilities of handling nested arrays is limited in the MongoDB. Nesting of "EMBEDDALBLE" property with multiple levels is OK, however more than two levels with MERGE is not recommended. Also, you need to be caution about not exceeding the document size of 16 MB for single row, so deep nesting is not recommended.
-* JOINS between related tables, MUST have used either of "EMBEDDABLE" or "MERGE" property, otherwise the query will result in error. In order for {{ book.productnameFull }} to correctly plan and support the JOINS, in the case that any two tables are *NOT* embedded in each other, use _allow-joins=false_ property on the Foreign Key that represents the relation. For example:
+* Currently nested embedding of documents has limited support due to capabilities of handling nested arrays is limited 
+in the MongoDB. Nesting of "EMBEDDABLE" property with multiple levels is OK, however more than two levels with MERGE 
+is not recommended. Also, you need to be caution about not exceeding the document size of 16 MB for single row, so deep nesting is not recommended.
+* JOINS between related tables, MUST have used either of "EMBEDDABLE" or "MERGE" property, otherwise the query will result in error. 
+In order for {{ book.productnameFull }} to correctly plan and support the JOINS, in the case that any two tables are 
+*NOT* embedded in each other, use _allow-joins=false_ property on the Foreign Key that represents the relation. For example:
 
 [source,sql]
 ----
@@ -578,11 +650,13 @@ with the example above, {{ book.productnameFull }} will create two collections, 
 
 instead of resulting in error, the JOIN processing will happen in the {{ book.productnameFull }} engine, without the above property it will result in an error.
 
-When you use above properties and carefully design the MongoDB document structure, {{ book.productnameFull }} translator can intelligently collate data based on their co-location and take advantage of it while querying.
+When you use above properties and carefully design the MongoDB document structure, {{ book.productnameFull }} translator can 
+intelligently collate data based on their co-location and take advantage of it while querying.
 
-== Geo Spatial function support
+.Geo Spatial function support
 
-MongoDB translator supports geo spatial query operators in the "WHERE" clause, when the data is stored in the GeoJSon format in the MongoDB Document. The supported functions are
+MongoDB translator supports geo spatial query operators in the "WHERE" clause, when the data is stored in the GeoJSon format 
+in the MongoDB Document. The following functions are available:
 
 [source,sql]
 ----
@@ -601,7 +675,7 @@ a sample query looks like
 SELECT loc FROM maps where mongo.geoWithin(loc, 'LineString', ((cast(1.0 as double), cast(2.0 as double)), (cast(1.0 as double), cast(2.0 as double))))
 ----
 
-Same functions using built-in Geometry type (the above functions will be deprecated and removed in future versions)
+Same functions using built-in Geometry type (the versions of the functions in the preceding list will be deprecated and removed in future versions)
 ----
 CREATE FOREIGN FUNCTION geoIntersects (columnRef string,  geo geometry) RETURNS boolean;
 CREATE FOREIGN FUNCTION geoWithin (ccolumnRef string,  geo geometry) RETURNS boolean;
@@ -621,9 +695,10 @@ SELECT loc FROM maps where mongo.geoWithin(loc, ST_GeomFromGeoJSON('{"coordinate
 There are various "st_geom.." methods are available in the Geo Spatial function library in {{ book.productnameFull }}.
 
 
-== Capabilities
+.Capabilities
 
-MongoDB translator designed on top of the MongoDB aggregation framework, use of MongoDB version that supports this framework is mandatory. Apart from SELECT queries, this translator also supports INSERT, UPDATE and DELETE queries.
+MongoDB translator designed on top of the MongoDB aggregation framework, use of MongoDB version that supports this framework is mandatory. 
+Apart from SELECT queries, this translator also supports INSERT, UPDATE and DELETE queries.
 
 This translator supports
 
@@ -636,17 +711,25 @@ This translator supports
 * Composite primary and foreign keys.
 
 
-== Native Queries
+.Native queries
 
-MongoDB source procedures may be created using the teiid_rel:native-query extension - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The procedure will invoke the native-query similar to a direct procedure call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality.
+MongoDB source procedures may be created using the `teiid_rel:native-query` extension. For more information, see _Parameterizable native queries_ in xref:translators[Translators]. 
+The procedure will invoke the native-query similar to a direct procedure call with the benefits that the query is predetermined and 
+that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality.
 
-=== Direct Query Procedure
+.Direct query procedure
 
-This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:Translators.adoc#_override_execution_properties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
+This feature is turned off by default because of the security risk this exposes to execute any command against the source.  
+To enable direct query procedures, set the execution property called `SupportsDirectQueryProcedure` to `true`. For more information, 
+see _Override the execution properties_ in xref:Translators[].
 
-By default the name of the procedure that executes the queries directly is called *native*. link:Translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
+By default the name of the procedure that executes the queries directly is called *native*. For information about how to change the 
+default name, see _Override the execution properties_ in xref:Translators[].
 
-The MongoDB translator provides a procedure to execute any ad-hoc aggregate query directly against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as an object array containing single blob at array location one(1). This blob contains the JSON document. XMLTABLE can be used construct tabular output for consumption by client applications.
+The MongoDB translator provides a procedure to execute any ad-hoc aggregate query directly against the source 
+without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not 
+known to {{ book.productnameFull }}, they are returned as an object array containing single blob at array location one(1). 
+This blob contains the JSON document. XMLTABLE can be used construct tabular output for consumption by client applications.
 
 [source,sql]
 .*Example MongoDB Direct Query*
@@ -655,7 +738,9 @@ The MongoDB translator provides a procedure to execute any ad-hoc aggregate quer
           xmltable('/city' PASSING JSONTOXML('city', cast(array_get(t.tuple, 1) as BLOB)) COLUMNS city string, state string) x
 ----
 
-In the above example, a collection called "city" is looked up with filter that matches the "city" name with "FREEDOM", using "native" procedure and then using the nested tables feature the output is passed to a XMLTABLE construct, where the output from the procedure is sent to a JSONTOXML function to construct a XML then the results of that are exposed in tabular form.
+In the above example, a collection called "city" is looked up with filter that matches the "city" name with "FREEDOM", 
+using "native" procedure and then using the nested tables feature the output is passed to a XMLTABLE construct, 
+where the output from the procedure is sent to a JSONTOXML function to construct a XML then the results of that are exposed in tabular form.
 
 The direct query MUST be in the format
 
@@ -664,7 +749,8 @@ The direct query MUST be in the format
      "collectionName;{$pipeline instr}+"
 ----
 
-From {{ book.productnameFull }} 8.10, MongoDB translator also allows to execute Shell type java script commands like remove, drop, createIndex. For this the command needs to be in format
+From {{ book.productnameFull }} 8.10, MongoDB translator also allows to execute Shell type java script commands 
+like remove, drop, createIndex. For this the command needs to be in format
 
 [source,sql]
 ----

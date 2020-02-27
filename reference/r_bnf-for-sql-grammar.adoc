@@ -1,3 +1,6 @@
+// Assembly included in the following assemblies:
+//master.adoc
+[id="bnf-for-sql-grammar"]
 = BNF for SQL Grammar
 
 * Main Entry Points
@@ -5862,4 +5865,3 @@ IMPORT DATABASE vdb VERSION '1.2.3' WITH ACCESS CONTROL]
 * <<token_DROP,DROP>>
 
 '''
-

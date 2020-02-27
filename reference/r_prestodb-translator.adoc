@@ -1,20 +1,43 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="prestodb-translator"]
+= PrestoDB translator (prestodb)
 
-= PrestoDB Translator (prestodb)
+Also see common xref:jdbc-translators[JDBC translators] information.
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+The PrestoDB translator, known by the type name *_prestodb_*, exposes querying functionality to Presto data sources. 
+In data integration respect, PrestoDB has very similar capabilities of {{ book.productnameFull }}, 
+however it goes beyond in terms of distributed query execution with multiple worker nodes. 
+{{ book.productnameFull }}’s execution model is limited to single execution node and focuses more on pushing the query down to sources. 
+{{ book.productnameFull }} provides more complete query support and many enterprise features.
 
-The PrestoDB translator, known by the type name *_prestodb_*, exposes querying functionality to PrestoDB Data Sources. In data integration respect, PrestoDB has very similar capabilities of {{ book.productnameFull }}, however it goes beyond in terms of distributed query execution with multiple worker nodes. {{ book.productnameFull }}’s execution model is limited to single execution node and focuses more on pushing the query down to sources. Currently {{ book.productnameFull }} has much more complete query support and many enterprise features.
+.Capabilities
 
-== Capabilities
+The PrestoDB translator supports only `SELECT` statements with a restrictive set of capabilities. 
 
-The PrestoDB translator supports only SELECT statements with a restrictive set of capabilities. This translator is developed with 0.85 version of PrestoDB and capabilities are designed for this version. With new versions of PrestoDB {{ book.productnameFull }} will adjust the capabilities of this translator. Since PrestoDB exposes a relational model, the usage of this is no different than any RDBMS source like Oracle, DB2 etc. For configuring the PrestoDB consult the PrestoDB documentation.
 
-TIP: PrestoDB not support multiple columns in the ORDER BY with in JOIN situations well, the translator property `supportsOrderBy` can use to disable Order by in some specific situations.
+Because Presto exposes a relational model, {{ book.productnameFull }} can use it as it does other RDBMS sources, such as Oracle, DB2, and so forth. 
+For information about configuring Presto, see the Presto documentation.
 
-TIP: Some versions of PrestoDB not support null as valid values in subquery well, to check the PrestoDB whether support null as valid values in subquery if you hit releated error.  
+TIP: In SQL JOIN operations, Presto does not support multiple `ORDER BY` columns well. 
+If errors occur during JOIN operations that involve more than one `ORDER BY` column, 
+set the translator property `supportsOrderBy` to disable the use of the `ORDER BY` clause. 
 
-TIP: PrestoDB not support transaction, define a no-tx-datasource is recommend.
+NOTE: Some versions of Presto generate errors when you include null values in subqueries.
 
-NOTE: Every catalogs in PrestoDB has a `information_schema` schema by default, If configure multiple catalogs, it should be consider to use import options to filter the schemas/tables, to avoid `Duplicate Table` error cause VDB deploy failed. For instance, set `catalog` to a specific catalog name to match the catalog name as it is stored in the prestodb, set `schemaName` to a single schema, or set `excludeTables` to a regular expression to filter tables by matching result.
+TIP: PrestoDB does not support transactions. 
+To overcome issues caused by this limitation, define the datasource as non-transactional.
 
-NOTE: PrestoDB JDBC driver uses Joda-Time library to work with time/date/timestamp. If you need to customize server's time zone (e.g. setting -Duser.timezone via JAVA_OPTS), you cannot use `GMT/...` ID as Joda-Time does not regonize it. However, you can use equivalent `Etc/...` ID. For more details see http://joda-time.sourceforge.net/timezones.html[Joda-Time timezones].
+
+[NOTE]
+====
+By default, every catalog in Presto has an `information_schema`. 
+If you have to configure multiple catalogs, duplicate table errors can cause deployment of a virtual database to fail.
+To prevent duplicate table errors, use import options to filter the schemas. 
+ 
+If you want to configure multiple Presto catalogs, set one of the following import options to filter the schemas and tables in the source:
+ 
+* Set `catalog` to a specific catalog name to match the name of the source catalog in Presto.
+* Set `schemaName` to a regular expression to filter schemas by matching result.
+* Set `excludeTables` to a regular expression to filter tables by matching results.
+====

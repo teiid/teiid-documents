@@ -1,0 +1,19 @@
+
+// Module included in the following assemblies:
+// as_update-commands.adoc
+[id="insert-command"]
+= INSERT command
+
+The INSERT command is used to add a record to a table.
+
+.Example syntax
+
+[source,sql]
+----
+INSERT INTO table (column,...) VALUES (value,...)
+----
+
+[source,sql]
+----
+INSERT INTO table (column,...) query
+----

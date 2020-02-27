@@ -1,37 +1,48 @@
+// Module included in the following assemblies:
+// as_datatypes.adoc"]
+[id-"type-conversions"]
+= Type conversions
 
-= Type Conversions
+Data types may be converted from one form to another either explicitly or implicitly. 
+Implicit conversions automatically occur in criteria and expressions to ease development. 
+Explicit datatype conversions require the use of the `CONVERT` function or `CAST` keyword.
 
-Data types may be converted from one form to another either explicitly or implicitly. Implicit conversions automatically occur in criteria and expressions to ease development. Explicit datatype conversions require the use of the *CONVERT* function or *CAST* keyword.
+.Type conversion considerations
 
-Type Conversion Considerations:
-
-* Any type may be implicitly converted to the OBJECT type.
-* The OBJECT type may be explicitly converted to any other type.
-* The NULL value may be converted to any type.
+* Any type may be implicitly converted to the `OBJECT` type.
+* The `OBJECT` type can be explicitly converted to any other type.
+* The NULL value can be converted to any type.
 * Any valid implicit conversion is also a valid explicit conversion.
-* Situations involving literal values that would normally require explicit conversions may have the explicit conversion applied implicitly if no loss of information occurs.
-* If link:../admin/System_Properties.adoc[widenComparisonToString] is false (the default), when {{ book.productnameFull }} detects that an explicit conversion can not be applied implicitly in criteria, then an exception will be raised. If link:../admin/System_Properties.adoc[widenComparisonToString] is true, then depending upon the comparison a widening conversion will be applied or the criteria will be treated as false.
-
-For example:
+* In scenarios where literal values would normally require explicit conversions, you can apply implicit conversions if no loss of information occurs.
+* If `widenComparisonToString` is false (the default), {{ book.productnameFull }} raises an exception 
+if it detects that an explicit conversion cannot be applied implicitly in criteria. 
+* If `widenComparisonToString` is true, then depending upon the comparison, a widening conversion is applied or the criteria are treated as false.
+For more information about `widenComparisonToString`, see _System properties_ in the Administrator's Guide.
++
+.Example
 
 [source,sql]
 ----
 SELECT * FROM my.table WHERE created_by = 'not a date'
 ----
++
+If `widenComparisonToString` is false, and `created_by` is a date, `not a date` cannot be converted to a date value, and an exception results.
 
-With link:../admin/System_Properties.adoc[widenComparisonToString] as false and created_by is typed as date, rather than converting `not a date` to a date value, an exception will be raised.
+* Explicit conversions that are not allowed between two types will result in an exception before execution. 
+Allowed explicit conversions can still fail during processing if the runtime values are not actually convertible.
 
-* Explicit conversions that are not allowed between two types will result in an exception before execution. Allowed explicit conversions may still fail during processing if the runtime values are not actually convertable.
+WARNING: The {{ book.productnameFull }} conversions of float/double/bigdecimal/timestamp to string rely on the JDBC/Java defined output formats. 
+Pushdown behavior attempts to mimic these results, but can vary depending upon the actual source type and conversion logic. 
+It is best not to assume use of the string form in criteria or other places where variations might lead to different results.
 
-WARNING: The {{ book.productnameFull }} conversions of float/double/bigdecimal/timestamp to string rely on the JDBC/Java defined output formats. Pushdown behavior attempts to mimic these results, but may vary depending upon the actual source type and conversion logic. Care should be taken to not assume the string form in criteria or other places where a variation may cause different results.
-
-.*Type Conversions*
+.*Type conversions*
 |===
-|Source Type |Valid Implicit Target Types |Valid Explicit Target Types
+|Source type |Valid implicit target types |Valid explicit target types
 
 |string
 |clob
-|char, boolean, byte, short, integer, long, biginteger, float, double, bigdecimal, xml footnote:[string to xml is equivalent to XMLPARSE(DOCUMENT exp) - See also link:XML_Functions.adoc#_xmlparse[XML Functions#XMLPARSE]]
+|char, boolean, byte, short, integer, long, biginteger, float, double, bigdecimal, xml 
+footnote:[string to xml is equivalent to XMLPARSE(DOCUMENT exp). For more information, see _XMLPARSE_ in xref:xml-functions[XML functions].]
 
 |char
 |string
@@ -54,7 +65,7 @@ WARNING: The {{ book.productnameFull }} conversions of float/double/bigdecimal/t
 |boolean, byte, short, float
 
 |long
-|string, biginteger, bigdecimal, float footnoteref:[imp_note,implicit conversion to float/double only occurs for literal values], double footnoteref:[imp_note]
+|string, biginteger, bigdecimal, float footnoteref:[imp_note,Implicit conversion to float/double only occurs for literal values.], double footnoteref:[imp_note]
 |boolean, byte, short, integer, float, double
 
 |biginteger
@@ -95,7 +106,7 @@ WARNING: The {{ book.productnameFull }} conversions of float/double/bigdecimal/t
 
 |xml
 |
-|string footnote:[xml to string is equivalent to XMLSERIALIZE(exp AS STRING) - see also link:XML_Functions.adoc#_xmlserialize[XML Functions#XMLSERIALIZE]]
+|string footnote:[xml to string is equivalent to XMLSERIALIZE(exp AS STRING). For more information, see _XMLSERIALIZE_ in xref:xml-functions[XML functions].]
 
 |geography
 |

@@ -1,0 +1,111 @@
+// Module included in the following assemblies:
+// as_expressions.adoc
+[id="literals]
+= Literals
+
+Literal values represent fixed values. 
+These can be any of the 'standard' data types. For information about data types, see xref:datatypes[Data types].
+
+.Syntax rules
+
+* Integer values will be assigned an integral data type big enough to hold the value (integer, long, or biginteger).
+* Floating point values will always be parsed as a double.
+* The keyword 'null' is used to represent an absent or unknown value and is inherently untyped. 
+In many cases, a null literal value will be assigned an implied type based on context. For example, 
+in the function '5 + null', the null value will be assigned the type 'integer' to match the type of 
+the value '5'. A null literal used in the SELECT clause of a query with no implied context will be assigned to type 'string'.
+
+Some examples of simple literal values are:
+
+[source,sql]
+----
+'abc'
+----
+
+[source,sql]
+.*Example: Escaped single tick*
+----
+'isn"t true'
+----
+
+[source,sql]
+----
+5
+----
+
+[source,sql]
+.*Example: Scientific notation*
+----
+-37.75e01
+----
+
+[source,sql]
+.*Example: exact numeric type BigDecimal*
+----
+100.0
+----
+
+[source,sql]
+----
+true
+----
+
+[source,sql]
+----
+false
+----
+
+[source,sql]
+.*Example: Unicode character*
+----
+'\u0027'
+----
+
+[source,sql]
+.*Example: Binary*
+----
+X'0F0A'
+----
+
+Date/Time literals can use either JDBC xref:escaped-literal-syntax[Escaped literal syntax]:
+
+[source,sql]
+.*Example: Date literal*
+----
+{d'...'}
+----
+
+[source,sql]
+.*Example: Time literal*
+----
+{t'...'}
+----
+
+[source,sql]
+.*Example: Timestamp literal*
+----
+{ts'...'}
+----
+
+Or the ANSI keyword syntax:
+
+[source,sql]
+.*Example: Date literal*
+----
+DATE '...'
+----
+
+[source,sql]
+.*Example: Time literal*
+----
+TIME '...'
+----
+
+[source,sql]
+.*Example: Timestamp literal*
+----
+TIMESTAMP '...'
+----
+
+Either way, the string literal value portion of the expression is expected to follow the defined 
+format - "yyyy-MM-dd" for date, "hh:mm:ss" for time, and "yyyy-MM-dd[ hh:mm:ss[.fff…]]" for timestamp.

@@ -1,13 +1,17 @@
+// Module included in the following assemblies:
+// as_data-roles.adoc
+[id="role-mapping"]
+= Role mapping
 
-= Role Mapping
-
-Each {{ book.productnameFull }} data role can be mapped to any number of container roles or any authenticated user. 
+Each {{ book.productnameFull }} data role can be mapped to any number of container roles or to any authenticated user. 
 
 {% if book.targetWildfly %}
-You may control role membership through whatever system the {{ book.productnameFull }} security domain login modules are associated with. The kit includes example files for use with the UsersRolesLoginModule - see teiid-security-roles.properties.
+You may control role membership through whatever system the {{ book.productnameFull }} security domain login modules are associated with. 
+The kit includes example files for use with the UsersRolesLoginModule - see teiid-security-roles.properties.
 
 If you have an alternative security domain that a VDB should use, then set the VDB property security-domain to the relevant security domain.
 {% endif %}
 
-It is possible for a user to have any number of container roles, which in turn imply a subset of {{ book.productnameFull }} data roles. Each applicable {{ book.productnameFull }} data role contributes cumulatively to the permissions of the user. No one role supersedes or negates the permissions of the other data roles.
-
+It is possible for a user to have any number of container roles, which in turn imply a subset of {{ book.productnameFull }} data roles. 
+Each applicable {{ book.productnameFull }} data role contributes cumulatively to the permissions of the user. 
+No one role supersedes or negates the permissions of the other data roles.

@@ -1,0 +1,56 @@
+// Module included in the following assemblies:
+// as_procedure-language.adoc
+[id="if-statement"]
+= IF statement
+
+An IF statement evaluates a condition and executes either one of two statements depending on the result. 
+You can nest IF statements to create complex branching logic. 
+A dependent ELSE statement will execute its statement only if the IF statement evaluates to `false`.
+
+.Usage
+
+[source,sql]
+----
+IF (criteria)
+   block
+[ELSE
+   block]
+END
+----
+
+[source,sql]
+.*Example IF statement*
+----
+IF ( var1 = 'North America')
+BEGIN
+  ...statement...
+END ELSE
+BEGIN
+  ...statement...
+END
+----
+
+The criteria can be any valid Boolean expression or an `IS DISTINCT FROM` predicate referencing row values. 
+The `IS DISTINCT FROM` extension uses the following syntax:
+
+[source,sql]
+----
+rowVal IS [NOT] DISTINCT FROM rowValOther
+----
+
+Where `rowVal` and `rowValOther` are references to row value group. 
+This would typically be used in instead of update triggers on views to quickly determine if the row values are changing:
+
+[source,sql]
+.*Example: IS DISTINCT FROM IF statement*
+----
+IF ( "new" IS DISTINCT FROM "old")
+BEGIN
+  ...statement...
+END 
+----
+
+`IS DISTINCT FROM` considers null values equivalent and never produces an UNKNOWN value.
+
+TIP: Null values should be considered in the criteria of an IF statement. 
+`IS NULL` criteria can be used to detect the presence of a null value.

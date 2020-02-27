@@ -1,17 +1,20 @@
+// Module included in the following assemblies:
+// as_dml-commands.adoc
+[id="select-clause"]
+= SELECT clause
 
-= SELECT Clause
+SQL queries start with the SELECT keyword and are often referred to as "SELECT statements". 
+{{ book.productnameFull }} supports most of the standard SQL query constructs.
 
-SQL queries that start with the SELECT keyword and are often referred to as "SELECT statements". {{ book.productnameFull }} supports most of the standard SQL query constructs.
-
-Usage:
+.Usage
 
 [source,sql]
 ----
 SELECT [DISTINCT|ALL] ((expression [[AS] name])|(group identifier.STAR))*|STAR ...
 ----
 
-Syntax Rules:
+.Syntax Rules
 
-* Aliased expressions are only used as the output column names and in the ORDER BY clause. They cannot be used in other clauses of the query.
+* Aliased expressions are only used as the output column names and in the ORDER BY clause. 
+They cannot be used in other clauses of the query.
 * DISTINCT may only be specified if the SELECT symbols are comparable.
-

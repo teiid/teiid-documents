@@ -1,206 +1,35 @@
-
-= DML Commands
-
-{{ book.productnameFull }} supports SQL for issuing queries and for defining view transformations; see also link:Procedure_Language.adoc[Procedure Language] for how SQL is used in virtual procedures and update procedures. Nearly all these features follow standard SQL syntax and functionality, so any SQL reference can be used for more information.
-
-There are 4 basic commands for manipulating data in SQL, corresponding to the CRUD create, read, update, and delete operations: INSERT, SELECT, UPDATE, and DELETE. A MERGE statement acts as a combination of INSERT and UPDATE.
-
-In addition, procedures can be executed using the EXECUTE command, through a link:DML_Commands.adoc#_procedural_relational_command[Procedural Relational Command], or an link:DML_Commands.adoc#_anonymous_procedure_block[Anonymous Procedure Block].
-
-== SELECT Command
-
-The SELECT command is used to retrieve records any number of relations.
-
-A SELECT command has a number of clauses:
-
-* link:WITH_Clause.adoc[WITH …]
-* link:SELECT_Clause.adoc[SELECT …]
-* [link:FROM_Clause.adoc[FROM …]]
-* [link:WHERE_Clause.adoc[WHERE …]]
-* [link:GROUP_BY_Clause.adoc[GROUP BY …]]
-* [link:HAVING_Clause.adoc[HAVING …]]
-* [link:ORDER_BY_Clause.adoc[ORDER BY …]]
-* [link:LIMIT_Clause.adoc[(LIMIT …)] | ([OFFSET …] [FETCH …])]
-* [link:OPTION_Clause.adoc[OPTION …]]
-
-All of these clauses other than OPTION are defined by the SQL specification. The specification also specifies the order that these clauses will be logically processed. Below is the processing order where each stage passes a set of rows to the following stage. Note that this processing model is logical and does not represent the way any actual database engine performs the processing, although it is a useful model for understanding questions about SQL.
-
-* WITH stage - gathers all rows from all with items in the order listed. Subsequent with items and the main query can reference the a with item as if it is a table.
-* FROM stage - gathers all rows from all tables involved in the query and logically joins them with a Cartesian product, producing a single large table with all columns from all tables. Joins and join criteria are then applied to filter rows that do not match the join structure.
-* WHERE stage - applies a criteria to every output row from the FROM stage, further reducing the number of rows.
-* GROUP BY stage - groups sets of rows with matching values in the group by columns.
-* HAVING stage - applies criteria to each group of rows. Criteria can only be applied to columns that will have constant values within a group(those in the grouping columns or aggregate functions applied across the group).
-* SELECT stage - specifies the column expressions that should be returned from the query. Expressions are evaluated, including aggregate functions based on the groups of rows, which will no longer exist after this point. The output columns are named using either column aliases or an implicit name determined by the engine. If SELECT DISTINCT is specified, duplicate removal will be performed on the rows being returned from the SELECT stage.
-* ORDER BY stage - sorts the rows returned from the SELECT stage as desired. Supports sorting on multiple columns in specified order, ascending or descending. The output columns will be identical to those columns returned from the SELECT stage and will have the same name.
-* LIMIT stage - returns only the specified rows (with skip and limit values). 
-
-This model can be used to understand many questions about SQL. For example, columns aliased in the SELECT clause can only be referenced by alias in the ORDER BY clause. Without knowledge of the processing model, this can be somewhat confusing. Seen in light of the model, it is clear that the ORDER BY stage is the only stage occurring after the SELECT stage, which is where the columns are named. Because the WHERE clause is processed before the SELECT, the columns have not yet been named and the aliases are not yet known.
-
-TIP: The explicit table syntax `TABLE x` may be used as a shortcut for `SELECT * FROM x`.
-
-== VALUES Command
-
-The VALUES command is used to construct a simple table.
-
-Example Syntax
-
-[source,sql]
-----
-VALUES (value,...)
-----
-
-[source,sql]
-----
-VALUES (value,...), (valueX,...) ...
-----
-
-A VALUES command with a single value set is equivalent to "SELECT value, ….". A VALUES command with multiple values sets is equivalent to a UNION ALL of simple SELECTs - "SELECT value, …. UNION ALL SELECT valueX, …".
-
-== Update Commands
-
-Update commands can report integer update counts. If a larger number or rows is updated, then the max integer value will be reported (2^31 -1).
-
-== INSERT Command
-
-The INSERT command is used to add a record to a table.
-
-Example Syntax
-
-[source,sql]
-----
-INSERT INTO table (column,...) VALUES (value,...)
-----
-
-[source,sql]
-----
-INSERT INTO table (column,...) query
-----
-
-== UPDATE Command
-
-The UPDATE command is used to modify records in a table. The operation may result in 1 or more records being updated, or in no records being updated if none match the criteria.
-
-Example Syntax
-
-[source,sql]
-----
-UPDATE table [[AS] alias] SET (column=value,...) [WHERE criteria]
-----
-
-== DELETE Command
-
-The DELETE command is used to remove records from a table. The operation may result in 1 or more records being deleted, or in no records being deleted if none match the criteria.
-
-Example Syntax
-
-[source,sql]
-----
-DELETE FROM table [[AS] alias] [WHERE criteria]
-----
-
-== UPSERT/MERGE Command
-
-The UPSERT (or MERGE) is used to add and/or update records. The {{ book.productnameFull }} specific (non-ANSI) UPSERT is simply a modified INSERT statement that requires the target table to have a primary key and for the target columns to cover the primary key. 
-The UPSERT operation will then check the existence of each row prior to INSERT and instead perform an UPDATE if the row already exists.
-
-Example Syntax
-
-[source,sql]
-----
-UPSERT INTO table [[AS] alias] (column,...) VALUES (value,...)
-----
-
-[source,sql]
-----
-UPSERT INTO table (column,...) query
-----
-
-NOTE: *UPSERT Pushdown* - If UPSERT statement is not pushed to the source, it will be broken down into the respective insert/update operations, which requires XA support on the target system to guarantee atomicity.
-
-== EXECUTE Command
-
-The EXECUTE command is used to execute a procedure, such as a virtual procedure or a stored procedure. Procedures may have zero or more scalar input parameters. The return value from a procedure is a result set or the set of inout/out/return scalars. Note that EXEC or CALL can be used as a short form of this command.
-
-Example Syntax
-
-[source,sql]
-----
-EXECUTE proc()
-----
-
-[source,sql]
-----
-CALL proc(value, ...)
-----
-
-Named Parameter Syntax
-
-[source,sql]
-----
-EXECUTE proc(name1=>value1,name4=>param4, ...)
-----
-
-Syntax Rules:
-
-* The default order of parameter specification is the same as how they are defined in the procedure definition.
-* You can specify the parameters in any order by name. Parameters that are have default values and/or are nullable in the metadata, can be omitted from the named parameter call and will have the appropriate value passed at runtime.
-* Positional parameters that are have default values and/or are nullable in the metadata, can be omitted from the end of the parameter list and will have the appropriate value passed at runtime.
-* If the procedure does not return a result set, the values from the RETURN, OUT, and IN_OUT parameters will be returned as a single row when used as an inline view query.
-* A VARIADIC parameter may be repeated 0 or more times as the last positional argument.
-
-== Procedural Relational Command
-
-Procedural relational commands use the syntax of a SELECT to emulate an EXEC. In a procedural relational command a procedure group names is used in a FROM clause in place of a table. That procedure will be executed in place of a normal table access if all of the necessary input values can be found in criteria against the procedure. Each combination of input values found in the criteria results in an execution of the procedure.
-
-Example Syntax
-
-[source,sql]
-----
-select * from proc
-----
-
-[source,sql]
-----
-select output_param1, output_param2 from proc where input_param1 = 'x'
-----
-
-[source,sql]
-----
-select output_param1, output_param2 from proc, table where input_param1 = table.col1 and input_param2 = table.col2
-----
-
-Syntax Rules:
-
-* The procedure as a table projects the same columns as an exec with the addition of the input parameters. For procedures that do not return a result set, IN_OUT columns will be projected as two columns, one that represents the output value and one named {column name}_IN that represents the input of the parameter.
-* Input values are passed via criteria. Values can be passed by '=','is null', or 'in' predicates. Disjuncts are not allowed. It is also not possible to pass the value of a non-comparable column through an equality predicate.
-* The procedure view automatically has an access pattern on its IN and IN_OUT parameters which allows it to be planned correctly as a dependent join when necessary or fail when sufficient criteria cannot be found.
-* Procedures containing duplicate names between the parameters (IN, IN_OUT, OUT, RETURN) and result set columns cannot be used in a procedural relational command.
-* If tehre is already a table/view with the same name as the procedure, then it cannot be invoked via procedural relational syntax.
-* Default values for IN, IN_OUT parameters are not used if there is no criteria present for a given input. Default values are only valid for link:DML_Commands.adoc#_execute_command[named procedure syntax].
-
-Multiple Execution
-
-The usage of 'in' or join criteria can result in the procedure being executed multiple times.
-
-Alternative Syntax
-
-None of issues listed in the syntax rules above exist if a link:FROM_Clause.adoc[nested table reference] is used.
-
-== Anonymous Procedure Block
-
-A link:Procedure_Language.adoc[Procedure Language] block may be executed as a user command. This is advantageous in situations when a virtual procedure doesn’t exists, but a set of processing can be cared out on the server side together.
-
-Example Syntax
-
-[source,sql]
-----
-begin insert into pm1.g1 (e1, e2) select ?, ?; select rowcount; end;
-----
-
-Syntax Rules:
-
-* In parameters are supported with prepared/callable statement parameters as shown above with a ? parameter.
-* out parameters are not yet supported - consider using session variables as a workaround as needed.
-* a return parameter is not supported.
-* a single result will be returned if any of the statements returns a result set. All returnable result sets must have a matching number of columns and types. Use the WITHOUT RETURN clause to indicate that a statement is not intended to a result set as needed.
-
+// Assembly included in the following assemblies:
+// as_sql-support.adoc
+
+[id="dml-commands"]
+= DML commands
+
+{{ book.productnameFull }} supports SQL for issuing queries and for defining view transformations. 
+For more information about how SQL is used in virtual procedures and update procedures, 
+see xref:procedure-language[Procedure language]. 
+Nearly all these features follow standard SQL syntax and functionality, so you can use any SQL reference for more information.
+
+There are 4 basic commands for manipulating data in SQL, corresponding to the create, read, update, and delete (CRUD) operations: 
+INSERT, SELECT, UPDATE, and DELETE. 
+A MERGE statement acts as a combination of INSERT and UPDATE.
+
+You can also execute procedures by using the EXECUTE command, procedural relational command. 
+For more information, see xref:procedural-relational-command[Procedural relational command],
+or xref:anonymous-procedure-block[Anonymous procedure block].
+
+
+include::r_set-operations.adoc[leveloffset=+1]
+include::r_select-command.adoc[leveloffset=+1]
+include::r_values-command.adoc[leveloffset=+1]
+include::as_update-commands.adoc[leveloffset=+1]
+include::r_subqueries.adoc[leveloffset=+1]
+include::r_with-clause.adoc[leveloffset=+1]
+include::r_select-clause.adoc[leveloffset=+1]
+include::as_from-clause.adoc[leveloffset=+1]
+include::r_where-clause.adoc[leveloffset=+1]
+include::r_groupby-clause.adoc[leveloffset=+1]
+include::r_having-clause.adoc[leveloffset=+1]
+include::r_orderby-clause.adoc[leveloffset=+1]
+include::r_limit-clause.adoc[leveloffset=+1]
+include::r_into-clause.adoc[leveloffset=+1]
+include::r_option-clause.adoc[leveloffset=+1]

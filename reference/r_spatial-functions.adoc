@@ -1,17 +1,24 @@
-
-= Spatial Functions
+// Module included in the following assemblies:
+// as_scalar-functions.adoc
+[id="spatial-functions"]
+= Spatial functions
 :toc: manual
 :toc-placement: preamble
 
-Spatial functions provide functionality for working with http://www.opengeospatial.org/[geospatial] data. {{ book.productnameFull }} relies on the http://www.vividsolutions.com/jts/JTSHome.htm[JTS Topology Suite] to provide partial support for the OpenGIS Simple Features Specification For SQL Revision 1.1. Please refer to the https://portal.opengeospatial.org/files/?artifact_id=829[specification] or to http://postgis.net/docs/manual-2.0/[PostGIS] for more details about particular functions.
+Spatial functions provide functionality for working with http://www.opengeospatial.org/[geospatial] data. 
+{{ book.productnameFull }} relies on the http://www.vividsolutions.com/jts/JTSHome.htm[JTS Topology Suite] 
+to provide partial support for the OpenGIS Simple Features Specification For SQL Revision 1.1. 
+For more information about particular functions, see the https://portal.opengeospatial.org/files/?artifact_id=829[Open GIS specification] 
+or the http://postgis.net/docs/manual-2.0/[PostGIS manual].
 
 Most Geometry support is limited to two dimensions due to the WKB and WKT formats.
 
-NOTE: Geometry support is still evolving. There may be minor differences between {{ book.productnameFull }} and pushdown results that will need to be further refined.
+NOTE: Geometry support is still evolving. 
+There might be minor differences between {{ book.productnameFull }} and pushdown results that will need to be further refined.
 
-== Conversion Functions
+.Conversion functions
 
-=== ST_GeomFromText
+.ST_GeomFromText
 
 Returns a geometry from a Clob in WKT format.
 
@@ -20,9 +27,10 @@ Returns a geometry from a Clob in WKT format.
 ST_GeomFromText(text [, srid])
 ----
 
-text is a clob, srid is an optional integer. Return value is a geometry.
+`text` is a clob, `srid` is an optional integer that represents a spatial reference identifier (SRID). 
+Return value is a geometry.
 
-=== ST_GeogFromText
+.ST_GeogFromText
 
 Returns a geography from a Clob in (E)WKT format.
 
@@ -31,9 +39,10 @@ Returns a geography from a Clob in (E)WKT format.
 ST_GeogFromText(text)
 ----
 
-text is a clob, srid is an optional integer. Return value is a geography.
+`text` is a clob, `srid` is an optional integer. 
+Return value is a geography.
 
-=== ST_GeomFromWKB/ST_GeomFromBinary
+.ST_GeomFromWKB/ST_GeomFromBinary
 
 Returns a geometry from a blob in WKB format.
 
@@ -42,9 +51,10 @@ Returns a geometry from a blob in WKB format.
 ST_GeomFromWKB(bin [, srid])
 ----
 
-bin is a blob, srid is an optional integer. Return value is a geometry.
+`bin` is a blob, `srid` is an optional integer. 
+Return value is a geometry.
 
-=== ST_GeomFromEWKB
+.ST_GeomFromEWKB
 
 Returns a geometry from a blob in EWKB format.
 
@@ -53,9 +63,11 @@ Returns a geometry from a blob in EWKB format.
 ST_GeomFromEWKB(bin)
 ----
 
-bin is a blob. Return value is a geometry.  Only 2 dimensions are supported.
+bin is a blob. 
+Return value is a geometry. 
+Only 2 dimensions are supported.
 
-=== ST_GeogFromWKB
+.ST_GeogFromWKB
 
 Returns a geography from a blob in (E)WKB format.
 
@@ -64,131 +76,148 @@ Returns a geography from a blob in (E)WKB format.
 ST_GeomFromEWKB(bin)
 ----
 
-bin is a blob. Return value is a geography.  Only 2 dimensions are supported.
+`bin` is a blob. 
+Return value is a geography. 
+Only 2 dimensions are supported.
 
-=== ST_GeomFromEWKT
+.ST_GeomFromEWKT
 
-Returns a geometry from a Clob in EWKT format.
+Returns a geometry from a clob in EWKT format.
 
 [source,sql]
 ----
 ST_GeomFromEWKT(text)
 ----
 
-text is a clob. Return value is a geometry. Only 2 dimensions are supported.
+`text` is a clob. 
+Return value is a geometry. 
+Only 2 dimensions are supported.
 
-=== ST_GeomFromGeoJSON
+.ST_GeomFromGeoJSON
 
-Returns a geometry from a Clob in GeoJSON format.
+Returns a geometry from a clob in GeoJSON format.
 
 [source,sql]
 ----
-ST_GeomFromGeoJson(text [, srid])
+ST_GeomFromGeoJson(`text` [, srid])
 ----
 
-text is a clob, srid is an optional integer. Return value is a geometry.
+`text` is a clob, `srid` is an optional integer. 
+Return value is a geometry.
 
-=== ST_GeomFromGML
+.ST_GeomFromGML
 
-Returns a geometry from a Clob in GML2 format.
+Returns a geometry from a clob in GML2 format.
 
 [source,sql]
 ----
 ST_GeomFromGML(text [, srid])
 ----
 
-text is a clob, srid is an optional integer. Return value is a geometry.
+`text` is a clob, `srid` is an optional integer. 
+Return value is a geometry.
 
-=== ST_AsText
+.ST_AsText
 
 [source,sql]
 ----
 ST_AsText(geom)
 ----
 
-geom is a geometry. Return value is clob in WKT format.
+`geom` is a geometry. 
+Return value is clob in WKT format.
 
-=== ST_AsBinary
+.ST_AsBinary
 
 [source,sql]
 ----
 ST_AsBinary(geo)
 ----
 
-geo is a geometry or geography. Return value is a blob in WKB format.
+geo is a geometry or geography. 
+Return value is a blob in WKB format.
 
-=== ST_AsEWKB
+.ST_AsEWKB
 
 [source,sql]
 ----
 ST_AsEWKB(geom)
 ----
 
-geom is a geometry. Return value is blob in EWKB format.
+`geom` is a geometry. 
+Return value is blob in EWKB format.
 
-=== ST_AsGeoJSON
+.ST_AsGeoJSON
 
 [source,sql]
 ----
 ST_AsGeoJSON(geom)
 ----
 
-geom is a geometry. Return value is a clob with the GeoJSON value.
+`geom` is a geometry. 
+Return value is a clob with the GeoJSON value.
 
-=== ST_AsGML
+.ST_AsGML
 
 [source,sql]
 ----
 ST_AsGML(geom)
 ----
 
-geom is a geometry. Return value is a clob with the GML2 value.
+`geom` is a geometry. 
+Return value is a clob with the GML2 value.
 
-=== ST_AsEWKT
+.ST_AsEWKT
 
 [source,sql]
 ----
 ST_AsEWKT(geo)
 ----
 
-geo is a geometry or geography. Return value is a clob with the EWKT value. The EWKT value is the WKT value with the SRID prefix.
+`geo` is a geometry or geography. 
+Return value is a clob with the EWKT value. 
+The EWKT value is the WKT value with the SRID prefix.
 
-=== ST_AsKML
+.ST_AsKML
 
 [source,sql]
 ----
 ST_AsKML(geom)
 ----
 
-geom is a geometry. Return value is a clob with the KML value. The KML value is effectively a simplified GML value and projected into SRID 4326.
+`geom` is a geometry. 
+Return value is a clob with the KML value. 
+The KML value is effectively a simplified GML value and projected into SRID 4326.
 
-== Operators
+.Operators
 
-=== &&
+.&&
 
-Returns true if the bounding boxes of geom1 and geom2 intersect. 
+Returns true if the bounding boxes of `geom1` and `geom2` intersect. 
 
 [source,sql]
 ----
 geom1 && geom2
 ----
 
-geom1, geom2 are geometries. Return value is a boolean.
+`geom1`, `geom2` are geometries. 
+Return value is a Boolean.
 
-== Relationship Functions
+.Relationship Functions
 
-=== ST_Contains
+.ST_Contains
 
-Returns true if geom1 contains geom2 contains another.
+Returns true if `geom1` contains `geom2`.
 
 [source,sql]
 ----
 ST_Contains(geom1, geom2)
 ----
 
-geom1, geom2 are geometries. Return value is a boolean.
+`geom1`, `geom2` are geometries. 
+Return value is a Boolean.
 
-=== ST_Crosses
+.ST_Crosses
 
 Returns true if the geometries cross.
 
@@ -197,9 +226,10 @@ Returns true if the geometries cross.
 ST_Crosses(geom1, geom2)
 ----
 
-geom1, geom2 are geometries. Return value is a boolean.
+`geom1`, `geom2` are geometries. 
+Return value is a Boolean.
 
-=== ST_Disjoint
+.ST_Disjoint
 
 Returns true if the geometries are disjoint.
 
@@ -208,9 +238,10 @@ Returns true if the geometries are disjoint.
 ST_Disjoint(geom1, geom2)
 ----
 
-geom1, geom2 are geometries. Return value is a boolean.
+`geom1`, `geom2` are geometries. 
+Return value is a Boolean.
 
-=== ST_Distance
+.ST_Distance
 
 Returns the distance between two geometries.
 
@@ -219,9 +250,11 @@ Returns the distance between two geometries.
 ST_Distance(geo1, geo2)
 ----
 
-geo1, geo2 are both geometries or geographies. Return value is a double.  The geography variant must be pushed down for evaluation.
+`geo1`, `geo2` are both geometries or geographies. 
+Return value is a double. 
+The geography variant must be pushed down for evaluation.
 
-=== ST_DWithin
+.ST_DWithin
 
 Returns true if the geometries are within a given distance of one another.
 
@@ -230,20 +263,24 @@ Returns true if the geometries are within a given distance of one another.
 ST_DWithin(geom1, geom2, dist)
 ----
 
-geom1, geom2 are geometries. dist is a double. Return value is a boolean.    
+`geom1`, `geom2` are geometries. 
+`dist` is a double. 
+Return value is a Boolean. 
 
-=== ST_Equals
+.ST_Equals
 
-Returns true if the two geometries are spatially equal - the points and order may differ, but neither geometry lies outside of the other.
+Returns true if the two geometries are spatially equal. 
+The points and order can differ, but neither geometry lies outside of the other.
 
 [source,sql]
 ----
 ST_Equals(geom1, geom2)
 ----
 
-geom1, geom2 are geometries. Return value is a boolean.
+`geom1`, `geom2` are geometries. 
+Return value is a Boolean.
 
-=== ST_Intersects
+.ST_Intersects
 
 Returns true if the geometries intersect.
 
@@ -252,20 +289,23 @@ Returns true if the geometries intersect.
 ST_Intersects(geo1, geo2)
 ----
 
-geo1, geo2 are both geometries or geographies. Return value is a boolean.  The geography variant must be pushed down for evaluation.
+`geo1`, `geo2` are both geometries or geographies. 
+Return value is a Boolean. 
+The geography variant must be pushed down for evaluation.
 
-=== ST_OrderingEquals
+.ST_OrderingEquals
 
-Returns true if geom1 and geom2 have the same structure and the same ordering of points.
+Returns true if `geom1` and `geom2` have the same structure and the same ordering of points.
 
 [source,sql]
 ----
 ST_OrderingEquals(geom1, geom2)
 ----
 
-geom1, geom2 are geometries. Return value is a boolean.
+`geom1`, `geom2` are geometries. 
+Return value is a Boolean.
 
-=== ST_Overlaps
+.ST_Overlaps
 
 Returns true if the geometries overlap.
 
@@ -274,9 +314,9 @@ Returns true if the geometries overlap.
 ST_Overlaps(geom1, geom2)
 ----
 
-geom1, geom2 are geometries. Return value is a boolean.
+`geom1`, `geom2` are geometries. Return value is a Boolean.
 
-=== ST_Relate
+.ST_Relate
 
 Test or return the intersection of geom1 and geom2.
 
@@ -285,16 +325,19 @@ Test or return the intersection of geom1 and geom2.
 ST_Relate(geom1, geom2, pattern)
 ----
 
-geom1, geom2 are geometries. pattern is a nine character DE-9IM pattern string. Return value is a boolean.
+`geom1`, `geom2` are geometries. 
+`pattern` is a nine character DE-9IM pattern string. 
+Return value is a Boolean.
 
 [source,sql]
 ----
 ST_Relate(geom1, geom2)
 ----
 
-geom1, geom2 are geometries. Return value is the nine character DE-9IM intersection string.
+`geom1`, `geom2` are geometries. 
+Return value is the nine character DE-9IM intersection string.
 
-=== ST_Touches
+.ST_Touches
 
 Returns true if the geometries touch.
 
@@ -303,22 +346,23 @@ Returns true if the geometries touch.
 ST_Touches(geom1, geom2)
 ----
 
-geom1, geom2 are geometries. Return value is a boolean.
+`geom1`, `geom2` are geometries. Return value is a Boolean.
 
-=== ST_Within
+.ST_Within
 
-Returns true if geom1 is completely inside geom2.
+Returns true if `geom1` is completely inside `geom2`.
 
 [source,sql]
 ----
 ST_Within(geom1, geom2)
 ----
 
-geom1, geom2 are geometries. Return value is a boolean.
+`geom1`, `geom2` are geometries. 
+Return value is a Boolean.
 
-== Attributes and Tests
+.Attributes and tests
 
-=== ST_Area
+.ST_Area
 
 Returns the area of geom.
 
@@ -327,9 +371,10 @@ Returns the area of geom.
 ST_Area(geom)
 ----
 
-geom is a geometry. Return value is a double.  
+`geom` is a geometry. 
+Return value is a double. 
 
-=== ST_CoordDim
+.ST_CoordDim
 
 Returns the coordinate dimensions of geom.
 
@@ -338,9 +383,10 @@ Returns the coordinate dimensions of geom.
 ST_CoordDim(geom)
 ----
 
-geom is a geometry. Return value is an integer between 0 and 3.  
+`geom` is a geometry. 
+Return value is an integer between 0 and 3. 
 
-=== ST_Dimension
+.ST_Dimension
 
 Returns the dimension of geom.
 
@@ -349,86 +395,100 @@ Returns the dimension of geom.
 ST_Dimension(geom)
 ----
 
-geom is a geometry. Return value is an integer between 0 and 3.  
+`geom` is a geometry. 
+Return value is an integer between 0 and 3. 
 
-=== ST_EndPoint
+.ST_EndPoint
 
-Returns the end Point of the LineString geom.  Returns null if geom is not a LineString.
+Returns the end Point of the LineString geom. 
+Returns null if `geom` is not a LineString.
 
 [source,sql]
 ----
 ST_EndPoint(geom)
 ----
 
-geom is a geometry. Return value is a geometry.  
+`geom` is a geometry. 
+Return value is a geometry. 
 
-=== ST_ExteriorRing
+.ST_ExteriorRing
 
-Returns the exterior ring or shell LineString of the Polygon geom.  Returns null if geom is not a Polygon.
+Returns the exterior ring or shell LineString of the polygon geom. 
+Returns null if `geom` is not a polygon.
 
 [source,sql]
 ----
 ST_ExteriorRing(geom)
 ----
 
-geom is a geometry. Return value is a geometry.  
+`geom` is a geometry. Return value is a geometry. 
 
-=== ST_GeometryN
+.ST_GeometryN
 
-Returns the nth geometry at the given 1-based index in geom.  Returns null if a geometry at the given index does not exist.  Non collection types return themselves at the first index.
+Returns the nth geometry at the given 1-based index in geom. 
+Returns null if a geometry at the given index does not exist. 
+Non-collection types return themselves at the first index.
 
 [source,sql]
 ----
 ST_GeometryN(geom, index)
 ----
 
-geom is a geometry. index is an integer. Return value is a geometry.  
+`geom` is a geometry. index is an integer. 
+Return value is a geometry. 
 
-=== ST_GeometryType
+.ST_GeometryType
 
-Returns the type name of geom as ST_name.  Where name will be LineString, Polygon, Point etc.
+Returns the type name of `geom` as ST_name. 
+Where name will be LineString, Polygon, Point etc.
 
 [source,sql]
 ----
 ST_GeometryType(geom)
 ----
 
-geom is a geometry. Return value is a string.  
+`geom` is a geometry. 
+Return value is a string. 
 
-=== ST_HasArc
+.ST_HasArc
 
-Test if the geometry has a circular string. Will currently only report false as curved geometry types are not supported.
+Test if the geometry has a circular string. 
+Will currently only report false as curved geometry types are not supported.
 
 [source,sql]
 ----
 ST_HasArc(geom)
 ----
 
-geom is a geometry. Return value is a geometry.  
+`geom` is a geometry. 
+Return value is a geometry. 
 
-=== ST_InteriorRingN
+.ST_InteriorRingN
 
-Returns the nth interior ring LinearString geometry at the given 1-based index in geom.  Returns null if a geometry at the given index does not exist or if geom is not a Polygon.
+Returns the nth interior ring LinearString geometry at the given 1-based index in geom. 
+Returns null if a geometry at the given index does not exist, or if `geom` is not a polygon.
 
 [source,sql]
 ----
 ST_InteriorRingN(geom, index)
 ----
 
-geom is a geometry. index is an integer. Return value is a geometry.  
+`geom` is a geometry. index is an integer. 
+Return value is a geometry. 
 
-=== ST_IsClosed
+.ST_IsClosed
 
-Returns true if LineString geom is closed.  Returns false if geom is not a LineString
+Returns true if LineString `geom` is closed. 
+Returns false if `geom` is not a LineString
 
 [source,sql]
 ----
 ST_IsClosed(geom)
 ----
 
-geom is a geometry. Return value is a boolean.
+`geom` is a geometry. Return value is a Boolean.
 
-=== ST_IsEmpty
+.ST_IsEmpty
 
 Returns true if the set of points is empty.
 
@@ -437,119 +497,136 @@ Returns true if the set of points is empty.
 ST_IsEmpty(geom)
 ----
 
-geom is a geometry. Return value is a boolean.
+`geom` is a geometry. 
+Return value is a Boolean.
 
-=== ST_IsRing
+.ST_IsRing
 
-Returns true if the LineString geom is a ring.  Returns false if geom is not a LineString.
+Returns true if the LineString `geom` is a ring. 
+Returns false if `geom` is not a LineString.
 
 [source,sql]
 ----
 ST_IsRing(geom)
 ----
 
-geom is a geometry. Return value is a boolean.
+`geom` is a geometry. 
+Return value is a Boolean.
 
-=== ST_IsSimple
+.ST_IsSimple
 
-Returns true if the geom is simple. 
+Returns true if the `geom` is simple. 
 
 [source,sql]
 ----
 ST_IsSimple(geom)
 ----
 
-geom is a geometry. Return value is a boolean.
+`geom` is a geometry. 
+Return value is a Boolean.
 
-=== ST_IsValid
+.ST_IsValid
 
-Returns true if the geom is valid. 
+Returns `true` if the `geom` is valid. 
 
 [source,sql]
 ----
 ST_IsValid(geom)
 ----
 
-geom is a geometry. Return value is a boolean.
+`geom` is a geometry. 
+Return value is a Boolean.
 
-=== ST_Length
+.ST_Length
 
-Returns the length of a (Multi)LineString otherwise 0. 
+Returns the length of a (Multi)LineString, otherwise returns 0. 
 
 [source,sql]
 ----
 ST_Length(geo)
 ----
 
-geo is a geometry or a geography. Return value is a double. The geography variant must be pushed down for evaluation.
+`geo` is a geometry or a geography. 
+Return value is a double. 
+The geography variant must be pushed down for evaluation.
 
-=== ST_NumGeometries
+.ST_NumGeometries
 
-Returns the number of geometries in geom.  Will return 1 if not a geometry collection.
+Returns the number of geometries in `geom`. 
+Will return 1 if not a geometry collection.
 
 [source,sql]
 ----
 ST_NumGeometries(geom)
 ----
 
-geom is a geometry. Return value is an integer.  
+`geom` is a geometry. 
+Return value is an integer. 
 
-=== ST_NumInteriorRings
+.ST_NumInteriorRings
 
-Returns the number of interior rings in the Polygon geom.  Returns null if geom is not a Polygon.
+Returns the number of interior rings in the polygon geometry. 
+Returns null if `geom` is not a polygon.
 
 [source,sql]
 ----
 ST_NumInteriorRings(geom)
 ----
 
-geom is a geometry. Return value is an integer.  
+`geom` is a geometry. 
+Return value is an integer. 
 
-=== ST_NunPoints
+.ST_NunPoints
 
-Returns the number of Points in geom.
+Returns the number of points in `geom`.
 
 [source,sql]
 ----
 ST_NunPoints(geom)
 ----
 
-geom is a geometry. Return value is an integer.  
+`geom` is a geometry. 
+Return value is an integer. 
 
-=== ST_PointOnSurface
+.ST_PointOnSurface
 
-Returns a Point that is guarenteed to be on the surface of geom.
+Returns a point that is guaranteed to be on the surface of geom.
 
 [source,sql]
 ----
 ST_PointOnSurface(geom)
 ----
 
-geom is a geometry. Return value is a Point geometry.  
+`geom` is a geometry. 
+Return value is a point geometry. 
 
-=== ST_Perimeter
+.ST_Perimeter
 
-Returns the perimeter of the (Multi)Polygon geom.  Will return 0 if geom is not a (Multi)Polygon
+Returns the perimeter of the (Multi)Polygon geom. 
+Will return 0 if `geom` is not a (Multi)Polygon
 
 [source,sql]
 ----
 ST_Perimeter(geom)
 ----
 
-geom is a geometry. Return value is a double.
+`geom` is a geometry. 
+Return value is a double.
 
-=== ST_PointN
+.ST_PointN
 
-Returns the nth Point at the given 1-based index in geom.  Returns null if a Point at the given index does not exist or if geom is not a LineString.
+Returns the nth point at the given 1-based index in geom. 
+Returns null if a point at the given index does not exist or if `geom` is not a LineString.
 
 [source,sql]
 ----
 ST_PointN(geom, index)
 ----
 
-geom is a geometry. index is an integer. Return value is a geometry.  
+`geom` is a geometry. index is an integer. 
+Return value is a geometry. 
 
-=== ST_SRID
+.ST_SRID
 
 Returns the SRID for the geometry.
 
@@ -558,9 +635,11 @@ Returns the SRID for the geometry.
 ST_SRID(geo)
 ----
 
-geo is a geometry or geography. Return value is an integer. A 0 value rather than null will be returned for an unknown SRID on a non-null geometry.
+`geo` is a geometry or geography. 
+Return value is an integer. 
+A 0 value rather than null will be returned for an unknown SRID on a non-null geometry.
 
-=== ST_SetSRID
+.ST_SetSRID
 
 Set the SRID for the given geometry.
 
@@ -569,55 +648,68 @@ Set the SRID for the given geometry.
 ST_SetSRID(geo, srid)
 ----
 
-geo is a geometry or geography. srid is an integer. Return value is the same as geo. Only the SRID metadata of is modified - no transformation is performed.
+`geo` is a geometry or geography. 
+`srid` is an integer. 
+Return value is the same as the value of `geo`. 
+Only the SRID metadata of is modified. 
+No transformation is performed.
 
-=== ST_StartPoint
+.ST_StartPoint
 
-Returns the start Point of the LineString geom.  Returns null if geom is not a LineString.
+Returns the start Point of the LineString geom. 
+Returns null if `geom` is not a LineString.
 
 [source,sql]
 ----
 ST_StartPoint(geom)
 ----
 
-geom is a geometry. Return value is a geometry.  
+`geom` is a geometry. 
+Return value is a geometry. 
 
-=== ST_X
+.ST_X
 
-Returns the X ordinate value, or null if the Point is empty.  Throws an exception if the Geometry is not a Point.
+Returns the X ordinate value, or null if the point is empty. 
+Throws an exception if the geometry is not a point.
 
 [source,sql]
 ----
 ST_X(geom)
 ----
 
-geom is a geometry. Return value is a double.
+`geom` is a geometry. 
+Return value is a double.
 
-=== ST_Y
+.ST_Y
 
-Returns the Y ordinate value, or null if the Point is empty.  Throws an exception if the Geometry is not a Point.
+Returns the Y ordinate value, or null if the point is empty. 
+Throws an exception if the geometry is not a point.
 
 [source,sql]
 ----
 ST_Y(geom)
 ----
 
-geom is a geometry. Return value is a double.
+`geom` is a geometry. 
+Return value is a double.
 
-=== ST_Z
+.ST_Z
 
-Returns the Z ordinate value, or null if the Point is empty.  Throws an exception if the Geometry is not a Point.  Will typically return null as 3 dimensions are not fully supported.
+Returns the Z ordinate value, or null if the point is empty. 
+Throws an exception if the geometry is not a point. 
+Will typically return null as 3 dimensions are not fully supported.
 
 [source,sql]
 ----
 ST_Z(geom)
 ----
 
-geom is a geometry. Return value is a double.
+`geom` is a geometry. 
+Return value is a double.
 
-== Misc. Functions
+.Misc. Functions
 
-=== ST_Boundary
+.ST_Boundary
 
 Computes the boundary of the given geometry.
 
@@ -626,64 +718,70 @@ Computes the boundary of the given geometry.
 ST_Boundary(geom)
 ----
 
-geom is a geometry. Return value is a geometry.
+`geom` is a geometry. 
+Return value is a geometry.
 
-=== ST_Buffer
+.ST_Buffer
 
-Computes the geometry that has points within the given distance of geom.
+Computes the geometry that has points within the given distance of `geom`.
 
 [source,sql]
 ----
 ST_Buffer(geom, distance)
 ----
 
-geom is a geometry. distance is a double. Return value is a geometry.
+`geom` is a geometry. `distance` is a double. 
+Return value is a geometry.
 
-=== ST_Centroid
+.ST_Centroid
 
-Computes the geometric center Point of geom.
+Computes the geometric center point of geom.
 
 [source,sql]
 ----
 ST_Centroid(geom)
 ----
 
-geom is a geometry. Return value is a geometry.
+`geom` is a geometry. 
+Return value is a geometry.
 
-=== ST_ConvexHull
+.ST_ConvexHull
 
-Return the smallest convex Polygon that contains all of the points in geom.
+Return the smallest convex polygon that contains all of the points in geometry.
 
 [source,sql]
 ----
 ST_ConvexHull(geom)
 ----
 
-geom is a geometry. Return value is a geometry.
+`geom` is a geometry. 
+Return value is a geometry.
 
-=== ST_CurveToLine
+.ST_CurveToLine
 
-Converts a CircularString/CurvedPolygon to a LineString/Polygon.  Not currently implemented in {{ book.productnameFull }}.
+Converts a CircularString/CurvedPolygon to a LineString/Polygon. 
+Not currently implemented in {{ book.productnameFull }}.
 
 [source,sql]
 ----
 ST_CurveToLine(geom)
 ----
 
-geom is a geometry. Return value is a geometry.
+`geom` is a geometry. Return value is a geometry.
 
-=== ST_Difference
+.ST_Difference
 
-Computes the closure of the point set of the points contained in geom1 that are not in geom2
+Computes the closure of the point set of the points contained in `geom1` that are not in `geom2`.
 
 [source,sql]
 ----
 ST_Difference(geom1, geom2)
 ----
 
-geom1, geom2 are geometry. Return value is a geometry.
+`geom1`, `geom2` are geometries. 
+Return value is a geometry.
 
-=== ST_Envelope
+.ST_Envelope
 
 Computes the 2D bounding box of the given geometry.
 
@@ -692,9 +790,10 @@ Computes the 2D bounding box of the given geometry.
 ST_Envelope(geom)
 ----
 
-geom is a geometry. Return value is a geometry.
+`geom` is a geometry. 
+Return value is a geometry.
 
-=== ST_Force_2D
+.ST_Force_2D
 
 Removes the z coordinate value if present.
 
@@ -703,42 +802,46 @@ Removes the z coordinate value if present.
 ST_Force_2D(geom)
 ----
 
-geom is a geometry. Return value is a geometry.
+`geom` is a geometry. Return value is a geometry.
 
-=== ST_Intersection
+.ST_Intersection
 
-Computes the point set intersection of the points contained in geom1 and in geom2
+Computes the point set intersection of the points contained in `geom1` and in `geom2`.
 
 [source,sql]
 ----
 ST_Intersection(geom1, geom2)
 ----
 
-geom1, geom2 are geometry. Return value is a geometry.
+`geom1`, `geom2` are geometries. 
+Return value is a geometry.
 
-=== ST_Simplify
+.ST_Simplify
 
-Simplifies a Geometry using the Douglas-Peucker algorithm, but may oversimplify to an invalid or empty geometry.
+Simplifies a geometry using the Douglas-Peucker algorithm, but may oversimplify to an invalid or empty geometry.
 
 [source,sql]
 ----
 ST_Simplify(geom, distanceTolerance)
 ----
 
-geom is a geometry. distanceTolerance is a double. Return value is a geometry.
+`geom` is a geometry. `distanceTolerance` is a double. 
+Return value is a geometry.
 
-=== ST_SimplifyPreserveTopology
+.ST_SimplifyPreserveTopology
 
-Simplifies a Geometry using the Douglas-Peucker algorithm.  Will always return a valid geometry.
+Simplifies a geometry using the Douglas-Peucker algorithm. 
+Will always return a valid geometry.
 
 [source,sql]
 ----
 ST_SimplifyPreserveTopology(geom, distanceTolerance)
 ----
 
-geom is a geometry. distanceTolerance is a double. Return value is a geometry.
+`geom` is a geometry. `distanceTolerance` is a double. 
+Return value is a geometry.
 
-=== ST_SnapToGrid
+.ST_SnapToGrid
 
 Snaps all points in the geometry to grid of given size.
 
@@ -747,9 +850,9 @@ Snaps all points in the geometry to grid of given size.
 ST_SnapToGrid(geom, size)
 ----
 
-geom is a geometry. size is a double. Return value is a geometry.
+`geom` is a geometry. size is a double. Return value is a geometry.
 
-=== ST_SymDifference
+.ST_SymDifference
 
 Return the part of geom1 that does not intersect with geom2 and vice versa.
 
@@ -758,9 +861,10 @@ Return the part of geom1 that does not intersect with geom2 and vice versa.
 ST_SymDifference(geom1, geom2)
 ----
 
-geom1, geom2 are geometry. Return value is a geometry.
+`geom1`, `geom2` are geometry. 
+Return value is a geometry.
 
-=== ST_Transform
+.ST_Transform
 
 Transforms the geometry value from one coordinate system to another.
 
@@ -769,52 +873,59 @@ Transforms the geometry value from one coordinate system to another.
 ST_Transform(geom, srid)
 ----
 
-geom is a geometry. srid is an integer. Return value is a geometry. The srid value and the srid of the geometry value must exist in the SPATIAL_REF_SYS view.
+`geom` is a geometry. `srid` is an integer. 
+Return value is a geometry. 
+The `srid` value and the SRID of the geometry value must exist in the SPATIAL_REF_SYS view.
 
-=== ST_Union
+.ST_Union
 
-Return a geometry that represents the point set containing all of geom1 and geom2.
+Return a geometry that represents the point set containing all of `geom1` and `geom2`.
 
 [source,sql]
 ----
 ST_Union(geom1, geom2)
 ----
 
-geom1, geom2 are geometry. Return value is a geometry.
+`geom1`, `geom2` are geometries. 
+Return value is a geometry.
 
-== Aggregate Functions
+.Aggregate functions
 
-=== ST_Extent
+.ST_Extent
 
-Computes the 2D bounding box around all of the geometry values.  All values should have the same srid.
+Computes the 2D bounding box around all of the geometry values. 
+All values should have the same SRID.
 
 [source,sql]
 ----
 ST_Extent(geom)
 ----
 
-geom is a geometry. Return value is a geometry.
+`geom` is a geometry. 
+Return value is a geometry.
 
-== Construction Functions
+.Construction functions
 
-=== ST_Point
+.ST_Point
 
-Retuns the Point for the given cooridinates.
+Retuns the Point for the given coordinates.
 
 [source,sql]
 ----
 ST_Point(x, y)
 ----
 
-x and y are doubles.  Return value is a Point geometry.
+x and y are doubles. 
+Return value is a Point geometry.
 
-=== ST_Polygon
+.ST_Polygon
 
-Retuns the Polygon with the given shell and srid.
+Returns the Polygon with the given shell and SRID.
 
 [source,sql]
 ----
 ST_Polygon(geom, srid)
 ----
 
-geom is a linear ring geometry and srid is an integer.  Return value is a Polygon geometry.
+`geom` is a linear ring geometry and `srid` is an integer. 
+Return value is a Polygon geometry.

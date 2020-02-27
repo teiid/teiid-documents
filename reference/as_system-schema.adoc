@@ -1,19 +1,23 @@
+// Assembly included in the following assemblies:
+// as_dv_reference.adoc
+[id="system-schema"]
+= System schema
 
-= System Schema
+The built-in SYS and SYSADMIN schemas provide metadata tables and procedures against the current virtual database.
 
-The built-in SYS and SYSADMIN schemas provide metadata tables and procedures against the current VDB.
+By default, a system schema for ODBC metadata pg_catalog is also exposed. -- however, that should be considered for general use.
 
-By default a system schema for ODBC metadata pg_catalog is also exposed - however that should be considered for general use.
+.Metadata visibility
 
-== Metadata Visibility
+The SYS system schema tables and procedures are always visible and accessible.
 
-The SYS system schema tables and procedures are always visible/accessible.
+When xref:data-roles[data roles] are in use, users can view only the tables, views, and procedure metadata entries that they 
+have permissions to access. 
+All columns of a key must be accessible for an entry to be visible.  
 
-Unlike {{ book.productnameFull }} 8.x and prior releases when link:Data_Roles.adoc[Data Roles] are in use table/views and procedure metadata entries will not be visible if the 
-user is not entitled by some permission to use the object.  All columns of a key
-must be accessible for the entry to be visible.  
+NOTE: To make all metadata visible to any authenticated user, set the environment/system property `org.teiid.metadataRequiresPermission` to false.
 
-NOTE: If you wish all metadata to be visible to any authenticated user, then set the environment/system property org.teiid.metadataRequiresPermission to false.
+NOTE: If you use data roles, visibility of entries can be affected by the caching of system metadata.
 
-NOTE: If there is any caching of system metadata when data roles are in use, then visibility needs to be considered.
-
+include::r_sys-schema.adoc[leveloffset=+1]
+include::r_sysadmin-schema.adoc[leveloffset=+1]

@@ -1,9 +1,15 @@
+// Module included in the following assemblies:
+// as_dml-commands.adoc
+[id="limit-clause"]
+= LIMIT clause
 
-= LIMIT Clause
+The LIMIT clause specifies a limit on the number of records returned from the SELECT command. 
+YOu can specify an optional offset (the number of rows to skip). 
+The LIMIT clause can also be specified using the SQL 2008 OFFSET/FETCH FIRST clauses. 
+If an ORDER BY is also specified, it will be applied before the OFFSET/LIMIT are applied. 
+If an ORDER BY is not specified there is generally no guarantee what subset of rows will be returned.
 
-The LIMIT clause specifies a limit on the number of records returned from the SELECT command. An optional offset (the number of rows to skip) can be specified. The LIMIT clause can also be specified using the SQL 2008 OFFSET/FETCH FIRST clauses. If an ORDER BY is also specified, it will be applied before the OFFSET/LIMIT are applied. If an ORDER BY is not specified there is generally no guarantee what subset of rows will be returned.
-
-Usage:
+.Usage
 
 [source,sql]
 ----
@@ -19,19 +25,21 @@ LIMIT limit OFFSET offset
 [OFFSET offset ROW|ROWS] [FETCH FIRST|NEXT [limit] ROW|ROWS ONLY]
 ----
 
-Syntax Rules:
+.Syntax rules
 
-* The limit/offset expressions must be a non-negative integer or a parameter reference (?). An offset of 0 is ignored. A limit of 0 will return no rows.
+* The LIMIT/OFFSET expressions must be a non-negative integer or a parameter reference (`?`). 
+An offset of `0` is ignored. A limit of `0` returns no rows.
 
 * The terms FIRST/NEXT are interchangeable as well as ROW/ROWS.
 
-* The limit clause may take an optional preceding NON_STRICT hint to indicate that push operations should not be inhibited even if the results will not be consistent with the logical application of the limit. The hint is only needed on unordered limits, e.g. "SELECT * FROM VW /*+ NON_STRICT */ LIMIT 2".
+* The LIMIT clause can take an optional preceding NON_STRICT hint to indicate that push operations should not be inhibited, 
+even if the results will not be consistent with the logical application of the limit. 
+The hint is only needed on unordered limits, for example, `"SELECT * FROM VW /*+ NON_STRICT */ LIMIT 2"`.
 
-Examples:
+.LIMIT clause examples
 
-* LIMIT 100 - returns the first 100 records (rows 1-100)
-* LIMIT 500, 100 - skips 500 records and returns the next 100 records(rows 501-600)
-* OFFSET 500 ROWS - skips 500 records
-* OFFSET 500 ROWS FETCH NEXT 100 ROWS ONLY - skips 500 records and returns the next 100 records (rows 501-600)
-* FETCH FIRST ROW ONLY - returns only the first record
-
+* `LIMIT 100` returns the first 100 records (rows 1-100).
+* `LIMIT 500, 100` skips 500 records and returns the next 100 records(rows 501-600).
+* `OFFSET 500 ROWS` skips 500 records.
+* `OFFSET 500 ROWS FETCH NEXT 100 ROWS ONLY` skips 500 records and returns the next 100 records (rows 501-600).
+* `FETCH FIRST ROW ONLY` returns only the first record.

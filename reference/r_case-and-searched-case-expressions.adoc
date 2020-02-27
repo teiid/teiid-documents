@@ -1,0 +1,24 @@
+// Module included in the following assemblies:
+// as_expressions.adoc
+[id="case-and-searched-case-expressions"]
+= Case and searched case
+
+In {{ book.productnameFull }}, to include conditional logic in a scalar expression, you can use the following two forms of the CASE expression:
+
+* `CASE <expr> ( WHEN <expr> THEN <expr>)+ [ELSE expr] END`
+* `CASE ( WHEN <criteria> THEN <expr>)+ [ELSE expr] END`
+
+Each form allows for an output based on conditional logic. The first form starts with an initial expression 
+and evaluates WHEN expressions until the values match, and outputs the THEN expression. If no WHEN is matched, 
+the ELSE expression is output. If no WHEN is matched and no ELSE is specified, a null literal value is output. 
+The second form (the searched case expression) searches the WHEN clauses, which specify an arbitrary criteria 
+to evaluate. If any criteria evaluates to true, the THEN expression is evaluated and output. If no WHEN is 
+true, the ELSE is evaluated or NULL is output if none exists.
+
+[source,sql]
+.*Example case statements*
+----
+SELECT CASE columnA WHEN '10' THEN 'ten' WHEN '20' THEN 'twenty' END AS myExample
+
+SELECT CASE WHEN columnA = '10' THEN 'ten' WHEN columnA = '20' THEN 'twenty' END AS myExample
+----

@@ -1,7 +1,8 @@
-
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="h2-translator"]
 = H2 Translator (h2)
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+Also see common xref:jdbc-translators[JDBC Translators] information.
 
 The H2 Translator, known by the type name *_h2_*, is for use with H2 version 1.1 or later.
-

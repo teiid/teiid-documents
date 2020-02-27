@@ -1,5 +1,10 @@
+// Module included in the following assemblies:
+// as_transation-support.adoc
+[id="limitations-and-workarounds"]
 
-= Limitations and Workarounds
+= Limitations
 
-* The client setting of transaction isolation level is only propagated to JDBC connectors. The default transaction isolation level can be set on each XA connector.
-
+* The client setting of transaction isolation level is propagated only to JDBC connectors; 
+the setting is not propagated to other connector types.  
+The default transaction isolation level can be set on each XA connector.
+However, the isolation level is fixed, and cannot be changed at runtime for specific connections or commands.

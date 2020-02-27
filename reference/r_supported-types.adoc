@@ -1,116 +1,128 @@
+// Module included in the following assemblies:
+// as_datatypes.adoc"]
+[id="supported-types"]
+= Supported types
 
-= Supported Types
+{{ book.productnameFull }} supports a core set of runtime types. Runtime types can be different from semantic 
+types that are defined in type fields at design time. The runtime type can also be specified at design time 
+or it will be automatically chosen as the closest base type to the semantic type.
 
-{{ book.productnameFull }} supports a core set of runtime types. Runtime types can be different than semantic types defined in type fields at design time. The runtime type can also be specified at design time or it will be automatically chosen as the closest base type to the semantic type.
+NOTE: Even if a type is declared with a length, precision, or scale argument, those restrictions are 
+effectively ignored by the runtime system, but may be enforced/reported at the edge by OData, ODBC, JDBC. 
+Geospatial types act in a similar manner. Extension metadata might be needed for SRID, type, and number 
+of dimensions for consumption by tools/OData, but it is not yet enforced. In some instances you might need 
+to use the ST_SETSRID function to ensure the SRID is associated.
 
-.*{{ book.productnameFull }} Runtime Types*
+.*{{ book.productnameFull }} runtime types*
 |===
-|Type |Description |Java Runtime Class |JDBC Type |ODBC Type
+|Type |Description |Java runtime class |JDBC type |ODBC type
 
 |string or varchar
-|variable length character string with a maximum length of 4000.
+|Variable length character string with a maximum length of 4000.
 |java.lang.String
 |VARCHAR
 |VARCHAR
 
 |varbinary
-|variable length binary string with a nominal maximum length of 8192.
+|Variable length binary string with a nominal maximum length of 8192.
 |byte[] [1]
 |VARBINARY
 |VARBINARY
 
 |char
-|a single 16 bit character - which cannot represent a value beyond the Basic Multilingual Plane.  This limitation also applies to functions/expressions that expect a single character such as trim, textagg, texttable, and like escape.
+|A single 16 bit character - which cannot represent a value beyond the Basic Multilingual Plane. 
+This limitation also applies to functions/expressions that expect a single character such as trim, textagg, texttable, and like escape.
 |java.lang.Character
 |CHAR
 |CHAR
 
 |boolean
-|a single bit, or Boolean, that can be true, false, or null (unknown)
+|A single bit, or Boolean, that can be true, false, or null (unknown)
 |java.lang.Boolean
 |BIT
 |SMALLINT
 
 |byte or tinyint
-|numeric, integral type, signed 8-bit
+|Numeric, integral type, signed 8-bit
 |java.lang.Byte
 |TINYINT
 |SMALLINT
 
 |short or smallint
-|numeric, integral type, signed 16-bit
+|Numeric, integral type, signed 16-bit
 |java.lang.Short
 |SMALLINT
 |SMALLINT
 
 |integer or serial
-|numeric, integral type, signed 32-bit. The serial type also implies not null and has an auto-incrementing value that starts at 1. serial types are not automatically UNIQUE.
+|Numeric, integral type, signed 32-bit. The serial type also implies not null and has an 
+auto-incrementing value that starts at 1. serial types are not automatically UNIQUE.
 |java.lang.Integer
 |INTEGER
 |INTEGER
 
 |long or bigint
-|numeric, integral type, signed 64-bit
+|Numeric, integral type, signed 64-bit
 |java.lang.Long
 |BIGINT
 |NUMERIC
 
 |biginteger
-|numeric, integral type, arbitrary precision of up to 1000 digits
+|Numeric, integral type, arbitrary precision of up to 1000 digits
 |java.math.BigInteger
 |NUMERIC
 |NUMERIC
 
 |float or real
-|numeric, floating point type, 32-bit IEEE 754 floating-point numbers
+|Numeric, floating point type, 32-bit IEEE 754 floating-point numbers
 |java.lang.Float
 |REAL
 |FLOAT
 
 |double
-|numeric, floating point type, 64-bit IEEE 754 floating-point numbers
+|Numeric, floating point type, 64-bit IEEE 754 floating-point numbers
 |java.lang.Double
 |DOUBLE
 |DOUBLE
 
 |bigdecimal or decimal
-|numeric, floating point type, arbitrary precision of up to 1000 digits.
+|Numeric, floating point type, arbitrary precision of up to 1000 digits.
 |java.math.BigDecimal
 |NUMERIC
 |NUMERIC
 
 |date
-|datetime, representing a single day (year, month, day)
+|Datetime, representing a single day (year, month, day)
 |java.sql.Date
 |DATE
 |DATE
 
 |time
-|datetime, representing a single time (hours, minutes, seconds)
+|Datetime, representing a single time (hours, minutes, seconds)
 |java.sql.Time
 |TIME
 |TIME
 
 |timestamp
-|datetime, representing a single date and time (year, month, day, hours, minutes, seconds, fractional seconds)
+|Datetime, representing a single date and time (year, month, day, hours, minutes, seconds, fractional seconds).
 |java.sql.Timestamp
 |TIMESTAMP
 |TIMESTAMP
 
 |object
-|any arbitrary Java object, must implement java.lang.Serializable
+|Any arbitrary Java object, must implement java.lang.Serializable.
 |Any
 |JAVA_OBJECT
 |VARCHAR
 
 |blob
-|binary large object, representing a stream of bytes
+|Binary large object, representing a stream of bytes.
 |java.sql.Blob [2]
 |BLOB
 |VARCHAR
 
 |clob
-|character large object, representing a stream of characters
+|Character large object, representing a stream of characters.
 |java.sql.Clob [3]
 |CLOB
 |VARCHAR
@@ -134,20 +146,15 @@
 |BLOB
 
 |json (11.2+)
-|character large object, representing a stream of json characters
+|Character large object, representing a stream of JSON characters.
 |java.sql.Clob [7]
 |CLOB
 |VARCHAR
 
 |===
 
-NOTE: Even if a type is declared with a length, precision, or scale argument, those restrictions are effectively ignored by the runtime system, but may be enforced/reported at the edge by OData, ODBC, JDBC.  The geospatial types act in a similar manner.  Extension metadata may be needed for srid, type, and number of dimensions for consumption by tools/OData - but it is not yet enforced.  In some instances you may need to use the ST_SETSRID function to ensure the srid is associated.
-
-NOTE: Charater, String, and Clob types are not limited to ascii/extended ascii values.  Character can hold codes up to 2^16-1 and String/Clob can hold any value.
-
-**Reference Link**
-
-1. The runtime type is org.teiid.core.types.BinaryType. Translators will need to explicitly handle BinaryType values. UDFs will instead have a byte[] value passed. 
+1. The runtime type is org.teiid.core.types.BinaryType. Translators will need to explicitly handle BinaryType values. 
+UDFs will instead have a byte[] value passed. 
 2. The concrete type is expected to be org.teiid.core.types.BlobType 
 3. The concrete type is expected to be org.teiid.core.types.ClobType 
 4. The concrete type is expected to be org.teiid.core.types.XMLType 
@@ -155,14 +162,16 @@ NOTE: Charater, String, and Clob types are not limited to ascii/extended ascii v
 6. The concrete type is expected to be org.teiid.core.types.GeographyType
 3. The concrete type is expected to be org.teiid.core.types.JsonType
 
-== Arrays
 
-WARNING: {{ book.productnameFull }}’s support for arrays is a new feature as of the 8.5 release. Support will be refined and enhanced in subsequent releases.
 
-An array of any type is designated by adding [] for each array dimension
-to the type declaration.
+NOTE: Character, String, and CLOB types are not limited to ASCII/extended ASCII values. 
+Character can hold codes up to 2^16-1 and String/CLOB can hold any value.
 
-Example array types:
+.Arrays
+
+An array of any type is designated by adding [] for each array dimension to the type declaration.
+
+.Example: Array types
 
 [source,sql]
 ----
@@ -174,5 +183,5 @@ string[]
 integer[][]
 ----
 
-NOTE: {{ book.productnameFull }} array handling is typically in memory. It is not advisable to rely on the usage of large array values. Also arrays of lobs are not well supported and will typically not be handled correctly when serialized.
-
+NOTE: Array handling is typically in memory. It is not advisable to rely on the usage of large array values. 
+Also arrays of LOBs are not well supported and will typically not be handled correctly when serialized.

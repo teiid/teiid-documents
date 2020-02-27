@@ -1,0 +1,41 @@
+// Module included in the following assemblies:
+// as_update-commands.adoc
+[id="execute-command"]
+= EXECUTE command
+
+The EXECUTE command is used to execute a procedure, such as a virtual procedure or a stored procedure. 
+Procedures can have zero or more scalar input parameters. 
+The return value from a procedure is a result set, or the set of inout/out/return scalars. 
+
+You can use the following short forms of the EXECUTE command:
+
+* EXEC
+* CALL
+
+.Example syntax
+[source,sql]
+----
+EXECUTE proc()
+----
+
+[source,sql]
+----
+CALL proc(value, ...)
+----
+
+.Named parameter syntax
+[source,sql]
+----
+EXECUTE proc(name1=>value1,name4=>param4, ...)
+----
+
+.Syntax rules
+* The default order of parameter specification is the same as how they are defined in the procedure definition.
+* You can specify the parameters in any order by name. 
+Parameters that have default values, or that are nullable in the metadata, can be omitted from the named parameter call, 
+and will have the appropriate value passed at runtime.
+* Positional parameters that have default values or that are nullable in the metadata, 
+can be omitted from the end of the parameter list and will have the appropriate value passed at runtime.
+* If the procedure does not return a result set, the values from the RETURN, OUT, and IN_OUT parameters 
+are returned as a single row when used as an inline view query.
+* A VARIADIC parameter may be repeated 0 or more times as the last positional argument.

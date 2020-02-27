@@ -1,9 +1,12 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="actian-vector-translator"]
+= Actian Vector translator (actian-vector)
 
-= Actian Vector Translator (actian-vector)
+Also see common xref:jdbc_translators[JDBC Translators] information.
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+The Actian Vector translator, known by the type name *_actian-vector_*, is for use with 
+http://esd.actian.com/Express/readme_HSE_2.0.html[Actian Vector in Hadoop].
 
-The Actian Vector Translator, known by the type name *_actian-vector_*, is for use http://esd.actian.com/Express/readme_HSE_2.0.html[Actian Vector in Hadoop].
-
-Download the JDBC driver at http://esd.actian.com/platform[http://esd.actian.com/platform]. Note the port number in connection URL is "AH7" which maps to 16967.
-
+Download the JDBC driver at http://esd.actian.com/platform[http://esd.actian.com/platform]. 
+Note the port number in the connection URL is "AH7", which maps to 16967.

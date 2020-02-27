@@ -1,0 +1,16 @@
+// Assembly included in the following assemblies:
+// as_dml-commands.adoc
+[id="update-commands"]
+= Update commands
+
+Update commands report integer update counts. 
+Update commands can report a maximum integer value of (2^31 -1). 
+If you update a greater number of rows, the commands report the maximum integer value.
+
+include::r_insert-command.adoc[leveloffset=+1]
+include::r_update-command.adoc[leveloffset=+1]
+include::r_delete-command.adoc[leveloffset=+1]
+include::r_upsert-merge-command.adoc[leveloffset=+1]
+include::r_execute-command.adoc[leveloffset=+1]
+include::r_procedural-relational-command.adoc[leveloffset=+1]
+include::r_anonymous-procedure-block.adoc[leveloffset=+1]

@@ -1,26 +1,29 @@
-
-= Security Functions
+// Module included in the following assemblies:
+// as_scalar-functions.adoc
+[id="security-functions"]
+= Security functions
 :toc: manual
 :toc-placement: preamble
 
 Security functions provide the ability to interact with the security system or to hash/encrypt values.
 
-== HASROLE
+.HASROLE
 
-Whether the current caller has the {{ book.productnameFull }} data role roleName.
+Whether the current caller has the {{ book.productnameFull }} data role `roleName`.
 
 [source,sql]
 ----
 hasRole([roleType,] roleName)
 ----
 
-_roleName_ must be a string, the return type is boolean.
+_roleName_ must be a string, the return type is Boolean.
 
-The two argument form is provided for backwards compatibility. roleType is a string and must be `data'.
+The two argument form is provided for backwards compatibility. `roleType` is a string and must be `data'.
 
-Role names are case-sensitive and only match {{ book.productnameFull }} link:Data_Roles.adoc[Data Roles]. Foreign/JAAS roles/groups names are not valid for this function - unless there is corresponding data role with the same name.
+Role names are case-sensitive and only match {{ book.productnameFull }} xref:data0roles[Data roles]. 
+Foreign/JAAS roles/groups names are not valid for this function, unless there is corresponding data role with the same name.
 
-== MD5
+.MD5
 
 Computes the MD5 hash of the value.
 
@@ -29,9 +32,10 @@ Computes the MD5 hash of the value.
 MD5(value)
 ----
 
-value must be a string or varbinary, the return type is varbinary.  String values are first converted to their UTF-8 byte representation.
+`value` must be a string or varbinary, the return type is varbinary. 
+String values are first converted to their UTF-8 byte representation.
 
-== SHA1
+.SHA1
 
 Computes the SHA-1 hash of the value.
 
@@ -40,9 +44,10 @@ Computes the SHA-1 hash of the value.
 SHA1(value)
 ----
 
-value must be a string or varbinary, the return type is varbinary.  String values are first converted to their UTF-8 byte representation.
+`value` must be a string or varbinary, the return type is varbinary. 
+String values are first converted to their UTF-8 byte representation.
 
-== SHA2_256
+.SHA2_256
 
 Computes the SHA-2 256 bit hash of the value.
 
@@ -51,9 +56,10 @@ Computes the SHA-2 256 bit hash of the value.
 SHA2_256(value)
 ----
 
-value must be a string or varbinary, the return type is varbinary.  String values are first converted to their UTF-8 byte representation.
+`value` must be a string or varbinary, the return type is varbinary. 
+String values are first converted to their UTF-8 byte representation.
 
-== SHA2_512
+.SHA2_512
 
 Computes the SHA-2 512 bit hash of the value.
 
@@ -62,26 +68,31 @@ Computes the SHA-2 512 bit hash of the value.
 SHA2_512(value)
 ----
 
-value must be a string or varbinary, the return type is varbinary.  String values are first converted to their UTF-8 byte representation.
+`value` must be a string or varbinary, the return type is varbinary. 
+String values are first converted to their UTF-8 byte representation.
 
-== AES_ENCRYPT
+.AES_ENCRYPT
 
 [source,sql]
 ----
 aes_encrypt(data, key)
 ----
 
-`AES_ENCRYPT()` allow encryption of data using the official AES (Advanced Encryption Standard) algorithm, 16 bytes(128 bit) key length, and AES/CBC/PKCS5Padding cipher algorithm with an explicit initialization vector.
+`AES_ENCRYPT()` allow encryption of data using the official AES (Advanced Encryption Standard) algorithm, 
+16 bytes(128 bit) key length, and AES/CBC/PKCS5Padding cipher algorithm with an explicit initialization vector.
 
-The `AES_ENCRYPT()` will return a BinaryType encrypted data. The argument `data` is a BinaryType data that need to encrypt, the argument `key` is a BinaryType used in encryption. 
+The `AES_ENCRYPT()` will return a BinaryType encrypted data. 
+The argument `data` is the BinaryType data to encrypt, and the argument `key` is a BinaryType used in encryption. 
 
-== AES_DECRYPT
+.AES_DECRYPT
 
 [source,sql]
 ----
 aes_decrypt(data, key)
 ----
 
-`AES_DECRYPT()` allow decryption of data using the official AES (Advanced Encryption Standard) algorithm, 16 bytes(128 bit) key length, and AES/CBC/PKCS5Padding cipher algorithm expecting an explicit initialization vector.
+`AES_DECRYPT()` allow decryption of data using the official AES (Advanced Encryption Standard) algorithm, 
+16 bytes(128 bit) key length, and AES/CBC/PKCS5Padding cipher algorithm expecting an explicit initialization vector.
 
-The `AES_DECRYPT()` will return a BinaryType decrypted data. The argument `data` is a BinaryType data that need to decrypt, the argument `key` is a BinaryType used in decryption.
+The `AES_DECRYPT()` will return a BinaryType decrypted data. 
+The argument `data` is the BinaryType data to decrypt, and the argument `key` is a BinaryType used in decryption.

@@ -1,7 +1,11 @@
-
+// Assembly included in the following assemblies:
+//master.adoc
+[id="translators"]
 = Translators
 
-The {{ book.productnameFull }} Connector Architecture (TCA) provides {{ book.productnameFull }} with a robust mechanism for integrating with external systems. The TCA defines a common client interface between {{ book.productnameFull }} and an external system that includes metadata as to what SQL constructs are supported for pushdown and the ability to import metadata from the external system.
+{{ book.productnameFull }} uses the Teiid Connector Architecture (TCA), which provides a robust mechanism for integrating with external systems. 
+The TCA defines a common client interface between {{ book.productnameFull }} and an external system that includes metadata as to what SQL constructs 
+are supported for pushdown and the ability to import metadata from the external system.
 
 A Translator is the heart of the TCA and acts as the bridge logic between {{ book.productnameFull }} and an external system.
 
@@ -10,19 +14,25 @@ Refer to the {{ book.productnameFull }} Developers Guide for details on developi
 
 TIP: The TCA is not the same as the JCA, the JavaEE Connector Architecture, although the TCA is designed for use with JCA resource adapters.
 
-A Translator is typically paired with a particular JCA resource adapter. In instances where pooling, environment dependent configuration management, advanced security handling, etc. are not needed, then a JCA resource adapter is not needed. The configuration of JCA ConnectionFactories for needed resource adapters is not part of this guide, please see the {{ book.productnameFull }} Administrator Guide and the kit examples for configuring resource adapters for use in {{ book.asName }}.
+A Translator is typically paired with a particular JCA resource adapter. In instances where pooling, environment dependent configuration management, 
+advanced security handling, etc. are not needed, then a JCA resource adapter is not needed. The configuration of JCA ConnectionFactories for needed 
+resource adapters is not part of this guide, please see the {{ book.productnameFull }} Administrator Guide and the kit examples for configuring resource adapters for use in {{ book.asName }}.
 {% endif %}
 
-Translators can have a number of configurable properties. These are broken down into execution properties, which determine aspects of how data is retrieved, and import settings, which determine what metadata is read for import.
+Translators can have a number of configurable properties. 
+These are broken down into execution properties, which determine aspects of how data is retrieved, and import settings, which determine what metadata is read for import.
 
-The execution properties for a translator typically have reasonable defaults. For specific translator types, e.g. the Derby translator, base execution properties are already tuned to match the source. In most cases the user will not need to adjust their values.
+The execution properties for a translator typically have reasonable defaults. 
+For specific translator types, such as the Derby translator, base execution properties are already tuned to match the source. 
+In most cases the user will not need to adjust their values.
 
-.*Base Execution Properties - shared by all translators*
+.*Base execution properties - shared by all translators*
 |===
 |Name |Description |Default
 
 |Immutable
-|Set to true to indicate that the source never changes. The transactional support will be reported as NONE, and update commands will fail.
+|Set to true to indicate that the source never changes. 
+The transactional support will be reported as NONE, and update commands will fail.
 |false
 
 |RequiresCriteria
@@ -46,7 +56,8 @@ The execution properties for a translator typically have reasonable defaults. Fo
 |false
 
 |SupportedJoinCriteria
-|If joins are supported, defines what criteria may be used as the join criteria. May be one of (ANY, THETA, EQUI, or KEY).
+|If joins are supported, defines what criteria may be used as the join criteria. 
+May be one of (ANY, THETA, EQUI, or KEY).
 |ANY
 
 |MaxInCriteriaSize
@@ -54,7 +65,8 @@ The execution properties for a translator typically have reasonable defaults. Fo
 |-1
 
 |MaxDependentInPredicates
-|If in criteria are supported, defines what the maximum number of predicates that can be used for a dependent join. Values less than 1 indicate to use only one in predicate per dependent value pushed (which matches the pre-7.4 behavior).
+|If in criteria are supported, defines what the maximum number of predicates that can be used for a dependent join. 
+Values less than 1 indicate to use only one in predicate per dependent value pushed (which matches the pre-7.4 behavior).
 |-1
 
 |DirectQueryProcedureName
@@ -62,7 +74,7 @@ The execution properties for a translator typically have reasonable defaults. Fo
 |native
 
 |SupportsDirectQueryProcedure
-|Set to true to indicate the translator supports the direct execution of commands
+|Set to true to indicate the translator supports the direct execution of commands.
 |false
 
 |ThreadBound
@@ -70,24 +82,27 @@ The execution properties for a translator typically have reasonable defaults. Fo
 |false
 
 |CopyLobs
-|If true, then returned lobs (clob, blob, sql/xml) will be copied by the engine in a memory safe manner. Use this option if the source does not support memory safe lobs or you want to disconnect lobs from the source connection.
+|If true, then returned lobs (clob, blob, sql/xml) will be copied by the engine in a memory safe manner. 
+Use this option if the source does not support memory safe LOBS or you want to disconnect LOBS from the source connection.
 |false
 
 |TransactionSupport
-|The highest level of transaction support. Used by the engine as a hint to determine if a transaction is needed for autoCommitTxn=DETECT mode.  Can be one of XA, NONE, or LOCAL.  If XA or LOCAL then access under a transaction will be serialized.
+|The highest level of transaction support. Used by the engine as a hint to determine if a transaction is needed for autoCommitTxn=DETECT mode. 
+Can be one of XA, NONE, or LOCAL. If XA or LOCAL then access under a transaction will be serialized.
 |XA
 |===
 
-NOTE: Only a subset of the supports metadata can be set through execution properties on the base ExecutionFactory.  All methods are available on the BaseDelegatingExecutionFactory.
+NOTE: Only a subset of the supports metadata can be set through execution properties on the base ExecutionFactory. 
+All methods are available on the BaseDelegatingExecutionFactory.
 
 There are no base importer settings.
 
-== Override Execution Properties
+.Override execution properties
 
-For all translators, you may override Execution Properties in the main vdb file.
+For all translators, you can override Execution Properties in the main vdb file.
 
-Example Overriding of Translator Property
-
+.Example: Overriding a translator property
+.
 [source,sql]
 ----
 CREATE FOREIGN DATA WRAPPER "oracle-override" TYPE oracle OPTIONS (RequiresCriteria 'true');
@@ -115,44 +130,69 @@ Or as an XML vdb:
 ----
 {% endif %}
 
-The above is overriding the _oracle_ translator and altering the behavior of _RequiresCriteria_ property to true. Note that the modified translator is only available in the scope of this VDB.
+The preceding example overrides the _oracle_ translator and sets the _RequiresCriteria_ property to true. 
+The modified translator is only available in the scope of this VDB.
 As many properties as desired may be overriden together.
 
 See also link:vdb_guide.adoc[VDB Definition].
 
-== Parameterizable Native Queries
+.Parameterizable native queries
 
-In some situations the teiid_rel:native-query property and native procedures accept parameterizable strings that can positionally reference IN parameters. A parameter reference has the form $integer, i.e. $1 Note that 1 based indexing is used and that only IN parameters may be referenced. Dollar-sign integer is therefore reserved, but may be escaped with another $, i.e. $$1. The value will be bound as a prepared value or a literal is a source specific manner. The native query must return a result set that matches the expectation of the calling procedure.
+In some situations the `teiid_rel:native-query` `property and native procedures accept parameterizable strings that can positionally reference IN parameters. 
+A parameter reference has the form `$integer`, for example, `$1`. 
+Note that one-based indexing is used and that only IN parameters may be referenced. 
+Dollar-sign integer is therefore reserved, but may be escaped with another `$``, for example, `$$1`. 
+The value will be bound as a prepared value or a literal is a source specific manner. 
+The native query must return a result set that matches the expectation of the calling procedure.
 
-For example the native-query `select c from g where c1 = $1 and c2 = '$$1'` results in a JDBC source query of `select c from g where c1 = ? and c2 = '$1'`, where ? will be replaced with the actual value bound to parameter 1.
+For example the native-query `select c from g where c1 = $1 and c2 = '$$1'` results in a JDBC source query 
+of `select c from g where c1 = ? and c2 = '$1'`, where `?`` will be replaced with the actual value bound to parameter 1.
 
-== General Import Properties
+.General import properties
 
 Several import properties are shared by all translators.
 
-When specifying an importer property, it must be prefixed with "importer.". Example: importer.tableTypes
+When specifying an importer property, it must be prefixed with `importer.`. For example, `importer.tableTypes`.
 
 |===
 |Name |Description |Default
 
 |autoCorrectColumnNames
-|Replace any usage of . in a column name with _ as the period character is not supported by {{ book.productnameFull }} in column names.
+|Replace any usage of `.` in a column name with `_` as the period character is not supported by {{ book.productnameFull }} in column names.
 |true
 
 |renameDuplicateColumns
-|If true rename duplicate columns caused by either mixed case collisions or autoCorrectColumnNames replacing . with _.  A suffix _n where n is an integer will be added to make the name unique. 
+|If true, rename duplicate columns caused by either mixed case collisions or `autoCorrectColumnNames` replacing `.` with `_`. 
+A suffix `_n` where `n` is an integer will be added to make the name unique. 
 |false
 
 |renameDuplicateTables
-|If true rename duplicate tables caused by mixed case collisions.  A suffix _n where n is an integer will be added to make the name unique. 
+|If true, rename duplicate tables caused by mixed case collisions. A suffix `_n` where `n` is an integer will be added to make the name unique. 
 |false
 
 |renameAllDuplicates
-|If true rename all duplicate tables, columns, procedures, and parameters caused by mixed case collisions.  A suffix _n where n is an integer will be added to make the name unique.  Supersedes the individual rename duplicate options.
+|If true, rename all duplicate tables, columns, procedures, and parameters caused by mixed case collisions. 
+A suffix `_n` where `n` is an integer will be added to make the name unique. 
+Supersedes the individual rename duplicate options.
 |false
 
 |nameFormat
-|Set to a Java string format to modify table and procedure names on import.  The only argument will be the original name {{ book.productnameFull }} name.  For example use prod_%s to prefix all names with prod_.
+|Set to a Java string format to modify table and procedure names on import. 
+The only argument will be the original name {{ book.productnameFull }} name. 
+For example use `prod_%s` to prefix all names with `prod_`.
 |
 |===
 
+include::r_amazon-s3-translator.adoc[leveloffset=+1]
+include::as_delegator-translators.adoc[leveloffset=+1]
+include::r_file-translator.adoc[leveloffset=+1]
+include::r_google-spreadsheet-translator.adoc[leveloffset=+1]
+include::as_jdbc-translators.adoc[leveloffset=+1]
+include::r_loopback-translator.adoc[leveloffset=+1]
+include::r_microsoft-excel-translator.adoc[leveloffset=+1]
+include::r_mongodb-translator.adoc[leveloffset=+1]
+include::r_odata-translator.adoc[leveloffset=+1]
+include::r_odata-v4-translator.adoc[leveloffset=+1]
+include::r_openapi-translator.adoc[leveloffset=+1]
+include::r_salesforce-translator.adoc[leveloffset=+1]
+include::r_web-services-translator.adoc[leveloffset=+1]

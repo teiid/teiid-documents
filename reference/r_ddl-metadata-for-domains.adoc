@@ -1,4 +1,7 @@
-= DDL Metadata for Domains
+// Module included in the following assemblies:
+// as_virtual-databases.adoc
+[id="ddl-metadata-for-domains"]
+= DDL metadata for domains
 
 Domains are simple type declarations that define a set of valid values for a given type name.  They can be created at the database level only.
 
@@ -7,7 +10,7 @@ The DDL for domains is common to both link:xml_deployment_mode.adoc[XML] and lin
 However in an XML vdb domains must be defined in a VDB property "domain-ddl".
 {% endif %} 
 
-== Create Domain
+.Create domain
 
 [source,sql]
 ----
@@ -21,7 +24,7 @@ See the BNF for <<../reference/BNF_for_SQL_Grammar.adoc#parseDataTypePrimary, Da
 
 Once a domain is defined it may be referenced as the data type for a column, parameter, etc.
 
-DDL VDB Example
+Example: Virtual database DDL 
 [source,sql]
 ----
 CREATE DOMAIN mychar AS VARCHAR(1000);
@@ -33,7 +36,7 @@ CREATE VIEW v1 (col1 mychar) as select 'value';
 ----
 
 {% if book.targetWildfly %}
-XML VDB Example
+Example: XML VDB 
 [source,xml]
 ----
 <vdb name="Portfolio" version="1">
@@ -43,11 +46,11 @@ XML VDB Example
 ----
 {% endif %}
 
-When the system metadata is queried the type for the column will be shown as the domain name.
+When the system metadata is queried, the type for the column is shown as the domain name.
 
-== Limitations
+.Limitations
 
-Domain names are not yet recognized in every place that a data type is expected, such as in:
+Domain names might not be recognized in the following places where a data type is expected:
 
 * create temp table 
 * execute immediate
@@ -56,4 +59,4 @@ Domain names are not yet recognized in every place that a data type is expected,
 * texttable
 * xmltable
 
-The ODBC/pg metadata will show the base type name, rather than the domain name when querying pg_attribute.  
+When you query a pg_attribute, the ODBC/pg metadata will show the name of the base type, rather than the domain name.  
