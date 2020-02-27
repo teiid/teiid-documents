@@ -1,0 +1,51 @@
+= Security Guide 
+
+The {{ book.productnameFull }} system provides a range of built-in and extensible security features to enable secure data access. This introduction provides a high-level guide to security concerns. The rest of the guide provides specifics on configuring clients, the {{ book.productnameFull }} server, and the application server.
+
+== Authentication
+
+=== Client Authentication
+
+JDBC/ODBC/Web Service clients may use simple passwords to authenticate a user.
+
+Typically a user name is required, however user names may be considered optional if the identity of the user can be discerned by the password credential alone. In any case it is up to the configured security domain to determine whether a user can be authenticated. If you need authentication, the administrator must configure link:LoginModules.adoc[LoginModules] for {{ book.productnameFull }}.
+
+CAUTION: By default, access to {{ book.productnameFull }} is NOT secure. The default link:LoginModules.adoc[LoginModules] are only backed by file based authentication, which has a well known user name and password. We *DO NOT* recommend leaving the default security profile as defined when you are exposing sensitive data.
+
+{{ book.productnameFull }} JDBC/ODBC also supports link:Kerberos_support_through_GSSAPI.adoc[Kerberos] authentication with additional configuration.
+
+Auto-generated web services, such as link:../client-dev/OData_Support.adoc[OData], for consuming {{ book.productnameFull }} typically support HTTPBasic authentication, which in turn should utilize Pass-through Authentication.
+
+=== Source Authentication
+
+Source authentication is generally determined by the capabilities of JCA resource adapters used to connect to external resources. Consult the AS JCA documentation for the capabilities of source pooling and supplied resource adapters for more information. Typically a single username/password credential is supported, such as when creating link:../admin/JDBC_Data_Sources.adoc[JDBC Data Sources]. In more advanced usage scenarios the link:Data_Source_Security.adoc[source] and/or translator may be configured or customized to use an link:../client-dev/Statement_Extensions.adoc[execution payload], the {{ book.productnameFull }} subject, or even the calling application subject via link:Security_Guide.html#67240172_SecurityGuide-PassthroughAuthentication[Pass-through Authentication]. See also link:../dev/Developing_JEE_Connectors.adoc[Developing JEE Connectors] and link:../dev/Translator_Development.adoc[Translator Development]
+
+=== Pass-through Authentication
+
+If your client application (web application or Web service) resides in the same {{ book.asName }} instance as {{ book.productnameFull }} and the client application uses a security domain, then you can configure {{ book.productnameFull }} to use the same security domain and not force the user to re-authenticate. In pass-through mode {{ book.productnameFull }} looks for an authenticated subject in the calling thread context and uses it for sessioning and authorization. To configure {{ book.productnameFull }} for pass-through authentication, change the {{ book.productnameFull }} security-domain name to the same name as your application’s security domain name. This change can be made via the CLI or in the `standalone-teiid.xml` file if running in standalone mode. The security domain must be a JAAS based LoginModule and your client application MUST obtain its {{ book.productnameFull }} connection using a link:../client-dev/WildFly_DataSource.adoc#_local_jdbc_connection[Local Connection] with the _PassthroughAuthentication_=true connection flag set. You may also set the security-domain on the VDB.
+
+== Authorization
+
+Authorization covers both administrative activities and data roles. A data role is a collection of permissions (also referred to as entitlements) and a collection of entitled principals or groups. With the deployment of a VDB the deployer can choose which principals and groups have which data roles. Check out link:../reference/Data_Roles.adoc[Reference Guide Data Roles] chapter for more information. Any source level authorization decisions are up to the source systems being integrated.
+
+VDBs without data roles defined are accessible by any authenticated user. If you want to ensure some attempt has been made at securing access, then set the data-roles-required configuration element to true via the CLI or in the standalone.xml on the teiid subsystem.
+
+== Encryption
+
+=== {{ book.productnameFull }} Transports
+
+{{ book.productnameFull }} provides built-in support for JDBC/ODBC over link:{{ book.productnameFull }}_Server_Transport_Security.adoc[SSL]. JDBC defaults to just sensitive message encryption (login mode), while ODBC (the pg transport) defaults to just clear text passwords if using simple username/password authentication.
+
+The AS instance must be configured for SSL as well so that Any web services consuming {{ book.productnameFull }} may use SSL.
+
+=== Configuration
+
+Passwords in configuration files are by default stored in plain text. If you need these values to be encrypted, please see http://community.jboss.org/wiki/maskingpasswordsinjbossasxmlconfiguration[encrypting passwords] for instructions on encryption facilities provided by the container.
+
+=== Source Access
+
+Encrypting remote source access is the responsibility for the resource adapter and library/driver used to access the source system.
+
+=== Temporary Data
+
+{{ book.productnameFull }} temporary data which can be stored on the file system as configured by the BufferManager may optionally be encrypted. Set the `buffer-service-encrypt-files` property to true on the {{ book.productnameFull }} subsystem to use 128-bit AES to encrypt any files written by the BufferManager. A new symmetric key will be generated for each start of the {{ book.productnameFull }} system on each server. A performance hit will be seen for processing that is memory intensive such that data typically spills to disk. This setting does not affect how VDBs (either the artifact or an exploded form) or log files are written to disk.

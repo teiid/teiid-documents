@@ -1,0 +1,28 @@
+
+= Migration Guide From {{ book.productnameFull }} 10.x to 11.x
+
+{{ book.productnameFull }} strives to maintain consistency between all versions, but when necessary breaking configuration and VDB/sql changes are made - and then typically only for major releases. 
+
+You should consult the release notes for compatibility and configuration changes from each minor version that you are upgrading over.  This guide expands upon the release notes included in the kit to cover changes since 10.x.
+
+If possible you should make your migration to {{ book.productnameFull }} 11 by first using {{ book.productnameFull }} 10.3.  {{ book.productnameFull }} 10.0 though 10.3 have the same JRE and WildFly requirements.  {{ book.productnameFull }} 11 requires Java 8 and WildFly 11.  See also link:Migration_Guide_From_Teiid_9.x.adoc[9 to 10 Migration Guide]
+
+== Configuration Changes
+
+The default max buffer space on disk for embedded, Spring, and Thorntail environments is 5 GB.  The WildFly server environment default remains 50 GB, but needs to be specified in the configuration.  If you are reusing the same configuration from {{ book.productnameFull }} 10 that has the default omitted, use the jboss cli to run:
+
+/subsystem=teiid/:write-attribute(name=buffer-service-max-buffer-space, value=51200)
+
+The authentication-allow-security-domain-qualifier property has been removed.
+
+== Compatibility Changes
+
+Function model support has been completely removed as it had been deprecated in {{ book.productnameFull }} Designer for some time.  Those models should be removed and the functions moved to other physical or virtual models. 
+
+The salesforce translator and resource adapter now provide access to the 34.0 version of the Salesforce API.  You may need to re-import your salesforce source metadata to ensure compatibility.
+
+Starting with 11.1 the {{ book.productnameFull }} client no longer supports the pluggable ServerDiscovery mechanism.  The client will no longer support post-connection load-balancing nor a client side ping.  If connecting to {{ book.productnameFull }} servers earlier than 10.2, then ping must be disabled on the server.
+
+Session/user scoped materialized views are no longer supported.  Please use a global temporary table instead.
+
+

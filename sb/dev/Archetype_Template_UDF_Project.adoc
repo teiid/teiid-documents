@@ -1,0 +1,132 @@
+
+= Archetype Template UDF Project 
+
+One way to start developing a custom user defined function (UDF) is to create a project using the {{ book.productnameFull }} UDF archetype template. When the project is created from the template, it will create a maven project that contains an example java class and the assembly resources for packaging as a module or a CLI script for configuring via jboss-cli.
+
+
+NOTE: The project will be created as an independent project and has no parent maven dependencies. It’s designed to be built independent of building {{ book.productnameFull }}.
+
+You have 2 options for creating a UDF project; in Eclipse by creating a new maven project from the arche type or by using the command line to generate the project.
+
+== Create Project in Eclipse
+
+To create a Java project in Eclipse from an arche type, perform the following:
+
+* Open the JAVA perspective
+* From the menu select File –> New —> Other
+* In the tree, expand Maven and select Maven Project, press Next
+* On the "Select project name and Location" window, you can accept the defaults, press Next
+* On the "Select an Archetype" window, select Configure button
+* Add the remote catalog: link:http://central.maven.org/maven2/ then click OK to return
+* Enter "teiid" in the filter to see the {{ book.productnameFull }} arche types.
+* Select the udf-archetype v{{ book.archeTypeVersion }}, then press Next
+* Enter all the information (i.e., Group ID, Artifact ID, method-name, method-args, return-type etc.) needed to generate the project, then click Finish
+
+The project will be created and name according to the _*ArtifactID*_.
+
+== Create Project using Command Line
+
+NOTE: make sure the link:http://central.maven.org/maven2/ repository is accessible via your maven settings.
+
+To create a custom translator project from the command line, you can use the following template command:
+
+***********
+* TEMPLATE
+***********
+
+[source,java]
+----
+mvn archetype:generate                         \
+  -DarchetypeGroupId=org.teiid.arche-types               \
+  -DarchetypeArtifactId=udf-archetype          \
+  -DarchetypeVersion=${archetypeVersion}     \
+  -DgroupId=${groupId}                  \
+  -DartifactId=${udf-artifact-id}   \
+  -Dpackage=${package}    \
+  -Dversion=0.0.1-SNAPSHOT      \
+  -Dudf-name=${functionName}  \
+  -Dmethod-name=${methodName}      \
+  -Dmethod-args=${methodArguments}   \
+  -Dreturn-type=${returnType}      \
+  -Dteiid-version=${teiid-version}
+----
+
+********
+* where:
+********
+
+[source,java]
+----
+  -DarchetypeGroupId    -  is the group ID for the arche type to use to generate
+  -DarchetypeArtifactId -  is the artifact ID for the arche type to use to generate
+  -DarchetypeVersion    -  is the version for the arche type to use to generate
+  -DgroupId     -  (user defined) group ID for the new udf project pom.xml
+  -DartifactId      -  (user defined) artifact ID for the new udf project pom.xml
+  -Dpackage     -  (user defined) the package structure where the java, module and resource files will be created
+  -Dversion     -  (user defined) the version that the new connector project pom.xml will be
+  -Dudf-name        -  (user defined) the name to give the new user defined function, will become the Class Name 
+  -Dmethod-name         -  (user defined) the name of the method that will be configured in the model procedure
+  -Dmethod-args         -  (user defined) the arguments the method will accept.  'Type name[, Type name[,...]]  Example:  'String arg0' or 'String arg0, integer arg1'
+  -Dreturn-type         -  (user defined) the data type of the value returned by the method
+  -Dteiid-version   -  the {{ book.productnameFull }} version the connector will depend upon
+----
+
+*********
+* EXAMPLE
+*********
+
+-  this is an example of the template that can be run:
+
+[source,java]
+----
+mvn archetype:generate                           \
+  -DarchetypeGroupId=org.teiid.arche-types               \
+  -DarchetypeArtifactId=udf-archetype          \
+  -DarchetypeVersion={{ book.archetypeVersion }}     \
+  -DgroupId=org.example   \
+  -DartifactId=udf-function    \
+  -Dpackage=org.example.function    \
+  -Dversion=0.0.1-SNAPSHOT      \
+  -Dudf-name=Function \
+  -Dmethod-name=function      \
+  -Dmethod-args='String arg1'   \
+  -Dreturn-type=String    \
+  -Dteiid-version=${teiid-version}
+ 
+----
+
+When executed, you will be asked to confirm the package property
+
+[INFO] Archetype repository not defined. Using the one from [org.teiid.arche-types:udf-archetype:9.0.1] found in catalog local
+[INFO] Using property: groupId = org.example
+[INFO] Using property: artifactId = udf-function
+[INFO] Using property: version = 0.0.1-SNAPSHOT
+[INFO] Using property: package = org.example.function
+[INFO] Using property: method-args = String arg1
+[INFO] Using property: method-name = function
+[INFO] Using property: return-type = String
+[INFO] Using property: udf-name = Function
+Confirm properties configuration:
+groupId: org.example
+artifactId: udf-function
+version: 0.0.1-SNAPSHOT
+package: org.example.function
+method-args: String arg1
+method-name: function
+return-type: String
+udf-name: Function
+ Y: : y
+
+----
+
+type Y (yes) and press enter, and the creation of the udf project will be done
+
+Upon creation, a directory based on the _*artifactId*_ will be created, that will contain the project. 'cd' into that directory and execute a test build to confirm the project was created correctly:
+
+[source,java]
+----
+ mvn clean install
+----
+
+This should build successfully, and now you are ready to start adding your custom code.
+

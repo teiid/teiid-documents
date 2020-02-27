@@ -1,0 +1,210 @@
+
+= XML Definition
+
+Data roles are defined inside the `vdb.xml` file (inside the .vdb Zip archive under META-INF/vdb.xml). The "vdb.xml" file is checked against the schema file `vdb-deployer.xsd`, which can be found in the kit under docs/teiid/schema. This example will show a sample "vdb.xml" file with few simple data roles.
+
+For example, if a VDB defines a table "TableA" in schema "modelName" with columns (column1, column2) - note that the column types do not matter. And we wish to define three roles "RoleA", "RoleB", and "admin" with following permissions:
+
+1.  RoleA has permissions to read, write access to TableA, but can not delete.
+2.  RoleB has permissions that only allow read access to TableA.column1
+3.  admin has all permissions
+
+[source,xml]
+.*vdb.xml defining RoleA, RoleB, and Admin*
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<vdb name="sample" version="1">
+
+    <model name="modelName">
+        <source name="source-name" translator-name="oracle" connection-jndi-name="java:myDS" />
+    </model>
+
+    <data-role name="RoleA">
+        <description>Allow all, except Delete</description>
+
+        <permission>
+            <resource-name>modelName.TableA</resource-name>
+            <resource-type>TABLE</resource-type>
+            <allow-create>true</allow-create>
+            <allow-read>true</allow-read>
+            <allow-update>true</allow-update>
+        </permission>
+
+        <mapped-role-name>role1</mapped-role-name>
+
+    </data-role>
+
+    <data-role name="RoleB">
+        <description>Allow read only</description>
+
+        <permission>
+            <resource-name>modelName.TableA</resource-name>
+            <resource-type>TABLE</resource-type>
+            <allow-read>true</allow-read>
+        </permission>
+
+        <permission>
+            <resource-name>modelName.TableA.colum2</resource-name>
+            <resource-type>COLUMN</resource-type>
+            <allow-read>false</allow-read>
+        </permission>
+
+        <mapped-role-name>role2</mapped-role-name>
+    </data-role>
+
+    <data-role name="admin" grant-all="true">
+        <description>Admin role</description>
+
+        <mapped-role-name>admin-group</mapped-role-name>
+    </data-role>
+</vdb>
+----
+
+The above XML defined three data roles, "RoleA" which allows everything except delete on the table, "RoleB" that allows only read operation on the table, and the "admin" role with all permissions. Since {{ book.productnameFull }} uses deny by default, there is no explicit data-role entry needed for "RoleB". Note that explicit column permissions are not needed for RoleA, since the parent resource path, modelName.TableA, permissions still apply. RoleB however must explicitly disallow read to column2.
+
+The "mapped-role-name" defines the container JAAS roles that are assigned the data role. For assigning roles to your users in the {{ book.asName }}, check out the instructions for the selected Login Module. Check the "Admin Guide" for configuring Login Modules.
+
+Using the grant-all option provides every permission on over object in the vdb.  When importing a vdb and its roles, grant-all applies only to resources from the imported vdb. 
+
+NOTE: The optional resource-type element currently accepts LANGUAGE, SCHEMA, DATABASE, PROCEDURE, FUNCTION, TABLE, COLUMN.  This property ensures that migration issues will be prevented when switching to DDL vdbs or dealing with multi-part table names.  
+
+*Additional Role Attributes*
+
+You may also choose to allow any authenticated user to have a data role by setting the any-authenticated attribute value to true on data-role element.
+
+The "allow-create-temporary-tables" data-role boolean attribute is used to explicitly enable or disable temporary table usage for the role. If it is left unspecified, then the value will be defaulted to false.
+
+[source,xml]
+.*Temp Table Role for Any Authenticated*
+----
+<data-role name="role" any-authenticated="true" allow-create-temporary-tables="true">
+     <description>Temp Table Role for Any Authenticated</description>
+
+     <permission>
+         ...
+     </permission>
+
+</data-role>
+----
+
+*Language Access*
+
+The following shows a vdb xml that allows the use of the javascript language. The allowed-languages property enables the languages use for any purpose in the vdb, while the allow-language permission allows the language to be used by users with RoleA.
+
+[source,xml]
+.*vdb.xml allowing JavaScript access*
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<vdb name="sample" version="1">
+
+    <property name="allowed-languages" value="javascript"/>
+
+    <model name="modelName">
+        <source name="source-name" translator-name="oracle" connection-jndi-name="java:myDS" />
+    </model>
+
+    <data-role name="RoleA">
+        <description>Read and javascript access.</description>
+
+        <permission>
+            <resource-name>modelName</resource-name>
+            <allow-read>true</allow-read>
+        </permission>
+
+        <permission>
+            <resource-name>javascript</resource-name>
+            <allow-language>true</allow-language>
+        </permission>
+
+        <mapped-role-name>role1</mapped-role-name>
+
+    </data-role>
+
+</vdb>
+----
+
+*Row-Based Security*
+
+The following shows a vdb xml utilizing a condition to restrict access. The condition acts as both a filter and constraint. Even though RoleA opens up read/insert access to modelName.tblName, the base-role condition will ensure that only values of column1 matching the current user can be read or inserted. Note that here the constraint enforcement has been disabled.
+
+[source,xml]
+.*vdb.xml allowing conditional access*
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<vdb name="sample" version="1">
+
+    <model name="modelName">
+        <source name="source-name" translator-name="oracle" connection-jndi-name="java:myDS" />
+    </model>
+    
+    <data-role name="base-role" any-authenticated="true">
+        <description>Conditional access</description>
+
+        <permission>
+            <resource-name>modelName.tblName</resource-name>
+            <condition constraint="false">column1=user()</condition>
+        </permission>
+
+    </data-role>
+
+    <data-role name="RoleA">
+        <description>Read/Insert access.</description>
+
+        <permission>
+            <resource-name>modelName.tblName</resource-name>
+            <allow-read>true</allow-read>
+            <allow-create>true</allow-create>
+        </permission>
+
+        <mapped-role-name>role1</mapped-role-name>
+
+    </data-role>
+
+</vdb>
+----
+
+*Column Masking*
+
+The following shows a vdb xml utilizing column masking. Here the RoleA column1 mask takes precedence over the base-role mask, but only for a subset of the rows as specified by the condition. For users without RoleA, access to column1 will effectively be replaced with "CASE WHEN column1=user() THEN column1 END", while for users with RoleA, access to column1 will effectively be replaced with "CASE WHEN column2=’x’ THEN column1 WHEN TRUE THEN CASE WHEN column1=user() THEN column1 END END".
+
+[source,xml]
+.*vdb.xml with column masking*
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<vdb name="sample" version="1">
+
+    <model name="modelName">
+        <source name="source-name" translator-name="oracle" connection-jndi-name="java:myDS" />
+    </model>
+    
+    <data-role name="base-role" any-authenticated="true">
+        <description>Masking</description>
+
+        <permission>
+            <resource-name>modelName.tblName.column1</resource-name>
+            <mask>CASE WHEN column1=user() THEN column1 END</mask>
+        </permission>
+
+    </data-role>
+
+    <data-role name="RoleA">
+        <description>Read/Insert access.</description>
+
+        <permission>
+            <resource-name>modelName.tblName</resource-name>
+            <allow-read>true</allow-read>
+            <allow-create>true</allow-create>
+        </permission>
+
+        <permission>
+            <resource-name>modelName.tblName.column1</resource-name>
+            <condition>column2='x'</condition>
+            <mask order="1">column1</mask>
+        </permission>
+
+        <mapped-role-name>role1</mapped-role-name>
+
+    </data-role>
+
+</vdb>
+----

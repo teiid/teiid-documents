@@ -1,0 +1,113 @@
+
+= Archetype Template Translator Project 
+
+One way to start developing a custom translator is to create a project using the {{ book.productnameFull }} archetype template. When the project is created from the template, it will contain the essential classes (i.e., ExecutionFactory) and resources for you to begin adding your custom logic. Additionally, the maven dependencies are defined in the pom.xml so that you can begin compiling the classes.
+
+NOTE: The project will be created as an independent project and has no parent maven dependencies. It’s designed to be built independent of building {{ book.productnameFull }}.
+
+You have 2 options for creating a translator project; in Eclipse by creating a new maven project from the arche type or by using the command line to generate the project.
+
+== Create Project in Eclipse
+
+To create a Java project in Eclipse from an arche type, perform the following:
+
+* Open the JAVA perspective
+* From the menu select File –> New —> Other
+* In the tree, expand Maven and select Maven Project, press Next
+* On the "Select project name and Location" window, you can accept the defaults, press Next
+* On the "Select an Archetype" window, select Configure button
+* Add the remote catalog: link:http://central.maven.org/maven2/ then click OK to return
+* Enter "teiid" in the filter to see the {{ book.productnameFull }} arche types.
+* Select the translator-archetype v{{ book.archeTypeVersion }}, then press Next
+* Enter all the information (i.e., Group ID, Artifact ID, etc.) needed to generate the project, then click Finish
+
+The project will be created and name according to the _*ArtifactID*_.
+
+== Create Project using Command Line
+
+NOTE: make sure the link:http://central.maven.org/maven2/ repository is accessible via your maven settings.
+
+To create a custom translator project from the command line, you can use the following template command:
+
+***********
+* TEMPLATE
+***********
+
+[source,java]
+----
+mvn archetype:generate               \
+  -DarchetypeGroupId=org.teiid.arche-types               \
+  -DarchetypeArtifactId=translator-archetype          \
+  -DarchetypeVersion=${archetypeVersion}               \
+  -DgroupId=${groupId}                  \
+  -DartifactId=translator-${translator-type}    \
+  -Dpackage=${package}    \
+  -Dversion=${version}    \
+  -Dtranslator-type=${translator-type}   \
+  -Dtranslator-name=${translator-name}
+  -Dteiid-version=${teiid-version}
+----  
+
+********
+* where:
+********
+
+[source,java]
+----
+  -DarchetypeGroupId    -  is the group ID for the arche type to use to generate
+  -DarchetypeArtifactId -  is the artifact ID for the arche type to use to generate
+  -DarchetypeVersion    -  is the version for the arche type to use to generate
+  -DgroupId     -  (user defined) group ID for the new translator project pom.xml
+  -DartifactId      -  (user defined) artifact ID for the new translator project pom.xml
+  -Dpackage     -  (user defined) the package structure where the java and resource files will be created
+  -Dversion     -  (user defined) the version that the new connector project pom.xml will be
+  -Dtranslator-type -  (user defined) the translator type that's used by {{ book.productnameFull }} when mapping the physical source to the translator to use 
+  -Dtranslator-name -  (user defined) the translator name thats used for name the java class names
+  -Dteiid-version   -  the {{ book.productnameFull }} version the connector will depend upon
+----
+
+*********
+* EXAMPLE
+*********
+
+-  this is an example of the template that can be run:
+
+[source,java]
+----
+mvn archetype:generate                    \
+  -DarchetypeGroupId=org.teiid.arche-types   \
+  -DarchetypeArtifactId=translator-archetype  \
+  -DarchetypeVersion={{ book.archetypeVersion }}  \
+  -DgroupId=org.example  \
+  -DartifactId=translator-type  \
+  -Dpackage=org.example.translator.type    \
+  -Dversion=0.0.1-SNAPSHOT  \
+  -Dtranslator-type=type  \
+  -Dtranslator-name=Type  \
+  -Dteiid-version={{ book.fullVersionNumber }}
+----
+
+When executed, you will be asked to confirm the properties
+
+Confirm properties configuration:
+groupId: org.example
+artifactId: translator-type
+version: 0.0.1-SNAPSHOT
+package: org.example.translator.type
+teiid-version: {{ book.fullVersionNumber }}
+translator-name: Type
+translator-type: type
+ Y: : y
+
+
+type Y (yes) and press enter, and the creation of the translator project will be done
+
+Upon creation, a directory based on the _*artifactId*_ will be created, that will contain the project. 'cd' into that directory and execute a test build to confirm the project was created correctly:
+
+[source,java]
+----
+ mvn clean install
+----
+
+This should build successfully, and now you are ready to start adding your custom code.
+
