@@ -90,9 +90,10 @@ See also link:xml-definition[XML Definition] for examples of specifying data rol
 
 .Row-based security
 
-A permission against a fully qualified table/view/procedure may also specify a condition. 
-Unlike the allow CRUD actions defined above, a condition is always applied, not only at the user query level. 
-The condition can be any valid SQL referencing the columns of the table/view/procedure. 
+NOTE: Specifying a condition on a GRANT for row based security has been deprecated.  Specifying a condition on a GRANT is the same as specifying "CREATE POLICY policyName ON schemaName.tblName TO role USING (condition);", such that the condition applies to all operations. 
+
+A POLICY against a fully qualified table/view/procedure may specify a condition to be satisfied by the given role. 
+The condition can be any valid boolean expression referencing the columns of the table/view/procedure. 
 Procedure result set columns may be referenced as `proc.col`. 
 The condition will act as a row-based filter and as a checked constraint for insert/update operations.
 
@@ -105,23 +106,23 @@ The condition will be present regardless of how the table/view is used in the qu
 [source,sql]
 .Example condition
 ----
-GRANT SELECT ON TABLE modelName.tblName CONDITION 'foo=bar' TO superuser;
+CREATE POLICY policyName ON schemaName.tblName TO superUser USING ('foo=bar');
 ----
 
 Inserts and updates against physical tables affected by a condition are further validated so that the insert/change values must 
 pass the condition (evaluate to true) for the insert/update to succeed -- this is effectively the same a SQL constraint. 
 This will happen for all styles of insert/update -- insert with query expression, bulk insert/update, and so on. Inserts/updates 
 against views are not checked with regards to the constraint. 
-You can disable the insert/update constraint check by indicating the condition is not a constraint. 
-This is typically only needed in circumstances when the condition cannot always be evaluated. 
-However, disabling the condition as a constraint simply drops the condition from consideration when logically evaluating the constraint. 
-Any other condition constraints will still be evaluated.
+
+You can disable the insert/update constraint check by restricting the operations that the POLICY applies to. 
 
 [source,sql]
 .Example DDL non-constraint condition
 ----
-GRANT SELECT ON TABLE modelName.tblName CONDITION NOT CONSTRAINT 'foo=bar' TO superuser;
+CREATE POLICY readPolicyName ON schemaName.tblName FOR SELECT,DELETE TO superUser USING ('col>10');
 ----
+
+You may of course add another POLICY to cover the INSERT and UPDATE operations should they require a different condition.
 
 {% if book.targetWildfly %}
 [source,xml]
@@ -134,9 +135,8 @@ GRANT SELECT ON TABLE modelName.tblName CONDITION NOT CONSTRAINT 'foo=bar' TO su
 ----
 {% endif %}
 
-Across multiple applicable roles, if more than one condition applies to the same resource, the conditions will be accumulated 
-disjunctively via OR, that is, "(condition1) *OR* (condition2) …". 
-Therefore, granting a permission with the condition "true" will allow users in that role to see all rows of the given resource.
+If more than one POLICY applies to the same resource, the conditions will be accumulated disjunctively via OR, that is, "(condition1) *OR* (condition2) …". 
+Therefore, creating a POLICY with the condition "true" will allow users in that role to see all rows of the given resource for the given operations.
 
 .Considerations when using conditions
 
