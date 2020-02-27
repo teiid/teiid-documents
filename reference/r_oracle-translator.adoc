@@ -1,30 +1,57 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="oracle-translator"]
+= Oracle translator (oracle)
 
-= Oracle Translator (oracle)
+Also see common xref:jdbc-translators[JDBC translators] information.
 
-Also see common link:JDBC_Translators.html[JDBC Translator Information]
+The Oracle translator, known by the type name *_oracle_*, is for use with Oracle Database 9i or later.
 
-The Oracle Translator, known by the type name *_oracle_*, is for use with Oracle 9i or later.
+[NOTE]
+====
 
-NOTE: The Oracle provide JDBC driver may cause memory issues due to excessive buffer usage.  Please see link:https://issues.redhat.com/browse/TEIID-4815[a related issue] and link:http://www.oracle.com/technetwork/topics/memory.pdf[an Oracle whitepaper].
+The Oracle-provided JDBC driver uses large amounts of memory. 
+Because the driver caches a high volume of data in the buffer, problems can occur on computers that lack sufficient memory allocation. 
 
-== Importer Properties 
+For more information, see the following resources:
 
-* _useGeometryType_- Use the {{ book.productnameFull }} Geometry type when importing columns with a source type of SDO_GEOMETRY. Defaults to false.
+* https://issues.redhat.com/browse/TEIID-4815[Teiid issue].
 
-NOTE: Metadata import from Oracle may be slow.  It is recommended that at least a schema name filter is specified.  There is also the useFetchSizeWithLongColumn=true link:https://docs.oracle.com/cd/E11882_01/appdev.112/e13995/oracle/jdbc/OracleDriver.html[connection property] that can increase the fetch size for metadata queries.  It significantly improves the metadata load process, especially when there are a large number of tables in a schema.
+* http://www.oracle.com/technetwork/topics/memory.pdf[Oracle whitepaper].
+====
 
-== Execution Properties
+.Importer properties 
 
-* _OracleSuppliedDriver_- indicates that the Oracle supplied driver (typically prefixed by ojdbc) is being used. Defaults to true. Set to false when using DataDirect or other Oracle JDBC drivers.
+useGeometryType:: Use the {{ book.productnameFull }} Geometry type when importing columns with a source type of SDO_GEOMETRY. Defaults to false.
++
+NOTE: Metadata import from Oracle may be slow. 
+It is recommended that at least a schema name filter is specified. 
+There is also the `useFetchSizeWithLongColumn=true` https://docs.oracle.com/cd/E11882_01/appdev.112/e13995/oracle/jdbc/OracleDriver.html[connection property] 
+that can increase the fetch size for metadata queries. 
+It significantly improves the metadata load process, especially when there are a large number of tables in a schema.
 
-== Oracle Specific Metadata
+.Execution properties
 
-=== Sequences
+OracleSuppliedDriver:: Indicates that the Oracle supplied driver (typically prefixed by ojdbc) is being used. 
+Defaults to true. 
+Set to `false` when using DataDirect or other Oracle JDBC drivers.
 
-Sequences may be used with the Oracle translator. A sequence may be modeled as a table with a name in source of DUAL and columns with the name in source set to <sequence name>.[nextval|currval]
 
-With {{ book.productnameFull }} 10.0+ sequences may be imported automatically link:JDBC_Translators.adoc[import properties].
+.Oracle-specific metadata
 
+Sequences:: You can use sequences with the Oracle translator. You can model a sequence as a table with a name in source of DUAL, 
+and setting column names in the source set to `<sequence name>.[nextval|currval]`
++
+ifndef::dv-product[]
+With {{ book.productnameFull }} 10.0+, you can import sequences automatically.
+endif::[]
+
+ifdef::dv-product[]
+You can import sequences automatically.
+endif::[]
++
+For more information, see _Importer properties_ in xref:jdbc-translators.adoc[JDBC translators].
+ifndef::dv-product[]
 {{ book.productnameFull }} 8.4 and Prior Oracle Sequence DDL
 
 [source,sql]
@@ -32,23 +59,32 @@ With {{ book.productnameFull }} 10.0+ sequences may be imported automatically li
 CREATE FOREIGN TABLE seq (nextval integer OPTIONS (NAMEINSOURCE 'seq.nextval'), currval integer options (NAMEINSOURCE 'seq.currval') ) OPTIONS (NAMEINSOURCE 'DUAL')
 ----
 
-With {{ book.productnameFull }} 8.5 it’s no longer necessary to rely on a table representation and Oracle specific handling for sequences. See link:DDL_Metadata.adoc[DDL Metadata] for representing currval and nextval as source functions.
+With {{ book.productnameFull }} 8.5 it’s no longer necessary to rely on a table representation and Oracle-specific handling for sequences. 
+endif::[]
+
+For information about representing `currval` and `nextval` as source functions, 
+see xref:ddl-metadata-for-schema-objects[DDL metadata for schema objects]
+
 
 [source,sql]
-.*8.5 Example:Sequence Native Query*
+.*8.5 Example: Sequence native query*
 ----
 CREATE FOREIGN FUNCTION seq_nextval () returns integer OPTIONS ("teiid_rel:native-query" 'seq.nextval');
 ----
 
-You can also use a sequence as the default value for insert columns by setting the column to autoincrement and the name in source to `<element name>:SEQUENCE=<sequence name>.<sequence value>`.
+You can also use a sequence as the default value for insert columns by setting the column to autoincrement, 
+and setting the name in source to `<element name>:SEQUENCE=<sequence name>.<sequence value>`.
 
-=== Rownum
+.Rownum
 
-A rownum column can also added to any Oracle physical table to support the rownum pseudo-column. A rownum column should have a name in source of `rownum`. These rownum columns do not have the same semantics as the Oracle rownum construct so care must be taken in their usage.
+A rownum column can also added to any Oracle physical table to support the rownum pseudo-column. 
+A rownum column should have a name in source of `rownum`. 
+These rownum columns do not have the same semantics as the Oracle rownum construct so care must be taken in their usage.
 
-=== Out Parameter Result Set
+.Out parameter result set
 
-Out parameters for procedures may also be used to return a result set, if this is not represented correctly by the automatic import you need to manually create a result set and represent the output parameter with native type "REF CURSOR".
+Out parameters for procedures may also be used to return a result set, if this is not represented correctly by the automatic 
+import you need to manually create a result set and represent the output parameter with native type `REF CURSOR`.
 
 [source,sql]
 .*DDL for out parameter result set*
@@ -57,11 +93,11 @@ create foreign procedure proc (in x integer, out y object options (native_type '
 returns table (a integer, b string) 
 ----
 
-=== Geo Spatial function support
+.Geospatial function support
 
-Oracle translator supports geo spatial functions. The supported functions are:
+The Oracle translator supports the following geospatial functions:
 
-Relate = sdo_relate
+Relate = sdo_relate::
 
 [source,sql]
 ----
@@ -71,7 +107,7 @@ CREATE FOREIGN FUNCTION sdo_relate (arg1 string,  arg2 Object,  arg3 string) RET
 CREATE FOREIGN FUNCTION sdo_relate (arg1 Object,  arg2 string,  arg3 string) RETURNS string;
 ----
 
-Nearest_Neighbor = sdo_nn
+Nearest_Neighbor = sdo_nn::
 
 [source,sql]
 ----
@@ -80,7 +116,7 @@ CREATE FOREIGN FUNCTION sdo_nn (arg1 Object,  arg2 Object,  arg3 string,  arg4 i
 CREATE FOREIGN FUNCTION sdo_nn (arg1 Object,  arg2 string,  arg3 string,  arg4 integer) RETURNS string;
 ----
 
-Within_Distance = sdo_within_distance
+Within_Distance = sdo_within_distance::
 
 [source,sql]
 ----
@@ -89,14 +125,14 @@ CREATE FOREIGN FUNCTION sdo_within_distance (arg1 string,  arg2 Object,  arg3 st
 CREATE FOREIGN FUNCTION sdo_within_distance (arg1 Object,  arg2 string,  arg3 string) RETURNS string;
 ----
 
-Nearest_Neigher_Distance = sdo_nn_distance
+Nearest_Neigher_Distance = sdo_nn_distance::
 
 [source,sql]
 ----
 CREATE FOREIGN FUNCTION sdo_nn_distance (arg integer) RETURNS integer;
 ----
 
-Filter = sdo_filter
+Filter = sdo_filter::
 
 [source,sql]
 ----
@@ -105,16 +141,21 @@ CREATE FOREIGN FUNCTION sdo_filter (arg1 Object,  arg2 Object,  arg3 string) RET
 CREATE FOREIGN FUNCTION sdo_filter (arg1 string,  arg2 object,  arg3 string) RETURNS string;
 ----
 
-=== Pushdown Functions
+.Pushdown functions
 
-The Oracle translator, depending upon the version of Oracle, will register other non-geospatial pushdown functions with the engine.  This includes:
+Depending on the Oracle version, the Oracle translator, registers the following non-geospatial pushdown functions with the engine:
 
-- TRUNC, both numeric and timestamp versions 
-- LISTAGG, which requires the {{ book.productnameFull }} SQL syntax "LISTAGG(arg [, delim] ORDER BY ...)"
+TRUNC:: Both numeric and timestamp versions.
+LISTAGG:: Requires the {{ book.productnameFull }} SQL syntax "LISTAGG(arg [, delim] ORDER BY ...)"
 
-=== SQLXML
+.SQLXML
 
-If you need to retrieve SQLXML values from oracle and are getting oracle.xdb.XMLType or OPAQUE instances instead, you need to use client driver later than 11.2, 
-have the xdb.jar and xmlparserv2.jar jars in the classpath, and set the system property oracle.jdbc.getObjectReturnsXMLType="false".  
-See also link:https://docs.oracle.com/cd/E11882_01/java.112/e16548/jdbcvers.htm#JJDBC28110[the Oracle documentation].
+If you need to retrieve SQLXML values from Oracle and are getting oracle.xdb.XMLType or OPAQUE instances instead, you make the following 
+changes: 
+ 
+* Use client driver version 11, or later. 
+* Place the `xdb.jar` and `xmlparserv2.jar` files in the classpath.
+* Set the system property `oracle.jdbc.getObjectReturnsXMLType="false"`.  
++
+For more information, see https://docs.oracle.com/cd/E11882_01/java.112/e16548/jdbcvers.htm#JJDBC28110[the Oracle documentation].
   

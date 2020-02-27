@@ -1,18 +1,20 @@
-
-= SYSADMIN Schema
+// Module included in the following assemblies:
+// as_system-schema.adoc
+[id-"sysadmin-schema"]
+= SYSADMIN schema
 :toc: manual
 :toc-placement: preamble
 
 System schema for administrative information and actions.
 
-== Tables/Views
+.Tables and views
 
-=== SYSADMIN.Usage
+.SYSADMIN.Usage
 
-This table supplies information about how views / procedures are defined.
+The following table supplies information about how views and procedures are defined.
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |VDBName
 |string
@@ -32,7 +34,7 @@ This table supplies information about how views / procedures are defined.
 
 |ElementName
 |string
-|Name of column or parameter, may be null to indicate a table/procedure.  Parameter level dependencies are currently not implemented.
+|Name of column or parameter, may be null to indicate a table/procedure. Parameter level dependencies are currently not implemented.
 
 |Uses_UID
 |string
@@ -57,10 +59,11 @@ This table supplies information about how views / procedures are defined.
 
 Every column, parameter, table, or procedure referenced in a procedure or view definition will be shown as used.  
 Likewise every column, parameter, table, or procedure referenced in the expression that defines a view column will be shown as used by that column.
-No dependency information is yet shown for procedure parameters.  Column level dependencies are not yet inferred through intervening temporary or common tables. 
+No dependency information is shown for procedure parameters. 
+Column level dependencies are not yet inferred through intervening temporary or common tables. 
 
 [source,sql]
-.*Example SYSADMIN.Usage*
+.*Example: SYSADMIN.Usage*
 ----
 SELECT * FROM SYSADMIN.Usage
 ----
@@ -68,7 +71,7 @@ SELECT * FROM SYSADMIN.Usage
 Recursive common table queries can be used to determine transitive relationships.
 
 [source,sql]
-.*Example Finding All Incoming Usage*
+.*Example: Finding all incoming usage*
 ----
 with im_using as (
     select 0 as level, uid, Uses_UID, Uses_Name, Uses_Object_Type, Uses_ElementName 
@@ -79,7 +82,7 @@ with im_using as (
 ----
 
 [source,sql]
-.*Example Finding All Outgoing Usage*
+.*Example: Finding all outgoing usage*
 ----
 with uses_me as (
     select 0 as level, uid, Uses_UID, Name, Object_Type, ElementName 
@@ -89,12 +92,12 @@ with uses_me as (
       from usage, uses_me where level < 10 and usage.uses_uid = uses_me.UID) select * from uses_me
 ----
 
-=== SYSADMIN.MatViews
+.SYSADMIN.MatViews
 
-This table supplies information about all the materailized views in the virtual database.
+The following table supplies information about all the materailized views in the virtual database.
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |VDBName
 |string
@@ -110,7 +113,8 @@ This table supplies information about all the materailized views in the virtual 
 
 |TargetSchemaName
 |string
-|Name of the materialized table schema.  Will be null for internal materialization.
+|Name of the materialized table schema. 
+Will be null for internal materialization.
 
 |TargetName
 |string
@@ -118,32 +122,36 @@ This table supplies information about all the materailized views in the virtual 
 
 |Valid
 |boolean
-|True if materialized table is currently valid.  Will be null for external materialization.
+|True if materialized table is currently valid. 
+Will be null for external materialization.
 
 |LoadState
 |boolean
-|The load state, can be one of NEEDS_LOADING, LOADING, LOADED, FAILED_LOAD.  Will be null for external materialization.
+|The load state, can be one of `NEEDS_LOADING`, `LOADING`, `LOADED`, `FAILED_LOAD`. 
+Will be null for external materialization.
 
 |Updated
 |timestamp
-|The timestamp of the last full refresh.  Will be null for external materialization.
+|The timestamp of the last full refresh. 
+Will be null for external materialization.
 
 |Cardinality
 |integer
-|The number of rows in the materialized view table.  Will be null for external materialization.
+|The number of rows in the materialized view table. 
+Will be null for external materialization.
 |===
 
-Valid, LoadState, Updated, and Cardinality may be checked for external materialized views with the SYSADMIN.matViewStatus procedure.
+Valid, LoadState, Updated, and Cardinality may be checked for external materialized views with the `SYSADMIN.matViewStatus` procedure.
 
 [source,sql]
-.*Example SYSADMIN.MatViews*
+.*Example: SYSADMIN.MatViews*
 ----
 SELECT * FROM SYSADMIN.MatViews
 ----
 
-=== SYSADMIN.VDBResources
+.SYSADMIN.VDBResources
 
-This table provides the current VDB contents.
+The following table provides the current VDB contents.
 
 |===
 |Column Name |Type |Description
@@ -158,17 +166,17 @@ This table provides the current VDB contents.
 |===
 
 [source,sql]
-.*Example SYSADMIN.VDBResources*
+.*Example: SYSADMIN.VDBResources*
 ----
 SELECT * FROM SYSADMIN.VDBResources
 ----
 
-=== SYSADMIN.Triggers
+.SYSADMIN.Triggers
 
-This table provides the Triggers in the virtual database.
+The following table provides the triggers in the virtual database.
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |VDBName
 |string
@@ -208,17 +216,17 @@ This table provides the Triggers in the virtual database.
 |===
 
 [source,sql]
-.*Example SYSADMIN.Triggers*
+.*Example: SYSADMIN.Triggers*
 ----
 SELECT * FROM SYSADMIN.Triggers
 ----
 
-=== SYSADMIN.Views
+.SYSADMIN.Views
 
-This table provides the Views in the virtual database.
+The following table provides the views in the virtual database.
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |VDBName
 |string
@@ -242,17 +250,17 @@ This table provides the Views in the virtual database.
 |===
 
 [source,sql]
-.*Example SYSADMIN.Views*
+.*Example: SYSADMIN.Views*
 ----
 SELECT * FROM SYSADMIN.Views
 ----
 
-=== SYSADMIN.StoredProcedures
+.SYSADMIN.StoredProcedures
 
-This table provides the StoredProcedures in the virtual database.
+The following table provides the StoredProcedures in the virtual database.
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |VDBName
 |string
@@ -276,19 +284,19 @@ This table provides the StoredProcedures in the virtual database.
 |===
 
 [source,sql]
-.*Example SYSADMIN.StoredProcedures*
+.*Example: SYSADMIN.StoredProcedures*
 ----
 SELECT * FROM SYSADMIN.StoredProcedures
 ----
 
-=== SYSADMIN.Requests
+.SYSADMIN.Requests
 
-This table provides active requests against the virtual database.
+The following table provides active requests against the virtual database.
 
  VDBName string(255) NOT NULL,
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |VDBName
 |string
@@ -323,12 +331,12 @@ This table provides active requests against the virtual database.
 |thread state, can be one of RUNNING, QUEUED, IDLE
 |===
 
-=== SYSADMIN.Sessions
+.SYSADMIN.Sessions
 
-This table provides the Sessions active for the virtual database.
+The following table provides the Sessions active for the virtual database.
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |VDBName
 |string
@@ -355,12 +363,12 @@ This table provides the Sessions active for the virtual database.
 |IP Address as reported by the client
 |===
 
-=== SYSADMIN.Transactions
+.SYSADMIN.Transactions
 
-This table provides the active Transactions.
+The following table provides the active Transactions.
 
 |===
-|Column Name |Type |Description
+|Column name |Type |Description
 
 |TransactionId
 |string
@@ -381,9 +389,9 @@ This table provides the active Transactions.
 
 Note: Transactions that are not associated with a given session will always be shown.  Transactions that are associated with a session must be for a session with the current VDB.
 
-== Procedures
+.Procedures
 
-=== SYSADMIN.isLoggable
+.SYSADMIN.isLoggable
 
 Tests if logging is enabled at the given level and context.
 
@@ -395,7 +403,7 @@ SYSADMIN.isLoggable(OUT loggable boolean NOT NULL RESULT, IN level string NOT NU
 Returns true if logging is enabled. level can be one of the log4j levels: OFF, FATAL, ERROR, WARN, INFO, DEBUG, TRACE. level defaults to 'DEBUG' and context defaults to 'org.teiid.PROCESSOR'
 
 [source,sql]
-.*Example isLoggable*
+.*Example: isLoggable*
 ----
 IF ((CALL SYSADMIN.isLoggable(context=>'org.something'))
 BEGIN
@@ -405,7 +413,7 @@ BEGIN
 END
 ----
 
-=== SYSADMIN.logMsg
+.SYSADMIN.logMsg
 
 Log a message to the underlying logging system.
 
@@ -414,19 +422,21 @@ Log a message to the underlying logging system.
 SYSADMIN.logMsg(OUT logged boolean NOT NULL RESULT, IN level string NOT NULL DEFAULT 'DEBUG', IN context string NOT NULL DEFAULT 'org.teiid.PROCESSOR', IN msg object)
 ----
 
-Returns true if the message was logged. level can be one of the log4j levels: OFF, FATAL, ERROR, WARN, INFO, DEBUG, TRACE. level defaults to 'DEBUG' and context defaults to 'org.teiid.PROCESSOR'.  A null msg object will be logged as the string 'null'.
+Returns true if the message was logged. level can be one of the log4j levels: OFF, FATAL, ERROR, WARN, INFO, DEBUG, TRACE. 
+The level defaults to 'DEBUG' and context defaults to 'org.teiid.PROCESSOR'. A null msg object will be logged as the string 'null'.
 
 [source,sql]
-.*Example logMsg*
+.*Example: logMsg*
 ----
 CALL SYSADMIN.logMsg(msg=>'some debug', context=>'org.something')
 ----
 
-This will log the message 'some debug' at the default level DEBUG to the context org.something.
+The preceding example will log the message 'some debug' at the default level DEBUG to the context org.something.
 
 === SYSADMIN.refreshMatView
 
-Full refresh/load of an internal materialized view.  Returns integer RowsUpdated. -1 indicates a load is in progress, otherwise the cardinality of the table is returned. See the link:../caching/Caching_Guide.adoc[Caching Guide] for more.
+Full refresh/load of an internal materialized view.  Returns integer RowsUpdated. -1 indicates a load is in progress, 
+otherwise the cardinality of the table is returned. See the link:../caching/Caching_Guide.adoc[Caching Guide] for more information.
 
 See also SYSADMIN.loadMatView
 
@@ -439,14 +449,15 @@ SYSADMIN.refreshMatView(OUT RowsUpdated integer NOT NULL RESULT, IN ViewName str
 
 Refreshes a row in an internal materialized view.
 
-Returns integer RowsUpdated. -1 indicates the materialized table is currently invalid. 0 indicates that the specified row did not exist in the live data query or in the materialized table. See the Caching Guide for more.
+Returns integer RowsUpdated. -1 indicates the materialized table is currently invalid. 0 indicates that the specified 
+row did not exist in the live data query or in the materialized table. See the Caching Guide for more information.
 
 [source,sql]
 ----
 SYSADMIN.CREATE FOREIGN PROCEDURE refreshMatViewRow(OUT RowsUpdated integer NOT NULL RESULT, IN ViewName string NOT NULL, IN Key object NOT NULL, VARIADIC KeyOther object)
 ----
 
-**Example of SYSADMIN.refreshMatViewRow**
+**Example: SYSADMIN.refreshMatViewRow**
 
 The materialized view `SAMPLEMATVIEW` has 3 rows under the `TestMat` Model as below:
 
@@ -470,16 +481,19 @@ EXEC SYSADMIN.refreshMatViewRow('TestMat.SAMPLEMATVIEW', '101', 'a1', 'b1')
 
 Refreshes rows in an internal materialized view.
 
-Returns integer RowsUpdated. -1 indicates the materialized table is currently invalid. Any row that does not exist in the live data query or in the materialized table will not count toward the RowsUpdated. See the Caching Guide for more.
+Returns integer RowsUpdated. -1 indicates the materialized table is currently invalid. Any row that does not 
+exist in the live data query or in the materialized table will not count toward the RowsUpdated. 
+For more information, see the http://teiid.github.io/teiid-documents/master/sb/caching/Caching_Guide.html[Teiid Caching Guide].
 
 [source,sql]
 ----
 SYSADMIN.refreshMatViewRows(OUT RowsUpdated integer NOT NULL RESULT, IN ViewName string NOT NULL, VARIADIC Key object[] NOT NULL)
 ----
 
-**Example of SYSADMIN.refreshMatViewRows**
+**Example: SYSADMIN.refreshMatViewRows**
 
-Continuing use the `SAMPLEMATVIEW` in Example of <<SYSADMIN.refreshMatViewRow, SYSADMIN.refreshMatViewRow>>. Assuming the primary key only contains one column, id, update all rows:
+Continuing use the `SAMPLEMATVIEW` in Example of <<SYSADMIN.refreshMatViewRow, SYSADMIN.refreshMatViewRow>>. 
+Assuming the primary key only contains one column, id, update all rows:
 
 [source,sql]
 ----
@@ -506,7 +520,7 @@ All stat values are nullable. Passing a null stat value will leave corresponding
 
 === SYSADMIN.setProperty
 
-Set an extension metadata property for the given record. Extension metadata is typically used by link:Translators.html[Translators].
+Set an extension metadata property for the given record. Extension metadata is typically used by xref:translators[Translators].
 
 [source,sql]
 ----
@@ -516,12 +530,12 @@ SYSADMIN.setProperty(OUT OldValue clob NOT NULL RESULT, IN UID string NOT NULL, 
 Setting a value to null will remove the property.
 
 [source,sql]
-.*Example Property Set*
+.*Example: Property Set*
 ----
 CALL SYSADMIN.setProperty(uid=>(SELECT uid FROM TABLES WHERE name='tab'), name=>'some name', value=>'some value')
 ----
 
-This will set the property 'some name'='some value' on table tab.
+The preceding example will set the property 'some name'='some value' on table tab.
 
 NOTE: The use of this procedure will not trigger replanning of associated prepared plans.
 
@@ -538,12 +552,13 @@ SYSADMIN.setTableStats(IN tableName string NOT NULL, IN cardinality long NOT NUL
 
 NOTE: <<SYSADMIN.setColumnStats, SYSADMIN.setColumnStats>>, <<SYSADMIN.setProperty, SYSADMIN.setProperty>>, <<SYSADMIN.setTableStats, SYSADMIN.setTableStats>> are Metadata Procedures. 
 {% if book.targetWildfly %}
-A MetadataRepository must be configured to make a non-temporary metadata update persistent. See the link:../dev/Developers_Guide.adoc[Developer’s Guide] Runtime Metadata Updates section for more.
+A MetadataRepository must be configured to make a non-temporary metadata update persistent. 
+See the link:../dev/Developers_Guide.adoc[Developer’s Guide] Runtime Metadata Updates section for more information.
 {% endif %}
 
-=== SYSADMIN.matViewStatus
+.SYSADMIN.matViewStatus
 
-matViewStatus is used to retrieve Materialized views' status via schemaName and viewName.
+matViewStatus is used to retrieve the status of materialized views via schemaName and viewName.
 
 Returns tables which contains TargetSchemaName, TargetName, Valid, LoadState, Updated, Cardinality, LoadNumber, OnErrorAction.
 
@@ -552,11 +567,12 @@ Returns tables which contains TargetSchemaName, TargetName, Valid, LoadState, Up
 SYSADMIN.matViewStatus(IN schemaName string NOT NULL, IN viewName string NOT NULL) RETURNS TABLE (TargetSchemaName varchar(50), TargetName varchar(50), Valid boolean, LoadState varchar(25), Updated timestamp, Cardinality long, LoadNumber long, OnErrorAction varchar(25))
 ----
 
-=== SYSADMIN.loadMatView
+.SYSADMIN.loadMatView
 
 loadMatView is used to perform a complete refresh of an internal or external materialized table.
 
-Returns integer RowsInserted. -1 indicates the materialized table is currently loading. And -3 indicates there was an exception when performing the load. See the Caching Guide for more.
+Returns integer RowsInserted. -1 indicates the materialized table is currently loading. And -3 indicates there was an exception when performing the load. 
+See the Caching Guide for more information.
 
 [source,sql]
 ----
@@ -564,25 +580,27 @@ SYSADMIN.loadMatView(IN schemaName string NOT NULL, IN viewName string NOT NULL,
 ----
 
 [source,sql]
-.*Example loadMatView*
+.*Example: loadMatView*
 ----
 exec SYSADMIN.loadMatView(schemaName=>'TestMat',viewname=>'SAMPLEMATVIEW', invalidate=>'true')
 ----
 
-=== SYSADMIN.updateMatView
+.SYSADMIN.updateMatView
 
 The updateMatView procedure is used to update a subset of an internal or external materialized table based on the refresh criteria.
 
-The refresh criteria may reference the view columns by qualified name, but all instances of '.' in the view name will be replaced by '_' as an alias is actually being used. 
+The refresh criteria might reference the view columns by qualified name, but all instances of `.` in the view name will be replaced by `_`, 
+because an alias is actually being used. 
 
-Returns integer RowsUpdated. -1 indicates the materialized table is currently invalid. And-3 indicates there was an exception when performing the update. See the Caching Guide for more.
+Returns integer RowsUpdated. -1 indicates the materialized table is currently invalid. And-3 indicates there was an exception when performing the update. 
+See the Caching Guide for more information.
 
 [source,sql]
 ----
 SYSADMIN.updateMatView(IN schemaName string NOT NULL, IN viewName string NOT NULL, IN refreshCriteria string) RETURNS integer
 ----
 
-**SYSADMIN.updateMatView**
+.**SYSADMIN.updateMatView**
 
 Continuing use the `SAMPLEMATVIEW` in Example of <<SYSADMIN.refreshMatViewRow, SYSADMIN.refreshMatViewRow>>. Update view rows:
 
@@ -591,7 +609,7 @@ Continuing use the `SAMPLEMATVIEW` in Example of <<SYSADMIN.refreshMatViewRow, S
 EXEC SYSADMIN.updateMatView('TestMat', 'SAMPLEMATVIEW', 'id = ''101'' AND a = ''a1''')
 ----
 
-=== SYSADMIN.cancelRequest
+.SYSADMIN.cancelRequest
 
 Cancel the user request identified by execution id for the given session.
 
@@ -603,12 +621,12 @@ SYSADMIN.cancelRequest(OUT cancelled boolean NOT NULL RESULT, IN SessionId strin
 ----
 
 [source,sql]
-.*Example Cancel*
+.*Example: Cancel*
 ----
 CALL SYSADMIN.cancelRequest('session id', 1)
 ----
 
-=== SYSADMIN.terminateSession
+.SYSADMIN.terminateSession
 
 Terminate the session with the given identifier.
 
@@ -620,14 +638,14 @@ SYSADMIN.terminateSession(OUT terminated boolean NOT NULL RESULT, IN SessionId s
 ----
 
 [source,sql]
-.*Example Termination*
+.*Example: Termination*
 ----
 CALL SYSADMIN.terminateSession('session id')
 ----
 
-=== SYSADMIN.terminateTransaction
+.SYSADMIN.terminateTransaction
 
-Terminate the transaction associated with the given session by marking the transaction as rollback only.
+Terminate the transaction associated with a session by marking the transaction as rollback only.
 
 See also SYSADMIN.TRANSACTIONS
 
@@ -636,10 +654,10 @@ See also SYSADMIN.TRANSACTIONS
 SYSADMIN.terminateTransaction(IN sessionid string NOT NULL)
 ----
 
-Note: it is currently not possible to cancel a transaction not associtated with a session.
+NOTE: You cannot only cancel transactions that are associated with a session.
 
 [source,sql]
-.*Example Terminate*
+.*Example: Terminate*
 ----
 CALL SYSADMIN.terminateTransaction('session id')
 ----

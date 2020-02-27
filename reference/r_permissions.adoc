@@ -1,22 +1,41 @@
-
+// Module included in the following assemblies:
+// as_data-roles.adoc
+[id="permissions"]
 = Permissions
 :toc: manual
 :toc-placement: preamble
 
-Permissions or grants control access to data in several ways.  There are simple access restrictions to READ, UPDATE, etc. down to a column level - note that the column or table metadata won't be visible to the user in JDBC/ODBC unless at user can read at least a single column.
+Permissions, or grants, control access to data in several ways. 
+There are simple access restrictions to READ, UPDATE, and so forth, down to a column level.
+
+NOTE: Column or table metadata are not visible to JDBC/ODBC users unless the user has permission to read at least a single column.
 
 You may also use permissions to filter and mask results, and constrain/check update values.
 
-== User Query Permissions
+.User query permissions
 
-CREATE, READ, UPDATE, DELETE (CRUD) permissions can be set for any resource path in a VDB. A resource path can be as specific as the fully qualified name of a column or as general a top level model (schema) name. Permissions granted to a particular path apply to it and any resource paths that share the same partial name. For example, granting read to "model" will also grant read to "model.table", "model.table.column", etc. Allowing or denying a particular action is determined by searching for permissions from the most to least specific resource paths. The first permission found with a specific allow or deny will be used. Thus it is possible to set very general permissions at high-level resource path names and to override only as necessary at more specific resource paths.
+CREATE, READ, UPDATE, DELETE (CRUD) permissions can be set for any resource path in a VDB. 
+A resource path can be as specific as the fully qualified name of a column or as general a top level model (schema) name. 
+Permissions granted to a particular path apply to it and any resource paths that share the same partial name. 
+For example, granting read to "model" will also grant read to "model.table", "model.table.column", and so on. 
+Allowing or denying a particular action is determined by searching for permissions from the most to least specific resource paths. 
+The first permission found with a specific allow or deny will be used. 
+Thus, it is possible to set very general permissions at high-level resource path names and to override only as necessary at more specific resource paths.
 
-Permission grants are only needed for resources that a role needs access to. Permissions are also only applied to the columns/tables/procedures in the user query - not to every resource accessed transitively through view and procedure definitions. It is important therefore to ensure that permission grants are applied consistently across models that access the same resources.
+Permission grants are only needed for resources that a role needs access to. 
+Permissions are also applied only to the columns/tables/procedures in the user query, 
+not to every resource that is accessed transitively through view and procedure definitions. 
+It is important therefore to ensure that permission grants are applied consistently across models that access the same resources.
 
-NOTE: Unlike previous versions of {{ book.productnameFull }}, non-visible models are accessible by user queries. To restrict user access at a model level, at least one data role should be created to enable data role checking. In turn that role can be mapped to any authenticated user and should not grant permissions to models that should be inaccessible.
+WARNING: Non-visible models are accessible by user queries. 
+To restrict user access at a model level, at least one data role should be created to enable data role checking. 
+In turn, that role can be mapped to any authenticated user, and should not grant permissions to models that should be inaccessible.
 
-Permissions are not applicable to the SYS and pg_catalog schemas. These metadata reporting schemas are always accessible regardless of the user. The SYSADMIN schema however may need permissions as applicable.
+Permissions are not applicable to the SYS and pg_catalog schemas. 
+These metadata reporting schemas are always accessible regardless of the user. 
+The SYSADMIN schema however may need permissions as applicable.
 
+.Permission assignment
 To process a _SELECT_ statement or a stored procedure execution, the user account requires the following access rights:
 
 * _READ_- on the Table(s) being accessed or the procedure being called.
@@ -60,29 +79,43 @@ To process any statement against a {{ book.productnameFull }} temporary table re
 
 * _CREATE_,_READ_,_UPDATE_,_DELETE_ - against the target model/schema as needed for operations against a FOREIGN temporary table.
 
-== Row and Column Based Security
+.Row- and column-based security
 
-Although specified in a similar way to user query CRUD permissions, row-based and column-based permissions may be used together or separately to control at a more granular and consistent level the data returned to users. 
+Although specified in a similar way to user query CRUD permissions, row-based and column-based permissions may be used together 
+or separately to control the data that is returned to users at a more granular and consistent level. 
 
 {% if book.targetWildfly %}
-See also link:XML_Definition.adoc[XML Definition] for examples of specifying data roles with row and column based security.
+See also link:xml-definition[XML Definition] for examples of specifying data roles with row and column based security.
 {% endif %}
 
-== Row-Based Security
+.Row-based security
 
-A permission against a fully qualified table/view/procedure may also specify a condition. Unlike the allow CRUD actions defined above, a condition is always applied - not just at the user query level. The condition can be any valid SQL referencing the columns of the table/view/procedure. Procedure result set columns may be referenced as proc.col. The condition will act as a row-based filter and as a checked constraint for insert/update operations.
+A permission against a fully qualified table/view/procedure may also specify a condition. 
+Unlike the allow CRUD actions defined above, a condition is always applied, not only at the user query level. 
+The condition can be any valid SQL referencing the columns of the table/view/procedure. 
+Procedure result set columns may be referenced as `proc.col`. 
+The condition will act as a row-based filter and as a checked constraint for insert/update operations.
 
-=== How Row-Based Conditions Are Applied
+.Application of row-based conditions
 
-A condition is applied conjunctively to update/delete/select where clauses against the affected resource. Those queries will therefore only ever be effective against the subset of rows that pass the condition, i.e. "SELECT * FROM TBL WHERE blah *AND condition*". The condition will be present regardless of how the table/view is used in the query, whether via a union, join, etc.
+A condition is applied conjunctively to update/delete/select WHERE clauses against the affected resource. 
+Those queries will therefore only ever be effective against the subset of rows that pass the condition, such as "SELECT * FROM TBL WHERE something *AND condition*. 
+The condition will be present regardless of how the table/view is used in the query, whether by means of a union, join, or other operation.
 
 [source,sql]
-.Example Condition
+.Example condition
 ----
 GRANT SELECT ON TABLE modelName.tblName CONDITION 'foo=bar' TO superuser;
 ----
 
-Inserts and updates against physical tables affected by a condition are further validated so that the insert/change values must pass the condition (evaluate to true) for the insert/update to succeed - this is effectively the same a SQL constraint. This will happen for all styles of insert/update - insert with query expression, bulk insert/update, etc. Inserts/updates against views are not checked with regards to the constraint. You may disable the insert/update constraint check by indicating the condition is not a constraint. This is typically only needed in circumstances when the condition cannot always be evaluated. However disabling the condition as a constraint simply drops the condition from consideration when logically evaluating the constraint. Any other condition constraints will still be evaluated.
+Inserts and updates against physical tables affected by a condition are further validated so that the insert/change values must 
+pass the condition (evaluate to true) for the insert/update to succeed -- this is effectively the same a SQL constraint. 
+This will happen for all styles of insert/update -- insert with query expression, bulk insert/update, and so on. Inserts/updates 
+against views are not checked with regards to the constraint. 
+You can disable the insert/update constraint check by indicating the condition is not a constraint. 
+This is typically only needed in circumstances when the condition cannot always be evaluated. 
+However, disabling the condition as a constraint simply drops the condition from consideration when logically evaluating the constraint. 
+Any other condition constraints will still be evaluated.
 
 [source,sql]
 .Example DDL non-constraint condition
@@ -101,19 +134,26 @@ GRANT SELECT ON TABLE modelName.tblName CONDITION NOT CONSTRAINT 'foo=bar' TO su
 ----
 {% endif %}
 
-Across multiple applicable roles if more than one condition applies to the same resource, the conditions will be accumulated disjunctively via OR, i.e. "(condition1) *OR* (condition2) …". Therefore granting a permission with the condition "true" will allow users in that role to see all rows of the given resource.
+Across multiple applicable roles, if more than one condition applies to the same resource, the conditions will be accumulated 
+disjunctively via OR, that is, "(condition1) *OR* (condition2) …". 
+Therefore, granting a permission with the condition "true" will allow users in that role to see all rows of the given resource.
 
-=== Considerations When Using Conditions
+.Considerations when using conditions
 
-Non-pushdown conditions may adversely impact performance, since their evaluation may inhibit pushdown of query constructs on top of the affected resource. Multiple conditions against the same resource should generally be avoided as any non-pushdown condition will cause the entire OR of conditions to not be pushed down. In some circumstances the insertion of permission conditions may require that the plan be altered with the addition of an inline view, which can result in adverse performance against sources that do not support inline views.
+Non-pushdown conditions can adversely impact performance, since their evaluation may inhibit pushdown of query constructs on top of the affected resource. 
+Multiple conditions against the same resource should generally be avoided, because any non-pushdown condition causes the entire OR statement to not be pushed down. 
+If you must insert permission conditions, be careful when adding inline views, because they can result in degraded performance if your sources do not support them.
 
 Pushdown of multi-row insert/update operations will be inhibited since the condition must be checked for each row.
 
-In addition to managing permission conditions on a per-role basis, another approach is to add condition permissions would in an any authenticated role such that the conditions are generalized for all users/roles using the `hasRole`, `user`, and other such security functions. The advantage of the latter approach is that there is effectively a static row-based policy in effect such that all query plans can still be shared between users.
+You can manage permission conditions on a per-role basis, but another approach is to add condition permissions to any authenticated role. 
+By adding permissions in this way, the conditions are generalized for anyone using the `hasRole`, `user`, and other security functions. 
+The advantage of this latter approach is that it provides you with a static row-based policy. 
+As a result, your entire range of query plans can be shared among your users.
 
-Handling of null values is up to the implementer of the data role and may require ISNULL checks to ensure that null values are allowed when a column is nullable.
+How you handle null values is up to you. You can implement ISNULL checks to ensure that null values are allowed when a column is _nullable_.
 
-=== Limitations
+.Limitations when using conditions
 
 * Conditions on source tables that act as check constraints must currently not contain correlated subqueries.
 * Conditions may not contain aggregate or windowed functions.
@@ -121,28 +161,50 @@ Handling of null values is up to the implementer of the data role and may requir
 
 NOTE: Row-based filter conditions are enforced even for materialized view loads.
 
-You should ensure that tables consumed to produce materialized views do not have row-based filter conditions on them that could affect the materialized view results.
+You should ensure that tables consumed to produce materialized views do not have row-based filter conditions on them 
+that could affect the materialized view results.
 
-== Column Masking
+.Column masking
 
-A permission against a fully qualified table/view/procedure column may also specify a mask and optionally a condition. When the query is submitted the roles are consulted and the relevant mask/condition information are combined to form a searched case expression to mask the values that would have been returned by the access. Unlike the CRUD allow actions defined above, the resulting masking effect is always applied - not just at the user query level. The condition and expression can be any valid SQL referencing the columns of the table/view/procedure. Procedure result set columns may be referenced as proc.col.
+A permission against a fully qualified table/view/procedure column can also specify a mask and optionally a condition. 
+When the query is submitted, the roles are consulted, and the relevant mask/condition information are combined to form a 
+searched case expression to mask the values that would have been returned by the access. 
+Unlike the CRUD allow actions defined above, the resulting masking effect is always applied -- not just at the user query level. 
+The condition and expression can be any valid SQL referencing the columns of the table/view/procedure. 
+Procedure result set columns may be referenced as `proc.col`.
 
-=== How Column Masks Are Applied
+.Application of column masks
 
-Column masking is applied only against SELECTs. Column masking is applied logically after the affect of row based security. However since both views and source tables may have row and column based security, the actual view level masking may take place on top of source level masking. If the condition is specified along with the mask, then the effective mask expression effects only a subset of the rows: "CASE WHEN condition THEN mask ELSE column". Otherwise the condition is assumed to be TRUE, meaning that the mask applies to all rows.
+Column masking is applied only against SELECTs. 
+Column masking is applied logically after the affect of row-based security. 
+However, because both views and source tables canb have row- and column-based security, 
+the actual view-level masking can take place on top of source level masking. 
+If the condition is specified along with the mask, then the effective mask expression affects only a subset of the rows: 
+"CASE WHEN condition THEN mask ELSE column". 
+Otherwise the condition is assumed to be TRUE, meaning that the mask applies to all rows.
 
-If multiple roles specify a mask against a column, the mask order argument will determine their precedence from highest to lowest as part of a larger searched case expression. For example a mask with the default order of 0 and a mask with an order of 1 would be combined as "CASE WHEN condition1 THEN mask1 WHEN condition0 THEN mask0 ELSE column".
+If multiple roles specify a mask against a column, the mask order argument will determine their precedence from highest to lowest 
+as part of a larger searched case expression. 
+For example, a mask with the default order of 0 and a mask with an order of 1 would be combined as 
+"CASE WHEN condition1 THEN mask1 WHEN condition0 THEN mask0 ELSE column".
 
-=== Considerations When Using Masking
+.Column masking considerations 
 
-Non-pushdown masking conditions/expressions may adversely impact performance, since their evaluation may inhibit pushdown of query constructs on top of the affected resource. In some circumstances the insertion of masking may require that the plan be altered with the addition of an inline view, which can result in adverse performance against sources that do not support inline views.
+Non-pushdown masking conditions/expressions can adversely impact performance, because their evaluation might inhibit pushdown 
+of query constructs on top of the affected resource. 
+In some circumstances the insertion of masking may require that the plan be altered with the addition of an inline view, 
+which can result in adverse performance against sources that do not support inline views.
 
-In addition to managing masking on a per-role basis with the use of the order value, another approach is to specify masking in a single any authenticated role such that the conditions/expressions are generalized for all users/roles using the `hasRole`, `user`, and other such security functions. The advantage of the latter approach is that there is effectively a static masking policy in effect such that all query plans can still be shared between users.
+In addition to managing masking on a per-role basis with the use of the order value, 
+another approach is to specify masking in a single any authenticated role such that the conditions/expressions are generalized for all users/roles 
+using the `hasRole`, `user`, and other such security functions. 
+The advantage of the latter approach is that there is effectively a static masking policy in effect, 
+such that all query plans can still be shared between users.
 
-=== Limitations
+.Column masking limitations
 
-* In the event that two masks have the same order value, it is not well defined what order they are applied in.
-* Masks or their conditions may not contain aggregate or windowed functions.
+* If two masks have the same order value, it is not well defined what order they are applied in.
+* Masks or their conditions cannot contain aggregate or windowed functions.
 * Tables and procedures referenced via subqueries will still have row-based filters and column masking applied to them.
 
 NOTE: Masking is enforced even for materialized view loads.

@@ -1,6 +1,9 @@
-= Virtual Database Related Properties
+// Module included in the following assemblies:
+// as_virtual-databases.adoc
+[id="vdb-properties"]
+= Virtual database properties
 
-== Properties DATABASE Level
+.DATABASE properties
 
 * _domain-ddl_
 
@@ -8,19 +11,27 @@
 {% if book.targetWildfly %}
 * _cache-metadata_
 
-Can be "true" or "false". defaults to "false" for -vdb.xml deployments otherwise "true". If "false", {{ book.productnameFull }} will obtain metadata once for every launch of the vdb. "true" will save a file containing the metadata into the PROFILE/data/teiid directory
+Can be `true` or `false. 
+Defaults to `false` for -vdb.xml deployments otherwise `true`. 
+If `false`, {{ book.productnameFull }} will obtain metadata once for every launch of the virtual database. 
+`true` will save a file containing the metadata into the PROFILE/data/teiid directory.
 {% endif %}
 * _query-timeout_ 
+Sets the default query timeout in milliseconds for queries executed against this VDB. 
+`0` indicates that the server default query timeout should be used. 
+Defaults to 0. 
+Will have no effect if the server default query timeout is set to a lesser value. 
+Note that clients can still set their own timeouts that will be managed on the client side.
 
-Sets the default query timeout in milliseconds for queries executed against this VDB. 0 indicates that the server default query timeout should be used. Defaults to 0. Will have no effect if the server default query timeout is set to a lesser value. Note that clients can still set their own timeouts that will be managed on the client side.
 {% if book.targetWildfly %}
 * _lib_ 
-
-Set to a list of modules for the vdb classpath for user defined function loading. See also link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[Support for User-Defined Functions (Non-Pushdown)].
+Set to a list of modules for the vdb classpath for user defined function loading. 
+For more information, see _Support for User-Defined Functions (Non-Pushdown)_ in the 
+link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[Translator Development Guide].
 
 * _security-domain_ 
-
-Set to the security domain to use if a specific security domain is applicable to the VDB. Otherwise the security domain list from the transport will be used.
+Set to the security domain to use if a specific security domain is applicable to the VDB. 
+Otherwise the security domain list from the transport will be used.
 
 [source,xml]
 ----
@@ -29,9 +40,11 @@ Set to the security domain to use if a specific security domain is applicable to
 
 NOTE: An admin needs to configure a matching "custom-security" login module in standalone-teiid.xml configuration file before the VDB is deployed.
 {% endif %}
-* _connection.XXX_ 
 
-For use by the ODBC transport and OData to set default connection/execution properties. See link:../client-dev/Driver_Connection.adoc[Driver Connection] for all properties. Note these are set on the connection after it has been established.
+* _connection.XXX_ 
+For use by the ODBC transport and OData to set default connection/execution properties. 
+For more information about related properties, see _Driver Connection_ in the link:../client-dev/Driver_Connection.adoc[Client Developer's Guide]. 
+Note these are set on the connection after it has been established.
 
 [source,sql]
 ----
@@ -47,19 +60,28 @@ CREATE DATABASE vdb OPTIONS ("connection.partialResultsMode" true);
 
 * _authentication-type_ 
 
-Authentication type of configured security domain. Allowed values currently are (GSS, USERPASSWORD). The default is set on the transport (typically USERPASSWORD).
+Authentication type of configured security domain. 
+Allowed values currently are (GSS, USERPASSWORD). 
+The default is set on the transport (typically USERPASSWORD).
 
 * _password-pattern_ 
 
-Regular expression matched against the connecting user’s name that determines if USERPASSWORD authentication is used. _password-pattern_ Takes precedence of over _authentication-type_. The default is _authentication-type_.
+Regular expression matched against the connecting user’s name that determines if USERPASSWORD authentication is used. 
+_password-pattern_ takes precedence over _authentication-type_. 
+The default is _authentication-type_.
 
 * _gss-pattern_ 
 
-Regular expression matched against the connecting user’s name that determines if GSS authentication is used. _gss-pattern_ Takes precedence of over _password-pattern_. The default is _password-pattern_.
+Regular expression matched against the connecting user’s name that determines if GSS authentication is used. 
+_gss-pattern_ takes precedence over _password-pattern_. 
+The default is _password-pattern_.
 
 * _max-sessions-per-user_ (11.2+)
 
-Maximum number of sessions allowed for each user, as identified by the user name, of this vdb.  No setting or a negative number indicates no per user max, but the session service max will still apply.  This is enforced at each {{ book.productnameFull }} server member in a cluster, and not cluster wide.  Derived sessions, created for tasks under an existing session, do not count against this maximum.
+Maximum number of sessions allowed for each user, as identified by the user name, of this VDB. 
+No setting or a negative number indicates no per user max, but the session service max will still apply. 
+This is enforced at each {{ book.productnameFull }} server member in a cluster, and not cluster wide. 
+Derived sessions that are created for tasks under an existing session do not count against this maximum.
 
 * _model.visible_ 
 
@@ -67,33 +89,69 @@ Used to override the visibility of imported vdb models, where model is the name 
 
 * _include-pg-metadata_ 
 
-By default, PG metadata is always added to VDB unless link:../admin/System_Properties.adoc[System Properties] set property _org.teiid.addPGMetadata_ to false. This property enables adding PG metadata per VDB. Please note that if you are using ODBC to access your VDB, the VDB must include PG metadata.
+By default, PostgreSQL metadata is always added to VDB unless you set the property _org.teiid.addPGMetadata_ to false. 
+This property enables adding PG metadata per VDB. 
+For more information, _System Properties_ in the link:../admin/System_Properties.adoc[Administrator's Guide].
+Please note that if you are using ODBC to access your VDB, the VDB must include PG metadata.
 
 * _lazy-invalidate_ 
 
-By default TTL expiration will be invalidating - see link:../caching/Internal_Materialization.adoc[Internal Materialization]. Setting lazy-invalidate to true will make ttl refreshes non-invalidating.
+By default TTL expiration will be invalidating. 
+For more information, see _Internal Materialization_ in the link:../caching/Internal_Materialization.adoc[Caching guide]. 
+Setting lazy-invalidate to `true` will make TTL refreshes non-invalidating.
 
 * _deployment-name_ 
 
 Effectively reserved. Will be set at deploy time by the server to the name of the server deployment.
 
-== Properties Schema/Model Level
+.Schema and model properties
 * _visible_
 
-Marks the Schema is visible when value is _true_. visible falg is set to _false_, the Schema's metadata is hidden from any metadata requests. However note that this does not prohibit the user from issuing the queries against this Schema, in order to control the queries look into Data Roles.
+Marks the schema as visible when the value is `true` (the default setting). 
+When the `visible` flag is set to `false`, the schema's metadata is hidden from any metadata requests. 
+Setting the property to `false` does not prohibit you from issuing queries against this schema. 
+For information about how to control access to data, see xref:data-roles[Data roles].
 
 * _multisource_
 
-Marks the Schema as multi-source mode, where the data exists in partitions in multiple different sources. It is assumed that metadata of the Schema across all the data sources is exactly same.
+Sets the schema to multi-source mode, where the data exists in partitions in multiple different sources. 
+It is assumed that metadata of the schema is the same across all data sources.
 
 * _multisource.columnName_
 
-In a multi-source schema all the tables will be implicitly added with additional column to designate the partition column about identity of that source. This property defines the name of that column, the type will be always 'String'.
+In a multi-source schema, an additional column that designates the partition is implicitly added to all tables to identify the source. 
+This property defines the name of that column, the type will be always `String`.
 
 * _multisource.addColumn_
 
-This flag to indicate, to add the implicit partition column to all the tables in this Schema. _true_ value adds the column. Default is _false_.
+This flag specifies to add an implicit partition column to all the tables in this schema. 
+A _true_ value adds the column. Default is _false_.
 
 * _allowed-languages_
 
-The allowed-languages property enables the languages use for any purpose in the vdb, while the allow-language permission allows the language to be used by users with RoleA. 
+Specifies a comma-separated list of programming languages that can be used for any purpose in the VDB. 
+Names are case-sensitive, and the list cannot include whitespace between entries. 
+For example, `<property name="allowed-languages" value="javascript"/>`
+
+* _allow-language_ Specifies that a role has permission to use a language that is listed in the `allowed-languages` property.
+For example, the `allow-language` property in following excerpt specifies that users with the role `RoleA` have permission to 
+use Javascript.  
+
+```
+<data-role name="RoleA">
+        <description>Read and javascript access.</description>
+
+        <permission>
+            <resource-name>modelName</resource-name>
+            <allow-read>true</allow-read>
+        </permission>
+
+        <permission>
+            <resource-name>javascript</resource-name>
+            <allow-language>true</allow-language>
+        </permission>
+
+        <mapped-role-name>role1</mapped-role-name>
+
+    </data-role>
+```

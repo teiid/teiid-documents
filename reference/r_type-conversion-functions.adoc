@@ -1,7 +1,10 @@
+// Module included in the following assemblies:
+// as_scalar-functions.adoc
+[id="type-conversion-functions"]
+= Type conversion functions
 
-= Type Conversion Functions
-
-Within your queries, you can convert between datatypes using the CONVERT or CAST keyword. See also link:Type_Conversions.html[Type Conversions]
+Within your queries, you can convert between datatypes using the CONVERT or CAST keyword. 
+For more information, see link:Type_Conversions.html[Type conversions]
 
 |===
 |Function |Definition
@@ -15,5 +18,5 @@ Within your queries, you can convert between datatypes using the CONVERT or CAST
 
 These functions are identical other than syntax; CAST is the standard SQL syntax, CONVERT is the standard JDBC/ODBC syntax.
 
-IMPORTANT: Options that are specified on the type, such as length, precision, scale, etc., are effectively ignored - the runtime is simply converting from one object type to another.
-
+IMPORTANT: Options that are specified on the type, such as length, precision, scale, etc., are effectively 
+ignored - the runtime is simply converting from one object type to another.

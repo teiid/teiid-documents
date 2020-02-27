@@ -1,0 +1,120 @@
+// Module included in the following assemblies:
+// as_expressions.adoc
+[id="aggregate-functions"]
+.Aggregate functions
+
+Aggregate functions take sets of values from a group produced by an explicit or implicit GROUP BY 
+and return a single scalar value computed from the group.
+
+{{ book.productnameFull }} supports the following aggregate functions:
+
+* COUNT(*) – count the number of values (including nulls and duplicates) in a group. 
+Returns an integer - an exception will be thrown if a larger count is computed.
+* COUNT(x) – count the number of values (excluding nulls) in a group. 
+Returns an integer - an exception will be thrown if a larger count is computed.
+* COUNT_BIG(*) – count the number of values (including nulls and duplicates) in a group. 
+Returns a long - an exception will be thrown if a larger count is computed.
+* COUNT_BIG(x) – count the number of values (excluding nulls) in a group. 
+Returns a long - an exception will be thrown if a larger count is computed.
+* SUM(x) – sum of the values (excluding nulls) in a group.
+* AVG(x) – average of the values (excluding nulls) in a group.
+* MIN(x) – minimum value in a group (excluding null).
+* MAX(x) – maximum value in a group (excluding null).
+* ANY(x)/SOME(x) – returns TRUE if any value in the group is TRUE (excluding null).
+* EVERY(x) – returns TRUE if every value in the group is TRUE (excluding null).
+* VAR_POP(x) – biased variance (excluding null) logically equals(sum(x^2) - sum(x)^2/count(x))/count(x); returns a double; null if count = 0.
+* VAR_SAMP(x) – sample variance (excluding null) logically equals(sum(x^2) - sum(x)^2/count(x))/(count(x) - 1); returns a double; null if count < 2.
+* STDDEV_POP(x) – standard deviation (excluding null) logically equals SQRT(VAR_POP(x)).
+* STDDEV_SAMP(x) – sample standard deviation (excluding null) logically equals SQRT(VAR_SAMP(x)).
+* TEXTAGG(expression [as name], … [DELIMITER char] [QUOTE char | NO QUOTE] [HEADER] [ENCODING id] [xref:order-by-clause[ORDER BY …]]) – CSV.
+text aggregation of all expressions in each row of a group. When DELIMITER is not specified, by default comma(,) is used as delimiter. 
+All non-null values will be quoted. Double quotes(") is the default quote character. Use QUOTE to specify a different value, or NO QUOTE 
+for no value quoting. If HEADER is specified, the result contains the header row as the first line - the header line will be present 
+even if there are no rows in a group. This aggregation returns a blob.
+
+[source,sql]
+----
+TEXTAGG(col1, col2 as name DELIMITER '|' HEADER ORDER BY col1)
+----
+
+* XMLAGG(xml_expr [xref:order-by-clause[ORDER BY …]]) – XML concatenation of all XML expressions 
+in a group (excluding null). The ORDER BY clause cannot reference alias names or use positional ordering.
+* JSONARRAY_AGG(x [xref:order-by-clause[ORDER BY …]]) – creates a JSON array result as a Clob 
+including null value. The ORDER BY clause cannot reference alias names or use positional ordering. 
+For more information, see xref:json_functions[JSONARRAY function].
+
+.Example: Integer value expression
+
+[source,sql]
+----
+jsonArray_Agg(col1 order by col1 nulls first)
+----
+
+could return
+
+[source,sql]
+----
+[null,null,1,2,3]
+----
+
+* STRING_AGG(x, delim) – creates a lob results from the concatenation of x using the delimiter delim. 
+If either argument is null, no value is concatenated. Both arguments are expected to be character (string/clob) or binary (varbinary, blob), 
+and the result will be CLOB or BLOB respectively. 
+DISTINCT and ORDER BY are allowed in STRING_AGG.
+
+.Example: String aggregate expression
+
+[source,sql]
+----
+string_agg(col1, ',' ORDER BY col1 ASC)
+----
+
+could return
+
+[source,sql]
+----
+'a,b,c'
+----
+
+* LIST_AGG(x [, delim]) WITHIN GROUP (ORDER BY ...) – a form of STRING_AGG that uses the same syntax as Oracle. 
+Here `x` can be any type that can be converted to a string. The `delim` value, if specified, must be a literal, and the `ORDER BY` value is required. 
+This is only a parsing alias for an equivalent `string_agg` expression.
+
+.Example: List aggregate expression
+
+[source,sql]
+----
+listagg(col1, ',') WITHIN GROUP (ORDER BY col1 ASC)
+----
+
+could return
+
+[source,sql]
+----
+'a,b,c'
+----
+
+* ARRAY_AGG(x [xref:order-by-clause[ORDER BY …]]) – Creates an array with a base type that
+matches the expression x. The ORDER BY clause cannot reference alias names or use positional ordering.
+* agg([DISTINCT|ALL] arg … [xref:order-by-clause[ORDER BY …]]) – A user defined aggregate function.
+
+.Syntax rules
+
+* Some aggregate functions may contain a keyword 'DISTINCT' before the expression, indicating 
+that duplicate expression values should be ignored. DISTINCT is not allowed in COUNT(*) and is 
+not meaningful in MIN or MAX (result would be unchanged), so it can be used in COUNT, SUM, and AVG.
+* Aggregate functions cannot be used in FROM, GROUP BY, or WHERE clauses without an intervening query expression.
+* Aggregate functions cannot be nested within another aggregate function without an intervening query expression.
+* Aggregate functions may be nested inside other functions.
+* Any aggregate function may take an optional FILTER clause of the form
+
+[source,sql]
+----
+FILTER ( WHERE condition )
+----
+
+The condition may be any boolean value expression that does not contain a subquery or a correlated 
+variable. The filter will logically be evaluated for each row prior to the grouping operation. 
+If false the aggregate function will not accumulate a value for the given row.
+
+For more information on aggregates, see the sections on GROUP BY or HAVING.

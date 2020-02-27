@@ -1,5 +1,7 @@
-
-= XML Definition
+// Module included in the following assemblies:
+// as_data-roles.adoc
+[id="xml-definition"]
+= XML definition
 
 Data roles are defined inside the `vdb.xml` file (inside the .vdb Zip archive under META-INF/vdb.xml). The "vdb.xml" file is checked against the schema file `vdb-deployer.xsd`, which can be found in the kit under docs/teiid/schema. This example will show a sample "vdb.xml" file with few simple data roles.
 

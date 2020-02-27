@@ -1,10 +1,13 @@
+// Module included in the following assemblies:
+// as_scalar-functions.adoc
+[id="numeric-functions"]
+= Numeric functions
 
-= Numeric Functions
-
-Numeric functions return numeric values (integer, long, float, double, biginteger, bigdecimal). They generally take numeric values as inputs, though some take strings.
+Numeric functions return numeric values (integer, long, float, double, biginteger, bigdecimal). 
+They generally take numeric values as inputs, though some take strings.
 
 |===
-|Function |Definition |Datatype Constraint
+|Function |Definition |Datatype constraint
 
 |+ - * /
 |Standard numeric operators
@@ -137,7 +140,7 @@ It will only effect the random values returned by the {{ book.productnameFull }}
 
 |ROUND(x,y)
 |Round x to y places; negative values of y indicate places to the left of the decimal point
-|x in {integer, float, double, bigdecimal} y is integer, return is same type as x
+|x in {integer, float, double, bigdecimal} y is integer, return is same type as x.
 
 |SIGN(x)
 |1 if x > 0, 0 if x = 0, -1 if x < 0
@@ -172,13 +175,20 @@ It will only effect the random values returned by the {{ book.productnameFull }}
 |x in {integer}, return type is integer
 |===
 
-[a] The precision and scale of non-bigdecimal arithmetic function functions results matches that of Java. The results of bigdecimal operations match Java, except for division, which uses a preferred scale of max(16, dividend.scale + divisor.precision + 1), which then has trailing zeros removed by setting the scale to max(dividend.scale, normalized scale)
+[a] The precision and scale of non-bigdecimal arithmetic function functions results matches that of Java. 
+The results of bigdecimal operations match Java, except for division, which uses a preferred scale of 
+max(16, dividend.scale + divisor.precision + 1), which then has trailing zeros removed by setting the scale to max(dividend.scale, normalized scale).
 
-== Parsing Numeric Datatypes from Strings
+.Parsing numeric datatypes from strings
 
-{{ book.productnameFull }} offers a set of functions you can use to parse numbers from strings. For each string, you need to provide the formatting of the string. These functions use the convention established by the java.text.DecimalFormat class to define the formats you can use with these functions. You can learn more about how this class defines numeric string formats by visiting the {{ book.javaVersionUrl }}/docs/api/java.base/java/text/DecimalFormat.html[Java Documentation Web site].
+{{ book.productnameFull }} offers a set of functions you can use to parse numbers from strings. 
+For each string, you need to provide the formatting of the string. These functions use the convention 
+established by the java.text.DecimalFormat class to define the formats you can use with these functions. 
+You can learn more about how this class defines numeric string formats by visiting the Sun Java Web site 
+at the following {{ book.javaVersionUrl }}/docs/api/java/text/DecimalFormat.html[URL for Sun Java].
 
-For example, you could use these function calls, with the formatting string that adheres to the java.text.DecimalFormat convention, to parse strings and return the datatype you need:
+For example, you could use these function calls, with the formatting string that adheres to the 
+java.text.DecimalFormat convention, to parse strings and return the datatype you need:
 
 |===
 |Input String |Function Call to Format String |Output Value |Output Datatype
@@ -209,11 +219,16 @@ For example, you could use these function calls, with the formatting string that
 |integer
 |===
 
-== Formatting Numeric Datatypes as Strings
+.Formatting numeric datatypes as strings
 
-{{ book.productnameFull }} offers a set of functions you can use to convert numeric datatypes into strings. For each string, you need to provide the formatting. These functions use the convention established within the java.text.DecimalFormat class to define the formats you can use with these functions. You can learn more about how this class defines numeric string formats by visiting the {{ book.javaVersionUrl }}/docs/api/java.base/java/text/DecimalFormat.html[Java Documentation Web site].
+{{ book.productnameFull }} offers a set of functions you can use to convert numeric datatypes into strings. 
+For each string, you need to provide the formatting. These functions use the convention established within 
+the java.text.DecimalFormat class to define the formats you can use with these functions. 
+You can learn more about how this class defines numeric string formats by visiting the Sun Java Web site 
+at the following {{ book.javaVersionUrl }}/docs/api/java/text/DecimalFormat.html[URL for Sun Java] .
 
-For example, you could use these function calls, with the formatting string that adheres to the java.text.DecimalFormat convention, to format the numeric datatypes into strings:
+For example, you could use these function calls, with the formatting string that adheres 
+to the java.text.DecimalFormat convention, to format the numeric datatypes into strings:
 
 |===
 |Input Value |Input Datatype |Function Call to Format String |Output String
@@ -243,4 +258,3 @@ For example, you could use these function calls, with the formatting string that
 |formatInteger(total, '#,##0;-#,##0')
 |'1,234,567'
 |===
-

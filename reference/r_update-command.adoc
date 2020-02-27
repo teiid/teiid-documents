@@ -1,0 +1,14 @@
+// Module included in the following assemblies:
+// as_update-commands.adoc
+[id="update-command"]
+= UPDATE command
+
+The UPDATE command is used to modify records in a table. 
+The operation results in 1 or more records being updated, or in no records being updated if none match the criteria.
+
+.Example syntax
+
+[source,sql]
+----
+UPDATE table [[AS] alias] SET (column=value,...) [WHERE criteria]
+----

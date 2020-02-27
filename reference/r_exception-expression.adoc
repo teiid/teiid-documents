@@ -1,0 +1,22 @@
+// Module included in the following assemblies:
+// as_procedure-language.adoc
+[id="exception-expression"]
+= Exception expression
+
+An exception expression creates an exception that can be raised or used as a warning.
+
+.Usage
+
+[source,sql]
+----
+SQLEXCEPTION message [SQLSTATE state [, code]] CHAIN exception
+----
+
+.Syntax rules
+
+* Any of the values may be null.
+* `message` and `state` are string expressions that specify the exception message and SQL state.
+ {{ book.productnameFull }} does not fully comply with the ANSI SQL specification on SQL state usage, 
+ but you are allowed to set any SQL state you choose.
+* `code` is an integer expression that specifies the vendor code.
+* `exception` must be a variable reference to an exception or an exception expression, and will be chained to the resulting exception as its parent.

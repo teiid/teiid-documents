@@ -1,12 +1,15 @@
-
-= String Functions
+// Module included in the following assemblies:
+// as_scalar-functions.adoc
+[id="string-functions"]
+= String functions
 
 String functions generally take strings as inputs and return strings as outputs.
 
-Unless specified, all of the arguments and return types in the following table are strings and all indexes are 1-based. The 0 index is considered to be before the start of the string.
+Unless specified, all of the arguments and return types in the following table are strings and all indexes are 1-based. 
+The 0 index is considered to be before the start of the string.
 
 |===
-|Function |Definition |Datatype Constraint
+|Function |Definition |Datatype constraint
 
 |x \|\| y
 |Concatenation operator
@@ -17,10 +20,11 @@ Unless specified, all of the arguments and return types in the following table a
 |return type is integer
 
 |CHR(x) CHAR(x)
-|Provide the character[1] for ASCII value x [a]
+|Provide the character[1] for ASCII value x [a].
 |x in {integer}
 
-[1] For the engine's implementations of the ASCII and CHR functions characters are limited to UCS2 values only.  For pushdown there is little consistency among sources for character values beyond character code 255.  
+[1] For the engine's implementations of the ASCII and CHR functions, characters are limited to UCS2 values only.  
+For pushdown there is little consistency among sources for character values beyond character code 255.  
 
 |CONCAT(x, y)
 |Concatenates x and y with ANSI semantics. If x and/or y is null, returns null.
@@ -35,7 +39,7 @@ Unless specified, all of the arguments and return types in the following table a
 |x, y in {string}, returns boolean
 
 |INITCAP(x)
-|Make first letter of each word in string x capital and all others lowercase
+|Make first letter of each word in string x capital and all others lowercase.
 |x in {string}
 
 |INSERT(str1, start, length, str2)
@@ -55,32 +59,34 @@ Unless specified, all of the arguments and return types in the following table a
 |return type is integer
 
 |LOCATE(x, y) POSITION(x IN y)
-|Find position of x in y starting at beginning of y
+|Find position of x in y starting at beginning of y.
 |x in {string}, y in {string}, return integer
 
 |LOCATE(x, y, z)
-|Find position of x in y starting at z
+|Find position of x in y starting at z.
 |x in {string}, y in {string}, z in {integer}, return integer
 
 |LPAD(x, y)
-|Pad input string x with spaces on the left to the length of y
+|Pad input string x with spaces on the left to the length of y.
 |x in {string}, y in {integer}, return string
 
 |LPAD(x, y, z)
-|Pad input string x on the left to the length of y using character z
+|Pad input string x on the left to the length of y using character z.
 |x in {string}, y in {string}, z in {character}, return string
 
 |LTRIM(x)
-|Left trim x of blank chars
+|Left trim x of blank chars.
 |x in {string}, return string
 
 |QUERYSTRING(path [, expr [AS name] …])
-|Returns a properly encoded query string appended to the given path. Null valued expressions are omitted, and a null path is treated as ". Names are optional for column reference expressions.e.g. `QUERYSTRING('path', 'value' as "&x", ' & ' as y, null as z) returns 'path?%26x=value&y=%20%26%20'`
-|path, expr in {string}. name is an identifier
+|Returns a properly encoded query string appended to the given path. Null valued expressions are omitted, 
+nd a null path is treated as ". Names are optional for column reference expressions. For example, 
+`QUERYSTRING('path', 'value' as "&x", ' & ' as y, null as z) returns 'path?%26x=value&y=%20%26%20'`
+|path, expr in {string}. name is an identifier.
 
 |REPEAT(str1,instances)
 |Repeat string1 a specified number of times
-|str1 in {string}, instances in {integer} return string
+|str1 in {string}, instances in {integer} return string.
 
 |RIGHT(x, y)
 |Get right y characters of x
@@ -111,11 +117,12 @@ Unless specified, all of the arguments and return types in the following table a
 |y, z in {integer}
 
 |TRANSLATE(x, y, z)
-|Translate string x by replacing each character in y with the character in z at the same position
+|Translate string x by replacing each character in y with the character in z at the same position.
 |x in {string}
 
 |TRIM([[LEADING\|TRAILING\|BOTH] [x] FROM] y)
-|Trim the leading, trailing, or both ends of a string y of character x. If LEADING/TRAILING/BOTH is not specified, BOTH is used. If no trim character x is specficed then the blank space `' is used.
+|Trim the leading, trailing, or both ends of a string y of character x. If LEADING/TRAILING/BOTH 
+is not specified, BOTH is used. If no trim character x is specified, then the blank space `' is used.
 |x in {character}, y in {string}
 
 |UCASE(x)
@@ -123,23 +130,29 @@ Unless specified, all of the arguments and return types in the following table a
 |x in {string}
 
 |UNESCAPE(x)
-|Unescaped version of x. Possible escape sequences are \b - backspace, \t - tab, \n - line feed, \f - form feed, \r - carriage return. \uXXXX, where X is a hex value, can be used to specify any unicode character. \XXX, where X is an octal digit, can be used to specify an octal byte value. If any other character appears after an escape character, that character will appear in the output and the escape character will be ignored.
+|Unescaped version of x. Possible escape sequences are \b - backspace, \t - tab, \n - line feed, \f - form feed, 
+\r - carriage return. \uXXXX, where X is a hex value, can be used to specify any unicode character. 
+\XXX, where X is an octal digit, can be used to specify an octal byte value. 
+If any other character appears after an escape character, that character will appear in the output and the escape character will be ignored.
 |x in {string}
 |===
 
-[a] Non-ASCII range characters or integers used in these functions may produce different results or exceptions depending on where the function is evaluated ({{ book.productnameFull }} vs. source). {{ book.productnameFull }}’s uses Java default int to char and char to int conversions, which operates over UTF16 values.
+[a] Non-ASCII range characters or integers used in these functions may produce different results 
+or exceptions depending on where the function is evaluated ({{ book.productnameFull }} vs. source). 
+{{ book.productnameFull }}’s uses Java default int to char and char to int conversions, which operates over UTF16 values.
 
-[b] The substring function depending upon the source does not have consistent behavior with respect to negative from/length arguments nor out of bounds from/length arguments. The default {{ book.productnameFull }} behavior is:
+[b] The substring function depending upon the source does not have consistent behavior with 
+respect to negative from/length arguments nor out of bounds from/length arguments. The default {{ book.productnameFull }} behavior is:
 
-* return a null value when the from value is out of bounds or the length is less than 0
-* a zero from index is effective the same as 1.
-* a negative from index is first counted from the end of the string.
+* Return a null value when the from value is out of bounds or the length is less than 0
+* A zero from index is effective the same as 1.
+* A negative from index is first counted from the end of the string.
 
-Some sources however can return an empty string instead of null and some sources do not support negative indexing. If any of these inconsistencies impact you, then please log an issue.
+Some sources, howeverm can return an empty string instead of null, and some sources do not support negative indexing. 
 
-== Encoding Functions
+.Encoding functions
 
-=== TO_CHARS
+.TO_CHARS
 
 Return a clob from the blob with the given encoding.
 
@@ -148,9 +161,13 @@ Return a clob from the blob with the given encoding.
 TO_CHARS(x, encoding [, wellformed])
 ----
 
-BASE64, HEX, UTF-8-BOM and the built-in Java Charset names are valid values for the encoding [b]. x is a blob, encoding is a string, wellformed is a boolean, and returns a clob. The two argument form defaults to wellformed=true. If wellformed is false, the conversion function will immediately validate the result such that an unmappable character or malformed input will raise an exception.
+BASE64, HEX, UTF-8-BOM and the built-in Java Charset names are valid values for the encoding [b]. 
+x is a blob, encoding is a string, wellformed is a boolean, and returns a clob. 
+The two argument form defaults to wellformed=true. 
+If wellformed is false, the conversion function will immediately validate the result 
+such that an unmappable character or malformed input will raise an exception.
 
-=== TO_BYTES
+.TO_BYTES
 
 Return a blob from the clob with the given encoding.
 
@@ -159,13 +176,20 @@ Return a blob from the clob with the given encoding.
 TO_BYTES(x, encoding [, wellformed])
 ----
 
-BASE64, HEX, UTF-8-BOM and the builtin Java Charset names are valid values for the encoding [b]. x in a clob, encoding is a string, wellformed is a boolean and returns a blob. The two argument form defaults to wellformed=true. If wellformed is false, the conversion function will immediately validate the result such that an unmappable character or malformed input will raise an exception. If wellformed is true, then unmappable characters will be replaced by the default replacement character for the character set. Binary formats, such as BASE64 and HEX, will be checked for correctness regardless of the wellformed parameter.
+BASE64, HEX, UTF-8-BOM and the builtin Java Charset names are valid values for the encoding [b]. 
+x in a clob, encoding is a string, wellformed is a boolean and returns a blob. 
+The two argument form defaults to wellformed=true. 
+If wellformed is false, the conversion function will immediately validate the result such that 
+an unmappable character or malformed input will raise an exception. 
+If wellformed is true, then unmappable characters will be replaced by the default replacement character for the character set. 
+Binary formats, such as BASE64 and HEX, will be checked for correctness regardless of the wellformed parameter.
 
-[b] See the https://docs.oracle.com/javase/8/docs/technotes/guides/intl/encoding.doc.html[Charset docs] for more on supported Charset names.
+[b] For more information about supported Charset names, 
+see the https://docs.oracle.com/javase/8/docs/technotes/guides/intl/encoding.doc.html[Charset docs].
 
-== Replacement Functions
+.Replacement functions
 
-=== REPLACE
+.REPLACE
 
 Replace all occurrences of a given string with another.
 
@@ -176,7 +200,7 @@ REPLACE(x, y, z)
 
 Replace all occurrences of y with z in x. x, y, z are strings and the return value is a string.
 
-=== REGEXP_REPLACE
+.REGEXP_REPLACE
 
 Replace one or all occurrences of a given pattern with another string.
 
@@ -187,27 +211,27 @@ REGEXP_REPLACE(str, pattern, sub [, flags])
 
 Replace one or more occurrences of pattern with sub in str. All arguments are strings and the return value is a string.
 
-The pattern parameter is expected to be a valid http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html[Java Regular Expression]
+The pattern parameter is expected to be a valid http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html[Java regular expression]
 
 The flags argument can be any concatenation of any of the valid flags with the following meanings:
 
 |===
-|flag |name |meaning
+|Flag |Name |Meaning
 
 |g
-|global
-|Replace all occurrences, not just the first
+|Global
+|Replace all occurrences, not just the first.
 
 |m
-|multiline
-|Match over multiple lines
+|Multi-line
+|Match over multiple lines.
 
 |i
-|case insensitive
-|Match without case sensitivity
+|Case insensitive
+|Match without case sensitivity.
 |===
 
-Usage:
+.Usage:
 
 The following will return "xxbye Wxx" using the global and case insensitive options.
 

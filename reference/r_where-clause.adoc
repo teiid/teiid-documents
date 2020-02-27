@@ -1,9 +1,10 @@
-
-= WHERE Clause
+// Module included in the following assemblies:
+// as_dml-commands.adoc
+[id="where-clause"]
+= WHERE clause
 
 The WHERE clause defines the criteria to limit the records affected by SELECT, UPDATE, and DELETE statements.
 
 The general form of the WHERE is:
 
-* WHERE link:Criteria.adoc[Criteria]
-
+* WHERE xref:r_criteria[Criteria]

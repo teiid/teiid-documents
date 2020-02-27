@@ -1,0 +1,158 @@
+// Module included in the following assemblies:
+// as_expressions.adoc
+[id="window-functions"]
+= Window functions
+
+{{ book.productnameFull }} supports ANSI SQL 2003 window functions. A window function allows 
+an aggregate function to be applied to a subset of the result set, without the need for a 
+GROUP BY clause. A window function is similar to an aggregate function, but requires the use of an OVER clause or window specification.
+
+.Usage:
+
+[source,sql]
+----
+  aggregate [FILTER (WHERE ...)] OVER ( [partition] [ORDER BY ...] [frame] )
+| FIRST_VALUE(val) OVER ( [partition] [ORDER BY ...] [frame] )
+| LAST_VALUE(val) OVER ( [partition] [ORDER BY ...] [frame] )
+| analytical OVER ( [partition] [ORDER BY ...] )
+
+partition := PARTITION BY expression [, expression]*
+
+frame := range_or_rows extent
+
+range_or_rows := RANGE | ROWS
+
+extent := 
+    frameBound 
+  | BETWEEN frameBound AND frameBound
+
+frameBound := 
+    UNBOUNDED PRECEDING 
+  | UNBOUNDED FOLLOWING
+  | n PRECEDING 
+  | n FOLLOWING
+  | CURRENT ROW
+
+----
+
+In the preceding syntax, `aggregate` can refer to any xref:aggregate-functions[aggregate function]. 
+Keywords exist for the following analytical functions ROW_NUMBER, RANK, DENSE_RANK, PERCENT_RANK, CUME_DIST.  
+There are also the FIRST_VALUE, LAST_VALUE, LEAD, LAG, NTH_VALUE, and NTILE analytical functions. For more information, 
+see xref:analytical-function-definitions[Analytical functions definitions].
+
+.Syntax rules
+
+* Window functions can only appear in the SELECT and ORDER BY clauses of a query expression.
+* Window functions cannot be nested in one another.
+* Partitioning and order by expressions cannot contain subqueries or outer references.
+* An aggregate ORDER BY clause cannot be used when windowed.
+* The window specification ORDER BY clause cannot reference alias names or use positional ordering.
+* Windowed aggregates may not use DISTINCT if the window specification is ordered.
+* Analytical value functions may not use DISTINCT and require the use of an ordering in the window specification.
+* RANGE or ROWS requires the ORDER BY clause to be specified.  The default frame if not specified 
+is RANGE UNBOUNDED PRECEDING.  If no end is specified the default is CURRENT ROW.  No combination of start 
+and end is allowed such that the end is before the start - for example UNBOUNDED FOLLOWING is not allow 
+as a start nor is UNBOUNDED PRECEDING allowed as an end.
+* RANGE cannot be used n PRECEDING or n FOLLOWING
+
+[[analytical-function-definitions]]
+.Analytical function definitions
+
+Ranking functions::
+* RANK() – Assigns a number to each unique ordering value within each partition starting at 1, such 
+that the next rank is equal to the count of prior rows.
+* DENSE_RANK() – Assigns a number to each unique ordering value within each partition starting at 1, such that the next rank is sequential.
+* PERCENT_RANK() – Computed as (RANK - 1) / ( RC - 1) where RC is the total row count of the partition. 
+* CUME_DIST() – Computed as the PR / RC where PR is the rank of the row including peers and RC is the total row count of the partition.
++
+By default all values are integers - an exception will be thrown if a larger value is needed.  
+Use the system org.teiid.longRanks to have RANK, DENSE_RANK, and ROW_NUMBER return long values instead. 
+
+Value functions::
+* FIRST_VALUE(val) – Return the first value in the window frame with the given ordering.
+* LAST_VALUE(val) – Return the last observed value in the window frame with the given ordering.
+* LEAD(val [, offset [, default]]) - Access the ordered value in the window that is offset rows ahead of the current row. 
+If there is no such row, then the default value will be returned. 
+If not specified the offset is 1 and the default is null.
+* LAG(val [, offset [, default]]) - Access the ordered value in the window that is offset rows behind of the current row. 
+If there is no such row, then the default value will be returned.  
+If not specified the offset is 1 and the default is null.
+* NTH_VALUE(val, n) - Returns the nth val in window frame. 
+The index must be greater than 0. 
+If no such value exists, then null is returned. 
+
+Row value functions::
+* ROW_NUMBER() – Sequentially assigns a number to each row in a partition starting at `1`.
+* NTILE(n) – Divides the partition into n tiles that differ in size by at most `1`. 
+Larger tiles will be created sequentially starting at the first. `n` must be greater than `0`.
+
+.Processing
+
+Window functions are logically processed just before creating the output from the SELECT clause. 
+Window functions can use nested aggregates if a GROUP BY clause is present. 
+There is no guaranteed effect on the output ordering from the presence of window functions. 
+The SELECT statement must have an ORDER BY clause to have a predictable ordering.
+
+NOTE: An ORDER BY in the OVER clause follows the same rules pushdown and processing rules as a top level ORDER BY. 
+In general this means you should specify NULLS FIRST/LAST as null handling may differ between engine and pushdown processing. 
+Also see the system properties controlling sort behavior if you different default behavior. 
+
+{{ book.productnameFull }} processes all window functions with the same window specification together. 
+In general, a full pass over the row values coming into the SELECT clause is required for each unique window specification. 
+For each window specification the values are grouped according to the PARTITION BY clause. 
+If no PARTITION BY clause is specified, then the entire input is treated as a single partition. 
+
+The frame for the output value is determined based upon the definition of the analytical function or the `ROWS/RANGE` clause. 
+The default frame is `RANGE UNBOUNDED PRECEDING`, which also implies the default end bound of `CURRENT ROW`. 
+`RANGE` computes over a row and its peers together. 
+`ROWS` computes over every row. 
+Most analytical functions, such as `ROW_NUMBER`, have an implicit `RANGE/ROWS` - which is why a different one cannot be specified. 
+For example, `ROW_NUMBER() OVER (order)`` can be expressed instead as `count(*) OVER (order ROWS UNBOUNDED PRECEDING AND CURRENT ROW)`.
+Thus it assigns a different value to every row regardless of the number of peers.
+
+[source,sql]
+.*Example: Windowed results*
+----
+SELECT name, salary, max(salary) over (partition by name) as max_sal,
+          rank() over (order by salary) as rank, dense_rank() over (order by salary) as dense_rank,
+          row_number() over (order by salary) as row_num FROM employees
+----
+
+|===
+|name |salary |max_sal |rank |dense_rank |row_num
+
+|John
+|100000
+|100000
+|2
+|2
+|2
+
+|Henry
+|50000
+|50000
+|5
+|4
+|5
+
+|John
+|60000
+|100000
+|3
+|3
+|3
+
+|Suzie
+|60000
+|150000
+|3
+|3
+|4
+
+|Suzie
+|150000
+|150000
+|1
+|1
+|1
+|===

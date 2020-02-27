@@ -1,10 +1,13 @@
+// Module included in the following assemblies:
+// as_datatypes.adoc"]
+[id="escaped-literal-syntax"]
+= Escaped literal syntax
 
-= Escaped Literal Syntax
-
-In addition to standard SQL syntax, datatype values may be expressed directly in SQL using escape syntax to define the type. Note that the supplied string value must match the expected format exactly or an exception will occur.
+Rather than relying on implicit conversion, you can define data type values directly in SQL by using escape syntax. 
+The string values that you supply must match the expected format exactly, or an exception will occur. 
 
 |===
-|Datatype |Escaped Syntax|Standard Literal
+|Datatype |Escaped syntax |Standard literal
 
 |BOOLEAN
 |{b 'true'}
@@ -22,4 +25,3 @@ In addition to standard SQL syntax, datatype values may be expressed directly in
 |{ts 'yyyy-mm-dd[ hh:mm:ss.[fff…]]'}
 |TIMESTAMP 'yyyy-mm-dd[ hh:mm:ss.[fff…]]'
 |===
-

@@ -1,9 +1,14 @@
-
+// Module included in the following assemblies:
+// as_from-clause.adoc
+[id=texttable]
 = TEXTTABLE
 
-The TEXTTABLE function processes character input to produce tabular output. It supports both fixed and delimited file format parsing. The function itself defines what columns it projects. The TEXTTABLE function is implicitly a nested table and may be correlated to preceding FROM clause entries.
+The TEXTTABLE function processes character input to produce tabular output. 
+It supports both fixed and delimited file format parsing. 
+The function itself defines what columns it projects. 
+The TEXTTABLE function is implicitly a nested table and can be used within FROM clauses.
 
-Usage:
+.Usage
 
 [source,sql]
 ----
@@ -17,46 +22,66 @@ Where <COLUMN>
 COLUMN := name (FOR ORDINALITY | ([HEADER string] datatype [WIDTH integer [NO TRIM]] [SELECTOR string integer]))
 ----
 
-Parameters
+.Parameters
 
-* expression - the text content to process, which should be convertible to CLOB.
+expression:: The text content to process, which should be convertible to CLOB.
 
-* SELECTOR is used with files containing multiple types of rows (example: order header, detail, summary). A TEXTTABLE SELECTOR specifies which lines to include in the output. Matching lines must begin with the selector string. The selector in column delimited files must be followed by the column delimiter.
-** If a TEXTTABLE SELECTOR is specified, a SELECTOR may also be specified for column values. A column SELECTOR argument will select the nearest preceding text line with the given SELECTOR prefix and select the value at the given 1-based integer position (which includes the selector itself). If no such text line or position with a given line exists, a null value will be produced. A column SELECTOR is not valid with fixed width parsing.
+SELECTOR:: Used with files containing multiple types of rows (example: order header, detail, summary). 
+A TEXTTABLE SELECTOR specifies which lines to include in the output. 
+Matching lines must begin with the selector string. 
+The selector in column delimited files must be followed by the column delimiter.
++
+If a TEXTTABLE SELECTOR is specified, a SELECTOR may also be specified for column values. 
+A column SELECTOR argument will select the nearest preceding text line with the given SELECTOR prefix, 
+and select the value at the given 1-based integer position (which includes the selector itself). 
+If no such text line or position with a given line exists, a null value will be produced. 
+A column SELECTOR is not valid with fixed width parsing.
 
-* NO ROW DELIMITER indicates that fixed parsing should not assume the presence of newline row delimiters.
+NO ROW DELIMITER:: Specifies that fixed parsing should not assume the presence of newline row delimiters.
 
-* ROW DELIMITER sets the row delimiter / new line to an alternate character. Defaults to the new line character - with built in handling for treating carriage return new line as a single character. If ROW DELIMITER is specified, carriage return will be given no special treatment.
+ROW DELIMITER:: Sets the row delimiter / newline to an alternate character. 
+Defaults to the new-line character - with built-in handling for treating carriage return newline as a single character. 
+If ROW DELIMITER is specified, carriage return is given no special treatment.
 
-* DELIMITER sets the field delimiter character to use. Defaults to ','.
+DELIMITER:: Sets the field delimiter character to use. Defaults to `,`.
 
-* QUOTE sets the quote, or qualifier, character used to wrap field values. Defaults to '"'.
+QUOTE:: Sets the quote, or qualifier, character used to wrap field values. Defaults to `"`.
 
-* ESCAPE sets the escape character to use if no quoting character is in use. This is used in situations where the delimiter or new line characters are escaped with a preceding character, e.g. \,
+ESCAPE:: Sets the escape character to use if no quoting character is in use. 
+This is used in situations where the delimiter or new line characters are escaped with a preceding character, e.g. `\`.
 
-* HEADER specifies the text line number (counting every new line) on which the column names occur. If the HEADER option for a column is specified, then that will be used as the expected header name. All lines prior to the header will be skipped. If HEADER is specified, then the header line will be used to determine the TEXTTABLE column position by case-insensitive name matching. This is especially useful in situations where only a subset of the columns are needed. If the HEADER value is not specified, it defaults to 1. If HEADER is not specified, then columns are expected to match positionally with the text contents.
+HEADER:: Specifies the text line number (counting every new line) on which the column names occur. 
+If the HEADER option for a column is specified, then that will be used as the expected header name. 
+All lines prior to the header will be skipped. 
+If HEADER is specified, then the header line will be used to determine the TEXTTABLE column position by case-insensitive name matching. 
+This is especially useful in situations where only a subset of the columns are needed. 
+If the HEADER value is not specified, it defaults to 1. 
+If HEADER is not specified, then columns are expected to match positionally with the text contents.
 
-* SKIP specifies the number of text lines (counting every new line) to skip before parsing the contents. HEADER may still be specified with SKIP.
+SKIP:: Specifies the number of text lines (counting every new line) to skip before parsing the contents. 
+HEADER can be specified with SKIP.
 
-* A FOR ORDINALITY column is typed as integer and will return the 1-based item number as its value.
+FOR ORDINALITY:: Column that is typed as integer and returns a 1-based item number as its value.
 
-* WIDTH indicates the fixed-width length of a column in characters - not bytes. With the default ROW DELIMITER, a CR NL sequence counts as a single character.
+WIDTH:: Indicates the fixed-width length of a column in characters, not bytes. 
+With the default ROW DELIMITER, a CR NL sequence counts as a single character.
 
-* NO TRIM specified on the TEXTTABLE, it will affect all column and header values. If NO TRIM is specified on a column, then the fixed or unqualified text value not be trimmed of leading and trailing white space.
+NO TRIM:: When specified on a TEXTTABLE, it affects all column and header values. 
+When NO TRIM is specified on a column, the fixed or unqualified text value is not trimmed of leading and trailing white space.
 
-Syntax Rules:
+.Syntax Rules
 
 * If width is specified for one column it must be specified for all columns and be a non-negative integer.
 
-* If width is specified, then fixed width parsing is used ESCAPE, QUOTE, column SELECTOR, nor HEADER should not be specified.
+* If width is specified, then fixed width parsing is used, and ESCAPE, QUOTE, column SELECTOR, nor HEADER should not be specified.
 
 * If width is not specified, then NO ROW DELIMITER cannot be used.
 
-* The columns names must not contain duplicates.
+* Columns names must not contain duplicates.
 
-* The QUOTE, DELIMITER, and ROW DELIMITER must all be different characters.
+* The characters specified for QUOTE, DELIMITER, and ROW DELIMITER must all be different.
 
-Examples
+.TEXTTABLE examples
 
 * Use of the HEADER parameter, returns 1 row ['b']:
 
@@ -99,4 +124,3 @@ SELECT x.* FROM t, TEXTTABLE(t.clobcolumn COLUMNS first string, second date SKIP
 ----
 SELECT * FROM TEXTTABLE('a,b\nc,d\nc,f' SELECTOR 'c' COLUMNS col1 string, col2 string col3 string SELECTOR 'a' 2) x
 ----
-

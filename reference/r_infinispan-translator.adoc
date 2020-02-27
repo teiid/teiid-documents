@@ -268,12 +268,14 @@ ProtoFilePath
 == Limitations
 
 - Bulk update support is not available. 
+- No transactions supported. It is currently last edit stands.
 - Aggregate functions like SUM, AVG etc are not supported on inner objects (ex: PhoneNumber)
 - UPSERT support on complex objects is always results in INSERT
 - LOBS are not streamed, use caution as this can lead to OOM errors.
 - There is no function library in Infinispan
 - Array objects can not be projected currently, but they will show up in the metadata
-- When using DATE/TIMESTAMP/TIME types in {{ book.productnameFull }} metadata, they are by default marshaled into a LONG type in Infinispan.  This means that TIMESTAMPs only retains millisecond precision.
+- When using DATE/TIMESTAMP/TIME types in {{ book.productnameFull }} metadata, they are by default marshaled into a LONG type in Infinispan.
+- SSL and identity support is not currently available (see TEIID-4904) 
 
 {% if book.targetWildfly %}
 == JCA Resource Adapter

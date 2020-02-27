@@ -1,0 +1,54 @@
+// Module included in the following assemblies:
+// as_dml-commands.adoc
+[id="select-command"]
+= SELECT command
+
+The SELECT command is used to retrieve records for any number of relations.
+
+A SELECT command can contain the following clauses:
+
+* xref:with-clause[WITH …]
+* xref:select-clause[SELECT …]
+* xref:from-clause[FROM …]
+* xref:where-clause[WHERE …]
+* xref:group-by-clause[GROUP BY …]
+* xref:having-clause[HAVING …]
+* xref:order-by-clause[ORDER BY …]
+* xref:limit-clause[(LIMIT …)] | ([OFFSET …] [FETCH …])
+* xref:option-clause[OPTION …]
+
+Except for the OPTION clause, all of the preceding clauses are defined by the SQL specification. 
+The specification also specifies the order in which these clauses are logically processed. 
+Processing occurs in stages, with each stage passing a set of rows to the following stage.
+The processing model is logical, and does not represent the way that a database engine performs the processing, 
+but it is a useful model for understanding how SQL works.
+The SELECT command processes clauses in the following stages:
+
+Stage 1: WITH clause:: Gathers all rows from all with items in the order listed. 
+Subsequent WITH items and the main query can reference a WITH item as if it were a table.
+Stage 2: FROM clause:: Gathers all rows from all tables involved in the query and logically joins them with a Cartesian product 
+to produce a single large table with all columns from all tables. 
+Joins and join criteria are then applied to filter rows that do not match the join structure.
+Stage 3: WHERE clause:: Applies a criteria to every output row from the FROM stage, further reducing the number of rows.
+Stage 4: GROUP BY clause:: Groups sets of rows with matching values in the GROUP BY columns.
+Stage 5: HAVING clause:: Applies criteria to each group of rows. 
+Criteria can only be applied to columns that will have constant values within a group 
+(those in the grouping columns or aggregate functions applied across the group).
+Stage 6: SELECT clause:: Specifies the column expressions that should be returned from the query. 
+Expressions are evaluated, including aggregate functions that are based on the groups of rows, 
+which will no longer exist after this point. 
+The output columns are named using either column aliases or an implicit name determined by the engine. 
+If SELECT DISTINCT is specified, duplicate removal is performed on the rows being returned from the SELECT stage.
+Stage 7: ORDER BY clause:: Sorts the rows returned from the SELECT stage as desired. 
+Supports sorting on multiple columns in specified order, ascending or descending. 
+The output columns will be identical to those columns returned from the SELECT stage and will have the same name.
+Stage 8: LIMIT clause:: Returns only the specified rows (with skip and limit values). 
+
+The preceding model helps to understand how SQL works. 
+For example, given that the SELECT clause assigns aliases to columns, 
+it makes sense that the subsequent ORDER BY clause must use those aliases to reference columns. 
+Without knowledge of the processing model, this can be somewhat confusing. 
+Seen in light of the model, it is clear that the ORDER BY stage is the only stage occurring after the SELECT stage, which is where the columns are named. 
+Because the WHERE clause is processed before the SELECT, the columns have not yet been named and the aliases are not yet known.
+
+TIP: The explicit table syntax `TABLE x` may be used as a shortcut for `SELECT * FROM x`.

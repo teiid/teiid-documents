@@ -1,0 +1,29 @@
+// Module included in the following assemblies:
+// as_procedure-language.adoc
+[id="declaration-statement"]
+= Declaration statement
+
+A declaration statement declares a variable and its type. 
+After you declare a variable, you can use it in that block within the procedure and any sub-blocks. 
+A variable is initialized to null by default, but can also be assigned the value of an expression as part of the declaration statement.
+
+.Usage
+
+[source,sql]
+----
+DECLARE <type> [VARIABLES.]<name> [= <expression>];
+----
+
+[source,sql]
+.*Example syntax*
+----
+  declare integer x;
+  declare string VARIABLES.myvar = 'value';
+----
+
+.Syntax rules
+
+* You cannot redeclare a variable with a duplicate name in a sub-block.
+* The VARIABLES group is always implied even if it is not specified.
+* The assignment value follows the same rules as for an Assignment statement.
+* In addition to the standard types, you may specify EXCEPTION if declaring an exception variable.

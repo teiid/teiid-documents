@@ -1,7 +1,8 @@
-
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="hsql-translator"]
 = HSQL Translator (hsql)
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+Also see common xref:jdbc-translators[JDBC Translators] information.
 
 The HSQL Translator, known by the type name *_hsql_*, is for use with HSQLDB 1.7 or later.
-

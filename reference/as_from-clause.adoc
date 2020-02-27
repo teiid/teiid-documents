@@ -1,10 +1,11 @@
+// Module included in the following assemblies:
+// as_sql-support.adoc
+[id="from-clause"]
+= FROM clause
 
-= FROM Clause
+The FROM clause specifies the target tables for SELECT, UPDATE, and DELETE statements.
 
-The FROM clause specifies the target table(s) for SELECT, UPDATE, and
-DELETE statements.
-
-Example Syntax:
+.Example Syntax:
 
 * FROM table [[AS] alias]
 
@@ -14,7 +15,7 @@ Example Syntax:
 
 * FROM (subquery) [AS] alias
 
-* FROM link:FROM_Clause.adoc#_nested_table_reference[TABLE(subquery)] [AS] alias
+* FROM TABLE(subquery) [AS] alias. For more information, see xref:nested-tables[Nested tables]
 
 * FROM table1 JOIN /*+ MAKEDEP */ table2 ON join-criteria
 
@@ -24,75 +25,71 @@ Example Syntax:
 
 * FROM /*+ NO_UNNEST */ vw1 JOIN table2 ON join-criteria
 
-* FROM table1 left outer join link:Federated_Optimizations.adoc#_optional_join[/*+ optional */] table2 ON join-criteria
+* FROM table1 left outer join /*+ optional */ table2 ON join-criteria. 
+For more information, see _Optional join_ in xref:federated-optimizations[Federated optimizations].
 
-* FROM link:TEXTTABLE.adoc[TEXTTABLE…]
+* FROM TEXTTABLE… For more information, see xref:texttable[TEXTTABLE].
 
-* FROM link:XMLTABLE.adoc[XMLTABLE…]
+* FROM XMLTABLE… For more information, see xref:xmltable[XMLTABLE].
 
-* FROM link:ARRAYTABLE.adoc[ARRAYTABLE…]
+* FROM ARRAYTABLE… For more information, see xref:arraytable[ARRAYTABLE].
 
-* FROM link:OBJECTTABLE.adoc[OBJECTTABLE…]
+* FROM OBJECTTABLE… For more information, see xref:objecttable[OBJECTTABLE].
 
-* FROM link:JSONTABLE.adoc[JSONTABLE…]
+* FROM JSONTABLE… For more information, see xref:jsontable[JSONTABLE].
 
-* FROM (link:Subqueries.adoc#_inline_views[SELECT …]
+* FROM SELECT… For more information, see _Inline views_ in xref:subqueries[Subqueries].
 
-== From Clause Hints
+.From clause hints
 
-From clause hints are typically specified in a comment block preceding the affected clause. MAKEDEP and MAKENOTDEP may also appear after in non-comment form after the affected clause. If multiple hints apply to that clause, the hints should be placed in the same comment block.
+From clause hints are typically specified in a comment block preceding the affected clause. 
+MAKEDEP and MAKENOTDEP may also appear after in non-comment form after the affected clause. 
+If multiple hints apply to that clause, the hints should be placed in the same comment block.
 
-Example Hint
+.Example hint
 
 [source,sql]
 ----
 FROM /*+ MAKEDEP PRESERVE */ (tbl1 inner join tbl2 inner join tbl3 on tbl2.col1 = tbl3.col1 on tbl1.col1 = tbl2.col1), tbl3 WHERE tbl1.col1 = tbl2.col1
 ----
 
-=== Dependent Joins
+.Dependent join hints
+MAKEIND, MAKEDEP, and MAKENOTDEP are hints that you can use to control dependent join behavior. 
+Use them only in situations where the optimizer does not choose the most optimal plan based 
+upon query structure, metadata, and costing information. 
+The hints can appear in a comment that follows the FROM keyword. 
+The hints can be specified against any FROM clause, not just a named table.
 
-MAKEIND, MAKEDEP, and MAKENOTDEP are hints used to control link:Federated_Optimizations.adoc#_dependent_joins[dependent join] behavior. They should only be used in situations where the optimizer does not choose the most optimal plan based upon query structure, metadata, and costing information. The hints may appear in a comment that proceeds the from clause. The hints can be specified against any from clause, not just a named table.
+MAKEIND:: Indicates that the clause should be the independent (feeder) side of a dependent join.
+MAKEDEP:: Indicates that the clause should be the dependent (filtered) side of a join.
+MAKENOTDEP:: Prevents the clause from being the dependent (filtered) side of a join.
 
-* MAKEIND - treat this clause as the independent (feeder) side of a dependent join if possible.
-* MAKEDEP - treat this clause as the dependent (filtered) side of a dependent join if possible.
-* MAKENOTDEP - do not treat this clause as the dependent (filtered) side of a join.
+MAKEDEP and MAKEIND support the following optional max and join arguments:
 
-MAKEDEP and MAKEIND support optional max and join arguments:
+MAKEDEP(JOIN):: Indicates that the entire join should be pushed.
+MAKEDEP(NO JOIN):: Indicates that the entire join should not be pushed.
+MAKEDEP(MAX:val):: Indicates that the dependent join should only be performed if there are less than the maximum number of values from the independent side.
 
-* MAKEDEP(JOIN) means that the entire join should be pushed
-* MAKEDEP(NO JOIN) means that the entire join should not be pushed
-* MAKEDEP(MAX:val) meaning that the dependent join should only be performed if there are less than the max number of values from the independent side.
+.Other hints
 
-=== Other Hints
+NO_UNNEST can be specified against a subquery FROM clause or view to instruct the planner to not to merge the nested SQL in the surrounding query.
+This process is known as view flattening. 
+This hint only applies to {{ book.productnameFull }} planning and is not passed to source queries. 
+NO_UNNEST can appear in a comment that follows the FROM keyword.
 
-NO_UNNEST can be specified against a subquery from clause or view to instruct the planner to not merge the nested SQL in the surrounding query - also known as view flattening. This hint only applies to {{ book.productnameFull }} planning and is not passed to source queries. NO_UNNEST may appear in a comment that proceeds the from clause.
-
-The PRESERVE hint can be used against an ANSI join tree to preserve the structure of the join rather than allowing the {{ book.productnameFull }} optimizer to reorder the join. This is similar in function to the Oracle ORDERED or MySQL STRAIGHT_JOIN hints.
+The PRESERVE hint can be used against an ANSI join tree to preserve the structure of the join, 
+rather than allowing the {{ book.productnameFull }} optimizer to reorder the join. 
+This is similar in function to the Oracle ORDERED or MySQL STRAIGHT_JOIN hints.
 
 [source,sql]
-.*Example PRESERVE Hint*
+.*Example PRESERVE hint*
 ----
 FROM /*+ PRESERVE */ (tbl1 inner join tbl2 inner join tbl3 on tbl2.col1 = tbl3.col1 on tbl1.col1 = tbl2.col1)
 ----
 
-== Nested Table Reference
-
-Nested tables may appear in the FROM clause with the TABLE keyword. They are an alternative to using a view with normal join semantics. The columns projected from the command contained in the nested table may be used just as any of the other FROM clause projected columns in join criteria, the where clause, etc.
-
-A nested table may have correlated references to preceding FROM clause column references as long as INNER and LEFT OUTER joins are used. This is especially useful in cases where then nested expression is a procedure or function call.
-
-Valid example:
-
-[source,sql]
-----
-select * from t1, TABLE(call proc(t1.x)) t2
-----
-
-Invalid example, since t1 appears after the nested table in the from clause:
-
-[source,sql]
-----
-select * from TABLE(call proc(t1.x)) t2, t1
-----
-
-NOTE: *Multiple Execution* - The usage of a correlated nested table may result in multiple executions of the table expression - once for each correlated row.
+include::r_nested-tables[leveloffset=+1]
+include::r_xmltable[leveloffset=+1]
+include::r_arraytable.adoc[leveloffset=+1]
+include::r_objecttable.adoc[leveloffset=+1]
+include::r_texttable.adoc[leveloffset=+1]
+include::r_jsontable.adoc[leveloffset=+1]

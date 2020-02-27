@@ -1,20 +1,24 @@
+// Module included in the following assemblies:
+// as_translators.adoc
+[id="web-services-translator"]
+= Web services translator
 
-= Web Services Translator
+The Web Services translator, known by the type name _ws_, exposes stored procedures for calling web services. 
+Results from this translator will commonly be used with the TEXTTABLE or XMLTABLE table functions to use CSV or XML formated data.
 
-The Web Services translator, known by the type name _ws_, exposes stored procedures for calling web services.  Results from this translator will commonly be used with the TEXTTABLE or XMLTABLE table functions to use CSV or XML formated data.
-
-*Execution Properties* 
+*Execution properties* 
 
 |===
 |Name |Description |When Used |Default
 
 |DefaultBinding
-|The binding that should be used if one is not specified. Can be one of HTTP, SOAP11, or SOAP12
+|The binding that should be used if one is not specified. Can be one of HTTP, SOAP11, or SOAP12.
 |invoke*
 |SOAP12
 
 |DefaultServiceMode
-|The default service mode. For SOAP, MESSAGE mode indicates that the request will contain the entire SOAP envelope and not just the contents of the SOAP body. Can be one of MESSAGE or PAYLOAD
+|The default service mode. For SOAP, MESSAGE mode indicates that the request will contain the entire SOAP envelope. 
+and not just the contents of the SOAP body. Can be one of MESSAGE or PAYLOAD
 |invoke* or WSDL call
 |PAYLOAD
 
@@ -24,11 +28,13 @@ The Web Services translator, known by the type name _ws_, exposes stored proced
 |null - unused
 |===
 
-NOTE: Setting the proper binding value on the translator is recommended as it removes the need for callers to pass an explicit value. If your service is actually uses SOAP11, but the binding used SOAP12 you will receive execution failures.
+NOTE: Setting the proper binding value on the translator is recommended as it removes the need for callers to pass an explicit value. 
+If your service is actually uses SOAP11, but the binding used SOAP12 you will receive execution failures.
 
-There are no ws importer settings, but it can provide metadata for VDBs.  If the connection is configured to point at a specific WSDL, the translator will import all SOAP operations under the specified service and port as procedures.
+There are no ws importer settings, but it can provide metadata for VDBs. If the connection is configured to point at a specific WSDL, 
+the translator will import all SOAP operations under the specified service and port as procedures.
 
-== Importer Properties
+.Importer properties
 
 When specifying the importer property, it must be prefixed with "importer.". Example: importer.tableTypes
 
@@ -36,15 +42,15 @@ When specifying the importer property, it must be prefixed with "importer.". Exa
 |Name |Description |Default
 
 |importWSDL
-|Import the metadata from the WSDL URL configured in resource-adapter
+|Import the metadata from the WSDL URL configured in resource-adapter.
 |true
 |===
 
-== Usage
+.Usage
 
-The WS translator exposes low level procedures for accessing web services. See also the twitter example in the kit.
+The WS translator exposes low level procedures for accessing web services. See also the Twitter example in the kit.
 
-== Invoke Procedure
+.Invoke procedure
 
 Invoke allows for multiple binding, or protocol modes, including HTTP, SOAP11, and SOAP12.
 
@@ -53,9 +59,11 @@ Invoke allows for multiple binding, or protocol modes, including HTTP, SOAP11, a
 Procedure invoke(binding in STRING, action in STRING, request in XML, endpoint in STRING, stream in BOOLEAN) returns XML
 ----
 
-The binding may be one of null (to use the default) HTTP, SOAP11, or SOAP12. Action with a SOAP binding indicates the SOAPAction value. Action with a HTTP binding indicates the HTTP method (GET, POST, etc.), which defaults to POST.
+The binding may be one of null (to use the default) HTTP, SOAP11, or SOAP12. Action with a SOAP binding indicates the SOAPAction value. 
+Action with a HTTP binding indicates the HTTP method (GET, POST, etc.), which defaults to POST.
 
-A null value for the binding or endpoint will use the default value. The default endpoint is specified in the WS source configuration. The endpoint URL may be absolute or relative. If it’s relative then it will be combined with the default endpoint.
+A null value for the binding or endpoint will use the default value. The default endpoint is specified in the WS source configuration. 
+The endpoint URL may be absolute or relative. If it’s relative then it will be combined with the default endpoint.
 
 Since multiple parameters are not required to have values, it is often more clear to call the invoke procedure with named parameter syntax.
 
@@ -66,7 +74,7 @@ call invoke(binding=>'HTTP', action=>'GET')
 
 The request XML should be a valid XML document or root element.
 
-== InvokeHTTP Procedure
+.InvokeHTTP procedure
 
 `invokeHttp` can return the byte contents of an HTTP(S) call.
 
@@ -77,7 +85,10 @@ Procedure invokeHttp(action in STRING, request in OBJECT, endpoint in STRING, st
 
 Action indicates the HTTP method (GET, POST, etc.), which defaults to POST.
 
-A null value for endpoint will use the default value. The default endpoint is specified in the WS source configuration. The endpoint URL may be absolute or relative. If it’s relative then it will be combined with the default endpoint.
+A null value for endpoint will use the default value. 
+The default endpoint is specified in the WS source configuration. 
+The endpoint URL may be absolute or relative. 
+If it’s relative then it will be combined with the default endpoint.
 
 Since multiple parameters are not required to have values, it is often more clear to call the invoke procedure with named parameter syntax.
 
@@ -86,9 +97,13 @@ Since multiple parameters are not required to have values, it is often more clea
 call invokeHttp(action=>'GET')
 ----
 
-The request can be one of SQLXML, STRING, BLOB, or CLOB. The request will be sent as the POST payload in byte form. For STRING/CLOB values this will default to the UTF-8 encoding. To control the byte encoding, see the to_bytes function.
+The request can be one of SQLXML, STRING, BLOB, or CLOB. 
+The request will be sent as the POST payload in byte form. 
+For STRING/CLOB values this will default to the UTF-8 encoding. 
+To control the byte encoding, see the to_bytes function.
 
-The optional headers parameter can be used to specify the request header values as a JSON value. The JSON value should be a JSON object with primitive or list of primitive values.
+The optional headers parameter can be used to specify the request header values as a JSON value. 
+The JSON value should be a JSON object with primitive or list of primitive values.
 
 [source,sql]
 ----
@@ -97,26 +112,32 @@ call invokeHttp(... headers=>jsonObject('application/json' as "Content-Type", js
 
 Recommendations for setting headers parameter:
 
-* Content-Type may be necessary if HTTP POST/PUT method is invoked
-* _Accept_ is necessary if you want to control return Media Type
+* `Content-Type` might be necessary if the HTTP POST/PUT method is invoked.
+* _Accept_ is necessary if you want to control return Media Type.
 
-== WSDL based Procedures
+.WSDL based procedures
 
-The procedures above give you anonymous way to execute any web service methods by supplying an endpoint, with this mechanism you can alter the endpoint defined in WSDL with a different endpoint. However, if you have access to the WSDL, then you can configure the WSDL URL in the web-service resource-adapter’s connection configuration, Web Service translator can parse the WSDL and provide the methods under configured port as pre-built procedures as its metadata. If you are using the default native metadata import, you will see the procedures in your web service’s source model.
+The procedures above give you anonymous way to execute any web service methods by supplying an endpoint, with this mechanism 
+you can alter the endpoint defined in WSDL with a different endpoint. 
+However, if you have access to the WSDL, then you can configure the WSDL URL in the web-service resource-adapter’s connection configuration, 
+Web Service translator can parse the WSDL and provide the methods under configured port as pre-built procedures as its metadata. 
+If you are using the default native metadata import, you will see the procedures in your web service’s source model.
 
-NOTE: *Native queries* - Native queries or a direct query execution procedure is not supported on the Web Services Translator.
+.Native queries
+NOTE: Native queries or a direct query execution procedure is not supported on the Web services translator.
 
-== Streaming Considerations
+.Streaming considerations
 
-If the stream parameter is set to true, then the resulting lob value may only be used a single time. If stream is null or false, then the engine may need to save a copy of the result for repeated use. Care must be used as some operations, such as casting or XMLPARSE may perform validation which results in the stream being consumed.
+If the stream parameter is set to `true`, then the resulting LOB value may only be used a single time. 
+If stream is `null` or `false`, then the engine may need to save a copy of the result for repeated use. 
+Care must be used as some operations, such as casting or `XMLPARSE` might perform validation which results in the stream being consumed.
 
 {% if book.targetWildfly %}
-== JCA Resource Adapter
+.JCA resource adapter
 
 The resource adapter for this translator is a link:../admin/Web_Service_Data_Sources.adoc[Web Service Data Source].
 
 The WS resource adapter may optionally be configured to point at a specific WSDL.
 
-NOTE: *WS-Security* - Currently you can only use WSDL based Procedures participate in WS-Security, when resource-adapter is configured with correct CXF configuration.
+NOTE: *WS-Security* - Currently you can only use WSDL-based Procedures participate in WS-Security, when resource-adapter is configured with correct CXF configuration.
 {% endif %}
-

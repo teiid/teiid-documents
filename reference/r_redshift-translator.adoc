@@ -1,7 +1,10 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="redshift-translator"]
 
-= Redshift Translator (redshift)
+= Redshift translator (redshift)
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+Also see common xref:jdbc-translators[JDBC translators] information.
 
-The Redshift Translator, known by the type name *_redshift_*, is for use with the Redshift database. This translator is an extension of the link:PostgreSQL_Translator.adoc[PostgreSQL Translator] and inherits its options.
-
+The Redshift translator, known by the type name *_redshift_*, is for use with the Amazon Redshift database. 
+This translator is an extension of the xref:postgresql-translator[PostgreSQL translator] and inherits its options.

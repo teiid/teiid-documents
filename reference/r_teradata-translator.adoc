@@ -1,9 +1,12 @@
+// Module included in the following assemblies:
+// as_jdbc-translators.adoc
+[id="teradata-translator"]
 
-= Teradata Translator (teradata)
+= Teradata translator (teradata)
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+Also see common xref:jdbc-translators[JDBC translators] information.
 
-The Teradata Translator, known by the type name *_teradata_*, is for use with Teradata V2R5.1 or later.
+The Teradata translator, known by the type name *_teradata_*, is for use with Teradata Database V2R5.1 or later.
 
-With Teradata driver version 15 date, time, and timestamp values by default will be adjusted for the {{ book.productnameFull }} server timezone. To remove this adjustment, set the translator DatabaseTimezone property to GMT or whatever the Teradata server defaults to.
-
+By default, Teradata driver version 15, adjusts date, time, and timestamp values to match the {{ book.productnameFull }} server timezone. 
+To remove this adjustment, set the translator `DatabaseTimezone` property to GMT or whatever the Teradata server defaults to.

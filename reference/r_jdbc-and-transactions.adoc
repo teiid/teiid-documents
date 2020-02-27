@@ -1,24 +1,33 @@
+// Module included in the following assemblies:
+// as_transation-support.adoc
+[id="jdbc-and-transactions"]
+= JDBC and transactions
 
-= JDBC and Transactions
+.JDBC API functionality
 
-== JDBC API Functionality
+The transaction scopes in xref:transaction-support[Transaction support] map to the following JDBC modes:
 
-The transaction scopes above map to these JDBC modes:
+Command:: Connection autoCommit property set to true.
 
-* *Command* - Connection autoCommit property set to true.
+Local:: Connection autoCommit property set to false. 
+The transaction is committed by setting autoCommit to true or calling `java.sql.Connection.commit`. 
+The transaction can be rolled back by a call to `java.sql.Connection.rollback`
 
-* *Local* - Connection autoCommit property set to false. The transaction is committed by setting autoCommit to true or calling java.sql.Connection.commit . The transaction can be rolled back by a call to java.sql.Connection.rollback
+Global:: The XAResource interface provided by an XAConnection is used to control the transaction. 
+Note that XAConnections are available only if {{ book.productnameFull }} is consumed through its XADataSource, `org.teiid.jdbc.TeiidDataSource`. 
+JEE containers or data access APIs typically control XA transactions on behalf of application code.
 
-* *Global* - the XAResource interface provided by an XAConnection is used to control the transaction. Note that XAConnections are available only if {{ book.productnameFull }} is consumed through its XADataSource, `org.teiid.jdbc.TeiidDataSource`. JEE containers or data access APIs typically control XA transactions on behalf of application code.
+.J2EE usage models
 
-== J2EE Usage Models
+J2EE provides the following ways to manage transactions for beans:
 
-J2EE provides three ways to manage transactions for beans:
+Client-controlled:: The client of a bean begins and ends a transaction explicitly.
 
-* *Client-controlled* – the client of a bean begins and ends a transaction explicitly.
+Bean-managed:: The bean itself begins and ends a transaction explicitly.
 
-* *Bean-managed* – the bean itself begins and ends a transaction explicitly.
+Container-managed:: The application server container begins and ends a transaction automatically.
 
-* *Container-managed* – the app server container begins and ends a transaction automatically.
-
-In any of these cases, transactions may be either local or XA transactions, depending on how the code and descriptors are written. Some kinds of beans (stateful session beans and entity beans) are not required by the spec to support non-transactional sources, although the spec does allow an app server to optionally support this with the caution that this is not portable or predictable. Generally speaking, to support most typical EJB activities in a portable fashion requires some kind of transaction support.
+In any of these cases, transactions may be either local or XA transactions, depending on how the code and descriptors are written. 
+Some kinds of beans (stateful session beans and entity beans) are not required by the specification to support non-transactional sources, 
+although the specification does allow an application server to optionally support this with the caution that this is not portable or predictable. 
+Generally speaking, to support most typical EJB activities in a portable fashion requires some kind of transaction support.
