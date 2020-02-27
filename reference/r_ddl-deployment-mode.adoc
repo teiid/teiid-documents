@@ -328,13 +328,10 @@ GRANT USAGE ON LANGUAGE {language-name}
     EXECUTE | ALTER | DROP
     
 <grant-resource> ::=
-        TABLE {schema-name}.{table-name} [<condition>] |
-        PROCEDURE {schema-name}.{procedure-name} [<condition>] |
+        TABLE {schema-name}.{table-name} |
+        PROCEDURE {schema-name}.{procedure-name} |
         SCHEMA {schema-name} |
         COLUMN {schema-name}.{table-name}.{column-name} [MASK [ORDER n] {expression} ] 
-
-<condition> ::=            
-    CONDITION [CONSTRAINT] {boolean expression}
     
 REVOKE [(<permission-types> (,<permission-types>)* )] 
     ON (<revoke-resource>)
@@ -348,11 +345,13 @@ REVOKE USAGE ON LANGUAGE {language-name}
     FROM {data-role}
 
 <revoke-resource> ::=
-        TABLE {schema-name}.{table-name} [CONDITION] |
-        PROCEDURE {schema-name}.{procedure-name} [CONDITION] |
+        TABLE {schema-name}.{table-name} |
+        PROCEDURE {schema-name}.{procedure-name} |
         SCHEMA {schema-name} |
         COLUMN {schema-name}.{table-name}.{column-name} [MASK] 
 ----
+
+BNF for link:r_bnf_for_sql_grammar.adoc#createPolicy[CREATE POLICY] and link:r_bnf_for_sql_grammar.adoc#dropPolicy[DROP POLICY].
 
 * permission-types: Types of permissions to be granted
 * language-name: Name of the language
@@ -362,9 +361,7 @@ REVOKE USAGE ON LANGUAGE {language-name}
 * table-name: Name of the Table/View
 * procedure-name: Procedure Name
 * column-name: Name of the column
-* condition: When present, the {expression} is appended to the WHERE clause of the query 
 * expression: any valid sql expression, this can include columns from referenced resource
-* CONSTRAINT: When this is supplied along with CONDITION, the {boolean expression} is also applied during the INSERT/UPDATE queries. By default CONDITION *only* applies SELECT queries. Also CONSTRAINT does *NOT* apply to VIEWs only FOREIGN TABLES.
 
 WARNING: GRANT/REVOKE mostly function as direct replacements for the XML permission declarations. A grant/revoke 
 has no effect on any other grant/revoke unless it represents the same resource, in which case its effect is combined.
@@ -372,7 +369,7 @@ has no effect on any other grant/revoke unless it represents the same resource, 
 .Example: Give Read, write, update permission on single table to user with enterprise role "role1"
 [source,sql]
 ----
-CREATE ROLE RoleA WITH JAAS ROLE role1;
+CREATE ROLE RoleA WITH FOREIGN ROLE role1;
 ...
 GRANT INSERT, READ, UPDATE ON TABLE test.Customer TO RoleA;
 ----
@@ -385,23 +382,25 @@ CREATE ROLE everything WITH FOREIGN ROLE admin;
 GRANT ALL PRIVILEGES TO everything;
 ----
 
-.Example : Use of CONDITION, all users can see only Orders table contents amount < 1000
+.Example : All users can see only Orders table contents amount < 1000
 ----
-CREATE ROLE base-role WITH ANY AUTHENTICATED;
+CREATE ROLE base_role WITH ANY AUTHENTICATED;
 ...
-GRANT READ ON TABLE test.Orders CONDITION 'amount < 1000' TO base-role;
+GRANT READ ON TABLE test.Orders TO base_role;
+CREATE POLICY policyOrders ON test.Orders TO base_role USING (amount < 1000) TO base_role;
 ----
 
-.Example : Use of CONDITION, override previous example to more privileged user
+.Example : Override previous example to more privileged user.
 [source,sql]
 ----
-GRANT READ ON TABLE test.Orders CONDITION 'amount < 1000 and amount >=1000' TO RoleA;
+CREATE POLICY policyRoleAOrders ON test.Orders TO RoleA USING (amount < 1000 and amount >=1000);
 ----
 
-.Example : Restricting rows, ROW BASED SECURITY
+.Example : Restricting rows to only those owned by this user.
 [source,sql]
 ----
-GRANT READ ON TABLE test.CustomerOrders CONDITION CONSTRAINT 'name = user()' TO RoleA;
+GRANT READ ON TABLE test.CustomerOrders TO RoleA;
+CREATE POLICY policyCustomerOrders TO RoleA ON test.CustomerOrders USING (name = user());
 ----
 
 In the above example, user() function returns the currently logged in user id, if that matches to the name column, only those rows will be returned. There are functions like hasRole('x') that can be used too. 
@@ -411,7 +410,7 @@ In the above example, user() function returns the currently logged in user id, i
 ----
 GRANT READ ON COLUMN test.Order.amount 
     MASK 'xxxx' 
-    TO base-role;
+    TO base_role;
 ----
 
 .Example : Column Masking, mask "amount for all users when amount > 1000"
@@ -419,7 +418,7 @@ GRANT READ ON COLUMN test.Order.amount
 ----
 GRANT READ ON COLUMN test.Order.amount 
     MASK 'CASE WHEN amount > 1000 THEN 'xxxx' END' 
-    TO base-role;
+    TO base_role;
 ----
 
 .Example : Column Masking, mask "amount for all users" except the calling user is equal to the user()
@@ -428,7 +427,7 @@ GRANT READ ON COLUMN test.Order.amount
 GRANT READ ON COLUMN test.Order.amount 
     MASK 'xxxx'
     CONDITION 'customerid <> user()' 
-    TO base-role;
+    TO base_role;
 ----
 
 == Differences with vdb.xml metadata
