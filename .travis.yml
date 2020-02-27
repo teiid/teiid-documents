@@ -1,5 +1,6 @@
 language: node_js
-    - "8.9.0"
+node_js:
+    - "8"
     
 install:
     - npm install -g gitbook-cli
