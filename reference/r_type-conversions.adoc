@@ -1,6 +1,6 @@
 // Module included in the following assemblies:
 // as_datatypes.adoc"]
-[id-"type-conversions"]
+[id="type-conversions"]
 = Type conversions
 
 Data types may be converted from one form to another either explicitly or implicitly. 

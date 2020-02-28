@@ -1,6 +1,6 @@
 // Module included in the following assemblies:
 // as_system-schema.adoc
-[id-"sysadmin-schema"]
+[id="sysadmin-schema"]
 = SYSADMIN schema
 :toc: manual
 :toc-placement: preamble
