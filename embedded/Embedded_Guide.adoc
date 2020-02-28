@@ -326,3 +326,4 @@ The internal interface for Teiid embedded’s logging is `org.teiid.logging.Logg
 * MDC logging values are not available as Java logging lacks the concept of a mapped diagnostic context.
 * Translator overrides in vdb.xml files is not supported, but you may add overridden translators using the addTranslator methods that accept an ExecutionFactory instance or a property set. 
 * The default for the maximum disk space used by the buffer manager is 5 GB, rather than 50 GB.
+* VDB imports are processed only at deployment time.  A missing vdb import results in a failed deployment.  If the imported vdb is redployed after the importing vdb is deployed, the importing vdb is not redeployed.
