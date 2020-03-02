@@ -16,7 +16,7 @@ The SQL Server `DatabaseVersion` property can be set to `2000`, `2005`, `2008`, 
 With {{ book.productnameFull }} 8.5+, sequence operations may be modeled as xref:ddl-metadata[source functions].
 
 With {{ book.productnameFull }} 10.0+, sequences may be imported automatically xref:jdbc-translators[import properties].
-
+{% endif %}
 
 {% if book.Product %}
 Sequences can be imported automatically. 
