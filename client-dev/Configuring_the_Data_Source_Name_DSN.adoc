@@ -22,9 +22,9 @@ Follow the below steps in creating a data source name (DSN)
 5.  The Create New Data Source dialog box displays. In the Select a driver for which you want to set up a data source table, select _PostgreSQL Unicode_.
 6.  Click Finish
 7.  The PostgreSQL ODBC DSN Setup dialog box displays.
-
++
 image:images/dsnsetup1.png[dsnsetup1.png]
-
++
 In the _Data Source_ Name edit box, type the name you want to assign to this data source. 
 In the _Database_ edit box, type the name of the virtual database you want to access through this data source.
 In the _Server_ edit box, type the host name or IP address of your {{ book.productnameFull }} runtime. If connecting via a firewall or NAT address, the firewall address or NAT address should be entered. 
@@ -33,11 +33,11 @@ In the _User Name_ and _Password_ edit boxes, supply the user name and password 
 Provide any description about the data source in the _Description_ field.
 
 8.  Click on the _Datasource_ button, you will see this below figure. Configure options as shown.
-
++
 image:images/dsnsetup2.png[dsnsetup2.png]
-
++
 Click on "page2" and make sure the options are selected as shown
-
++
 image:images/dsnsetup3.png[dsnsetup3.png]
 
 9.  Click "save" and you can optionally click "test" to validate your connection if the {{ book.productnameFull }} is running. You have configured a {{ book.productnameFull }}’s virtual database as a data source for your ODBC applications. Now you can use applications such as Excel, Access to query the data in the VDB

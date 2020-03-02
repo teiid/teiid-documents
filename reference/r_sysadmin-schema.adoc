@@ -433,7 +433,7 @@ CALL SYSADMIN.logMsg(msg=>'some debug', context=>'org.something')
 
 The preceding example will log the message 'some debug' at the default level DEBUG to the context org.something.
 
-=== SYSADMIN.refreshMatView
+== SYSADMIN.refreshMatView
 
 Full refresh/load of an internal materialized view.  Returns integer RowsUpdated. -1 indicates a load is in progress, 
 otherwise the cardinality of the table is returned. See the link:../caching/Caching_Guide.adoc[Caching Guide] for more information.
@@ -445,7 +445,7 @@ See also SYSADMIN.loadMatView
 SYSADMIN.refreshMatView(OUT RowsUpdated integer NOT NULL RESULT, IN ViewName string NOT NULL, IN Invalidate boolean NOT NULL DEFAULT 'false')
 ----
 
-=== SYSADMIN.refreshMatViewRow
+== SYSADMIN.refreshMatViewRow
 
 Refreshes a row in an internal materialized view.
 
@@ -477,7 +477,7 @@ Assuming the primary key contains more columns, a and b, update the second row:
 EXEC SYSADMIN.refreshMatViewRow('TestMat.SAMPLEMATVIEW', '101', 'a1', 'b1')
 ----
 
-=== SYSADMIN.refreshMatViewRows
+== SYSADMIN.refreshMatViewRows
 
 Refreshes rows in an internal materialized view.
 
@@ -507,7 +507,7 @@ Assuming the primary key comtain more columns, id, a and b compose of the primar
 EXEC SYSADMIN.refreshMatViewRows('TestMat.SAMPLEMATVIEW', ('100', 'a0', 'b0'), ('101', 'a1', 'b1'), ('102', 'a2', 'b2'))
 ----
 
-=== SYSADMIN.setColumnStats
+== SYSADMIN.setColumnStats
 
 Set statistics for the given column.
 
@@ -518,7 +518,7 @@ SYSADMIN.setColumnStats(IN tableName string NOT NULL, IN columnName string NOT N
 
 All stat values are nullable. Passing a null stat value will leave corresponding metadata value unchanged.
 
-=== SYSADMIN.setProperty
+== SYSADMIN.setProperty
 
 Set an extension metadata property for the given record. Extension metadata is typically used by xref:translators[Translators].
 
@@ -541,7 +541,7 @@ NOTE: The use of this procedure will not trigger replanning of associated prepar
 
 Properties from built-in teiid_* namespaces can be set using the the short form - namespace:key form.
 
-=== SYSADMIN.setTableStats
+== SYSADMIN.setTableStats
 
 Set statistics for the given table.
 
