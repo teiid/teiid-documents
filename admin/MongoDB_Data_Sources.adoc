@@ -42,7 +42,7 @@ All the properties that are defined on the RAR file are
 |none
 
 |SecurityType
-|MongoDB Type of Authentication to be used. Allowed values are "None","SCRAM_SHA_1","MONGODB_CR", "Kerberos","X509". If you are using MongoDB version lessthan 3.0, MongoDB by default uses "MONGODB_CR", thus this value need to be set accordingly or set to None.
+|MongoDB Type of Authentication to be used. Allowed values are "None","SCRAM_SHA_1", "SCRAM_SHA_256","MONGODB_CR", "Kerberos","X509". If you are using MongoDB version lessthan 3.0, MongoDB by default uses "MONGODB_CR", thus this value need to be set accordingly or set to None.
 |false
 |SCRAM_SHA_1
 
