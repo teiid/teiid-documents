@@ -2,6 +2,7 @@
 // Assembly included in the following assemblies:
 //master.adoc
 [id="architecture"]
+= {{ book.productnameFull }} Architecture
 
 {% if book.targetWildfly %}
 .{{ book.productnameFull }} Components
@@ -20,8 +21,6 @@ used to connect/federate/transform datasources to produce a `.vdb` file.
 * **AdminAPI** - An API for performing management and monitoring:../dev/AdminAPI.adoc[AdminAPI]
 * **quickstarts** - A maven quickstart showing how to utilize {{ book.productnameFull }}.
 {% endif %}
-
-= {{ book.productnameFull }} Architecture
 
 {% if book.targetWildfly %}
 image:images/teiid-architecture.png[images/teiid-architecture.png]

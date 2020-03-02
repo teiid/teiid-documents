@@ -160,9 +160,7 @@ UDFs will instead have a byte[] value passed.
 4. The concrete type is expected to be org.teiid.core.types.XMLType 
 5. The concrete type is expected to be org.teiid.core.types.GeometryType
 6. The concrete type is expected to be org.teiid.core.types.GeographyType
-3. The concrete type is expected to be org.teiid.core.types.JsonType
-
-
+7. The concrete type is expected to be org.teiid.core.types.JsonType
 
 NOTE: Character, String, and CLOB types are not limited to ASCII/extended ASCII values. 
 Character can hold codes up to 2^16-1 and String/CLOB can hold any value.

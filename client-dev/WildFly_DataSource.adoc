@@ -11,7 +11,7 @@ A special case exists if the {{ book.productnameFull }} instance you are connect
 Installation Steps
 
 1. If you are working with an AS instance that already has {{ book.productnameFull }} installed then required module / jar files are already installed. If the AS instance does not have {{ book.productnameFull }} installed, then you should create a module for the client jar. Under the path module/org/jboss/teiid/client add the client jar and a module.xml defined as:
- 
++ 
 [source,xml]
 .*Sample {{ book.productnameFull }} Client Module*
 ----
@@ -26,7 +26,7 @@ Installation Steps
     </dependencies>
 </module>
 ----
-
++
 NOTE: Prior to {{ book.productnameFull }} 8.12.3 a module dependency on sun.jdk was also required.
 
 2. Use the CLI or edit the `standalone-teiid.xml` or `domain-teiid.xml` file and add a datasource into the "datasources" subsystem.

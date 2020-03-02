@@ -3,7 +3,6 @@
 [id="federated-optimizations"]
 = Federated Optimizations
 
-[access-patterns]
 .Access patterns
 
 Access patterns are used on both physical tables and views to specify the need for criteria against a set of columns. 
@@ -264,7 +263,7 @@ In an XML VDB:
     ...
 ----  
 {% endif %}
-[standard-relational-techniques]
+
 .Standard relational techniques
 
 {{ book.productnameFull }} also incorporates many standard relational techniques to ensure efficient query plans.
