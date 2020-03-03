@@ -105,7 +105,7 @@ CREATE FOREIGN TABLE Order (
 |===
 
 
-image:images/create_column.png[images/create_column.png]
+image:images/create_column.jpg[images/create_column.jpg]
 
 *COLUMN OPTIONS*: (the following options are well known, any others properties defined will be considered as extension metadata).
 
@@ -195,7 +195,7 @@ Constraints can be defined on table/view to define indexes and relationships to 
 This information is used by the {{ book.productnameFull }} optimizer to plan queries, 
 or use the indexes in materialization tables to optimize the access to the data.
 
-image:images/constraint.png[images/constraint.png]
+image:images/constraint.jpg[images/constraint.jpg]
 
 CONSTRAINTS are same as one can define on RDBMS.
 
@@ -299,7 +299,7 @@ CREATE VIEW {table-name} [(
     <key> <value>[,<key>, <value>]*
 ----
 
-image:images/create_view.png[images/create_view.png]
+image:images/create_view.jpg[images/create_view.jpg]
 
 .*VIEW OPTIONS*: (These properties are in addition to properties defined in the CREATE TABLE )
 
@@ -356,7 +356,7 @@ updates and deletes that reference data in the tables. Based on the select trans
 some times INSTEAD OF TRIGGERS are automatically provided for the user when `UPDATABLE` OPTION on the VIEW is set to `TRUE`. 
 However, using the CREATE TRIGGER mechanism user can provide/override the default behavior.
 
-image:images/create_trigger.png[images/create_trigger.png]
+image:images/create_trigger.jpg[images/create_trigger.jpg]
 
 [source,sql]
 .*Example: Define INSTEAD OF trigger on View for INSERT*
@@ -424,7 +424,7 @@ or than can have the implementation defined by a Java class.
 For more information about writing the Java code for a UDF, see _Support for user-defined functions (non-pushdown)_ in the 
 link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[Translator Development Guide].
 
-image:images/create_procedure.png[images/create_procedure.png]
+image:images/create_procedure.jpg[images/create_procedure.jpg]
 
 For more information about creating functions or procedures, see the xref:bnf-for-sql-grammar[BNF for SQL grammar].
 

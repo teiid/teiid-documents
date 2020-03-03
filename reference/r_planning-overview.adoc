@@ -43,7 +43,7 @@ Logically, the data from the Employees and Departments tables are retrieved, the
 and finally the output columns are projected. 
 The canonical query plan thus looks like this:
 
-image:images/query-plan.png[images/query-plan.png]
+image:images/query_plan_2.png[images/query_plan_2.png]
 
 Data flows from the tables at the bottom upwards through the join, through the select, and finally through the project to produce the final results. 
 The data passed between each node is logically a result set with columns and rows.
