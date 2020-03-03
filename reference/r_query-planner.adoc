@@ -50,7 +50,7 @@ WITH, SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY, LIMIT. These clauses are 
 
 For example, a SQL statement such as `SELECT max(pm1.g1.e1) FROM pm1.g1 WHERE e2 = 1` creates a logical plan:
 
-image:images/teiid-query-plan-3.png[images/teiid-query-plan-3.png]
+image:images/query-plan-2.png[images/query-plan-2.png]
 
 [source,xml]
 ----
