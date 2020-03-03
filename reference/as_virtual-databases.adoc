@@ -6,7 +6,7 @@
 A virtual database (VDB) is a metadata container for components used to integrate data from multiple data sources, 
 so that they can be accessed in an integrated manner through a single, uniform API. 
 
-image:images/vdb.png[Virtual database]
+image:images/virtual_db.png[Virtual database]
 
 A virtual database typically contains multiple schema components (also called as models), and each schema contains 
 the metadata (tables, procedures, functions). 
