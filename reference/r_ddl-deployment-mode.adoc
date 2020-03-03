@@ -2,22 +2,27 @@
 :toc: manual
 :toc-placement: preamble
 
-A Virtual Database (VDB) can created through DDL statements. {{ book.productnameFull }} supports SQL-MED specification to configure the foreign data sources.
+A Virtual Database (VDB) can created through DDL statements. {{ book.productnameFull }} supports the SQL-MED specification to utilize foreign data sources.
 
-A DDL file captures information about the VDB, the sources it integrate, and preferences for importing metadata. The format of the DDL file can be any elements in documented here.
-The DDL file may be deployed as a single file, or in a zip archive.  See link:developing_vdb.adoc[Developing a Virtual Database] for a discussion of the .vdb zip packaging. 
+DDL captures information about the VDB - the sources it integrate, and preferences for importing metadata. 
+DDL may be deployed as a single file or as a set of files in a zip archive.  
+
+{% if book.targetWildfly %}
+See link:r_developing-vdb.adoc[Developing a Virtual Database] for a discussion of the .vdb zip packaging.
 
 == DDL File Deployment
 
-You can simply create a *SOME-NAME-vdb.ddl* file. 
+You can simply create a *SOME-NAME-vdb.ddl* file with your DDL content.  Then use a standard deployment mechanism (cli, adminapi, or placing the file in the deployments directory) to deploy it.
 
 IMPORTANT: The VDB name pattern must adhere to "-vdb.ddl" for the {{ book.productnameFull }} VDB deployer to recognize this file when deployed in {{ book.productnameFull }} Server.
 
+{% endif %}
+
 [source,DDL]
-.Example VDB DDL Template
+.Example VDB DDL
 ----
-CREATE DATABASE my_example VERSION '1.0.0';
-USE DATABASE my_example VERSION '1.0.0'; 
+CREATE DATABASE my_example;
+USE DATABASE my_example; 
 
 CREATE SERVER pgsql  
     VERSION 'one' FOREIGN DATA WRAPPER postgresql 
@@ -35,15 +40,14 @@ IMPORT FOREIGN SCHEMA public FROM SERVER pgsql INTO test
 == DDL File Format
 
 For compatibility with the existing metadata system, DDL statements must appear in a specific order to define a virtual database.  
-All of the database structure must be defined first - this includes create/alter/drop database, domains, vdb import, roles, and schemas statements.
-Then the schema object, schema import, and permission DDL may appear. 
+All of the database structure must be defined first - this includes create/alter database, domains, vdb import, roles, and schemas statements. Then the schema object, schema import, and permission DDL may appear. 
 
 == Create a Database
 
 Every VDB file must start with database definition where it specifies the name and version of the database. The create syntax for database is
 
 ----
-CREATE DATABASE {db-name} [VERSION {version-string}] OPTIONS ( <options-clause>)
+CREATE DATABASE {db-name} {% if book.targetWildfly %}[VERSION {version-string}]{% endif %} OPTIONS ( <options-clause>)
 
 <options-clause> ::= 
     <key> <value>[,<key>, <value>]*
@@ -51,10 +55,10 @@ CREATE DATABASE {db-name} [VERSION {version-string}] OPTIONS ( <options-clause>)
 
 An example statement
 ----
-CREATE DATABASE my_example VERSION '1' OPTIONS ("cache-metadata" true);
+CREATE DATABASE my_example {% if book.targetWildfly %}VERSION '1'{% endif %} OPTIONS ("cache-metadata" true);
 ----
 
-For list database scoped properties see link:vdb_properties.adoc[VDB properties].
+For the list of database scoped properties see link:r_vdb_properties.adoc[VDB properties].
 
 Immediately following the create database statement is an analogous use database statement.
 
@@ -62,14 +66,12 @@ As we learned about the VDB components earlier in the guide, we need to first cr
 
 == Create a Translator 
 
-A translator is an adapter to the foreign data source.  The creation of translator in the context of the VDB creates a reference to the software module that is available in the {{ book.productnameFull }} system. Some of the examples of available translator modules include:
+A translator is an adapter to the foreign data source.  The creation of translator in the context of the VDB creates a reference to the software module that is available in the {{ book.productnameFull }} system. Some of the examples of available translators include:
 
 * oracle
 * mysql
 * postgresql
 * mongodb 
-
-See link:Data_Sources.adoc[Data Sources] for more.
 
 ----
 CREATE FOREIGN ( DATA WRAPPER | TRANSLATOR ) {translator-name} 
@@ -80,13 +82,13 @@ CREATE FOREIGN ( DATA WRAPPER | TRANSLATOR ) {translator-name}
     <key> <value>[,<key>, <value>]*
 ----
 
-Optional _TYPE_ is used to create "override" translator.  It is not required to define translators already known to the engine with a CREATE - for example CREATE FOREIGN DATA WRAPPER oracle OPTIONS ... - will effectively be ignored.
+Optional _TYPE_ is used to create an "override" translator.  It is not required to define translators already known to the engine with a CREATE - for example CREATE FOREIGN DATA WRAPPER oracle OPTIONS ... - will effectively be ignored.
 
-The _OPTIONS_ clause is used to provide the "execution-properties" of a specific translator defined in either in {translator-name} or {base-translator-name}. These names *MUST* match with available Translators in the system. link:Translators.adoc[Translators} documents all the available translators. 
+The _OPTIONS_ clause is used to provide the "execution-properties" of a specific translator defined in either in {translator-name} or {base-translator-name}. These names *MUST* match with available Translators in the system. link:as_translators.adoc[Translators} documents all the available translators. 
 
-For all available translators see link:Translators.adoc[Translators]
+For all available translators see link:as_translators.adoc[Translators]
 
-.Example creating Override Translator
+.Example Creating Override Translator
 [source,sql]
 ----
 CREATE FOREIGN DATA WRAPPER oracle-override TYPE oracle OPTIONS (useBindVariables false);
@@ -100,13 +102,9 @@ ALTER  (DATA WRAPPER|TRANSLATOR) {translator-name} OPTIONS (ADD|SET|DROP <key-va
 DROP FOREIGN [<DATA> <WRAPPER>|<TRANSLATOR>] {translator-name}
 ----
 
-== Create a Connection To an External Source
+== Associate The Translator With A Source
 
-Before you can create a connection to the data source, you must either have a JDBC driver (Type 4) that can connect to the data source, or {{ book.productnameFull }} system must have provided a resource adapter (RAR) file to enable connection to the data source. 
-If you are using the JDBC driver file this should have already been deployed to the {{ book.productnameFull }} system, or made it available on the classpath in the case of the {{ book.productnameFull }} Embedded. There is currently no DDL mechanism to deploy the external drivers.
-
-Now to create connection to the external data source. One needs to know the name of deployment. For JDBC drivers, it is typically JAR name with out path. For resource adapters, it is the name of the resource-adapter. Step also associates the connection created with the translator to be used in communicating with this source. 
-
+The SERVER construct is used to associate your translator with a data source.
 
 [source,sql] 
 ----
@@ -121,13 +119,10 @@ CREATE SERVER {source-name} [TYPE '{source-type}']
 |====
 |Name |Description
 |source-name | Name given to the source's connection.
-|source-type | For JDBC connection, the driver name or resource-adapter name. 
+|source-type | Not currently used. 
 |translator-name| Name of the translator to be used with this server.
-|options| All connection properties for the connection.  Currently only resource-name is supported as a way to specify the environmentally dependent name of the source, for example java:/source, so that the source-name can be anything. 
+|options| Currently only resource-name is supported. resource-name provides a way to specify the environmentally dependent (JNDI or bean) name of the source if it differs from the server name.  For example java:/source
 |====
-
-For all available translators see link:Translators.adoc[Translators] 
-
 
 .Example 3: creating a data source connection to Postgres database
 [source,sql] 
@@ -139,40 +134,32 @@ CREATE SERVER pgsql
     );
 ----
 
-The below are the typical properties that need to be configured for a JDBC connection
-|====
-|Name|Description
-|jndi-name|Jndi name of the datasource
-|====
-
-NOTE: Any additional properties to create a data-source in WildFly can also used here in OPTIONS clause.
-
-IMPORTANT: If the data source is already exists in the configuration, then supply only provide _jndi-name_ property (you can omit all other properties), then above command will create a new connection, but will use existing configuration in the system.
-
-The below shows an example connection with resource adapter.
+An example file source.
 
 .Example 4: creating a data source connection to "file" resource adapter.
 ----
 CREATE SERVER marketdata 
     FOREIGN DATA WRAPPER file 
     OPTIONS(
-        ParentDirectory '/path/to/marketdata'
+        ParentDirectory '/path/to/marketdata' {% if book.targetWildfly %},"resource-name" 'java:/postgres-ds'{% endif %}
     );
 ----
-For all available data sources see link:Data_Sources.adoc[data sources]
+
+{% if book.targetWildfly %}
+See link:r_data-sources.adoc[Data Sources] for more.
+{% endif %}
 
 Additional management support to alter/delete a connection. 
 ----
 ALTER  SERVER {source-name}  OPTIONS ( ADD|SET|DROP <key-value>);
 DROP SERVER  {source-name};
 ----
-WARNING: ALTER can be used to change properties, but due to a bug in WildFly this feature currently does not work.
 
 Now that we have the Translators and Connections created, the next step is to create SCHEMAs and work with metadata.
 
-== Create SCHEMA in VDB
+== Create SCHEMA
 
-Before metadata about data sources or abstraction layers can be created, a container for this metadata needs to be created. In relational database concepts this is called Schema, and this also works as a namespace in which metadata objects like TABLES, VIEWS and PROCEDURES exist. The below DDL shows how to create a SCHEMA element.
+A schema is a container for metadata.  It works as a namespace in which metadata objects like TABLES, VIEWS and PROCEDURES exist. The below DDL shows how to create a SCHEMA element.
 
 ----
 CREATE [VIRTUAL] SCHEMA {schema-name} 
@@ -183,9 +170,12 @@ CREATE [VIRTUAL] SCHEMA {schema-name}
     <key> <value>[,<key>, <value>]*
 ----
 
-* The use of VIRTUAL keyword defines if this schema is "Virtual Schema". In the absence of the VIRTUAL keyword, this Schema element represents a "Source Schema". Refer to link:vdb_guide.adoc[VDB Guide] about different types of Schema types.
+* The use of VIRTUAL keyword defines if this schema is "Virtual Schema". In the absence of the VIRTUAL keyword, this Schema element represents a "Source Schema". Refer to link:as_virtual-databases.adoc[VDB Guide] about different types of Schema types.
 
-IMPORTANT: If the Schema is defined as "Source Schema", then SERVER configuration *must* be provided, to be able to determine the data source connection to be used when executing queries that belong to this Schema. Providing multiple Server names configure this Schema as "multi-source" model.  See link:./Multisource_Models.adoc[Multisource Models] for more information. 
+IMPORTANT: If the Schema is defined as "Source Schema", then SERVER configuration *must* be provided, to be able to determine the data source connection to be used when executing queries that belong to this Schema.
+{% if book.targetWildfly %}
+Providing multiple Server names configure this Schema as "multi-source" model.  See link:./r_multisource_models.adoc[Multisource Models] for more information.
+{% endif %} 
 
 Below are typical properties that can be configured for a Schema in the OPTIONS clause.
 |====
@@ -251,6 +241,7 @@ IMPORT FROM REPOSITORY "DDL-FILE"
 
 TIP: The example IMPORT SCHEMA can be used with any custom Metadata Repository, in the REPOSITORY DDL-FILE, DDL-FILE represents a particular type of repository.
 
+{% if book.targetWildfly %}
 === Importing another Virtual Database (VDB Reuse)
 
 If you like to import another VDB that is created into the current VDB, the following command cn be used to import all the metadata
@@ -261,10 +252,11 @@ IMPORT DATABASE {vdb-name} VERSION {version} [WITH ACCESS CONTROL]
 ----
 
 Specifying the WITH ACCESS CONTROL also imports any Data Roles defined in the other database.
+{% endif %}
 
 == Create Schema Objects
 
-Most DDL statements that affect link:DDL_Metadata.adoc[schema objects] need the schema to be explicitly set.  To be able to establish the schema context you are working with use following command:
+Most DDL statements that affect link:r_ddl-metadata-for-schema-objects.adoc[schema objects] need the schema to be explicitly set.  To be able to establish the schema context you are working with use following command:
 
 .Example: Set Schema
 [source,sql]
@@ -282,7 +274,7 @@ CREATE VIEW my_view AS SELECT 'HELLO WORLD';
 ----
 
 == Data Roles
-Data roles, also called entitlements, are sets of permissions defined per VDB that dictate data access (create, read, update, delete). Data roles use a fine-grained permission system that {{ book.productnameFull }} will enforce at runtime and provide audit log entries for access violations. To read more about Data Roles and Permissions see  link:../reference/Data_Roles.adoc[Data Roles] and  link:../reference/Permissions.adoc[Permissions]
+Data roles, also called entitlements, are sets of permissions defined per VDB that dictate data access (create, read, update, delete). Data roles use a fine-grained permission system that {{ book.productnameFull }} will enforce at runtime and provide audit log entries for access violations. To read more about Data Roles and Permissions see  link:as_data-roles.adoc[Data Roles] and  link:r_permissions.adoc[Permissions]
 
 Here we will show DDL support to create these Data Roles and corresponding permissions.
 
@@ -308,7 +300,7 @@ CREATE ROLE readOnly WITH ANY AUTHENTICATED;
 
 NOTE: Roles must be defined as a structural component of the VDB.  GRANT/REVOKE may then appear after all of the database structure has been defined.
 
-See link:../reference/Permissions.adoc[Permissions] for more details on the permission system.
+See link:r_permissions.adoc[Permissions] for more details on the permission system.
 
 .BNF for GRANT/REVOKE command
 [source,sql]
@@ -430,6 +422,7 @@ GRANT READ ON COLUMN test.Order.amount
     TO base_role;
 ----
 
+{% if book.targetWildfly %}
 == Differences with vdb.xml metadata
 
 Using a .ddl file instead of a .xml file to define a vdb will result in differences in how metadata is loaded when using a full server deployment of {{ book.productnameFull }}.
@@ -440,3 +433,4 @@ Using a vdb.ddl file does not support:
 * parallel loading of source metadata
 
 All of same limitations affect all VDBs (regardless of .xml or .ddl) when using {{ book.productnameFull }} Embedded.
+{% endif %}
