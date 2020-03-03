@@ -24,6 +24,10 @@ Teiid {{ book.fullVersionNumber }} adds performance features, microservice enabl
 * https://issues.redhat.com/browse/TEIID-5511[TEIID-5511] The AdminShell kit has been removed. No further releases are planned.
 * https://issues.redhat.com/browse/TEIID-5833[TEIID-5833] The use of SET NAMESPACE to define a custom prefix or namespace is no longer allowed.  Please remove this statement from your DDL and simply use a consistent property key.
 
+=== from 13.0
+
+* https://issues.redhat.com/browse/TEIID-5798[TEIID-5798] specifying a condition on a table permission is now deprecated.  Use CREATE POLICY instead.
+
 === from 12.3
 
 * https://issues.redhat.com/browse/TEIID-5819[TEIID-5819] References to any Teiid *-swagger artifact should use openapi in both the artifact name and group instead.

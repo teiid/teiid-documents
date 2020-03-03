@@ -343,8 +343,6 @@ REVOKE USAGE ON LANGUAGE {language-name}
         COLUMN {schema-name}.{table-name}.{column-name} [MASK] 
 ----
 
-BNF for link:r_bnf_for_sql_grammar.adoc#createPolicy[CREATE POLICY] and link:r_bnf_for_sql_grammar.adoc#dropPolicy[DROP POLICY].
-
 * permission-types: Types of permissions to be granted
 * language-name: Name of the language
 * grant-resource: This is Schema element in the VDB on which this grant applies to.
@@ -355,8 +353,11 @@ BNF for link:r_bnf_for_sql_grammar.adoc#createPolicy[CREATE POLICY] and link:r_b
 * column-name: Name of the column
 * expression: any valid sql expression, this can include columns from referenced resource
 
-WARNING: GRANT/REVOKE mostly function as direct replacements for the XML permission declarations. A grant/revoke 
-has no effect on any other grant/revoke unless it represents the same resource, in which case its effect is combined.
+BNF for link:r_bnf_for_sql_grammar.html#createPolicy[CREATE POLICY] and link:r_bnf_for_sql_grammar.html#dropPolicy[DROP POLICY].
+
+WARNING: GRANT/REVOKE mostly function as direct replacements for the legacy permission model. They do not function the same as standard SQL GRANT/REVOKE.  GRANT/REVOKE apply/remove permissions from the given resource - but do not affect prior GRANT/REVOKEs against any other resource.  For example if you GRANT read permission on a table, then REVOKE read permission on the table's schema, the GRANT of the read permission will remain on the table.  At runtime GRANTs are still interpreted hierarchically - a read GRANT on a schema implies read access to all contained schema objects.  GRANT/REVOKE is also not ADD/DROP aware.  If the GRANT target is dropped the old GRANT still remains and could affect any recreated object.
+
+WARNING: POLICIES are not ADD/DROP aware.  If the POLICY target is dropped the old POLICY still remains and could affect any recreated object.
 
 .Example: Give Read, write, update permission on single table to user with enterprise role "role1"
 [source,sql]
