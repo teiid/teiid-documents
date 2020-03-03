@@ -22,9 +22,9 @@ used to connect/federate/transform datasources to produce a `.vdb` file.
 * **quickstarts** - A maven quickstart showing how to utilize {{ book.productnameFull }}.
 {% endif %}
 
-{% if book.targetWildfly %}
-image:images/teiid-architecture.png[images/teiid-architecture.png]
-{% endif %}
+
+image:images/data-virt-arch.png[images/data-virt-arch.png]
+
 
 {% if book.targetWildfly %}* Client:: link:../client-dev/Client_Developers_Guide.adoc[Client Developer's Guide]{% endif %}
 Transport:: Transport services manage client connections: security authentication, encryption, and so forth.
