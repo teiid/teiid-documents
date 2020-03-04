@@ -5,7 +5,7 @@
 
 You should consult the release notes for compatibility and configuration changes from each minor version that you are upgrading over.  This guide expands upon the release notes included in the kit to cover changes since 12.x.
 
-If possible you should make your migration to {{ book.productnameFull }} 13 by first using {{ book.productnameFull }} 12.2.x.  {{ book.productnameFull }} 13 requires Java 8 and WildFly 17.
+If possible you should make your migration to {{ book.productnameFull }} 13 by first using {{ book.productnameFull }} 12.2.x.  {{ book.productnameFull }} 13 requires Java 8 and WildFly 17.  See also link:Migration_Guide_From_Teiid_11.x.adoc[11 to 12 Migration Guide]
 
 == Configuration Changes
 
