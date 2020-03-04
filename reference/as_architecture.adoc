@@ -26,9 +26,18 @@ used to connect/federate/transform datasources to produce a `.vdb` file.
 image:images/teiid-architecture.png[images/teiid-architecture.png]
 {% endif %}
 
+{% if book.targetSpring %}
+image:images/data_virt_arch.png[images/data_virt_arch.png]
+{% endif %}
+
 {% if book.targetWildfly %}* Client:: link:../client-dev/Client_Developers_Guide.adoc[Client Developer's Guide]{% endif %}
 Transport:: Transport services manage client connections: security authentication, encryption, and so forth.
 Query Engine:: The query engine has several layers and components. At a high level, request processing is structured as follows:
+
+{% if book.targetSpring %}
+The following diagram shows the components that make up the data virtualization service in greater detail:
+image:images/data_virt_engine.png[images/data_virt_engine.png]
+{% endif %}
 
 1. SQL is converted to a processor plan. The engine receives an incoming SQL query. 
 It is parsed to a internal command. Then the command is converted a logical plan via resolving, validating, and rewriting. 
