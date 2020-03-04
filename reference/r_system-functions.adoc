@@ -1,6 +1,6 @@
 // Module included in the following assemblies:
 // as_scalar-functions.adoc
-
+[id="system-functions"]
 = System functions
 :toc: manual
 :toc-placement: preamble

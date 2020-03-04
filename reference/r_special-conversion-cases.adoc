@@ -1,6 +1,6 @@
 // Module included in the following assemblies:
 // as_datatypes.adoc"]
-[id-"special-conversion-cases"]
+[id="special-conversion-cases"]
 = Special conversion cases
 
 .Conversion of string literals
