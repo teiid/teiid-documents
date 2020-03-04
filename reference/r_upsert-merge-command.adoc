@@ -1,6 +1,6 @@
 // Module included in the following assemblies:
 // as_update-commands.adoc
-[id-"upsert-merge-command"]
+[id="upsert-merge-command"]
 = UPSERT (MERGE) command
 
 The UPSERT (or MERGE) command is used to add or update records. 
