@@ -42,7 +42,7 @@ It is best not to assume use of the string form in criteria or other places wher
 |string
 |clob
 |char, boolean, byte, short, integer, long, biginteger, float, double, bigdecimal, xml 
-footnote:[string to xml is equivalent to XMLPARSE(DOCUMENT exp). For more information, see _XMLPARSE_ in xref:xml-functions[XML functions].]
+footnote:[string to xml is equivalent to XMLPARSE(DOCUMENT exp). For more information, see _XMLPARSE_ in <<xml-functions,XML functions>>.]
 
 |char
 |string
@@ -106,7 +106,7 @@ footnote:[string to xml is equivalent to XMLPARSE(DOCUMENT exp). For more inform
 
 |xml
 |
-|string footnote:[xml to string is equivalent to XMLSERIALIZE(exp AS STRING). For more information, see _XMLSERIALIZE_ in xref:xml-functions[XML functions].]
+|string footnote:[xml to string is equivalent to XMLSERIALIZE(exp AS STRING). For more information, see _XMLSERIALIZE_ in <<xml-functions,XML functions>>.]
 
 |geography
 |
