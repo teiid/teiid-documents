@@ -53,13 +53,17 @@ Since the current timestamp has only millisecond precision by default setting th
 |Return day number in year
 |x in {date, timestamp}, returns integer
 
+|EPOCH(x)
+|Return seconds since the unix epoch with microsecond precision
+|x in {date, timestamp}, returns double
+
 |EXTRACT(YEAR\|MONTH\|DAY
-\|HOUR\|MINUTE\|SECOND FROM x)
+\|HOUR\|MINUTE\|SECOND\|QUARTER\EPOCH FROM x)
 |Return the given field value from the date value x. 
-Produces the same result as the associated YEAR, MONTH, DAYOFMONTH, HOUR, MINUTE, SECOND functions. 
+Produces the same result as the associated YEAR, MONTH, DAYOFMONTH, HOUR, MINUTE, SECOND, QUARTER, EPOCH functions functions. 
 The SQL specification also allows for TIMEZONE_HOUR and TIMEZONE_MINUTE as extraction targets. 
 In {{ book.productnameFull }} all date values are in the timezone of the server.
-|x in {date, time, timestamp}, returns integer
+|x in {date, time, timestamp}, epoch returns double, the others return integer
 
 |FORMATDATE(x, y)
 |Format date x using format y.
