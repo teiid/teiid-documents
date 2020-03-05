@@ -8,7 +8,9 @@
 {{ book.productnameFull }} supports creating temporary (_temp_) tables. 
 Temporary tables are created dynamically, but are treated as any other physical table.
 
+{% if not book.targetWildfly and not book.targetSpring %}
 include::r_local-temporary-tables.adoc[leveloffset=+1]
 include::r_global-temporary-tables.adoc[leveloffset=+1]
 include::r_global-and-local-temp-table-features.adoc[leveloffset=+1]
 include::r_foreign-temporary-tables.adoc[leveloffset=+1]
+{% endif %}

@@ -17,7 +17,7 @@ You can also execute procedures by using the EXECUTE command, procedural relatio
 For more information, see xref:procedural-relational-command[Procedural relational command],
 or xref:anonymous-procedure-block[Anonymous procedure block].
 
-
+{% if not book.targetWildfly and not book.targetSpring %}
 include::r_set-operations.adoc[leveloffset=+1]
 include::r_select-command.adoc[leveloffset=+1]
 include::r_values-command.adoc[leveloffset=+1]
@@ -33,3 +33,4 @@ include::r_orderby-clause.adoc[leveloffset=+1]
 include::r_limit-clause.adoc[leveloffset=+1]
 include::r_into-clause.adoc[leveloffset=+1]
 include::r_option-clause.adoc[leveloffset=+1]
+{% endif %}

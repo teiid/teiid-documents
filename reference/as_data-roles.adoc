@@ -25,9 +25,11 @@ OData access provides all non-hidden metadata by default.
 To configure JDBC/pg to also make all non-hidden schema metadata visible to all authenticated users, 
 set the environment/system property `org.teiid.metadataRequiresPermission` to false.
 
+{% if not book.targetWildfly and not book.targetSpring %}
 include::r_permissions.adoc[leveloffset=+1]
 include::r_role-mapping.adoc[leveloffset=+1]
 
 
 //include::r_xml-definition.adoc[leveloffset=+1] <== Wildfly
 //include::r_customizing.adoc[leveloffset=+1] <== Wildfly
+{% endif %}
