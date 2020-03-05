@@ -343,6 +343,7 @@ The resource adapter for this translator provided through data source in {{ book
 See to Admin Guide section link:../client-dev/WildFly_DataSource.adoc[{{ book.asName }} Data Sources] for configuration.
 {% endif %}
 
+{% if not book.targetWildfly and not book.targetSpring %}
 include::r_actian-vector-translator.adoc[leveloffset=+1]
 include::r_apache-phoenix-translator.adoc[leveloffset=+1]
 include::r_cloudera-impala-translator.adoc[leveloffset=+1]
@@ -372,3 +373,4 @@ include::r_sybase-translator.adoc[leveloffset=+1]
 include::r_teiid-translator.adoc[leveloffset=+1]
 include::r_teradata-translator.adoc[leveloffset=+1]
 include::r_vertica-translator.adoc[leveloffset=+1]
+{% endif %}

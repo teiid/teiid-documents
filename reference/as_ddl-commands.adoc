@@ -12,8 +12,9 @@ To make non-temporary metadata updates persistent, you must configure a `Metadat
 For more information, see _Runtime Metadata Updates_ in the Developer's Guide.
 {% endif %}
 
-
+{% if not book.targetWildfly and not book.targetSpring %}
 include::as_temp-tables.adoc[leveloffset=+1]
 include::r_alter-view.adoc[leveloffset=+1]
 include::r_alter-procedure.adoc[leveloffset=+1]
 include::r_alter-trigger.adoc[leveloffset=+1]
+{% endif %}

@@ -61,7 +61,9 @@ Resource adapter:: Provides container managed access to a source. For more infor
 see _Developing JEE connectors_ in the link:../dev/Developing_JEE_Connectors.adoc[Developer's Guide].
 {% endif %}  
 
+{% if not book.targetWildfly and not book.targetSpring %}
 include::r_terminology.adoc[leveloffset=+1]
 include::r_data-management.adoc[leveloffset=+1]
 include::r_query-termination.adoc[leveloffset=+1]
 include::r_processing.adoc[leveloffset=+1]
+{% endif %}

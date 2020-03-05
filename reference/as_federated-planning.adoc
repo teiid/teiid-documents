@@ -7,6 +7,7 @@ At its core, {{ book.productnameFull }} is a federated, relational query engine.
 This query engine allows you to treat all of your data sources as one virtual database, and access them through a single SQL query. 
 As a result, instead of focusing on hand-coding joins, you can focus on building your application, and on running other relational operations between data sources.
 
+{% if not book.targetWildfly and not book.targetSpring %}
 include::r_planning-overview.adoc[leveloffset=+1]
 include::r_query-planner.adoc[leveloffset=+1]
 include::r_query-plans.adoc[leveloffset=+1]
@@ -15,3 +16,4 @@ include::r_subquery-optimization.adoc[leveloffset=+1]
 include::r_xquery-optimization.adoc[leveloffset=+1]
 include::r_federated-failure-modes.adoc[leveloffset=+1]
 include::r_conformed-tables.adoc[leveloffset=+1]
+{% endif %}
