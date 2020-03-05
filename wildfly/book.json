@@ -15,5 +15,5 @@
         "productnameFull" : "Teiid",
         "odataContext" : "odata4/northwind/NW"
     },
-    "plugins": ["collapsible-menu", "asciidoc-include@0.1.8"]
+    "plugins": ["collapsible-menu"]
 }

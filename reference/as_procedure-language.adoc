@@ -12,6 +12,7 @@ These are known as update procedures.
 For more information, see xref:virtual-procedures[Virtual procedures] 
 and xref:update-procedures-triggers[update procedures (Triggers)].
 
+{% if not book.targetWildfly and not book.targetSpring %}
 include::r_command-statement.adoc[leveloffset=+1]
 include::r_dynamic-sql-command.adoc[leveloffset=+1]
 include::r_declaration-statement.adoc[leveloffset=+1]
@@ -28,3 +29,4 @@ include::r_return-statement.adoc[leveloffset=+1]
 include::r_error-statement.adoc[leveloffset=+1]
 include::r_raise-statement.adoc[leveloffset=+1]
 include::r_exception-expresssion.adoc[leveloffset=+1]
+{% endif %}

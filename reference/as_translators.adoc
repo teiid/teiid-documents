@@ -183,6 +183,7 @@ For example use `prod_%s` to prefix all names with `prod_`.
 |
 |===
 
+{% if not book.targetWildfly and not book.targetSpring %}
 include::r_amazon-s3-translator.adoc[leveloffset=+1]
 include::as_delegator-translators.adoc[leveloffset=+1]
 include::r_file-translator.adoc[leveloffset=+1]
@@ -196,3 +197,4 @@ include::r_odata-v4-translator.adoc[leveloffset=+1]
 include::r_openapi-translator.adoc[leveloffset=+1]
 include::r_salesforce-translator.adoc[leveloffset=+1]
 include::r_web-services-translator.adoc[leveloffset=+1]
+{% endif %}

@@ -19,6 +19,7 @@ be used in a query with nearly any keyword, including SELECT, FROM (if specifyin
 * xref:criteria[Criteria]
 * xref:scalar-functions[Scalar functions]
 
+{% if not book.targetWildfly and not book.targetSpring %}
 include::column-identifiers[leveloffset=+1]
 include::literals[leveloffset=+1]
 include::aggregate-functions[leveloffset=+1]
@@ -27,3 +28,4 @@ include::case-and-searched-case-expressions[leveloffset=+1]
 include::scalar-subqueries[leveloffset=+1]
 include::parameter-references[leveloffset=+1]
 include::arrays[leveloffset=+1]
+{% endif %}
