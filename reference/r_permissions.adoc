@@ -90,23 +90,14 @@ See also link:xml-definition[XML Definition] for examples of specifying data rol
 
 .Row-based security
 
-NOTE: Specifying a condition on a GRANT for row based security has been deprecated.  Specifying a condition on a GRANT is the same as specifying "CREATE POLICY policyName ON schemaName.tblName TO role USING (condition);", such that the condition applies to all operations. 
+A permission against a fully qualified table/view/procedure may also specify a condition. Unlike the allow CRUD actions defined above, a condition is always applied - not just at the user query level. The condition can be any valid SQL referencing the columns of the table/view/procedure. Procedure result set columns may be referenced as proc.col. The condition will act as a row-based filter and as a checked constraint for insert/update operations.
 
-A POLICY against a fully qualified table/view/procedure may specify a condition to be satisfied by the given role. 
-The condition can be any valid boolean expression referencing the columns of the table/view/procedure. 
-Procedure result set columns may be referenced as `proc.col`. 
-The condition will act as a row-based filter and as a checked constraint for insert/update operations.
-
-.Application of row-based conditions
-
-A condition is applied conjunctively to update/delete/select WHERE clauses against the affected resource. 
-Those queries will therefore only ever be effective against the subset of rows that pass the condition, such as "SELECT * FROM TBL WHERE something *AND condition*. 
-The condition will be present regardless of how the table/view is used in the query, whether by means of a union, join, or other operation.
+A condition is applied conjunctively to update/delete/select where clauses against the affected resource. Those queries will therefore only ever be effective against the subset of rows that pass the condition, i.e. "SELECT * FROM TBL WHERE blah *AND condition*". The condition will be present regardless of how the table/view is used in the query, whether via a union, join, etc.
 
 [source,sql]
 .Example condition
 ----
-CREATE POLICY policyName ON schemaName.tblName TO superUser USING ('foo=bar');
+GRANT SELECT ON TABLE modelName.tblName CONDITION 'foo=bar' TO superuser;
 ----
 
 Inserts and updates against physical tables affected by a condition are further validated so that the insert/change values must 
@@ -114,15 +105,13 @@ pass the condition (evaluate to true) for the insert/update to succeed -- this i
 This will happen for all styles of insert/update -- insert with query expression, bulk insert/update, and so on. Inserts/updates 
 against views are not checked with regards to the constraint. 
 
-You can disable the insert/update constraint check by restricting the operations that the POLICY applies to. 
+You can disable the insert/update constraint check by indicating the condition is not a constraint. This is typically only needed in circumstances when the condition cannot always be evaluated. However disabling the condition as a constraint simply drops the condition from consideration when logically evaluating the constraint. Any other condition constraints will still be evaluated.
 
 [source,sql]
 .Example DDL non-constraint condition
 ----
-CREATE POLICY readPolicyName ON schemaName.tblName FOR SELECT,DELETE TO superUser USING ('col>10');
+GRANT SELECT ON TABLE modelName.tblName CONDITION NOT CONSTRAINT 'foo=bar' TO superuser;
 ----
-
-You may of course add another POLICY to cover the INSERT and UPDATE operations should they require a different condition.
 
 {% if book.targetWildfly %}
 [source,xml]
@@ -135,8 +124,7 @@ You may of course add another POLICY to cover the INSERT and UPDATE operations s
 ----
 {% endif %}
 
-If more than one POLICY applies to the same resource, the conditions will be accumulated disjunctively via OR, that is, "(condition1) *OR* (condition2) …". 
-Therefore, creating a POLICY with the condition "true" will allow users in that role to see all rows of the given resource for the given operations.
+Across multiple applicable roles if more than one condition applies to the same resource, the conditions will be accumulated disjunctively via OR, i.e. "(condition1) *OR* (condition2) …". Therefore granting a permission with the condition "true" will allow users in that role to see all rows of the given resource.
 
 .Considerations when using conditions
 

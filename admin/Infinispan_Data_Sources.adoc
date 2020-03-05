@@ -81,11 +81,6 @@ All the properties that are defined on the RAR file are
 |No
 |n/a
 
-|TransactionMode
-|The transaction mode expected for cache access.  Can be one of: FULL_XA, NON_DURABLE_XA, NON_XA
-|No
-|n/a
-
 |===
 
 To find out all the properties that are supported by this Infinispan Connector, execute the following command in the CLI.

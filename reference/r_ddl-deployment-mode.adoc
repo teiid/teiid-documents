@@ -353,11 +353,7 @@ REVOKE USAGE ON LANGUAGE {language-name}
 * column-name: Name of the column
 * expression: any valid sql expression, this can include columns from referenced resource
 
-BNF for link:r_bnf_for_sql_grammar.html#createPolicy[CREATE POLICY] and link:r_bnf_for_sql_grammar.html#dropPolicy[DROP POLICY].
-
 WARNING: GRANT/REVOKE mostly function as direct replacements for the legacy permission model. They do not function the same as standard SQL GRANT/REVOKE.  GRANT/REVOKE apply/remove permissions from the given resource - but do not affect prior GRANT/REVOKEs against any other resource.  For example if you GRANT read permission on a table, then REVOKE read permission on the table's schema, the GRANT of the read permission will remain on the table.  At runtime GRANTs are still interpreted hierarchically - a read GRANT on a schema implies read access to all contained schema objects.  GRANT/REVOKE is also not ADD/DROP aware.  If the GRANT target is dropped the old GRANT still remains and could affect any recreated object.
-
-WARNING: POLICIES are not ADD/DROP aware.  If the POLICY target is dropped the old POLICY still remains and could affect any recreated object.
 
 .Example: Give Read, write, update permission on single table to user with enterprise role "role1"
 [source,sql]
@@ -379,21 +375,19 @@ GRANT ALL PRIVILEGES TO everything;
 ----
 CREATE ROLE base_role WITH ANY AUTHENTICATED;
 ...
-GRANT READ ON TABLE test.Orders TO base_role;
-CREATE POLICY policyOrders ON test.Orders TO base_role USING (amount < 1000) TO base_role;
+GRANT READ ON TABLE test.Orders CONDITION 'amount < 1000' TO base-role;
 ----
 
 .Example : Override previous example to more privileged user.
 [source,sql]
 ----
-CREATE POLICY policyRoleAOrders ON test.Orders TO RoleA USING (amount < 1000 and amount >=1000);
+GRANT READ ON TABLE test.Orders CONDITION 'amount < 1000 and amount >=1000' TO RoleA;
 ----
 
 .Example : Restricting rows to only those owned by this user.
 [source,sql]
 ----
-GRANT READ ON TABLE test.CustomerOrders TO RoleA;
-CREATE POLICY policyCustomerOrders TO RoleA ON test.CustomerOrders USING (name = user());
+GRANT READ ON TABLE test.CustomerOrders CONDITION CONSTRAINT 'name = user()' TO RoleA;
 ----
 
 In the above example, user() function returns the currently logged in user id, if that matches to the name column, only those rows will be returned. There are functions like hasRole('x') that can be used too. 
