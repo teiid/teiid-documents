@@ -1,6 +1,6 @@
 // Module included in the following assemblies:
 // as_transaction-support.adoc
-[id="transaction-support"]
+[id="autocommittxn-execution-property"]
 = AutoCommitTxn Execution Property
 
 User level commands can execute multiple source commands. 
