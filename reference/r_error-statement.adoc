@@ -1,6 +1,6 @@
 // Module included in the following assemblies:
 // as_procedure-language.adoc
-[id="return-statement"]
+[id="error-statement"]
 = Error statement
 
 An `ERROR` statement declares that the procedure has entered an error state and should abort. 

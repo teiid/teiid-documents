@@ -1,6 +1,6 @@
 // Module included in the following assemblies:
 // as_dml-commands.adoc
-[id=with-clause]
+[id="with-clause"]
 = WITH clause
 
 {{ book.productnameFull }} supports non-recursive common table expressions via the WITH clause. 

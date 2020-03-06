@@ -46,6 +46,7 @@ For more information see _OData Support_ in the http://teiid.github.io/teiid-doc
 
 |NavigationProperties
 |Table [4]
+
 |===
 
 [1] Only if the EntityType is exposed as the EntitySet in the Entity container. 
@@ -139,6 +140,7 @@ The following execution properties extend or limit the functionality of the tran
 |SupportsUpdates
 |Supports INSERT/UPDATE/DELETE
 |true
+
 |===
 
 The OData server that you connect to might not fully implement the entire 
@@ -165,6 +167,7 @@ The following table lists the importer properties that define the behavior of th
 |schemaNamespace
 |Namespace of the schema to import
 |null
+
 |===
 
 Example importer settings to only import tables and views from http://services.odata.org/V4/(S(nivess3y23eyhit4jbppgtdj))/TripPinServiceRW/$metadata[Trippin] 

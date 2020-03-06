@@ -28,5 +28,5 @@ include::r_leave-statement.adoc[leveloffset=+1]
 include::r_return-statement.adoc[leveloffset=+1]
 include::r_error-statement.adoc[leveloffset=+1]
 include::r_raise-statement.adoc[leveloffset=+1]
-include::r_exception-expresssion.adoc[leveloffset=+1]
+include::r_exception-expression.adoc[leveloffset=+1]
 {% endif %}
