@@ -1,6 +1,6 @@
 // Module included in the following assemblies:
 // as_expressions.adoc
-[id="column-identifiers]
+[id="column-identifiers"]
 
 = Column Identifiers
 

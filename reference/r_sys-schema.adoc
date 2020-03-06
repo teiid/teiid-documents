@@ -159,6 +159,7 @@ This table supplies information about all the elements (columns, tags, attribute
 |ColumnSize
 |string
 |If numeric, the precision, if character, the length, and if date/time, then the string length of a literal value.
+
 |===
 
 .SYS.DataTypes
@@ -251,6 +252,7 @@ This table supplies information on datatypes.
 |Literal_Prefix
 |string
 |literal suffix
+
 |===
 
 .SYS.KeyColumns
@@ -299,6 +301,7 @@ This table supplies information about the columns referenced by a key.
 |TableUID
 |string
 |Parent Table unique ID
+
 |===
 
 .SYS.Keys
@@ -367,6 +370,7 @@ This table supplies information about primary, foreign, and unique keys.
 |ColPositions
 |short[]
 |Array of column positions within the key table
+
 |===
 
 .SYS.ProcedureParams
@@ -447,6 +451,7 @@ This supplies information on procedure parameters.
 |DefaultValue
 |string
 |Default value
+
 |===
 
 .SYS.Procedures
@@ -487,6 +492,7 @@ This table supplies information about the procedures in the virtual database.
 |SchemaUID
 |string
 |Parent Schema unique ID
+
 |===
 
 
@@ -564,6 +570,7 @@ This supplies information on function parameters.
 |ColumnSize
 |string
 |If numeric, the precision, if character, the length, and if date/time, then the string length of a literal value.
+
 |===
 
 .SYS.Functions
@@ -600,6 +607,7 @@ This table supplies information about the functions in the virtual database.
 |IsVarArgs
 |boolean
 |Does the function accept variable arguments
+
 |===
 
 .SYS.Properties
@@ -625,6 +633,7 @@ Normally, this table is empty if no metamodel extensions are being used.
 |ClobValue
 |clob
 |Clob Value
+
 |===
 
 .SYS.ReferenceKeyColumns
@@ -722,6 +731,7 @@ This table supplies information about all the schemas in the virtual database, i
 |PrimaryMetamodelURI
 |string
 |URI for the primary metamodel describing the model used for this schema
+
 |===
 
 .SYS.Tables
@@ -778,6 +788,7 @@ This table supplies information about all the groups (tables, views, documents, 
 |SchemaUID
 |string
 |Parent Schema unique ID
+
 |===
 
 .SYS.VirtualDatabases
@@ -805,7 +816,7 @@ This table supplies information about the currently connected virtual database, 
 
 |ActiveTimestamp
 |timestamp
-|The timestamp when the vdb became active
+|The timestamp when the vdb became active.
 |===
 
 .SYS.spatial_sys_ref

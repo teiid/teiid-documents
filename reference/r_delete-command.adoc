@@ -1,6 +1,6 @@
 // Module included in the following assemblies:
 // as_update-commands.adoc
-[id=delete-command]
+[id="delete-command"]
 = DELETE command
 
 The DELETE command is used to remove records from a table. 

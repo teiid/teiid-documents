@@ -72,7 +72,7 @@ Sometimes default properties must be adjusted for proper execution of the transl
 
 *Execution properties*
 
-none
+None.
 
 
 .Importer properties

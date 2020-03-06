@@ -8,5 +8,5 @@
 {% if not book.targetWildfly and not book.targetSpring %}
 include::as_procedure-language.adoc[leveloffset=+1]
 include::r_virtual-procedures.adoc[leveloffset=+1]
-include::r_update-procedure-triggers.adoc[leveloffset=+1]
+include::r_update-procedures-triggers.adoc[leveloffset=+1]
 {% endif %}

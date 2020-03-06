@@ -1,6 +1,6 @@
 // Module included in the following assemblies:
 // as_dml-commands.adoc
-[id=subqueries]
+[id="subqueries"]
 = Subqueries
 
 A subquery is a SQL query embedded within another SQL query. The query containing the subquery is the outer query.
