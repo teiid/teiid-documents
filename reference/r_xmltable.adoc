@@ -1,6 +1,6 @@
 // Module included in the following assemblies:
 // as_from-clause.adoc
-[id=xmltable]
+[id="xmltable"]
 = XMLTABLE
 
 The XMLTABLE function uses XQuery to produce tabular output. 

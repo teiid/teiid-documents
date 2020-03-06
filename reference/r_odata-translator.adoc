@@ -30,11 +30,12 @@ The following table shows the mapping selections in the OData translator from a 
 |FunctionImport
 |Procedure
 
-|AssosiationSet
+|AssociationSet
 |Foreign keys on the table*
 
 |ComplexType
 |ignored**
+
 |===
 
 * A many-to-many association will result in a link table that can not be selected from, but can be used for join purposes. 
@@ -76,6 +77,7 @@ as if the EntitySets and Function Imports were local to the {{ book.productnameF
 |SupportsOdataTop
 |Supports $top.
 |true
+
 |===
 
 .*Importer Properties*
@@ -90,6 +92,7 @@ as if the EntitySets and Function Imports were local to the {{ book.productnameF
 |entityContainer
 |Entity Container Name to import.
 |default container
+
 |===
 
 .Example: Importer settings to import only tables and views from NetflixCatalog

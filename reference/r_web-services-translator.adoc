@@ -26,6 +26,7 @@ and not just the contents of the SOAP body. Can be one of MESSAGE or PAYLOAD
 |Used with the HTTP binding (typically with the GET method) to indicate that the request document should be part of the query string.
 |invoke*
 |null - unused
+
 |===
 
 NOTE: Setting the proper binding value on the translator is recommended as it removes the need for callers to pass an explicit value. 
@@ -44,6 +45,7 @@ When specifying the importer property, it must be prefixed with "importer.". Exa
 |importWSDL
 |Import the metadata from the WSDL URL configured in resource-adapter.
 |true
+|
 |===
 
 .Usage
