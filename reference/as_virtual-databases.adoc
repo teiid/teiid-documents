@@ -1,5 +1,4 @@
-// Assembly included in the following assemblies:
-// as_dv_reference.adoc
+// Assembly included in master.adoc
 [id="virtual-databases"]
 = Virtual databases
 
@@ -107,6 +106,6 @@ IMPORTANT: In a VDB, a source schema *must be* configured with a *correct* Trans
 
 {% if not book.targetWildfly and not book.targetSpring %}
 include::r_vdb-properties.adoc[leveloffset=+1]
-include::r_ddl_metadata-for-schema-objects.adoc[leveloffset=+1]
+include::r_ddl-metadata-for-schema-objects.adoc[leveloffset=+1]
 include::r_ddl-metadata-for-domains.adoc[leveloffset=+1]
 {% endif %}

@@ -1,6 +1,6 @@
 // Module included in the following assemblies:
 // as_from-clause.adoc
-[id=arraytable]
+[id="arraytable"]
 = ARRAYTABLE
 
 The ARRAYTABLE function processes an array input to produce tabular output. 

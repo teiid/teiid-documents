@@ -1,6 +1,6 @@
 // Module included in the following assemblies:
 // as_from-clause.adoc
-[id=texttable]
+[id="texttable"]
 = TEXTTABLE
 
 The TEXTTABLE function processes character input to produce tabular output. 

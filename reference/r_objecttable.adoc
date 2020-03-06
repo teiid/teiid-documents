@@ -1,6 +1,6 @@
 // Module included in the following assemblies:
 // as_from-clause.adoc
-[id=objecttable]
+[id="objecttable"]
 
 = OBJECTTABLE
 

@@ -244,6 +244,7 @@ Importer properties define the behavior of the translator during the metadata im
 |Number of documents to sample to determine the structure.
 If documents have different fields, or fields with different types, this should be greater than 1.
 |1
+
 |===
 
 .MongoDB metadata extension properties for building complex documents

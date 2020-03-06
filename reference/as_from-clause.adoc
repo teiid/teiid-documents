@@ -88,8 +88,8 @@ FROM /*+ PRESERVE */ (tbl1 inner join tbl2 inner join tbl3 on tbl2.col1 = tbl3.c
 ----
 
 {% if not book.targetWildfly and not book.targetSpring %}
-include::r_nested-tables[leveloffset=+1]
-include::r_xmltable[leveloffset=+1]
+include::r_nested-tables.adoc[leveloffset=+1]
+include::r_xmltable.adoc[leveloffset=+1]
 include::r_arraytable.adoc[leveloffset=+1]
 include::r_objecttable.adoc[leveloffset=+1]
 include::r_texttable.adoc[leveloffset=+1]

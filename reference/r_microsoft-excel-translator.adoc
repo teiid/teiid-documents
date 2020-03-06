@@ -28,6 +28,7 @@ The following table describes how Excel translator interprets the data in Excel 
 
 |Cell
 |Column Definition or Data of a column
+
 |===
 
 The Excel translator supports the "source metadata" feature, where for a given Excel workbook, it can introspect and build the schema 
@@ -90,11 +91,12 @@ In the case of a single file, specify the absolute name.
 
 |importer.headerRowNumber
 |Defines the cell header information to be used as column names.
-|Optional, default is first data row of sheet
+|Optional. Default is first data row of sheet
 
 |importer.dataRowNumber
 |Defines the row number where the data rows start.
 |Optional. Default is first data row of sheet.
+
 |=== 
 
 To enable information in the Excel spreadsheet to be interpreted correctly, it is best to define all the preceding importer properties.
@@ -134,6 +136,7 @@ the following namespace:
 |Column of Table
 |Defines cell number to use for reading data of particular column.
 |Yes
+
 |===
 
 The following example shows a table that is defined by using the extension metadata properties.
