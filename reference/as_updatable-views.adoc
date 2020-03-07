@@ -35,7 +35,7 @@ For information about key-preserved tables, see xref:key-preserved-tables[Key-pr
 
 If the default handling is not available or if you want to have an alternative implementation of an `INSERT/UPDATE/DELETE`, 
 you can use update procedures, or triggers, to define procedures to handle the respective operations. 
-For more information see xref:update_procedures_triggers[Update procedures (Triggers)].
+For more information see xref:update-procedures-triggers[Update procedures (Triggers)].
 
 Consider the following example of an inherently updatable denormalized view:
 

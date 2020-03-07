@@ -33,7 +33,7 @@ The node structure of the debug plan resembles that of the processing plan, but 
 
 .Canonical plan and all nodes
 
-As described in the xref:planning-overview.[Planning overview], a SQL statement submitted to the query engine is parsed, resolved, 
+As described in the xref:planning-overview[Planning overview], a SQL statement submitted to the query engine is parsed, resolved, 
 validated, and rewritten before it is converted into a canonical plan form. The canonical plan form most closely resembles the 
 initial SQL structure. A SQL select query has the following possible clauses (all but SELECT are optional):  
 WITH, SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY, LIMIT. These clauses are logically executed in the following order:

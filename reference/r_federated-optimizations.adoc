@@ -3,6 +3,7 @@
 [id="federated-optimizations"]
 = Federated Optimizations
 
+[id="access-patterns"]
 .Access patterns
 
 Access patterns are used on both physical tables and views to specify the need for criteria against a set of columns. 
@@ -37,7 +38,7 @@ Dependent joins can perform some joins much faster by drastically reducing the a
 from the second source and the number of join comparisons that must be performed.
 
 The conditions when a dependent join is used are determined by the query planner based on 
-xref:access_patterns[access patterns], hints, and costing information. 
+xref:access-patterns[access patterns], hints, and costing information. 
 {{ book.productnameFull }} supports the following types of dependent joins:
 
 Join based on in/equality support:: Where the engine will determine how to break up large 
@@ -57,8 +58,8 @@ MAKEDEP(MAX:5000)::: meaning that the dependent join should only be performed if
 the maximum number of values from the independent side.
 MAKENOTDEP:: Prevents the clause from being the dependent side of a join.
 
-These can be placed in either the xref:OPTION_Clause.adoc[OPTION Clause] or directly in the 
-xref:FROM_Clause.html[FROM Clause]. As long as all xref:Federated_Optimizations.adoc#_access_patterns[Access Patterns] 
+These can be placed in either the xref:option-clause[OPTION Clause] or directly in the 
+xref:from-clause[FROM Clause]. As long as all xref:access-patterns[Access Patterns] 
 can be met, the MAKEIND, MAKEDEP, and MAKENOTDEP hints override any use of costing information. MAKENOTDEP supersedes the other hints.
 
 TIP: The MAKEDEP or MAKEIND hints should only be used if the proper query plan is not chosen by default. 
@@ -110,6 +111,7 @@ In a cross-source scenario, this allows for where criteria applied to a single s
 {{ book.productnameFull }} ensures that each pushdown query only projects the symbols required 
 for processing the user query. This is especially helpful when querying through large intermediate view layers.
 
+[id="partial-aggregate-pushdown"]
 .Partial aggregate pushdown
 
 Partial aggregate pushdown allows for grouping operations above multi-source joins and unions 
@@ -235,7 +237,7 @@ The view is partitioned on column x, since the first branch can only be the valu
 NOTE: More advanced or explicit partitioning will be considered for future releases. 
 
 The concept of a partitioned union is used for performing partition-wise joins, in 
-xref:Updatable_Views.adoc[Updatable Views], and xref:Federated_Optimizations.adoc#_partial_aggregate_pushdown[Partial Aggregate Pushdown].
+xref:updatable-views[Updatable Views], and xref:partial-aggregate-pushdown[Partial Aggregate Pushdown].
 These optimizations are also applied when using the multi-source feature as well - 
 which introduces an explicit partitioning column.
 
@@ -264,6 +266,7 @@ In an XML VDB:
 ----  
 {% endif %}
 
+[id="standard-relational-techniques"]
 .Standard relational techniques
 
 {{ book.productnameFull }} also incorporates many standard relational techniques to ensure efficient query plans.

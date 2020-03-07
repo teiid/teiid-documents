@@ -1,7 +1,7 @@
 // Module included in the following assemblies:
 // as_sql-support.adoc
 
-[id="criteria"]
+[id="sql-criteria"]
 = Criteria
 
 Criteria can be any of the following items:
@@ -58,8 +58,8 @@ expression [NOT] LIKE pattern [ESCAPE char]
 ----
 
 `LIKE` matches the string expression against the given string pattern. 
-The pattern may contain `%` to match any number of characters, and `_` to match any single character. 
-The escape character can be used to escape the match characters `%` and `_`.
+The pattern may contain `%` to match any number of characters, and `+++_+++` to match any single character. 
+The escape character can be used to escape the match characters `%` and `+++_+++`.
 
 [source,sql]
 ----

@@ -17,7 +17,7 @@ Conformed tables are defined by adding the following extension metadata property
 {http://www.teiid.org/ext/relational/2012}conformed-sources
 ----
 
-You can set extension properties in the DDL file by using full xref:ddl_metadata-for-schema-objects[DDL metadata] or alter statements, 
+You can set extension properties in the DDL file by using full xref:ddl-metadata-for-schema-objects[DDL metadata] or alter statements, 
 or at runtime by using the `setProperty` xref:system-schema[system procedure]. 
 The property is expected to be a comma separated list of physical model/schema names.
 
