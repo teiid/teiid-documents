@@ -7,4 +7,4 @@ The WHERE clause defines the criteria to limit the records affected by SELECT, U
 
 The general form of the WHERE is:
 
-* WHERE xref:r_criteria[Criteria]
+* WHERE xref:sql-criteria[Criteria]

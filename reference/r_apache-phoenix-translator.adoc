@@ -3,7 +3,7 @@
 [id="apache-phoenix-translator"]
 = Apache Phoenix Translator (phoenix)
 
-Also see common xref:jdbc_translators[JDBC Translators] information.
+Also see common xref:jdbc-translators[JDBC Translators] information.
 
 The Apache Phoenix translator, known by the type name *_phoenix_*, exposes querying functionality to http://hbase.apache.org/[HBase] tables. 
 http://phoenix.apache.org/[Apache Phoenix] is a JDBC SQL interface for HBase that is required for this translator as it pushes down commands into 

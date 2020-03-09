@@ -21,7 +21,7 @@ For more information, see _Reading a debug plan_ in xref:query-planner[Query pla
 With the above options, the query plan is available from the Statement object by casting 
 to the `org.teiid.jdbc.TeiidStatement` interface or by using the SHOW PLAN statement. For more information, 
 see _SHOW Statement_ in the Client Developer's Guide. 
-Alternatively you may use the EXPLAIN statement. For more information, see, xref:explain-statement[Explain statement].
+Alternatively you may use the EXPLAIN statement. For more information, see, xref:explain-statements[Explain statement].
 
 [source,java]
 .**Retrieving a query plan using {{ book.productnameFull }} extensions**
@@ -72,7 +72,7 @@ resources:
 ** _Hints and Options_ in the Caching Guide.
 //insert link to Caching Guide
 ** _FROM clause hints_ in xref:from-clause[FROM clause].
-** xref:subquery-optimization.[Subquery optimization].
+** xref:subquery-optimization[Subquery optimization].
 ** xref:federated-optimizations[Federated optimizations].
 
 You can determine all of information in the preceding list from the processing plan. You will typically 
@@ -119,7 +119,7 @@ always false (and whatever tree is underneath). There are no properties for this
 * Dependent procedure execution -- Executes a sub plan using multiple sets of input values.
 * Limit -- Returns a specified number of rows, then stops processing. Also processes an offset if present.
 * XML table -- Evaluates XMLTABLE. The debug plan will contain more information about the XQuery/XPath 
-with regards to their optimization. For more information, see xref:xquer-_optimization[XQuery optimization].
+with regards to their optimization. For more information, see xref:xquery-optimization[XQuery optimization].
 * Text table - Evaluates TEXTTABLE
 * Array table - Evaluates ARRAYTABLE
 * Object table - Evaluates OBJECTTABLE

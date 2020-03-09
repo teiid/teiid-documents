@@ -67,4 +67,4 @@ INSERT INTO temp VALUES (1,2,3);
 SELECT a,b,c FROM Src3, temp WHERE Src3.a = temp.b; 
 ----
 
-For more information about using local temporary tables, see xref:virtual_procedures[Virtual procedures].
+For more information about using local temporary tables, see xref:virtual-procedures[Virtual procedures].

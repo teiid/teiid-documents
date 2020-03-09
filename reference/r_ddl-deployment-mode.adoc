@@ -116,13 +116,13 @@ CREATE SERVER {source-name} [TYPE '{source-type}']
     <key> <value>[,<key>, <value>]*
 ----
 
-|====
+|===
 |Name |Description
 |source-name | Name given to the source's connection.
 |source-type | Not currently used. 
 |translator-name| Name of the translator to be used with this server.
 |options| Currently only resource-name is supported. resource-name provides a way to specify the environmentally dependent (JNDI or bean) name of the source if it differs from the server name.  For example java:/source
-|====
+|===
 
 .Example 3: creating a data source connection to Postgres database
 [source,sql] 

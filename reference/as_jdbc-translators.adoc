@@ -291,8 +291,8 @@ The `teiid_rel:non-prepared` extension metadata property can be set to `false` t
 Be careful in setting this option, because inbound allows for SQL injection attacks if not properly validated. 
 The native query does not need to call a stored procedure. 
 Any SQL that returns a result set that positionally matches the result set that is expected by the physical stored procedure metadata will work. 
-For example on a stored procedure `x` with `teiid_rel:native-query="select c from g where c1 = $1 and c2 = `$$1"'`, the {{ book.productnameFull }} source 
-query ``"CALL x(?)"`` would generate the SQL query ``"select c from g where c1 = ? and c2 = `$1"'``.  
+For example on a stored procedure `x` with `+++teiid_rel:native-query="select c from g where c1 = $1 and c2 = `$$1"'+++`, the {{ book.productnameFull }} source 
+query `+++`"CALL x(?)"`+++` would generate the SQL query `+++`"select c from g where c1 = ? and c2 = `$1"'`+++`.  
 Note that `?` in this example will be replaced with the actual value bound to parameter 1.
 
 .Direct query procedure

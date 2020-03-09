@@ -1,6 +1,6 @@
 // Module included in the following assemblies:
 // as_expressions.adoc
-[id="literals]
+[id="literals"]
 = Literals
 
 Literal values represent fixed values. 

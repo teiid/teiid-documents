@@ -11,7 +11,7 @@ known as Sybase SQL Server, version 12.5 or later.
 
 If you use the default native import, you can avoid exceptions during the retrieval of system table information, if you specify import properties. 
 If errors occur when retrieving table information, specify a `schemaName` or `schemaPattern`, or use `excludeTables` to exclude system tables. 
-For more information about using import properties, see _Importer properties_ in xref:jdbc-translator[JDBC translators].
+For more information about using import properties, see _Importer properties_ in xref:jdbc-translators[JDBC translators].
 
 If the name in the source metadata contains quoted identifiers (such as reserved words, or words that contain characters 
 that would not otherwise be allowed), and you are using a jConnect Sybase driver, you must first configure the connection pool to enable *quoted_identifier*:

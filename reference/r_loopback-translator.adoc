@@ -6,7 +6,7 @@
 The Loopback translator, known by the type name _loopback_, provides a quick testing solution. 
 It supports all SQL constructs and returns default results, with some configurable behavior.
 
-.*Execution properties* 
+.Execution properties 
 
 |===
 |Name |Description |Default
@@ -31,7 +31,8 @@ the engine will wait the poll interval before polling for the results.
 |DelegateName
 |Set to the name of the translator which is to be mimicked.
 |na 
-|=== 
+
+|===
 
 You can also use the Loopback translator to mimic how a real source query would be formed for a given translator 
 (although loopback will still return dummy data that might not be useful for your situation). 
