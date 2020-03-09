@@ -7,7 +7,6 @@
 ** <<callableStatement,callable statement>>
 ** <<ddlStmt,ddl statement>>
 ** <<explainCommand,explain>>
-** <<procedureBodyCommand,procedure body definition>>
 ** <<userCommand,directly executable statement>>
 * <<Reserved Keywords, Reserved Keywords>>
 * <<Non-Reserved Keywords, Non-Reserved Keywords>>
@@ -160,7 +159,7 @@
 |<<aggregateSymbol,standard aggregate function>>, <<basicNonReserved,basicNonReserved>>
 
 |[[token_CREATE]]_CREATE_
-|<<createDDLProcedure,create procedure>>, <<createDataWrapper,create data wrapper>>, <<createDatabase,create database>>, <<createDomain,create a domain or type alias>>, <<createForeignTempTable,create foreign temp table>>, <<createPolicy,CREATE POLICY>>, <<createRole,create role >>, <<createSchema,create schema>>, <<createServer,create server>>, <<createTable,create table>>, <<createTempTable,create temporary table>>, <<createTrigger,create trigger>>, <<procedureBodyCommand,procedure body definition>>
+|<<createDDLProcedure,create procedure>>, <<createDataWrapper,create data wrapper>>, <<createDatabase,create database>>, <<createDomain,create a domain or type alias>>, <<createForeignTempTable,create foreign temp table>>, <<createPolicy,CREATE POLICY>>, <<createRole,create role >>, <<createSchema,create schema>>, <<createServer,create server>>, <<createTable,create table>>, <<createTempTable,create temporary table>>, <<createTrigger,create trigger>>
 
 |[[token_CROSS]]_CROSS_
 |<<crossJoin,cross join>>
@@ -559,7 +558,7 @@
 |<<basicNonReserved,basicNonReserved>>, <<grant,GRANT>>, <<revokeGrant,Revoke GRANT>>
 
 |[[token_PROCEDURE]]_PROCEDURE_
-|<<alter,alter>>, <<alterProcedure,ALTER PROCEDURE >>, <<createDDLProcedure,create procedure>>, <<createPolicy,CREATE POLICY>>, <<dropPolicy,DROP POLICY>>, <<dropProcedure,drop procedure>>, <<grant,GRANT>>, <<procedureBodyCommand,procedure body definition>>, <<revokeGrant,Revoke GRANT>>
+|<<alter,alter>>, <<alterProcedure,ALTER PROCEDURE >>, <<createDDLProcedure,create procedure>>, <<createPolicy,CREATE POLICY>>, <<dropPolicy,DROP POLICY>>, <<dropProcedure,drop procedure>>, <<grant,GRANT>>, <<revokeGrant,Revoke GRANT>>
 
 |[[token_QUARTER]]_QUARTER_
 |<<basicNonReserved,basicNonReserved>>, <<function,function>>
@@ -823,7 +822,7 @@
 |<<alter,alter>>, <<alterTable,ALTER TABLE >>, <<basicNonReserved,basicNonReserved>>, <<createView,create view>>, <<dropTableView,drop table>>
 
 |[[token_VIRTUAL]]_VIRTUAL_
-|<<alterProcedure,ALTER PROCEDURE >>, <<alterTable,ALTER TABLE >>, <<createDDLProcedure,create procedure>>, <<createSchema,create schema>>, <<createView,create view>>, <<dropProcedure,drop procedure>>, <<dropSchema,drop schema>>, <<dropTableView,drop table>>, <<procedureBodyCommand,procedure body definition>>
+|<<alterProcedure,ALTER PROCEDURE >>, <<alterTable,ALTER TABLE >>, <<createDDLProcedure,create procedure>>, <<createSchema,create schema>>, <<createView,create view>>, <<dropProcedure,drop procedure>>, <<dropSchema,drop schema>>, <<dropTableView,drop table>>
 
 |[[token_WELLFORMED]]_WELLFORMED_
 |<<basicNonReserved,basicNonReserved>>, <<xmlParse,xml parse>>
@@ -1246,6 +1245,9 @@
 |[[usage_branchingStatement]]_<<branchingStatement, branching statement>>_
 |<<delimitedStatement,delimited statement>>
 
+|[[usage_callableStatement]]_<<callableStatement, callable statement>>_
+|
+
 |[[usage_caseExpression]]_<<caseExpression, case expression>>_
 |<<unsignedValueExpressionPrimary,unsigned value expression primary>>
 
@@ -1404,6 +1406,9 @@
 
 |[[usage_existsCriteria]]_<<existsCriteria, exists predicate>>_
 |<<booleanPrimary,boolean primary>>
+
+|[[usage_explainCommand]]_<<explainCommand, explain>>_
+|
 
 |[[usage_explainOption]]_<<explainOption, explain option>>_
 |<<explainCommand,explain>>
@@ -1640,7 +1645,7 @@
 |<<delimitedStatement,delimited statement>>
 
 |[[usage_statement]]_<<statement, statement>>_
-|<<alter,alter>>, <<alterProcedure,ALTER PROCEDURE >>, <<compoundStatement,compound statement>>, <<createDDLProcedure,create procedure>>, <<forEachRowTriggerAction,for each row trigger action>>, <<ifStatement,if statement>>, <<loopStatement,loop statement>>, <<procedureBodyCommand,procedure body definition>>, <<whileStatement,while statement>>
+|<<alter,alter>>, <<alterProcedure,ALTER PROCEDURE >>, <<compoundStatement,compound statement>>, <<createDDLProcedure,create procedure>>, <<forEachRowTriggerAction,for each row trigger action>>, <<ifStatement,if statement>>, <<loopStatement,loop statement>>, <<whileStatement,while statement>>
 
 |[[usage_storedProcedure]]_<<storedProcedure, call statement>>_
 |<<assignStatement,assignment statement>>, <<subquery,subquery>>, <<subqueryFromClause,table subquery>>, <<userCommand,directly executable statement>>
@@ -2548,24 +2553,6 @@ A value or command that can be used in an assignment.  {note}All assignments exc
 
 
 A procedure statement that executes a SQL statement.  An update statement can have its update count accessed via the ROWCOUNT variable. 
-
-'''
-
-
-=== [[procedureBodyCommand]]_<<usage_procedureBodyCommand, procedure body definition>>_ ::= 
-
-* ( <<token_CREATE,CREATE>> ( <<token_VIRTUAL,VIRTUAL>> )? <<token_PROCEDURE,PROCEDURE>> )? <<<statement,statement>>> <EOF>
-
-
-Defines a procedure body on a Procedure metadata object.
-
-
-Example:
-[source,sql]
-----
-BEGIN ... END
-----
-
 
 '''
 
