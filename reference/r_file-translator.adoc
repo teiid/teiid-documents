@@ -14,7 +14,7 @@ The translator is typically used with the `TEXTTABLE` or `XMLTABLE` functions to
 |Encoding
 |The encoding that should be used for CLOBs returned by the getTextFiles procedure. 
 The value should match an encoding known to {{ book.productnameFull }}. 
-For more information, see _TO_CHARS_ and _TO_BYTES_ in xref:string-functions.adoc[String functions].
+For more information, see _TO_CHARS_ and _TO_BYTES_ in xref:string-functions[String functions].
 |The system default encoding.
 
 |ExceptionIfFileNotFound

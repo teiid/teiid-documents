@@ -18,7 +18,7 @@ Update procedures define the logic for how the update command that you run again
 the individual commands to be executed against the underlying physical sources. 
 Similar to virtual procedures, update procedures have the ability to execute queries or other commands, 
 define temporary tables, add data to temporary tables, walk through result sets, use loops, and use conditional logic.
-For more inmformation about virtual procedures, see xref:Virtual_Procedures.adoc[Virtual procedures].
+For more inmformation about virtual procedures, see xref:virtual-procedures[Virtual procedures].
 
 You can use `INSTEAD OF` triggers on views in a way that is similar to the way that you might use them with traditional databases. 
 You can have only one `FOR EACH ROW` procedure for each `INSERT`, `UPDATE`, or `DELETE` operation against a view. 

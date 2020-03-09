@@ -50,7 +50,7 @@ ifdef::dv-product[]
 You can import sequences automatically.
 endif::[]
 +
-For more information, see _Importer properties_ in xref:jdbc-translators.adoc[JDBC translators].
+For more information, see _Importer properties_ in xref:jdbc-translators[JDBC translators].
 ifndef::dv-product[]
 {{ book.productnameFull }} 8.4 and Prior Oracle Sequence DDL
 

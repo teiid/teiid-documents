@@ -41,7 +41,7 @@ TEXTAGG(col1, col2 as name DELIMITER '|' HEADER ORDER BY col1)
 in a group (excluding null). The ORDER BY clause cannot reference alias names or use positional ordering.
 * JSONARRAY_AGG(x [xref:order-by-clause[ORDER BY …]]) – creates a JSON array result as a Clob 
 including null value. The ORDER BY clause cannot reference alias names or use positional ordering. 
-For more information, see xref:json_functions[JSONARRAY function].
+For more information, see xref:json-functions[JSONARRAY function].
 
 .Example: Integer value expression
 

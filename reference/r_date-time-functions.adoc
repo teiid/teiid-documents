@@ -152,6 +152,7 @@ but will assume that the startTimeZone is the same as the server process.
 
 .Timestampadd/Timestampdiff
 
+[id="Timestampadd"]
 .Timestampadd
 
 Add a specified interval amount to the timestamp.
