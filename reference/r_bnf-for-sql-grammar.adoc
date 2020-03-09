@@ -7,7 +7,6 @@
 ** <<callableStatement,callable statement>>
 ** <<ddlStmt,ddl statement>>
 ** <<explainCommand,explain>>
-** <<procedureBodyCommand,procedure body definition>>
 ** <<userCommand,directly executable statement>>
 * <<Reserved Keywords, Reserved Keywords>>
 * <<Non-Reserved Keywords, Non-Reserved Keywords>>
@@ -21,26 +20,14 @@
 |===
 |Keyword |Usage
 
-|[[token_ACCESS]]_ACCESS_
-|<<basicNonReserved,basicNonReserved>>, <<importDatabase,Import another Database>>
-
-|[[token_ACCESSPATTERN]]_ACCESSPATTERN_
-|<<basicNonReserved,basicNonReserved>>, <<constraint,other constraints>>
-
 |[[token_ADD]]_ADD_
 |<<addSetChildOption,add set child option>>, <<addSetOption,add set option>>, <<alterAddColumn,ADD column>>, <<alterAddConstraint,ADD constraint>>
-
-|[[token_AFTER]]_AFTER_
-|<<alter,alter>>, <<basicNonReserved,basicNonReserved>>, <<createTrigger,create trigger>>
 
 |[[token_ALL]]_ALL_
 |<<aggregateSymbol,standard aggregate function>>, <<createPolicy,CREATE POLICY>>, <<function,function>>, <<grant,GRANT>>, <<queryExpressionBody,query expression body>>, <<queryTerm,query term>>, <<revokeGrant,Revoke GRANT>>, <<select,select clause>>, <<subqueryCompareCriteria,quantified comparison predicate>>
 
 |[[token_ALTER]]_ALTER_
 |<<alter,alter>>, <<alterProcedure,ALTER PROCEDURE >>, <<alterStatement,alterStatement>>, <<alterTable,ALTER TABLE >>, <<readGrantTypes,grant type>>
-
-|[[token_ANALYZE]]_ANALYZE_
-|<<basicNonReserved,basicNonReserved>>, <<explainOption,explain option>>
 
 |[[token_AND]]_AND_
 |<<betweenCrit,between predicate>>, <<compoundCritAnd,boolean term>>, <<windowFrame,window frame>>
@@ -50,9 +37,6 @@
 
 |[[token_ARRAY]]_ARRAY_
 |<<arrayExpression,ARRAY expression constructor>>
-
-|[[token_ARRAYTABLE]]_ARRAYTABLE_
-|<<arrayTable,array table>>, <<basicNonReserved,basicNonReserved>>
 
 |[[token_ARRAY_AGG]]_ARRAY_AGG_
 |<<orderedAgg,ordered aggregate function>>
@@ -68,12 +52,6 @@
 
 |[[token_AUTHENTICATED]]_AUTHENTICATED_
 |<<readWith,with role>>
-
-|[[token_AUTO_INCREMENT]]_AUTO_INCREMENT_
-|<<alterColumn,alter column options>>, <<basicNonReserved,basicNonReserved>>, <<createColumn,table element>>, <<createViewColumn,view element>>
-
-|[[token_AVG]]_AVG_
-|<<aggregateSymbol,standard aggregate function>>, <<basicNonReserved,basicNonReserved>>
 
 |[[token_BEGIN]]_BEGIN_
 |<<compoundStatement,compound statement>>, <<forEachRowTriggerAction,for each row trigger action>>
@@ -117,9 +95,6 @@
 |[[token_CAST]]_CAST_
 |<<function,function>>
 
-|[[token_CHAIN]]_CHAIN_
-|<<basicNonReserved,basicNonReserved>>, <<exception,sql exception>>
-
 |[[token_CHAR]]_CHAR_
 |<<function,function>>, <<parseDataTypePrimary,simple data type>>
 
@@ -129,47 +104,26 @@
 |[[token_COLUMN]]_COLUMN_
 |<<alterAddColumn,ADD column>>, <<alterDropColumn,DROP column>>, <<alterTable,ALTER TABLE >>, <<grant,GRANT>>, <<revokeGrant,Revoke GRANT>>
 
-|[[token_COLUMNS]]_COLUMNS_
-|<<arrayTable,array table>>, <<basicNonReserved,basicNonReserved>>, <<jsonTable,json table>>, <<objectTable,object table>>, <<textTable,text table>>, <<xmlTable,xml table>>
-
 |[[token_COMMIT]]_COMMIT_
 |<<createTempTable,create temporary table>>
-
-|[[token_CONDITION]]_CONDITION_
-|<<basicNonReserved,basicNonReserved>>, <<grant,GRANT>>, <<revokeGrant,Revoke GRANT>>
 
 |[[token_CONSTRAINT]]_CONSTRAINT_
 |<<grant,GRANT>>, <<tableConstraint,table constraint>>
 
-|[[token_CONTENT]]_CONTENT_
-|<<basicNonReserved,basicNonReserved>>, <<xmlParse,xml parse>>, <<xmlSerialize,xml serialize>>
-
 |[[token_CONTINUE]]_CONTINUE_
 |<<branchingStatement,branching statement>>
-
-|[[token_CONTROL]]_CONTROL_
-|<<basicNonReserved,basicNonReserved>>, <<importDatabase,Import another Database>>
 
 |[[token_CONVERT]]_CONVERT_
 |<<function,function>>
 
-|[[token_COUNT]]_COUNT_
-|<<aggregateSymbol,standard aggregate function>>, <<basicNonReserved,basicNonReserved>>
-
-|[[token_COUNT_BIG]]_COUNT_BIG_
-|<<aggregateSymbol,standard aggregate function>>, <<basicNonReserved,basicNonReserved>>
-
 |[[token_CREATE]]_CREATE_
-|<<createDDLProcedure,create procedure>>, <<createDataWrapper,create data wrapper>>, <<createDatabase,create database>>, <<createDomain,create a domain or type alias>>, <<createForeignTempTable,create foreign temp table>>, <<createPolicy,CREATE POLICY>>, <<createRole,create role >>, <<createSchema,create schema>>, <<createServer,create server>>, <<createTable,create table>>, <<createTempTable,create temporary table>>, <<createTrigger,create trigger>>, <<procedureBodyCommand,procedure body definition>>
+|<<createDDLProcedure,create procedure>>, <<createDataWrapper,create data wrapper>>, <<createDatabase,create database>>, <<createDomain,create a domain or type alias>>, <<createForeignTempTable,create foreign temp table>>, <<createPolicy,CREATE POLICY>>, <<createRole,create role >>, <<createSchema,create schema>>, <<createServer,create server>>, <<createTable,create table>>, <<createTempTable,create temporary table>>, <<createTrigger,create trigger>>
 
 |[[token_CROSS]]_CROSS_
 |<<crossJoin,cross join>>
 
 |[[token_CUME_DIST]]_CUME_DIST_
 |<<analyticAggregateSymbol,analytic aggregate function>>
-
-|[[token_CURRENT]]_CURRENT_
-|<<basicNonReserved,basicNonReserved>>, <<windowFrameBound,window frame bound>>
 
 |[[token_CURRENT_DATE]]_CURRENT_DATE_
 |<<function,function>>
@@ -179,12 +133,6 @@
 
 |[[token_CURRENT_TIMESTAMP]]_CURRENT_TIMESTAMP_
 |<<function,function>>
-
-|[[token_DATA]]_DATA_
-|<<alterTranslator,ALTER DATA WRAPPER >>, <<basicNonReserved,basicNonReserved>>, <<createDataWrapper,create data wrapper>>, <<createServer,create server>>, <<dropDataWrapper,Drop data wrapper>>
-
-|[[token_DATABASE]]_DATABASE_
-|<<alterDatabase,ALTER DATABASE >>, <<basicNonReserved,basicNonReserved>>, <<createDatabase,create database>>, <<importDatabase,Import another Database>>, <<useDatabase,use database>>
 
 |[[token_DATE]]_DATE_
 |<<nonNumericLiteral,non numeric literal>>, <<parseDataTypePrimary,simple data type>>
@@ -201,26 +149,11 @@
 |[[token_DELETE]]_DELETE_
 |<<alter,alter>>, <<alterTrigger,ALTER TRIGGER >>, <<createPolicy,CREATE POLICY>>, <<createTrigger,create trigger>>, <<delete,delete statement>>, <<readGrantTypes,grant type>>
 
-|[[token_DELIMITER]]_DELIMITER_
-|<<basicNonReserved,basicNonReserved>>, <<textAgg,text aggreate function>>, <<textTable,text table>>
-
-|[[token_DENSE_RANK]]_DENSE_RANK_
-|<<analyticAggregateSymbol,analytic aggregate function>>, <<basicNonReserved,basicNonReserved>>
-
 |[[token_DESC]]_DESC_
 |<<sortSpecification,sort specification>>
 
-|[[token_DISABLED]]_DISABLED_
-|<<alter,alter>>, <<alterTrigger,ALTER TRIGGER >>, <<basicNonReserved,basicNonReserved>>
-
 |[[token_DISTINCT]]_DISTINCT_
 |<<aggregateSymbol,standard aggregate function>>, <<function,function>>, <<isDistinct,is distinct>>, <<queryExpressionBody,query expression body>>, <<queryTerm,query term>>, <<select,select clause>>
-
-|[[token_DOCUMENT]]_DOCUMENT_
-|<<basicNonReserved,basicNonReserved>>, <<xmlParse,xml parse>>, <<xmlSerialize,xml serialize>>
-
-|[[token_DOMAIN]]_DOMAIN_
-|<<basicNonReserved,basicNonReserved>>, <<createDomain,create a domain or type alias>>
 
 |[[token_DOUBLE]]_DOUBLE_
 |<<parseDataTypePrimary,simple data type>>
@@ -234,20 +167,8 @@
 |[[token_ELSE]]_ELSE_
 |<<caseExpression,case expression>>, <<ifStatement,if statement>>, <<searchedCaseExpression,searched case expression>>
 
-|[[token_EMPTY]]_EMPTY_
-|<<basicNonReserved,basicNonReserved>>, <<xmlQuery,xml query>>
-
-|[[token_ENABLED]]_ENABLED_
-|<<alter,alter>>, <<alterTrigger,ALTER TRIGGER >>, <<basicNonReserved,basicNonReserved>>
-
-|[[token_ENCODING]]_ENCODING_
-|<<basicNonReserved,basicNonReserved>>, <<textAgg,text aggreate function>>, <<xmlSerialize,xml serialize>>
-
 |[[token_END]]_END_
 |<<caseExpression,case expression>>, <<compoundStatement,compound statement>>, <<forEachRowTriggerAction,for each row trigger action>>, <<searchedCaseExpression,searched case expression>>
-
-|[[token_EPOCH]]_EPOCH_
-|<<basicNonReserved,basicNonReserved>>, <<function,function>>
 
 |[[token_ERROR]]_ERROR_
 |<<errorStatement,raise error statement>>
@@ -255,14 +176,8 @@
 |[[token_ESCAPE]]_ESCAPE_
 |<<matchCrit,match predicate>>, <<textTable,text table>>
 
-|[[token_EVERY]]_EVERY_
-|<<aggregateSymbol,standard aggregate function>>, <<basicNonReserved,basicNonReserved>>
-
 |[[token_EXCEPT]]_EXCEPT_
 |<<queryExpressionBody,query expression body>>
-
-|[[token_EXCLUDING]]_EXCLUDING_
-|<<basicNonReserved,basicNonReserved>>, <<xmlSerialize,xml serialize>>
 
 |[[token_EXEC]]_EXEC_
 |<<dynamicCommand,dynamic data statement>>, <<storedProcedure,call statement>>
@@ -273,12 +188,6 @@
 |[[token_EXISTS]]_EXISTS_
 |<<existsCriteria,exists predicate>>
 
-|[[token_EXPLAIN]]_EXPLAIN_
-|<<basicNonReserved,basicNonReserved>>, <<explainCommand,explain>>
-
-|[[token_EXTRACT]]_EXTRACT_
-|<<basicNonReserved,basicNonReserved>>, <<function,function>>
-
 |[[token_FALSE]]_FALSE_
 |<<explainOption,explain option>>, <<jsonTable,json table>>, <<nonNumericLiteral,non numeric literal>>
 
@@ -288,23 +197,14 @@
 |[[token_FILTER]]_FILTER_
 |<<filterClause,filter clause>>
 
-|[[token_FIRST]]_FIRST_
-|<<basicNonReserved,basicNonReserved>>, <<fetchLimit,fetch clause>>, <<sortSpecification,sort specification>>
-
 |[[token_FLOAT]]_FLOAT_
 |<<parseDataTypePrimary,simple data type>>
-
-|[[token_FOLLOWING]]_FOLLOWING_
-|<<basicNonReserved,basicNonReserved>>, <<windowFrameBound,window frame bound>>
 
 |[[token_FOR]]_FOR_
 |<<createPolicy,CREATE POLICY>>, <<forEachRowTriggerAction,for each row trigger action>>, <<function,function>>, <<jsonColumn,json table column>>, <<textAgg,text aggreate function>>, <<textColumn,text table column>>, <<xmlColumn,xml table column>>
 
 |[[token_FOREIGN]]_FOREIGN_
 |<<alterProcedure,ALTER PROCEDURE >>, <<alterTable,ALTER TABLE >>, <<createDDLProcedure,create procedure>>, <<createDataWrapper,create data wrapper>>, <<createForeignOrGloablTable,create foreign or global temporary table>>, <<createForeignTempTable,create foreign temp table>>, <<createSchema,create schema>>, <<createServer,create server>>, <<dropDataWrapper,Drop data wrapper>>, <<dropProcedure,drop procedure>>, <<dropSchema,drop schema>>, <<dropTableView,drop table>>, <<foreignKey,foreign key>>, <<importSchema,Import foreign schema>>, <<readWith,with role>>
-
-|[[token_FORMAT]]_FORMAT_
-|<<basicNonReserved,basicNonReserved>>, <<explainOption,explain option>>
 
 |[[token_FROM]]_FROM_
 |<<delete,delete statement>>, <<from,from clause>>, <<function,function>>, <<importSchema,Import foreign schema>>, <<isDistinct,is distinct>>, <<revokeGrant,Revoke GRANT>>
@@ -330,9 +230,6 @@
 |[[token_HAVING]]_HAVING_
 |<<having,having clause>>
 
-|[[token_HEADER]]_HEADER_
-|<<basicNonReserved,basicNonReserved>>, <<textAgg,text aggreate function>>, <<textColumn,text table column>>, <<textTable,text table>>
-
 |[[token_HOUR]]_HOUR_
 |<<function,function>>
 
@@ -348,9 +245,6 @@
 |[[token_IN]]_IN_
 |<<function,function>>, <<procedureParameter,procedure parameter>>, <<setCrit,in predicate>>
 
-|[[token_INCLUDING]]_INCLUDING_
-|<<basicNonReserved,basicNonReserved>>, <<xmlSerialize,xml serialize>>
-
 |[[token_INNER]]_INNER_
 |<<qualifiedJoin,qualified table>>
 
@@ -359,9 +253,6 @@
 
 |[[token_INSERT]]_INSERT_
 |<<alter,alter>>, <<alterTrigger,ALTER TRIGGER >>, <<createPolicy,CREATE POLICY>>, <<createTrigger,create trigger>>, <<function,function>>, <<insert,insert statement>>, <<readGrantTypes,grant type>>
-
-|[[token_INSTEAD]]_INSTEAD_
-|<<alter,alter>>, <<alterTrigger,ALTER TRIGGER >>, <<basicNonReserved,basicNonReserved>>, <<createTrigger,create trigger>>
 
 |[[token_INTEGER]]_INTEGER_
 |<<parseDataTypePrimary,simple data type>>
@@ -375,29 +266,11 @@
 |[[token_IS]]_IS_
 |<<isDistinct,is distinct>>, <<isNullCrit,is null predicate>>
 
-|[[token_JAAS]]_JAAS_
-|<<basicNonReserved,basicNonReserved>>, <<readWith,with role>>
-
 |[[token_JOIN]]_JOIN_
 |<<crossJoin,cross join>>, <<makedepOptions,make dep options>>, <<qualifiedJoin,qualified table>>
 
-|[[token_JSONARRAY_AGG]]_JSONARRAY_AGG_
-|<<basicNonReserved,basicNonReserved>>, <<orderedAgg,ordered aggregate function>>
-
-|[[token_JSONOBJECT]]_JSONOBJECT_
-|<<basicNonReserved,basicNonReserved>>, <<jsonObject,json object>>
-
-|[[token_JSONTABLE]]_JSONTABLE_
-|<<basicNonReserved,basicNonReserved>>, <<jsonTable,json table>>
-
-|[[token_KEY]]_KEY_
-|<<basicNonReserved,basicNonReserved>>, <<createTempTable,create temporary table>>, <<foreignKey,foreign key>>, <<inlineConstraint,inline constraint>>, <<primaryKey,primary key>>
-
 |[[token_LANGUAGE]]_LANGUAGE_
 |<<grant,GRANT>>, <<objectTable,object table>>, <<revokeGrant,Revoke GRANT>>
-
-|[[token_LAST]]_LAST_
-|<<basicNonReserved,basicNonReserved>>, <<sortSpecification,sort specification>>
 
 |[[token_LATERAL]]_LATERAL_
 |<<subqueryFromClause,table subquery>>
@@ -420,9 +293,6 @@
 |[[token_LIMIT]]_LIMIT_
 |<<limit,limit clause>>
 
-|[[token_LISTAGG]]_LISTAGG_
-|<<basicNonReserved,basicNonReserved>>, <<function,function>>
-
 |[[token_LOCAL]]_LOCAL_
 |<<createForeignTempTable,create foreign temp table>>, <<createTempTable,create temporary table>>
 
@@ -441,17 +311,8 @@
 |[[token_MAKENOTDEP]]_MAKENOTDEP_
 |<<option,option clause>>, <<tablePrimary,table primary>>
 
-|[[token_MASK]]_MASK_
-|<<basicNonReserved,basicNonReserved>>, <<grant,GRANT>>, <<revokeGrant,Revoke GRANT>>
-
-|[[token_MAX]]_MAX_
-|<<aggregateSymbol,standard aggregate function>>, <<basicNonReserved,basicNonReserved>>, <<makedepOptions,make dep options>>
-
 |[[token_MERGE]]_MERGE_
 |<<insert,insert statement>>
-
-|[[token_MIN]]_MIN_
-|<<aggregateSymbol,standard aggregate function>>, <<basicNonReserved,basicNonReserved>>
 
 |[[token_MINUTE]]_MINUTE_
 |<<function,function>>
@@ -459,35 +320,17 @@
 |[[token_MONTH]]_MONTH_
 |<<function,function>>
 
-|[[token_NAME]]_NAME_
-|<<basicNonReserved,basicNonReserved>>, <<function,function>>, <<xmlElement,xml element>>
-
-|[[token_NAMESPACE]]_NAMESPACE_
-|<<basicNonReserved,basicNonReserved>>, <<createNameSpace,option namespace>>
-
-|[[token_NEXT]]_NEXT_
-|<<basicNonReserved,basicNonReserved>>, <<fetchLimit,fetch clause>>
-
 |[[token_NO]]_NO_
 |<<makedepOptions,make dep options>>, <<namespaceItem,xml namespace element>>, <<textAgg,text aggreate function>>, <<textColumn,text table column>>, <<textTable,text table>>
 
 |[[token_NOCACHE]]_NOCACHE_
 |<<option,option clause>>
 
-|[[token_NONE]]_NONE_
-|<<basicNonReserved,basicNonReserved>>
-
 |[[token_NOT]]_NOT_
 |<<alterColumn,alter column options>>, <<betweenCrit,between predicate>>, <<compoundStatement,compound statement>>, <<createColumn,table element>>, <<createDomain,create a domain or type alias>>, <<createViewColumn,view element>>, <<grant,GRANT>>, <<isDistinct,is distinct>>, <<isNullCrit,is null predicate>>, <<matchCrit,match predicate>>, <<notCrit,boolean factor>>, <<procedureParameter,procedure parameter>>, <<procedureRsColumn,procedure result column>>, <<regexMatchCrit,like regex predicate>>, <<setCrit,in predicate>>, <<tableElement,temporary table element>>
 
 |[[token_NULL]]_NULL_
 |<<alterColumn,alter column options>>, <<createColumn,table element>>, <<createDomain,create a domain or type alias>>, <<createViewColumn,view element>>, <<isNullCrit,is null predicate>>, <<nonNumericLiteral,non numeric literal>>, <<procedureParameter,procedure parameter>>, <<procedureRsColumn,procedure result column>>, <<tableElement,temporary table element>>, <<xmlQuery,xml query>>
-
-|[[token_NULLS]]_NULLS_
-|<<basicNonReserved,basicNonReserved>>, <<sortSpecification,sort specification>>
-
-|[[token_OBJECTTABLE]]_OBJECTTABLE_
-|<<basicNonReserved,basicNonReserved>>, <<objectTable,object table>>
 
 |[[token_OF]]_OF_
 |<<alter,alter>>, <<alterTrigger,ALTER TRIGGER >>, <<createTrigger,create trigger>>
@@ -513,9 +356,6 @@
 |[[token_ORDER]]_ORDER_
 |<<grant,GRANT>>, <<orderby,order by clause>>
 
-|[[token_ORDINALITY]]_ORDINALITY_
-|<<basicNonReserved,basicNonReserved>>, <<jsonColumn,json table column>>, <<textColumn,text table column>>, <<xmlColumn,xml table column>>
-
 |[[token_OUT]]_OUT_
 |<<procedureParameter,procedure parameter>>
 
@@ -531,68 +371,23 @@
 |[[token_PARTITION]]_PARTITION_
 |<<windowSpecification,window specification>>
 
-|[[token_PASSING]]_PASSING_
-|<<basicNonReserved,basicNonReserved>>, <<objectTable,object table>>, <<xmlExists,xml query>>, <<xmlQuery,xml query>>, <<xmlTable,xml table>>
-
-|[[token_PATH]]_PATH_
-|<<basicNonReserved,basicNonReserved>>, <<jsonColumn,json table column>>, <<xmlColumn,xml table column>>
-
 |[[token_PERCENT_RANK]]_PERCENT_RANK_
 |<<analyticAggregateSymbol,analytic aggregate function>>
-
-|[[token_POLICY]]_POLICY_
-|<<basicNonReserved,basicNonReserved>>, <<createPolicy,CREATE POLICY>>, <<dropPolicy,DROP POLICY>>
-
-|[[token_POSITION]]_POSITION_
-|<<basicNonReserved,basicNonReserved>>, <<function,function>>
-
-|[[token_PRECEDING]]_PRECEDING_
-|<<basicNonReserved,basicNonReserved>>, <<windowFrameBound,window frame bound>>
-
-|[[token_PRESERVE]]_PRESERVE_
-|<<basicNonReserved,basicNonReserved>>, <<createTempTable,create temporary table>>
 
 |[[token_PRIMARY]]_PRIMARY_
 |<<createTempTable,create temporary table>>, <<inlineConstraint,inline constraint>>, <<primaryKey,primary key>>
 
-|[[token_PRIVILEGES]]_PRIVILEGES_
-|<<basicNonReserved,basicNonReserved>>, <<grant,GRANT>>, <<revokeGrant,Revoke GRANT>>
-
 |[[token_PROCEDURE]]_PROCEDURE_
-|<<alter,alter>>, <<alterProcedure,ALTER PROCEDURE >>, <<createDDLProcedure,create procedure>>, <<createPolicy,CREATE POLICY>>, <<dropPolicy,DROP POLICY>>, <<dropProcedure,drop procedure>>, <<grant,GRANT>>, <<procedureBodyCommand,procedure body definition>>, <<revokeGrant,Revoke GRANT>>
-
-|[[token_QUARTER]]_QUARTER_
-|<<basicNonReserved,basicNonReserved>>, <<function,function>>
-
-|[[token_QUERYSTRING]]_QUERYSTRING_
-|<<basicNonReserved,basicNonReserved>>, <<queryString,querystring function>>
-
-|[[token_QUOTE]]_QUOTE_
-|<<basicNonReserved,basicNonReserved>>, <<textAgg,text aggreate function>>, <<textTable,text table>>
-
-|[[token_RAISE]]_RAISE_
-|<<basicNonReserved,basicNonReserved>>, <<raiseStatement,raise statement>>
+|<<alter,alter>>, <<alterProcedure,ALTER PROCEDURE >>, <<createDDLProcedure,create procedure>>, <<createPolicy,CREATE POLICY>>, <<dropPolicy,DROP POLICY>>, <<dropProcedure,drop procedure>>, <<grant,GRANT>>, <<revokeGrant,Revoke GRANT>>
 
 |[[token_RANGE]]_RANGE_
 |<<windowFrame,window frame>>
-
-|[[token_RANK]]_RANK_
-|<<analyticAggregateSymbol,analytic aggregate function>>, <<basicNonReserved,basicNonReserved>>
 
 |[[token_REAL]]_REAL_
 |<<parseDataTypePrimary,simple data type>>
 
 |[[token_REFERENCES]]_REFERENCES_
 |<<foreignKey,foreign key>>
-
-|[[token_RENAME]]_RENAME_
-|<<alterProcedure,ALTER PROCEDURE >>, <<alterTable,ALTER TABLE >>, <<basicNonReserved,basicNonReserved>>
-
-|[[token_REPOSITORY]]_REPOSITORY_
-|<<basicNonReserved,basicNonReserved>>, <<importSchema,Import foreign schema>>
-
-|[[token_RESULT]]_RESULT_
-|<<basicNonReserved,basicNonReserved>>, <<procedureParameter,procedure parameter>>
 
 |[[token_RETURN]]_RETURN_
 |<<assignStatement,assignment statement>>, <<returnStatement,return statement>>, <<sqlStatement,data statement>>
@@ -606,9 +401,6 @@
 |[[token_RIGHT]]_RIGHT_
 |<<function,function>>, <<qualifiedJoin,qualified table>>
 
-|[[token_ROLE]]_ROLE_
-|<<basicNonReserved,basicNonReserved>>, <<createRole,create role >>, <<dropRole,drop role >>, <<readWith,with role>>
-
 |[[token_ROLLUP]]_ROLLUP_
 |<<groupBy,group by clause>>
 
@@ -618,20 +410,11 @@
 |[[token_ROWS]]_ROWS_
 |<<arrayTable,array table>>, <<createTempTable,create temporary table>>, <<fetchLimit,fetch clause>>, <<limit,limit clause>>, <<windowFrame,window frame>>
 
-|[[token_ROW_NUMBER]]_ROW_NUMBER_
-|<<analyticAggregateSymbol,analytic aggregate function>>, <<basicNonReserved,basicNonReserved>>
-
-|[[token_SCHEMA]]_SCHEMA_
-|<<basicNonReserved,basicNonReserved>>, <<createSchema,create schema>>, <<dropSchema,drop schema>>, <<grant,GRANT>>, <<importSchema,Import foreign schema>>, <<revokeGrant,Revoke GRANT>>, <<useSchema,set schema>>
-
 |[[token_SECOND]]_SECOND_
 |<<function,function>>
 
 |[[token_SELECT]]_SELECT_
 |<<createPolicy,CREATE POLICY>>, <<readGrantTypes,grant type>>, <<select,select clause>>
-
-|[[token_SELECTOR]]_SELECTOR_
-|<<basicNonReserved,basicNonReserved>>, <<textColumn,text table column>>, <<textTable,text table>>
 
 |[[token_SERVER]]_SERVER_
 |<<alterServer,ALTER SERVER >>, <<createSchema,create schema>>, <<createServer,create server>>, <<dropServer,drop server>>, <<importSchema,Import foreign schema>>
@@ -644,9 +427,6 @@
 
 |[[token_SIMILAR]]_SIMILAR_
 |<<matchCrit,match predicate>>
-
-|[[token_SKIP_KEYWORD]]_SKIP_
-|<<basicNonReserved,basicNonReserved>>, <<textTable,text table>>
 
 |[[token_SMALLINT]]_SMALLINT_
 |<<parseDataTypePrimary,simple data type>>
@@ -662,6 +442,394 @@
 
 |[[token_SQLWARNING]]_SQLWARNING_
 |<<raiseStatement,raise statement>>
+
+|[[token_STRING]]_STRING_
+|<<dynamicCommand,dynamic data statement>>, <<parseDataTypePrimary,simple data type>>, <<xmlSerialize,xml serialize>>
+
+|[[token_TABLE]]_TABLE_
+|<<alterTable,ALTER TABLE >>, <<createDDLProcedure,create procedure>>, <<createForeignOrGloablTable,create foreign or global temporary table>>, <<createForeignTempTable,create foreign temp table>>, <<createTempTable,create temporary table>>, <<dropTable,drop table>>, <<dropTableView,drop table>>, <<grant,GRANT>>, <<queryPrimary,query primary>>, <<revokeGrant,Revoke GRANT>>, <<subqueryFromClause,table subquery>>
+
+|[[token_TEMPORARY]]_TEMPORARY_
+|<<createForeignOrGloablTable,create foreign or global temporary table>>, <<createForeignTempTable,create foreign temp table>>, <<createTempTable,create temporary table>>, <<dropTableView,drop table>>, <<grant,GRANT>>, <<revokeGrant,Revoke GRANT>>
+
+|[[token_THEN]]_THEN_
+|<<caseExpression,case expression>>, <<searchedCaseExpression,searched case expression>>
+
+|[[token_TIME]]_TIME_
+|<<nonNumericLiteral,non numeric literal>>, <<parseDataTypePrimary,simple data type>>
+
+|[[token_TIMESTAMP]]_TIMESTAMP_
+|<<nonNumericLiteral,non numeric literal>>, <<parseDataTypePrimary,simple data type>>
+
+|[[token_TINYINT]]_TINYINT_
+|<<parseDataTypePrimary,simple data type>>
+
+|[[token_TO]]_TO_
+|<<alterRenameColumn,rename column options>>, <<alterRenameTable,RENAME Table>>, <<createPolicy,CREATE POLICY>>, <<dropPolicy,DROP POLICY>>, <<grant,GRANT>>, <<matchCrit,match predicate>>
+
+|[[token_TRAILING]]_TRAILING_
+|<<function,function>>
+
+|[[token_TRANSLATE]]_TRANSLATE_
+|<<function,function>>
+
+|[[token_TRIGGER]]_TRIGGER_
+|<<alter,alter>>, <<alterTrigger,ALTER TRIGGER >>, <<createTrigger,create trigger>>
+
+|[[token_TRUE]]_TRUE_
+|<<explainOption,explain option>>, <<jsonTable,json table>>, <<nonNumericLiteral,non numeric literal>>
+
+|[[token_UNION]]_UNION_
+|<<crossJoin,cross join>>, <<queryExpressionBody,query expression body>>
+
+|[[token_UNIQUE]]_UNIQUE_
+|<<constraint,other constraints>>, <<inlineConstraint,inline constraint>>
+
+|[[token_UNKNOWN]]_UNKNOWN_
+|<<nonNumericLiteral,non numeric literal>>
+
+|[[token_UPDATE]]_UPDATE_
+|<<alter,alter>>, <<alterTrigger,ALTER TRIGGER >>, <<createPolicy,CREATE POLICY>>, <<createTrigger,create trigger>>, <<dynamicCommand,dynamic data statement>>, <<readGrantTypes,grant type>>, <<update,update statement>>
+
+|[[token_USER]]_USER_
+|<<function,function>>
+
+|[[token_USING]]_USING_
+|<<createPolicy,CREATE POLICY>>, <<dynamicCommand,dynamic data statement>>
+
+|[[token_VALUES]]_VALUES_
+|<<queryPrimary,query primary>>
+
+|[[token_VARBINARY]]_VARBINARY_
+|<<parseDataTypePrimary,simple data type>>, <<xmlSerialize,xml serialize>>
+
+|[[token_VARCHAR]]_VARCHAR_
+|<<parseDataTypePrimary,simple data type>>, <<xmlSerialize,xml serialize>>
+
+|[[token_VIRTUAL]]_VIRTUAL_
+|<<alterProcedure,ALTER PROCEDURE >>, <<alterTable,ALTER TABLE >>, <<createDDLProcedure,create procedure>>, <<createSchema,create schema>>, <<createView,create view>>, <<dropProcedure,drop procedure>>, <<dropSchema,drop schema>>, <<dropTableView,drop table>>
+
+|[[token_WHEN]]_WHEN_
+|<<caseExpression,case expression>>, <<searchedCaseExpression,searched case expression>>
+
+|[[token_WHERE]]_WHERE_
+|<<filterClause,filter clause>>, <<where,where clause>>
+
+|[[token_WHILE]]_WHILE_
+|<<whileStatement,while statement>>
+
+|[[token_WITH]]_WITH_
+|<<assignStatement,assignment statement>>, <<createRole,create role >>, <<importDatabase,Import another Database>>, <<queryExpression,query expression>>, <<sqlStatement,data statement>>
+
+|[[token_WITHIN]]_WITHIN_
+|<<function,function>>
+
+|[[token_WITHOUT]]_WITHOUT_
+|<<assignStatement,assignment statement>>, <<sqlStatement,data statement>>
+
+|[[token_WRAPPER]]_WRAPPER_
+|<<alterTranslator,ALTER DATA WRAPPER >>, <<createDataWrapper,create data wrapper>>, <<createServer,create server>>, <<dropDataWrapper,Drop data wrapper>>
+
+|[[token_XML]]_XML_
+|<<explainOption,explain option>>, <<parseDataTypePrimary,simple data type>>
+
+|[[token_XMLAGG]]_XMLAGG_
+|<<orderedAgg,ordered aggregate function>>
+
+|[[token_XMLATTRIBUTES]]_XMLATTRIBUTES_
+|<<xmlAttributes,xml attributes>>
+
+|[[token_XMLCAST]]_XMLCAST_
+|<<unescapedFunction,unescapedFunction>>
+
+|[[token_XMLCOMMENT]]_XMLCOMMENT_
+|<<function,function>>
+
+|[[token_XMLCONCAT]]_XMLCONCAT_
+|<<function,function>>
+
+|[[token_XMLELEMENT]]_XMLELEMENT_
+|<<xmlElement,xml element>>
+
+|[[token_XMLEXISTS]]_XMLEXISTS_
+|<<xmlExists,xml query>>
+
+|[[token_XMLFOREST]]_XMLFOREST_
+|<<xmlForest,xml forest>>
+
+|[[token_XMLNAMESPACES]]_XMLNAMESPACES_
+|<<xmlNamespaces,xml namespaces>>
+
+|[[token_XMLPARSE]]_XMLPARSE_
+|<<xmlParse,xml parse>>
+
+|[[token_XMLPI]]_XMLPI_
+|<<function,function>>
+
+|[[token_XMLQUERY]]_XMLQUERY_
+|<<xmlQuery,xml query>>
+
+|[[token_XMLSERIALIZE]]_XMLSERIALIZE_
+|<<xmlSerialize,xml serialize>>
+
+|[[token_XMLTABLE]]_XMLTABLE_
+|<<xmlTable,xml table>>
+
+|[[token_XMLTEXT]]_XMLTEXT_
+|<<function,function>>
+
+|[[token_YEAR]]_YEAR_
+|<<function,function>>
+
+|===
+
+== Non-Reserved Keywords
+
+|===
+|Name |Usage
+
+|[[token_ACCESS]]_ACCESS_
+|<<basicNonReserved,basicNonReserved>>, <<importDatabase,Import another Database>>
+
+|[[token_ACCESSPATTERN]]_ACCESSPATTERN_
+|<<basicNonReserved,basicNonReserved>>, <<constraint,other constraints>>
+
+|[[token_AFTER]]_AFTER_
+|<<alter,alter>>, <<basicNonReserved,basicNonReserved>>, <<createTrigger,create trigger>>
+
+|[[token_ANALYZE]]_ANALYZE_
+|<<basicNonReserved,basicNonReserved>>, <<explainOption,explain option>>
+
+|[[token_ARRAYTABLE]]_ARRAYTABLE_
+|<<arrayTable,array table>>, <<basicNonReserved,basicNonReserved>>
+
+|[[token_AUTO_INCREMENT]]_AUTO_INCREMENT_
+|<<alterColumn,alter column options>>, <<basicNonReserved,basicNonReserved>>, <<createColumn,table element>>, <<createViewColumn,view element>>
+
+|[[token_AVG]]_AVG_
+|<<aggregateSymbol,standard aggregate function>>, <<basicNonReserved,basicNonReserved>>
+
+|[[token_CHAIN]]_CHAIN_
+|<<basicNonReserved,basicNonReserved>>, <<exception,sql exception>>
+
+|[[token_COLUMNS]]_COLUMNS_
+|<<arrayTable,array table>>, <<basicNonReserved,basicNonReserved>>, <<jsonTable,json table>>, <<objectTable,object table>>, <<textTable,text table>>, <<xmlTable,xml table>>
+
+|[[token_CONDITION]]_CONDITION_
+|<<basicNonReserved,basicNonReserved>>, <<grant,GRANT>>, <<revokeGrant,Revoke GRANT>>
+
+|[[token_CONTENT]]_CONTENT_
+|<<basicNonReserved,basicNonReserved>>, <<xmlParse,xml parse>>, <<xmlSerialize,xml serialize>>
+
+|[[token_CONTROL]]_CONTROL_
+|<<basicNonReserved,basicNonReserved>>, <<importDatabase,Import another Database>>
+
+|[[token_COUNT]]_COUNT_
+|<<aggregateSymbol,standard aggregate function>>, <<basicNonReserved,basicNonReserved>>
+
+|[[token_COUNT_BIG]]_COUNT_BIG_
+|<<aggregateSymbol,standard aggregate function>>, <<basicNonReserved,basicNonReserved>>
+
+|[[token_CURRENT]]_CURRENT_
+|<<basicNonReserved,basicNonReserved>>, <<windowFrameBound,window frame bound>>
+
+|[[token_DATA]]_DATA_
+|<<alterTranslator,ALTER DATA WRAPPER >>, <<basicNonReserved,basicNonReserved>>, <<createDataWrapper,create data wrapper>>, <<createServer,create server>>, <<dropDataWrapper,Drop data wrapper>>
+
+|[[token_DATABASE]]_DATABASE_
+|<<alterDatabase,ALTER DATABASE >>, <<basicNonReserved,basicNonReserved>>, <<createDatabase,create database>>, <<importDatabase,Import another Database>>, <<useDatabase,use database>>
+
+|[[token_DEFAULT_KEYWORD]]_DEFAULT_
+|<<namespaceItem,xml namespace element>>, <<nonReserved,non-reserved identifier>>, <<objectColumn,object table column>>, <<postCreateColumn,post create column>>, <<procedureParameter,procedure parameter>>, <<xmlColumn,xml table column>>
+
+|[[token_DELIMITER]]_DELIMITER_
+|<<basicNonReserved,basicNonReserved>>, <<textAgg,text aggreate function>>, <<textTable,text table>>
+
+|[[token_DENSE_RANK]]_DENSE_RANK_
+|<<analyticAggregateSymbol,analytic aggregate function>>, <<basicNonReserved,basicNonReserved>>
+
+|[[token_DISABLED]]_DISABLED_
+|<<alter,alter>>, <<alterTrigger,ALTER TRIGGER >>, <<basicNonReserved,basicNonReserved>>
+
+|[[token_DOCUMENT]]_DOCUMENT_
+|<<basicNonReserved,basicNonReserved>>, <<xmlParse,xml parse>>, <<xmlSerialize,xml serialize>>
+
+|[[token_DOMAIN]]_DOMAIN_
+|<<basicNonReserved,basicNonReserved>>, <<createDomain,create a domain or type alias>>
+
+|[[token_EMPTY]]_EMPTY_
+|<<basicNonReserved,basicNonReserved>>, <<xmlQuery,xml query>>
+
+|[[token_ENABLED]]_ENABLED_
+|<<alter,alter>>, <<alterTrigger,ALTER TRIGGER >>, <<basicNonReserved,basicNonReserved>>
+
+|[[token_ENCODING]]_ENCODING_
+|<<basicNonReserved,basicNonReserved>>, <<textAgg,text aggreate function>>, <<xmlSerialize,xml serialize>>
+
+|[[token_EPOCH]]_EPOCH_
+|<<basicNonReserved,basicNonReserved>>, <<function,function>>
+
+|[[token_EVERY]]_EVERY_
+|<<aggregateSymbol,standard aggregate function>>, <<basicNonReserved,basicNonReserved>>
+
+|[[token_EXCEPTION]]_EXCEPTION_
+|<<compoundStatement,compound statement>>, <<declareStatement,declare statement>>, <<nonReserved,non-reserved identifier>>
+
+|[[token_EXCLUDING]]_EXCLUDING_
+|<<basicNonReserved,basicNonReserved>>, <<xmlSerialize,xml serialize>>
+
+|[[token_EXPLAIN]]_EXPLAIN_
+|<<basicNonReserved,basicNonReserved>>, <<explainCommand,explain>>
+
+|[[token_EXTRACT]]_EXTRACT_
+|<<basicNonReserved,basicNonReserved>>, <<function,function>>
+
+|[[token_FIRST]]_FIRST_
+|<<basicNonReserved,basicNonReserved>>, <<fetchLimit,fetch clause>>, <<sortSpecification,sort specification>>
+
+|[[token_FOLLOWING]]_FOLLOWING_
+|<<basicNonReserved,basicNonReserved>>, <<windowFrameBound,window frame bound>>
+
+|[[token_FORMAT]]_FORMAT_
+|<<basicNonReserved,basicNonReserved>>, <<explainOption,explain option>>
+
+|[[token_GEOGRAPHY]]_GEOGRAPHY_
+|<<nonReserved,non-reserved identifier>>, <<parseDataTypePrimary,simple data type>>
+
+|[[token_GEOMETRY]]_GEOMETRY_
+|<<nonReserved,non-reserved identifier>>, <<parseDataTypePrimary,simple data type>>
+
+|[[token_HEADER]]_HEADER_
+|<<basicNonReserved,basicNonReserved>>, <<textAgg,text aggreate function>>, <<textColumn,text table column>>, <<textTable,text table>>
+
+|[[token_INCLUDING]]_INCLUDING_
+|<<basicNonReserved,basicNonReserved>>, <<xmlSerialize,xml serialize>>
+
+|[[token_INDEX]]_INDEX_
+|<<constraint,other constraints>>, <<inlineConstraint,inline constraint>>, <<nonReserved,non-reserved identifier>>
+
+|[[token_INSTEAD]]_INSTEAD_
+|<<alter,alter>>, <<alterTrigger,ALTER TRIGGER >>, <<basicNonReserved,basicNonReserved>>, <<createTrigger,create trigger>>
+
+|[[token_JAAS]]_JAAS_
+|<<basicNonReserved,basicNonReserved>>, <<readWith,with role>>
+
+|[[token_JSON]]_JSON_
+|<<nonReserved,non-reserved identifier>>, <<parseDataTypePrimary,simple data type>>
+
+|[[token_JSONARRAY_AGG]]_JSONARRAY_AGG_
+|<<basicNonReserved,basicNonReserved>>, <<orderedAgg,ordered aggregate function>>
+
+|[[token_JSONOBJECT]]_JSONOBJECT_
+|<<basicNonReserved,basicNonReserved>>, <<jsonObject,json object>>
+
+|[[token_JSONTABLE]]_JSONTABLE_
+|<<basicNonReserved,basicNonReserved>>, <<jsonTable,json table>>
+
+|[[token_KEY]]_KEY_
+|<<basicNonReserved,basicNonReserved>>, <<createTempTable,create temporary table>>, <<foreignKey,foreign key>>, <<inlineConstraint,inline constraint>>, <<primaryKey,primary key>>
+
+|[[token_LAST]]_LAST_
+|<<basicNonReserved,basicNonReserved>>, <<sortSpecification,sort specification>>
+
+|[[token_LISTAGG]]_LISTAGG_
+|<<basicNonReserved,basicNonReserved>>, <<function,function>>
+
+|[[token_MASK]]_MASK_
+|<<basicNonReserved,basicNonReserved>>, <<grant,GRANT>>, <<revokeGrant,Revoke GRANT>>
+
+|[[token_MAX]]_MAX_
+|<<aggregateSymbol,standard aggregate function>>, <<basicNonReserved,basicNonReserved>>, <<makedepOptions,make dep options>>
+
+|[[token_MIN]]_MIN_
+|<<aggregateSymbol,standard aggregate function>>, <<basicNonReserved,basicNonReserved>>
+
+|[[token_NAME]]_NAME_
+|<<basicNonReserved,basicNonReserved>>, <<function,function>>, <<xmlElement,xml element>>
+
+|[[token_NAMESPACE]]_NAMESPACE_
+|<<basicNonReserved,basicNonReserved>>, <<createNameSpace,option namespace>>
+
+|[[token_NEXT]]_NEXT_
+|<<basicNonReserved,basicNonReserved>>, <<fetchLimit,fetch clause>>
+
+|[[token_NONE]]_NONE_
+|<<basicNonReserved,basicNonReserved>>
+
+|[[token_NULLS]]_NULLS_
+|<<basicNonReserved,basicNonReserved>>, <<sortSpecification,sort specification>>
+
+|[[token_OBJECT]]_OBJECT_
+|<<nonReserved,non-reserved identifier>>, <<parseDataTypePrimary,simple data type>>
+
+|[[token_OBJECTTABLE]]_OBJECTTABLE_
+|<<basicNonReserved,basicNonReserved>>, <<objectTable,object table>>
+
+|[[token_ORDINALITY]]_ORDINALITY_
+|<<basicNonReserved,basicNonReserved>>, <<jsonColumn,json table column>>, <<textColumn,text table column>>, <<xmlColumn,xml table column>>
+
+|[[token_PASSING]]_PASSING_
+|<<basicNonReserved,basicNonReserved>>, <<objectTable,object table>>, <<xmlExists,xml query>>, <<xmlQuery,xml query>>, <<xmlTable,xml table>>
+
+|[[token_PATH]]_PATH_
+|<<basicNonReserved,basicNonReserved>>, <<jsonColumn,json table column>>, <<xmlColumn,xml table column>>
+
+|[[token_POLICY]]_POLICY_
+|<<basicNonReserved,basicNonReserved>>, <<createPolicy,CREATE POLICY>>, <<dropPolicy,DROP POLICY>>
+
+|[[token_POSITION]]_POSITION_
+|<<basicNonReserved,basicNonReserved>>, <<function,function>>
+
+|[[token_PRECEDING]]_PRECEDING_
+|<<basicNonReserved,basicNonReserved>>, <<windowFrameBound,window frame bound>>
+
+|[[token_PRESERVE]]_PRESERVE_
+|<<basicNonReserved,basicNonReserved>>, <<createTempTable,create temporary table>>
+
+|[[token_PRIVILEGES]]_PRIVILEGES_
+|<<basicNonReserved,basicNonReserved>>, <<grant,GRANT>>, <<revokeGrant,Revoke GRANT>>
+
+|[[token_QUARTER]]_QUARTER_
+|<<basicNonReserved,basicNonReserved>>, <<function,function>>
+
+|[[token_QUERYSTRING]]_QUERYSTRING_
+|<<basicNonReserved,basicNonReserved>>, <<queryString,querystring function>>
+
+|[[token_QUOTE]]_QUOTE_
+|<<basicNonReserved,basicNonReserved>>, <<textAgg,text aggreate function>>, <<textTable,text table>>
+
+|[[token_RAISE]]_RAISE_
+|<<basicNonReserved,basicNonReserved>>, <<raiseStatement,raise statement>>
+
+|[[token_RANK]]_RANK_
+|<<analyticAggregateSymbol,analytic aggregate function>>, <<basicNonReserved,basicNonReserved>>
+
+|[[token_RENAME]]_RENAME_
+|<<alterProcedure,ALTER PROCEDURE >>, <<alterTable,ALTER TABLE >>, <<basicNonReserved,basicNonReserved>>
+
+|[[token_REPOSITORY]]_REPOSITORY_
+|<<basicNonReserved,basicNonReserved>>, <<importSchema,Import foreign schema>>
+
+|[[token_RESULT]]_RESULT_
+|<<basicNonReserved,basicNonReserved>>, <<procedureParameter,procedure parameter>>
+
+|[[token_ROLE]]_ROLE_
+|<<basicNonReserved,basicNonReserved>>, <<createRole,create role >>, <<dropRole,drop role >>, <<readWith,with role>>
+
+|[[token_ROW_NUMBER]]_ROW_NUMBER_
+|<<analyticAggregateSymbol,analytic aggregate function>>, <<basicNonReserved,basicNonReserved>>
+
+|[[token_SCHEMA]]_SCHEMA_
+|<<basicNonReserved,basicNonReserved>>, <<createSchema,create schema>>, <<dropSchema,drop schema>>, <<grant,GRANT>>, <<importSchema,Import foreign schema>>, <<revokeGrant,Revoke GRANT>>, <<useSchema,set schema>>
+
+|[[token_SELECTOR]]_SELECTOR_
+|<<basicNonReserved,basicNonReserved>>, <<textColumn,text table column>>, <<textTable,text table>>
+
+|[[token_SERIAL]]_SERIAL_
+|<<alterColumn,alter column options>>, <<createColumn,table element>>, <<createViewColumn,view element>>, <<nonReserved,non-reserved identifier>>, <<tableElement,temporary table element>>
+
+|[[token_SKIP_KEYWORD]]_SKIP_
+|<<basicNonReserved,basicNonReserved>>, <<textTable,text table>>
 
 |[[token_SQL_TSI_DAY]]_SQL_TSI_DAY_
 |<<basicNonReserved,basicNonReserved>>, <<intervalType,time interval>>
@@ -696,20 +864,11 @@
 |[[token_STDDEV_SAMP]]_STDDEV_SAMP_
 |<<aggregateSymbol,standard aggregate function>>, <<basicNonReserved,basicNonReserved>>
 
-|[[token_STRING]]_STRING_
-|<<dynamicCommand,dynamic data statement>>, <<parseDataTypePrimary,simple data type>>, <<xmlSerialize,xml serialize>>
-
 |[[token_SUBSTRING]]_SUBSTRING_
 |<<basicNonReserved,basicNonReserved>>, <<function,function>>
 
 |[[token_SUM]]_SUM_
 |<<aggregateSymbol,standard aggregate function>>, <<basicNonReserved,basicNonReserved>>
-
-|[[token_TABLE]]_TABLE_
-|<<alterTable,ALTER TABLE >>, <<createDDLProcedure,create procedure>>, <<createForeignOrGloablTable,create foreign or global temporary table>>, <<createForeignTempTable,create foreign temp table>>, <<createTempTable,create temporary table>>, <<dropTable,drop table>>, <<dropTableView,drop table>>, <<grant,GRANT>>, <<queryPrimary,query primary>>, <<revokeGrant,Revoke GRANT>>, <<subqueryFromClause,table subquery>>
-
-|[[token_TEMPORARY]]_TEMPORARY_
-|<<createForeignOrGloablTable,create foreign or global temporary table>>, <<createForeignTempTable,create foreign temp table>>, <<createTempTable,create temporary table>>, <<dropTableView,drop table>>, <<grant,GRANT>>, <<revokeGrant,Revoke GRANT>>
 
 |[[token_TEXT]]_TEXT_
 |<<basicNonReserved,basicNonReserved>>, <<explainOption,explain option>>
@@ -720,26 +879,11 @@
 |[[token_TEXTTABLE]]_TEXTTABLE_
 |<<basicNonReserved,basicNonReserved>>, <<textTable,text table>>
 
-|[[token_THEN]]_THEN_
-|<<caseExpression,case expression>>, <<searchedCaseExpression,searched case expression>>
-
-|[[token_TIME]]_TIME_
-|<<nonNumericLiteral,non numeric literal>>, <<parseDataTypePrimary,simple data type>>
-
-|[[token_TIMESTAMP]]_TIMESTAMP_
-|<<nonNumericLiteral,non numeric literal>>, <<parseDataTypePrimary,simple data type>>
-
 |[[token_TIMESTAMPADD]]_TIMESTAMPADD_
 |<<basicNonReserved,basicNonReserved>>, <<function,function>>
 
 |[[token_TIMESTAMPDIFF]]_TIMESTAMPDIFF_
 |<<basicNonReserved,basicNonReserved>>, <<function,function>>
-
-|[[token_TINYINT]]_TINYINT_
-|<<parseDataTypePrimary,simple data type>>
-
-|[[token_TO]]_TO_
-|<<alterRenameColumn,rename column options>>, <<alterRenameTable,RENAME Table>>, <<createPolicy,CREATE POLICY>>, <<dropPolicy,DROP POLICY>>, <<grant,GRANT>>, <<matchCrit,match predicate>>
 
 |[[token_TO_BYTES]]_TO_BYTES_
 |<<basicNonReserved,basicNonReserved>>, <<function,function>>
@@ -747,41 +891,17 @@
 |[[token_TO_CHARS]]_TO_CHARS_
 |<<basicNonReserved,basicNonReserved>>, <<function,function>>
 
-|[[token_TRAILING]]_TRAILING_
-|<<function,function>>
-
-|[[token_TRANSLATE]]_TRANSLATE_
-|<<function,function>>
-
 |[[token_TRANSLATOR]]_TRANSLATOR_
 |<<alterTranslator,ALTER DATA WRAPPER >>, <<basicNonReserved,basicNonReserved>>, <<createDataWrapper,create data wrapper>>, <<createServer,create server>>, <<dropDataWrapper,Drop data wrapper>>
 
-|[[token_TRIGGER]]_TRIGGER_
-|<<alter,alter>>, <<alterTrigger,ALTER TRIGGER >>, <<createTrigger,create trigger>>
-
 |[[token_TRIM]]_TRIM_
 |<<basicNonReserved,basicNonReserved>>, <<function,function>>, <<textColumn,text table column>>, <<textTable,text table>>
-
-|[[token_TRUE]]_TRUE_
-|<<explainOption,explain option>>, <<jsonTable,json table>>, <<nonNumericLiteral,non numeric literal>>
 
 |[[token_TYPE]]_TYPE_
 |<<alterColumn,alter column options>>, <<basicNonReserved,basicNonReserved>>, <<createDataWrapper,create data wrapper>>, <<createServer,create server>>
 
 |[[token_UNBOUNDED]]_UNBOUNDED_
 |<<basicNonReserved,basicNonReserved>>, <<windowFrameBound,window frame bound>>
-
-|[[token_UNION]]_UNION_
-|<<crossJoin,cross join>>, <<queryExpressionBody,query expression body>>
-
-|[[token_UNIQUE]]_UNIQUE_
-|<<constraint,other constraints>>, <<inlineConstraint,inline constraint>>
-
-|[[token_UNKNOWN]]_UNKNOWN_
-|<<nonNumericLiteral,non numeric literal>>
-
-|[[token_UPDATE]]_UPDATE_
-|<<alter,alter>>, <<alterTrigger,ALTER TRIGGER >>, <<createPolicy,CREATE POLICY>>, <<createTrigger,create trigger>>, <<dynamicCommand,dynamic data statement>>, <<readGrantTypes,grant type>>, <<update,update statement>>
 
 |[[token_UPSERT]]_UPSERT_
 |<<basicNonReserved,basicNonReserved>>, <<insert,insert statement>>
@@ -791,21 +911,6 @@
 
 |[[token_USE]]_USE_
 |<<basicNonReserved,basicNonReserved>>, <<useDatabase,use database>>
-
-|[[token_USER]]_USER_
-|<<function,function>>
-
-|[[token_USING]]_USING_
-|<<createPolicy,CREATE POLICY>>, <<dynamicCommand,dynamic data statement>>
-
-|[[token_VALUES]]_VALUES_
-|<<queryPrimary,query primary>>
-
-|[[token_VARBINARY]]_VARBINARY_
-|<<parseDataTypePrimary,simple data type>>, <<xmlSerialize,xml serialize>>
-
-|[[token_VARCHAR]]_VARCHAR_
-|<<parseDataTypePrimary,simple data type>>, <<xmlSerialize,xml serialize>>
 
 |[[token_VARIADIC]]_VARIADIC_
 |<<basicNonReserved,basicNonReserved>>, <<procedureParameter,procedure parameter>>
@@ -822,123 +927,17 @@
 |[[token_VIEW]]_VIEW_
 |<<alter,alter>>, <<alterTable,ALTER TABLE >>, <<basicNonReserved,basicNonReserved>>, <<createView,create view>>, <<dropTableView,drop table>>
 
-|[[token_VIRTUAL]]_VIRTUAL_
-|<<alterProcedure,ALTER PROCEDURE >>, <<alterTable,ALTER TABLE >>, <<createDDLProcedure,create procedure>>, <<createSchema,create schema>>, <<createView,create view>>, <<dropProcedure,drop procedure>>, <<dropSchema,drop schema>>, <<dropTableView,drop table>>, <<procedureBodyCommand,procedure body definition>>
-
 |[[token_WELLFORMED]]_WELLFORMED_
 |<<basicNonReserved,basicNonReserved>>, <<xmlParse,xml parse>>
-
-|[[token_WHEN]]_WHEN_
-|<<caseExpression,case expression>>, <<searchedCaseExpression,searched case expression>>
-
-|[[token_WHERE]]_WHERE_
-|<<filterClause,filter clause>>, <<where,where clause>>
-
-|[[token_WHILE]]_WHILE_
-|<<whileStatement,while statement>>
 
 |[[token_WIDTH]]_WIDTH_
 |<<basicNonReserved,basicNonReserved>>, <<textColumn,text table column>>
 
-|[[token_WITH]]_WITH_
-|<<assignStatement,assignment statement>>, <<createRole,create role >>, <<importDatabase,Import another Database>>, <<queryExpression,query expression>>, <<sqlStatement,data statement>>
-
-|[[token_WITHIN]]_WITHIN_
-|<<function,function>>
-
-|[[token_WITHOUT]]_WITHOUT_
-|<<assignStatement,assignment statement>>, <<sqlStatement,data statement>>
-
-|[[token_WRAPPER]]_WRAPPER_
-|<<alterTranslator,ALTER DATA WRAPPER >>, <<createDataWrapper,create data wrapper>>, <<createServer,create server>>, <<dropDataWrapper,Drop data wrapper>>
-
-|[[token_XML]]_XML_
-|<<explainOption,explain option>>, <<parseDataTypePrimary,simple data type>>
-
-|[[token_XMLAGG]]_XMLAGG_
-|<<orderedAgg,ordered aggregate function>>
-
-|[[token_XMLATTRIBUTES]]_XMLATTRIBUTES_
-|<<xmlAttributes,xml attributes>>
-
-|[[token_XMLCAST]]_XMLCAST_
-|<<unescapedFunction,unescapedFunction>>
-
-|[[token_XMLCOMMENT]]_XMLCOMMENT_
-|<<function,function>>
-
-|[[token_XMLCONCAT]]_XMLCONCAT_
-|<<function,function>>
-
 |[[token_XMLDECLARATION]]_XMLDECLARATION_
 |<<basicNonReserved,basicNonReserved>>, <<xmlSerialize,xml serialize>>
 
-|[[token_XMLELEMENT]]_XMLELEMENT_
-|<<xmlElement,xml element>>
-
-|[[token_XMLEXISTS]]_XMLEXISTS_
-|<<xmlExists,xml query>>
-
-|[[token_XMLFOREST]]_XMLFOREST_
-|<<xmlForest,xml forest>>
-
-|[[token_XMLNAMESPACES]]_XMLNAMESPACES_
-|<<xmlNamespaces,xml namespaces>>
-
-|[[token_XMLPARSE]]_XMLPARSE_
-|<<xmlParse,xml parse>>
-
-|[[token_XMLPI]]_XMLPI_
-|<<function,function>>
-
-|[[token_XMLQUERY]]_XMLQUERY_
-|<<xmlQuery,xml query>>
-
-|[[token_XMLSERIALIZE]]_XMLSERIALIZE_
-|<<xmlSerialize,xml serialize>>
-
-|[[token_XMLTABLE]]_XMLTABLE_
-|<<xmlTable,xml table>>
-
-|[[token_XMLTEXT]]_XMLTEXT_
-|<<function,function>>
-
 |[[token_YAML]]_YAML_
 |<<basicNonReserved,basicNonReserved>>, <<explainOption,explain option>>
-
-|[[token_YEAR]]_YEAR_
-|<<function,function>>
-
-|===
-
-== Non-Reserved Keywords
-
-|===
-|Name |Usage
-
-|[[token_DEFAULT_KEYWORD]]_DEFAULT_
-|<<namespaceItem,xml namespace element>>, <<nonReserved,non-reserved identifier>>, <<objectColumn,object table column>>, <<postCreateColumn,post create column>>, <<procedureParameter,procedure parameter>>, <<xmlColumn,xml table column>>
-
-|[[token_EXCEPTION]]_EXCEPTION_
-|<<compoundStatement,compound statement>>, <<declareStatement,declare statement>>, <<nonReserved,non-reserved identifier>>
-
-|[[token_GEOGRAPHY]]_GEOGRAPHY_
-|<<nonReserved,non-reserved identifier>>, <<parseDataTypePrimary,simple data type>>
-
-|[[token_GEOMETRY]]_GEOMETRY_
-|<<nonReserved,non-reserved identifier>>, <<parseDataTypePrimary,simple data type>>
-
-|[[token_INDEX]]_INDEX_
-|<<constraint,other constraints>>, <<inlineConstraint,inline constraint>>, <<nonReserved,non-reserved identifier>>
-
-|[[token_JSON]]_JSON_
-|<<nonReserved,non-reserved identifier>>, <<parseDataTypePrimary,simple data type>>
-
-|[[token_OBJECT]]_OBJECT_
-|<<nonReserved,non-reserved identifier>>, <<parseDataTypePrimary,simple data type>>
-
-|[[token_SERIAL]]_SERIAL_
-|<<alterColumn,alter column options>>, <<createColumn,table element>>, <<createViewColumn,view element>>, <<nonReserved,non-reserved identifier>>, <<tableElement,temporary table element>>
 
 |===
 
@@ -1246,6 +1245,9 @@
 |[[usage_branchingStatement]]_<<branchingStatement, branching statement>>_
 |<<delimitedStatement,delimited statement>>
 
+|[[usage_callableStatement]]_<<callableStatement, callable statement>>_
+|
+
 |[[usage_caseExpression]]_<<caseExpression, case expression>>_
 |<<unsignedValueExpressionPrimary,unsigned value expression primary>>
 
@@ -1404,6 +1406,9 @@
 
 |[[usage_existsCriteria]]_<<existsCriteria, exists predicate>>_
 |<<booleanPrimary,boolean primary>>
+
+|[[usage_explainCommand]]_<<explainCommand, explain>>_
+|
 
 |[[usage_explainOption]]_<<explainOption, explain option>>_
 |<<explainCommand,explain>>
@@ -1640,7 +1645,7 @@
 |<<delimitedStatement,delimited statement>>
 
 |[[usage_statement]]_<<statement, statement>>_
-|<<alter,alter>>, <<alterProcedure,ALTER PROCEDURE >>, <<compoundStatement,compound statement>>, <<createDDLProcedure,create procedure>>, <<forEachRowTriggerAction,for each row trigger action>>, <<ifStatement,if statement>>, <<loopStatement,loop statement>>, <<procedureBodyCommand,procedure body definition>>, <<whileStatement,while statement>>
+|<<alter,alter>>, <<alterProcedure,ALTER PROCEDURE >>, <<compoundStatement,compound statement>>, <<createDDLProcedure,create procedure>>, <<forEachRowTriggerAction,for each row trigger action>>, <<ifStatement,if statement>>, <<loopStatement,loop statement>>, <<whileStatement,while statement>>
 
 |[[usage_storedProcedure]]_<<storedProcedure, call statement>>_
 |<<assignStatement,assignment statement>>, <<subquery,subquery>>, <<subqueryFromClause,table subquery>>, <<userCommand,directly executable statement>>
@@ -2548,24 +2553,6 @@ A value or command that can be used in an assignment.  {note}All assignments exc
 
 
 A procedure statement that executes a SQL statement.  An update statement can have its update count accessed via the ROWCOUNT variable. 
-
-'''
-
-
-=== [[procedureBodyCommand]]_<<usage_procedureBodyCommand, procedure body definition>>_ ::= 
-
-* ( <<token_CREATE,CREATE>> ( <<token_VIRTUAL,VIRTUAL>> )? <<token_PROCEDURE,PROCEDURE>> )? <<<statement,statement>>> <EOF>
-
-
-Defines a procedure body on a Procedure metadata object.
-
-
-Example:
-[source,sql]
-----
-BEGIN ... END
-----
-
 
 '''
 
