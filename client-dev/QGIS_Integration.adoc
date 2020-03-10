@@ -9,7 +9,7 @@ link:http://www.qgis.org/[QGIS] is an open source geospatial platform.  It can b
 
 - Have QGIS installed.  {{ book.productnameFull }} integration was last tested with version 2.14. 
 
-- Your {{ book.productnameFull }} installation should already be setup for link:../admin/Socket_Transports.adoc[ODBC] access.  This allows the built-in support of QGIS 
+- Your {{ book.productnameFull }} installation should already be setup for link:../admin/Socket_Transports.adoc[ODBC] access.  This allows the built-in compatibility of QGIS 
 for PostGIS/PostgreSQL to be used.
 
 - Have a VDB deployed that exposes one or more tables containing an appropriate Geometry column.
@@ -35,4 +35,4 @@ org.teiid.backslashDefaultMatchEscape must be set to true.
 - If you are integrating a PostgreSQL source, you must not re-expose the postgres system tables including the PostGIS geometry_columns or geography_columns tables.
 This is because QGIS makes unqualified references to these tables, which may then be ambiguous.
 - Operations involving creating or deleting schemas or tables will not work.
-- The logs may contain messages related to information_schema.tables - this is to determine if the qgis_editor_widget_styles table exists.  That is currently not supported.
+- The logs might contain messages related to information_schema.tables - this is to determine if the qgis_editor_widget_styles table exists. {{ book.productnameFull}} is not compatible with QGIS editor widget styles.

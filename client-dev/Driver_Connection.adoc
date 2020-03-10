@@ -20,7 +20,7 @@ URL Components
 2.  mm - defines {{ book.productnameFull }} JDBC protocol, mms defines a secure channel (see link:SSL_Client_Connections.adoc[SSL Client Connections] for more)
 3.  <host> - defines the server where the {{ book.productnameFull }} Server is installed. If you are using IPv6 binding address as the host name, place it in square brackets. ex:[::1]
 4.  <port> - defines the port on which the {{ book.productnameFull }} Server is listening for incoming JDBC connections.
-5.  [prop-name=prop-value] - additionally you can supply any number of name value pairs separated by semi-colon [;]. All supported URL properties are defined in the link:Driver_Connection.adoc[connection properties] section. Property values should be URL encoded if they contain reserved characters, e.g. (’?’, '=', ';', etc.)
+5.  [prop-name=prop-value] - additionally you can supply any number of name value pairs separated by semi-colon [;]. All compatible URL properties are defined in the link:Driver_Connection.adoc[connection properties] section. Property values should be URL encoded if they contain reserved characters, e.g. (’?’, '=', ';', etc.)
 
 {% if book.targetWildfly %}
 NOTE: host and port may be a comma separated list to specify link:Using_Multiple_Hosts.adoc[multiple hosts].
@@ -38,7 +38,7 @@ For local WildFly deployments it's preferred to configure the link:WildFly_DataS
 [id="client-dev-Driver_Connection-URL-Connection-Properties"]
 == URL Connection Properties
 
-The following table shows all the supported connection properties that can used with {{ book.productnameFull }} JDBC Driver URL connection string, or on the {{ book.productnameFull }} JDBC Data Source class.
+The following table shows all the connection properties that you can use with {{ book.productnameFull }} JDBC Driver URL connection string, or on the {{ book.productnameFull }} JDBC Data Source class.
 
 .*Connection Properties*
 [cols="2,2,5a"]
@@ -55,7 +55,7 @@ The following table shows all the supported connection properties that can used 
 
 |`partialResultsMode`
 |`boolean`
-|Enable/disable support partial results mode. Default false. See the link:Partial_Results_Mode.adoc[Partial Results Mode] section.
+|Enable/disable partial results mode. Default false. See the link:Partial_Results_Mode.adoc[Partial Results Mode] section.
 
 |`autoCommitTxn`
 |`String`
@@ -121,7 +121,7 @@ If true in embedded mode, connections will reconnect to a newer VDB of the same 
 |`useJDBC4ColumnNameAndLabelSemantics`
 |`boolean`
 |A change was made in JDBC4 to return unaliased column names as the ResultSetMetadata column name. Prior to this, if a column alias were used it was returned as the column name. Setting this property to false
-will enable backwards compatibility when JDBC3 and older support is still required. Defaults to true.
+will enable backwards compatibility with JDBC3 and earlier. Defaults to true.
 
 |`jaasName`
 |`String`
@@ -150,4 +150,3 @@ can wait by default for up to link:../admin/System_Properties.adoc[org.teiid.cli
 |`boolean`
 |If DatabaseMetaData will report {{ book.productnameFull }} views as a VIEW table type. If false then {{ book.productnameFull }} views will be reported as a TABLE. Default true.
 |===
-

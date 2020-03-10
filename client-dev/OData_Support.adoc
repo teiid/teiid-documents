@@ -1,5 +1,5 @@
 [id="client-dev-OData_Support-OData-Support"]
-= OData Support
+= OData compatibility
 
 [id="client-dev-OData_Support-What-is-OData"]
 == What is OData
@@ -11,12 +11,12 @@ OData is consistent with the way the Web works - it makes a deep commitment to U
 copied from http://odata.org[http://odata.org]
 
 [id="client-dev-OData_Support--bookproductnameFull-Support-for-OData"]
-== {{ book.productnameFull }} Support for OData
+== {{ book.productnameFull }} compatibility for OData
 
-{{ book.productnameFull }} provides link:OData4_Support.adoc[OData Version 4.0] support.
+{{ book.productnameFull }} is compatible with link:OData4_Support.adoc[OData Version 4.0].
 
 {% if book.targetWildfly %}
-When a user successfully deploys a VDB into a {{ book.productnameFull }} Server, the OData protocol support is implicitly provided by the {{ book.productnameFull }} server without any further configuration. 
+When a user successfully deploys a VDB into a {{ book.productnameFull }} Server, the OData protocol compatibility is implicitly provided by the {{ book.productnameFull }} server without any further configuration. 
 
 OData support is currently not available in the {{ book.productnameFull }} Embedded profile. 
 
@@ -24,4 +24,3 @@ OData support is implemented and deployed through WAR file(s). Access is similar
   
 Legacy OData Version 2.0 support has been removed, but could be maintained as it's own project - please contact the community if you still need this feature and want to maintain it.
 {% endif %}  
-

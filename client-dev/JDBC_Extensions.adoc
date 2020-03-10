@@ -2,5 +2,4 @@
 [id="client-dev-JDBC_Extensions-JDBC-Extensions"]
 = JDBC Extensions
 
-These are custom extensions to JDBC API from {{ book.productnameFull }} to support various features.
-
+These are custom extensions to JDBC API from {{ book.productnameFull }} to provide compatibility with various features.

@@ -5,7 +5,7 @@
 [id="client-dev-Using_Teiid_with_EclipseLink-Overview"]
 == Overview
 
-We can use link:Using_Teiid_with_Hibernate.adoc[{{ book.productnameFull }} with Hibernate], we also have a quick start show how https://github.com/teiid/teiid-wildfly-quickstarts/tree/master/hibernate-on-top-of-teiid[Hibernate on top of {{ book.productnameFull }}]. Both Hibernate and Eclipselink are fully support JSR-317 (JPA 2.0), primary purpose of this document is demonstrate how use {{ book.productnameFull }} with EclipseLink.
+We can use link:Using_Teiid_with_Hibernate.adoc[{{ book.productnameFull }} with Hibernate], we also have a quick start to show how: https://github.com/teiid/teiid-wildfly-quickstarts/tree/master/hibernate-on-top-of-teiid[Hibernate on top of {{ book.productnameFull }}]. Both Hibernate and Eclipselink fully support JSR-317 (JPA 2.0). The primary purpose of this document is demonstrate how use {{ book.productnameFull }} with EclipseLink.
 
 [id="client-dev-Using_Teiid_with_EclipseLink-Configuration"]
 == Configuration

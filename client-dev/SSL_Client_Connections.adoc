@@ -5,7 +5,7 @@
 The following sections define the properties required for each SSL mode. Note that when connecting to {{ book.productnameFull }} Server with SSL enabled, you _MUST_ use the _"mms"_ protocol, instead of "mm" in the JDBC connection URL, for example
 
 {% if book.targetWildfly %}
-NOTE: Anonymous SSL mode is not supported for some JREs, see the link:../security/Teiid_Server_Transport_Security.adoc[{{ book.productnameFull }} Server Transport Security] for alternatives.
+NOTE: Anonymous SSL mode is not provided for some JREs, see the link:../security/Teiid_Server_Transport_Security.adoc[{{ book.productnameFull }} Server Transport Security] for alternatives.
 {% endif %}
 
 [source,java]
@@ -156,4 +156,3 @@ org.teiid.ssl.trustStore=<dir>/server.truststore (required)
 org.teiid.ssl.keyStore=<dir>/client.keystore (required)
 org.teiid.ssl.trustStore=<dir>/server.truststore (required)
 ----
-

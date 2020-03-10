@@ -4,7 +4,7 @@
 
 To use a data source based connection, use `org.teiid.jdbc.TeiidDataSource` as the data source class. The `{{ book.productnameFull }}DataSource` is also an XADatasource. {{ book.productnameFull }} DataSource class is also Serializable, so it possible for it to be used with JNDI naming services.
 
-{{ book.productnameFull }} supports the XA protocol, XA transactions will be extended to {{ book.productnameFull }} sources that also support XA.
+{{ book.productnameFull }} is compatible with the XA protocol, XA transactions will be extended to {{ book.productnameFull }} sources that support XA.
 
 All the properties (except for version, which is known on {{ book.productnameFull }}DataSource as DatabaseVersion) defined in the link:Driver_Connection.adoc[Driver Connection#URL Connection Properties] have corresponding "set" methods on the `org.teiid.jdbc.TeiidDataSource`. Properties that are assumed from the URL string have additional "set" methods, which are described in the following table.
 
@@ -46,4 +46,3 @@ All the properties (except for version, which is known on {{ book.productnameFul
 |===
 
 NOTE: *Additional Properties* - All the properties from link:Driver_Connection.adoc[URL Connection Properties] can be used on DataSource using the _AdditionalProperties_ setter method if the corresponding setter method is not already available. For example, you can add _"useCallingThread"_ property as `<xa-datasource-property name="AdditionalProperties">useCallingThread=false</xa-datasource-property>`
-

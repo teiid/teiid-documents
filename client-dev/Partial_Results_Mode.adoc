@@ -2,7 +2,7 @@
 [id="client-dev-Partial_Results_Mode-Partial-Results-Mode"]
 = Partial Results Mode
 
-The {{ book.productnameFull }} Server supports a "partial results" query mode. This mode changes the behavior of the query processor so the server returns results even when some data sources are unavailable.
+You can use a "partial results" query mode with the {{ book.productnameFull }} Server. In this mode, the behavior of the query processor changes so that the server returns results even when some data sources are unavailable.
 
 For example, suppose that two data sources exist for different suppliers and your data designers have created a virtual group that creates a union between the information from the two suppliers. If your application submits a query without using partial results query mode and one of the suppliers’ databases is down, the query against the virtual group returns an exception. However, if your application runs the same query in "partial results" query mode, the server returns data from the running data source and no data from the data source that is down.
 
@@ -12,7 +12,7 @@ This behavior is most useful when using `UNION` or `OUTER JOIN` queries as these
 
 For each source that is excluded from the query, a warning will be generated describing the source and the failure. These warnings can be obtained from the `Statement.getWarnings()` method. This method returns a `SQLWarning` object but in the case of "partial results" warnings, this will be an object of type `org.teiid.jdbc.PartialResultsWarning` class. This class can be used to obtain a list of all the failed sources by name and to obtain the specific exception thrown by each source.
 
-NOTE: Since {{ book.productnameFull }} supports cursoring before the entire result is formed, it is possible that a data source failure will not be determined until after the first batch of results have been returned to the client. This can happen in the case of unions, but not joins. To ensure that all warnings have been accumulated, the statement should be checked after the entire result set has been read.
+NOTE: Because {{ book.productnameFull }} enables cursoring before an entire result is formed, it is possible that a data source failure will not be determined until after the first batch of results have been returned to the client. This can happen in the case of unions, but not joins. To ensure that all warnings have been accumulated, the statement should be checked after the entire result set has been read.
 
 NOTE: If other warnings are returned by execution, then the partial results warnings may occur after the first warning in the warning chain. 
 

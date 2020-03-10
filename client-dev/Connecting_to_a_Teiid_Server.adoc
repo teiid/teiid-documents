@@ -2,9 +2,9 @@
 [id="client-dev-Connecting_to_a_Teiid_Server-Connecting-to-a-bookproductnameFull-Server"]
 = Connecting to a {{ book.productnameFull }} Server
 
-The {{ book.productnameFull }} JDBC API provides Java Database Connectivity (JDBC) access to a Virtual Database (VDB) deployed on {{ book.productnameFull }}. The {{ book.productnameFull }} JDBC API is compatible with the JDBC 4.0 specification; however, it does not fully support all methods. Advanced features, such as updatable result sets or SQL3 data types, are not supported.
+The {{ book.productnameFull }} JDBC API provides Java Database Connectivity (JDBC) access to a Virtual Database (VDB) deployed on {{ book.productnameFull }}. The {{ book.productnameFull }} JDBC API is compatible with the JDBC 4.0 specification; however, it is not compatible with some methods. You cannot use some advanced features, such as updatable result sets or SQL3 data types.
 
-Java client applications connecting to a {{ book.productnameFull }} Server will need to use at least the Java 1.8 JDK. Previous versions of Java are not supported.  You may attempt to use a client driver from a previous Teiid version that supported the target JRE.
+Java client applications connecting to a {{ book.productnameFull }} Server will need to use at least the Java 1.8 JDK. Earlier versions of Java are not compatible.  You may attempt to use a client driver from earlier Teiid versions that were compatible with the target JRE.
 
 {% if book.targetWildfly %}
 Support for {{ book.productnameFull }} clients and servers older than version 8 has been dropped from {{ book.productnameFull }} 10.2 and later.
@@ -39,9 +39,9 @@ Important classes in the client JAR:
 Once you have established a connection with the {{ book.productnameFull }} Server, you can use standard JDBC API classes to interrogate metadata and execute queries.
 
 [id="client-dev-Connecting_to_a_Teiid_Server-OpenTracing-Support"]
-== OpenTracing Support
+== OpenTracing compatibility
 
-http://opentracing.io/[OpenTracing] support is optional for the client driver.  For remote connections to propagate the span the driver must have the appropriate OpenTracing jars in its classpath.  This can be done via a maven dependency:
+http://opentracing.io/[OpenTracing] is optional for the client driver.  For remote connections to propagate the span the driver must have the appropriate OpenTracing jars in its classpath.  This can be done via a maven dependency:
 
 [source,xml]
 ----
