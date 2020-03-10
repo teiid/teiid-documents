@@ -2,7 +2,8 @@
 [id="client-dev-ResultSet_Limitations-ResultSet-Limitations"]
 = ResultSet Limitations
 
-* TYPE_SCROLL_SENSITIVE is not supported.
-* `UPDATABLE` ResultSets are not supported.
-* Returning multiple ResultSets from Procedure execution is not supported.
+The following limitations apply to result sets in {{book.productnameFull}}:
 
+* TYPE_SCROLL_SENSITIVE are not compatible.
+* `UPDATABLE` ResultSets are not compatible.
+* You cannot return multiple ResultSets from a Procedure execution.

@@ -23,7 +23,7 @@ BEGIN
 ----
 Note the cast of the bind variable, which is due to a small issue with the resolver that isn't inferring the type from the variable declaration.
 
-** You may also use the not officially supported PostgreSQL like feature of $n positional bindings:
+** You can also use the PostgreSQL like feature of $n positional bindings:
 
 [source,sql]
 ----

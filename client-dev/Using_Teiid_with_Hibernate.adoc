@@ -76,7 +76,7 @@ Note also that since your VDBs will likely contain multiple source and view mode
 
 [id="client-dev-Using_Teiid_with_Hibernate-SEQUENCE-Based-Identity-Generation"]
 === SEQUENCE Based Identity Generation
-If you want use SEQUENCE based Identity generation with {{ book.productnameFull }}, this is supported through the {{ book.productnameFull }}Dialect. When you define a JPA Entity
+If you want to use SEQUENCE based Identity generation with {{ book.productnameFull }}, you can do so through the {{ book.productnameFull }}Dialect. When you define a JPA Entity
 
 ----
 public class Customer {
@@ -108,7 +108,7 @@ BEGIN
 END;
 ----
 
-Stating with {{ book.productnameFull }} 10.0 some sources, including DB2, Oracle, H2, PostgreSQL, DB2, support automatic import of sequence information.  For other sources you need to add source functions to represent the sequence calls.  For example assuming you wanted to do this manually for Oracle, then in your OracleDB source model, create a source function:
+Stating with {{ book.productnameFull }} 10.0, for some sources, including DB2, Oracle, H2, PostgreSQL, DB2, you can automatically import sequence information.  For other sources you need to add source functions to represent the sequence calls.  For example assuming you wanted to do this manually for Oracle, then in your OracleDB source model, create a source function:
 
 ----
 CREATE FOREIGN FUNCTION mySequence_nextval() RETURNS long
@@ -119,7 +119,7 @@ Then when the Customer entity is inserted, the sequence is used.
 
 [id="client-dev-Using_Teiid_with_Hibernate-TABLE-Based-Idenity-Generation"]
 === TABLE Based Idenity Generation
-If you want use TABLE based Identity generation with {{ book.productnameFull }}, this is supported through the {{ book.productnameFull }}Dialect. When you define a JPA Entity like
+If you want use TABLE based Identity generation with {{ book.productnameFull }}, you can do so through the {{ book.productnameFull }}Dialect. When you define a JPA Entity like
 
 ----
 public class Customer {
@@ -159,11 +159,10 @@ such that the IDKEY matches and IDVALUE has a initializer value.
 
 [id="client-dev-Using_Teiid_with_Hibernate-IDENTITY-Based-identity-generation"]
 === IDENTITY Based identity generation
-* GUID and Identity (using generated key retrieval) identifier generation strategy are directly supported.
+* {{ book.productnameFull }} provides for GUID and Identity (using generated key retrieval) identifier generation strategy.
 
 [id="client-dev-Using_Teiid_with_Hibernate-Limitations"]
 == Limitations
 
-* Many Hibernate use cases assume a data source has the ability (with proper user permissions) to process Data Definition Language (DDL) statements like CREATE TABLE and DROP TABLE as well as Data Manipulation Language (DML) statements like SELECT, UPDATE, INSERT and DELETE. {{ book.productnameFull }} can handle a broad range of DML, but does not directly support DDL against a particular source.
+* Many Hibernate use cases assume a data source has the ability (with proper user permissions) to process Data Definition Language (DDL) statements like CREATE TABLE and DROP TABLE as well as Data Manipulation Language (DML) statements like SELECT, UPDATE, INSERT and DELETE. {{ book.productnameFull }} can handle a broad range of DML, but does not directly handle DDL against a particular source.
 * Sequence generation is not directly supported.
-

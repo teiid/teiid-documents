@@ -2,7 +2,7 @@
 [id="client-dev-Configuring_the_Data_Source_Name_DSN-Configuring-the-Data-Source-Name-DSN"]
 = Configuring the Data Source Name (DSN)
 
-See link:ODBC_Support.adoc#_connection_settings[{{ book.productnameFull }} supported options] for a description of the client configuration.
+See link:ODBC_Support.adoc#_connection_settings[{{ book.productnameFull }} compatible options] for a description of the available client configuration options.  
 
 [id="client-dev-Configuring_the_Data_Source_Name_DSN-Windows-Installation"]
 == Windows Installation
