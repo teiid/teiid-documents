@@ -1,6 +1,6 @@
 
 [id="client-dev-Unsupported_Classes_and_Methods_in_java.sql-Unsupported-Classes-and-Methods-in-javasql"]
-= Unsupported Classes and Methods in "java.sql"
+= Incompatible Classes and Methods in "java.sql"
 
 |===
 |Class name |Methods

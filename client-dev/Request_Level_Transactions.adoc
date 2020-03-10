@@ -17,5 +17,4 @@ You can set your transaction wrapping to one of the following modes:
 [id="client-dev-Request_Level_Transactions-Multiple-Insert-Batches"]
 == Multiple Insert Batches
 
-When issuing an INSERT with a query expression (or the deprecated SELECT INTO), multiple insert batches handled by separate source INSERTS may be processed by the {{ book.productnameFull }} server. Care should be taken to ensure that targeted sources support XA or that compensating actions are taken in the event of a failure.
-
+When issuing an INSERT with a query expression (or the deprecated SELECT INTO), multiple insert batches handled by separate source INSERTS may be processed by the {{ book.productnameFull }} server. Be sure that the sources that you target support XA or that compensating actions are taken in the event of a failure.

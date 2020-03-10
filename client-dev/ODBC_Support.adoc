@@ -1,6 +1,6 @@
 
 [id="client-dev-ODBC_Support-ODBC-Support"]
-= ODBC Support
+= ODBC compatibility
 
 Open Database Connectivity (ODBC) is a standard database access method developed by the SQL Access group in 1992. ODBC, just like JDBC in Java, allows consistent client access regardless of which database management system (DBMS) is handling the data. ODBC uses a driver to translate the application’s data queries into commands that the DBMS understands. For this to work, both the application and the DBMS must be ODBC-compliant – that is, the application must be capable of issuing ODBC commands and the DBMS must be capable of responding to them.
 
@@ -9,7 +9,7 @@ Open Database Connectivity (ODBC) is a standard database access method developed
 NOTE: By default, ODBC is enabled and running on on port _35432_.
 
 The pg emulation is not complete. The intention of the ODBC access is to provide non-JDBC connectivity to issue {{ book.productnameFull }} queries - not pgsql queries. 
-While many PostgreSQL constructs are supported the default behavior for queries matches {{ book.productnameFull }}’s expectations. 
+Although you can use many PostgreSQL constructs, the default behavior for queries matches {{ book.productnameFull }}’s expectations. 
 See link:../admin/System_Properties.adoc[System Properties] for optional properties that further emulate pgsql handling.
 
 NOTE: *Handling names with underscore ("_")* in ODBC. By default {{ book.productnameFull }} does not have a default like escape character.  Depending upon the ODBC client however there may be an expectation that backslash is used by default - which is the behavior of PostgreSQL.
@@ -36,13 +36,13 @@ create a Data Source Name (DSN) that represents a connection profile for
 your {{ book.productnameFull }} VDB.
 
 {% if book.targetWildfly %}
-For a windows client, see the link:Installing_the_ODBC_Driver_Client.adoc[Windows Installation Guide].
+For a Windows client, see the link:Installing_the_ODBC_Driver_Client.adoc[Windows Installation Guide].
 {% endif %}
 
 [id="client-dev-ODBC_Support-Configuration"]
 == Configuration
 
-WARNING: By default {{ book.productnameFull }} supports plain text password authentication for pg/ODBC. If the client/server are not configured to use SSL or GSS authentication, the password will be sent in plain text over the network. 
+WARNING: By default, clients use plain text password authentication in {{ book.productnameFull }} for pg/ODBC interfaces. If the client/server are not configured to use SSL or GSS authentication, the password will be sent in plain text over the network. 
 
 {% if book.wildFly %}
 If you need secure passwords in transit and are not using SSL, then consider installing a security domain that will accept safe password values from the client (for example encrypted or hashed).

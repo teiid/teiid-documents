@@ -1,9 +1,9 @@
 
 [id="client-dev-Unsupported_JDBC_Methods-Unsupported-JDBC-Methods"]
-= Unsupported JDBC Methods
+= Incompatible JDBC Methods
 
-Based upon the JDBC in JDK 1.6, this appendix details only those JDBC methods that {{ book.productnameFull }} does not support. Unless specified below, {{ book.productnameFull }} supports all other JDBC Methods.
+Based upon the JDBC in JDK 1.6, this appendix details only those JDBC methods that {{ book.productnameFull }} is not compatible with. Unless specified below, {{ book.productnameFull }} is compatible with all other JDBC Methods.
 
 Those methods listed without comments throw a SQLException stating that it is not supported.
 
-Where specified, some listed methods do not throw an exception, but possibly exhibit unexpected behavior. If no arguments are specified, then all related (overridden) methods are not supported. If an argument is listed then only those forms of the method specified are not supported.
+Where specified, some listed methods do not throw an exception, but possibly exhibit unexpected behavior. If no arguments are specified, then all related (overridden) methods are not compatible. If an argument is listed then only those forms of the method specified are not compatible.
