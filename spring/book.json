@@ -12,6 +12,7 @@
         "archeTypeVersion" : "REPLACE ME",
         "targetWildfly" : false,
         "targetSpring" : true,
+        "targetDVProd" : false,
         "productnameFull" : "Teiid Spring Boot",
         "docUrl" : "https://github.com/teiid/teiid-spring-boot/blob/7.6-1.3.x",
         "odataContext" : "odata"
