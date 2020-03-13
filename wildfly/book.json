@@ -12,6 +12,7 @@
         "archeTypeVersion" : "12.0.0",
         "targetWildfly" : true,
         "targetSpring" : false,
+        "targetDVProd" : false,
         "productnameFull" : "Teiid",
         "odataContext" : "odata4/northwind/NW"
     },
