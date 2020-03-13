@@ -245,6 +245,10 @@ Importer properties define the behavior of the translator during the metadata im
 If documents have different fields, or fields with different types, this should be greater than 1.
 |1
 
+|fullEmbeddedNames
+|Whether to prefix embedded table names with their parents, e.g. parent_embedded.  If false the name of the table will just be the name of the field - which may lead to conflicts with existing tables or other embedded tables.
+|false
+
 |===
 
 .MongoDB metadata extension properties for building complex documents
