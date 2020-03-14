@@ -1,7 +1,7 @@
 // Assembly included in the following assemblies:
 // as_dv_reference.adoc
 [id="transaction-support"]
-= Transaction support
+= Transactions
 
 {{ book.productnameFull }} utilizes XA transactions for participating in global transactions and for demarcating its local and command scoped transactions. 
 

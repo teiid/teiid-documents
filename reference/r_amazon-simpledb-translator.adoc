@@ -54,7 +54,8 @@ The Amazon SimpleDB Translator currently has no import or execution properties.
 
 == Capabilities
 
-The Amazon SimpleDB Translator supports SELECT statements with a restrictive set of capabilities including: comparison predicates, IN predicates, LIMIT and ORDER BY. Insert, update, delete are also supported.
+The Amazon SimpleDB Translator provides a restrictive set of capabilities for SELECT statements, including: comparison predicates, IN predicates, LIMIT and ORDER BY. 
+The translator also works with Insert, update, and delete statements.
 
 *Queries on Attributes with Multiple Values*
 
@@ -80,13 +81,14 @@ With Insert/Update/Delete you write prepare statements or you can write SQL like
 INSERT INTO mydomain (ItemName, title, author, year, pages, keyword, rating) values ('0385333498', 'The Sirens of Titan', 'Kurt Vonnegut', ('1959'), ('Book', Paperback'), ('*****','5 stars','Excellent'))
 ----
 
-== Direct Query Support
+.Direct Queries
 
 NOTE: This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, override the execution property called SupportsDirectQueryProcedure to true.
 
 TIP: By default the name of the procedure that executes the queries directly is called native. Override the execution property DirectQueryProcedureName to change it to another name.
 
-The SimpleDB translator provides a procedure to execute any ad-hoc simpledb query directly against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as an object array. ARRAYTABLE can be used construct tabular output for consumption by client applications. Direct query supported for "select" based calls.
+The SimpleDB translator provides a procedure to execute any ad-hoc simpledb query directly against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as an object array. ARRAYTABLE can be used construct tabular output for consumption by client applications. 
+You can use direct query with `SELECT`-based calls.
 
 [source,sql]
 ----
@@ -99,4 +101,3 @@ SELECT X.*
 
 The {{ book.productnameFull }} specific Amazon SimpleDB Resource Adapter should be used with this translator. See link:../admin/Amazon_SimpleDB_Data_Sources.adoc[Amazon SimpleDB Data Sources] for connecting to SimpleDB.
 {% endif %}
-

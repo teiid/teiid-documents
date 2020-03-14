@@ -4,7 +4,8 @@
 = Explain statements
 
 You can use an EXPLAIN statement to obtain a query plan. 
-This is built into the language support and is the preferred mechanism when using the pg/ODBC transport. 
+Using EXPLAIN statements to obtain a query execution plan is a native function of the SQL language, 
+and it is the preferred mechanism to use over pg/ODBC transport. 
 If you are using a Teiid JDBC client, you can also use SET/SHOW statements. 
 For more information about SET and SHOW statements, see the Client Developer's Guide. 
 //../client_dev/SET_Statement.adoc[

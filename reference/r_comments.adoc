@@ -3,7 +3,7 @@
 [id="comments"]
 = Comments
 
-{{ book.productnameFull }} supports multi-line comments enclosed with `/* */`.
+You can add multi-line SQL comments in {{ book.productnameFull }} by enclosing text with `/* */`.
 
 [source,sql]
 ----

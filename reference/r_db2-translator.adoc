@@ -14,4 +14,4 @@ Defaults to `false`.
 supportsCommonTableExpressions:: Indicates that the Db2 instance supports common table expressions (CTEs). 
 Defaults to `true`. 
 Common table expression are not fully supported on some older versions of Db2, and on instances of Db2 that run in a conversion mode. 
-If you encounter errors working with CTEs in these environments, disable the CTE support.
+If you encounter errors working with CTEs in these environments, set the CTE property to `false`.

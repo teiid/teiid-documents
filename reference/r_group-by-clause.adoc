@@ -119,6 +119,6 @@ would return:
 |305000
 |===
 
-NOTE: Not all sources support ROLLUPs, and compared to normal aggregate processing, some optimizations might be inhibited by the use of a ROLLUP.
+NOTE: Not all sources are compatible with ROLLUPs, and compared to normal aggregate processing, some optimizations might be inhibited by the use of a ROLLUP.
 
-Support for ROLLUP in {{ book.productnameFull }} is currently limited in comparison to the SQL specification. 
+The use of ROLLUPs in {{ book.productnameFull }} is currently limited in comparison to the SQL specification. 

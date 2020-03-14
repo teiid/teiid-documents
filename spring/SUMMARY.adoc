@@ -250,7 +250,7 @@
 ... link:reference/r_escaped-literal-syntax.adoc[Escaped literal syntax]
 .. link:reference/as_updatable-views.adoc[Updatable views]
 ... link:reference/r_key-preserved-table.adoc[Key-preserved tables]
-.. link:reference/as_transaction-support.adoc[Transaction Support]
+.. link:reference/as_transaction-support.adoc[Transactions]
 ... link:reference/r_autocommittxn-execution-property.adoc[AutoCommitTxn execution property]
 ... link:reference/r_updating-model-count.adoc[Updating model count]
 ... link:reference/r_jdbc-and-transactions.adoc[JDBC and transactions]

@@ -6,7 +6,7 @@
 Identifiers, literals, and functions can be combined into expressions. Expressions can 
 be used in a query with nearly any keyword, including SELECT, FROM (if specifying join criteria), WHERE, GROUP BY, HAVING, or ORDER BY.
 
-{{ book.productnameFull }} supports the following types of expressions:
+You can use following types of expressions in {{ book.productnameFull }}:
 
 * xref:column-identifiers[Column identifiers]
 * xref:literals[Literals]

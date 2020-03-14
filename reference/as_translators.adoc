@@ -5,7 +5,7 @@
 
 {{ book.productnameFull }} uses the Teiid Connector Architecture (TCA), which provides a robust mechanism for integrating with external systems. 
 The TCA defines a common client interface between {{ book.productnameFull }} and an external system that includes metadata as to what SQL constructs 
-are supported for pushdown and the ability to import metadata from the external system.
+are available for pushdown and the ability to import metadata from the external system.
 
 A Translator is the heart of the TCA and acts as the bridge logic between {{ book.productnameFull }} and an external system.
 
@@ -31,68 +31,68 @@ In most cases the user will not need to adjust their values.
 |Name |Description |Default
 
 |Immutable
-|Set to true to indicate that the source never changes. 
-The transactional support will be reported as NONE, and update commands will fail.
+|Set to `true` to indicate that the source never changes. 
+The transactional capability is reported as NONE, and update commands will fail.
 |false
 
 |RequiresCriteria
-|Set to true to indicate that source SELECT/UPDATE/DELETE queries require a where clause.
+|Set to `true` to indicate that source SELECT/UPDATE/DELETE queries require a where clause.
 |false
 
 |SupportsOrderBy
-|Set to true to indicate that the ORDER BY clause is supported.
+|Set to `true` to indicate that the ORDER BY clause can be used.
 |false
 
 |SupportsOuterJoins
-|Set to true to indicate that OUTER JOINs are supported.
+|Set to `true` to indicate that OUTER JOINs can be used.
 |false
 
 |SupportsFullOuterJoins
-|If outer joins are supported, true indicates that FULL OUTER JOINs are supported.
+|If `SupportsOuterJoins` is set to `true`, `true` indicates that FULL OUTER JOINs can be used.
 |false
 
 |SupportsInnerJoins
-|Set to true to indicate that INNER JOINs are supported.
+|Set to `true` to indicate that INNER JOINs can be used.
 |false
 
 |SupportedJoinCriteria
-|If joins are supported, defines what criteria may be used as the join criteria. 
+|If join capabilities are enabled, defines the criteria that can be used as the join criteria. 
 May be one of (ANY, THETA, EQUI, or KEY).
 |ANY
 
 |MaxInCriteriaSize
-|If in criteria are supported, defines what the maximum number of in entries are per predicate. -1 indicates no limit.
+|If the use of `IN` criteria is enabled, specifies the maximum number of `IN` entries per predicate. `-1` indicates no limit.
 |-1
 
 |MaxDependentInPredicates
-|If in criteria are supported, defines what the maximum number of predicates that can be used for a dependent join. 
-Values less than 1 indicate to use only one in predicate per dependent value pushed (which matches the pre-7.4 behavior).
+|If the use of `IN` criteria is enabled, defines what the maximum number of predicates that can be used for a dependent join. 
+Values less than 1 indicate to use only one `IN` predicate per dependent value pushed (which matches the pre-7.4 behavior).
 |-1
 
 |DirectQueryProcedureName
-|if the direct query procedure is supported on the translator, this property indicates the name of the procedure.
+|If `SupportsDirectQueryProcedure` is set to `true` for the translator, this property indicates the name of the procedure.
 |native
 
 |SupportsDirectQueryProcedure
-|Set to true to indicate the translator supports the direct execution of commands.
+|Set to `true` to indicate that direct execution of commands is available for the translator.
 |false
 
 |ThreadBound
-|Set to true to indicate the translator’s Executions should be processed by only a single thread
+|Set to `true` to indicate the translator’s Executions should be processed by only a single thread
 |false
 
 |CopyLobs
-|If true, then returned lobs (clob, blob, sql/xml) will be copied by the engine in a memory safe manner. 
-Use this option if the source does not support memory safe LOBS or you want to disconnect LOBS from the source connection.
+|If `true`, then returned large object (LOB) data (clob, blob, sql/xml) is copied by the engine in a memory safe manner. 
+Use this option if the source does not provide memory safe LOBS or if you want to disconnect LOBS from the source connection.
 |false
 
 |TransactionSupport
-|The highest level of transaction support. Used by the engine as a hint to determine if a transaction is needed for autoCommitTxn=DETECT mode. 
+|The highest level of transaction capability. Used by the engine as a hint to determine if a transaction is needed for `autoCommitTxn=DETECT` mode. 
 Can be one of XA, NONE, or LOCAL. If XA or LOCAL then access under a transaction will be serialized.
 |XA
 |===
 
-NOTE: Only a subset of the supports metadata can be set through execution properties on the base ExecutionFactory. 
+NOTE: Only a subset of the available metadata can be set through execution properties on the base ExecutionFactory. 
 All methods are available on the BaseDelegatingExecutionFactory.
 
 There are no base importer settings.
@@ -158,7 +158,7 @@ When specifying an importer property, it must be prefixed with `importer.`. For 
 |Name |Description |Default
 
 |autoCorrectColumnNames
-|Replace any usage of `.` in a column name with `_` as the period character is not supported by {{ book.productnameFull }} in column names.
+|Replace any usage of `.` in a column name with `_` as the period character is not valid in {{ book.productnameFull }} column names.
 |true
 
 |renameDuplicateColumns

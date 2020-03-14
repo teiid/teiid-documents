@@ -3,7 +3,7 @@
 [id="ddl-commands"]
 = DDL Commands
 
-{{ book.productnameFull }} supports a subset of DDL to create or drop temporary tables and to manipulate procedure and view definitions at runtime. 
+{{ book.productnameFull }} is compatible with a subset of the DDL commands for creating or dropping temporary tables and manipulating procedure and view definitions at runtime. 
 It is not currently possible to arbitrarily drop or create non-temporary metadata entries. 
 For information about the DDL statements that you can use to define schemas in a virtual database, see xref:ddl-metadata-for-schema-objects[DDL metadata].
 
