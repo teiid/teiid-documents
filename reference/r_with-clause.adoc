@@ -3,9 +3,9 @@
 [id="with-clause"]
 = WITH clause
 
-{{ book.productnameFull }} supports non-recursive common table expressions via the WITH clause. 
-You can reference WITH clause items as tables in subsequent WITH clause items, and in the main query. 
-You can think of the WITH clause as providing query-scoped temporary tables.
+{{ book.productnameFull }} provides access to non-recursive common table expressions via the `WITH` clause. 
+You can reference `WITH` clause items as tables in subsequent WITH clause items, and in the main query. 
+You can think of the `WITH` clause as providing query-scoped temporary tables.
 
 .Usage
 

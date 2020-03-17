@@ -5,7 +5,7 @@
 :toc: manual
 :toc-placement: preamble
 
-{{ book.productnameFull }} supports creating temporary (_temp_) tables. 
+You can create and use temporary (_temp_) tables in  {{ book.productnameFull }}. 
 Temporary tables are created dynamically, but are treated as any other physical table.
 
 {% if not book.targetWildfly and not book.targetSpring %}

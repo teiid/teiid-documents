@@ -6,27 +6,27 @@
 Aggregate functions take sets of values from a group produced by an explicit or implicit GROUP BY 
 and return a single scalar value computed from the group.
 
-{{ book.productnameFull }} supports the following aggregate functions:
+You can use the following aggregate functions in {{ book.productnameFull }}:
 
-* COUNT(*) – count the number of values (including nulls and duplicates) in a group. 
+COUNT(*):: Count the number of values (including nulls and duplicates) in a group. 
 Returns an integer - an exception will be thrown if a larger count is computed.
-* COUNT(x) – count the number of values (excluding nulls) in a group. 
+COUNT(x):: Count the number of values (excluding nulls) in a group. 
 Returns an integer - an exception will be thrown if a larger count is computed.
-* COUNT_BIG(*) – count the number of values (including nulls and duplicates) in a group. 
+COUNT_BIG(*):: Count the number of values (including nulls and duplicates) in a group. 
 Returns a long - an exception will be thrown if a larger count is computed.
-* COUNT_BIG(x) – count the number of values (excluding nulls) in a group. 
+COUNT_BIG(x):: Count the number of values (excluding nulls) in a group. 
 Returns a long - an exception will be thrown if a larger count is computed.
-* SUM(x) – sum of the values (excluding nulls) in a group.
-* AVG(x) – average of the values (excluding nulls) in a group.
-* MIN(x) – minimum value in a group (excluding null).
-* MAX(x) – maximum value in a group (excluding null).
-* ANY(x)/SOME(x) – returns TRUE if any value in the group is TRUE (excluding null).
-* EVERY(x) – returns TRUE if every value in the group is TRUE (excluding null).
-* VAR_POP(x) – biased variance (excluding null) logically equals(sum(x^2) - sum(x)^2/count(x))/count(x); returns a double; null if count = 0.
-* VAR_SAMP(x) – sample variance (excluding null) logically equals(sum(x^2) - sum(x)^2/count(x))/(count(x) - 1); returns a double; null if count < 2.
-* STDDEV_POP(x) – standard deviation (excluding null) logically equals SQRT(VAR_POP(x)).
-* STDDEV_SAMP(x) – sample standard deviation (excluding null) logically equals SQRT(VAR_SAMP(x)).
-* TEXTAGG(expression [as name], … [DELIMITER char] [QUOTE char | NO QUOTE] [HEADER] [ENCODING id] [xref:order-by-clause[ORDER BY …]]) – CSV.
+SUM(x):: Sum of the values (excluding nulls) in a group.
+AVG(x):: Average of the values (excluding nulls) in a group.
+MIN(x):: Minimum value in a group (excluding null).
+MAX(x):: Maximum value in a group (excluding null).
+ANY(x)/SOME(x):: Returns TRUE if any value in the group is TRUE (excluding null).
+EVERY(x):: Returns TRUE if every value in the group is TRUE (excluding null).
+VAR_POP(x):: Biased variance (excluding null) logically equals(sum(x^2) - sum(x)^2/count(x))/count(x); returns a double; null if count = 0.
+VAR_SAMP(x):: Sample variance (excluding null) logically equals(sum(x^2) - sum(x)^2/count(x))/(count(x) - 1); returns a double; null if count < 2.
+STDDEV_POP(x):: Standard deviation (excluding null) logically equals SQRT(VAR_POP(x)).
+STDDEV_SAMP(x):: Sample standard deviation (excluding null) logically equals SQRT(VAR_SAMP(x)).
+TEXTAGG(expression [as name], … [DELIMITER char] [QUOTE char | NO QUOTE] [HEADER] [ENCODING id] [xref:order-by-clause[ORDER BY …]]):: CSV
 text aggregation of all expressions in each row of a group. When DELIMITER is not specified, by default comma(,) is used as delimiter. 
 All non-null values will be quoted. Double quotes(") is the default quote character. Use QUOTE to specify a different value, or NO QUOTE 
 for no value quoting. If HEADER is specified, the result contains the header row as the first line - the header line will be present 

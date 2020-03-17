@@ -15,7 +15,7 @@ PostgreSQL-specific execution properties:
 
 PostGisVersion:: Indicates the PostGIS version in use. Defaults to 0, which means that PostGIS is not installed. 
 Will be set automatically if the database version is not set.
-ProjSupported:: Boolean indicating if Proj is support for PostGis. 
+ProjSupported:: Boolean that indicates if the PostGis version supports PROJ coordinate transformation software. 
 Will be set automatically if the database version is not set.
 
 [NOTE] 

@@ -19,10 +19,10 @@ INTO table FROM ...
 
 .Syntax rules
 
-* The INTO clause is logically applied last in processing, after the ORDER BY and LIMIT clauses.
+* The `INTO` clause is logically applied last in processing, after the `ORDER BY` and `LIMIT` clauses.
 
-* {{ book.productnameFull }}’s support for SELECT INTO is similar to Microsoft SQL Server. The target of the 
-INTO clause is a table where the result of the SELECT command will be inserted. 
+* {{ book.productnameFull }}’s support for `SELECT INTO` is similar to Microsoft SQL Server. 
+The target of the `INTO` clause is a table where the result of the `SELECT` command will be inserted. 
 +
 For example, the following statement:
 +

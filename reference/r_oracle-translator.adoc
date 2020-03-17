@@ -77,7 +77,7 @@ and setting the name in source to `<element name>:SEQUENCE=<sequence name>.<seq
 
 .Rownum
 
-A rownum column can also added to any Oracle physical table to support the rownum pseudo-column. 
+A `rownum` column can also be added to any Oracle physical table to enable use of the rownum pseudo-column. 
 A rownum column should have a name in source of `rownum`. 
 These rownum columns do not have the same semantics as the Oracle rownum construct so care must be taken in their usage.
 
@@ -93,9 +93,9 @@ create foreign procedure proc (in x integer, out y object options (native_type '
 returns table (a integer, b string) 
 ----
 
-.Geospatial function support
+.Geospatial functions
 
-The Oracle translator supports the following geospatial functions:
+You can use the following geospatial functions with the translator for Oracle:
 
 Relate = sdo_relate::
 

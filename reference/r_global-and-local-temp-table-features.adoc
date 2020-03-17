@@ -5,27 +5,27 @@
 
 Global and local temporary tables share some common features.
 
-.Primary key support
+.Primary key usage
 
 * All key columns must be comparable.
-* If you use a primary key, it creates a clustered index that supports search improvements 
+* If you use a primary key, it creates a clustered index that enables search improvements 
 for SQL comparison operators, and the IN, LIKE, and ORDER BY operators.
 * You can use `Null` as a primary key value, but there must be only one row that has an all-null key.
 
-.Transaction support
+.Transactions
 
 * There is a `READ_UNCOMMITED` transaction isolation level. 
-There are no locking mechanisms available to support higher isolation levels, and the result of a rollback may be inconsistent across multiple transactions. 
+There are no locking mechanisms available to enable higher isolation levels, and the result of a rollback may be inconsistent across multiple transactions. 
 If concurrent transactions are not associated with the same local temporary table or session, then the transaction isolation level is effectively serializable. 
 If you want full consistency with local temporary tables, then only use a connection with one transaction at a time. 
 This mode of operation is ensured by connection pooling that tracks connections by transaction.
 
 .Limitations
 
-* With the CREATE TABLE syntax, only basic table definition (column name, type, and nullable information), and an optional primary key are supported. 
+* With the `CREATE TABLE` syntax, you can specify only basic table definition (column name, type, and nullable information), and an optional primary key. 
 For global temporary tables, additional metadata in the CREATE statement is effectively ignored when creating the temporary table instance.
 However, the metadata might still be used by planning similar to any other table entry.
-* You can use ON COMMIT PRESERVE ROWS. No other ON COMMIT action is supported.
+* You can use `ON COMMIT PRESERVE ROWS`. You cannot use other `ON COMMIT` actions.
 * The cannot use "drop behavior" options in the DROP statement.
 * Temporary tables are not fail-over safe.
 * Non-inlined LOB values (XML, CLOB, BLOB, JSON, geometry) are tracked by reference rather than by value in a temporary table. 

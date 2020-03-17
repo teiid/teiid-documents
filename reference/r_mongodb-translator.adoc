@@ -7,7 +7,7 @@
 
 The MongoDB translator, known by the type name _mongodb_, provides a relational view of data that resides in a MongoDB database. 
 This translator is capable of converting {{ book.productnameFull }} SQL queries into MongoDB based queries. 
-It supports a full range of SELECT, INSERT, UPDATE and DELETE calls.
+It provides for a full range of SELECT, INSERT, UPDATE and DELETE calls.
 
 MongoDB is a document based "schema-less" database with it own query language. 
 It does not map perfectly with relational concepts or the SQL query language. 
@@ -28,7 +28,7 @@ approaches the problem in reverse compared to other translators.
 When working with MongoDB, {{ book.productnameFull }} requires you to define the MongoDB schema upfront, by using {{ book.productnameFull }} metadata. 
 Because {{ book.productnameFull }} only allows relational schema as its metadata, you must define your MongoDB schema in relational terms, 
 using tables, procedures, and functions. 
-For the purposes of MongoDB, the {{ book.productnameFull }} metadata has been extended to support extension properties that can be defined on a table 
+For the purposes of MongoDB, the {{ book.productnameFull }} metadata has been extended to provide extension properties that can be defined on a table 
 to convert it into a MongoDB based document. 
 These extension properties let you define how a MongoDB document is structured and stored. 
 Based on the relationships (primary-key, foreign-key) that are defined on a table, and their cardinality (ONE-to-ONE, ONE-to-MANY, MANY-to-ONE), 
@@ -199,8 +199,8 @@ If you defined the composite PRIMARY KEY on Customer table, the document structu
 
 .Data types
 
-The MongoDB translator supports automatic mapping of {{ book.productnameFull }} data types into MongoDB data types, including the support for BLOBS, CLOBS and XML. 
-The LOB support is based on GridFS in MongoDB. 
+The MongoDB translator provides automatic mapping of {{ book.productnameFull }} data types into MongoDB data types, including BLOBS, CLOBS and XML. 
+The LOB mapping is based on GridFS in MongoDB. 
 Arrays are in the following form:
 
 [source,sql]
@@ -217,7 +217,7 @@ Users can get individual items in the array using the function `array_get`, or c
 
 NOTE: Note that even though embedded documents can also be in arrays, the handling of embedded documents is different from array with scalar values.
 
-NOTE: Regular Expressions, MongoDB::Code, MongoDB::MinKey, MongoDB::MaxKey, and MongoDB::OID are not currently supported.
+NOTE: The translator does not work with regular Expressions, MongoDB::Code, MongoDB::MinKey, MongoDB::MaxKey, and MongoDB::OID.
 
 NOTE: In documents that contain values of mixed types for the same key, you must mark the column as unsearchable, or MongoDB will not correctly match predicates 
 against the column. A key is used as a mixed type of it is represented as a string value in one document, and an integer in another. 
@@ -256,10 +256,9 @@ If documents have different fields, or fields with different types, this should 
 Using the preceding DDL, or any other metadata facility, you can map a table in a relational store into a document in MongoDB. 
 However, to make effective use of MongoDB, you must be able to build complex documents that can co-locate related information, 
 so that data can queried in a single MongoDB query. 
-Because MongoDB does not support join relationships like a relational database, unless you can build complex documents, 
-you would have to issue multiple queries to retrieve data and then join it manually. 
-The power of MongoDB comes from its "embedded" documents, its support of complex data types, such as arrays, and its use of an aggregation framework 
-to query them. 
+Unlike a relational database, you cannot run join operations in MongoDB.
+As as a result, unless you can build complex documents, you would have to issue multiple queries to retrieve data and then join it manually. 
+The power of MongoDB comes from its "embedded" documents, its support for complex data types, such as arrays, and its use of an aggregation framework to query them. 
 This translator provides a way to achieve the goals.
 
 When you do not define the complex embedded documents in MongoDB, {{ book.productnameFull }} can step in for join processing and provide that functionality. 
@@ -622,11 +621,11 @@ Products
 
 .Limitations
 
-* Currently nested embedding of documents has limited support due to capabilities of handling nested arrays is limited 
-in the MongoDB. Nesting of "EMBEDDABLE" property with multiple levels is OK, however more than two levels with MERGE 
-is not recommended. Also, you need to be caution about not exceeding the document size of 16 MB for single row, so deep nesting is not recommended.
-* JOINS between related tables, MUST have used either of "EMBEDDABLE" or "MERGE" property, otherwise the query will result in error. 
-In order for {{ book.productnameFull }} to correctly plan and support the JOINS, in the case that any two tables are 
+* Nested embedding of documents is limited due to capabilities of handling nested arrays is limited in the MongoDB. 
+Nesting of "EMBEDDABLE" property with multiple levels is OK, however more than two levels with MERGE is not recommended. 
+Also, you need to be caution about not exceeding the document size of 16 MB for single row, so deep nesting is not recommended.
+* JOINS between related tables, MUST use either the "EMBEDDABLE" or "MERGE" properties, otherwise the query will result in error. 
+In order for {{ book.productnameFull }} to correctly plan and work with JOINS, in the case that any two tables are 
 *NOT* embedded in each other, use _allow-joins=false_ property on the Foreign Key that represents the relation. For example:
 
 [source,sql]
@@ -658,9 +657,9 @@ instead of resulting in error, the JOIN processing will happen in the {{ book.pr
 When you use above properties and carefully design the MongoDB document structure, {{ book.productnameFull }} translator can 
 intelligently collate data based on their co-location and take advantage of it while querying.
 
-.Geo Spatial function support
+.Geo Spatial functions
 
-MongoDB translator supports geo spatial query operators in the "WHERE" clause, when the data is stored in the GeoJSon format 
+MongoDB translator enables you to use geo spatial query operators in the "WHERE" clause, when the data is stored in the GeoJSon format 
 in the MongoDB Document. The following functions are available:
 
 [source,sql]
@@ -702,17 +701,18 @@ There are various "st_geom.." methods are available in the Geo Spatial function 
 
 .Capabilities
 
-MongoDB translator designed on top of the MongoDB aggregation framework, use of MongoDB version that supports this framework is mandatory. 
-Apart from SELECT queries, this translator also supports INSERT, UPDATE and DELETE queries.
+MongoDB translator is designed on top of the MongoDB aggregation framework. 
+You must use a MongoDB version that the aggregation framework. 
+Apart from SELECT queries, the MongoDB translator also works with INSERT, UPDATE and DELETE queries.
 
-This translator supports
+You can use the MongoDB translator with the following functions:
 
-* grouping
-* matching
-* sorting
-* filtering
-* limit
-* support for LOBs using GridFS
+* Grouping.
+* Matching.
+* Sorting.
+* Filtering.
+* Limits.
+* Working with LOBs stored in GridFS.
 * Composite primary and foreign keys.
 
 

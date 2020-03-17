@@ -65,30 +65,32 @@ Cast to or from XML.
 XMLCAST(expression AS type)
 ----
 
-Expression or type must be XML. The return value will be typed as type. This is the same functionality 
-as XMLTABLE uses to convert values to the desired runtime type - with the exception that array type targets are not supported with XMLCAST.
+Expression or type must be XML. 
+The return value will be typed as `type`. 
+This is the same functionality that `XMLTABLE` uses to convert values to the desired runtime type, 
+except that `XMLCAST` does not work with array type targets.
 
 .XMLCOMMENT
 
-Returns an xml comment.
+Returns an XML comment.
 
 [source,sql]
 ----
 XMLCOMMENT(comment)
 ----
 
-Comment is a string. Return value is xml.
+Comment is a string. Return value is XML.
 
 .XMLCONCAT
 
-Returns an XML with the concatenation of the given xml types.
+Returns an XML with the concatenation of the given XML types.
 
 [source,sql]
 ----
 XMLCONCAT(content [, content]*)
 ----
 
-Content is xml. Return value is xml.
+Content is XML. Return value is XML.
 
 If a value is null, it will be ignored. If all values are null, null is returned.
 
@@ -119,7 +121,7 @@ ATTR:=XMLATTRIBUTES(exp [AS name] [, exp [AS name]]*)
 NSP:=XMLNAMESPACES((uri AS prefix | DEFAULT uri | NO DEFAULT))+
 ----
 
-If the content value is of a type other than xml, it will be escaped when added to the parent element. 
+If the content value is of a type other than XML, it will be escaped when added to the parent element. 
 Null content values are ignored. Whitespace in XML or the string values of the content is preserved, 
 but no whitespace is added between content values.
 
@@ -131,7 +133,7 @@ If a attribute name is not supplied, the expression must be a column reference, 
 Null attribute values are ignored.
 
 Name, prefix are identifiers. uri is a string literal. content can be any type. 
-Return value is xml. 
+Return value is XML. 
 The return value is valid for use in places where a document is expected.
 
 [source,sql]
@@ -255,7 +257,7 @@ Returns an XML type representation of the string value expression.
 XMLPARSE((DOCUMENT|CONTENT) expr [WELLFORMED])
 ----
 
-expr in {string, clob, blob, varbinary}. Return value is xml.
+expr in {string, clob, blob, varbinary}. Return value is XML.
 
 If DOCUMENT is specified then the expression must have a single root element and may or may not contain an XML declaration.
 
@@ -272,14 +274,14 @@ Will return a SQLXML with contents
 
 .XMLPI
 
-Returns an xml processing instruction.
+Returns an XML processing instruction.
 
 [source,sql]
 ----
 XMLPI([NAME] name [, content])
 ----
 
-Name is an identifier. Content is a string. Return value is xml.
+Name is an identifier. Content is a string. Return value is XML.
 
 [[xmlquery]]
 .XMLQUERY
@@ -307,7 +309,7 @@ The ON EMPTY clause is used to specify the result when the evaluted sequence is 
 EMPTY ON EMPTY, the default, returns an empty XML result. 
 NULL ON EMPTY returns a null result.
 
-xquery in string. Return value is xml.
+xquery in string. Return value is XML.
 
 XMLQUERY is part of the SQL/XML 2006 specification.
 
@@ -374,7 +376,7 @@ XMLSERIALIZE(DOCUMENT value AS BLOB ENCODING "UTF-16" INCLUDING XMLDECLARATION)
 
 .XMLTEXT
 
-Returns xml text.
+Returns XML text.
 
 [source,sql]
 ----

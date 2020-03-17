@@ -6,32 +6,32 @@
 Also see common xref:jdbc-translators[JDBC translators] information.
 
 The PrestoDB translator, known by the type name *_prestodb_*, exposes querying functionality to Presto data sources. 
-In data integration respect, PrestoDB has very similar capabilities of {{ book.productnameFull }}, 
+In data integration respect, PrestoDB has capabilities that are similar to {{ book.productnameFull }}, 
 however it goes beyond in terms of distributed query execution with multiple worker nodes. 
 {{ book.productnameFull }}’s execution model is limited to single execution node and focuses more on pushing the query down to sources. 
-{{ book.productnameFull }} provides more complete query support and many enterprise features.
+{{ book.productnameFull }} provides more complete querying capabilities and many enterprise features.
 
 .Capabilities
 
-The PrestoDB translator supports only `SELECT` statements with a restrictive set of capabilities. 
+You can use the PrestoDB translator only with `SELECT` statements. The translator provides a restricted set of capabilities. 
 
 
-Because Presto exposes a relational model, {{ book.productnameFull }} can use it as it does other RDBMS sources, such as Oracle, DB2, and so forth. 
-For information about configuring Presto, see the Presto documentation.
+Because PrestoDB exposes a relational model, {{ book.productnameFull }} can use it as it does other RDBMS sources, such as Oracle, Db2, and so forth. 
+For information about configuring PrestoDB, see the Presto documentation.
 
-TIP: In SQL JOIN operations, Presto does not support multiple `ORDER BY` columns well. 
+TIP: In SQL JOIN operations, PrestoDB does not support multiple `ORDER BY` columns well. 
 If errors occur during JOIN operations that involve more than one `ORDER BY` column, 
 set the translator property `supportsOrderBy` to disable the use of the `ORDER BY` clause. 
 
 NOTE: Some versions of Presto generate errors when you include null values in subqueries.
 
 TIP: PrestoDB does not support transactions. 
-To overcome issues caused by this limitation, define the datasource as non-transactional.
+To overcome issues caused by this limitation, define the data source as non-transactional.
 
 
 [NOTE]
 ====
-By default, every catalog in Presto has an `information_schema`. 
+By default, every catalog in PrestoDB has an `information_schema`. 
 If you have to configure multiple catalogs, duplicate table errors can cause deployment of a virtual database to fail.
 To prevent duplicate table errors, use import options to filter the schemas. 
  

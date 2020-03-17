@@ -72,7 +72,7 @@ NOTE: {{ book.productnameFull }} does not exhaustively validate `SIMILAR TO` pat
 Instead, the pattern is converted to an equivalent regular expression. 
 Do not rely on general regular expression features when using `SIMILAR TO`. 
 If additional features are needed, use `LIKE_REGEX`. 
-Avoid the use of non-literal patterns, because pushdown support is limited.
+Avoid the use of non-literal patterns, because {{ book.productnameFull }} has a limited ability to process SQL pushdown predicates.
 
 [source,sql]
 ----
@@ -87,7 +87,7 @@ For more information, see the http://download.oracle.com/javase/6/docs/api/java/
 
 NOTE: {{ book.productnameFull }} does not exhaustively validate `LIKE_REGEX` pattern values. 
 It is possible to use JRE-only regular expression features that are not specified by the SQL specification. 
-Additionally, not all sources support the same regular expression flavor or extensions. 
+Additionally, not all sources can use the same regular expression flavor or extensions. 
 In pushdown situations, be careful to ensure that the pattern that you use has the same meaning in {{ book.productnameFull }}, 
 and across all applicable sources.
 

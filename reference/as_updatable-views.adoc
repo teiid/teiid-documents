@@ -18,7 +18,7 @@ An inherently updatable view cannot be defined with a query that has:
 * A `LIMIT` clause.
 
 A `UNION ALL` can define an inherently updatable view only if each of the UNION branches are themselves inherently updatable. 
-A view defined by a `UNION ALL` can support inherent `INSERTs` if it is a partitioned union, and the `INSERT` specifies values that belong to a single partition.
+A view defined by a `UNION ALL` can accommodate inherent `INSERT` statements if it is a partitioned union, and the `INSERT` specifies values that belong to a single partition.
 For more information, see _partitioned union_ in xref:federated-optimizations[Federated optimizations].
 
 Any view column that is not mapped directly to a column is not updatable and cannot be targeted by an UPDATE set clause or be an INSERT column.

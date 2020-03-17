@@ -153,18 +153,18 @@ A set has no effect on the current transaction and is not affected by commit/rol
 Get a column value from the generated keys of the last insert statement of this session returning a generated key.
 
 Typically this function will only be used within the scope of procedure to determine a generated key value from an insert. 
-It should not be expected that all inserts provide generated keys as not all sources support returning generated keys.
+Not all inserts provide generated keys, because not all sources return generated keys.
 
-GENERATED_KEY()
+`GENERATED_KEY()`
 
 The return value is long.
 
 Returns the first column of the last generated key as a long value. 
 Null is returned if there is no such generated key.
 
-GENERATED_KEY(column_name)
+`GENERATED_KEY(column_name)``
  
-column_name is a string.  The return value is of type object.
+`column_name` is a string.  The return value is of type object.
  
-A more general form of GENERATED_KEY that can be used if there are more than one generated column or a type other than long. 
+A more general form of `GENERATED_KEY` that can be used if there are more than one generated column or a type other than long. 
 Null is returned if there is no such generated key nor matching key column.
