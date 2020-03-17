@@ -3,8 +3,8 @@
 [id="select-clause"]
 = SELECT clause
 
-SQL queries start with the SELECT keyword and are often referred to as "SELECT statements". 
-{{ book.productnameFull }} supports most of the standard SQL query constructs.
+SQL queries that start with the `SELECT` keyword and are often referred to as _SELECT statements_. 
+YOu can use most of the standard SQL query constructs in {{ book.productnameFull }}.
 
 .Usage
 

@@ -1,7 +1,7 @@
 // Module included in the following assemblies:
 //master.adoc
 [id="sql-support"]
-= SQL Support
+= SQL compatibility
 
 {{ book.productnameFull }} provides nearly all of the functionality of SQL-92 DML. SQL-99 and later 
 features are constantly being added based upon community need. 

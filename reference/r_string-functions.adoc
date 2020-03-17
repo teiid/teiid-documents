@@ -13,14 +13,14 @@ The 0 index is considered to be before the start of the string.
 
 |x \|\| y
 |Concatenation operator
-|x,y in {string, clob}, return type is string or clob
+|x,y in {string, clob}, return type is string or character large object (CLOB).
 
 |ASCII(x)
-|Provide ASCII value of the left most character[1] in x. The empty string will as input will return null.
+|Provide ASCII value of the left most character[1] in x. The empty string will as input will return `null`.
 |return type is integer
 
 |CHR(x) CHAR(x)
-|Provide the character[1] for ASCII value x [a].
+|Provide the character[1] for ASCII value `x` [a].
 |x in {integer}
 
 [1] For the engine's implementations of the ASCII and CHR functions, characters are limited to UCS2 values only.  
@@ -148,13 +148,13 @@ respect to negative from/length arguments nor out of bounds from/length argument
 * A zero from index is effective the same as 1.
 * A negative from index is first counted from the end of the string.
 
-Some sources, howeverm can return an empty string instead of null, and some sources do not support negative indexing. 
+Some sources, however, can return an empty string instead of `null`, and some sources are not compatible with negative indexing. 
 
 .Encoding functions
 
 .TO_CHARS
 
-Return a clob from the blob with the given encoding.
+Return a CLOB from the binary large object (BLOB) with the given encoding.
 
 [source,sql]
 ----
@@ -162,14 +162,14 @@ TO_CHARS(x, encoding [, wellformed])
 ----
 
 BASE64, HEX, UTF-8-BOM and the built-in Java Charset names are valid values for the encoding [b]. 
-x is a blob, encoding is a string, wellformed is a boolean, and returns a clob. 
+x is a BLOB, encoding is a string, wellformed is a boolean, and returns a CLOB. 
 The two argument form defaults to wellformed=true. 
 If wellformed is false, the conversion function will immediately validate the result 
 such that an unmappable character or malformed input will raise an exception.
 
 .TO_BYTES
 
-Return a blob from the clob with the given encoding.
+Return a BLOB from the CLOB with the given encoding.
 
 [source,sql]
 ----
@@ -177,14 +177,14 @@ TO_BYTES(x, encoding [, wellformed])
 ----
 
 BASE64, HEX, UTF-8-BOM and the builtin Java Charset names are valid values for the encoding [b]. 
-x in a clob, encoding is a string, wellformed is a boolean and returns a blob. 
+x in a CLOB, encoding is a string, wellformed is a boolean and returns a BLOB. 
 The two argument form defaults to wellformed=true. 
 If wellformed is false, the conversion function will immediately validate the result such that 
 an unmappable character or malformed input will raise an exception. 
 If wellformed is true, then unmappable characters will be replaced by the default replacement character for the character set. 
 Binary formats, such as BASE64 and HEX, will be checked for correctness regardless of the wellformed parameter.
 
-[b] For more information about supported Charset names, 
+[b] For more information about Charset names, 
 see the https://docs.oracle.com/javase/8/docs/technotes/guides/intl/encoding.doc.html[Charset docs].
 
 .Replacement functions

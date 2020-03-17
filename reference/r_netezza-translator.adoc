@@ -14,6 +14,6 @@ It is best to perform batched updates whenever possible.
 .Execution properties
 Netezza-specific execution properties:
 
-SqlExtensionsInstalled:: Indicates that SQL Extensions, including support for `REGEXP_LIKE`, are installed. 
+SqlExtensionsInstalled:: Indicates that SQL extensions, including the ability to process Netezza `REGEXP_LIKE` functions, are installed. 
 All other REGEXP functions are then available as pushdown functions. 
-Defaults to false.
+Defaults to `false`.

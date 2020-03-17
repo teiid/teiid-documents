@@ -140,9 +140,9 @@ Therefore, creating a POLICY with the condition "true" will allow users in that 
 
 .Considerations when using conditions
 
-Non-pushdown conditions can adversely impact performance, since their evaluation may inhibit pushdown of query constructs on top of the affected resource. 
-Multiple conditions against the same resource should generally be avoided, because any non-pushdown condition causes the entire OR statement to not be pushed down. 
-If you must insert permission conditions, be careful when adding inline views, because they can result in degraded performance if your sources do not support them.
+Be aware that non-pushdown conditions may adversely impact performance. 
+Avoid using multiple conditions against the same resource as any non-pushdown condition will cause the entire OR statement to not be pushed down. 
+If you need to insert permission conditions, be careful when adding an inline view, because adding them can cause performance problems if they are not compatible with your sources.
 
 Pushdown of multi-row insert/update operations will be inhibited since the condition must be checked for each row.
 
@@ -193,7 +193,7 @@ For example, a mask with the default order of 0 and a mask with an order of 1 wo
 Non-pushdown masking conditions/expressions can adversely impact performance, because their evaluation might inhibit pushdown 
 of query constructs on top of the affected resource. 
 In some circumstances the insertion of masking may require that the plan be altered with the addition of an inline view, 
-which can result in adverse performance against sources that do not support inline views.
+which can result in poor performance if your sources are not compatible with the use of inline views.
 
 In addition to managing masking on a per-role basis with the use of the order value, 
 another approach is to specify masking in a single any authenticated role such that the conditions/expressions are generalized for all users/roles 

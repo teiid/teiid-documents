@@ -17,8 +17,8 @@ relational databases, file systems, content management systems and traditional W
 
 Using this specification from the OASIS group, with help from the http://code.google.com/p/odata4j/[OData4J] framework, 
 {{ book.productnameFull }} maps OData entities into relational schema. 
-{{ book.productnameFull }} supports reading of CSDL (Conceptual Schema Definition Language) from the an OData endpoint provided, 
-and converts the OData schema into relational schema. 
+{{ book.productnameFull }} can read CSDL (Conceptual Schema Definition Language) from a provided OData endpoint, 
+and convert the OData schema into a relational schema. 
 The following table shows the mapping selections in the OData translator from a CSDL document.
 
 |===
@@ -45,8 +45,8 @@ All CRUD operations will be appropriately mapped to the resulting entity based o
 
 . Usage
 
-Usage of a OData source is similar to that of a JDBC translator. The metadata import is supported through the translator, 
-once the metadata is imported from source system and exposed in relational terms, then this source can be queried 
+Usage of a OData source is similar to that of a JDBC translator. The metadata import is provided through the translator, 
+once the metadata is imported from the source system and exposed in relational terms, then this source can be queried 
 as if the EntitySets and Function Imports were local to the {{ book.productnameFull }} system.
 
 .Execution properties
@@ -59,23 +59,23 @@ as if the EntitySets and Function Imports were local to the {{ book.productnameF
 |The system default time zone
 
 |SupportsOdataCount
-|Supports $count.
+|Enables the use of the `$count` option in system queries.
 |true
 
 |SupportsOdataFilter
-|Supports $filter.
+|Enables the use of the `$filter` option in system queries.
 |true
 
 |SupportsOdataOrderBy
-|Supports $orderby.
+|Enables the use of the `$orderby` option in system queries.
 |true
 
 |SupportsOdataSkip
-|Supports $skip.
+|Enables the use of the `$skip` option in system queries.
 |true
 
 |SupportsOdataTop
-|Supports $top.
+|Enables the use of the `$top` option in system queries.
 |true
 
 |===
@@ -129,7 +129,7 @@ CREATE SERVER odata FOREIGN DATA WRAPPER "odata-override" OPTIONS ("SupportOdata
 
 
 .Native queries
-TIP: Native or direct query execution is not supported through the OData translator. 
+TIP: The OData translator cannot perform native or direct query execution. 
 However, you can use the _invokehttp_ method of the Web services translator to issue REST-based calls, and then use SQLXML to parse results.
 
 .Using OData as server.

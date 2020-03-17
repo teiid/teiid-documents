@@ -31,7 +31,7 @@ The following table describes how Excel translator interprets the data in Excel 
 
 |===
 
-The Excel translator supports the "source metadata" feature, where for a given Excel workbook, it can introspect and build the schema 
+The Excel translator provides a "source metadata" feature, where for a given Excel workbook, it can introspect and build the schema 
 based on the worksheets that are defined within it. 
 There are options available to detect header columns and data columns in a worksheet to define the correct metadata of a table.
 

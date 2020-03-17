@@ -4,7 +4,7 @@
 = Loopback translator
 
 The Loopback translator, known by the type name _loopback_, provides a quick testing solution. 
-It supports all SQL constructs and returns default results, with some configurable behavior.
+It works with all SQL constructs and returns default results, with some configurable behavior.
 
 .Execution properties 
 
