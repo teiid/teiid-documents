@@ -2,5 +2,25 @@
 [id="client-dev-Client_Developers_Guide-Client-Developers-Guide"]
 = Client Developer's Guide
 
-This guide intended for developers that are trying to write 3rd party applications that interact with {{ book.productnameFull }}. This will guide you through connection mechanisms, extensions to JDBC API, ODBC, SSL etc. Before one can delve into {{ book.productnameFull }} it is very important to learn few basic constructs of {{ book.productnameFull }}, like what is VDB? what is Model? etc. For that please read the http://teiid.io/about/basics/[short introduction].
+This guide intended for developers that are trying to write 3rd party applications that interact with {{ book.productnameFull }}. 
+You can find information about connection mechanisms, extensions to the JDBC API, ODBC, SSL and so forth. 
 
+{% if book.targetWildfly or book.targetSpring %}
+Before one can delve into {{ book.productnameFull }} it is very important to learn few basic constructs of {{ book.productnameFull }}, like what is VDB? what is Model? etc. For that please read the http://teiid.io/about/basics/[short introduction].
+
+{% endif %}
+
+
+{%if book.targetDVProd %}
+[IMPORTANT]
+====
+Data virtualization is a Technology Preview feature only. Technology Preview features are
+not supported with Red Hat production service level agreements (SLAs) and might not be
+functionally complete. Red Hat does not recommend using them in production.
+These features provide early access to upcoming product features, enabling
+customers to test functionality and provide feedback during the development process.
+For more information about the support scope of Red Hat Technology Preview features,
+see https://access.redhat.com/support/offerings/techpreview/.
+====
+
+{% endif %}
