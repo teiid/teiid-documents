@@ -2,7 +2,7 @@
 //in master.adoc
 
 [id="dv-reference"]
-= Data virtualization reference
+= {{ book.productnameFull }} reference
 
 {{ book.productnameFull }} offers a highly scalable and high performance solution to information integration. By allowing integrated 
 and enriched data to be consumed relationally, as JSON, XML, and other formats over multiple protocols. {{ book.productnameFull }} 
