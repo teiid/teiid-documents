@@ -2,7 +2,7 @@
 //in master.adoc
 
 [id="dv-reference"]
-= Data virtualization reference
+= {{ book.productnameFull }} reference
 
 {{ book.productnameFull }} offers a highly scalable and high performance solution to information integration. By allowing integrated 
 and enriched data to be consumed relationally, as JSON, XML, and other formats over multiple protocols. {{ book.productnameFull }} 
@@ -11,7 +11,6 @@ simplifies data access for developers and consuming applications.
 {% if book.targetWildfly or book.targetSpring %}
 Commercial development support, production support, and training for {{ book.productnameFull }} is available through Red Hat. 
 {{ book.productnameFull }} is a professional open source project and a critical component of Red Hat data Integration.
-{% endif %}
 
 Before one can delve into {{ book.productnameFull }} it is very important to learn few basic constructs of {{ book.productnameFull }}.
 For example, what is a virtual database? What is a model? and so forth. 
@@ -19,3 +18,19 @@ For more information, see the http://teiid.io/about/basics/[Teiid Basics].
 
 If not otherwise specified, versions referenced in this document refer to Teiid project versions.  
 Teiid or {{ book.productnameFull }} running on various platforms will have both platform and product-specific versioning.
+
+{% endif %}
+
+{%if book.targetDVProd %}
+[IMPORTANT]
+====
+Data virtualization is a Technology Preview feature only. Technology Preview features are
+not supported with Red Hat production service level agreements (SLAs) and might not be
+functionally complete. Red Hat does not recommend using them in production.
+These features provide early access to upcoming product features, enabling
+customers to test functionality and provide feedback during the development process.
+For more information about the support scope of Red Hat Technology Preview features,
+see https://access.redhat.com/support/offerings/techpreview/.
+====
+
+{% endif %}
