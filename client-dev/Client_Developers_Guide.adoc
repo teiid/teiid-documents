@@ -1,6 +1,6 @@
 
 [id="client-dev-Client_Developers_Guide-Client-Developers-Guide"]
-= Developing clients for {{ book.productnameFull }
+= Developing clients for {{ book.productnameFull }}
 
 This guide intended for developers that are trying to write 3rd party applications that interact with {{ book.productnameFull }}. 
 You can find information about connection mechanisms, extensions to the JDBC API, ODBC, SSL and so forth. 
