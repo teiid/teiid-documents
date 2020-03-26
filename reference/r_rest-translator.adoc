@@ -1,0 +1,65 @@
+// Module included in the following assemblies:
+// as_translators.adoc
+[id="rest-translator"]
+= Rest translator
+
+The Rest translator, known by the type name _rest_, exposes stored procedures for calling REST services. 
+Results from this translator will commonly be used with the TEXTTABLE, JSONTABLE, or XMLTABLE table functions to use CSV, JSON, or XML formated data.
+
+*Execution properties* 
+
+There are no _rest_ importer settings, but it can provide metadata for VDBs. 
+
+.Usage
+
+The _rest_ translator exposes low level procedures for accessing web services.
+
+.InvokeHTTP procedure
+
+`invokeHttp` can return the byte contents of an HTTP(S) call.
+
+[source,sql]
+----
+Procedure invokeHttp(action in STRING, request in OBJECT, endpoint in STRING, stream in BOOLEAN, contentType out STRING, headers in CLOB) returns BLOB
+----
+
+Action indicates the HTTP method (GET, POST, etc.), which defaults to POST.
+
+A null value for endpoint will use the default value. 
+The default endpoint is specified in the _rest_ source configuration. 
+The endpoint URL may be absolute or relative. 
+If it’s relative then it will be combined with the default endpoint.
+
+Since multiple parameters are not required to have values, it is often more clear to call the invokeHttp procedure with named parameter syntax.
+
+[source,sql]
+----
+call invokeHttp(action=>'GET')
+----
+
+The request can be one of SQLXML, STRING, BLOB, or CLOB. 
+The request will be sent as the POST payload in byte form. 
+For STRING/CLOB values this will default to the UTF-8 encoding. 
+To control the byte encoding, see the to_bytes function.
+
+The optional headers parameter can be used to specify the request header values as a JSON value. 
+The JSON value should be a JSON object with primitive or list of primitive values.
+
+[source,sql]
+----
+call invokeHttp(... headers=>jsonObject('application/json' as "Content-Type", jsonArray('gzip', 'deflate') as "Accept-Encoding"))
+----
+
+Recommendations for setting headers parameter:
+
+* `Content-Type` might be necessary if the HTTP POST/PUT method is invoked.
+* _Accept_ is necessary if you want to control return Media Type.
+
+.Native queries
+NOTE: You cannot use native queries or direct query execution procedures with the web services translator.
+
+.Streaming considerations
+
+If the stream parameter is set to `true`, then the resulting LOB value may only be used a single time. 
+If stream is `null` or `false`, then the engine may need to save a copy of the result for repeated use. 
+Care must be used as some operations, such as casting or `XMLPARSE` might perform validation which results in the stream being consumed.

@@ -196,5 +196,6 @@ include::r_odata-translator.adoc[leveloffset=+1]
 include::r_odata-v4-translator.adoc[leveloffset=+1]
 include::r_openapi-translator.adoc[leveloffset=+1]
 include::r_salesforce-translators.adoc[leveloffset=+1]
+include::r_rest-translator.adoc[leveloffset=+1]
 include::r_web-services-translator.adoc[leveloffset=+1]
 {% endif %}
