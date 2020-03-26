@@ -3,11 +3,11 @@
 [id="upsert-merge-command"]
 = UPSERT (MERGE) command
 
-The UPSERT (or MERGE) command is used to add or update records. 
-The non-ANSI version of UPSERT that is implemented in {{ book.productnameFull }} is a modified INSERT statement
+The `UPSERT` (or `MERGE`) command is used to add or update records. 
+The non-ANSI version of `UPSERT` that is implemented in {{ book.productnameFull }} is a modified INSERT statement
 that requires that the target table has a primary key, and that the target columns cover the primary key. 
-Before it performs an INSERT, the UPSERT operation checks whether a row exists, 
-and if it does, UPSERT updates the current row rather than inserting a new one.
+Before it performs an `INSERT`, the `UPSERT` operation checks whether a row exists, 
+and if it does, `UPSERT` updates the current row rather than inserting a new one.
 
 .Example syntax
 
@@ -22,5 +22,5 @@ UPSERT INTO table (column,...) query
 ----
 
 .UPSERT pushdown
-NOTE: If an UPSERT statement is not pushed to the source, it is broken down into the respective insert/update operations, 
-which requires XA support on the target system to guarantee atomicity.
+NOTE: If an `UPSERT` statement is not pushed to the source, it is broken down into the respective INSERT and UPDATE operations.
+The target database system must support extended architecture (XA) to guarantee transaction atomicity.

@@ -6,4 +6,4 @@
 Also see common xref:jdbc-translators[JDBC Translators] information.
 
 The JDBC Simple translator, known by the type name *_jdbc-simple_*, is the same as the xref:jdbc-ansi-translator[jdbc-ansi-translator], 
-except that it disables support for nearly all pushdown constructs for maximum compatibility.
+except that, to provide maximum compatibility, it does not handle most pushdown constructs. 

@@ -5,13 +5,13 @@
 
 You can use the _delegator_ translator, which is available in the core {{ book.productnameFull }} installation, to modify the capabilities of a existing translator. 
 Often times for debugging purposes, or in special situations, you might want to turn certain capabilities of a translator on or off. 
-For example, say that the latest version of a Hive database supports the ORDER BY construct, but the current {{ book.productnameFull }} version of the Hive translator does not.
-You could use the delegator translator to turn on the `ORDER BY` support without actually writing any code. 
+For example, say that the latest version of a Hive database supports the `ORDER BY` construct, but the current {{ book.productnameFull }} version of the Hive translator does not.
+You could use the delegator translator to enable `ORDER BY` compatibility without actually writing any code. 
 Similarly, you could do the reverse, and turn off certain capabilities to produce a better plan. 
 
 
 To use the delegator translator, you must define it in the DDL. 
-The following example shows how to override the "hive" translator and turn off the `ORDER BY` support.
+The following example shows how to override the "hive" translator and turn off the `ORDER BY` capability.
 
 [source,xml]
 ----
@@ -44,8 +44,8 @@ IMPORT FROM SERVER source INTO mymodel;
 {% endif %}
 
 For more information about the translator capabilities that you can override by using execution properties, see _Translator_Capabilities_ in the link:../dev/Translator_Capabilities.adoc[Translator Development Guide]. 
-The preceding example shows how you might modify the default ORDER BY support for the Hive translator. 
+The preceding example shows how you might modify the default `ORDER BY` compatibility of the Hive translator. 
 
-{% if not book.targetWildfly and not book.targetSpring %}
+{% if targetDVProd %}
 include::p_extending-the-delegator-translator.adoc[leveloffset=+1]
 {% endif %}

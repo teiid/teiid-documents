@@ -476,7 +476,7 @@ in Merge Criteria to allow for the creation of join plans from subqueries in bot
 * Push Select Criteria -- Push select nodes as far as possible through unions, joins, and views layers toward the access nodes. 
 In most cases movement down the tree is good as this will filter rows earlier in the plan. We currently do not undo 
 the decisions made by Push Select Criteria.  However in situations where criteria cannot be evaluated by the source, this can lead to sub-optimal plans.
-* Push Large IN -- Push IN predicates that are larger than directly supported by the translator to be processed as a dependent set.
+* Push Large IN -- Push `IN` predicates that are larger than the translator can process directly to be processed as a dependent set.
 
 One of the most important optimization related to pushing criteria, is how the criteria will be pushed through join. 
 Consider the following plan tree that represents a subtree of the plan for the query `select * from A inner join b on (A.x = B.x) where B.y = 3`
@@ -641,7 +641,7 @@ Project(groups=[pm1.g1], props={PROJECT_COLS=[e1], OUTPUT_COLS=[e1]})
 ----
 
 Some important planning decisions are shown in the plan as they occur as an annotation. For example, 
-the following code snippet shows that the access node could not be raised as the parent select node contained an unsupported subquery.
+the following code snippet shows that the access node could not be raised, because the parent `SELECT` node contained an unsupported subquery.
 
 [source,sql]
 ----

@@ -324,9 +324,10 @@ XML:
 NOTE: prior releases defaulted incorrectly to using _uXXXX_ escaping rather than _xXXXX_. 
 If you need to rely on that behavior see the org.teiid.useXMLxEscape system property.
 
-.JsonPath Support
+[id="jsonpath"]
+.JsonPath 
 
-JsonPath support is provided by https://github.com/json-path/JsonPath[Jayway JsonPath]. 
+Processing of JsonPath expressions is provided by https://github.com/json-path/JsonPath[Jayway JsonPath]. 
 Please note that it uses 0-based indexing, rather than 1-based indexing. 
 Be sure that you are familiar with the expected returns for various path expressions. 
 For example, if a row JsonPath expression is expected to provide an array, 

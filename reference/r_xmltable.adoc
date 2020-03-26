@@ -49,7 +49,7 @@ Each sequence item returned by the xquery is used to create a row of values as d
 
 * Columns names must not contain duplicates.
 
-* blob datatypes are supported, but there is built-in support  only for xs:hexBinary values. 
+* You can use binary large object (BLOB) datatypes, but there is built-in compatibility only for `xs:hexBinary` values. 
 For xs:base64Binary, use a workaround of a PATH that uses the following explicit value constructor: `xs:base64Binary(<path>)`.
 
 * The column expression must evaluate to a single value if a non-array type is expected.

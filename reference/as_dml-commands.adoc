@@ -4,7 +4,7 @@
 [id="dml-commands"]
 = DML commands
 
-{{ book.productnameFull }} supports SQL for issuing queries and for defining view transformations. 
+You can use SQL in {{ book.productnameFull }} to issue queries and define view transformations. 
 For more information about how SQL is used in virtual procedures and update procedures, 
 see xref:procedure-language[Procedure language]. 
 Nearly all these features follow standard SQL syntax and functionality, so you can use any SQL reference for more information.
@@ -17,7 +17,7 @@ You can also execute procedures by using the EXECUTE command, procedural relatio
 For more information, see xref:procedural-relational-command[Procedural relational command],
 or xref:anonymous-procedure-block[Anonymous procedure block].
 
-{% if not book.targetWildfly and not book.targetSpring %}
+{% if targetDVProd %}
 include::r_set-operations.adoc[leveloffset=+1]
 include::r_select-command.adoc[leveloffset=+1]
 include::r_values-command.adoc[leveloffset=+1]

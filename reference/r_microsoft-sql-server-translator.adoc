@@ -10,7 +10,7 @@ The Microsoft SQL Server translator, known by the type name *_sqlserver_*, is fo
 A SQL Server JDBC driver version 2.0 or later (or a compatible driver such as, JTDS 1.2 or later) should be used. 
 The SQL Server `DatabaseVersion` property can be set to `2000`, `2005`, `2008`, or `2012`, but otherwise expects a standard version number, for example, `10.0`.
 
-.Sequence support
+.Sequences
 {% if book.targetWildfly or book.targetSpring %}
 
 With {{ book.productnameFull }} 8.5+, sequence operations may be modeled as xref:ddl-metadata-for-domains[source functions].

@@ -32,7 +32,7 @@ and not just the contents of the SOAP body. Can be one of MESSAGE or PAYLOAD
 NOTE: Setting the proper binding value on the translator is recommended as it removes the need for callers to pass an explicit value. 
 If your service is actually uses SOAP11, but the binding used SOAP12 you will receive execution failures.
 
-There are no ws importer settings, but it can provide metadata for VDBs. If the connection is configured to point at a specific WSDL, 
+There are no _ws_ importer settings, but it can provide metadata for VDBs. If the connection is configured to point at a specific WSDL, 
 the translator will import all SOAP operations under the specified service and port as procedures.
 
 .Importer properties
@@ -126,7 +126,7 @@ Web Service translator can parse the WSDL and provide the methods under configur
 If you are using the default native metadata import, you will see the procedures in your web service’s source model.
 
 .Native queries
-NOTE: Native queries or a direct query execution procedure is not supported on the Web services translator.
+NOTE: You cannot use native queries or direct query execution procedures with the web services translator.
 
 .Streaming considerations
 

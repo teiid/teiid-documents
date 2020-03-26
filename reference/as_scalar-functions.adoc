@@ -10,7 +10,7 @@ In addition, {{ book.productnameFull }} provides the capability for user-defined
 For information about adding UDFs, see _User-defined functions_ in the Translator Development Guide. 
 After you add UDFs, you can call them in the same way that you call other functions.
 
-{% if not book.targetWildfly and not book.targetSpring %}
+{% if targetDVProd %}
 include::r_numeric-functions.adoc[leveloffset=+1]
 include::r_string-functions.adoc[leveloffset=+1]
 include::r_date-time-functions.adoc[leveloffset=+1]

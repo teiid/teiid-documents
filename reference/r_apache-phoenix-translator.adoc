@@ -14,17 +14,17 @@ The name change reflects that the translator is specific to Phoenix and that the
 
 Do not use the `DatabaseTimezone` property with this translator.
 
-The HBase translator doesn’t support Join commands. 
-Phoenix uses the HBase Table Row ID as the Primary Key, which map to . 
+The HBase translator cannot process Join commands. 
+Phoenix uses the HBase Table Row ID as the Primary Key. 
 This Translator is developed with Phoenix 4.3 or greater for HBase 0.98.1 or greater.
 
-NOTE: The translator implements INSERT/UPDATE through the Phoenix UPSERT operation. 
-This means you can see different behavior than with standard INSERT/UPDATE. 
+NOTE: The translator implements `INSERT`/`UPDATE` through the Phoenix `UPSERT` operation. 
+This means you can see different behavior than with standard `INSERT`/`UPDATE`. 
 For example, repeated inserts will not throw a duplicate key exception, but will instead update the row in question.
 
-NOTE: Due to Phoenix driver limitations the importer will not look for unique constraints and defaults to not importing foreign keys.
+NOTE: Due to Phoenix driver limitations, the importer does not look for unique constraints, and defaults to not importing foreign keys.
 
-NOTE: The translator supports offset and other features starting with Phoenix 4.8. 
+NOTE: The translator can process SQL `OFFSET` arguments and other features starting with Phoenix 4.8. 
 The Phoenix driver hard codes the server version in `PhoenixDatabaseMetaData`, and does not otherwise provide a way to detect the server version at runtime. 
 If a newer driver is used with an older server, set the database version translator property manually.
 

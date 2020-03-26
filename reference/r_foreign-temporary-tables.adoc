@@ -53,7 +53,7 @@ Also note the table is explicitly marked as updatable, since DDL defined tables 
 
 The source’s handling of temporary tables must also be understood to make this work as intended. 
 Sources that use the same GLOBAL table definition for all sessions while scoping the data to be 
-session-specific (such as Oracle) or sources that support session-scoped temporary tables (such as PostgreSQL) 
+session-specific (such as Oracle) or sources that use session-scoped temporary tables (such as PostgreSQL) 
 will work if accessed under a transaction. 
 A transaction is necessary for the following reasons:
 
@@ -63,5 +63,5 @@ Keep in mind that a {{ book.productnameFull }} drop does not issue a source comm
 * The source pool when using track connections by transaction will ensure that multiple uses of that source by 
 {{ book.productnameFull }} will use the same connection/session and thus the same temporary table and data.
 
-TIP: {{ book.productnameFull }} does not support the ON COMMIT clause. 
-As a result, for local temporary tables, the ON COMMIT behavior for source tables is likely to be different from the default PRESERVE ROWS.
+TIP: You cannot use the `ON COMMIT` clause with {{ book.productnameFull }}. 
+As a result, for local temporary tables, the `ON COMMIT` behavior for source tables is likely to be different from the default `PRESERVE ROWS`.

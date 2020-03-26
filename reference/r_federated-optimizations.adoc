@@ -39,20 +39,20 @@ from the second source and the number of join comparisons that must be performed
 
 The conditions when a dependent join is used are determined by the query planner based on 
 xref:access-patterns[access patterns], hints, and costing information. 
-{{ book.productnameFull }} supports the following types of dependent joins:
+You can use the following types of dependent joins with {{ book.productnameFull }}:
 
-Join based on in/equality support:: Where the engine will determine how to break up large 
-queries based upon translator capabilities.
+Join based on equality or inequality:: Where the engine determines how to break up large 
+queries based on translator capabilities.
 Key pushdown:: Where the translator has access to the full set of key values and determines 
 what queries to send.
 Full pushdown:: Where the translator ships the all data from the independent side to the translator. 
 Can be used automatically by costing or can be specified as an option in the hint.
 
-{{ book.productnameFull }} supports the following types of hints to control dependent join behavior:
+You can use the following types of hints in {{ book.productnameFull }} to control dependent join behavior:
 
 MAKEIND:: Indicates that the clause should be the independent side of a dependent join.
-MAKEDEP:: Indicates that the clause should be the dependent side of a join. MAKEDEP as a non-comment 
-hint supports the following optional max and join arguments. 
+MAKEDEP:: Indicates that the clause should be the dependent side of a join. As a non-comment 
+hint, you can use `MAKEDEP` with the following optional `MAX` and `JOIN` arguments. 
 MAKEDEP(JOIN)::: meaning that the entire join should be pushed. 
 MAKEDEP(MAX:5000)::: meaning that the dependent join should only be performed if there are less than 
 the maximum number of values from the independent side.
@@ -90,14 +90,15 @@ benefit of allowing the plan above the join to be eligible for pushdown as well.
 This is why the optimizer may choose to perform a full pushdown even when the number of independent values 
 does not exceed `MaxInCriteriaSize*MaxDependentPredicates`.  You may also force full pushdown using the `MAKEDEP(JOIN)` hint.
 The translator is typically responsible for creating, populating, and removing a temporary table that 
-represents the independent side. For more information about how to use custom translators to support dependent, key, 
+represents the independent side. For more information about how to use custom translators with dependent, key, 
 and full pushdown, see _Dependent join pushdown_ in link:../dev/Dependent_Join_Pushdown.adoc[Translator Development].
 //link to Translator Development guide 
-NOTE: *Key/Full Pushdown* is currently only supported out-of-the box by a subset of JDBC translators. 
-To enable support, set the translator override property `enableDependentJoins` to `true`. 
-The JDBC source must support the creation of temporary tables, which typically requires a Hibernate dialect. 
-Translators that should support this feature include: DB2, Derby, H2, Hana, HSQL, MySQL, Oracle, 
-PostgreSQL, SQL Server, SAP IQ, Sybase, {{ book.productnameFull }}, and Teradata. 
+NOTE: By default, *Key/Full Pushdown* is compatible with only a subset of JDBC translators. 
+To use it, set the translator override property `enableDependentJoins` to `true`. 
+The JDBC source must allow for the creation of temporary tables, which typically requires a Hibernate dialect. 
+The following translators are compatible with this feature: DB2, Derby, H2, Hana, HSQL, MySQL, Oracle, 
+PostgreSQL, SQL Server, SAP IQ, Sybase, Teiid, and Teradata. 
+
 
 .Copy criteria
 
@@ -281,9 +282,9 @@ In an XML VDB:
 
 .Join compensation
 
-Some source systems only allow "relationship" queries logically producing left outer join results 
-even when queried with an inner join {{ book.productnameFull }} will attempt to form an appropriate left outer join. 
-These sources are restricted to only supporting key joins. In some circumstances foreign key relationships 
+Some source systems only allow "relationship" queries logically producing left outer join results.
+Even when queried with an inner join, {{ book.productnameFull }} will attempt to form an appropriate left outer join. 
+These sources are restricted to use with key joins. In some circumstances foreign key relationships 
 on the same source should not be traversed at all or with the referenced table on the outer side of join. 
 The extension property `teiid_rel:allow-join` can be used on the foreign key to further restrict 
 the pushdown behavior. With a value of "false" no join pushdown will be allowed, and with a value 

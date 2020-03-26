@@ -6,11 +6,11 @@
 
 Also see common xref:jdbc-translators[JDBC Translators] information.
 
-The JDBC ANSI translator, known by the type name *_jdbc-ansi_*, declares support for most SQL constructs supported by {{ book.productnameFull }}, 
+The JDBC ANSI translator, known by the type name *_jdbc-ansi_*, works with most of the SQL constructs used in {{ book.productnameFull }}, 
 except for row LIMIT/OFFSET and EXCEPT/INTERSECT. 
 It translates source SQL into ANSI compliant syntax. 
 This translator should be used when another more specific type is not available. 
-If source exceptions arise from unsupported SQL, then consider using the xref:jdbc-simple-translator[JDBC simple translator] 
+If source exceptions arise due to the use of incompatible SQL constructs, then consider using the xref:jdbc-simple-translator[JDBC simple translator] 
 to further restrict capabilities, or create a custom translator. 
 For more information, see the 
 http://teiid.github.io/teiid-documents/master/sb/dev/Translator_Development.html[Custom Translator documentation in the Teiid community].
