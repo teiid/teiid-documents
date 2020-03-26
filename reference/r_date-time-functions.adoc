@@ -58,7 +58,7 @@ Since the current timestamp has only millisecond precision by default setting th
 |x in {date, timestamp}, returns double
 
 |EXTRACT(YEAR\|MONTH\|DAY
-\|HOUR\|MINUTE\|SECOND\|QUARTER\EPOCH FROM x)
+\|HOUR\|MINUTE\|SECOND\|QUARTER\|EPOCH FROM x)
 |Return the given field value from the date value x. 
 Produces the same result as the associated YEAR, MONTH, DAYOFMONTH, HOUR, MINUTE, SECOND, QUARTER, EPOCH functions functions. 
 The SQL specification also allows for TIMEZONE_HOUR and TIMEZONE_MINUTE as extraction targets. 

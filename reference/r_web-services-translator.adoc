@@ -3,7 +3,7 @@
 [id="web-services-translator"]
 = Web services translator
 
-The Web Services translator, known by the type name _ws_, exposes stored procedures for calling web services. 
+The Web Services translator, known by the type name {% if book.targetSpring %}_soap_ or {% endif %}_ws_, exposes stored procedures for calling web/SOAP services. 
 Results from this translator will commonly be used with the TEXTTABLE or XMLTABLE table functions to use CSV or XML formated data.
 
 *Execution properties* 
@@ -32,7 +32,7 @@ and not just the contents of the SOAP body. Can be one of MESSAGE or PAYLOAD
 NOTE: Setting the proper binding value on the translator is recommended as it removes the need for callers to pass an explicit value. 
 If your service is actually uses SOAP11, but the binding used SOAP12 you will receive execution failures.
 
-There are no _ws_ importer settings, but it can provide metadata for VDBs. If the connection is configured to point at a specific WSDL, 
+There are no importer settings, but it can provide metadata for VDBs. If the connection is configured to point at a specific WSDL, 
 the translator will import all SOAP operations under the specified service and port as procedures.
 
 .Importer properties
@@ -50,7 +50,7 @@ When specifying the importer property, it must be prefixed with "importer.". Exa
 
 .Usage
 
-The WS translator exposes low level procedures for accessing web services. See also the Twitter example in the kit.
+The translator exposes low level procedures for accessing web services. {% if book.targetWildfly %}See also the Twitter example in the kit.{% endif %}
 
 .Invoke procedure
 
@@ -64,7 +64,7 @@ Procedure invoke(binding in STRING, action in STRING, request in XML, endpoint i
 The binding may be one of null (to use the default) HTTP, SOAP11, or SOAP12. Action with a SOAP binding indicates the SOAPAction value. 
 Action with a HTTP binding indicates the HTTP method (GET, POST, etc.), which defaults to POST.
 
-A null value for the binding or endpoint will use the default value. The default endpoint is specified in the WS source configuration. 
+A null value for the binding or endpoint will use the default value. The default endpoint is specified in the source configuration. 
 The endpoint URL may be absolute or relative. If it’s relative then it will be combined with the default endpoint.
 
 Since multiple parameters are not required to have values, it is often more clear to call the invoke procedure with named parameter syntax.
@@ -88,11 +88,11 @@ Procedure invokeHttp(action in STRING, request in OBJECT, endpoint in STRING, st
 Action indicates the HTTP method (GET, POST, etc.), which defaults to POST.
 
 A null value for endpoint will use the default value. 
-The default endpoint is specified in the WS source configuration. 
+The default endpoint is specified in the source configuration. 
 The endpoint URL may be absolute or relative. 
 If it’s relative then it will be combined with the default endpoint.
 
-Since multiple parameters are not required to have values, it is often more clear to call the invoke procedure with named parameter syntax.
+Since multiple parameters are not required to have values, it is often more clear to call the invokeHttp procedure with named parameter syntax.
 
 [source,sql]
 ----
