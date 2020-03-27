@@ -1,11 +1,11 @@
 // Module included in the following assemblies:
 // as_datatypes.adoc"]
 [id="supported-types"]
-= Supported types
+= Runtime types
 
-{{ book.productnameFull }} supports a core set of runtime types. Runtime types can be different from semantic 
-types that are defined in type fields at design time. The runtime type can also be specified at design time 
-or it will be automatically chosen as the closest base type to the semantic type.
+{{ book.productnameFull }} works with a core set of runtime types. 
+Runtime types can be different from semantic types that are defined in type fields at design time. 
+The runtime type can also be specified at design time or it will be automatically chosen as the closest base type to the semantic type.
 
 NOTE: Even if a type is declared with a length, precision, or scale argument, those restrictions are 
 effectively ignored by the runtime system, but may be enforced/reported at the edge by OData, ODBC, JDBC. 
@@ -162,7 +162,7 @@ UDFs will instead have a byte[] value passed.
 6. The concrete type is expected to be org.teiid.core.types.GeographyType
 7. The concrete type is expected to be org.teiid.core.types.JsonType
 
-NOTE: Character, String, and CLOB types are not limited to ASCII/extended ASCII values. 
+NOTE: Character, String, and character large objects (CLOB) types are not limited to ASCII/extended ASCII values. 
 Character can hold codes up to 2^16-1 and String/CLOB can hold any value.
 
 .Arrays
@@ -181,5 +181,6 @@ string[]
 integer[][]
 ----
 
-NOTE: Array handling is typically in memory. It is not advisable to rely on the usage of large array values. 
-Also arrays of LOBs are not well supported and will typically not be handled correctly when serialized.
+NOTE: Array handling is typically in memory. 
+It is not advisable to rely on the usage of large array values. 
+Arrays of large objects (LOBs) are typically not handled correctly when serialized.

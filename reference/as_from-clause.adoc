@@ -54,17 +54,17 @@ FROM /*+ MAKEDEP PRESERVE */ (tbl1 inner join tbl2 inner join tbl3 on tbl2.col1 
 ----
 
 .Dependent join hints
-MAKEIND, MAKEDEP, and MAKENOTDEP are hints that you can use to control dependent join behavior. 
+`MAKEIND`, `MAKEDEP`, and `MAKENOTDEP` are hints that you can use to control dependent join behavior. 
 Use them only in situations where the optimizer does not choose the most optimal plan based 
 upon query structure, metadata, and costing information. 
-The hints can appear in a comment that follows the FROM keyword. 
-The hints can be specified against any FROM clause, not just a named table.
+The hints can appear in a comment that follows the `FROM` keyword. 
+The hints can be specified against any `FROM` clause, not just a named table.
 
 MAKEIND:: Indicates that the clause should be the independent (feeder) side of a dependent join.
 MAKEDEP:: Indicates that the clause should be the dependent (filtered) side of a join.
 MAKENOTDEP:: Prevents the clause from being the dependent (filtered) side of a join.
 
-MAKEDEP and MAKEIND support the following optional max and join arguments:
+You can use the following optional `MAX` and `JOIN` arguments with `MAKEDEP` and `MAKEIND`:
 
 MAKEDEP(JOIN):: Indicates that the entire join should be pushed.
 MAKEDEP(NO JOIN):: Indicates that the entire join should not be pushed.
@@ -87,7 +87,7 @@ This is similar in function to the Oracle ORDERED or MySQL STRAIGHT_JOIN hints.
 FROM /*+ PRESERVE */ (tbl1 inner join tbl2 inner join tbl3 on tbl2.col1 = tbl3.col1 on tbl1.col1 = tbl2.col1)
 ----
 
-{% if not book.targetWildfly and not book.targetSpring %}
+{% if targetDVProd %}
 include::r_nested-tables.adoc[leveloffset=+1]
 include::r_xmltable.adoc[leveloffset=+1]
 include::r_arraytable.adoc[leveloffset=+1]

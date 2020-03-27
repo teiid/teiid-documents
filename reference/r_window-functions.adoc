@@ -3,9 +3,9 @@
 [id="window-functions"]
 = Window functions
 
-{{ book.productnameFull }} supports ANSI SQL 2003 window functions. A window function allows 
-an aggregate function to be applied to a subset of the result set, without the need for a 
-GROUP BY clause. A window function is similar to an aggregate function, but requires the use of an OVER clause or window specification.
+{{ book.productnameFull }} provides ANSI SQL 2003 window functions. 
+A window function allows an aggregate function to be applied to a subset of the result set, without the need for a `GROUP BY` clause. 
+A window function is similar to an aggregate function, but requires the use of an `OVER` clause or window specification.
 
 .Usage:
 

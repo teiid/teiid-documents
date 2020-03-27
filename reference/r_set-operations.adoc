@@ -3,8 +3,7 @@
 [id="set-operations"]
 = Set operations
 
-{{ book.productnameFull }} supports the UNION, UNION ALL, INTERSECT, and EXCEPT set operations 
-as ways of combining the results of query expressions.
+You can use the SQL `UNION`, `UNION ALL`, `INTERSECT`, and `EXCEPT` set operations in {{ book.productnameFull }} to combine the results of query expressions.
 
 .Usage:
 
@@ -16,7 +15,7 @@ queryExpression (UNION|INTERSECT|EXCEPT) [ALL] queryExpression [ORDER BY...]
 .Syntax Rules:
 
 * The output columns will be named by the output columns of the first set operation branch.
-* Each SELECT must have the same number of output columns and compatible data types for each relative column. 
-Data type conversion will be performed if data types are inconsistent and implicit conversions exist.
-* If UNION, INTERSECT, or EXCEPT is specified without all, then the output columns must be comparable types.
-* INTERSECT ALL, and EXCEPT ALL are currently not supported.
+* Each `SELECT` must have the same number of output columns and compatible data types for each relative column. 
+Data type conversion is performed if data types are inconsistent and implicit conversions exist.
+* If `UNION`, `INTERSECT`, or `EXCEPT` is specified without `all`, then the output columns must be comparable types.
+* You cannot use the SQL `INTERSECT ALL` or `EXCEPT ALL` operators.

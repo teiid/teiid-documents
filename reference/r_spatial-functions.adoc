@@ -7,14 +7,13 @@
 
 Spatial functions provide functionality for working with http://www.opengeospatial.org/[geospatial] data. 
 {{ book.productnameFull }} relies on the http://www.vividsolutions.com/jts/JTSHome.htm[JTS Topology Suite] 
-to provide partial support for the OpenGIS Simple Features Specification For SQL Revision 1.1. 
+to provide partial compatibility with the OpenGIS Simple Features Specification For SQL Revision 1.1. 
 For more information about particular functions, see the https://portal.opengeospatial.org/files/?artifact_id=829[Open GIS specification] 
 or the http://postgis.net/docs/manual-2.0/[PostGIS manual].
 
-Most Geometry support is limited to two dimensions due to the WKB and WKT formats.
+Most Geometry capabilities is limited to two dimensions due to the WKB and WKT formats.
 
-NOTE: Geometry support is still evolving. 
-There might be minor differences between {{ book.productnameFull }} and pushdown results that will need to be further refined.
+NOTE: There might be minor differences between {{ book.productnameFull }} and pushdown results that will need to be further refined.
 
 .Conversion functions
 
@@ -27,7 +26,7 @@ Returns a geometry from a Clob in WKT format.
 ST_GeomFromText(text [, srid])
 ----
 
-`text` is a clob, `srid` is an optional integer that represents a spatial reference identifier (SRID). 
+`text` is a CLOB, `srid` is an optional integer that represents a spatial reference identifier (SRID). 
 Return value is a geometry.
 
 .ST_GeogFromText
@@ -39,82 +38,82 @@ Returns a geography from a Clob in (E)WKT format.
 ST_GeogFromText(text)
 ----
 
-`text` is a clob, `srid` is an optional integer. 
+`text` is a CLOB, `srid` is an optional integer. 
 Return value is a geography.
 
 .ST_GeomFromWKB/ST_GeomFromBinary
 
-Returns a geometry from a blob in WKB format.
+Returns a geometry from a BLOB in WKB format.
 
 [source,sql]
 ----
 ST_GeomFromWKB(bin [, srid])
 ----
 
-`bin` is a blob, `srid` is an optional integer. 
+`bin` is a BLOB, `srid` is an optional integer. 
 Return value is a geometry.
 
 .ST_GeomFromEWKB
 
-Returns a geometry from a blob in EWKB format.
+Returns a geometry from a BLOB in EWKB format.
 
 [source,sql]
 ----
 ST_GeomFromEWKB(bin)
 ----
 
-bin is a blob. 
+`bin` is a BLOB. 
 Return value is a geometry. 
-Only 2 dimensions are supported.
+This version of the translator works with two dimensions only.
 
 .ST_GeogFromWKB
 
-Returns a geography from a blob in (E)WKB format.
+Returns a geography from a BLOB in (E)WKB format.
 
 [source,sql]
 ----
 ST_GeomFromEWKB(bin)
 ----
 
-`bin` is a blob. 
+`bin` is a BLOB. 
 Return value is a geography. 
-Only 2 dimensions are supported.
+This version of the translator works with two dimensions only.
 
 .ST_GeomFromEWKT
 
-Returns a geometry from a clob in EWKT format.
+Returns a geometry from a character large object (CLOB) in EWKT format.
 
 [source,sql]
 ----
 ST_GeomFromEWKT(text)
 ----
 
-`text` is a clob. 
+`text` is a CLOB. 
 Return value is a geometry. 
-Only 2 dimensions are supported.
+This version of the translator works with two dimensions only.
 
 .ST_GeomFromGeoJSON
 
-Returns a geometry from a clob in GeoJSON format.
+Returns a geometry from a CLOB in GeoJSON format.
 
 [source,sql]
 ----
 ST_GeomFromGeoJson(`text` [, srid])
 ----
 
-`text` is a clob, `srid` is an optional integer. 
+`text` is a CLOB, `srid` is an optional integer. 
 Return value is a geometry.
 
 .ST_GeomFromGML
 
-Returns a geometry from a clob in GML2 format.
+Returns a geometry from a CLOB in GML2 format.
 
 [source,sql]
 ----
 ST_GeomFromGML(text [, srid])
 ----
 
-`text` is a clob, `srid` is an optional integer. 
+`text` is a CLOB, `srid` is an optional integer. 
 Return value is a geometry.
 
 .ST_AsText
@@ -125,7 +124,7 @@ ST_AsText(geom)
 ----
 
 `geom` is a geometry. 
-Return value is clob in WKT format.
+Return value is CLOB in WKT format.
 
 .ST_AsBinary
 
@@ -135,7 +134,7 @@ ST_AsBinary(geo)
 ----
 
 geo is a geometry or geography. 
-Return value is a blob in WKB format.
+Return value is a binary large object (BLOB) in WKB format.
 
 .ST_AsEWKB
 
@@ -145,7 +144,7 @@ ST_AsEWKB(geom)
 ----
 
 `geom` is a geometry. 
-Return value is blob in EWKB format.
+Return value is BLOB in EWKB format.
 
 .ST_AsGeoJSON
 
@@ -155,7 +154,7 @@ ST_AsGeoJSON(geom)
 ----
 
 `geom` is a geometry. 
-Return value is a clob with the GeoJSON value.
+Return value is a CLOB with the GeoJSON value.
 
 .ST_AsGML
 
@@ -165,7 +164,7 @@ ST_AsGML(geom)
 ----
 
 `geom` is a geometry. 
-Return value is a clob with the GML2 value.
+Return value is a CLOB with the GML2 value.
 
 .ST_AsEWKT
 
@@ -175,7 +174,7 @@ ST_AsEWKT(geo)
 ----
 
 `geo` is a geometry or geography. 
-Return value is a clob with the EWKT value. 
+Return value is a CLOB with the EWKT value. 
 The EWKT value is the WKT value with the SRID prefix.
 
 .ST_AsKML
@@ -186,7 +185,7 @@ ST_AsKML(geom)
 ----
 
 `geom` is a geometry. 
-Return value is a clob with the KML value. 
+Return value is a CLOB with the KML value. 
 The KML value is effectively a simplified GML value and projected into SRID 4326.
 
 .Operators
@@ -452,8 +451,8 @@ Return value is a string.
 
 .ST_HasArc
 
-Test if the geometry has a circular string. 
-Will currently only report false as curved geometry types are not supported.
+Tests if the geometry has a circular string. 
+Reports `false`, because the translator does not work with curved geometry types.
 
 [source,sql]
 ----
@@ -697,7 +696,7 @@ Return value is a double.
 
 Returns the Z ordinate value, or null if the point is empty. 
 Throws an exception if the geometry is not a point. 
-Will typically return null as 3 dimensions are not fully supported.
+Typically returns `null` because the translator does not work with more than two dimensions.
 
 [source,sql]
 ----

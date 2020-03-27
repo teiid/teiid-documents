@@ -15,9 +15,10 @@ begin insert into pm1.g1 (e1, e2) select ?, ?; select rowcount; end;
 ----
 
 .Syntax rules
-* `in` parameters are supported with prepared/callable statement parameters, as shown in the preceding example, which uses `?` parameter.
-* `out` parameters are not supported. As a workaround, you can use session variables as needed.
-* A return parameter is not supported.
-* A single result will be returned if any of the statements returns a result set. 
+* You can use `in` parameters with prepared/callable statement parameters, as shown in the preceding example, which uses `?` parameter.
+* You cannot use `out` parameters in an anonymous procedure block. 
+As a workaround, you can use session variables as needed.
+* Anonymous procedure blocks do not return data as output parameters.
+* A single result is returned if any of the statements returns a result set. 
 All returnable result sets must have a matching number of columns and types. 
 To indicate that a statement is not intended to provide a result set, use the WITHOUT RETURN clause.

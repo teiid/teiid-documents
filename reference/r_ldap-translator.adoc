@@ -23,7 +23,7 @@ NOTE: The resource adapter for this translator is provided by configuring the ld
 |false
 
 |UsePagination
-|Use a PagedResultsControl to page through large results. This is not supported by all directory servers.
+|Use a PagedResultsControl to page through large results. This is not compatible with all directory servers.
 |false
 
 |ExceptionOnSizeLimitExceeded
@@ -37,7 +37,7 @@ There are no import settings for the ldap translator; it also does not provide m
 
 === SEARCHABLE 'equality_only'
 
-For openldap, apacheds, and other ldap servers dn attributes have search restrictions, such that only equality predicates are supported. Use SEARCHABLE `equality_only` to indicates that only equality predicates should be pushed down. Any other predicate would need evaluated in the engine. For example
+For openldap, apacheds, and other ldap servers, dn attributes have search restrictions, such that they can process only equality predicates. Use SEARCHABLE `equality_only` to indicates that only equality predicates should be pushed down. Any other predicate would need evaluated in the engine. For example
 
 [source,sql]
 ----
@@ -62,15 +62,15 @@ Used on a column if rdn_type is specified to indicates that the values should ma
  col string OPTIONS ("teiid_ldap:rdn_type" 'cn', "teiid_ldap:dn_prefix" 'ou=groups,dc=example,dc=com', ...) 
 ----
 
-=== Multivalued Attribute Support
+=== Multivalued Attributes
 
-If one of the methods below is not used and the attribute is mapped to a non-array type, then any value may be returned on a read operation. Also insert/update/delete support will not be multi-value aware.
+If one of the methods below is not used and the attribute is mapped to a non-array type, then any value may be returned on a read operation. Also insert/update/delete capabilities are not multi-value aware.
 
 === Concatenation
 
 String columns with a default value of "multivalued-concat" will concatenate all attribute values together in alphabetical order using a ? delimiter. Insert/update will function as expected if all applicable values are supplied in the concatenated format.
 
-=== Array support
+=== Arrays 
 
 Multiple attribute values may also supported as an array type. The array type mapping also allows for insert/update operations.
 
@@ -358,4 +358,3 @@ The Console shows an Exception That Says Error Synchronizing the Server, If you 
 
 The resource adapter for this translator provided through "LDAP Data Source", Refer to Admin Guide for configuration.
 {% endif %}
-

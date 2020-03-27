@@ -351,8 +351,8 @@ ALTER VIEW CustomerOrders
 
 .INSTEAD OF triggers on VIEW (Update VIEW)
 
-A view comprising multiple base tables must use an INSTEAD OF trigger to support inserts, 
-updates and deletes that reference data in the tables. Based on the select transformation’s complexity 
+A view comprising multiple base tables must use an `INSTEAD OF` trigger to insert records, 
+apply updates, and implement deletes that reference data in the tables. Based on the select transformation’s complexity 
 some times INSTEAD OF TRIGGERS are automatically provided for the user when `UPDATABLE` OPTION on the VIEW is set to `TRUE`. 
 However, using the CREATE TRIGGER mechanism user can provide/override the default behavior.
 
@@ -414,12 +414,12 @@ For more detailed information about update procedures, see xref:update-procedure
 
 A user can define one of the following functions:
 
-* Source Procedure ("CREATE FOREIGN PROCEDURE") - a stored procedure in source
-* Source Function ("CREATE FOREIGN FUNCTION") - A function that is supported by the source, 
-where {{ book.productnameFull }} will pushdown to source instead of evaluating in {{ book.productnameFull }} engine
-* Virtual Procedure ("CREATE VIRTUAL PROCEDURE") - Similar to stored procedure, however this is defined using 
+Source Procedure ("CREATE FOREIGN PROCEDURE"):: A stored procedure in source.
+Source Function ("CREATE FOREIGN FUNCTION"):: A function that depends on capabilities in the data source, 
+and for which {{ book.productnameFull }} will pushdown to the source instead of evaluating in the {{ book.productnameFull }} engine.
+Virtual Procedure ("CREATE VIRTUAL PROCEDURE"):: Similar to stored procedure, however this is defined using 
 the {{ book.productnameFull }}’s Procedure language and evaluated in the {{ book.productnameFull }}’s engine.
-* Function/UDF ("CREATE VIRTUAL FUNCTION") - A user defined function, that can be defined using the Teiid procedure language, 
+Function/UDF ("CREATE VIRTUAL FUNCTION"):: A user defined function, that can be defined using the Teiid procedure language, 
 or than can have the implementation defined by a Java class. 
 For more information about writing the Java code for a UDF, see _Support for user-defined functions (non-pushdown)_ in the 
 link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[Translator Development Guide].
@@ -428,10 +428,10 @@ image:images/create_procedure.png[images/create_procedure.png]
 
 For more information about creating functions or procedures, see the xref:bnf-for-sql-grammar[BNF for SQL grammar].
 
-.*Variable argument support* 
+.*Variable arguments* 
 
 Instead of using just an IN parameter, the last non optional parameter can be declared VARIADIC to 
-indicate that it can be repeated 0 or more times when the procedure is called
+indicate that it can be repeated 0 or more times when the procedure is called.
 
 [source,sql]
 .*Example: Vararg procedure*
@@ -490,8 +490,8 @@ It is more proper to use a VARIADIC parameter.
 Note that NULL-ON-NULL, VARARGS, and all of the AGGREGATE properties are also valid relational extension 
 metadata properties that can be used on source procedures marked as functions. 
 
-You can also create FOREIGN functions that are supported by a source. 
-For more information about creating foreign functions that are supported by a source, 
+You can also create FOREIGN functions that are based on source-specific functions. 
+For more information about creating foreign functions that use functions that are provided by the data source, 
 see _Source supported functions_ in the link:../dev/Source_Supported_Functions.adoc[Translator development guide].
 
 *.AGGREGATE FUNCTION OPTIONS*
@@ -501,30 +501,30 @@ see _Source supported functions_ in the link:../dev/Source_Supported_Functions.a
 
 |ANALYTIC
 |'TRUE'\|'FALSE'
-|Indicates the aggregate function must be windowed. default false.
+|Indicates the aggregate function must be windowed. The default value is `false`.
 
 |ALLOWS-ORDERBY
 |'TRUE'\|'FALSE'
-|Indicates the aggregate function supports an ORDER BY clause. default false.
+|Indicates that the aggregate function can use an ORDER BY clause. The default value is `false`.
 
 |ALLOWS-DISTINCT
 |'TRUE'\|'FALSE'
-|Indicates the aggregate function supports the DISTINCT keyword. default false.
+|Indicates the aggregate function can use the `DISTINCT` keyword. The default value is `false`.
 
 |DECOMPOSABLE
 |'TRUE'\|'FALSE'
-|Indicates the single argument aggregate function can be decomposed as agg(agg(x) ) over subsets of data. default false.
+|Indicates the single argument aggregate function can be decomposed as agg(agg(x) ) over subsets of data. The default value is `false`.
 
 |USES-DISTINCT-ROWS
 |'TRUE'\|'FALSE'
-|Indicates the aggregate function effectively uses distinct rows rather than all rows. default false.
+|Indicates the aggregate function effectively uses distinct rows rather than all rows. The default value is `false`.
 |===
 
 Note that virtual functions defined using the Teiid procedure language cannot be aggregate functions.
 
 NOTE: *Providing the JAR libraries* - If you have defined a UDF (virtual) function without 
 a Teiid procedure definition, then it must be accompanied by its implementation in Java. 
-For information about how to configure the Java library as dependency to the VDB, see _Support for User-Defined Functions_ in 
+For information about how to configure the Java library as a dependency to the VDB, see _Support for User-Defined Functions_ in 
 the link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[Translator development guide].
 
 *PROCEDURE OPTIONS*:(the following options are well known, any others properties defined will be considered as extension metadata)
@@ -617,9 +617,7 @@ CREATE FOREIGN FUNCTION seq_nextval ()
     RETURNS integer 
     OPTIONS ("teiid_rel:native-query" 'seq.nextval');
 ----
-
-TIP: Until {{ book.productnameFull }} provides higher-level metadata support for sequences, a source function 
-representation is the best fit to expose sequence functionality.
+TIP: Use source function representations to expose sequence functionality.
 
 .Extension metadata
 
@@ -629,7 +627,6 @@ Prefixes starting with teiid_ are reserved for use by {{ book.productnameFull }}
 accessed via the runtime APIs - but they are case sensitive when accessing SYS.PROPERTIES.
 
 WARNING: The usage of SET NAMESPACE for custom prefixes or namespaces is no longer allowed. 
-Support for SET NAMESPACE will be removed altogether in the next major version. 
 
 [source,sql]
 ----

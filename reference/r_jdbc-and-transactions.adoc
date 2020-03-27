@@ -5,7 +5,7 @@
 
 .JDBC API functionality
 
-The transaction scopes in xref:transaction-support[Transaction support] map to the following JDBC modes:
+The transaction scopes in xref:transaction-support[Transactions] map to the following JDBC modes:
 
 Command:: Connection autoCommit property set to true.
 
@@ -27,7 +27,7 @@ Bean-managed:: The bean itself begins and ends a transaction explicitly.
 
 Container-managed:: The application server container begins and ends a transaction automatically.
 
-In any of these cases, transactions may be either local or XA transactions, depending on how the code and descriptors are written. 
-Some kinds of beans (stateful session beans and entity beans) are not required by the specification to support non-transactional sources, 
-although the specification does allow an application server to optionally support this with the caution that this is not portable or predictable. 
-Generally speaking, to support most typical EJB activities in a portable fashion requires some kind of transaction support.
+In any of the preceding cases, transactions can be either local or XA transactions, depending on how the code and descriptors are written. 
+The XA specification does not require some types of beans (for example, stateful session beans and entity beans) to work with non-transactional sources. 
+However, according to the specification, optionally, application servers can allow the use of these beans with non-transactional sources, with the caution that such usage is not portable or predictable. 
+Generally speaking, to provide for most types of EJB activities in a portable fashion, applications require a mechanism for managing transactions.

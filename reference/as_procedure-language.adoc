@@ -5,14 +5,14 @@
 :toc: manual
 :toc-placement: preamble
 
-{{ book.productnameFull }} supports a procedural language for defining virtual procedures. 
+You can use a procedural language in {{ book.productnameFull }} to define virtual procedures. 
 These are similar to stored procedures in relational database management systems. 
 You can use this language to define the transformation logic for decomposing INSERT, UPDATE, and DELETE commands against views.
 These are known as update procedures. 
 For more information, see xref:virtual-procedures[Virtual procedures] 
 and xref:update-procedures-triggers[update procedures (Triggers)].
 
-{% if not book.targetWildfly and not book.targetSpring %}
+{% if targetDVProd %}
 include::r_command-statement.adoc[leveloffset=+1]
 include::r_dynamic-sql-command.adoc[leveloffset=+1]
 include::r_declaration-statement.adoc[leveloffset=+1]

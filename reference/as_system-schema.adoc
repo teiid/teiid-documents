@@ -19,7 +19,7 @@ NOTE: To make all metadata visible to any authenticated user, set the environmen
 
 NOTE: If you use data roles, visibility of entries can be affected by the caching of system metadata.
 
-{% if not book.targetWildfly and not book.targetSpring %}
+{% if targetDVProd %}
 include::r_sys-schema.adoc[leveloffset=+1]
 include::r_sysadmin-schema.adoc[leveloffset=+1]
 {% endif %}

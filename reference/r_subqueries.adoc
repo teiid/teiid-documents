@@ -5,7 +5,7 @@
 
 A subquery is a SQL query embedded within another SQL query. The query containing the subquery is the outer query.
 
-.Supported subquery types:
+.Subquery types:
 
 * Scalar subquery - a subquery that returns only a single column with a single value. 
 Scalar subqueries are a type of expression and can be used where single valued expressions are expected.
@@ -26,8 +26,8 @@ SELECT a FROM (SELECT Y.b, Y.c FROM Y WHERE Y.d = '3') AS X WHERE a = X.c AND b 
 
 .Subqueries can appear anywhere where an expression or criteria is expected.
 
-Subqueries are supported in quantified criteria, the EXISTS predicate, the IN predicate, 
-and as link:Expressions.adoc#_scalar_subqueries[Scalar Subqueries].
+You can use subqueries in quantified criteria, the `EXISTS` predicate, the `IN` predicate, 
+and as xref:scalar-subqueries[Scalar subqueries].
 
 [source,sql]
 .*Example subquery in WHERE using EXISTS*

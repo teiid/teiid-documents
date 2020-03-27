@@ -8,8 +8,8 @@ Also see common xref:jdbc-translators[JDBC Translators] information.
 The Hive translator, known by the type name *_hive_*, is for use with Hive v.10 and SparkSQL v1.0 and later.
 
 .Capabilities
-Hive has limited support for data types. 
-t does not have native support for time/xml or LOBs. 
+Hive is compatible with a limited set of data types. 
+It does not have native support for time/XML or large objects (LOBs). 
 These limitations are reflected in the translator capabilities. 
 Although a {{ book.productnameFull }} view can use these types, the transformation must specify the necessary conversions. 
 Note that in those situations, evaluations are processed in {{ book.productnameFull }} engine.

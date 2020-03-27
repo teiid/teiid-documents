@@ -3,9 +3,9 @@
 [id="having-clause"]
 = HAVING Clause
 
-The HAVING clause operates exactly as a WHERE clause, although it operates on the output of a GROUP BY. 
-It supports the same syntax as the WHERE clause.
+The `HAVING` clause operates exactly as a `WHERE` clause, although it operates on the output of a `GROUP BY`. 
+You can use the same syntax with the `HAVING` clause as with the `WHERE` clause.
 
 .Syntax Rules
 
-* Expressions used in the GROUP BY clause must contain either an aggregate function (COUNT, AVG, SUM, MIN, MAX), or be one of the grouping expressions.
+* Expressions used in the GROUP BY clause must contain either an aggregate function (`COUNT`, `AVG`, `SUM`, `MIN`, `MAX`), or be one of the grouping expressions.

@@ -19,7 +19,7 @@ JSONTABLE(value, path [, nullLeafOnMissing] COLUMNS <COLUMN>, ... ) AS name
 COLUMN := name (FOR ORDINALITY | (datatype [PATH string]))
 ----
 
-See also link:JSON_Functions.adoc#_jsonpath_support[JsonPath Support]
+See also xref:jsonpath[JsonPath]
 
 .Parameters
 
@@ -44,7 +44,7 @@ If PATH is specified, it must begin with @, which means that the path will be pr
 
 * Columns names must not contain duplicates.
 
-* Array types are not supported.
+* You cannot use array types with the JSONTABLE function.
 
 .JSONTABLE examples
 
@@ -75,7 +75,7 @@ Processing of JSON to tabular results was previously recommended through the use
 For most tasks, JSONTABLE provides a simpler syntax. However, there are some differences to consider:
 
 * JSONTABLE parses the JSON completely, the processes it. 
-XMLTABLE support streaming processing to reduce the memory overhead.
+XMLTABLE uses streaming processing to reduce the memory overhead.
 * JsonPath is not as powerful as XQuery. 
 There are a lot of functions and operations available in XQuery/XPath that are not available in JsonPath.
 * JsonPath does not allow for parent references in the column paths. 

@@ -23,7 +23,7 @@ For more information, see link:../dev/Translator_Development.adoc[Translator Dev
 
 UID types including UUID, GUID, or UNIQUEIDENTIFIER are typically mapped to the {{ book.productnameFull }} string type. 
 JDBC data sources treat UID strings as non-case sensitive, but they are case-sensitive in {{ book.productnameFull }}. 
-The source may also not support the implicit conversion to the string type, thus usage in functions expecting a string value may fail at the source. 
+If the source does not support the implicit conversion to the string type, then usage in functions that expect a string value might fail at the source. 
 
 The following table lists the execution properties that are shared by all JDBC translators.
 
@@ -37,8 +37,8 @@ The following table lists the execution properties that are shared by all JDBC t
 |The system default time zone
 
 |DatabaseVersion
-|The specific database version. Used to further tune pushdown support.
-|The base supported version, or the version that is derived from the DatabaseMetadata.getDatabaseProductVersion string. 
+|The specific database version. Used to further tune the use of pushdown operations.
+|The base compatible version, or the version that is derived from the DatabaseMetadata.getDatabaseProductVersion string. 
 Automatic detection requires a connection.
 If there are circumstances where you are getting an exception due to capabilities being unavailable (for example, because a connection is not available), 
 then set `DatabaseVersion` property. 
@@ -92,7 +92,7 @@ a|Specify one of the following Struct retrieval modes:
 |OBJECT
 
 |EnableDependentJoins
-|Allow dependent join pushdown for sources that support temporary tables (DB2, Derby, H2, HSQL 2.0+, MySQL 5.0+, Oracle, PostgreSQL, SQLServer, SQP IQ, Sybase). 
+|Allow dependent join pushdown for sources that use temporary tables (DB2, Derby, H2, HSQL 2.0+, MySQL 5.0+, Oracle, PostgreSQL, SQLServer, SQP IQ, Sybase). 
 |false
 |===
 
@@ -170,7 +170,7 @@ It is also not currently possible to import overloaded procedures.
 |false
 
 |importSequences
-|`true` to import sequences. Supported only for Db2, Oracle, PostgreSQL, SQL Server, and H2. A matching sequence will be imported
+|`true` to import sequences. Compatible only with Db2, Oracle, PostgreSQL, SQL Server, and H2. A matching sequence will be imported
 to a 0-argument {{ book.productnameFull }} function `name_nextval`.
 |false
 
@@ -199,7 +199,7 @@ WARNING: When you set this option to `false`, it can lead to objects with duplic
 |useCatalogName
 |`true` will use any non-null/non-empty catalog name as part of the name in source, e.g. "catalog"."schema"."table"."column", 
 and in the {{ book.productnameFull }} runtime name if applicable. `false` will not use the catalog name in either the name 
-in source nor the {{ book.productnameFull }} runtime name. Only required to be set to `false` for sources such as HSQL that do not support a catalog concept, 
+in source nor the {{ book.productnameFull }} runtime name. Only required to be set to `false` for sources such as HSQL that do not use the catalog concept, 
 but return a non-null/non-empty catalog name in their metadata.
 |true (rarely needs changed)
 
@@ -220,12 +220,12 @@ With this option enabled,
 |useAnyIndexCardinality
 |`true` will use the maximum cardinality returned from `DatabaseMetaData.getIndexInfo`. `importKeys` or `importIndexes` needs to be enabled for 
 this setting to have an effect. 
-This allows for better stats gathering from sources that don’t support returning a statistical index.
+This allows for better stats gathering from sources that don’t return a statistical index.
 |false
 
 |importStatistics
-|`true` will use database dependent logic to determine the cardinality if none is determined. Not yet supported by all database types -- 
-currently only supported by Oracle and MySQL.
+|`true` will use database dependent logic to determine the cardinality if none is determined. Not available for all database types -- 
+currently available for Oracle and MySQL only.
 |false
 
 |importRowIdAsBinary
@@ -277,7 +277,7 @@ For more information about importer settings, see xref:virtual-databases[Virtual
 Physical tables, functions, and procedures may optionally have native queries associated with them. 
 No validation of the native query is performed, it is simply used in a straight-forward manner to generate the source SQL. 
 For a physical table setting the `teiid_rel:native-query` extension metadata will execute the native query as an inline view in the source query. 
-This feature should only be used against sources that support inline views. 
+This feature should only be used against sources that provide inline views. 
 The native query is used as is and is not treated as a parameterized string. 
 For example, on a physical table `y` with `nameInSource="x"`` and `teiid_rel:native-query="select c from g"`, the {{ book.productnameFull }} source 
 query `"SELECT c FROM y"` would generate the SQL query `"SELECT c FROM (select c from g) as x"`. 
@@ -343,7 +343,7 @@ The resource adapter for this translator provided through data source in {{ book
 See to Admin Guide section link:../client-dev/WildFly_DataSource.adoc[{{ book.asName }} Data Sources] for configuration.
 {% endif %}
 
-{% if not book.targetWildfly and not book.targetSpring %}
+{% if targetDVProd %}
 include::r_actian-vector-translator.adoc[leveloffset=+1]
 include::r_apache-phoenix-translator.adoc[leveloffset=+1]
 include::r_cloudera-impala-translator.adoc[leveloffset=+1]

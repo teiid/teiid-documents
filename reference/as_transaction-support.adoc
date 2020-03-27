@@ -1,7 +1,7 @@
 // Assembly included in the following assemblies:
 // as_dv_reference.adoc
 [id="transaction-support"]
-= Transaction support
+= Transactions
 
 {{ book.productnameFull }} utilizes XA transactions for participating in global transactions and for demarcating its local and command scoped transactions. 
 
@@ -32,7 +32,7 @@ The link:AutoCommitTxn_Execution_Property.adoc[AutoCommitTxn] execution property
 
 The default transaction isolation level for {{ book.productnameFull }} is READ_COMMITTED.
 
-{% if not book.targetWildfly and not book.targetSpring %}
+{% if targetDVProd %}
 include::r_autocommittxn-execution-property.adoc[leveloffset=+1]
 include::r_updating-model-count.adoc[leveloffset=+1]
 include::r_jdbc-and-transactions.adoc[leveloffset=+1]

@@ -17,7 +17,7 @@ This translator is compatible with OpenAPI/Swagger v2 and OpenAPI v3.
 .Usage
 
 Usage of a OpenAPI source is similar any other translator in {{ book.productnameFull }}. 
-The metadata import is supported through the translator. 
+The translator enables metadata import. 
 The metadata is imported from source system's metadata file and then exposed as stored procedures in {{ book.productnameFull }}. 
 The source system can be queried by executing these stored procedures in {{ book.productnameFull }} system.
 
@@ -106,13 +106,19 @@ The following table lists the importer properties that define the behavior of th
 The resource adapter for this translator is a link:../admin/Web_Service_Data_Sources.adoc[Web Service Data Source].
 {% endif %}
 
-TIP: *Native queries* - Native or direct query execution is not supported through the OpenAPI translator. 
+TIP: *Native queries* - The OpenAPI translator cannot perform native or direct query execution.
 However, you can use the _invokehttp_ method of the Web services translator to issue REST-based calls, and then use SQLXML to parse results.
 
 
 .Limitations
-- `application/xml` MIME type in both `Accept` and `Content-Type` is currently not supported.
-- File, Map properties are currently not supported, thus any multi-part payloads are not supported.
-- Security metadata is currently not supported.
-- Custom properties that start with `x-` are not supported.
-- Schema with `allof`, `multipleof`, `items` from JSON schema are not supported.
+The OpenAPI translator does not fully implement all of the features of OpenAPI. 
+The following limitations apply:  
+
+* You cannot set the MIME type to `application/xml` in either the `Accept` or `Content-Type` headers.
+* File and Map properties cannot be used. As a result, any multi-part payloads are not supported.
+* The translator does not process security metadata.
+* The translator does not process custom properties that start with `x-`.
+* The translator does not work with following JSON schema keywords: 
+** `allOf`
+** `multipleOf`
+** `items`

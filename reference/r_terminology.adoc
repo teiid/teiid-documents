@@ -18,4 +18,4 @@ to the applications that are built on top of it:
   Buffer manager::: The Buffer Manager service provides access to data management for intermediate results. 
   For more information, see _Buffer management_  in xref:data-management[Data management].
   Transaction::: The Transaction service manages global, local, and request scoped transactions. 
-  For more information, see xref:transaction-support[Transaction support].
+  For more information, see xref:transaction-support[Transactions].

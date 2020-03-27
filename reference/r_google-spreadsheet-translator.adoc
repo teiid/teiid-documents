@@ -16,8 +16,8 @@ Where possible, the translator may provide a warning or throw an exception if it
 If you are using the default native metadata import, the metadata for your Google account (worksheets and information about columns in worksheets) is loaded upon translator start up. 
 If you make any changes in data types, it is advisable to restart your virtual database.
 
-The translator supports queries against a single sheet. 
-It supports ordering, aggregation, basic predicates, and most of the functions supported by the spreadsheet query language.
+The translator can submit queries against a single sheet only. 
+It provides ordering, aggregation, basic predicates, and most of the functions available in the spreadsheet query language.
 
 The google-spreadsheet translator does not provide importer settings, but it can provide metadata for VDBs.
 

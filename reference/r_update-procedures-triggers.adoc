@@ -45,10 +45,10 @@ Commands in the procedure can be different in type from the command that is rece
 
 .Source triggers
 
-{{ book.productnameFull }} supports `AFTER` triggers on source tables. 
-`AFTER` triggers  are called by events from a CDC (change data capture) system.
+{{ book.productnameFull }} can use `AFTER` triggers on source tables. 
+`AFTER` triggers are called by events from a change data capture (CDC) system.
 
-Usage:
+.Usage:
 
 [source,sql]
 ----
@@ -59,7 +59,7 @@ FOR EACH ROW
 
 .FOR EACH ROW triggers
 
-Only the `FOR EACH ROW` construct is supported as a trigger handler.  
+Only the `FOR EACH ROW` construct serves as a trigger handler.  
 A `FOR EACH ROW` trigger procedure will evaluate its block for each row of the view/source affected by the `UPDATE` statement. 
 For `UPDATE` and `DELETE` statements, this will be every row that passes the `WHERE` condition. 
 For `INSERT` statements there will be one new row for each set of values from the `VALUES` or query expression. 
@@ -122,8 +122,9 @@ For example, for a view with columns A, B, C:
 |CHANGING.A = false, CHANGING.B = false, CHANGING.C = true
 |====
 
-Key variables:: To support returning generated keys from an INSERT trigger, a KEY group is made available that can be assigned the value to be returned.
-Typically this requires using the `generated_key` system function - however not all inserts provide generated keys as not all sources support returning generated keys.  
+Key variables:: To return generated keys from an `INSERT` trigger, a KEY group is made available that can be assigned the value to be returned.
+Typically this requires using the `generated_key` system function. 
+However, not all inserts provide generated keys, because not all sources return generated keys.  
 +
 [source,sql]
 ----

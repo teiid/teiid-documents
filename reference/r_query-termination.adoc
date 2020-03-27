@@ -6,11 +6,9 @@
 
 .Canceling queries
 
-When a query is canceled, processing will be stopped in the query engine and in all 
-connectors involved in the query. The semantics of what a connector does in response 
-to a cancellation command depends on the connector implementation. For example, 
-JDBC connectors will asynchronously call cancel on the underlying JDBC driver, which 
-might or might not support this method.
+When a query is canceled, processing will be stopped in the query engine and in all connectors involved in the query. 
+The semantics of what a connector does in response to a cancellation command depends on the connector implementation. 
+For example, JDBC connectors will asynchronously call `cancel` on the underlying JDBC driver, which might or might not be compatible with this method.
 
 .User query timeouts
 

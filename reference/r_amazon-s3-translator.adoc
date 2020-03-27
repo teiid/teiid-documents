@@ -3,11 +3,11 @@
 [id="amazon-s3-translator"]
 = Amazon S3 Translator
 
-The Amazon S3 translator, known by the type name _amazon-s3_, exposes stored procedures to leverage Amazon S3 object resources. 
+The Amazon Simple Storage Service (S3) translator, known by the type name _amazon-s3_, exposes stored procedures to leverage Amazon S3 object resources. 
 
 This translator is typically used with the `TEXTTABLE` or `XMLTABLE` functions to consume CSV or XML formatted data, or to read Microsoft Excel files  
 or other object files that are stored in Amazon S3. 
-The translator supports access to Amazon S3 using access-key and secret-key. 
+The S3 translator can access Amazon S3 by using an AWS access key ID and secret access key. 
 
 .Usage
 In the following example, a virtual database reads a CSV file with the name `g2.txt` from an Amazon S3 bucket called `teiidbucket`: 
@@ -78,7 +78,7 @@ When provided, this will be default region used.
 |Encryption
 |When server-side encryption with customer-provided encryption keys (SSE-C) is used, the key is used to define the "type" of 
 encryption algorithm used. 
-The AES-256 and AWS-KMS algorithms are supported. If provided, this will be used as default algorithm for all "get" based calls.
+You can configure the translator to use the AES-256 or AWS-KMS encryption algorithms. If provided, this will be used as default algorithm for all "get" based calls.
 |n/a
 
 |Encryptionkey
@@ -158,9 +158,9 @@ call saveFile(string name NOT NULL, string bucket, string region, string endpoin
    string accesskey, string secretkey, contents object)
 ----
 
-NOTE: `saveFile` does not support streaming or chunked uploads of a file's contents. 
+NOTE: You cannot use `saveFile` to stream or chunk uploads of a file's contents. 
 If you try to load very large objects, out-of-memory issues can result. 
-`saveFile` does not support SSE-C encryption.
+You cannot configure `saveFile` to use SSE-C encryption.
 
 .Examples
 ----

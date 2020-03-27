@@ -4,7 +4,7 @@
 = TEXTTABLE
 
 The TEXTTABLE function processes character input to produce tabular output. 
-It supports both fixed and delimited file format parsing. 
+It provides both fixed and delimited file format parsing. 
 The function itself defines what columns it projects. 
 The TEXTTABLE function is implicitly a nested table and can be used within FROM clauses.
 
@@ -24,7 +24,7 @@ COLUMN := name (FOR ORDINALITY | ([HEADER string] datatype [WIDTH integer [NO TR
 
 .Parameters
 
-expression:: The text content to process, which should be convertible to CLOB.
+expression:: The text content to process, which should be convertible to a character large object (CLOB).
 
 SELECTOR:: Used with files containing multiple types of rows (example: order header, detail, summary). 
 A TEXTTABLE SELECTOR specifies which lines to include in the output. 

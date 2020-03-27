@@ -6,7 +6,7 @@
 
 Also see common xref:jdbc-translators[JDBC Translators] information.
 
-Ingres translation is supported by 2 translators.
+You can use one of the following Ingres translators, depending on your Ingres version:
 
 ingres:: The Ingres translator, known by the type name *_ingres_*, is for use with Ingres 2006 or later.
 

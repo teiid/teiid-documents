@@ -5,13 +5,12 @@
 
 Also see common xref:jdbc-translators[JDBC translators] information.
 
-Translation of MySQL and MariaDB is supported by the following translators.
+You can use the following translators with MySQL and MariaDB:
 
 mysql:: The MySQL translator, known by the type name *_mysql_*, is for use with MySQL version 4.x.
 
 mysql5:: The MySQL5 translator, known by the type name *_mysql5_*, is for use with MySQL version 5 or later.
-
-The translator also supports the translation of other compatible MySQL derivatives such as MariaDB.
+The translator also works with other compatible MySQL derivatives, such as MariaDB.
 
 .Usage
 
