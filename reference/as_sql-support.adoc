@@ -8,7 +8,7 @@ features are constantly being added based upon community need.
 The following does not attempt to cover SQL exhaustively, but rather highlights how SQL is used within {{ book.productnameFull }}. 
 For details about the exact form of SQL that {{ book.productnameFull }} accepts, see the xref:bnf-for-sql-grammar[BNF for SQL grammar].
 
-{% if not book.targetWildfly and not book.targetSpring %}
+{% if targetDVProd %}
 include::r_identifiers.adoc[leveloffset=+1]
 include::r_operator-precedence.adoc[leveloffset=+1]
 include::as_expressions.adoc[leveloffset=+1]

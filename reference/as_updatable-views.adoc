@@ -59,6 +59,6 @@ Not all scenarios will work.
 Referencing the preceding example, an `insert into denormalized (pk_col, child_name) values (1, 'a')` 
 with a view that is defined using the `p.pk_col` will fail, because the logic doesn't yet consider the equivalency of the key values. 
 
-{% if not book.targetWildfly and not book.targetSpring %}
+{% if targetDVProd %}
 include::r_key-preserved-tables.adoc[leveloffset=+1]
 {% endif %}

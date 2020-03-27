@@ -145,7 +145,7 @@
 . link:reference/r_dv-reference.adoc[Reference Guide]
 // .. link:reference/r_data_sources.adoc[Data Sources]
 .. link:reference/Release_Notes.adoc[Release Notes]
-.. link:reference/virtual-databases.adoc[Virtual databases]
+.. link:reference/as_virtual-databases.adoc[Virtual databases]
 //... link:reference/r_developing-vdb.adoc[Developing a Virtual Database]
 ... link:reference/r_ddl-deployment-mode.adoc[DDL VDB]
 //... link:reference/r_xml-deployment-mode.adoc[Using XML & DDL]

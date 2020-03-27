@@ -9,7 +9,7 @@ For more information, see xref:supported-types[Runtime types].
 You can use domain types to extend the type system. 
 For more information, see xref:ddl-metadata-for-domains[DDL metadata for domains].
 
-{% if not book.targetWildfly and not book.targetSpring %}
+{% if targetDVProd %}
 include::r_supported-types.adoc[leveloffset=+1]
 include::r_type-conversions.adoc[leveloffset=+1]
 include::r_special-conversion-cases.adoc[leveloffset=+1]

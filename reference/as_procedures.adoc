@@ -5,7 +5,7 @@
 
 You can use a procedure language in {{ book.productnameFull }} to call foreign procedures and define virtual procedures and triggers. 
 
-{% if not book.targetWildfly and not book.targetSpring %}
+{% if targetDVProd %}
 include::as_procedure-language.adoc[leveloffset=+1]
 include::r_virtual-procedures.adoc[leveloffset=+1]
 include::r_update-procedures-triggers.adoc[leveloffset=+1]

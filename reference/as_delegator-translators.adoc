@@ -46,6 +46,6 @@ IMPORT FROM SERVER source INTO mymodel;
 For more information about the translator capabilities that you can override by using execution properties, see _Translator_Capabilities_ in the link:../dev/Translator_Capabilities.adoc[Translator Development Guide]. 
 The preceding example shows how you might modify the default `ORDER BY` compatibility of the Hive translator. 
 
-{% if not book.targetWildfly and not book.targetSpring %}
+{% if targetDVProd %}
 include::p_extending-the-delegator-translator.adoc[leveloffset=+1]
 {% endif %}

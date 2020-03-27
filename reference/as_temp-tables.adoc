@@ -8,7 +8,7 @@
 You can create and use temporary (_temp_) tables in  {{ book.productnameFull }}. 
 Temporary tables are created dynamically, but are treated as any other physical table.
 
-{% if not book.targetWildfly and not book.targetSpring %}
+{% if targetDVProd %}
 include::r_local-temporary-tables.adoc[leveloffset=+1]
 include::r_global-temporary-tables.adoc[leveloffset=+1]
 include::r_global-and-local-temp-table-features.adoc[leveloffset=+1]
