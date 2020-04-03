@@ -359,12 +359,12 @@ WARNING: GRANT/REVOKE mostly function as direct replacements for the legacy perm
 
 WARNING: POLICIES are not ADD/DROP aware.  If the POLICY target is dropped the old POLICY still remains and could affect any recreated object.
 
-.Example: Give Read, write, update permission on single table to user with enterprise role "role1"
+.Example: Give insert, select, update permission on single table to user with enterprise role "role1"
 [source,sql]
 ----
 CREATE ROLE RoleA WITH FOREIGN ROLE role1;
 ...
-GRANT INSERT, READ, UPDATE ON TABLE test.Customer TO RoleA;
+GRANT INSERT, SELECT, UPDATE ON TABLE test.Customer TO RoleA;
 ----
 
 .Example : Give all permissions to user with "admin" enterprise role
