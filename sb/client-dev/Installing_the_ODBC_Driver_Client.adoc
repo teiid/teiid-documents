@@ -1,0 +1,55 @@
+
+[id="client-dev-Installing_the_ODBC_Driver_Client-Installing-the-ODBC-Driver-Client"]
+= Installing the ODBC Driver Client
+
+A PostgreSQL ODBC driver needed to make the ODBC connection to {{ book.productnameFull }} is _not_ bundled with the {{ book.productnameFull }} distribution. The appropriate driver needs be http://www.postgresql.org/ftp/odbc/versions/[downloaded] directly from the PostgreSQL web site. The _8.04.200_ version of the ODBC driver was extensively tested for compatibility.
+
+[id="client-dev-Installing_the_ODBC_Driver_Client-Microsoft-Windows"]
+== Microsoft Windows
+
+1.  Download at least the ODBC 8.4 driver from the http://ftp.postgresql.org/pub/odbc/versions/msi[PostgreSQL download site]. If you are looking for 64-bit Windows driver download the driver from http://code.google.com/p/visionmap/wiki/psqlODBC[here]. Later versions of the driver may be used the 9.0-9.5 clients have been used extensively by the {{ book.productnameFull }} community.  There are no active issues against 9.6 and later, but they have not yet seen as much use - if you encounter an issue, please create a JIRA.
+2.  Extract the contents of the ZIP file into a temporary location on your system. For example: "c:\temp\pgodbc"
+3.  Double click on "psqlodbc.msi" file or (.exe file in the case of 64 bit) to start installation of the driver.
+4.  The Wizard appears as
+
+image:images/winsetup1.png[winsetup1.png]
+
+Click "Next".
+5.  The next step of the wizard displays.
+
+image:images/winsetup2.png[winsetup2.png]
+
+Carefully read it, and check the "I accept the terms in the License Agreement", if you are agreeing to the licensing terms. Then click "Next".
+6.  The next step of the wizard displays.
+
+image:images/winsetup3.png[winsetup3.png]
+
+If you want to install in a different directory than the default that is already selected, click the "Browse" button and select a directory. Click "Next" to start installing in the selected directory.
+7.  The next step of the wizard displays.
+
+image:images/winsetup4.png[winsetup4.png]
+
+This step summarizes the choices you have made in the wizard. Review this information. If you need to change anything, you can use the Back button to return to previous steps. Click "Install" to proceed.
+8.  1.The installation wizard copies the necessary files to the location you specified. When it finishes, the following screen displays.
+
+image:images/winsetup5.png[winsetup5.png]
+
+Click "Finish" to complete.
+
+[id="client-dev-Installing_the_ODBC_Driver_Client-Other-nix-Platform-Installations"]
+== Other *nix Platform Installations
+
+For all other platforms other than Microsoft Windows, the ODBC driver needs built from the source files provided. Download the ODBC driver source files from http://wwwmaster.postgresql.org/download/mirrors-ftp/odbc/versions/src/psqlodbc-08.04.0200.tar.gz[the PostgreSQL download site]. Untar the files to a temporary location. For example: "~/tmp/pgodbc". Build and install the driver by running the commands below.
+
+NOTE: You should use super user account or use "sudo" command for running the "make install" command.
+
+----
+% tar -zxvf psqlodbc-xx.xx.xxxx.tar.gz
+% cd psqlodbc-xx.xx.xxxx
+% ./configure
+% make
+% make install
+----
+
+Some *nix distributions may already provide binary forms of the appropriate driver, which can be used as an alternative to building from source.
+

@@ -1,0 +1,153 @@
+
+= Migration Guide From {{ book.productnameFull }} 8.x to 9.x
+
+{{ book.productnameFull }} strives to maintain consistency between all versions, but when necessary breaking configuration and VDB/sql changes are made - and then typically only for major releases. 
+
+You should consult the release notes for compatibility and configuration changes from each minor version that you are upgrading over.  This guide expands upon the release notes included in the kit to cover changes since 8.x.
+
+If possible you should make your migration to {{ book.productnameFull }} 9 by first using {{ book.productnameFull }} 8.13.  8.13 is a non-feature transitional release that is effectively {{ book.productnameFull }} 8.12 running on WildFly 9.0.2.  See also https://docs.jboss.org/author/display/teiid813final/Migration+Guide+From+{{ book.productnameFull }}+8.12[8.13 Migration Guide]
+
+== JRE Support
+
+{{ book.productnameFull }} 9.1 uses WildFly 10.0.0. Both the server kit and usage of {{ book.productnameFull }} Embedded will require Java 1.8+. The client driver may still use a 1.6 runtime.
+
+{{ book.productnameFull }} 9.0 uses WildFly 9.0.2. Both the server kit and usage of {{ book.productnameFull }} Embedded will require Java 1.7+. The client driver may still use a 1.6 runtime.
+
+== Configuration Changes
+
+You will need to apply your {{ book.productnameFull }} and other configuration changes starting with a new base configuration for {{ book.asName }}, such as the standalone-teiid.xml included in the kit.  Note that 9999 port has been removed by default.  Admin connections are expected to use either 9990 (http) or 9993 (https).
+
+=== Security Related
+
+There is now a single session service. Session service related properties, prefixed by authentication, are no longer specified per transport. Instead they now appear as a single sibling to the transports.
+
+[source,xml]
+.*Old standalone.xml Configuration*
+----
+  <transport name="local"/>
+  <transport name="odata">
+    <authentication security-domain="teiid-security"/>
+  </transport>
+  <transport name="jdbc" protocol="teiid" socket-binding="teiid-jdbc">
+    <authentication security-domain="teiid-security"/>
+  </transport>
+  <transport name="odbc" protocol="pg" socket-binding="teiid-odbc">
+    <authentication security-domain="teiid-security"/>
+    <ssl mode="disabled"/>
+  </transport>
+----
+
+[source,xml]
+.*New standalone.xml Configuration*
+----
+  <authentication security-domain="teiid-security"/>
+
+  <transport name="local"/>
+  <transport name="odata"/>
+  <transport name="jdbc" protocol="teiid" socket-binding="teiid-jdbc"/>
+  <transport name="odbc" protocol="pg" socket-binding="teiid-odbc">
+    <ssl mode="disabled"/>
+  </transport>
+----
+
+The default maximum number of sessions was increased to 10000 to accommodate for this change.
+
+In addition there is a new property trust-all-local that defaults to true and allows unauthenticated access by local pass-through connections over the embedded transport - this was effectively the default behavior of 8.x and before when no security-domain was set on the embedded transport. You may choose to disallow that type of access by setting the property to false instead.
+
+The authentication-security-domain property will only accept a single security domain, and will not interpret the value as a comma separated list.  
+The default behavior has also changed for user names - they are longer allowed to be qualified by the security domain.  Use the
+authentication-allow-security-domain-qualifier property to allow the old behavior of accepting user names that are security domain qualified.
+
+==== RoleBasedCredentialMapIdentityLoginModule 
+
+The RoleBasedCredentialMapIdentityLoginModule class has been removed.  Consider alternative login modules with roles assignments to restrict access to the VDB.
+
+=== Local Transport
+
+The embedded transport was renamed to local to avoid confusion with {{ book.productnameFull }} embedded.
+
+=== Behavioral
+
+==== widenComparisonToString
+
+The resolver’s default behavior was to widen comparisons to string, but 9.0 now defaults org.teiid.widenComparisonToString to false. For example with this setting as false a comparison such as "timestamp_col < 'a'" will produce an exception whereas when set to true it would effectively evaluate "cast(timestamp_col as string) < 'a'". If you experience resolving errors when a vdb is deployed you should update the vdb if possible before reverting to the old resolving behavior.
+
+==== reportAsViews
+
+The JDBC client will report {{ book.productnameFull }} views in the metadata as table type VIEW rather than TABLE by default.  Use the connection property reportAsViews=false to use pre-9.0 behavior.
+
+==== Default Precision/Scale
+
+If a column is specified with a precision of 0 or left as the default in DDL metadata it will be treated as having the nominal internal maximum value of 32767.  
+This may cause the precision and scale to be reported differently, which may have been 2147483647 in some places or 20 in JDBC DatabaseMetaData. 
+
+== Compatibility Changes
+
+=== DDL Delimiters
+
+Not using a semicolon delimiter between statements is deprecated and should only be relied on for backwards compatibility.
+
+=== System Metadata
+
+With data roles enabled system tables (SYS, SYSADMIN, and pg_catalog) will only expose tables, columns, procedures, etc. for which the user is entitled to access.  A READ permission is expected for tables/columns, while an EXECUTE permission is expected for functions/procedures.  All non-hidden schemas will still be visible though.
+
+The OID columns has been removed.  The UID column should be used instead or the corresponding pg_catalog table will contain an OID values.
+
+Parent uid columns have been added to the SYS Tables, Procedures, KeyColumns, and Columns tables.
+
+=== XML Document Model
+
+The XML Document Model has been deprecated.  Please consider migrating to OData or utilizing SQL/XML functions for constructing documents.
+
+== Kitting/Build Changes
+
+=== Admin JAR
+
+For 8.13 the entry point for creating remote admin connection, AdminFactory, was moved into the teiid-jboss-admin jar rather than being located in teiid-admin.
+
+=== API Changes
+
+The AuthorizationValidator and PolicyDecider interfaces had minor changes.  AuthorizationValidator has an additional method to determine metadata filtering, and PolicyDecider had isTempAccessable corrected to isTempAccessible.
+
+Semantic versioning required the change of the VDB version field from an integer to a string.  This affected the following public classes: 
+
+VDB
+Session
+EventListener
+VDBImport
+ExecutionContext
+MetadataRepository
+
+There are also duplicate/deprecated methods on:
+
+EventDistributor
+Admin
+
+Using the TranslatorProperty annotation without a setter now requires that readOnly=true be set on the annotation.
+
+The JDBC DatabaseMetaData and CommandContext getUserName methods will now return just the base user name without the security domain. 
+
+=== Embedded Kit
+
+The Embedded Kit has been removed.  You should follow the https://github.com/teiid/teiid-embedded-examples[Embedded Examples] to use maven to pull the dependencies you need for your project.
+
+There were extensive changes in dependency management for how the project is built.  These changes allowed us to remove the need for resource adapter jars built with the lib classifier.  If you need to reference these artifacts from maven, just omit the classifier.
+
+=== Legacy Drivers
+
+The drivers for JRE 1.4/1.5 systems have been discontinued. If you still need a client for those platforms, you should use the appropriate 8.x driver.
+
+=== OData
+
+The OData v2 war based upon odata4j has been removed.  You should utilize the OData v4 war service instead.
+
+The names of the wars have been changed to strip version information - this makes it easier to capture a deployment-overlay in the configuration such that it won't be changed from one {{ book.productnameFull }} version to the next.
+
+teiid-odata-odata2.war has become teiid-odata.war
+teiid-olingo-odata4.war has become teiid-olingo-odata4.war
+
+To change properties in an web.xml file or add other files to the default odata war, you should use a {{ book.asDocRoot }}/Deployment+Overlays[deployment overlay] instead.
+
+=== Materialization
+
+The semantic versioning change requires the materialization status tables to change their version column from an integer to string.  Both the source and the source model will need to be updated with the column type change.

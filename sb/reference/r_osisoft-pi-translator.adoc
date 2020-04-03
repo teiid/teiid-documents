@@ -1,0 +1,74 @@
+
+= OSISoft PI Translator (osisoft-pi)
+
+Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+
+The OSISoft Translator, known by the type name *_osisoft-pi_*, is for use with OSIsoft PI OLEDB Enterprise. 
+This translator uses the JDBC driver provided by the OSISoft. 
+
+{% if book.targetWildfly %}
+
+{% endif %}
+
+== Usage
+
+You can develop a VDB like follows to fetch metadata from PI and give you access to executing queries against PI.
+
+pi-vdb.xml
+----
+<vdb name="pi" version="1">
+    <model name="AF">
+        <property name="importer.importProcedures" value="true"/>
+        <source connection-jndi-name="java:/pi-ds" name="pi-connector" translator-name="osisoft-pi"/>
+    </model>
+</vdb>
+---- 
+
+Deploy this file into {{ book.productnameFull }} using CLI or using management console
+
+----
+deploy pi-vdb.xml
+----
+
+Once the metadata is loaded and VDB is active you can use {{ book.productnameFull }} JDBC/ODBC driver or OData to connect to the VDB and issue 
+queries.
+
+
+== PI Translator Capabilities
+
+PI translator is extension of _jdbc-ansi_ translator, so all the SQL ANSI queries are supported. PI translator also supports
+LATERAL join with Table Valued Functions (TVF). An example {{ book.productnameFull }} query looks like
+
+----
+SELECT EH.Name, BT."Time", BT."Number of Computers", BT."Temperature"
+    FROM Sample.Asset.ElementHierarchy EH
+    LEFT JOIN  LATERAL (exec "TransposeArchive_Building Template"(EH.ElementID, TIMESTAMPADD(SQL_TSI_HOUR, -1, now()), now())) BT on 1=1
+    WHERE EH.ElementID IN (SELECT ElementID FROM Sample.Asset.ElementHierarchy WHERE Path='\Data Center\')
+---- 
+
+NOTE: ANSI SQL semantics require a ON clause, but CROSS APPLY or OUTER APPLY do no have a ON clause, so for this
+reason user need to pass in a dummy ON clause like ON (1 = 1), which will be ignored when converted to APPLY clause which
+will be pushed down.
+
+By default this translator turns off the "importer.ImportKeys"  to false.
+
+NOTE: The PI data type, "GUID" will need to be modeled as "String" and must define the NATIVE_TYPE on column as "guid", then {{ book.productnameFull }}
+translator will appropriately convert the data back forth with the PI datasource's native guid type with appropriate type 
+casting from string.
+
+=== Pushdown Functions
+
+PI accepts time interval literals that are not recognized by {{ book.productnameFull }}.  If you wish to make a comparison based upon an interval, use the PI.inteveral function:
+
+----
+select * from Archive a where a.time between PI.interval('*-14d') and PI.interval('*')
+----
+
+Known Issues:
+TEIID-5123 - Casting a string containing a negative or zero value (e.g. '-24' or '0') to Float/Single fails with PI Jdbc driver.
+
+{% if book.targetWildfly %}
+== JCA Resource Adapter
+
+The resource adapter for this translator is provided through link:../admin/PI_Data_Sources.adoc[OSISoft PI Data Sources]. Refer to Admin Guide for configuration.
+{% endif %}

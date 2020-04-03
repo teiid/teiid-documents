@@ -1,0 +1,15 @@
+= AdminAPI
+
+In most circumstances the admin operations will be performed through the admin console, but it is also possible to invoke admin functionality directly in Java (or a Java scripting language) through the AdminAPI.
+
+All classes for the AdminAPI are in the client jar under the `org.teiid.adminapi` package.
+
+== Connecting
+
+An AdminAPI connection, which is represented by the `org.teiid.adminapi.Admin` interface, is obtained through the `org.teiid.adminapi.AdminFactory.createAdmin` methods. `AdminFactory` is a singleton in the teiid-jboss-admin jar, see `AdminFactory.getInstance()`. The `Admin` instance automatically tests its connection and reconnects to a server in the event of a failure. The `close` method should be called to terminate the connection.
+
+See your JBoss installation for the appropriate admin port - the default port is 9999.
+
+== Admin Methods
+
+Admin methods exist for monitoring, server administration, and configuration purposes. Note that the objects returned by the monitoring methods, such as getRequests, are read-only and cannot be used to change server state. See the JavaDocs for all of the details

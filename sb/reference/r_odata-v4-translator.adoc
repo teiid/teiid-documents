@@ -1,0 +1,191 @@
+// Module included in the following assemblies:
+// as_translators.adoc
+[id="odata-v4-translator"]
+= OData V4 translator
+
+The OData V4 translator, known by the type name _"odata4"_ exposes the OData Version 4 data sources and uses the {{ book.productnameFull }} 
+web services resource adapter for making web service calls. 
+This translator is extension of _Web Services Translator_. 
+The OData V4 translator is not for use with older OData V1-3 sources. 
+Use the OData translator (_"odata"_) for older OData sources.
+
+.What is OData
+The http://www.odata.org[Open Data Protocol (OData)] Web protocol is for querying and updating data that provides 
+a way to unlock your data and free it from silos that exist in applications today. 
+OData does this by applying and building upon Web technologies such as HTTP, Atom Publishing Protocol (AtomPub), 
+and JSON to provide access to information from a variety of applications, services, and stores. 
+OData is being used to expose and access information from a variety of sources including, but not limited to, 
+relational databases, file systems, content management systems and traditional Web sites.
+
+Using this specification from the OASIS group, with the help from the http://olingo.apache.org/[Olingo] framework, 
+{{ book.productnameFull }} maps OData V4 CSDL (Conceptual Schema Definition Language) document from the OData endpoint 
+provided and converts the OData metadata into {{ book.productnameFull }}’s relational schema. 
+The following table shows the mapping selections in the OData V4 translator from a CSDL document
+
+.Using OData as a server
+NOTE: {{ book.productnameFull }} can not only consume OData-based data sources, but it can expose any data source as an OData based web service. 
+For more information see _OData Support_ in the http://teiid.github.io/teiid-documents/master/sb/client-dev/Client_Developers_Guide.html[Client Developer's Guide].
+
+|===
+|OData |Mapped to relational entity
+
+|EntitySet
+|Table
+
+|EntityType
+|Table see [1]
+
+|ComplexType
+|Table see [2]
+
+|FunctionImport
+|Procedure [3]
+
+|ActionImport
+|Procedure [3]
+
+|NavigationProperties
+|Table [4]
+
+|===
+
+[1] Only if the EntityType is exposed as the EntitySet in the Entity container. 
+[2] Only if the complex type is used as property in the exposed EntitySet. This table will be designed as child table 
+with foreign key [1-to-1] or [1-to-many] relationship to the parent. +
+[3] If the return type is EntityType or ComplexType, the procedure is designed to return a table. 
+[4] Navigation properties are exposed as tables. The table will be created with foreign key relationship to the parent.
+
+All CRUD operations will be appropriately mapped to the resulting entity based on the SQL submitted to the OData translator.
+
+.Usage
+
+Usage of a OData source is similar a JDBC translator. 
+The metadata import is supported through the translator, once the metadata is imported from source system and exposed in relational terms, 
+then this source can be queried as if the EntitySets, Function Imports and Action Imports were local to the {{ book.productnameFull }} system.
+
+It is not recommended to define your own metadata using {{ book.productnameFull }} DDL for complex services.
+There are several extension metadata properties required to enable proper functioning. 
+On non-string properties, a `NATIVE_TYPE` property is expected and should specify the full EDM type name - `Edm.xxx`.  
+
+The below is sample VDB that can read metadata service from TripPin service on http://odata.org[http://odata.org] site.
+
+[source,xml]
+----
+<vdb name="trippin" version="1">
+    <model name="trippin">
+         <source name="odata4" translator-name="odata4" connection-jndi-name="java:/tripDS"/>
+    </model>
+</vdb>
+----
+
+{% if book.targetWildfly %}
+The required resource-adapter configuration will look like
+
+[source,xml]
+----
+<resource-adapter id="trippin">
+    <module slot="main" id="org.jboss.teiid.resource-adapter.webservice"/>
+    <transaction-support>NoTransaction</transaction-support>
+    <connection-definitions>
+        <connection-definition class-name="org.teiid.resource.adapter.ws.WSManagedConnectionFactory" jndi-name="java:/tripDS" enabled="true" use-java-context="true" pool-name="teiid-trip-ds">
+            <config-property name="EndPoint">
+                http://services.odata.org/V4/(S(va3tkzikqbtgu1ist44bbft5))/TripPinServiceRW
+            </config-property>
+        </connection-definition>
+    </connection-definitions>
+</resource-adapter>
+----
+{% endif %}
+
+You can connect to the VDB deployed using {{ book.productnameFull }} JDBC driver and issue SQL statements like
+
+[source,sql]
+----
+SELECT * FROM trippin.People;
+SELECT * FROM trippin.People WHERE UserName = 'russelwhyte';
+SELECT * FROM trippin.People p INNER JOIN trippin.People_Friends pf ON p.UserName = pf.People_UserName; (note that People_UserName is implicitly added by {{ book.productnameFull }} metadata)
+EXEC GetNearestAirport(lat, lon) ;
+----
+
+.Configuration of translator
+
+.Execution properties
+
+Sometimes default properties need to adjusted for proper execution of the translator.
+The following execution properties extend or limit the functionality of the translator based on the physical source capabilities.  
+
+|===
+|Name |Description |Default
+
+|SupportsOdataCount
+|Supports $count
+|true
+
+|SupportsOdataFilter
+|Supports $filter
+|true
+
+|SupportsOdataOrderBy
+|Supports $orderby
+|true
+
+|SupportsOdataSkip
+|Supports $skip
+|true
+
+|SupportsOdataTop
+|Supports $top
+|true
+
+|SupportsUpdates
+|Supports INSERT/UPDATE/DELETE
+|true
+
+|===
+
+The OData server that you connect to might not fully implement the entire 
+OData specification. If the server's OData implementation does not support a feature, 
+set "execution properties" to turn off the corresponding capability, so that {{ book.productnameFull }} 
+does not push down invalid queries to the translator. 
+
+
+[source,xml]
+----
+<translator name="odata-override" type="odata">
+     <property name="SupportsOdataFilter" value="false"/>
+</translator>
+----
+
+then use "odata-override" as the translator name on your source model.
+
+.Importer properties
+The following table lists the importer properties that define the behavior of the translator during metadata import from the physical source.
+
+|===
+|Name |Description |Default
+
+|schemaNamespace
+|Namespace of the schema to import
+|null
+
+|===
+
+Example importer settings to only import tables and views from http://services.odata.org/V4/(S(nivess3y23eyhit4jbppgtdj))/TripPinServiceRW/$metadata[Trippin] 
+service exposed on odata.org
+
+[source,xml]
+----
+<property name="importer.schemaNamespace" value="Microsoft.OData.SampleService.Models.TripPin"/>
+----
+
+You can leave this property undefined. If the translator does not detect a configured instance of the property, 
+it specifies the default name of the EntityContainer.
+
+{% if book.targetWildfly %}
+.JCA resource adapter
+
+The resource adapter for this translator is a link:../admin/Web_Service_Data_Sources.adoc[Web Service Data Source].
+{% endif %}
+
+TIP: *Native queries* - Native or direct query execution is not supported through the OData translator. 
+However, you can use the _invokehttp_ method of the Web services translator to issue REST-based calls, and then use SQLXML to parse results.

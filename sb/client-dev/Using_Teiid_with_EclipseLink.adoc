@@ -1,0 +1,43 @@
+
+[id="client-dev-Using_Teiid_with_EclipseLink-Using-bookproductnameFull-with-EclipseLink"]
+= Using {{ book.productnameFull }} with EclipseLink
+
+[id="client-dev-Using_Teiid_with_EclipseLink-Overview"]
+== Overview
+
+We can use link:Using_Teiid_with_Hibernate.adoc[{{ book.productnameFull }} with Hibernate], we also have a quick start show how https://github.com/teiid/teiid-wildfly-quickstarts/tree/master/hibernate-on-top-of-teiid[Hibernate on top of {{ book.productnameFull }}]. Both Hibernate and Eclipselink are fully support JSR-317 (JPA 2.0), primary purpose of this document is demonstrate how use {{ book.productnameFull }} with EclipseLink.
+
+[id="client-dev-Using_Teiid_with_EclipseLink-Configuration"]
+== Configuration
+
+For the most part, interacting with {{ book.productnameFull }} VDBs (Virtual Databases) through Eclipselink is no different from working with any other type of data source. First, depending on where your Eclipselink application will reside, either in the same VM as the {{ book.productnameFull }} Runtime or on a separate VM, will determine which jar’s are used.
+
+* Running in same VM in the {{ book.asName }} server, the teiid-client-\{version}.jar and teiid-eclipselink-platform-\{version}.jar are needed
+* Running separate VM’s,you need the {{ book.productnameFull }} JDBC Driver JAR(http://www.jboss.org/teiid/downloads.html[Download {{ book.productnameFull }} JDBC Driver JAR]) and {{ book.productnameFull }}’s Eclipselink Platform JAR(teiid-eclipselink-platform \{version}.jar) in the Eclipselink’s classpath. 
+
+These JAR files have the _org.teiid.eclipselin.platform.TeiidPlatform_ and _org.teiid.jdbc.TeiidDriver_ classes.
+
+You configure EclipseLink (via persistence.xml) as follows:
+
+* Specify the {{ book.productnameFull }} driver class, connection url
+
+[source,xml]
+----
+ <property name="javax.persistence.jdbc.driver" value="org.teiid.jdbc.TeiidDriver" />
+ <property name="javax.persistence.jdbc.url" value="jdbc:teiid:<vdb-name>@mm://<host>:<port>" />
+ <property name="javax.persistence.jdbc.user" value="<username>" />
+ <property name="javax.persistence.jdbc.password" value="<password>" />
+----
+
+* Specify the {{ book.productnameFull }} platform class
+
+[source,xml]
+----
+ <property name="eclipselink.target-database" value="org.teiid.eclipselink.platform.TeiidPlatform"/>
+----
+
+[id="client-dev-Using_Teiid_with_EclipseLink-Limitations"]
+== Limitations
+
+* Many Eclipselink use cases assume a data source has the ability (with proper user permissions) to process Data Definition Language (DDL) statements like CREATE TABLE and DROP TABLE as well as Data Manipulation Language (DML) statements like SELECT, UPDATE, INSERT and DELETE. {{ book.productnameFull }} can handle a broad range of DML, but does not directly support DDL against a particular source.
+* Sequence generation is not directly supported.

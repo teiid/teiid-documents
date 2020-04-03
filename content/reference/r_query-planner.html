@@ -1,0 +1,5993 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Query planner · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="r_query-plans.html" />
+    
+    
+    <link rel="prev" href="r_planning-overview.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../Legal_Notice.html">
+            
+                <a href="../Legal_Notice.html">
+            
+                    
+                    Legal Notice
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../admin/Administrators_Guide.html">
+            
+                <a href="../admin/Administrators_Guide.html">
+            
+                    
+                    Administrator’s Guide
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="../admin/Installation_Guide.html">
+            
+                <a href="../admin/Installation_Guide.html">
+            
+                    
+                    Installation Guide
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1.1" data-path="../admin/Dockerize_Teiid.html">
+            
+                <a href="../admin/Dockerize_Teiid.html">
+            
+                    
+                    Dockerize Teiid
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="../admin/Deploying_VDBs.html">
+            
+                <a href="../admin/Deploying_VDBs.html">
+            
+                    
+                    Deploying VDBs
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.2.1" data-path="../admin/Deploying_VDB_Dependencies.html">
+            
+                <a href="../admin/Deploying_VDB_Dependencies.html">
+            
+                    
+                    Deploying VDB Dependencies
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.2.1.1" data-path="../admin/Accumulo_Data_Sources.html">
+            
+                <a href="../admin/Accumulo_Data_Sources.html">
+            
+                    
+                    Accumulo Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.2" data-path="../admin/Amazon_SimpleDB_Data_Sources.html">
+            
+                <a href="../admin/Amazon_SimpleDB_Data_Sources.html">
+            
+                    
+                    Amazon SimpleDB Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.3" data-path="../admin/Cassandra_Data_Sources.html">
+            
+                <a href="../admin/Cassandra_Data_Sources.html">
+            
+                    
+                    Cassandra Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.4" data-path="../admin/Couchbase_Data_Sources.html">
+            
+                <a href="../admin/Couchbase_Data_Sources.html">
+            
+                    
+                    Couchbase Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.5" data-path="../admin/File_Data_Sources.html">
+            
+                <a href="../admin/File_Data_Sources.html">
+            
+                    
+                    File Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.6" data-path="../admin/Ftp_Data_Sources.html">
+            
+                <a href="../admin/Ftp_Data_Sources.html">
+            
+                    
+                    Ftp/Ftps Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.7" data-path="../admin/Google_Spreadsheet_Data_Sources.html">
+            
+                <a href="../admin/Google_Spreadsheet_Data_Sources.html">
+            
+                    
+                    Google Spreadsheet Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.8" data-path="../admin/Infinispan_Data_Sources.html">
+            
+                <a href="../admin/Infinispan_Data_Sources.html">
+            
+                    
+                    Infinispan HotRod Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.9" data-path="../admin/JDBC_Data_Sources.html">
+            
+                <a href="../admin/JDBC_Data_Sources.html">
+            
+                    
+                    JDBC Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.10" data-path="../admin/LDAP_Data_Sources.html">
+            
+                <a href="../admin/LDAP_Data_Sources.html">
+            
+                    
+                    LDAP Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.11" data-path="../admin/MongoDB_Data_Sources.html">
+            
+                <a href="../admin/MongoDB_Data_Sources.html">
+            
+                    
+                    MongoDB Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.12" data-path="../admin/Phoenix_Data_Sources.html">
+            
+                <a href="../admin/Phoenix_Data_Sources.html">
+            
+                    
+                    Phoenix Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.13" data-path="../admin/PI_Data_Sources.html">
+            
+                <a href="../admin/PI_Data_Sources.html">
+            
+                    
+                    OSISoft PI Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.14" data-path="../admin/Salesforce_Data_Sources.html">
+            
+                <a href="../admin/Salesforce_Data_Sources.html">
+            
+                    
+                    Salesforce Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.15" data-path="../admin/Solr_Data_Sources.html">
+            
+                <a href="../admin/Solr_Data_Sources.html">
+            
+                    
+                    Solr Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.16" data-path="../admin/Web_Service_Data_Sources.html">
+            
+                <a href="../admin/Web_Service_Data_Sources.html">
+            
+                    
+                    Web Service Data Sources
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.2.1.16.1" data-path="../admin/Kerberos_with_REST_based_Services.html">
+            
+                <a href="../admin/Kerberos_with_REST_based_Services.html">
+            
+                    
+                    Kerberos with REST based Services
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.1.16.2" data-path="../admin/OAuth_Authentication_With_REST_Based_Services.html">
+            
+                <a href="../admin/OAuth_Authentication_With_REST_Based_Services.html">
+            
+                    
+                    OAuth Authentication With REST Based Services
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2.2" data-path="../admin/VDB_Versioning.html">
+            
+                <a href="../admin/VDB_Versioning.html">
+            
+                    
+                    VDB Versioning
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="../admin/Logging.html">
+            
+                <a href="../admin/Logging.html">
+            
+                    
+                    Logging
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="../admin/Clustering_in_Teiid.html">
+            
+                <a href="../admin/Clustering_in_Teiid.html">
+            
+                    
+                    Clustering in Teiid
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.5" data-path="../admin/Monitoring.html">
+            
+                <a href="../admin/Monitoring.html">
+            
+                    
+                    Monitoring
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6" data-path="../admin/Performance_Tuning.html">
+            
+                <a href="../admin/Performance_Tuning.html">
+            
+                    
+                    Performance Tuning
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.6.1" data-path="../admin/Memory_Management.html">
+            
+                <a href="../admin/Memory_Management.html">
+            
+                    
+                    Memory Management
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6.2" data-path="../admin/Threading.html">
+            
+                <a href="../admin/Threading.html">
+            
+                    
+                    Threading
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6.3" data-path="../admin/Cache_Tuning.html">
+            
+                <a href="../admin/Cache_Tuning.html">
+            
+                    
+                    Cache Tuning
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6.4" data-path="../admin/Socket_Transports.html">
+            
+                <a href="../admin/Socket_Transports.html">
+            
+                    
+                    Socket Transports
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6.5" data-path="../admin/LOBs.html">
+            
+                <a href="../admin/LOBs.html">
+            
+                    
+                    LOBs
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6.6" data-path="../admin/Other_Considerations.html">
+            
+                <a href="../admin/Other_Considerations.html">
+            
+                    
+                    Other Considerations
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7" data-path="../admin/Teiid_Console.html">
+            
+                <a href="../admin/Teiid_Console.html">
+            
+                    
+                    Teiid Console
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8" data-path="../admin/System_Properties.html">
+            
+                <a href="../admin/System_Properties.html">
+            
+                    
+                    System Properties
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9" data-path="../admin/Teiid_Management_CLI.html">
+            
+                <a href="../admin/Teiid_Management_CLI.html">
+            
+                    
+                    Teiid Management CLI
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.10" data-path="../admin/Diagnosing_Issues.html">
+            
+                <a href="../admin/Diagnosing_Issues.html">
+            
+                    
+                    Diagnosing Issues
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.11" data-path="../admin/Migration_Guide_From_Teiid_12.x.html">
+            
+                <a href="../admin/Migration_Guide_From_Teiid_12.x.html">
+            
+                    
+                    Migration Guide From Teiid 12.x
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.12" data-path="../admin/Migration_Guide_From_Teiid_11.x.html">
+            
+                <a href="../admin/Migration_Guide_From_Teiid_11.x.html">
+            
+                    
+                    Migration Guide From Teiid 11.x
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.13" data-path="../admin/Migration_Guide_From_Teiid_10.x.html">
+            
+                <a href="../admin/Migration_Guide_From_Teiid_10.x.html">
+            
+                    
+                    Migration Guide From Teiid 10.x
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.14" data-path="../admin/Migration_Guide_From_Teiid_9.x.html">
+            
+                <a href="../admin/Migration_Guide_From_Teiid_9.x.html">
+            
+                    
+                    Migration Guide From Teiid 9.x
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.15" data-path="../admin/Migration_Guide_From_Teiid_8.x.html">
+            
+                <a href="../admin/Migration_Guide_From_Teiid_8.x.html">
+            
+                    
+                    Migration Guide From Teiid 8.x
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../caching/Caching_Guide.html">
+            
+                <a href="../caching/Caching_Guide.html">
+            
+                    
+                    Caching Guide
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="../caching/Results_Caching.html">
+            
+                <a href="../caching/Results_Caching.html">
+            
+                    
+                    Results Caching
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="../caching/Materialized_Views.html">
+            
+                <a href="../caching/Materialized_Views.html">
+            
+                    
+                    Materialized Views
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.2.1" data-path="../caching/External_Materialization.html">
+            
+                <a href="../caching/External_Materialization.html">
+            
+                    
+                    External Materialization
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2.2" data-path="../caching/Internal_Materialization.html">
+            
+                <a href="../caching/Internal_Materialization.html">
+            
+                    
+                    Internal Materialization
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="../caching/Code_Table_Caching.html">
+            
+                <a href="../caching/Code_Table_Caching.html">
+            
+                    
+                    Code Table Caching
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="../caching/Translator_Results_Caching.html">
+            
+                <a href="../caching/Translator_Results_Caching.html">
+            
+                    
+                    Translator Results Caching
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5" data-path="../caching/Hints_and_Options.html">
+            
+                <a href="../caching/Hints_and_Options.html">
+            
+                    
+                    Hints and Options
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="../caching/Programmatic_Control.html">
+            
+                <a href="../caching/Programmatic_Control.html">
+            
+                    
+                    Programmatic Control
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../client-dev/Client_Developers_Guide.html">
+            
+                <a href="../client-dev/Client_Developers_Guide.html">
+            
+                    
+                    Client Developer’s Guide
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="../client-dev/JDBC_Support.html">
+            
+                <a href="../client-dev/JDBC_Support.html">
+            
+                    
+                    JDBC Support
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1.1" data-path="../client-dev/Connecting_to_a_Teiid_Server.html">
+            
+                <a href="../client-dev/Connecting_to_a_Teiid_Server.html">
+            
+                    
+                    Connecting to a Teiid Server
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1.1.1" data-path="../client-dev/Driver_Connection.html">
+            
+                <a href="../client-dev/Driver_Connection.html">
+            
+                    
+                    Driver Connection
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.1.2" data-path="../client-dev/DataSource_Connection.html">
+            
+                <a href="../client-dev/DataSource_Connection.html">
+            
+                    
+                    DataSource Connection
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.1.3" data-path="../client-dev/Standalone_Application.html">
+            
+                <a href="../client-dev/Standalone_Application.html">
+            
+                    
+                    Standalone Application
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.1.4" data-path="../client-dev/WildFly_DataSource.html">
+            
+                <a href="../client-dev/WildFly_DataSource.html">
+            
+                    
+                    WildFly DataSource
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.1.5" data-path="../client-dev/Using_Multiple_Hosts.html">
+            
+                <a href="../client-dev/Using_Multiple_Hosts.html">
+            
+                    
+                    Using Multiple Hosts
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.1.6" data-path="../client-dev/SSL_Client_Connections.html">
+            
+                <a href="../client-dev/SSL_Client_Connections.html">
+            
+                    
+                    SSL Client Connections
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.1.7" data-path="../client-dev/Additional_Socket_Client_Settings.html">
+            
+                <a href="../client-dev/Additional_Socket_Client_Settings.html">
+            
+                    
+                    Additional Socket Client Settings
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.2" data-path="../client-dev/Prepared_Statements.html">
+            
+                <a href="../client-dev/Prepared_Statements.html">
+            
+                    
+                    Prepared Statements
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.3" data-path="../client-dev/ResultSet_Limitations.html">
+            
+                <a href="../client-dev/ResultSet_Limitations.html">
+            
+                    
+                    ResultSet Limitations
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.4" data-path="../client-dev/JDBC_Extensions.html">
+            
+                <a href="../client-dev/JDBC_Extensions.html">
+            
+                    
+                    JDBC Extensions
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1.4.1" data-path="../client-dev/Statement_Extensions.html">
+            
+                <a href="../client-dev/Statement_Extensions.html">
+            
+                    
+                    Statement Extensions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.4.2" data-path="../client-dev/Partial_Results_Mode.html">
+            
+                <a href="../client-dev/Partial_Results_Mode.html">
+            
+                    
+                    Partial Results Mode
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.4.3" data-path="../client-dev/Non-blocking_Statement_Execution.html">
+            
+                <a href="../client-dev/Non-blocking_Statement_Execution.html">
+            
+                    
+                    Non-blocking Statement Execution
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.4.4" data-path="../client-dev/ResultSet_Extensions.html">
+            
+                <a href="../client-dev/ResultSet_Extensions.html">
+            
+                    
+                    ResultSet Extensions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.4.5" data-path="../client-dev/Connection_Extensions.html">
+            
+                <a href="../client-dev/Connection_Extensions.html">
+            
+                    
+                    Connection Extensions
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.5" data-path="../client-dev/Unsupported_JDBC_Methods.html">
+            
+                <a href="../client-dev/Unsupported_JDBC_Methods.html">
+            
+                    
+                    Unsupported JDBC Methods
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1.5.1" data-path="../client-dev/Unsupported_Classes_and_Methods_in_java.sql.html">
+            
+                <a href="../client-dev/Unsupported_Classes_and_Methods_in_java.sql.html">
+            
+                    
+                    Unsupported Classes and Methods in "java.sql"
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.5.2" data-path="../client-dev/Unsupported_Classes_and_Methods_in_javax.sql.html">
+            
+                <a href="../client-dev/Unsupported_Classes_and_Methods_in_javax.sql.html">
+            
+                    
+                    Unsupported Classes and Methods in "javax.sql"
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="../client-dev/ODBC_Support.html">
+            
+                <a href="../client-dev/ODBC_Support.html">
+            
+                    
+                    ODBC Support
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.2.1" data-path="../client-dev/Installing_the_ODBC_Driver_Client.html">
+            
+                <a href="../client-dev/Installing_the_ODBC_Driver_Client.html">
+            
+                    
+                    Installing the ODBC Driver Client
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2.2" data-path="../client-dev/Configuring_the_Data_Source_Name_DSN.html">
+            
+                <a href="../client-dev/Configuring_the_Data_Source_Name_DSN.html">
+            
+                    
+                    Configuring the Data Source Name (DSN)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2.3" data-path="../client-dev/DSN_Less_Connection.html">
+            
+                <a href="../client-dev/DSN_Less_Connection.html">
+            
+                    
+                    DSN Less Connection
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2.4" data-path="../client-dev/ODBC_Connection_Properties.html">
+            
+                <a href="../client-dev/ODBC_Connection_Properties.html">
+            
+                    
+                    ODBC Connection Properties
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.3" data-path="../client-dev/OData_Support.html">
+            
+                <a href="../client-dev/OData_Support.html">
+            
+                    
+                    OData Support
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.3.1" data-path="../client-dev/OData4_Support.html">
+            
+                <a href="../client-dev/OData4_Support.html">
+            
+                    
+                    OData Version 4.0 Support
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.4" data-path="../client-dev/Using_Teiid_with_Hibernate.html">
+            
+                <a href="../client-dev/Using_Teiid_with_Hibernate.html">
+            
+                    
+                    Using Teiid with Hibernate
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.5" data-path="../client-dev/Using_Teiid_with_EclipseLink.html">
+            
+                <a href="../client-dev/Using_Teiid_with_EclipseLink.html">
+            
+                    
+                    Using Teiid with EclipseLink
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.6" data-path="../client-dev/GeoServer_Integration.html">
+            
+                <a href="../client-dev/GeoServer_Integration.html">
+            
+                    
+                    GeoServer Integration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.7" data-path="../client-dev/QGIS_Integration.html">
+            
+                <a href="../client-dev/QGIS_Integration.html">
+            
+                    
+                    QGIS Integration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.8" data-path="../client-dev/SQLAlchemy_Integration.html">
+            
+                <a href="../client-dev/SQLAlchemy_Integration.html">
+            
+                    
+                    SQLAlchemy Integration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.9" data-path="../client-dev/Node_Integration.html">
+            
+                <a href="../client-dev/Node_Integration.html">
+            
+                    
+                    Node.js Integration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.10" data-path="../client-dev/ADONET_Integration.html">
+            
+                <a href="../client-dev/ADONET_Integration.html">
+            
+                    
+                    ADO.NET Integration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.11" data-path="../client-dev/Reauthentication.html">
+            
+                <a href="../client-dev/Reauthentication.html">
+            
+                    
+                    Reauthentication
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.12" data-path="../client-dev/Execution_Properties.html">
+            
+                <a href="../client-dev/Execution_Properties.html">
+            
+                    
+                    Execution Properties
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.13" data-path="../client-dev/SET_Statement.html">
+            
+                <a href="../client-dev/SET_Statement.html">
+            
+                    
+                    SET Statement
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.14" data-path="../client-dev/SHOW_Statement.html">
+            
+                <a href="../client-dev/SHOW_Statement.html">
+            
+                    
+                    SHOW Statement
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.15" data-path="../client-dev/Transactions.html">
+            
+                <a href="../client-dev/Transactions.html">
+            
+                    
+                    Transactions
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.15.1" data-path="../client-dev/Local_Transactions.html">
+            
+                <a href="../client-dev/Local_Transactions.html">
+            
+                    
+                    Local Transactions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.15.2" data-path="../client-dev/Request_Level_Transactions.html">
+            
+                <a href="../client-dev/Request_Level_Transactions.html">
+            
+                    
+                    Request Level Transactions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.15.3" data-path="../client-dev/Using_Global_Transactions.html">
+            
+                <a href="../client-dev/Using_Global_Transactions.html">
+            
+                    
+                    Using Global Transactions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.15.4" data-path="../client-dev/Restrictions.html">
+            
+                <a href="../client-dev/Restrictions.html">
+            
+                    
+                    Restrictions
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="../dev/Developers_Guide.html">
+            
+                <a href="../dev/Developers_Guide.html">
+            
+                    
+                    Developer’s Guide
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="../dev/Developing_JEE_Connectors.html">
+            
+                <a href="../dev/Developing_JEE_Connectors.html">
+            
+                    
+                    Developing JEE Connectors
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1.1" data-path="../dev/Archetype_Template_Connector_Project.html">
+            
+                <a href="../dev/Archetype_Template_Connector_Project.html">
+            
+                    
+                    Archetype Template Connector Project
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.1.2" data-path="../dev/Implementing_the_Teiid_Framework.html">
+            
+                <a href="../dev/Implementing_the_Teiid_Framework.html">
+            
+                    
+                    Implementing the Teiid Framework
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1.2.1" data-path="../dev/ra.xml_file_Template.html">
+            
+                <a href="../dev/ra.xml_file_Template.html">
+            
+                    
+                    ra.xml file Template
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.1.3" data-path="../dev/Packaging_the_Adapter.html">
+            
+                <a href="../dev/Packaging_the_Adapter.html">
+            
+                    
+                    Packaging the Adapter
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1.3.1" data-path="../dev/Adding_Dependent_Libraries.html">
+            
+                <a href="../dev/Adding_Dependent_Libraries.html">
+            
+                    
+                    Adding Dependent Libraries
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.1.4" data-path="../dev/Deploying_the_Adapter.html">
+            
+                <a href="../dev/Deploying_the_Adapter.html">
+            
+                    
+                    Deploying the Adapter
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="../dev/Translator_Development.html">
+            
+                <a href="../dev/Translator_Development.html">
+            
+                    
+                    Translator Development
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.2.1" data-path="../dev/Environment_Setup.html">
+            
+                <a href="../dev/Environment_Setup.html">
+            
+                    
+                    Environment Setup
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.2.1.1" data-path="../dev/Setting_up_the_build_environment.html">
+            
+                <a href="../dev/Setting_up_the_build_environment.html">
+            
+                    
+                    Setting up the build environment
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.1.2" data-path="../dev/Archetype_Template_Translator_Project.html">
+            
+                <a href="../dev/Archetype_Template_Translator_Project.html">
+            
+                    
+                    Archetype Template Translator Project
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2" data-path="../dev/Implementing_the_Framework.html">
+            
+                <a href="../dev/Implementing_the_Framework.html">
+            
+                    
+                    Implementing the Framework
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.2.2.1" data-path="../dev/Caching_API.html">
+            
+                <a href="../dev/Caching_API.html">
+            
+                    
+                    Caching API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2.2" data-path="../dev/Command_Language.html">
+            
+                <a href="../dev/Command_Language.html">
+            
+                    
+                    Command Language
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2.3" data-path="../dev/Connections_to_Source.html">
+            
+                <a href="../dev/Connections_to_Source.html">
+            
+                    
+                    Connections to Source
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2.4" data-path="../dev/Dependent_Join_Pushdown.html">
+            
+                <a href="../dev/Dependent_Join_Pushdown.html">
+            
+                    
+                    Dependent Join Pushdown
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2.5" data-path="../dev/Executing_Commands.html">
+            
+                <a href="../dev/Executing_Commands.html">
+            
+                    
+                    Executing Commands
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2.6" data-path="../dev/Extending_the_ExecutionFactory_Class.html">
+            
+                <a href="../dev/Extending_the_ExecutionFactory_Class.html">
+            
+                    
+                    Extending the ExecutionFactory Class
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2.7" data-path="../dev/Large_Objects.html">
+            
+                <a href="../dev/Large_Objects.html">
+            
+                    
+                    Large Objects
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2.8" data-path="../dev/Translator_Capabilities.html">
+            
+                <a href="../dev/Translator_Capabilities.html">
+            
+                    
+                    Translator Capabilities
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2.9" data-path="../dev/Translator_Properties.html">
+            
+                <a href="../dev/Translator_Properties.html">
+            
+                    
+                    Translator Properties
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.3" data-path="../dev/Extending_The_JDBC_Translator.html">
+            
+                <a href="../dev/Extending_The_JDBC_Translator.html">
+            
+                    
+                    Extending The JDBC Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.4" data-path="../dev/Delegating_Translator.html">
+            
+                <a href="../dev/Delegating_Translator.html">
+            
+                    
+                    Delegating Translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.5" data-path="../dev/Packaging.html">
+            
+                <a href="../dev/Packaging.html">
+            
+                    
+                    Packaging
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.2.5.1" data-path="../dev/Adding_Dependent_Modules.html">
+            
+                <a href="../dev/Adding_Dependent_Modules.html">
+            
+                    
+                    Adding Dependent Modules
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.6" data-path="../dev/Deployment.html">
+            
+                <a href="../dev/Deployment.html">
+            
+                    
+                    Deployment
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="../dev/User_Defined_Functions.html">
+            
+                <a href="../dev/User_Defined_Functions.html">
+            
+                    
+                    User Defined Functions
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.3.1" data-path="../dev/Source_Supported_Functions.html">
+            
+                <a href="../dev/Source_Supported_Functions.html">
+            
+                    
+                    Source Supported Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3.2" data-path="../dev/Support_for_User-Defined_Functions_Non-Pushdown.html">
+            
+                <a href="../dev/Support_for_User-Defined_Functions_Non-Pushdown.html">
+            
+                    
+                    Support for User-Defined Functions(Non-Pushdown)
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.3.2.1" data-path="../dev/Archetype_Template_UDF_Project.html">
+            
+                <a href="../dev/Archetype_Template_UDF_Project.html">
+            
+                    
+                    Archetype Template UDF Project
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="../dev/AdminAPI.html">
+            
+                <a href="../dev/AdminAPI.html">
+            
+                    
+                    AdminAPI
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="../dev/Custom_Logging.html">
+            
+                <a href="../dev/Custom_Logging.html">
+            
+                    
+                    Custom Logging
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="../dev/Runtime_Updates.html">
+            
+                <a href="../dev/Runtime_Updates.html">
+            
+                    
+                    Runtime Updates
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.7" data-path="../dev/Custom_Metadata_Repository.html">
+            
+                <a href="../dev/Custom_Metadata_Repository.html">
+            
+                    
+                    Custom Metadata Repository
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.8" data-path="../dev/PreParser.html">
+            
+                <a href="../dev/PreParser.html">
+            
+                    
+                    PreParser
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.8.1" data-path="../dev/Archetype_Template_PreParser_Project.html">
+            
+                <a href="../dev/Archetype_Template_PreParser_Project.html">
+            
+                    
+                    Archetype Template PreParser Project
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="../embedded/Embedded_Guide.html">
+            
+                <a href="../embedded/Embedded_Guide.html">
+            
+                    
+                    Embedded Guide
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="../embedded/Logging_in_Teiid_Embedded.html">
+            
+                <a href="../embedded/Logging_in_Teiid_Embedded.html">
+            
+                    
+                    Logging in Teiid Embedded
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="../embedded/Secure_Embedded_with_PicketBox.html">
+            
+                <a href="../embedded/Secure_Embedded_with_PicketBox.html">
+            
+                    
+                    Secure Embedded with PicketBox
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="r_dv-reference.html">
+            
+                <a href="r_dv-reference.html">
+            
+                    
+                    Reference Guide
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="Release_Notes.html">
+            
+                <a href="Release_Notes.html">
+            
+                    
+                    Release Notes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2" data-path="r_data-sources.html">
+            
+                <a href="r_data-sources.html">
+            
+                    
+                    Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3" data-path="as_virtual-databases.html">
+            
+                <a href="as_virtual-databases.html">
+            
+                    
+                    Virtual databases
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.3.1" data-path="r_developing-vdb.html">
+            
+                <a href="r_developing-vdb.html">
+            
+                    
+                    Developing a Virtual Database
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.2" data-path="r_ddl-deployment-mode.html">
+            
+                <a href="r_ddl-deployment-mode.html">
+            
+                    
+                    DDL VDB
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.3" data-path="r_xml-deployment-mode.html">
+            
+                <a href="r_xml-deployment-mode.html">
+            
+                    
+                    Using XML & DDL
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.4" data-path="r_vdb-properties.html">
+            
+                <a href="r_vdb-properties.html">
+            
+                    
+                    VDB Properties
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.5" data-path="r_ddl-metadata-for-schema-objects.html">
+            
+                <a href="r_ddl-metadata-for-schema-objects.html">
+            
+                    
+                    Schema object DDL
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.6" data-path="r_ddl-metadata-for-domains.html">
+            
+                <a href="r_ddl-metadata-for-domains.html">
+            
+                    
+                    Domain DDL
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.7" data-path="r_multisource-models.html">
+            
+                <a href="r_multisource-models.html">
+            
+                    
+                    MultiSource Models
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.8" data-path="r_metadata-repositories.html">
+            
+                <a href="r_metadata-repositories.html">
+            
+                    
+                    Metadata Repositories
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.9" data-path="r_rest-service-through-vdb.html">
+            
+                <a href="r_rest-service-through-vdb.html">
+            
+                    
+                    REST Service Through VDB
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.10" data-path="r_vdb-reuse.html">
+            
+                <a href="r_vdb-reuse.html">
+            
+                    
+                    VDB Reuse
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4" data-path="as_sql-support.html">
+            
+                <a href="as_sql-support.html">
+            
+                    
+                    SQL Support
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.4.1" data-path="r_identifiers.html">
+            
+                <a href="r_identifiers.html">
+            
+                    
+                    Identifiers
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.2" data-path="as_expressions.html">
+            
+                <a href="as_expressions.html">
+            
+                    
+                    Expressions
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.4.2.1" data-path="r_column-identifiers.html">
+            
+                <a href="r_column-identifiers.html">
+            
+                    
+                    Column identifiers
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.2.2" data-path="r_literals.html">
+            
+                <a href="r_literals.html">
+            
+                    
+                    Literals
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.2.3" data-path="r_aggregate-functions.html">
+            
+                <a href="r_aggregate-functions.html">
+            
+                    
+                    Aggregate functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.2.4" data-path="r_window-functions.html">
+            
+                <a href="r_window-functions.html">
+            
+                    
+                    Window functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.2.5" data-path="r_case-and-searched-case-expressions.html">
+            
+                <a href="r_case-and-searched-case-expressions.html">
+            
+                    
+                    Case and searched case expressions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.2.6" data-path="r_scalar-subqueries.html">
+            
+                <a href="r_scalar-subqueries.html">
+            
+                    
+                    Scalar subqueries
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.2.7" data-path="r_parameter-references.html">
+            
+                <a href="r_parameter-references.html">
+            
+                    
+                    Parameter references
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.2.8" data-path="r_arrays.html">
+            
+                <a href="r_arrays.html">
+            
+                    
+                    Arrays
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.3" data-path="r_criteria.html">
+            
+                <a href="r_criteria.html">
+            
+                    
+                    Criteria
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.4" data-path="as_scalar-functions.html">
+            
+                <a href="as_scalar-functions.html">
+            
+                    
+                    Scalar functions
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.4.4.1" data-path="r_numeric-functions.html">
+            
+                <a href="r_numeric-functions.html">
+            
+                    
+                    Numeric functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.4.2" data-path="r_string-functions.html">
+            
+                <a href="r_string-functions.html">
+            
+                    
+                    String functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.4.3" data-path="r_date-time-functions.html">
+            
+                <a href="r_date-time-functions.html">
+            
+                    
+                    Date_Time functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.4.4" data-path="r_type-conversion-functions.html">
+            
+                <a href="r_type-conversion-functions.html">
+            
+                    
+                    Type conversion functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.4.5" data-path="r_choice-functions.html">
+            
+                <a href="r_choice-functions.html">
+            
+                    
+                    Choice functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.4.6" data-path="r_decode-functions.html">
+            
+                <a href="r_decode-functions.html">
+            
+                    
+                    Decode functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.4.7" data-path="r_lookup-function.html">
+            
+                <a href="r_lookup-function.html">
+            
+                    
+                    Lookup function
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.4.8" data-path="r_system-functions.html">
+            
+                <a href="r_system-functions.html">
+            
+                    
+                    System functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.4.9" data-path="r_xml-functions.html">
+            
+                <a href="r_xml-functions.html">
+            
+                    
+                    XML functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.4.10" data-path="r_json-functions.html">
+            
+                <a href="r_json-functions.html">
+            
+                    
+                    JSON functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.4.11" data-path="r_security-functions.html">
+            
+                <a href="r_security-functions.html">
+            
+                    
+                    Security functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.4.12" data-path="r_spatial-functions.html">
+            
+                <a href="r_spatial-functions.html">
+            
+                    
+                    Spatial functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.4.13" data-path="r_miscellaneous-functions.html">
+            
+                <a href="r_miscellaneous-functions.html">
+            
+                    
+                    Miscellaneous functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.4.14" data-path="c_nondeterministic-function-handling.html">
+            
+                <a href="c_nondeterministic-function-handling.html">
+            
+                    
+                    Nondeterministic function handling
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5" data-path="as_dml-commands.html">
+            
+                <a href="as_dml-commands.html">
+            
+                    
+                    DML commands
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.4.5.1" data-path="r_set-operations.html">
+            
+                <a href="r_set-operations.html">
+            
+                    
+                    Set operations
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.2" data-path="r_select-command.html">
+            
+                <a href="r_select-command.html">
+            
+                    
+                    SELECT command
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.3" data-path="r_values-command.html">
+            
+                <a href="r_values-command.html">
+            
+                    
+                    VALUES command
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.4" data-path="as_update-commands.html">
+            
+                <a href="as_update-commands.html">
+            
+                    
+                    Update commands
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.4.5.4.1" data-path="r_insert-command.html">
+            
+                <a href="r_insert-command.html">
+            
+                    
+                    INSERT command
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.4.2" data-path="r_update-command.html">
+            
+                <a href="r_update-command.html">
+            
+                    
+                    UPDATE command
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.4.3" data-path="r_delete-command.html">
+            
+                <a href="r_delete-command.html">
+            
+                    
+                    DELETE
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.4.4" data-path="r_upsert-merge-command.html">
+            
+                <a href="r_upsert-merge-command.html">
+            
+                    
+                    UPSERT/MERGE command
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.4.5" data-path="r_execute-command.html">
+            
+                <a href="r_execute-command.html">
+            
+                    
+                    EXECUTE command
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.4.6" data-path="r_procedural-relational-command.html">
+            
+                <a href="r_procedural-relational-command.html">
+            
+                    
+                    Procedural relational command
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.4.7" data-path="r_anonymous-procedure-block.html">
+            
+                <a href="r_anonymous-procedure-block.html">
+            
+                    
+                    Anonymous procedure block
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.5" data-path="r_subqueries.html">
+            
+                <a href="r_subqueries.html">
+            
+                    
+                    Subqueries
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.6" data-path="r_with-clause.html">
+            
+                <a href="r_with-clause.html">
+            
+                    
+                    WITH clause
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.7" data-path="r_select-clause.html">
+            
+                <a href="r_select-clause.html">
+            
+                    
+                    SELECT clause
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.8" data-path="as_from-clause.html">
+            
+                <a href="as_from-clause.html">
+            
+                    
+                    FROM clause
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.4.5.8.1" data-path="r_nested-tables.html">
+            
+                <a href="r_nested-tables.html">
+            
+                    
+                    Nested tables
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.8.2" data-path="r_xmltable.html">
+            
+                <a href="r_xmltable.html">
+            
+                    
+                    XMLTABLE
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.8.3" data-path="r_arraytable.html">
+            
+                <a href="r_arraytable.html">
+            
+                    
+                    ARRAYTABLE
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.8.4" data-path="r_objecttable.html">
+            
+                <a href="r_objecttable.html">
+            
+                    
+                    OBJECTTABLE
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.8.5" data-path="r_texttable.html">
+            
+                <a href="r_texttable.html">
+            
+                    
+                    TEXTTABLE
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.8.6" data-path="r_jsontable.html">
+            
+                <a href="r_jsontable.html">
+            
+                    
+                    JSONTABLE
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.9" data-path="r_where-clause.html">
+            
+                <a href="r_where-clause.html">
+            
+                    
+                    WHERE clause
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.10" data-path="r_group-by-clause.html">
+            
+                <a href="r_group-by-clause.html">
+            
+                    
+                    GROUP BY clause
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.11" data-path="r_having-clause.html">
+            
+                <a href="r_having-clause.html">
+            
+                    
+                    HAVING clause
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.12" data-path="r_order-by-clause.html">
+            
+                <a href="r_order-by-clause.html">
+            
+                    
+                    ORDER BY clause
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.13" data-path="r_limit-clause.html">
+            
+                <a href="r_limit-clause.html">
+            
+                    
+                    LIMIT clause
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.14" data-path="r_into-clause.html">
+            
+                <a href="r_into-clause.html">
+            
+                    
+                    INTO clause
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.5.15" data-path="r_option-clause.html">
+            
+                <a href="r_option-clause.html">
+            
+                    
+                    OPTION clause
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.6" data-path="as_ddl-commands.html">
+            
+                <a href="as_ddl-commands.html">
+            
+                    
+                    DDL commands
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.4.6.1" data-path="as_temp-tables.html">
+            
+                <a href="as_temp-tables.html">
+            
+                    
+                    Temporary tables
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.6.2" data-path="r_local-temporary-tables.html">
+            
+                <a href="r_local-temporary-tables.html">
+            
+                    
+                    Local temporary tables
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.6.3" data-path="r_global-temporary-tables.html">
+            
+                <a href="r_global-temporary-tables.html">
+            
+                    
+                    Global temporary tables
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.6.4" data-path="r_global-and-local-temp-table-features.html">
+            
+                <a href="r_global-and-local-temp-table-features.html">
+            
+                    
+                    Global and local temporary table features
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.6.5" data-path="r_foreign-temporary-tables.html">
+            
+                <a href="r_foreign-temporary-tables.html">
+            
+                    
+                    Foreign temporary tables
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.6.6" data-path="r_alter-view.html">
+            
+                <a href="r_alter-view.html">
+            
+                    
+                    Alter view
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.6.7" data-path="r_alter-procedure.html">
+            
+                <a href="r_alter-procedure.html">
+            
+                    
+                    Alter procedure
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.6.8" data-path="r_alter-trigger.html">
+            
+                <a href="r_alter-trigger.html">
+            
+                    
+                    Alter trigger
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.7" data-path="as_procedures.html">
+            
+                <a href="as_procedures.html">
+            
+                    
+                    Procedures
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.4.7.1" data-path="as_procedure-language.html">
+            
+                <a href="as_procedure-language.html">
+            
+                    
+                    Procedure language
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.4.7.1.1" data-path="r_command-statement.html">
+            
+                <a href="r_command-statement.html">
+            
+                    
+                    Command statement
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.7.1.2" data-path="r_dynamic-sql-command.html">
+            
+                <a href="r_dynamic-sql-command.html">
+            
+                    
+                    Dynamic SQL command
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.7.1.3" data-path="r_declaration-statement.html">
+            
+                <a href="r_declaration-statement.html">
+            
+                    
+                    Declaration statement
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.7.1.4" data-path="r_assignment-statement.html">
+            
+                <a href="r_assignment-statement.html">
+            
+                    
+                    Assignment statement
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.7.1.5" data-path="r_special-variables.html">
+            
+                <a href="r_special-variables.html">
+            
+                    
+                    Special variables
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.7.1.6" data-path="r_compound-statement.html">
+            
+                <a href="r_compound-statement.html">
+            
+                    
+                    Compound statement
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.7.1.7" data-path="r_if-statement.html">
+            
+                <a href="r_if-statement.html">
+            
+                    
+                    IF statement
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.7.1.8" data-path="r_loop-statement.html">
+            
+                <a href="r_loop-statement.html">
+            
+                    
+                    LOOP statement
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.7.1.9" data-path="r_while-statement.html">
+            
+                <a href="r_while-statement.html">
+            
+                    
+                    WHILE statement
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.7.1.10" data-path="r_continue-statement.html">
+            
+                <a href="r_continue-statement.html">
+            
+                    
+                    CONTINUE statement
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.7.1.11" data-path="r_break-statement.html">
+            
+                <a href="r_break-statement.html">
+            
+                    
+                    BREAK statement
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.7.1.12" data-path="r_leave-statement.html">
+            
+                <a href="r_leave-statement.html">
+            
+                    
+                    LEAVE statement
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.7.1.13" data-path="r_return-statement.html">
+            
+                <a href="r_return-statement.html">
+            
+                    
+                    RETURN statement
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.7.1.14" data-path="r_error-statement.html">
+            
+                <a href="r_error-statement.html">
+            
+                    
+                    ERROR statement
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.7.1.15" data-path="r_raise-statement.html">
+            
+                <a href="r_raise-statement.html">
+            
+                    
+                    RAISE statement
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.7.1.16" data-path="r_exception-expression.html">
+            
+                <a href="r_exception-expression.html">
+            
+                    
+                    Exception-expression
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.7.2" data-path="r_virtual-procedures.html">
+            
+                <a href="r_virtual-procedures.html">
+            
+                    
+                    Virtual procedures
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.7.3" data-path="r_update-procedures-triggers.html">
+            
+                <a href="r_update-procedures-triggers.html">
+            
+                    
+                    Update procedures (Triggers)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.8" data-path="r_comments.html">
+            
+                <a href="r_comments.html">
+            
+                    
+                    Comments
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4.9" data-path="r_explain-statement.html">
+            
+                <a href="r_explain-statement.html">
+            
+                    
+                    Explain statement
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.5" data-path="as_datatypes.html">
+            
+                <a href="as_datatypes.html">
+            
+                    
+                    Datatypes
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.5.1" data-path="r_supported-types.html">
+            
+                <a href="r_supported-types.html">
+            
+                    
+                    Supported types
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.5.2" data-path="r_type-conversions.html">
+            
+                <a href="r_type-conversions.html">
+            
+                    
+                    Type conversions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.5.3" data-path="r_special-conversion-cases.html">
+            
+                <a href="r_special-conversion-cases.html">
+            
+                    
+                    Special conversion cases
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.5.4" data-path="r_escaped-literal-syntax.html">
+            
+                <a href="r_escaped-literal-syntax.html">
+            
+                    
+                    Escaped literal syntax
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.6" data-path="as_updatable-views.html">
+            
+                <a href="as_updatable-views.html">
+            
+                    
+                    Updatable views
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.6.1" data-path="r_key-preserved-table.adoc">
+            
+                <span>
+            
+                    
+                    Key-preserved tables
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.7" data-path="as_transaction-support.html">
+            
+                <a href="as_transaction-support.html">
+            
+                    
+                    Transaction Support
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.7.1" data-path="r_autocommittxn-execution-property.html">
+            
+                <a href="r_autocommittxn-execution-property.html">
+            
+                    
+                    AutoCommitTxn execution property
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.7.2" data-path="r_updating-model-count.html">
+            
+                <a href="r_updating-model-count.html">
+            
+                    
+                    Updating model count
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.7.3" data-path="r_jdbc-and-transactions.html">
+            
+                <a href="r_jdbc-and-transactions.html">
+            
+                    
+                    JDBC and transactions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.7.4" data-path="r_transactional-behavior-with-jboss-data-source-types.html">
+            
+                <a href="r_transactional-behavior-with-jboss-data-source-types.html">
+            
+                    
+                    Transactional behavior with JBoss data source types
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.7.5" data-path="r_limitations-and-workarounds.html">
+            
+                <a href="r_limitations-and-workarounds.html">
+            
+                    
+                    Limitations and workarounds
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.8" data-path="as_data-roles.html">
+            
+                <a href="as_data-roles.html">
+            
+                    
+                    Data roles
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.8.1" data-path="r_permissions.html">
+            
+                <a href="r_permissions.html">
+            
+                    
+                    Permissions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.8.2" data-path="r_role-mapping.html">
+            
+                <a href="r_role-mapping.html">
+            
+                    
+                    Role mapping
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.8.3" data-path="r_xml-definition.html">
+            
+                <a href="r_xml-definition.html">
+            
+                    
+                    XML definition
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.8.4" data-path="r_customizing.html">
+            
+                <a href="r_customizing.html">
+            
+                    
+                    Customizing
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9" data-path="as_system-schema.html">
+            
+                <a href="as_system-schema.html">
+            
+                    
+                    System schema
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.9.1" data-path="r_sys-schema.html">
+            
+                <a href="r_sys-schema.html">
+            
+                    
+                    SYS schema
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.9.2" data-path="r_sysadmin-schema.html">
+            
+                <a href="r_sysadmin-schema.html">
+            
+                    
+                    SYSADMIN schema
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10" data-path="as_translators.html">
+            
+                <a href="as_translators.html">
+            
+                    
+                    Translators
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.10.1" data-path="r_amazon-s3-translator.html">
+            
+                <a href="r_amazon-s3-translator.html">
+            
+                    
+                    Amazon S3 translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.2" data-path="r_amazon-simpledb-translator.html">
+            
+                <a href="r_amazon-simpledb-translator.html">
+            
+                    
+                    Amazon SimpleDB translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.3" data-path="r_apache-accumulo-translator.html">
+            
+                <a href="r_apache-accumulo-translator.html">
+            
+                    
+                    Apache Accumulo translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.4" data-path="r_apache-solr-translator.html">
+            
+                <a href="r_apache-solr-translator.html">
+            
+                    
+                    Apache SOLR translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.5" data-path="r_cassandra-translator.html">
+            
+                <a href="r_cassandra-translator.html">
+            
+                    
+                    Cassandra translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.6" data-path="r_couchbase-translator.html">
+            
+                <a href="r_couchbase-translator.html">
+            
+                    
+                    Couchbase translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.7" data-path="as_delegator-translators.html">
+            
+                <a href="as_delegator-translators.html">
+            
+                    
+                    Delegator translators
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.10.7.1" data-path="p_extending-the-delegator-translator.html">
+            
+                <a href="p_extending-the-delegator-translator.html">
+            
+                    
+                    Extending the delegator translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.8" data-path="r_file-translator.html">
+            
+                <a href="r_file-translator.html">
+            
+                    
+                    File translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.9" data-path="r_google-spreadsheet-translator.html">
+            
+                <a href="r_google-spreadsheet-translator.html">
+            
+                    
+                    Google spreadsheet translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.10" data-path="r_infinispan-translator.html">
+            
+                <a href="r_infinispan-translator.html">
+            
+                    
+                    Infinispan translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11" data-path="as_jdbc-translators.html">
+            
+                <a href="as_jdbc-translators.html">
+            
+                    
+                    JDBC translators
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.10.11.1" data-path="r_actian-vector-translator.html">
+            
+                <a href="r_actian-vector-translator.html">
+            
+                    
+                    Actian vector translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.2" data-path="r_apache-phoenix-translator.html">
+            
+                <a href="r_apache-phoenix-translator.html">
+            
+                    
+                    Apache Phoenix translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.3" data-path="r_cloudera-impala-translator.html">
+            
+                <a href="r_cloudera-impala-translator.html">
+            
+                    
+                    Cloudera Impala translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.4" data-path="r_db2-translator.html">
+            
+                <a href="r_db2-translator.html">
+            
+                    
+                    Db2 translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.5" data-path="r_derby-translator.html">
+            
+                <a href="r_derby-translator.html">
+            
+                    
+                    Derby translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.6" data-path="r_exasol-translator.html">
+            
+                <a href="r_exasol-translator.html">
+            
+                    
+                    Exasol translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.7" data-path="r_greenplum-translator.html">
+            
+                <a href="r_greenplum-translator.html">
+            
+                    
+                    Greenplum translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.8" data-path="r_h2-translator.html">
+            
+                <a href="r_h2-translator.html">
+            
+                    
+                    H2 translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.9" data-path="r_hive-translator.html">
+            
+                <a href="r_hive-translator.html">
+            
+                    
+                    Hive translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.10" data-path="r_hsql-translator.html">
+            
+                <a href="r_hsql-translator.html">
+            
+                    
+                    HSQL translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.11" data-path="r_informix-translator.html">
+            
+                <a href="r_informix-translator.html">
+            
+                    
+                    Informix translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.12" data-path="r_ingres-translators.html">
+            
+                <a href="r_ingres-translators.html">
+            
+                    
+                    Ingres translators
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.13" data-path="r_intersystems-cache-translator.html">
+            
+                <a href="r_intersystems-cache-translator.html">
+            
+                    
+                    Intersystems Cache translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.14" data-path="r_jdbc-ansi-translator.html">
+            
+                <a href="r_jdbc-ansi-translator.html">
+            
+                    
+                    JDBC ANSI translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.15" data-path="r_jdbc-simple-translator.html">
+            
+                <a href="r_jdbc-simple-translator.html">
+            
+                    
+                    JDBC Simple translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.16" data-path="r_metamatrix-translator.html">
+            
+                <a href="r_metamatrix-translator.html">
+            
+                    
+                    MetaMatrix translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.17" data-path="r_microsoft-access-translators.html">
+            
+                <a href="r_microsoft-access-translators.html">
+            
+                    
+                    Microsoft Access translators
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.18" data-path="r_microsoft-sql-server-translator.html">
+            
+                <a href="r_microsoft-sql-server-translator.html">
+            
+                    
+                    Microsoft SQL Server translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.19" data-path="r_modeshape-translator.html">
+            
+                <a href="r_modeshape-translator.html">
+            
+                    
+                    ModeShape translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.20" data-path="r_mysql-translators.html">
+            
+                <a href="r_mysql-translators.html">
+            
+                    
+                    MySQL translators
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.21" data-path="r_netezza-translator.html">
+            
+                <a href="r_netezza-translator.html">
+            
+                    
+                    Netezza translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.22" data-path="r_oracle-translator.html">
+            
+                <a href="r_oracle-translator.html">
+            
+                    
+                    Oracle translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.23" data-path="r_osisoft-pi-translator.html">
+            
+                <a href="r_osisoft-pi-translator.html">
+            
+                    
+                    OSISoft PI translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.24" data-path="r_postgresql-translator.html">
+            
+                <a href="r_postgresql-translator.html">
+            
+                    
+                    PostgreSQL translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.25" data-path="r_prestodb-translator.html">
+            
+                <a href="r_prestodb-translator.html">
+            
+                    
+                    PrestoDB translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.26" data-path="r_redshift-translator.html">
+            
+                <a href="r_redshift-translator.html">
+            
+                    
+                    Redshift translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.27" data-path="r_sap-hana-translator.html">
+            
+                <a href="r_sap-hana-translator.html">
+            
+                    
+                    SAP HANA translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.28" data-path="r_sap-iq-translator.html">
+            
+                <a href="r_sap-iq-translator.html">
+            
+                    
+                    SAP IQ translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.29" data-path="r_sybase-translator.html">
+            
+                <a href="r_sybase-translator.html">
+            
+                    
+                    Sybase translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.30" data-path="r_teiid-translator.html">
+            
+                <a href="r_teiid-translator.html">
+            
+                    
+                    Teiid translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.31" data-path="r_teradata-translator.html">
+            
+                <a href="r_teradata-translator.html">
+            
+                    
+                    Teradata translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.11.32" data-path="r_vertica-translator.html">
+            
+                <a href="r_vertica-translator.html">
+            
+                    
+                    Vertica translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.12" data-path="r_jpa-translator.html">
+            
+                <a href="r_jpa-translator.html">
+            
+                    
+                    JPA translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.13" data-path="r_ldap-translator.html">
+            
+                <a href="r_ldap-translator.html">
+            
+                    
+                    LDAP translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.14" data-path="r_loopback-translator.html">
+            
+                <a href="r_loopback-translator.html">
+            
+                    
+                    Loopback translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.15" data-path="r_microsoft-excel-translator.html">
+            
+                <a href="r_microsoft-excel-translator.html">
+            
+                    
+                    Microsoft Excel translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.16" data-path="r_mongodb-translator.html">
+            
+                <a href="r_mongodb-translator.html">
+            
+                    
+                    MongoDB translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.17" data-path="r_odata-translator.html">
+            
+                <a href="r_odata-translator.html">
+            
+                    
+                    OData translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.18" data-path="r_odata-v4-translator.html">
+            
+                <a href="r_odata-v4-translator.html">
+            
+                    
+                    OData V4 translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.19" data-path="r_swagger-translator.html">
+            
+                <a href="r_swagger-translator.html">
+            
+                    
+                    Swagger translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.20" data-path="r_openapi-translator.html">
+            
+                <a href="r_openapi-translator.html">
+            
+                    
+                    OpenAPI translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.21" data-path="r_olap-translator.html">
+            
+                <a href="r_olap-translator.html">
+            
+                    
+                    OLAP translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.22" data-path="r_salesforce-translators.html">
+            
+                <a href="r_salesforce-translators.html">
+            
+                    
+                    Salesforce translators
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.23" data-path="r_sap-gateway-translator.html">
+            
+                <a href="r_sap-gateway-translator.html">
+            
+                    
+                    SAP Gateway translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.10.24" data-path="r_web-services-translator.html">
+            
+                <a href="r_web-services-translator.html">
+            
+                    
+                    Web Services translator
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.11" data-path="as_federated-planning.html">
+            
+                <a href="as_federated-planning.html">
+            
+                    
+                    Federated planning
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.11.1" data-path="r_planning-overview.html">
+            
+                <a href="r_planning-overview.html">
+            
+                    
+                    Planning overview
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.8.11.2" data-path="r_query-planner.html">
+            
+                <a href="r_query-planner.html">
+            
+                    
+                    Query planner
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.11.3" data-path="r_query-plans.html">
+            
+                <a href="r_query-plans.html">
+            
+                    
+                    Query plans
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.11.4" data-path="r_federated-optimizations.html">
+            
+                <a href="r_federated-optimizations.html">
+            
+                    
+                    Federated optimizations
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.11.5" data-path="r_subquery-optimization.html">
+            
+                <a href="r_subquery-optimization.html">
+            
+                    
+                    Subquery optimization
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.11.6" data-path="r_xquery-optimization.html">
+            
+                <a href="r_xquery-optimization.html">
+            
+                    
+                    XQuery optimization
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.11.7" data-path="r_federated-failure-modes.html">
+            
+                <a href="r_federated-failure-modes.html">
+            
+                    
+                    Federated failure modes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.11.8" data-path="r_conformed-tables.html">
+            
+                <a href="r_conformed-tables.html">
+            
+                    
+                    Conformed tables
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.12" data-path="as_architecture.html">
+            
+                <a href="as_architecture.html">
+            
+                    
+                    Architecture
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.12.1" data-path="r_terminology.html">
+            
+                <a href="r_terminology.html">
+            
+                    
+                    Terminology
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.12.2" data-path="r_data-management.html">
+            
+                <a href="r_data-management.html">
+            
+                    
+                    Data management
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.12.3" data-path="r_query-termination.html">
+            
+                <a href="r_query-termination.html">
+            
+                    
+                    Query termination
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.12.4" data-path="r_processing.html">
+            
+                <a href="r_processing.html">
+            
+                    
+                    Processing
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.13" data-path="r_bnf-for-sql-grammar.html">
+            
+                <a href="r_bnf-for-sql-grammar.html">
+            
+                    
+                    BNF for SQL grammar
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="../security/Security_Guide.html">
+            
+                <a href="../security/Security_Guide.html">
+            
+                    
+                    Security Guide
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.1" data-path="../security/LoginModules.html">
+            
+                <a href="../security/LoginModules.html">
+            
+                    
+                    LoginModules
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.2" data-path="../security/Teiid_Server_Transport_Security.html">
+            
+                <a href="../security/Teiid_Server_Transport_Security.html">
+            
+                    
+                    Teiid Server Transport Security
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.3" data-path="../security/JDBC_ODBC_SSL_SelfSigned.html">
+            
+                <a href="../security/JDBC_ODBC_SSL_SelfSigned.html">
+            
+                    
+                    JDBC/ODBC SSL connection using self-signed SSL certificates
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.4" data-path="../security/Data_Source_Security.html">
+            
+                <a href="../security/Data_Source_Security.html">
+            
+                    
+                    Data Source Security
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.5" data-path="../security/Kerberos_support_through_GSSAPI.html">
+            
+                <a href="../security/Kerberos_support_through_GSSAPI.html">
+            
+                    
+                    Kerberos support through GSSAPI
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.6" data-path="../security/Custom_Authorization_Validator.html">
+            
+                <a href="../security/Custom_Authorization_Validator.html">
+            
+                    
+                    Custom Authorization Validator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.7" data-path="../security/SAML_Based_Security_For_OData.html">
+            
+                <a href="../security/SAML_Based_Security_For_OData.html">
+            
+                    
+                    SAML Based Security For OData
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.8" data-path="../security/OAuth2_Based_Security_For_OData_Using_KeyCloak.html">
+            
+                <a href="../security/OAuth2_Based_Security_For_OData_Using_KeyCloak.html">
+            
+                    
+                    OAuth2 Based Security For OData Using KeyCloak
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.9" data-path="../security/SAML_Based_Security_For_OData_Using_KeyCloak.html">
+            
+                <a href="../security/SAML_Based_Security_For_OData_Using_KeyCloak.html">
+            
+                    
+                    SAML Based Security For OData Using KeyCloak
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Query planner</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="query-planner">Query planner</h1>
+<div class="paragraph">
+<p>For each sub-command in the user command an appropriate kind of sub-planner is used (relational, XML, procedure, etc).</p>
+</div>
+<div class="paragraph">
+<p>Each planner has three primary phases:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Generate canonical plan</p>
+</li>
+<li>
+<p>Optimization</p>
+</li>
+<li>
+<p>Plan to process converter&#x2009;&#x2014;&#x2009;Converts plan data structure into a processing form.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">Relational planner</div>
+<p>A relational processing plan is created by the optimizer after the logical plan is manipulated by a series of rules.
+The application of rules is determined both by the query structure and by the rules themselves.
+The node structure of the debug plan resembles that of the processing plan, but the node types more logically represent SQL operations.</p>
+</div>
+<div class="paragraph">
+<div class="title">Canonical plan and all nodes</div>
+<p>As described in the <a href="#planning-overview.">Planning overview</a>, a SQL statement submitted to the query engine is parsed, resolved,
+validated, and rewritten before it is converted into a canonical plan form. The canonical plan form most closely resembles the
+initial SQL structure. A SQL select query has the following possible clauses (all but SELECT are optional):
+WITH, SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY, LIMIT. These clauses are logically executed in the following order:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>WITH (create common table expressions)&#x2009;&#x2014;&#x2009;Processed by a specialized PROJECT NODE.</p>
+</li>
+<li>
+<p>FROM (read and join all data from tables)&#x2009;&#x2014;&#x2009;Processed by a SOURCE node for each from clause item, or a Join node (if &gt;1 table).</p>
+</li>
+<li>
+<p>WHERE (filter rows)&#x2009;&#x2014;&#x2009;Processed by a SELECT node.</p>
+</li>
+<li>
+<p>GROUP BY (group rows into collapsed rows)&#x2009;&#x2014;&#x2009;Processed by a GROUP node.</p>
+</li>
+<li>
+<p>HAVING (filter grouped rows)&#x2009;&#x2014;&#x2009;Processed by a SELECT node.</p>
+</li>
+<li>
+<p>SELECT (evaluate expressions and return only requested rows)&#x2009;&#x2014;&#x2009;Processed by a PROJECT node and DUP_REMOVE node (for SELECT DISTINCT).</p>
+</li>
+<li>
+<p>INTO&#x2009;&#x2014;&#x2009;Processed by a specialized PROJECT with a SOURCE child.</p>
+</li>
+<li>
+<p>ORDER BY (sort rows)&#x2009;&#x2014;&#x2009;Processed by a SORT node.</p>
+</li>
+<li>
+<p>LIMIT (limit result set to a certain range of results)&#x2009;&#x2014;&#x2009;Processed by a LIMIT node.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>For example, a SQL statement such as <code>SELECT max(pm1.g1.e1) FROM pm1.g1 WHERE e2 = 1</code> creates a logical plan:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/dv_query_plan.png" alt="images/dv_query_plan.png"></span></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">Project(groups=[anon_grp0], props={PROJECT_COLS=[anon_grp0.agg0 AS expr1]})
+  Group(groups=[anon_grp0], props={SYMBOL_MAP={anon_grp0.agg0=MAX(pm1.G1.E1)}})
+    Select(groups=[pm1.G1], props={SELECT_CRITERIA=pm1.G1.E2 = 1})
+      Source(groups=[pm1.G1])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here the Source corresponds to the FROM clause, the Select corresponds to the WHERE clause, the Group corresponds
+to the implied grouping to create the max aggregate, and the Project corresponds to the SELECT clause.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The effect of grouping generates what is effectively an inline view, <code>anon_grp0</code>, to handle the projection of values created by the grouping.
+</td>
+</tr>
+</table>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. <strong>Node Types</strong></caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Type Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ACCESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A source access or plan execution.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DUP_REMOVE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Removes duplicate rows</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JOIN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A join (LEFT OUTER, FULL OUTER, INNER, CROSS, SEMI, and so forth).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PROJECT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A projection of tuple values</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SELECT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A filtering of tuples</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SORT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An ordering operation, which may be inserted to process other operations such as joins.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SOURCE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Any logical source of tuples including an inline view, a source access, XMLTABLE, and so forth.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GROUP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A grouping operation.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SET_OP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A set operation (UNION/INTERSECT/EXCEPT).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NULL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A source of no tuples.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TUPLE_LIMIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Row offset / limit</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<div class="title">Node properties</div>
+<p>Each node has a set of applicable properties that are typically shown on the node.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. <strong>Access properties</strong></caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ATOMIC_REQUEST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The final form of a source request.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MODEL_ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The metadata object for the target model/schema.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PROCEDURE_CRITERIA/PROCEDURE_INPUTS/PROCEDURE_DEFAULTS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Used in planning procedureal relational queries.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IS_MULTI_SOURCE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">set to true when the node represents a multi-source access.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SOURCE_NAME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">used to track the multi-source source name.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CONFORMED_SOURCES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tracks the set of conformed sources when the conformed extension metadata is used.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SUB_PLAN/SUB_PLANS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">used in multi-source planning.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 3. <strong>Set operation properties</strong></caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SET_OPERATION/USE_ALL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">defines the set operation(UNION/INTERSECT/EXCEPT) and if all rows or distinct rows are used.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 4. <strong>Join properties</strong></caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JOIN_CRITERIA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All join predicates.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JOIN_TYPE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of join (INNER, LEFT OUTER, and so forth).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JOIN_STRATEGY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The algorithm to use (nested loop, merge, and so forth).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LEFT_EXPRESSIONS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The expressions in equi-join predicates that originate from the left side of the join.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RIGHT_EXPRESSIONS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The expressions in equi-join predicates that originate from the right side of the join.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DEPENDENT_VALUE_SOURCE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">set if a dependent join is used.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NON_EQUI_JOIN_CRITERIA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Non-equi join predicates.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SORT_LEFT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the left side needs sorted for join processing.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SORT_RIGHT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the right side needs sorted for join processing.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IS_OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the join is optional.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IS_LEFT_DISTINCT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the left side is distinct with respect to the equi join predicates.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IS_RIGHT_DISTINCT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the right side is distinct with respect to the equi join predicates.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IS_SEMI_DEP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the dependent join represents a semi-join.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PRESERVE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the preserve hint is preserving the join order.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 5. <strong>Project properties</strong></caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PROJECT_COLS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The expressions projected.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INTO_GROUP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The group targeted if this is a select into or insert with a query expression.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HAS_WINDOW_FUNCTIONS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">True if window functions are used.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CONSTRAINT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The constraint that must be met if the values are being projected into a group.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UPSERT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the insert is an upsert.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 6. <strong>Select properties</strong></caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SELECT_CRITERIA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The filter.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IS_HAVING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the filter is applied after grouping.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IS_PHANTOM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">True if the node is marked for removal, but temporarily left in the plan.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IS_TEMPORARY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Inferred criteria that may not be used in the final plan.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IS_COPIED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the criteria has already been processed by rule copy criteria.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IS_PUSHED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the criteria is pushed as far as possible.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IS_DEPENDENT_SET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the criteria is the filter of a dependent join.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 7. <strong>Sort properties</strong></caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SORT_ORDER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The order by that defines the sort.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UNRELATED_SORT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the ordering includes a value that is not being projected.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IS_DUP_REMOVAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the sort should also perform duplicate removal over the entire projection.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 8. <strong>Source properties</strong></caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SYMBOL_MAP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The mapping from the columns above the source to the projected expressions. Also present on Group nodes.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PARTITION_INFO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The partitioning of the union branches.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VIRTUAL_COMMAND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the source represents an view or inline view, the query that defined the view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MAKE_DEP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hint information.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PROCESSOR_PLAN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The processor plan of a non-relational source(typically from the NESTED_COMMAND).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NESTED_COMMAND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The non-relational command.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TABLE_FUNCTION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The table function (XMLTABLE, OBJECTTABLE, and so forth.) defining the source.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CORRELATED_REFERENCES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The correlated references for the nodes below the source.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MAKE_NOT_DEP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If make not dep is set.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INLINE_VIEW</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the source node represents an inline view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NO_UNNEST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the no_unnest hint is set.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MAKE_IND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the make ind hint is set.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SOURCE_HINT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The source hint. See <a href="#federated-optimizations">Federated optimizations</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ACCESS_PATTERNS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Access patterns yet to be satisfied.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ACCESS_PATTERN_USED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Satisfied access patterns.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">REQUIRED_ACCESS_PATTERN_GROUPS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Groups needed to satisfy the access patterns. Used in join planning.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Many source properties also become present on associated access nodes.
+</td>
+</tr>
+</table>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 9. <strong>Group properties</strong></caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GROUP_COLS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The grouping columns.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ROLLUP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the grouping includes a rollup.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 10. <strong>Tuple limit properties</strong></caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MAX_TUPLE_LIMIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Expression that evaluates to the max number of tuples generated.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OFFSET_TUPLE_COUNT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Expression that evaluates to the tuple offset of the starting tuple.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IS_IMPLICIT_LIMIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the limit is created by the rewriter as part of a subquery optimization.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IS_NON_STRICT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the unordered limit should not be enforced strictly.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 11. <strong>General and costing properties</strong></caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OUTPUT_COLS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The output columns for the node. Is typically set after rule assign output elements.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EST_SET_SIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Represents the estimated set size this node would produce for a sibling node as the independent node in a dependent join scenario.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EST_DEP_CARDINALITY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value that represents the estimated cardinality (amount of rows) produced by this node as the dependent node in a dependent join scenario.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EST_DEP_JOIN_COST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value that represents the estimated cost of a dependent join (the join strategy for this could be Nested Loop or Merge).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EST_JOIN_COST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value that represents the estimated cost of a merge join (the join strategy for this could be Nested Loop or Merge).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EST_CARDINALITY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Represents the estimated cardinality (amount of rows) produced by this node.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EST_COL_STATS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Column statistics including number of null values, distinct value count, and so forth.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EST_SELECTIVITY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Represents the selectivity of a criteria node.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<div class="title">Rules</div>
+<p>Relational optimization is based upon rule execution that evolves the initial plan into the execution plan.
+There are a set of pre-defined rules that are dynamically assembled into a rule stack for every query.
+The rule stack is assembled based on the contents of the user&#x2019;s query and the views/procedures accessed.
+For example, if there are no view layers, then rule Merge Virtual, which merges view layers together,
+is not needed and will not be added to the stack. &#xA0;This allows the rule stack to reflect the complexity of the query.</p>
+</div>
+<div class="paragraph">
+<p>Logically the plan node data structure represents a tree of nodes where the source data comes up from the leaf nodes
+(typically Access nodes in the final plan), flows up through the tree and produces the user&#x2019;s results out the top.
+The nodes in the plan structure can have bidirectional links, dynamic properties, and allow any number of child nodes.
+Processing plans in contrast typically have fixed properties.</p>
+</div>
+<div class="paragraph">
+<p>Plan rule manipulate the plan tree, fire other rules, and drive the optimization process. Each rule is designed
+to perform a narrow set of tasks. Some rules can be run multiple times. Some rules require a specific set of precursors to run properly.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Access Pattern Validation&#x2009;&#x2014;&#x2009;Ensures that all access patterns have been satisfied.</p>
+</li>
+<li>
+<p>Apply Security&#x2009;&#x2014;&#x2009;Applies row and column level security.</p>
+</li>
+<li>
+<p>Assign Output Symbol&#x2009;&#x2014;&#x2009;This rule walks top down through every node and calculates the output columns for each node.
+Columns that are not needed are dropped at every node, which is known as projection minimization.
+This is done by keeping track of both the columns needed to feed the parent node and also keeping
+track of columns that are &quot;created&quot; at a certain node.</p>
+</li>
+<li>
+<p>Calculate Cost&#x2009;&#x2014;&#x2009;Adds costing information to the plan</p>
+</li>
+<li>
+<p>Choose Dependent&#x2009;&#x2014;&#x2009;This rule looks at each join node and determines whether the join should be made
+dependent and in which direction. Cardinality, the number of distinct values, and primary key information
+are used in several formulas to determine whether a dependent join is likely to be worthwhile. The dependent join
+differs in performance ideally because a fewer number of values will be returned from the dependent side.</p>
+<div class="paragraph">
+<p>Also, we must consider the number of values passed from independent to dependent side. If that set is larger than
+the maximum number of values in an IN criteria on the dependent side, then we must break the query into a set of
+queries and combine their results.&#xA0;Executing each query in the connector has some overhead and that is taken into account.
+Without costing information a lot of common cases where the only criteria specified is on a non-unique
+(but strongly limiting) field are missed.</p>
+</div>
+<div class="paragraph">
+<p>A join is eligible to be dependent if:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>There is at least one equi-join criterion, for example, <code>tablea.col = tableb.col</code></p>
+</li>
+<li>
+<p>The join is not a full outer join and the dependent side of the join is on the inner side of the join.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The join will be made dependent if one of the following conditions, listed in precedence order, holds:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>There is an unsatisfied access pattern that can be satisfied with the dependent join criteria.</p>
+</li>
+<li>
+<p>The potential dependent side of the join is marked with an option makedep.</p>
+</li>
+<li>
+<p>(4.3.2) if costing was enabled, the estimated cost for the dependent join (5.0+ possibly in each direction
+in the case of inner joins) is computed and compared to not performing the dependent join.
+If the costs were all determined (which requires all relevant table cardinality, column ndv, and possibly nnv
+  values to be populated) the lowest is chosen.</p>
+</li>
+<li>
+<p>If key metadata information indicates that the potential dependent side is not &quot;small&quot; and the other side is
+&quot;not small&quot; or (5.0.1) the potential dependent side is the inner side of a left outer join.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Dependent join is the key optimization we use to efficiently process multi-source joins.
+Instead of reading all of source A and all of source B and joining them on A.x = B.x, we read all of A,
+and then build a set of A.x that are passed as a criteria when querying B.
+In cases where A is small and B is large, this can drastically reduce the data retrieved from B, thus greatly speeding the overall query.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Choose Join Strategy&#x2009;&#x2014;&#x2009;Choose the join strategy based upon the cost and attributes of the join.</p>
+</li>
+<li>
+<p>Clean Criteria&#x2009;&#x2014;&#x2009;Removes phantom criteria.</p>
+</li>
+<li>
+<p>Collapse Source&#x2009;&#x2014;&#x2009;Takes all of the nodes below an access node and creates a SQL query representation.</p>
+</li>
+<li>
+<p>Copy Criteria&#x2009;&#x2014;&#x2009;This rule copies criteria over an equality criteria that is present in the criteria of a join.
+Since the equality defines an equivalence, this is a valid way to create a new criteria that may limit
+results on the other side of the join (especially in the case of a multi-source join).</p>
+</li>
+<li>
+<p>Decompose Join&#x2009;&#x2014;&#x2009;This rule performs a partition-wise join optimization on joins of a partitioned union. For more information,
+see <em>Partitioned unions</em> in <a href="#federated-optimizations">Federated optimizations</a>.
+The decision to decompose is based upon detecting that each side of the join is a partitioned union
+(note that non-ANSI joins of more than 2 tables may cause the optimization to not detect the appropriate join).
+The rule currently only looks for situations where at most 1 partition matches from each side.</p>
+</li>
+<li>
+<p>Implement Join Strategy&#x2009;&#x2014;&#x2009;Adds necessary sort and other nodes to process the chosen join strategy</p>
+</li>
+<li>
+<p>Merge Criteria&#x2009;&#x2014;&#x2009;Combines select nodes</p>
+</li>
+<li>
+<p>Merge Virtual&#x2009;&#x2014;&#x2009;Removes view and inline view layers</p>
+</li>
+<li>
+<p>Place Access&#x2009;&#x2014;&#x2009;Places access nodes under source nodes. An access node represents the point at which
+everything below the access node gets pushed to the source or is a plan invocation.
+Later rules focus on either pushing under the access or pulling the access node up the tree to move
+more work down to the sources.&#xA0;This rule is also responsible for placing access patterns. For more information, see
+<em>Access patterns</em> in <a href="#federated-optimizations">Federated optimizations</a></p>
+</li>
+<li>
+<p>Plan Joins&#x2009;&#x2014;&#x2009;This rule attempts to find an optimal ordering of the joins performed in the plan, while ensuring that
+access pattern dependencies are met.
+This rule has three main steps.</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>It must determine an ordering of joins that satisfy the access patterns present.</p>
+</li>
+<li>
+<p>It will heuristically create joins that can be pushed to the source (if a set of joins are pushed to the source,
+we will not attempt to create an optimal ordering within that set. More than likely it will be sent to the source in
+the non-ANSI multi-join syntax and will be optimized by the database).</p>
+</li>
+<li>
+<p>It will use costing information to determine the best left-linear ordering of joins performed in the processing engine.
+This third step will do an exhaustive search for 7 or less join sources and is heuristically driven by join selectivity for 8 or more sources.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Plan Outer Joins&#x2009;&#x2014;&#x2009;Reorders outer joins as permitted to improve push down.</p>
+</li>
+<li>
+<p>Plan Procedures&#x2009;&#x2014;&#x2009;Plans procedures that appear in procedural relational queries.</p>
+</li>
+<li>
+<p>Plan Sorts&#x2009;&#x2014;&#x2009;Optimizations around sorting, such as combining sort operations or moving projection.</p>
+</li>
+<li>
+<p>Plan Subqueries&#x2009;&#x2014;&#x2009;New for Teiid 12. Generalizes the subquery optimization that was performed
+in Merge Criteria to allow for the creation of join plans from subqueries in both projection and filtering.</p>
+</li>
+<li>
+<p>Plan Unions&#x2009;&#x2014;&#x2009;Reorders union children for more pushdown.</p>
+</li>
+<li>
+<p>Plan Aggregates&#x2009;&#x2014;&#x2009;Performs aggregate decomposition over a join or union.</p>
+</li>
+<li>
+<p>Push Limit&#x2009;&#x2014;&#x2009;Pushes the affect of a limit node further into the plan.</p>
+</li>
+<li>
+<p>Push Non-Join Criteria&#x2009;&#x2014;&#x2009;This rule will push predicates out of an on clause if it is not necessary for the correctness of the join.</p>
+</li>
+<li>
+<p>Push Select Criteria&#x2009;&#x2014;&#x2009;Push select nodes as far as possible through unions, joins, and views layers toward the access nodes.
+In most cases movement down the tree is good as this will filter rows earlier in the plan. We currently do not undo
+the decisions made by Push Select Criteria. &#xA0;However in situations where criteria cannot be evaluated by the source, this can lead to sub-optimal plans.</p>
+</li>
+<li>
+<p>Push Large IN&#x2009;&#x2014;&#x2009;Push IN predicates that are larger than directly supported by the translator to be processed as a dependent set.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>One of the most important optimization related to pushing criteria, is how the criteria will be pushed through join.
+Consider the following plan tree that represents a subtree of the plan for the query <code>select * from A inner join b on (A.x = B.x) where B.y = 3</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">&#xA0; &#xA0; <span class="hljs-keyword">SELECT</span> (B.y = <span class="hljs-number">3</span>)
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0;|
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; <span class="hljs-keyword">JOIN</span> - <span class="hljs-keyword">Inner</span> <span class="hljs-keyword">Join</span> <span class="hljs-keyword">on</span> (A.x = B.x)
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0;/ &#xA0; &#xA0; \
+&#xA0; &#xA0; &#xA0; SRC (A) &#xA0; SRC (B)</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+SELECT nodes represent criteria, and SRC stands for SOURCE.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>It is always valid for inner join and cross joins to push (single source) criteria that are above the join, below the join.
+This allows for criteria originating in the user query to eventually be present in source queries below the joins.&#xA0;This result can be represented visually as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">    JOIN - Inner Join on (A.x = B.x)
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; / &#xA0; &#xA0;\
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0;/ &#xA0; <span class="hljs-keyword">SELECT</span> (B.y = <span class="hljs-number">3</span>)
+&#xA0; &#xA0; &#xA0; &#xA0; | &#xA0; &#xA0; &#xA0; &#xA0;|
+&#xA0; &#xA0; &#xA0; SRC (A) &#xA0; SRC (B)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The same optimization is valid for criteria specified against the outer side of an outer join.&#xA0;For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql"> &#xA0; &#xA0; <span class="hljs-keyword">SELECT</span> (B.y = <span class="hljs-number">3</span>)
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0;|
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; <span class="hljs-keyword">JOIN</span> - <span class="hljs-keyword">Right</span> <span class="hljs-keyword">Outer</span> <span class="hljs-keyword">Join</span> <span class="hljs-keyword">on</span> (A.x = B.x)
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0;/ &#xA0; &#xA0; \
+  &#xA0; &#xA0; SRC (A) &#xA0; SRC (B)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Becomes</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; JOIN - Right Outer Join on (A.x = B.x)
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; / &#xA0; &#xA0;\
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0;/ &#xA0; <span class="hljs-keyword">SELECT</span> (B.y = <span class="hljs-number">3</span>)
+&#xA0; &#xA0; &#xA0; &#xA0; | &#xA0; &#xA0; &#xA0; &#xA0;|
+&#xA0; &#xA0; &#xA0; SRC (A) &#xA0; SRC (B)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However criteria specified against the inner side of an outer join needs special consideration.
+The above scenario with a left or full outer join is not the same. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">&#xA0; &#xA0; &#xA0; <span class="hljs-keyword">SELECT</span> (B.y = <span class="hljs-number">3</span>)
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0;|
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; <span class="hljs-keyword">JOIN</span> - <span class="hljs-keyword">Left</span> <span class="hljs-keyword">Outer</span> <span class="hljs-keyword">Join</span> <span class="hljs-keyword">on</span> (A.x = B.x)
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0;/ &#xA0; &#xA0; \
+&#xA0; &#xA0; &#xA0; SRC (A) &#xA0; SRC (B)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Can become (available only after 5.0.2):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">&#xA0; &#xA0; JOIN - Inner Join on (A.x = B.x)
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; / &#xA0; &#xA0;\
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0;/ &#xA0; <span class="hljs-keyword">SELECT</span> (B.y = <span class="hljs-number">3</span>)
+&#xA0; &#xA0; &#xA0; &#xA0; | &#xA0; &#xA0; &#xA0; &#xA0;|
+&#xA0; &#xA0; &#xA0; SRC (A) &#xA0; SRC (B)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since the criterion is not dependent upon the null values that may be populated from the inner
+side of the join, the criterion is eligible to be pushed below the join&#x2009;&#x2014;&#x2009;but only if
+the join type is also changed to an inner join. On the other hand, criteria that are
+dependent upon the presence of null values CANNOT be moved. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">&#xA0; &#xA0; <span class="hljs-keyword">SELECT</span> (B.y <span class="hljs-keyword">is</span> <span class="hljs-literal">null</span>)
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0;|
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; <span class="hljs-keyword">JOIN</span> - <span class="hljs-keyword">Left</span> <span class="hljs-keyword">Outer</span> <span class="hljs-keyword">Join</span> <span class="hljs-keyword">on</span> (A.x = B.x)
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0;/ &#xA0; &#xA0; \
+&#xA0; &#xA0; &#xA0; SRC (A) &#xA0; SRC (B)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The preceding plan tree must have the criteria remain above the join, becuase the outer join may be introducing null values itself.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Raise Access&#x2009;&#x2014;&#x2009;This rule attempts to raise the Access nodes as far up the plan as posssible.
+This is mostly done by looking at the source&#x2019;s capabilities and determining whether the operations can be achieved in the source or not.</p>
+</li>
+<li>
+<p>Raise Null&#x2009;&#x2014;&#x2009;Raises null nodes. Raising a null node removes the need to consider any part of the old plan that was below the null node.</p>
+</li>
+<li>
+<p>Remove Optional Joins&#x2009;&#x2014;&#x2009;Removes joins that are marked as or determined to be optional.</p>
+</li>
+<li>
+<p>Substitute Expressions&#x2009;&#x2014;&#x2009;Used only when a function based index is present.</p>
+</li>
+<li>
+<p>Validate Where All&#x2009;&#x2014;&#x2009;Ensures criteria is used when required by the source.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Cost calculations</div>
+<p>The cost of node operations is primarily determined by an estimate of the number of rows
+(also referred to as cardinality) that will be processed by it. The optimizer will typically
+compute cardinalities from the bottom up of the plan (or subplan) at several points in time
+with planning&#x2009;&#x2014;&#x2009;once generally with rule calculate cost, and then specifically for join
+planning and other decisions. The cost calculation is mainly directed by the statistics set on
+physical tables (cardinality, NNV, NDV, and so forth) and is also influenced by the presence of
+constraints (unique, primary key, index, and so forth). If there is a situation that seems like a
+sub-optimal plan is being chosen, you should first ensure that at least representative table
+cardinalities are set on the physical tables involved.</p>
+</div>
+<div class="paragraph">
+<div class="title">Reading a debug plan</div>
+<p>As each relational sub plan is optimized, the plan will show what is being optimized and it&#x2019;s canonical form:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql"><span class="hljs-keyword">OPTIMIZE</span>:
+<span class="hljs-keyword">SELECT</span> e1 <span class="hljs-keyword">FROM</span> (<span class="hljs-keyword">SELECT</span> e1 <span class="hljs-keyword">FROM</span> pm1.g1) <span class="hljs-keyword">AS</span> x
+
+<span class="hljs-comment">----------------------------------------------------------------------------</span>
+GENERATE CANONICAL:
+<span class="hljs-keyword">SELECT</span> e1 <span class="hljs-keyword">FROM</span> (<span class="hljs-keyword">SELECT</span> e1 <span class="hljs-keyword">FROM</span> pm1.g1) <span class="hljs-keyword">AS</span> x
+
+CANONICAL PLAN:
+<span class="hljs-keyword">Project</span>(<span class="hljs-keyword">groups</span>=[x], props={PROJECT_COLS=[e1]})
+  <span class="hljs-keyword">Source</span>(<span class="hljs-keyword">groups</span>=[x], props={NESTED_COMMAND=<span class="hljs-keyword">SELECT</span> e1 <span class="hljs-keyword">FROM</span> pm1.g1, SYMBOL_MAP={x.e1=e1}})
+    <span class="hljs-keyword">Project</span>(<span class="hljs-keyword">groups</span>=[pm1.g1], props={PROJECT_COLS=[e1]})
+      <span class="hljs-keyword">Source</span>(<span class="hljs-keyword">groups</span>=[pm1.g1])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With more complicated user queries, such as a procedure invocation or one containing subqueries,
+the sub-plans may be nested within the overall plan. Each plan ends by showing the final processing plan:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql"><span class="hljs-comment">----------------------------------------------------------------------------</span>
+OPTIMIZATION COMPLETE:
+PROCESSOR PLAN:
+AccessNode(0) output=[e1] <span class="hljs-keyword">SELECT</span> g_0.e1 <span class="hljs-keyword">FROM</span> pm1.g1 <span class="hljs-keyword">AS</span> g_0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The affect of rules can be seen by the state of the plan tree before and after the rule fires.
+For example, the debug log below shows the application of rule merge virtual, which will remove the &quot;x&quot; inline view layer:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">EXECUTING AssignOutputElements
+
+AFTER:
+Project(groups=[x], props={PROJECT_COLS=[e1], OUTPUT_COLS=[e1]})
+  Source(groups=[x], props={NESTED_COMMAND=SELECT e1 FROM pm1.g1, SYMBOL_MAP={x.e1=e1}, OUTPUT_COLS=[e1]})
+    Project(groups=[pm1.g1], props={PROJECT_COLS=[e1], OUTPUT_COLS=[e1]})
+      Access(groups=[pm1.g1], props={SOURCE_HINT=null, MODEL_ID=Schema name=pm1, nameInSource=null, uuid=3335, OUTPUT_COLS=[e1]})
+        Source(groups=[pm1.g1], props={OUTPUT_COLS=[e1]})
+
+
+============================================================================
+EXECUTING MergeVirtual
+
+AFTER:
+Project(groups=[pm1.g1], props={PROJECT_COLS=[e1], OUTPUT_COLS=[e1]})
+  Access(groups=[pm1.g1], props={SOURCE_HINT=null, MODEL_ID=Schema name=pm1, nameInSource=null, uuid=3335, OUTPUT_COLS=[e1]})
+    Source(groups=[pm1.g1])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Some important planning decisions are shown in the plan as they occur as an annotation. For example,
+the following code snippet shows that the access node could not be raised as the parent select node contained an unsupported subquery.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">Project(groups=[pm1.g1], props={PROJECT_COLS=[e1], OUTPUT_COLS=null})
+  Select(groups=[pm1.g1], props={SELECT_CRITERIA=e1 IN /*+ NO_UNNEST */ (SELECT e1 FROM pm2.g1), OUTPUT_COLS=null})
+    Access(groups=[pm1.g1], props={SOURCE_HINT=null, MODEL_ID=Schema name=pm1, nameInSource=null, uuid=3341, OUTPUT_COLS=null})
+      Source(groups=[pm1.g1], props={OUTPUT_COLS=null})
+
+
+============================================================================
+EXECUTING RaiseAccess
+LOW Relational Planner SubqueryIn is not supported by source pm1 - e1 IN /*+ NO_UNNEST */ (SELECT e1 FROM pm2.g1) was not pushed
+
+AFTER:
+Project(groups=[pm1.g1])
+  Select(groups=[pm1.g1], props={SELECT_CRITERIA=e1 IN /*+ NO_UNNEST */ (SELECT e1 FROM pm2.g1), OUTPUT_COLS=null})
+    Access(groups=[pm1.g1], props={SOURCE_HINT=null, MODEL_ID=Schema name=pm1, nameInSource=null, uuid=3341, OUTPUT_COLS=null})
+      Source(groups=[pm1.g1])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="title">Procedure planner</div>
+<p>The procedure planner is fairly simple.
+It converts the statements in the procedure into instructions in a program that will be run during processing.
+This is mostly a 1-to-1 mapping and very little optimization is performed.</p>
+</div>
+<div class="paragraph">
+<div class="title">XQuery</div>
+<p>XQuery is eligible for specific optimizations.
+For more information, see <a href="#xquery-optimization">XQuery optimization</a>.
+Document projection is the most common optimization. It will be shown in the debug plan as an annotation.
+For example, with the user query that contains &quot;xmltable(&apos;/a/b&apos; passing doc columns x string path &apos;@x&apos;, val string path &apos;.&apos;)&quot;,
+the debug plan would show a tree of the document that will effectively be used by the context and path XQuerys:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">MEDIUM XQuery Planning Projection conditions met for /a/b - Document projection will be used
+child element(Q{}a)
+  child element(Q{}b)
+    attribute attribute(Q{}x)
+      child text()
+    child text()</code></pre>
+</div>
+</div>
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="r_planning-overview.html" class="navigation navigation-prev " aria-label="Previous page: Planning overview">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="r_query-plans.html" class="navigation navigation-next " aria-label="Next page: Query plans">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Query planner","level":"1.8.11.2","depth":3,"next":{"title":"Query plans","level":"1.8.11.3","depth":3,"path":"reference/r_query-plans.adoc","ref":"reference/r_query-plans.adoc","articles":[]},"previous":{"title":"Planning overview","level":"1.8.11.1","depth":3,"path":"reference/r_planning-overview.adoc","ref":"reference/r_planning-overview.adoc","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{"asFullVersionNumber":"17.0.0.Final","versionNumber":"13.1","copyrightYear":"2019","asDocRoot":"https://docs.jboss.org/author/display/WFLY/Documentation","productnameFull":"Teiid","archeTypeVersion":"12.0.0","asVersionNumber":"WildFly 17.0.0","fullVersionNumber":"13.1.0","copyrightHolder":"Red Hat, Inc.","odataContext":"odata4/northwind/NW","targetWildfly":true,"javaVersionUrl":"https://docs.oracle.com/en/java/javase/11","asName":"WildFly","targetSpring":false},"plugins":["collapsible-menu"],"pluginsConfig":{"collapsible-menu":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"reference/r_query-planner.adoc","mtime":"2020-04-03T22:42:06.169Z","type":"asciidoc"},"gitbook":{"version":"3.2.3","time":"2020-04-03T22:43:14.399Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-collapsible-menu/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

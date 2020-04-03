@@ -1,0 +1,121 @@
+
+= Migration Guide From {{ book.productnameFull }} 11.x to 12.x
+
+{{ book.productnameFull }} strives to maintain consistency between all versions, but when necessary breaking configuration and VDB/sql changes are made - and then typically only for major releases. 
+
+You should consult the release notes for compatibility and configuration changes from each minor version that you are upgrading over.  This guide expands upon the release notes included in the kit to cover changes since 11.x.
+
+If possible you should make your migration to {{ book.productnameFull }} 12 by first using {{ book.productnameFull }} 11.2.x.  {{ book.productnameFull }} 12 requires Java 8 and WildFly 14.  See also link:Migration_Guide_From_Teiid_10.x.adoc[10 to 11 Migration Guide]
+
+== Configuration Changes
+
+=== System Properties
+
+The default for org.teiid.longRanks changed to true.  This is more inline with other platforms.  You may switch it back to false for compatibility or make appropriate updates to your views and other sql that may expect integer values to be returned.
+
+The default for org.teiid.enforceSingleMaxBufferSizeEstimate changed to false.  Proactively limiting the size of a single operation does not match well to many {{ book.productnameFull }} usage scenarios, which could run just fine as long as enough disk was allocated.  The default behavior will no selective kill sessions that are consuming the most amount of memory in response to running out of disk.  It cannot be guaranteed that the current operation for with the disk running out will succeed however - in those circumstances it would be advisable to engage proactive limits.
+
+=== Buffer Manager
+
+The configuration property names for the buffer manager have been refined to greater consistency.
+
+|===
+|Old |New |Notes 
+
+|buffer-service-processor-batch-size
+|buffer-manager-processor-batch-size
+|
+
+|buffer-service-inline-lobs
+|buffer-manager-inline-lobs instead
+|
+
+|buffer-service-max-processing-kb
+|buffer-manager-heap-max-processing-kb
+|
+
+|buffer-service-max-reserve-kb
+|buffer-manager-heap-max-reserve-mb
+|The unit change from kilobytes to megabytes
+
+|buffer-service-use-disk
+|buffer-manager-storage-enabled
+|Renamed to storage - which is both the fixed memory buffer and disk tiers below the buffer managed heap
+
+|buffer-service-max-storage-object-size
+|buffer-manager-storage-max-object-size-kb 
+|The units changed from bytes to kilobytes
+
+|buffer-service-memory-buffer-space
+|buffer-manager-fixed-memory-space-mb
+|
+
+|buffer-service-memory-buffer-off-heap
+|buffer-manager-fixed-memory-off-heap
+|
+
+|buffer-service-max-file-size
+|buffer-manager-disk-max-file-size-mb
+|
+
+|buffer-service-max-buffer-space
+|buffer-manager-disk-max-space-mb
+|
+
+|buffer-service-max-open-files
+|buffer-manager-disk-max-open-files
+|
+
+|buffer-service-encrypt-files
+|buffer-manager-disk-encrypt-files
+|
+|===
+
+This change introduced a new version of the WildFly xml configuration for {{ book.productnameFull }}.  Older xml and cli are still compatible and are automatically converted to the new configuration.  You should not mix the usage of new and old properties.
+
+== Compatibility Changes
+
+The ability to specify a jgroups configuration file directly to {{ book.productnameFull }} Embedded has been removed.
+If you need {{ book.productnameFull }} Embedded to support clustering, please log an issue.
+
+== Kitting/Build Changes
+
+=== AdminShell
+
+The AdminShell has been removed from the build.  AdminShell has releases between 10.x and 11.x are effectively identical.  You may still use one of those versions if you wish to continue using AdminShell.  Alternatively you may use the AdminAPI directly from Java or with the scripting language binding of your choice.
+
+=== WildFly/JEE Restructuring
+
+The maven coordinates for the full source, wildfly, and combined wildfly artifacts have changed.  They were under org.teiid:teiid with classifiers that began with wildfly-.  For example, instead of:
+
+----
+<groupId>org.teiid</groupId>
+<artifactId>teiid</artifactId>
+<classifier>wildfly-server</classifier>
+<type>zip</type>
+----
+
+Use:
+
+----
+<groupId>org.teiid.wildfly</groupId>
+<artifactId>teiid-wildfly</artifactId>
+<classifier>server</classifier>
+<type>zip</type>
+----
+
+Similarly all of the org.teiid:connector-xxx artifacts have moved to org.teiid.wildfly:connector-xxx.  The {{ book.productnameFull }} embedded examples will be updated to reflect this change.
+
+Dependencies on JEE have been pushed to non-core modules of {{ book.productnameFull }}.  This should not affect anyone using a base {{ book.productnameFull }} distribution.  However if you have done custom development it may affect you.  The changes include:
+
+* The `org.teiid.resource.spi` package was moved from the teiid-api jar to the org.teiid.wildfly:teiid-resource-spi jar.  Poms will need to be updated accordingly.  There is no change needed for jboss modules as the teiid-resource-spi artifact is already included in org.jboss.teiid.api.
+
+* ResourceException has been replaced by TranslatorException on {{ book.productnameFull }} connection interfaces such as SalesforceConnection.
+
+* The file translator resource adapter translator and connector logic were refactored to use a {{ book.productnameFull }} VirtualFile interface rather than directly expose both a Java File and VFS.  If you were developing based upon FileConnection, please use VirtualFileConnection org.teiid.connectors:file-api instead.
+
+* `org.teiid.translator.WSConnection` has been moved into org.teiid.connector:translator-ws `org.teiid.translator.ws.WSConnection`
+
+* The arche-type version compatible with {{ book.productnameFull }} 12.0.0 has been bumped to 12.0.0.
+
+* {{ book.productnameFull }} Embedded usage will need to include the org.teiid:cache-infinispan dependency, otherwise it will default to non-concurrent cache.  If you are already setting the CacheFactory on the EmbeddedConfiguration, no action is needed.  The EmbeddedConfiguration InfinispanConfigFile methods have been deprecated - in the future the user/platform will be fully responsible for wiring in the CacheFactory.

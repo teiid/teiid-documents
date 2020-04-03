@@ -1,0 +1,81 @@
+
+= MongoDB Data Sources
+
+MongoDB data sources use a {{ book.productnameFull }} specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. There are many ways to create a MongoDB data source, using CLI,
+admin-console, etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
+
+Execute the following command using the {{ book.asDocRoot }}/Admin+Guide#AdminGuide-RunningtheCLI[CLI] once you connected to the Server. Make sure you provide the correct URL and user credentials. Add any additional properties required by the connector by duplicating the "connection-definitions" command below. Edit the JNDI name to match the JNDI name you used in VDB.
+
+[source]
+----
+batch
+/subsystem=resource-adapters/resource-adapter=mongodb/connection-definitions=mongodbDS:add(jndi-name="java:/mongoDS", class-name=org.teiid.resource.adapter.mongodb.MongoDBManagedConnectionFactory, enabled=true, use-java-context=true)
+/subsystem=resource-adapters/resource-adapter=mongodb/connection-definitions=mongodbDS/config-properties=RemoteServerList:add(value="{host}:27017")
+/subsystem=resource-adapters/resource-adapter=mongodb/connection-definitions=mongodbDS/config-properties=Database:add(value="{db-name}")
+/subsystem=resource-adapters/resource-adapter=mongodb:activate
+runbatch
+----
+
+All the properties that are defined on the RAR file are
+
+|===
+|Property Name |Description |Required |Default
+
+|RemoteServerList
+|A comma separated list of server locations. Each location can contain an optional port, of the format host:port. The property may also contain a full standard (mongodb://) or seedlist (mongodb+srv://) connection URI string.  If a full connection string is used, then none of the other configuration properties will be used nor are required.  However the database should be specified in the URI. 
+|true
+|
+
+|Username
+|Connection User’s Name
+|false
+|none
+
+|Password
+|Connection User’s password
+|false
+|none
+
+|Database
+|MongoDB database name - required if not suing a full connection URI in the RemoteServerList
+|false
+|none
+
+|SecurityType
+|MongoDB Type of Authentication to be used. Allowed values are "None","SCRAM_SHA_1", "SCRAM_SHA_256","MONGODB_CR", "Kerberos","X509". If you are using MongoDB version lessthan 3.0, MongoDB by default uses "MONGODB_CR", thus this value need to be set accordingly or set to None.
+|false
+|SCRAM_SHA_1
+
+|AuthDatabase
+|MongoDB Database Name for user authentication in case when SecurityType 'MONGODB-CR' is used. This is an optional value.
+|false
+|none
+
+|Ssl
+|Use SSL Connections
+|false
+|none
+|===
+
+To find out all the properties that are supported by this MongoDB Connector execute the following command in the CLI.
+
+[source,java]
+----
+/subsystem=teiid:read-rar-description(rar-name=mongodb)
+----
+
+TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in *"<jboss-install>/docs/teiid/datasources/mongodb"* directory under "resource-adapters" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
+
+== Transaction support
+
+With {{ book.productnameFull }} 12.1 running against a MongoDB server 4+ in a replica set, you may optionally use LocalTransaction transaction support.  Doing so through the CLI requires the creation of a new resource adapter.
+
+[source]
+----
+batch
+/subsystem=resource-adapters/resource-adapter=mongodbLocal:add(transaction-support=LocalTransaction, module=org.jboss.teiid.resource-adapter.mongodb:main
+/subsystem=resource-adapters/resource-adapter=mongodbLocal/connection-definitions=mongodbLocal:add(jndi-name="java:/mongoDS", class-name=org.teiid.resource.adapter.mongodb.MongoDBManagedConnectionFactory, enabled=true, use-java-context=true)
+...
+runbatch
+----
+

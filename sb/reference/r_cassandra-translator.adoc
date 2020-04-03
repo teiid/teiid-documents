@@ -1,0 +1,44 @@
+
+
+= Cassandra Translator
+
+The Cassandra Translator, known by the type name _cassandra_, exposes querying functionality to link:../admin/Cassandra_Data_Sources.adoc[Cassandra Data Sources]. The translator translates {{ book.productnameFull }} push down commands into http://cassandra.apache.org/doc/cql/CQL.html[Cassandra CQL].
+
+*Properties*
+
+The Cassandra Translator currently has no import or execution properties.
+
+== Usage
+
+The Cassandra Translator supports INSERT/UPDATE/DELETE/SELECT statements with a restrictive set of capabilities including: count(*), comparison predicates, IN predicates, and LIMIT. Only indexed columns are searchable. Consider a custom extension or create an enhancement request should your usage require additional capabilities.
+
+Cassandra updates always return an update count of 1 per update regardless of the number of rows affected.
+
+Cassandra inserts are functionally upserts, that is if a given row exists it will be updated rather than causing an exception.
+
+{% if book.targetWildfly %}
+== JCA Resource Adapter
+
+The {{ book.productnameFull }} specific Cassandra Resource Adapter should be used with this translator. See link:../admin/Cassandra_Data_Sources.adoc[Cassandra Data Sources] for connecting to a Cassandra cluster.
+{% endif %}
+
+== Native Queries
+
+Cassandra source procedures may be created using the teiid_rel:native-query extension - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The procedure will invoke the native-query similar to a direct procedure call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality.
+
+=== Direct Query Procedure
+
+This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:Translators.adoc#_override_execution_properties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
+
+By default the name of the procedure that executes the queries directly is called *native*. link:Translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
+
+The Cassandra translator provides a procedure to execute any ad-hoc CQL query directly against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as an object array. link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications.
+
+[source,sql]
+.*Example CQL Direct Query*
+----
+SELECT X.* 
+  FROM cassandra_source.native('SELECT firstname, lastname FROM users WHERE birth_year = $1 AND country = $2 ALLOW FILTERING', 1981, 'US') n, 
+       ARRAYTABLE(n.tuple COLUMNS firstname string, lastname string) AS X
+----
+
