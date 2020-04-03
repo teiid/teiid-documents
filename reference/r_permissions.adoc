@@ -6,7 +6,7 @@
 :toc-placement: preamble
 
 Permissions, or grants, control access to data in several ways. 
-There are simple access restrictions to READ, UPDATE, and so forth, down to a column level.
+There are simple access restrictions to SELECT, UPDATE, and so forth, down to a column level.
 
 NOTE: Column or table metadata are not visible to JDBC/ODBC users unless the user has permission to read at least a single column.
 
@@ -17,7 +17,7 @@ You may also use permissions to filter and mask results, and constrain/check upd
 CREATE, READ, UPDATE, DELETE (CRUD) permissions can be set for any resource path in a VDB. 
 A resource path can be as specific as the fully qualified name of a column or as general a top level model (schema) name. 
 Permissions granted to a particular path apply to it and any resource paths that share the same partial name. 
-For example, granting read to "model" will also grant read to "model.table", "model.table.column", and so on. 
+For example, granting select to "model" will also grant select to "model.table", "model.table.column", and so on. 
 Allowing or denying a particular action is determined by searching for permissions from the most to least specific resource paths. 
 The first permission found with a specific allow or deny will be used. 
 Thus, it is possible to set very general permissions at high-level resource path names and to override only as necessary at more specific resource paths.
@@ -38,32 +38,32 @@ The SYSADMIN schema however may need permissions as applicable.
 .Permission assignment
 To process a _SELECT_ statement or a stored procedure execution, the user account requires the following access rights:
 
-* _READ_- on the Table(s) being accessed or the procedure being called.
-* _READ_- on every column referenced.
+* _SELECT_- on the Table(s) being accessed or the procedure being called.
+* _SELECT_- on every column referenced.
 
 To process an _INSERT_ statement, the user account requires the following access rights:
 
-* _CREATE_- on the Table being inserted into.
-* _CREATE_- on every column being inserted on that Table.
+* _INSERT_- on the Table being inserted into.
+* _INSERT_- on every column being inserted on that Table.
 
 To process an _UPDATE_ statement, the user account requires the following access rights:
 
 * _UPDATE_- on the Table being updated.
 * _UPDATE_- on every column being updated on that Table.
-* _READ_- on every column referenced in the criteria.
+* _SELECT_- on every column referenced in the criteria.
 
 To process a _DELETE_ statement, the user account requires the following access rights:
 
 * _DELETE_- on the Table being deleted.
-* _READ_- on every column referenced in the criteria.
+* _SELECT_- on every column referenced in the criteria.
 
 To process a _EXEC/CALL_ statement, the user account requires the following access rights:
 
-* _EXECUTE (or READ)_- on the Procedure being executed.
+* _EXECUTE (or SELECT)_- on the Procedure being executed.
 
 To process any function, the user account requires the following access rights:
 
-* _EXECUTE (or READ)_- on the Function being called.
+* _EXECUTE (or SELECT)_- on the Function being called.
 
 To process any ALTER or CREATE TRIGGER statement, the user account requires the following access rights:
 
@@ -77,7 +77,7 @@ To process any statement against a {{ book.productnameFull }} temporary table re
 
 * allow-create-temporary-tables attribute on any applicable role
 
-* _CREATE_,_READ_,_UPDATE_,_DELETE_ - against the target model/schema as needed for operations against a FOREIGN temporary table.
+* _SELECT_,_INSERT_,_UPDATE_,_DELETE_ - against the target model/schema as needed for operations against a FOREIGN temporary table.
 
 .Row- and column-based security
 
@@ -85,7 +85,7 @@ Although specified in a similar way to user query CRUD permissions, row-based an
 or separately to control the data that is returned to users at a more granular and consistent level. 
 
 {% if book.targetWildfly %}
-See also link:xml-definition[XML Definition] for examples of specifying data roles with row and column based security.
+See also link:r_xml-definition[XML Definition] for examples of specifying data roles with row and column based security.
 {% endif %}
 
 .Row-based security
