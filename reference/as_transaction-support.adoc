@@ -32,7 +32,7 @@ The link:AutoCommitTxn_Execution_Property.adoc[AutoCommitTxn] execution property
 
 The default transaction isolation level for {{ book.productnameFull }} is READ_COMMITTED.
 
-{% if targetDVProd %}
+{% if book.targetDVProd %}
 include::r_autocommittxn-execution-property.adoc[leveloffset=+1]
 include::r_updating-model-count.adoc[leveloffset=+1]
 include::r_jdbc-and-transactions.adoc[leveloffset=+1]

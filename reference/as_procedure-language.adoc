@@ -12,7 +12,7 @@ These are known as update procedures.
 For more information, see xref:virtual-procedures[Virtual procedures] 
 and xref:update-procedures-triggers[update procedures (Triggers)].
 
-{% if targetDVProd %}
+{% if book.targetDVProd %}
 include::r_command-statement.adoc[leveloffset=+1]
 include::r_dynamic-sql-command.adoc[leveloffset=+1]
 include::r_declaration-statement.adoc[leveloffset=+1]
