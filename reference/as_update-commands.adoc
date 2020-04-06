@@ -7,7 +7,7 @@ Update commands report integer update counts.
 Update commands can report a maximum integer value of (2^31 -1). 
 If you update a greater number of rows, the commands report the maximum integer value.
 
-{% if targetDVProd %}
+{% if book.targetDVProd %}
 include::r_insert-command.adoc[leveloffset=+1]
 include::r_update-command.adoc[leveloffset=+1]
 include::r_delete-command.adoc[leveloffset=+1]

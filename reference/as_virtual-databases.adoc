@@ -104,7 +104,7 @@ For information about the available translators, see xref:translators[Translator
 IMPORTANT: In a VDB, a source schema *must be* configured with a *correct* Translator and a *valid* resource adapter, to make the system work.
 {% endif %}
 
-{% if targetDVProd %}
+{% if book.targetDVProd %}
 include::r_vdb-properties.adoc[leveloffset=+1]
 include::r_ddl-metadata-for-schema-objects.adoc[leveloffset=+1]
 include::r_ddl-metadata-for-domains.adoc[leveloffset=+1]
