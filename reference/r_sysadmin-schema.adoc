@@ -567,7 +567,7 @@ Returns tables which contains TargetSchemaName, TargetName, Valid, LoadState, Up
 SYSADMIN.matViewStatus(IN schemaName string NOT NULL, IN viewName string NOT NULL) RETURNS TABLE (TargetSchemaName varchar(50), TargetName varchar(50), Valid boolean, LoadState varchar(25), Updated timestamp, Cardinality long, LoadNumber long, OnErrorAction varchar(25))
 ----
 
-.SYSADMIN.loadMatView
+== SYSADMIN.loadMatView
 
 loadMatView is used to perform a complete refresh of an internal or external materialized table.
 
@@ -585,14 +585,14 @@ SYSADMIN.loadMatView(IN schemaName string NOT NULL, IN viewName string NOT NULL,
 exec SYSADMIN.loadMatView(schemaName=>'TestMat',viewname=>'SAMPLEMATVIEW', invalidate=>'true')
 ----
 
-.SYSADMIN.updateMatView
+== SYSADMIN.updateMatView
 
 The updateMatView procedure is used to update a subset of an internal or external materialized table based on the refresh criteria.
 
 The refresh criteria might reference the view columns by qualified name, but all instances of `.` in the view name will be replaced by `_`, 
 because an alias is actually being used. 
 
-Returns integer RowsUpdated. -1 indicates the materialized table is currently invalid. And-3 indicates there was an exception when performing the update. 
+Returns integer RowsUpdated. -1 indicates the materialized table is currently invalid. And -3 indicates there was an exception when performing the update. 
 See the Caching Guide for more information.
 
 [source,sql]
@@ -609,7 +609,7 @@ Continuing use the `SAMPLEMATVIEW` in Example of <<SYSADMIN.refreshMatViewRow, S
 EXEC SYSADMIN.updateMatView('TestMat', 'SAMPLEMATVIEW', 'id = ''101'' AND a = ''a1''')
 ----
 
-.SYSADMIN.cancelRequest
+== SYSADMIN.cancelRequest
 
 Cancel the user request identified by execution id for the given session.
 
@@ -626,7 +626,7 @@ SYSADMIN.cancelRequest(OUT cancelled boolean NOT NULL RESULT, IN SessionId strin
 CALL SYSADMIN.cancelRequest('session id', 1)
 ----
 
-.SYSADMIN.terminateSession
+== SYSADMIN.terminateSession
 
 Terminate the session with the given identifier.
 
@@ -643,7 +643,7 @@ SYSADMIN.terminateSession(OUT terminated boolean NOT NULL RESULT, IN SessionId s
 CALL SYSADMIN.terminateSession('session id')
 ----
 
-.SYSADMIN.terminateTransaction
+== SYSADMIN.terminateTransaction
 
 Terminate the transaction associated with a session by marking the transaction as rollback only.
 
