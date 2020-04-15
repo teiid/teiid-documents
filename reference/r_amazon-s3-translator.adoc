@@ -69,7 +69,7 @@ When provided, this becomes the default secret key.
 |Region
 |Amazon region to be used with the request. 
 When provided, this will be default region used.
-|n/a
+|US-EAST-1
 
 |Bucket
 |Amazon S3 bucket name. If provided, this will serve as default bucket to be used for all the requests
@@ -90,6 +90,8 @@ If provided, this will be used as default key for all "get" based calls.
 
 TIP: For information about setting properties, see _Override execution property_ in xref:translators[Translators], and review the examples in the 
 sections that follow.
+
+If you are using an S3 service other than AWS, then you need to set the EndPoint property on the associated source to the service URL, i.e. http://my-minio:9000
 
 .Procedures exposed by translator
 When you add the a model (schema) like above in the example, the following procedure calls are available for user to execute against Amazon S3.
