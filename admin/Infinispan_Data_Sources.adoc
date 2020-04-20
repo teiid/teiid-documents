@@ -74,7 +74,7 @@ All the properties that are defined on the RAR file are
 |CacheName
 |The default cache name.
 |No
-|default
+|n/a
 
 |CacheTemplate
 |If a cache needs to be created the template name to use.
