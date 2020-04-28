@@ -11,25 +11,32 @@ Support for {{ book.productnameFull }} clients and servers older than version 8 
 
 Before you can connect to the {{ book.productnameFull }} Server using the {{ book.productnameFull }} JDBC API, please do following tasks.
 
+
 1.  Install the {{ book.productnameFull }} Server. See the "Admin Guide" for instructions.
 2.  Build a Virtual Database (VDB). Check the "Reference Guide" for instructions on how to build a VDB. If you do not know what VDB is, then start with this http://www.jboss.org/teiid/basics/virtualdatabases.html[document].
 3.  Deploy the VDB into {{ book.productnameFull }} Server. Check link:../admin/Administrators_Guide.adoc[Administrator’s Guide] for instructions.
 4.  Start the {{ book.productnameFull }} Server ({{ book.asName }}), if it is not already running.
 {% endif %}
 
-Once you have the VDB deployed in {{ book.productnameFull }}, client applications can connect to the {{ book.productnameFull }} Server and issue SQL queries against deployed VDB using JDBC API. If you are new to JDBC, see Java’s documentation about http://docs.oracle.com/javase/tutorial/jdbc/index.html[JDBC]. {{ book.productnameFull }} ships with teiid-{{ book.fullVersionNumber }}-jdbc.jar that can be found in the http://teiid.io/teiid_runtimes/teiid_wildfly/downloads/[downloads].
+After you deploy the virtual database, client applications can connect to it and issue SQL queries against it using the JDBC API. If you are new to JDBC, refer to the Java documentation about http://docs.oracle.com/javase/tutorial/jdbc/index.html[JDBC]. {{ book.productnameFull }} ships with `teiid-_VERSION_NUMBER_-jdbc.jar` that is available from the http://teiid.io/teiid_wildfly/downloads/[Teiid.io downloads].
 
-You can also obtain the {{ book.productnameFull }} JDBC from the Maven Repository https://oss.sonatype.org/content/repositories/releases/ using the coordinates:
+{% if book.targetWildfly or book.targetSpring %}
+You can also obtain the {{ book.productnameFull }} JDBC from the Maven repository at https://oss.sonatype.org/content/repositories/releases/ using the coordinates:
+{% else %}
+You can also obtain the {{ book.productnameFull }} JDBC from the Red Hat Maven repository at https://maven.repository.redhat.com/ga/org/teiid/
+{% endif %}
 
-[source,xml]
+[source,xml,subs="+quotes"]
 ----
 <dependency>
   <groupId>org.teiid</groupId>
   <artifactId>teiid</artifactId>
   <classifier>jdbc</classifier>
-  <version>{{ book.fullVersionNumber }}</version>
+  <version>__$versionNumber__</version>
 </dependency>
 ----
+
+where `versionNumber` is the version of the most recent {{book.productnameFull}} release.
 
 Important classes in the client JAR:
 
@@ -41,7 +48,7 @@ Once you have established a connection with the {{ book.productnameFull }} Serve
 [id="client-dev-Connecting_to_a_Teiid_Server-OpenTracing-Support"]
 == OpenTracing compatibility
 
-http://opentracing.io/[OpenTracing] is optional for the client driver.  For remote connections to propagate the span the driver must have the appropriate OpenTracing jars in its classpath.  This can be done via a maven dependency:
+http://opentracing.io/[OpenTracing] is optional for the client driver. For remote connections to propagate the span the driver must have the appropriate OpenTracing jars in its classpath.  This can be done via a maven dependency:
 
 [source,xml]
 ----
@@ -52,8 +59,8 @@ http://opentracing.io/[OpenTracing] is optional for the client driver.  For remo
 </dependency>
 ----
 
-where version.opentracing (0.31 for {{ book.productnameFull }} 11.0) is defined in the project integration bom.  
+where `version.opentracing` is defined in the project integration bom.  
 
-Or you may manually include the opentracing-util, opentracing-api, and opentracing-noop jars as needed by the tooling or other environment where the {{ book.productnameFull }} client jar is utilized.
+Alternately, you can manually include the `opentracing-util`, `opentracing-api`, and `opentracing-noop` jar files as needed by the tooling or other environment where the {{ book.productnameFull }} client jar is utilized.
 
 OpenTracing support in the client and server requires that the respective runtimes have an appropriate tracing client installed and available via the GlobalTracer.

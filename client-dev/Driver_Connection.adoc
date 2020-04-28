@@ -17,10 +17,10 @@ You should attempt to keep the client up-to-date though as fixes and features ar
 URL Components
 
 1.  <vdb-name> - Name of the VDB you are connecting to. Optionally VDB name can also contain version information inside it. For example: "myvdb.2", this is equivalent to supplying the "version=2" connection property defined below. However, use of vdb name in this format and the "version" property at the same time is not allowed.
-2.  mm - defines {{ book.productnameFull }} JDBC protocol, mms defines a secure channel (see link:SSL_Client_Connections.adoc[SSL Client Connections] for more)
+2.  mm - defines {{ book.productnameFull }} JDBC protocol, mms defines a secure channel (see xref:client-dev-SSL_Client_Connections-Client-SSL-Settings[SSL Client Connections] for more)
 3.  <host> - defines the server where the {{ book.productnameFull }} Server is installed. If you are using IPv6 binding address as the host name, place it in square brackets. ex:[::1]
 4.  <port> - defines the port on which the {{ book.productnameFull }} Server is listening for incoming JDBC connections.
-5.  [prop-name=prop-value] - additionally you can supply any number of name value pairs separated by semi-colon [;]. All compatible URL properties are defined in the link:Driver_Connection.adoc[connection properties] section. Property values should be URL encoded if they contain reserved characters, e.g. (’?’, '=', ';', etc.)
+5.  [prop-name=prop-value] - additionally you can supply any number of name value pairs separated by semi-colon [;]. All compatible URL properties are defined in the xref:client-dev-Driver_Connection-URL-Connection-Properties[connection properties] section. Property values should be URL encoded if they contain reserved characters, e.g. (’?’, '=', ';', etc.)
 
 {% if book.targetWildfly %}
 NOTE: host and port may be a comma separated list to specify link:Using_Multiple_Hosts.adoc[multiple hosts].
@@ -55,7 +55,7 @@ The following table shows all the connection properties that you can use with {{
 
 |`partialResultsMode`
 |`boolean`
-|Enable/disable partial results mode. Default false. See the link:Partial_Results_Mode.adoc[Partial Results Mode] section.
+|Enable/disable partial results mode. Default false. See the xref:client-dev-Partial_Results_Mode-Partial-Results-Mode[Partial Results Mode] section.
 
 |`autoCommitTxn`
 |`String`
@@ -106,6 +106,7 @@ If true in embedded mode, connections will reconnect to a newer VDB of the same 
 |`String`
 |(typically not set as a connection property) Can be ON, OFF; ON prevents query execution, but parsing and planning will still occur. Default OFF.
 
+{% if book.targetWildfly or book.targetSpring %}
 |`PassthroughAuthentication`
 |`boolean`
 |Only applies to "local" connections. When this option is set to "true", then {{ book.productnameFull }} looks for already authenticated security context on the calling thread. If one found it uses that users credentials to create session. {{ book.productnameFull }} also verifies that the same user is using this connection during the life of the connection. if it finds a different security context on the calling thread, it switches the identity on the connection, if the new user is also eligible to log in to {{ book.productnameFull }} otherwise connection fails to execute.
@@ -113,6 +114,7 @@ If true in embedded mode, connections will reconnect to a newer VDB of the same 
 |`useCallingThread`
 |`boolean`
 |Only applies to "local" connections. When this option is set to "true" (the default), then the calling thread will be used to process the query. If false, then an engine thread will be used.
+{% endif %}
 
 |`QueryTimeout`
 |`integer`
@@ -123,13 +125,17 @@ If true in embedded mode, connections will reconnect to a newer VDB of the same 
 |A change was made in JDBC4 to return unaliased column names as the ResultSetMetadata column name. Prior to this, if a column alias were used it was returned as the column name. Setting this property to false
 will enable backwards compatibility with JDBC3 and earlier. Defaults to true.
 
+{% if book.targetWildfly or book.targetSpring %}
 |`jaasName`
 |`String`
 |JAAS configuration name. Only applies when configuring a GSS authentication. Defaults to {{ book.productnameFull }}. See the Security Guide for configuration required for GSS.
 
+
 |`kerberosServicePrincipleName`
 |`String`
 |Kerberos authenticated principle name. Only applies when configuring a GSS authentication. See the Security Guide for configuration required for GSS
+
+{% endif %}
 
 |`encryptRequest`
 |`boolean`
@@ -139,13 +145,15 @@ will enable backwards compatibility with JDBC3 and earlier. Defaults to true.
 |`boolean`
 |In some situations tooling may choose undesirable fetch sizes for processing results. Set to true to disable honoring ResultSet.setFetchSize. Default false.
 
+{% if book.targetWildfly or book.targetSpring %}
 |`loginTimeout`
 |`integer`
 |The login timeout in seconds. Must be >= 0. 0 indicates no specific timeout, but other timeouts may apply. 
 If a connection cannot be created in approximately the the timeout value an exception will be thrown. A default of 0 does not mean that the login
-will wait indefinitely.  Typically is an active vdb cannot be found the login will fail at that time.  Local connections that specify a vdb version however
-can wait by default for up to link:../admin/System_Properties.adoc[org.teiid.clientVdbLoadTimeoutMillis].
-
+will wait indefinitely. Typically if an active vdb cannot be found, the login will fail at that time. 
+Local connections that specify a vdb version however
+can wait by default for up to the time specified in the property link:../admin/System_Properties.adoc[org.teiid.clientVdbLoadTimeoutMillis[org.teiid.clientVdbLoadTimeoutMillis].
+{% endif %}
 |`reportAsViews`
 |`boolean`
 |If DatabaseMetaData will report {{ book.productnameFull }} views as a VIEW table type. If false then {{ book.productnameFull }} views will be reported as a TABLE. Default true.

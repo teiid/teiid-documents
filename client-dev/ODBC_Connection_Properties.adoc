@@ -1,20 +1,21 @@
 [id="client-dev-ODBC_Connection_Properties-Configuring-Connection-Properties-with-ODBC"]
 = Configuring Connection Properties with ODBC
 
-When working with ODBC connection, the user can set the connection properties link:Driver_Connection.adoc[Driver Connection#URL Connection Properties] 
-that are available in {{ book.productnameFull }} by executing the command like below.
+When working with ODBC connections, you can set the xref:client-dev-Driver_Connection-URL-Connection-Properties[URL connection properties] 
+that are available in {{ book.productnameFull }} by running a command such as the following:
 
 ----
 SET <property-name> TO <property-value>
 ----  
 
-for example to turn on the result set caching you can issue
+For example, to turn on result set caching you can run the following command:
 
 ----
 SET resultSetCacheMode TO 'true'
 ----
 
-Another option is to set this as VDB property in the vdb file as 
+Another option is to use VDB properties in the vdb file to configure the connection, as in 
+the following example: 
 
 [source,sql]
 ----
