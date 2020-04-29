@@ -6,7 +6,7 @@
 |Class name |Methods
 
 |`Blob`
-|
+a|
 [source,java]
 ----
 getBinaryStream(long, long) - throws SQLFeatureNotSupportedException
@@ -16,7 +16,7 @@ truncate(long) - throws SQLFeatureNotSupportedException
 ----
 
 |`CallableStatement`
-|
+a|
 [source,java]
 ----
 getObject(int parameterIndex, Map&lt;String, Class&lt;?&gt;&gt; map) - throws SQLFeatureNotSupportedException
@@ -30,7 +30,7 @@ setURL(String parameterName, URL val) - throws SQLFeatureNotSupportedException
 ----
 
 |`Clob`
-|
+a|
 [source,java]
 ----
 getCharacterStream(long arg0, long arg1) - throws SQLFeatureNotSupportedException
@@ -41,7 +41,7 @@ truncate - throws SQLFeatureNotSupportedException
 ----
 
 |`Connection`
-|
+a|
 [source,java]
 ----
 createBlob - throws SQLFeatureNotSupportedException
@@ -59,7 +59,7 @@ setRealOnly - effectively ignored
 ----
 
 |`DatabaseMetaData`
-|
+a|
 [source,java]
 ----
 getAttributes - throws SQLFeatureNotSupportedException
@@ -71,7 +71,7 @@ getRowIdLifetime - throws SQLFeatureNotSupportedException
 |`Not Supported`
 
 |`PreparedStatement`
-|
+a|
 [source,java]
 ----
 setRef - throws SQLFeatureNotSupportedException
@@ -83,7 +83,7 @@ setUnicodeStream - throws SQLFeatureNotSupportedException
 |`Not Implemented`
 
 |`ResultSet`
-|
+a|
 [source,java]
 ----
 deleteRow - throws SQLFeatureNotSupportedException

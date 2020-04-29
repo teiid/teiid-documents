@@ -16,4 +16,4 @@ For *nix:
 ODBC;DRIVER={PostgreSQL};DATABASE=<vdb-name>;SERVER=<host-name>;PORT=<port>;Uid=<username>;Pwd=<password>;c4=0;c8=1;            
 ----
 
-See the available link:ODBC_Support.adoc#_connection_settings[{{ book.productnameFull }} connection options].
+See the available xref:client-dev-ODBC_Support--bookproductnameFull-Connection-Settings[{{ book.productnameFull }} ODBC connection settings].
