@@ -2,7 +2,7 @@
 [id="client-dev-ResultSet_Extensions-ResultSet-Extensions"]
 = ResultSet Extensions
 
-The {{ book.productnameFull }} result set extension interface, `org.teiid.jdbc.TeiidResultSet`, provides functionality beyond the JDBC standard. To use the extension interface, simply cast or unwap a result set returned by a {{ book.productnameFull }} statement. The following methods are provided on the extension interface:
+The {{ book.productnameFull }} result set extension interface, `org.teiid.jdbc.TeiidResultSet`, provides functionality beyond the JDBC standard. To use the extension interface, simply cast or unwrap a result set returned by a {{ book.productnameFull }} statement. The following methods are provided on the extension interface:
 
 .*Connection Properties*
 |===
