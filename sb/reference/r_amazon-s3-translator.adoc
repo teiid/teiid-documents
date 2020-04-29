@@ -1,0 +1,242 @@
+// Module included in the following assemblies:
+// as_translators.adoc
+[id="amazon-s3-translator"]
+= Amazon S3 Translator
+
+The Amazon Simple Storage Service (S3) translator, known by the type name _amazon-s3_, exposes stored procedures to leverage Amazon S3 object resources. 
+
+This translator is typically used with the `TEXTTABLE` or `XMLTABLE` functions to consume CSV or XML formatted data, or to read Microsoft Excel files  
+or other object files that are stored in Amazon S3. 
+The S3 translator can access Amazon S3 by using an AWS access key ID and secret access key. 
+
+.Usage
+In the following example, a virtual database reads a CSV file with the name `g2.txt` from an Amazon S3 bucket called `teiidbucket`: 
+
+
+[source, text]
+----
+e1,e2,e3
+5,'five',5.0
+6,'six',6.0
+7,'seven',7.0
+----
+
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<vdb name="example" version="1">
+    <model name="s3">
+        <source name="web-connector" translator-name="user-s3" connection-jndi-name="java:/amazon-s3"/>
+    </model>
+    <model name="Stocks" type="VIRTUAL">
+        <metadata type="DDL"><![CDATA[
+        CREATE VIEW G2 (e1 integer, e2 string, e3 double,PRIMARY KEY (e1))
+            AS  SELECT SP.e1, SP.e2,SP.e3
+                FROM (EXEC s3.getTextFile(name=>'g2.txt')) AS f, 
+                TEXTTABLE(f.file COLUMNS e1 integer, e2 string, e3 double HEADER) AS SP;                                 
+        ]]> </metadata>
+    </model>
+    <translator name="user-s3" type="amazon-s3">
+      <property name="accesskey" value="xxxx"/>
+      <property name="secretkey" value="xxxx"/>
+      <property name="region" value="us-east-1"/>
+      <property name="bucket" value="teiidbucket"/>
+    </translator>	
+</vdb>
+----
+
+.Execution properties
+Use the translator override mechanism to supply the following properties.
+
+|===
+|Name |Description |Default
+
+|Encoding
+|The encoding that should be used for CLOBs returned by the getTextFiles procedure. The value should match an encoding known to the JRE.
+|The system default encoding.
+
+|Accesskey
+|Amazon security access key. 
+Log in to Amazon console to find your security access key. 
+When provided, this becomes the default access key.
+|n/a
+
+|Secretkey
+|Amazon security secret key. 
+Log in to Amazon console to find your security secret key. 
+When provided, this becomes the default secret key.
+|n/a
+
+|Region
+|Amazon region to be used with the request. 
+When provided, this will be default region used.
+|n/a
+
+|Bucket
+|Amazon S3 bucket name. If provided, this will serve as default bucket to be used for all the requests
+|n/a
+
+|Encryption
+|When server-side encryption with customer-provided encryption keys (SSE-C) is used, the key is used to define the "type" of 
+encryption algorithm used. 
+You can configure the translator to use the AES-256 or AWS-KMS encryption algorithms. If provided, this will be used as default algorithm for all "get" based calls.
+|n/a
+
+|Encryptionkey
+|When SSE-C type encryption used, where customer supplies the encryption key, this key will be used for defining the "encryption key". 
+If provided, this will be used as default key for all "get" based calls.
+|n/a
+
+|===
+
+TIP: For information about setting properties, see _Override execution property_ in xref:translators[Translators], and review the examples in the 
+sections that follow.
+
+.Procedures exposed by translator
+When you add the a model (schema) like above in the example, the following procedure calls are available for user to execute against Amazon S3.
+
+NOTE: `bucket`, `region`, `accesskey`, `secretkey`, `encryption` and `encryptionkey` are optional or nullable parameters in most of the methods provided. 
+Provide them only if they are not already configured by using translator override properties as shown in preceding example.
+
+.getTextFile(...)
+
+Retrieves the given named object as a text file from the specified bucket and region by using the provided security credentials as CLOB.
+
+[source,sql]
+----
+getTextFile(string name NOT NULL, string bucket, string region, 
+   string endpoint, string accesskey, string secretkey,string encryption, string encryptionkey, boolean stream default false) 
+   returns TABLE(file blob, endpoint string, lastModified string, etag string, size long);
+----
+
+NOTE: `endpoint` is optional. When provided the endpoint URL is used instead of the one constructed by the supplied properties. 
+Use `encryption` and `encryptionkey` only in when server side security with customer supplied keys (SSE-C) in force.
+
+If the value of `stream` is true, then returned LOBs are read only once and are not typically buffered to disk.   
+
+.Examples
+[source,sql] 
+----
+exec getTextFile(name=>'myfile.txt');
+
+SELECT SP.e1, SP.e2,SP.e3, f.lastmodified 
+   FROM (EXEC getTextFile(name=>'myfile.txt')) AS f,
+   TEXTTABLE(f.file COLUMNS e1 integer, e2 string, e3 double HEADER) AS SP; 	
+----
+
+.getFile(...)
+Retrieves the given named object as binary file from specified bucket and region using the provided security credentials as BLOB.
+
+[source,sql]
+----
+getFile(string name NOT NULL, string bucket, string region, 
+   string endpoint, string accesskey, string secretkey, string encryption, string encryptionkey, boolean stream default false) 
+   returns TABLE(file blob, endpoint string, lastModified string, etag string, size long)
+----
+
+NOTE: `endpoint` is optional. When provided the endpoint URL is used instead of the one constructed by the supplied properties. 
+Use `encryption` and `encryptionkey` only in when server side security with customer supplied keys (SSE-C) in force.
+
+If the value of `stream` is true, then returned lOBs are read once and are not typically buffered to disk.   
+
+.Examples
+[source,sql] 
+----
+exec getFile(name=>'myfile.xml', bucket=>'mybucket', region=>'us-east-1', accesskey=>'xxxx', secretkey=>'xxxx');
+
+select b.* from (exec getFile(name=>'myfile.xml', bucket=>'mybucket', region=>'us-east-1', accesskey=>'xxxx', secretkey=>'xxxx')) as a, 
+XMLTABLE('/contents' PASSING XMLPARSE(CONTENT a.result WELLFORMED) COLUMNS e1 integer, e2 string, e3 double) as b;	
+----
+
+.saveFile(...)
+
+Save the CLOB, BLOB, or XML value to given name and bucket. 
+In the following procedure signature, the _contents_ parameter can be any of the LOB types.
+
+[source,sql]
+----
+call saveFile(string name NOT NULL, string bucket, string region, string endpoint, 
+   string accesskey, string secretkey, contents object)
+----
+
+NOTE: You cannot use `saveFile` to stream or chunk uploads of a file's contents. 
+If you try to load very large objects, out-of-memory issues can result. 
+You cannot configure `saveFile` to use SSE-C encryption.
+
+.Examples
+----
+exec saveFile(name=>'g4.txt', contents=>'e1,e2,e3\n1,one,1.0\n2,two,2.0');
+----
+
+.deleteFile(...)
+
+Delete the named object from the bucket. 
+
+[source,sql]
+----
+call deleteFile(string name NOT NULL, string bucket, string region, string endpoint, string accesskey, string secretkey)
+----
+
+.Examples
+----
+exec deleteFile(name=>'myfile.txt');
+----
+
+.list(...)
+
+Lists the contents of the bucket. 
+
+[source,sql]
+----
+call list(string bucket, string region, string accesskey, string secretkey, nexttoken string) 
+    returns Table(result clob)
+----
+
+The result is the XML file that Amazon S3 provides in the following format
+
+[source, xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>/n
+<ListBucketResult
+    xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+    <Name>teiidbucket</Name>
+    <Prefix></Prefix>
+    <KeyCount>1</KeyCount>
+    <MaxKeys>1000</MaxKeys>
+    <IsTruncated>false</IsTruncated>
+    <Contents>
+        <Key>g2.txt</Key>
+        <LastModified>2017-08-08T16:53:19.000Z</LastModified>
+        <ETag>&quot;fa44a7893b1735905bfcce59d9d9ae2e&quot;</ETag>
+        <Size>48</Size>
+        <StorageClass>STANDARD</StorageClass>
+    </Contents>
+</ListBucketResult>
+---- 
+
+You can parse this into a view by using a query similar to the one in the following example:
+
+[source,sql]
+----
+select b.* from (exec list(bucket=>'mybucket', region=>'us-east-1')) as a, 
+ XMLTABLE(XMLNAMESPACES(DEFAULT 'http://s3.amazonaws.com/doc/2006-03-01/'), '/ListBucketResult/Contents' 
+ PASSING XMLPARSE(CONTENT a.result WELLFORMED) COLUMNS Key string, LastModified string, ETag string, Size string, 
+ StorageClass string,	NextContinuationToken string PATH '../NextContinuationToken') as b;
+---- 
+
+
+If all properties (`bucket`, `region`, `accesskey`, and `secretkey`) are defined as translator override properties, you can run the following simple query:
+
+----
+SELECT * FROM Bucket
+---- 
+
+NOTE: If there are more then 1000 object in the bucket, then the value 'NextContinuationToken' need to be supplied as 'nexttoken' 
+into the _list_ call to fetch the next batch of objects. 
+This can be automated in {{ book.productnameFull }} with enhancement request. 
+
+
+{% if book.targetWildfly %}
+== JCA Resource Adapter
+
+The resource adapter for this translator provided through "Web Service Data Source", Refer to the Teiid Administrator's Guide for configuration information.
+{% endif %}

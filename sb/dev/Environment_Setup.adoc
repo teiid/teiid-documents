@@ -1,0 +1,8 @@
+
+= Translator Environment Setup
+
+To setup the environment for developing a custom translator, you have 2 options; 
+
+1. link:Setting_up_the_build_environment.adoc[Manually setup the build environment] - structure, framework classes, and resources. 
+2. link:Archetype_Template_Translator_Project.adoc[Use the {{ book.productnameFull }} Translator Archetype] template to generate the initial project.
+

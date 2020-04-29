@@ -1,0 +1,112 @@
+
+= {{ book.productnameFull }} Console
+
+{{ book.productnameFull }} Console is a web based administrative and monitoring tool for {{ book.productnameFull }}. {{ book.productnameFull }} Console is extension of {{ book.asName }} console that is built using GWT based technologies. There are two primary {{ book.productnameFull }} kits - an overlay for an existing WildFly install, and an all in one that includes the {{ book.asName }} server and {{ book.productnameFull }} console.
+
+The Web Console is now maintenance only.  New work related to web tooling will be alligned with OpenShift efforts.
+
+== Installation
+
+If you start with just the overlay, you may separately install the {{ book.productnameFull }} Console.  Unzip the contents over the {{ book.asName }} root directory and all the required files will be overlayed correctly to install {{ book.productnameFull }} Console.  See all http://teiid.io/teiid_runtimes/teiid_wildfly/downloads/[downloads] on teiid.io.
+
+== Management User 
+
+The {{ book.productnameFull }} Console, by default is secured, so you would need a management realm user id and password to log in. In the <install>/bin directory, use
+
+.*Adding a management user in linux*
+----
+./add-user.sh
+----
+
+.*Adding a management user in Windows*
+----
+add-user.bat
+----
+
+then follow the prompts to create Management Realm user. Once you have created a management user, you need to use these credentials to log in to the {{ book.productnameFull }} Console. 
+
+== Accessing The Console
+
+If you have started your {{ book.asName }} in default mode, then you can access the {{ book.productnameFull }} Console at http://localhost:9990/console/App.html[http://localhost:9990/console/App.html]. If you have altered the binding or port numbers then modify the address accordingly.
+
+== Configuration
+
+Click on the configuration tab at the top of the main console screen.  Under Subsystems click on "{{ book.productnameFull }}" in left navigation tree. There you have four choices:
+
+* Query Engine - view and configure core {{ book.productnameFull }} engine properties.
+* Translators - view, add and remove the Translators configured in {{ book.productnameFull }}.
+* Transports - view, add and remove transports to the {{ book.productnameFull }} engine.
+* Logging - toggle command / audit / trace logging.
+
+image:images/webconsole2.png[webconsole2.png]
+
+Using this view you can change any configuration value of {{ book.productnameFull }}. Note that various different configuration properties are sub-divided into different tabs. You can click "Need Help" link on these pages to see the description of each field on the page.
+
+NOTE: *Server Restart* - some properties require you to restart the server before they can take effect.
+
+== Runtime View
+
+Runtime view shows runtime information about WildFly and the subsystems including {{ book.productnameFull }}. Click on the Runtime tab, select the Standalone Server (or whatever server is appropriate), select Subsystems, then {{ book.productnameFull }}.
+
+image:images/webconsole1.png[webconsole1.png]
+
+Using this page user can view many different settings in the context a VDB. All the VDBs deployed in the server are shown in top level table. When you select and highlight a VDB, more details about that VDB are displayed in the sub-tabs below. Each of these sub-tabs are divided into grouping of the functionality.
+
+=== Summary
+
+This tab shows the description and any properties associated with VDB, along with any other VDBs this VDB imports. This tab is designed to give a quick overview of the VDB status.
+
+=== Models
+
+This panel shows all the models that are defined in a given VDB, and shows each models translator name and source connection JNDI name. It also shows the type of models and if it is multi-source or not. When a
+particular model is selected it will show all properties of that model that are defined and also shows any errors associated with the model. When your VDB is not deployed in the "active" status, you would need to verify these errors and fix to resolve any deployment issues.
+
+The "DDL" button shows the schema for the given model. 
+
+The tool lets the user edit the translator name or JNDI name by double clicking on them and modifying them. This useful if you would like to change the JNDI name in a given environment.
+
+=== Overrides
+
+If you have overridden any translators this panel will show the all the overridden translators and their properties.
+
+=== Caching
+
+Caching panel shows caching statistics of resultset cache as to how effectively the cache is being used. It also shows all the internal materialized views in the VDB and their load status as to when they were
+loaded. It also gives options to invalidate a specific view or all the views in a VDB, so that they can refresh/reload the contents from source.
+
+This panel also provides a UI to flush the entire the resultset cache contents or prepared plan cache contents for the selected VDB.
+
+=== Data Roles
+
+Data Roles panel shows the all the policies that defined in the VDB. For each selected policy, it will also list the "permissions" for that policy as to what kind of authorizations user has and shows the mapped enterprise role assignments to that policy. You can even add/remove a enterprise role to the policy using the this UI.
+
+=== Requests
+
+This panel shows all the current requests against the selected VDB at the time of VDB selection. You can click "refresh" to get a more up to date requests. The top table in the panel shows the user submitted requests to the teiid engine, when one of those requests are selected, then the bottom table shows all the source level queries that are submitted to the physical sources by {{ book.productnameFull }} engine.
+
+Using this UI, user can also submit a "cancel" request to a user level query. Since "cancel" asynchronous operation, the operation is not guaranteed as query may already been finished, by the time cancel is submitted.
+
+=== Sessions
+
+This panel shows all the active sessions that are connected to the selected VDB. It shows their connection properties and also gives an option to terminate either a selected session or all the sessions.
+
+== FAQ
+
+* _How to deploy a VDB in standalone mode?_ 
+
+In the `Deployments` view, click `add` and select the VDB to deploy. Also make sure you `enable` the VDB once it is deployed.
+
+* _How to create Data source?_ 
+
+In the `Configuration` view, go to `Subsystem` -> `Datasources` -> `XA/Non-XA`, click `add` and follow the wizard to create JDBC data source. 
+
+If you trying to create connection to {{ book.productnameFull }} based File, Salesforce or WS based connections, select `Subsystem` -> `Resource Adaptors` and click `add`.
+
+* _How to add COMMAND Logging?_ 
+
+In the `Configuration` view, go to `Subsystem` -> `Logging`, click view, on `Log Categories` tab, click add `org.teiid.COMMAND_LOG` in `DEBUG` mode. The default log will be in the FILE handler. You can even add other handler if choose to do so.
+
+* _Change {{ book.productnameFull }} JDBC Port in standalone mode?_ 
+
+In the `Configuration` view, go to `Socket Binding` click `View`, view the `standard-sockets` select `teiid-jdbc` and edit.
+

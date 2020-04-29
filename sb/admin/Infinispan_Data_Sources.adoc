@@ -1,0 +1,94 @@
+
+= Infinispan Data Sources
+
+Infinispan data sources use a {{ book.productnameFull }} specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. There are many ways to create a Infinispan hotrod based data source, using CLI,
+admin-console, etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
+
+Execute the following commands using the {{ book.asDocRoot }}/Admin+Guide#AdminGuide-RunningtheCLI[CLI] once you connected to the Server. Make sure you provide the correct URL and user credentials. Add any additional properties required by the connector by duplicating the "connection-definitions" command below. Edit the JNDI name to match the JNDI name you used in VDB.
+
+[source,java]
+----
+batch
+/subsystem=resource-adapters/resource-adapter=infinispanDS:add(module=org.jboss.teiid.resource-adapter.infinispan.hotrod)
+/subsystem=resource-adapters/resource-adapter=infinispanDS/connection-definitions=ispnDS:add(jndi-name="java:/ispnDS", class-name=org.teiid.resource.adapter.infinispan.hotrod.InfinispanManagedConnectionFactory, enabled=true, use-java-context=true)
+/subsystem=resource-adapters/resource-adapter=infinispanDS/connection-definitions=ispnDS/config-properties=RemoteServerList:add(value="{host}:11222")
+/subsystem=resource-adapters/resource-adapter=infinispanDS:activate
+run-batch
+----
+
+All the properties that are defined on the RAR file are
+
+|===
+|Property Name |Description |Required |Default
+
+|RemoteServerList
+|A comma separated list of server locations. Each location can contain an optional port, of the format host:port
+|Yes
+|n/a
+
+|UserName
+|If remote server is secured, this property is used as username to login
+|No
+|n/a
+
+|Password
+|If remote server is secured, this property is used as password to login
+|No
+|n/a
+
+|SaslMechanism
+|"EXTERNAL" is when certificate based security at use, all others use username/password.
+|No
+|The default mechanism of Hotrod.
+
+|AuthenticationRealm
+|Realm to use for authentication.
+|No
+|n/a
+
+|AuthenticationServerName
+|Infinispan server name where the Authentication is handled.
+|No
+|n/a
+
+|TrustStoreFileName
+|When "EXTERNAL" SaslMechnism used, use this property to define truststore. Alternatively JAVA system property "javax.net.ssl.trustStore" can also be defined instead.
+|No
+|n/a
+
+|TrustStorePassword
+|When "EXTERNAL" SaslMechnism used, use this property to define truststore password. Alternatively JAVA system property "javax.net.ssl.trustStorePassword" can also be defined instead.
+|No
+|n/a
+
+|KeyStoreFileName
+|When "EXTERNAL" SaslMechnism used, use this property to define keystore. Alternatively JAVA system property "javax.net.ssl.keyStore" can also be defined instead.
+|No
+|n/a
+
+|KeyStorePassword
+|When "EXTERNAL" SaslMechnism used, use this property to define keystore  password. Alternatively JAVA system property "javax.net.ssl.keyStorePassword" can also be defined instead.
+|No
+|n/a
+
+|CacheName
+|The default cache name.
+|No
+|default
+
+|CacheTemplate
+|If a cache needs to be created the template name to use.
+|No
+|n/a
+
+|===
+
+To find out all the properties that are supported by this Infinispan Connector, execute the following command in the CLI.
+
+[source,java]
+----
+/subsystem=teiid:read-rar-description(rar-name=infinispan)
+----
+
+TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in *"<jboss-install>/docs/teiid/datasources/infinispan"* directory under "resource-adapters" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
+

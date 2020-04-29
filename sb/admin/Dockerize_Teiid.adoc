@@ -1,0 +1,55 @@
+= Dockerize {{ book.productnameFull }}
+
+Running {{ book.productnameFull }} as a Docker container is straight-forward, but since the runtime by itself is not a turn-key environment you must consider how you will configure/use the server from there.
+
+The following is a basic Dockerfile that can be used to create a base image.  Just create a Dockerfile with these contents and run "docker build ." from that directory.
+
+----
+FROM jboss/wildfly:{{book.asFullVersionNumber}}
+
+ENV JBOSS_HOME /opt/jboss/wildfly
+
+# Set the TEIID_VERSION env variable
+ENV TEIID_VERSION {{book.fullVersionNumber}}
+
+# Download and unzip {{ book.productnameFull }} server
+RUN cd $JBOSS_HOME \
+    && curl -O https://oss.sonatype.org/service/local/repositories/releases/content/org/teiid/teiid/$TEIID_VERSION/teiid-wildfly-$TEIID_VERSION-dist.zip \
+    && bsdtar -xf teiid-wildfly-$TEIID_VERSION-dist.zip \
+    && chmod +x $JBOSS_HOME/bin/*.sh \
+    && rm teiid-wildfly-$TEIID_VERSION-dist.zip
+    
+VOLUME ["$JBOSS_HOME/standalone", "$JBOSS_HOME/domain"]
+
+USER jboss
+
+ENV LAUNCH_JBOSS_IN_BACKGROUND true
+
+# Expose {{ book.productnameFull }} server  ports 
+EXPOSE 8080 9990 31000 35432 
+
+# Run {{ book.productnameFull }} server and bind to all interface
+CMD ["/bin/sh", "-c", "$JBOSS_HOME/bin/standalone.sh -c standalone-teiid.xml -b 0.0.0.0 -bmanagement 0.0.0.0"]
+----
+
+Pre-built images can be found at https://hub.docker.com/r/jboss/teiid/[Docker Hub].
+
+If you are just using the {{ book.productnameFull }} Docker environment for more than just testing you will likely want to extend the base image or base Dockerfile to overlay the necessary modules, vdbs, and other artifacts as well as run any necessary cli to create your data sources.
+
+== Mutable Container
+
+See the link:https://developer.jboss.org/wiki/QuickstartExampleWithDockerizedTeiid[{{ book.productnameFull }} Docker Quickstart] that shows starting the {{ book.productnameFull }} container and performing mutative operations after it is started.
+
+== Immutable Container
+  
+See the link:http://blog.arungupta.me/docker-container-linking-across-multiple-hosts-techtip69/[WildFly with MySQL] example that shows extending the WildFly image to include a MySQL source.  Note that this is based upon also having the database containerized and thus exposing the container linking variables.  If that is not the case for your environment, you will have to provide the host/port information in a different way.
+
+== OpenShift
+
+OpenShift is the Red Hat enterprise offering of Kubernetes which also utilizes Docker.  While you may usually be able to use your existing Docker containers on OpenShift, there are additional considerations and features. 
+
+See link:https://dzone.com/articles/red-hat-jboss-data-virtualization-on-openshift-part-1-getting-started[JDV on OpenShift] for an overview of how the productized version of {{ book.productnameFull }} can be run on OpenShift.
+
+A simplified form of immutable containers, but with additional OpenShift features such as health checks and better JVM constraints, can be seen at link:https://github.com/shawkins/teiid-openshift-templates/tree/master/server-docker[OpenShift {{ book.productnameFull }} Server Docker].  Note however that many of the resource concerns have been addressed by later java versions which automatically detect memory constraints in vm sizing and report an appropriate number of available processors.
+
+See link:http://teiid.io/tools/beetle_studio/ for tooling that provides a turn-key experience for creating containerized virtualizations.  Under the covers it uses fabric8 and Thorntail to create images.  See link:https://github.com/teiid/thorntail-teiid-examples[{{ book.productnameFull }} Thorntail Examples] for direct usage of the build logic.

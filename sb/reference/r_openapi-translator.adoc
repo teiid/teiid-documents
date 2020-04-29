@@ -1,0 +1,124 @@
+// Module included in the following assemblies:
+// as_translators.adoc
+[id="openapi-translator"]
+= OpenAPI translator
+
+The OpenAPI translator, known by the type name _"openapi"_ exposes OpenAPI data sources via relational concepts 
+and uses the {{ book.productnameFull }} WS resource adapter for making web service calls.
+
+.What is OpenAPI?
+https://www.openapis.org/[[OpenAPI] is a simple yet powerful representation of your RESTful API. 
+With the largest ecosystem of API tooling on the planet, thousands of developers are supporting OpenAPI 
+in almost every modern programming language and deployment environment. 
+With an OpenAPI-enabled API, you get interactive documentation, client SDK generation, and discoverability.
+
+This translator is compatible with OpenAPI/Swagger v2 and OpenAPI v3.
+
+.Usage
+
+Usage of a OpenAPI source is similar any other translator in {{ book.productnameFull }}. 
+The translator enables metadata import. 
+The metadata is imported from source system's metadata file and then exposed as stored procedures in {{ book.productnameFull }}. 
+The source system can be queried by executing these stored procedures in {{ book.productnameFull }} system.
+
+NOTE: Although parameter order is guaranteed by the Swagger libraries, if you rely upon the native import, 
+it is best if you call procedures using named, rather than positional parameters. 
+
+The below is sample VDB that can read metadata from Petstore reference service on http://petstore.swagger.io/ site.
+
+[source,xml]
+----
+<vdb name="petstore" version="1">
+    <model visible="true" name="m">
+        <property name="importer.metadataUrl" value="/swagger.json"/>
+        <source name="s" translator-name="openapi" connection-jndi-name="java:/openapi"/> 
+    </model>
+</vdb>
+----
+
+The required resource-adapter configuration will look like
+
+[source,xml]
+----
+<resource-adapter id="openapi">
+    <module slot="main" id="org.jboss.teiid.resource-adapter.webservice"/>
+    <transaction-support>NoTransaction</transaction-support>
+    <connection-definitions>
+        <connection-definition class-name="org.teiid.resource.adapter.ws.WSManagedConnectionFactory" jndi-name="java:/openapi" enabled="true" use-java-context="true" pool-name="teiid-openapi-ds">
+            <config-property name="EndPoint">
+                http://petstore.swagger.io/v2
+            </config-property>
+        </connection-definition>
+    </connection-definitions>
+</resource-adapter>
+----
+
+After you configure the preceding resource-adapter and deploy the VDB successfully, 
+then you can connect to the VDB deployed using {{ book.productnameFull }} JDBC driver and issue SQL statements such as the following:
+
+[source,sql]
+----
+EXEC findPetsByStatus(('sold',))
+EXEC getPetById(1461159803)
+EXEC deletePet('', 1461159803)
+----
+
+.Configuration of translator
+
+.Execution properties
+
+Execution properties extend/limit the functionality of the translator based on the physical source capabilities. 
+Sometimes default properties must be adjusted for proper execution of the translator.
+
+*Execution properties*
+
+None.
+
+
+.Importer properties
+
+The following table lists the importer properties that define the behavior of the translator during the import of from the physical source.
+
+|===
+|Name |Description |Default
+
+|metadataUrl
+|URL from which to obtain the OpenAPI metadata. May be a local file using a file: URL.
+|true
+
+|server
+|The server to use. Otherwise the first server listed will be used.
+|null
+
+|preferredProduces
+|Preferred Accept MIME type header, this should be one of the OpenAPI 'produces' types;
+|application/json
+
+|preferredConsumes
+|Preferred Content-Type MIME type header, this should be one of the OpenAPI 'consumer' types;
+|application/json
+
+|===
+
+{% if book.targetWildfly %}
+.JCA resource adapter
+
+The resource adapter for this translator is a link:../admin/Web_Service_Data_Sources.adoc[Web Service Data Source].
+{% endif %}
+
+TIP: *Native queries* - The OpenAPI translator cannot perform native or direct query execution.
+However, you can use the _invokehttp_ method of the Web services translator to issue REST-based calls, and then use SQLXML to parse results.
+
+
+.Limitations
+The OpenAPI translator does not fully implement all of the features of OpenAPI. 
+The following limitations apply:  
+
+* You cannot set the MIME type to `application/xml` in either the `Accept` or `Content-Type` headers.
+* File and Map properties cannot be used. As a result, any multi-part payloads are not supported.
+* The translator does not process security metadata.
+* The translator does not process custom properties that start with `x-`.
+* The translator does not work with following JSON schema keywords: 
+** `allOf`
+** `multipleOf`
+** `items`

@@ -1,0 +1,83 @@
+
+= Custom Metadata Repository
+
+If the provided link:../reference/Metadata_Repositories.adoc[metadata facilities] are not sufficient then a developer can extend the _MetadataRepository_ class provided in the _org.teiid.api_ jar to plug-in their own metadata facilities into the {{ book.productnameFull }} engine. For example, a user can write a metadata facility that is based on reading data from a database or a JCR repository. 
+
+See the arche-type for creating a https://github.com/teiid/teiid-tools/tree/master/arche-types/metadatarepository-archetype[custom metadata repository].
+
+Or see link:Setting_up_the_build_environment.adoc[setting up the build environment] to start development. For Example:
+
+[source,java]
+.*Sample Java Code*
+----
+import org.teiid.metadata.MetadataRepository;
+...
+
+package com.something;
+
+public class CustomMetadataRepository implements MetadataRepository {
+    @Override
+    public void loadMetadata(MetadataFactory factory, ExecutionFactory executionFactory, Object connectionFactory)
+        throws TranslatorException {
+        /* Provide implementation and fill the details in factory */
+        ...
+    }
+}
+----
+
+Then build a JAR archive with above implementation class and create file a named _org.teiid.metadata.MetadataRepository_ in the _META-INF/services_ directory with contents:
+
+[source,java]
+----
+com.something.CustomMetadataRepository
+----
+
+Once the JAR file has been built, it needs to be deployed in the {{ book.asName }} as a module under _<jboss-as>/modules_ directory. Follow the below steps to create a module.
+
+* Create a directory _<jboss-as>/modules/com/something/main_
+
+* Under this directory create a "module.xml" file that looks like
+
+[source,xml]
+.*Sample module.xml file*
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="urn:jboss:module:1.0" name="com.something">
+    <resources>
+        <resource-root path="something.jar" />
+    </resources>
+    <dependencies>
+        <module name="javax.api"/>
+        <module name="org.teiid.common-core"/>
+        <module name="org.teiid.teiid-api" />
+    </dependencies>
+</module>
+----
+
+* Copy the jar file under this same directory. Make sure you add any additional dependencies if required by your implementation class under dependencies.
+
+* Restart the server
+
+The below XML fragment shows how to configure the VDB with the custom metadata repository created
+
+[source,xml]
+.*Sample vdb.xml file*
+----
+<vdb name="{vdb-name}" version="1">
+    <model name="{model-name}" type="PHYSICAL">
+        <source name="AccountsDB" translator-name="oracle" connection-jndi-name="java:/oracleDS"/>
+        <metadata type="{metadata-repo-module}"></metadata>
+    </model>
+</vdb>
+----
+
+Now when this VDB gets deployed, it will call the _CustomMetadataRepository_ instance for metadata of the model. Using this you can define metadata for single model or for the whole VDB pragmatically. Be careful about holding state and synchronization in your repository instance.
+
+== Development Considerations
+
+* `MetadataRepository` instances are created on a per vdb basis and may be called concurrently for the load of multiple models.
+
+* See the `MetadataFactory` and the `org.teiid.metadata` package javadocs for metadata construction methods and objects. For example if you use your own DDL, then call the `MetadataFactory.parse(Reader)` method. If you need access to files in a VDB zip deployment, then use the `MetadataFactory.getVDBResources` method.
+
+* Use the `MetadataFactory.addPermission` and add `MetadataFactory.addColumnPermission` method to grant permissions on the given metadata objects to the named roles. The roles should be declared in your vdb.xml, which is also where they are typically tied to container roles.
+

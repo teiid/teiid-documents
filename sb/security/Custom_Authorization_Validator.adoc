@@ -1,0 +1,64 @@
+
+= Custom Authorization Validator
+
+In situations where {{ book.productnameFull }}’s built-in link:../reference/Data_Roles.adoc[Data Roles] mechanism is not sufficient, a custom `org.teiid.PolicyDecider` can be installed via a JBoss module. Note that a PolicyDecider only makes high-level authorization decisions based upon the access context (INSERT, UPDATE, DELETE, etc.), the caller, and the resource (column, table/view, procedure, function, etc.). Data-level column masking and row based security policy information due to its interaction with the {{ book.productnameFull }} planner cannot be injected via a custom `org.teiid.PolicyDecider`. You may add column masking and row based security permissions via the `org.teiid.MetadataFactory` in custom a `org.teiid.MetadataRepository` or custom translator.
+
+To provide a custom authorization validator, you must extend the `org.teiid.PolicyDecider` interface and build a custom java class. If you are using maven as your build process, you can use following dependencies:
+
+[source,xml]
+----
+<dependencies>
+      <dependency>
+         <groupId>org.teiid</groupId>
+         <artifactId>teiid-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.teiid</groupId>
+         <artifactId>teiid-common-core</artifactId>
+         <scope>provided</scope>
+      </dependency>
+   </dependencies>
+----
+
+The _PoilcyDecider_ interface is loaded by the {{ book.productnameFull }} using the Java’s standard service loader mechanism. For this to work, add the following named file _META-INF/services/org.teiid.PolicyDecider_ with full name of your PolicyDecider implementation class as its contents. for example:
+
+.*META-INF/services/org.teiid.PolicyDecider*
+----
+org.example.auth.MyCustomPolicyDecider
+----
+
+Now package all these files into a JAR archive file and build JBoss module in _jboss-as/modules_ directory. If your PolicyDecider has any third party dependencies those jar files can also be added as dependencies to the same module. Make sure you list all the files in the _module.xml_ file. Below is sample module.xml file along with {{ book.productnameFull }} specific dependencies
+
+[source,xml]
+.*module.xml*
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="urn:jboss:module:1.0" name="org.example.auth">
+    <resources>
+        <resource-root path="my_custom_policy.jar" />
+        <!--add any other dependent jars here, if they are not defined as modules -->
+    </resources>
+
+
+<dependencies>
+    <module name="org.teiid.common-core"/>
+    <module name="org.teiid.api"/>
+    <module name="javax.api"/>
+</dependencies>
+</module>
+----
+
+create folder in the "<jboss-as>/modules/org/example/auth/main", copy the above _module.xml_ file along with all the jar files. This directory can be different if you choose, just make sure the name of the
+module and the directory name match.
+
+After the module has been added, change the configuration. Edit either the standalone-teiid.xml or te domain-teiid.xml file, and in the "teiid" subsystem xml fragment add the following xml with the module name created.
+
+[source,xml]
+----
+<policy-decider-module>name</policy-decider-module>
+----
+
+then restart the system. A `PolicyDecider` may be consulted many times for a single user command, but it is only called to make decisions based upon resources that appear in user queries. Any further access of
+resources through views or stored procedures, just as with data roles, is not checked against a `PolicyDecider`.
+
