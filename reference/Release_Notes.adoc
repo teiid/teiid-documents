@@ -7,10 +7,6 @@ Teiid {{ book.fullVersionNumber }} adds performance features, microservice enabl
 
 == Highlights
 
-* https://issues.redhat.com/browse/TEIID-5874[TEIID-5874] added support for transactional Infinispan/JDG access.  Support for cache aliasing was removed.
-* https://issues.redhat.com/browse/TEIID-5896[TEIID-5896] added support for EXTRACT QUARTER and EPOCH.
-* https://issues.redhat.com/browse/TEIID-5798[TEIID-5798] added the POLICY construct to replace specifying a CONDITION on a permission.
-
 == Compatibility Issues
 
 * Support for named parameter syntax using param=value has been deprecated, since it is ambiguous with a comparison predicate boolean value expression. param**=>**value should be used instead.
@@ -23,6 +19,10 @@ Teiid {{ book.fullVersionNumber }} adds performance features, microservice enabl
 * https://issues.redhat.com/browse/TEIID-4731[TEIID-4731] The default authentication scheme for MongoDB resource adapter has been changed to SCRAM_SHA_1 to match with latest versions of MongoDB. If using MongoDB version less than 3.0, to restore previous functionality change/add SecurityType to 'None' in the resource adapter configuration.
 * https://issues.redhat.com/browse/TEIID-5511[TEIID-5511] The AdminShell kit has been removed. No further releases are planned.
 * https://issues.redhat.com/browse/TEIID-5833[TEIID-5833] The use of SET NAMESPACE to define a custom prefix or namespace is no longer allowed.  Please remove this statement from your DDL and simply use a consistent property key.
+
+=== from 13.1
+
+* https://issues.redhat.com/browse/TEIID-5948[TEIID-5948] The mysql5 translator name has been deprecated.  You should use just mysql instead - the version will be detected from the source, or you may manually set the database version property.
 
 === from 13.0
 

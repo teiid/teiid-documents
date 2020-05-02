@@ -1,16 +1,16 @@
 // Module included in the following assemblies:
 // as_jdbc-translators.adoc
 [id="my-sql-server-translator"]
-= MySQL translator (mysql/mysql5)
+= MySQL translator (mysql)
 
 Also see common xref:jdbc-translators[JDBC translators] information.
 
 You can use the following translators with MySQL and MariaDB:
 
-mysql:: The MySQL translator, known by the type name *_mysql_*, is for use with MySQL version 4.x.
+mysql:: The MySQL translator, known by the type name *_mysql_*, is for use with MySQL version 4.x or later. The translator also works with other compatible MySQL derivatives, such as MariaDB.
 
-mysql5:: The MySQL5 translator, known by the type name *_mysql5_*, is for use with MySQL version 5 or later.
-The translator also works with other compatible MySQL derivatives, such as MariaDB.
+mysql5:: The legacy MySQL5 translator, known by the type name *_mysql5_*, was for use with MySQL version 5 or later.  It has been incorporated into the mysql translator.
+
 
 .Usage
 
