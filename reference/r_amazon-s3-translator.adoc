@@ -185,7 +185,7 @@ exec deleteFile(name=>'myfile.txt');
 
 .list(...)
 
-Lists the contents of the bucket. 
+Lists the contents of the bucket using a v2 list request. 
 
 [source,sql]
 ----
@@ -193,7 +193,17 @@ call list(string bucket, string region, string accesskey, string secretkey, next
     returns Table(result clob)
 ----
 
-The result is the XML file that Amazon S3 provides in the following format
+.listv1(...)
+
+Lists the contents of the bucket using a v1 list request. 
+
+[source,sql]
+----
+call listv1(string bucket, string region, string accesskey, string secretkey) 
+    returns Table(result clob)
+----
+
+The result for either is an XML file which resembles:
 
 [source, xml]
 ----
@@ -232,10 +242,8 @@ If all properties (`bucket`, `region`, `accesskey`, and `secretkey`) are defined
 SELECT * FROM Bucket
 ---- 
 
-NOTE: If there are more then 1000 object in the bucket, then the value 'NextContinuationToken' need to be supplied as 'nexttoken' 
-into the _list_ call to fetch the next batch of objects. 
-This can be automated in {{ book.productnameFull }} with enhancement request. 
-
+NOTE: If there are more then 1000 object in the bucket, then the value 'IsTruncated' will be true. 
+v2 support for a Bucket list with continuation support can be automated in {{ book.productnameFull }} with an enhancement request. 
 
 {% if book.targetWildfly %}
 == JCA Resource Adapter
