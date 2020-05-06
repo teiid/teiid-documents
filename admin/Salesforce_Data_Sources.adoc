@@ -20,7 +20,7 @@ batch
 runbatch
 ----
 
-The salesforce-xx connection definition configuration is similar to the above. The resource adapter name would instead be salesforce-xx, and the url would point to a later version.  It is recommended to set the url explicitly.  The -34 resource adapter defaults to https://login.salesforce.com/services/Soap/u/34.0, and the -41 resource adapter defaults to https://login.salesforce.com/services/Soap/u/40.0 
+The salesforce-xx connection definition configuration is similar to the above. The resource adapter name would instead be salesforce-xx, and the url would point to a later version.  It is recommended to set the url explicitly.  If you use just the salesforce resource adapter without setting the url, then later versions of Teiid can use a different default once the resource adapter moves to a different version.  The -34 resource adapter defaults to https://login.salesforce.com/services/Soap/u/34.0, and the -41 resource adapter defaults to https://login.salesforce.com/services/Soap/u/40.0 
 
 NOTE: that if you access a newer Salesforce API version than the resource adapter supports, you will receive low level metadata parsing exceptions - you can either access an older API or log an issue to have updated support. 
 

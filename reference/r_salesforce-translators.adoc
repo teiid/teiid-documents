@@ -31,7 +31,7 @@ project https://github.com/teiid/salesforce[https://github.com/teiid/salesforce]
 
 .salesforce
 
-The translator, known by the type name *_salesforce_*, works with Salesforce API 37.0 and later.
+The translator, known by the type name *_salesforce_*, works with Salesforce API 34.0 and later.
 
 {% endif %}
 
