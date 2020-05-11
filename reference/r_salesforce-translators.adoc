@@ -11,7 +11,7 @@ You can use the Salesforce translator to run `SELECT`, `DELETE`, `INSERT`, `UPSE
 .salesforce
 
 The translator, known by the type name *_salesforce_*, provides Salesforce API 34.0 support. The translator must be used 
-with the corresponding Salesforce resource adapter of the same API version. Salesforce API version 34.0 support has been removed.
+with the corresponding Salesforce resource adapter of the same API version. Salesforce API version 22.0 support has been removed.
 
 .salesforce-34
 
@@ -34,6 +34,8 @@ project https://github.com/teiid/salesforce[https://github.com/teiid/salesforce]
 The translator, known by the type name *_salesforce_*, works with Salesforce API 34.0 and later.
 
 {% endif %}
+
+NOTE: The default URL for a Salesforce source may change from release to release.  Especially if you are relying on metadata import it is recommended that the Salesforce URL is configured on the source.  The URL will contain an explicit API version which means the imported metadata will remain consistent.
 
 .Execution properties
 
