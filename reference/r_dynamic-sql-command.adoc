@@ -21,7 +21,7 @@ The `AS` clause symbols will be matched positionally with the symbols returned b
 Non-convertible types or too few columns returned by the executed SQL string will result in an error.
 * The `INTO` clause will project the dynamic SQL into the specified temp table. 
 With the `INTO` clause specified, the dynamic command will actually execute a statement that behaves like an INSERT with a QUERY EXPRESSION. 
-If the dynamic SQL command creates a temporary table with the `INTO` clause, then the `AS` clause is required to define the table’s metadata.
+If the dynamic SQL command creates a temporary table with the `INTO` clause, then the `AS` clause is required to define the table’s metadata.  Note that if the temporary table already exists, then the insert columns are matched positionally - not by name.
 * The `USING` clause allows the dynamic SQL string to contain variable references that are bound at runtime to specified values. 
 This allows for some independence of the SQL string from the surrounding procedure variable names and input names. 
 In the dynamic command `USING` clause, each variable is specified by short name only. 
