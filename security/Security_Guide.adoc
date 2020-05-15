@@ -2,6 +2,22 @@
 
 The {{ book.productnameFull }} system provides a range of built-in and extensible security features to enable secure data access. This introduction provides a high-level guide to security concerns. The rest of the guide provides specifics on configuring clients, the {{ book.productnameFull }} server, and the application server.
 
+== Elytron Configuration
+
+Examples in this guide are based upon the legacy security framework - which is still supported.  If you want to migrate to the newer Elytron system you should remove the legacy teiid-security security domain and instead work with an analogous one created in Elytron.  This also requires telling undertow to use the new security domain.  
+
+The standalone cli for this change to Elytron:
+
+[source,cli]
+----
+/subsystem=security/security-domain=teiid-security:remove()
+/subsystem=elytron/security-domain=teiid-security:add(realms=[{realm=ApplicationRealm}])
+/subsystem=undertow/application-security-domain=teiid-security:add(security-domain=teiid-security)
+reload
+----
+
+From there you would not completely follow the examples shown here, but rather use them as a guide to follow migration documentation such as link:https://docs.wildfly.org/19/WildFly_Elytron_Security.html#Migrate_Legacy_Security_to_Elytron_Security[Migrate Legacy Security].
+
 == Authentication
 
 === Client Authentication
