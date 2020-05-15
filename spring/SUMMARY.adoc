@@ -265,7 +265,7 @@
 ... link:reference/r_sys-schema.adoc[SYS schema]
 ... link:reference/r_sysadmin-schema.adoc[SYSADMIN schema]
 .. link:reference/as_translators.adoc[Translators]
-// ... link:reference/r_amazon-s3-translator.adoc[Amazon S3 translator]
+... link:reference/r_amazon-s3-translator.adoc[Amazon S3 translator]
 // ... link:reference/r_amazon-simpledb-translator.adoc[Amazon SimpleDB translator]
 // ... link:reference/r_apache-accumulo-translator.adoc[Apache Accumulo translator]
 // ... link:reference/r_apache-solr-translator.adoc[Apache SOLR translator]
