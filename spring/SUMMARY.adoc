@@ -269,7 +269,7 @@
 // ... link:reference/r_amazon-simpledb-translator.adoc[Amazon SimpleDB translator]
 // ... link:reference/r_apache-accumulo-translator.adoc[Apache Accumulo translator]
 // ... link:reference/r_apache-solr-translator.adoc[Apache SOLR translator]
-// ... link:reference/r_cassandra-translator.adoc[Cassandra translator]
+... link:reference/r_cassandra-translator.adoc[Cassandra translator]
 // ... link:reference/r_couchbase-translator.adoc[Couchbase translator]
 ... link:reference/as_delegator-translators.adoc[Delegator translators]
 .... link:reference/p_extending-the-delegator-translator.adoc[Extending the delegator translator]
