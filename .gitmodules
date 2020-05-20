@@ -74,3 +74,7 @@
 	path = 7.6-13.0.x
 	url = https://github.com/teiid/teiid-documents
 	branch = 7.6-13.0.x-gh-pages
+[submodule "14.0.x"]
+	path = 14.0.x
+	url = https://github.com/teiid/teiid-documents
+	branch = 14.0.x-gh-pages
