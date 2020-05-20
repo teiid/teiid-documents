@@ -1240,7 +1240,7 @@
 |<<booleanPrimary,boolean primary>>
 
 |[[usage_booleanPrimary]]_<<booleanPrimary, boolean primary>>_
-|<<createPolicy,CREATE POLICY>>, <<filterClause,filter clause>>, <<notCrit,boolean factor>>
+|<<createPolicy,CREATE POLICY>>, <<filterClause,filter clause>>, <<grant,GRANT>>, <<notCrit,boolean factor>>
 
 |[[usage_branchingStatement]]_<<branchingStatement, branching statement>>_
 |<<delimitedStatement,delimited statement>>
@@ -5020,7 +5020,8 @@ DROP row level policy
 
 Example:
 [source,sql]
-----DROP POLICY pname ON tbl TO role
+----
+DROP POLICY pname ON tbl TO role
 ----
 
 
@@ -5029,7 +5030,7 @@ Example:
 
 === [[grant]]_<<usage_grant, GRANT>>_ ::= 
 
-* <<token_GRANT,GRANT>> ( ( ( <<<readGrantTypes,grant type>>> ( <<<token_COMMA,comma>>> <<<readGrantTypes,grant type>>> )* )? <<token_ON,ON>> ( <<token_TABLE,TABLE>> <<<id,identifier>>> ( <<token_CONDITION,CONDITION>> ( ( <<token_NOT,NOT>> )? <<token_CONSTRAINT,CONSTRAINT>> )? <<<stringVal,string>>> )? | <<token_FUNCTION,FUNCTION>> <<<id,identifier>>> | <<token_PROCEDURE,PROCEDURE>> <<<id,identifier>>> ( <<token_CONDITION,CONDITION>> ( ( <<token_NOT,NOT>> )? <<token_CONSTRAINT,CONSTRAINT>> )? <<<stringVal,string>>> )? | <<token_SCHEMA,SCHEMA>> <<<id,identifier>>> | <<token_COLUMN,COLUMN>> <<<id,identifier>>> ( <<token_MASK,MASK>> ( <<token_ORDER,ORDER>> <<<intVal,unsigned integer>>> )? <<<stringVal,string>>> )? ) ) | ( <<token_ALL,ALL>> <<token_PRIVILEGES,PRIVILEGES>> ) | ( <<token_TEMPORARY,TEMPORARY>> <<token_TABLE,TABLE>> ) | ( <<token_USAGE,USAGE>> <<token_ON,ON>> <<token_LANGUAGE,LANGUAGE>> <<<id,identifier>>> ) ) <<token_TO,TO>> <<<id,identifier>>>
+* <<token_GRANT,GRANT>> ( ( ( <<<readGrantTypes,grant type>>> ( <<<token_COMMA,comma>>> <<<readGrantTypes,grant type>>> )* )? <<token_ON,ON>> ( ( <<token_TABLE,TABLE>> <<<id,identifier>>> ( <<token_CONDITION,CONDITION>> ( ( <<token_NOT,NOT>> )? <<token_CONSTRAINT,CONSTRAINT>> )? <<<stringVal,string>>> )? ) | ( <<token_FUNCTION,FUNCTION>> <<<id,identifier>>> ) | ( <<token_PROCEDURE,PROCEDURE>> <<<id,identifier>>> ( <<token_CONDITION,CONDITION>> ( ( <<token_NOT,NOT>> )? <<token_CONSTRAINT,CONSTRAINT>> )? <<<stringVal,string>>> )? ) | ( <<token_SCHEMA,SCHEMA>> <<<id,identifier>>> ) | ( <<token_COLUMN,COLUMN>> <<<id,identifier>>> ( <<token_MASK,MASK>> ( <<token_ORDER,ORDER>> <<<intVal,unsigned integer>>> )? <<<stringVal,string>>> )? ( <<token_CONDITION,CONDITION>> ( <<<booleanPrimary,boolean primary>>> | <<<stringVal,string>>> ) )? ) ) ) | ( <<token_ALL,ALL>> <<token_PRIVILEGES,PRIVILEGES>> ) | ( <<token_TEMPORARY,TEMPORARY>> <<token_TABLE,TABLE>> ) | ( <<token_USAGE,USAGE>> <<token_ON,ON>> <<token_LANGUAGE,LANGUAGE>> <<<id,identifier>>> ) ) <<token_TO,TO>> <<<id,identifier>>>
 
 
 Defines GRANT for a role
