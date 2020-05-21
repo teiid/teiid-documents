@@ -7,6 +7,10 @@ Teiid {{ book.fullVersionNumber }} adds performance features, microservice enabl
 
 == Highlights
 
+* https://issues.redhat.com/browse/TEIID-5859[TEIID-5859] Upgraded to WildFly 19.1.0 including bringing the default standalone-teiid configuration up to date.
+* https://issues.redhat.com/browse/TEIID-5927[TEIID-5927] https://issues.redhat.com/browse/TEIID-5935[TEIID-5935] The amazon-s3 translator is now capable of utilizing other s3 services including minio and ceph. 
+* https://issues.redhat.com/browse/TEIID-5917[TEIID-5917] The teiid.io website has been updated to better reflect the state of teiid related projects.
+
 == Compatibility Issues
 
 * Support for named parameter syntax using param=value has been deprecated, since it is ambiguous with a comparison predicate boolean value expression. param**=>**value should be used instead.
