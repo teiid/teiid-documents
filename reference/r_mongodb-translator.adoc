@@ -1,6 +1,6 @@
 // Module included in the following assemblies:
 // as_translators.adoc
-[id="mongotdb-translator"]
+[id="mongodb-translator"]
 = MongoDB Translator
 :toc: manual
 :toc-placement: preamble
@@ -68,7 +68,7 @@ IMPORT FROM SERVER local INTO northwind;
 Or as an xml vdb:
 [source,xml]
 ----
-<vdb name="nothwind" version="1">
+<vdb name="northwind" version="1">
     <model name="northwind">
         <source name="local" translator-name="mongodb" connection-jndi-name="java:/mongoDS"/>
     </model>
