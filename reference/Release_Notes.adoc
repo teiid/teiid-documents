@@ -7,6 +7,8 @@ Teiid {{ book.fullVersionNumber }} adds performance features, microservice enabl
 
 == Highlights
 
+* https://issues.redhat.com/browse/TEIID-5040[TEIID-5040] The google spreadsheet source can specify more than one spreadsheet with the new SpreadsheetMap property. 
+
 == Compatibility Issues
 
 * Support for named parameter syntax using param=value has been deprecated, since it is ambiguous with a comparison predicate boolean value expression. param**=>**value should be used instead.

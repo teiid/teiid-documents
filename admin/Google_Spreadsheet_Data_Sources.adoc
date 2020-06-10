@@ -18,10 +18,13 @@ Authentication to your google account may be done using OAuth, which requires a 
 |Use guide below to retrieve RefreshToken. Request access to Google Drive and Spreadsheet API.
 
 |SpreadsheetName
-|Name/Title of the Spreadsheet.
+|Name/Title of the Spreadsheet.  May be used with v3.
 
 |SpreadsheetId
-|ID of Spreadsheet.
+|ID of Spreadsheet.  May be used with v3 or v4.
+
+|SpreadsheetMap
+|If spreadsheetId is not set, specifies more than one spreadsheet for use in a format of prefix1=spreadsheetId1;prefix2=spreadsheet2... May be used with v4.
 
 |ApiVersion
 |Optional GData API version.  Can be v3 or v4.  Defaults to v3.
