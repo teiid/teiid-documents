@@ -16,6 +16,8 @@ batch
 /subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=URL:add(value=https://login.salesforce.com/services/Soap/u/34.0)
 /subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=username:add(value={user})
 /subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=password:add(value={password})
+/subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=connectTimeout:add(value={timeout})
+/subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=requestTimeout(value={timeout})
 /subsystem=resource-adapters/resource-adapter=salesforce:activate
 runbatch
 ----
@@ -30,6 +32,8 @@ To find out all the properties that are supported by this Salesforce Connector e
 ----
 /subsystem=teiid:read-rar-description(rar-name=salesforce)
 ----
+
+The resource adapter by default uses the Salesforce library for the http transport.  Usage of the ConfigFile property allows you to pass in a CXF configuration and instead use the CXF library.  If you do so the other properties, such as the requestTimeout or connectTimeout, are still applicable but may also be specified directly in the CXF config.
 
 TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in *"<jboss-install>/docs/teiid/datasources/salesforce" directory under "resource-adapters" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
 
@@ -166,7 +170,7 @@ http://salesforce.stackexchange.com/questions/88396/invalid-assertion-error-in-j
 
 Logging, when enabled, will be performed at an INFO level to the org.apache.cxf.interceptor context.
 
-=== Per Resource Adapder
+=== Per Resource Adapter
 
 The CXF config property may also be used to control the logging of requests and responses.
 
