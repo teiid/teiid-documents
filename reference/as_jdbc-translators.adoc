@@ -186,6 +186,10 @@ will be formed using the catalog and schema names as directed by the `useCatalog
 will be allowed for objects to come from multiple foreign schema. This option does not affect the name in source property.
 |false (only change when importing from multiple foreign schema).
 
+|useTypeInfo
+|If JDBC DatabaseMetaData getTypeInfo should be used.  If false, array component types and unsigned types may not be able to be determined.
+|true
+
 |useQualifiedName
 |`true` will use name qualification for both the {{ book.productnameFull }} name and name in source as further refined 
 by the `useCatalogName` and `useFullSchemaName` properties. 
