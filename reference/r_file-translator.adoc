@@ -119,7 +119,7 @@ An exception is also thrown if the file cannot be deleted.
 {% if book.targetWildfly %}
 .JCA resource adapter
 
-For configuration information, see xref:../admin/File_Data_Sources.adoc[File Data Source], the xref:../admin/Ftp_Data_Sources.adoc[FTP Data Source], 
+For configuration information, see xref:../admin/File_Data_Sources.adoc[File Data Source], the xref:../admin/Ftp_Data_Sources.adoc[FTP Data Source], the xref:../admin/HDFS_Data_Sources.adoc[HDFS Data Source]
 and the Administrator's Guide in general.
 {% endif %}
 

@@ -1,7 +1,7 @@
 
 = Salesforce Data Sources
 
-Salesforce data sources use a {{ book.productnameFull }} specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. There are three versions of the salesforce resource adapter - salesforce, which currently provides connectivity to the 34.0 Salesforce API, salesforce-34, which provides connectivity to the 34.0 Salesforce API, and salesforce-41 which actually provides access to 37.0 through at least 45.0. The version 22.0 support has been removed.
+Salesforce data sources use a built-in {{ book.productnameFull }} specific JCA connector. There are three versions of the salesforce resource adapter - salesforce, which currently provides connectivity to the 34.0 Salesforce API, salesforce-34, which provides connectivity to the 34.0 Salesforce API, and salesforce-41 which actually provides access to 37.0 through at least 45.0. The version 22.0 support has been removed.
 
 NOTE: If you need connectivity to an API version other than what is built in, you may try to use an existing connectivity pair, but in some circumstances - especially accessing a later remote api from an older java api - this is not possible and results in what appears to be hung connections.  Please raise an issue if you cannot successfully access a specific API version.
 

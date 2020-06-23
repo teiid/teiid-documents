@@ -14,6 +14,7 @@
 .... link:admin/File_Data_Sources.adoc[File Data Sources]
 .... link:admin/Ftp_Data_Sources.adoc[Ftp/Ftps Data Sources]
 .... link:admin/Google_Spreadsheet_Data_Sources.adoc[Google Spreadsheet Data Sources]
+.... link:admin/HDFS_Data_Sources.adoc[HDFS Data Sources]
 .... link:admin/Infinispan_Data_Sources.adoc[Infinispan HotRod Data Sources]
 .... link:admin/JDBC_Data_Sources.adoc[JDBC Data Sources]
 .... link:admin/LDAP_Data_Sources.adoc[LDAP Data Sources]
