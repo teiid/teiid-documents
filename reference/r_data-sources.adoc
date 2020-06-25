@@ -49,6 +49,7 @@ See the link:OpenAPI_Translator.adoc[OpenAPI] and link:Swagger_Translator.adoc[S
 == Big Data/No SQL/Search Engines/JCR and Other Sources
 
 * link:Actian_Vector_Translator.adoc[Actian Vector]
+* link:r_amazon-athena-translator.adoc[Amazon Athena]
 * link:Amazon_S3_Translator.adoc[Amazon S3]
 * link:Amazon_SimpleDB_Translator.adoc[Amazon SimpleDB]
 * link:Apache_Accumulo_Translator.adoc[Apache Accumulo]
@@ -83,23 +84,24 @@ See the link:OpenAPI_Translator.adoc[OpenAPI] and link:Swagger_Translator.adoc[S
 
 == LDAP 
 
-See the link:LDAP_Translator.adoc[LDAP Translator] for access to:
+See the link:r_ldap_translator.adoc[LDAP Translator] for access to:
 
 * RedHat Directory Server
 * Active Directory
 
 == Files
 
-See the link:File_Translator.adoc[File Translator] for use with:
+See the link:File_Translator.adoc[File Translator] and file sources (file, hdfs, and ftp) for use with:
 
-* link:FROM_Clause.adoc#_texttable[Delimited/Fixed width]
-* link:FROM_Clause.adoc#_xmltable[XML]
+* link:r_texttable.adoc[Delimited/Fixed width]
+* link:r_xmltable.adoc[XML]
+* link:r_jsontable.adoc[JSON]
 
 == Spreadsheets
 
-* link:Microsoft_Excel_Translator.adoc[Excel]
-* link:Google_Spreadsheet_Translator.adoc[Google Spreadsheet]
+* link:r_microsoft-excel-translator.adoc[Excel]
+* link:r_google-spreadsheet-translator.adoc[Google Spreadsheet]
 
 This represents data sources that have been validated to work using the available translators and connectors. However, this does not preclude a new data source from working. It can be as easy as extending an existing translator, to creating a new translator using the link:../dev/Translator_Development.adoc[Translator Development] extensions.
 
-Take a look at the list of link:Translators.adoc[Translators] that are used as the bridge between {{ book.productnameFull }} and the external system.
+Take a look at the list of link:as_translators.adoc[Translators] that are used as the bridge between {{ book.productnameFull }} and the external system.

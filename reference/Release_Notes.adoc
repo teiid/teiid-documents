@@ -7,7 +7,9 @@ Teiid {{ book.fullVersionNumber }} adds performance features, microservice enabl
 
 == Highlights
 
-* https://issues.redhat.com/browse/TEIID-5040[TEIID-5040] The google spreadsheet source can specify more than one spreadsheet with the new SpreadsheetMap property. 
+* https://issues.redhat.com/browse/TEIID-5040[TEIID-5040] The google spreadsheet source can specify more than one spreadsheet with the new SpreadsheetMap property.
+* https://issues.redhat.com/browse/TEIID-3647[TEIID-3647] Added a HDFS file source utilizing the hadoop client jars.
+* https://issues.redhat.com/browse/TEIID-5950[TEIID-5950] Added an Amazon Athena Translator.
 
 == Compatibility Issues
 
@@ -277,6 +279,10 @@ See the Admin Guide for more on configuration and installation.
 == Thirdparty Library Updates
 
 The following components have been updated:
+
+=== From 14.0
+
+* Accumulo was updated to the 2.0.0 client.
 
 === From 12.3
 

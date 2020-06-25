@@ -5,16 +5,10 @@
 
 Also see common xref:jdbc-translators[JDBC translators] information.
 
-The PrestoDB translator, known by the type name *_prestodb_*, exposes querying functionality to Presto data sources. 
-In data integration respect, PrestoDB has capabilities that are similar to {{ book.productnameFull }}, 
-however it goes beyond in terms of distributed query execution with multiple worker nodes. 
-{{ book.productnameFull }}’s execution model is limited to single execution node and focuses more on pushing the query down to sources. 
-{{ book.productnameFull }} provides more complete querying capabilities and many enterprise features.
+The PrestoDB translator, known by the type name *_prestodb_*, exposes querying functionality to Presto data sources - 
+which includes both PrestoDB and PrestoSQL.
 
 .Capabilities
-
-You can use the PrestoDB translator only with `SELECT` statements. The translator provides a restricted set of capabilities. 
-
 
 Because PrestoDB exposes a relational model, {{ book.productnameFull }} can use it as it does other RDBMS sources, such as Oracle, Db2, and so forth. 
 For information about configuring PrestoDB, see the Presto documentation.
@@ -25,9 +19,7 @@ set the translator property `supportsOrderBy` to disable the use of the `ORDER B
 
 NOTE: Some versions of Presto generate errors when you include null values in subqueries.
 
-TIP: PrestoDB does not support transactions. 
-To overcome issues caused by this limitation, define the data source as non-transactional.
-
+TIP: Older PrestoDB versions do not support transactions. To overcome issues caused by this limitation, define the data source as non-transactional.
 
 [NOTE]
 ====
@@ -38,6 +30,6 @@ To prevent duplicate table errors, use import options to filter the schemas.
 If you want to configure multiple Presto catalogs, set one of the following import options to filter the schemas and tables in the source:
  
 * Set `catalog` to a specific catalog name to match the name of the source catalog in Presto.
-* Set `schemaName` to a regular expression to filter schemas by matching result.
-* Set `excludeTables` to a regular expression to filter tables by matching results.
+* Set `schemaPattern` to a regular expression to include matching schemas.
+* Set `excludeTables` to a regular expression to exclude tables.
 ====

@@ -1,0 +1,8 @@
+// Module included in the following assemblies:
+// as_translators.adoc
+[id="amazon-athena-translator"]
+= Athena translator (athena)
+
+The Amazon Athena translator, known by the type name _athena_, is for use with the Amazon Athena service. 
+
+The translator is effectively an extension of the link:r_prestodb-translator.adoc[PrestoDB] translator, but accounts for some of the known limitations of Athena.  It is generally been used with a source created with the Simba Athena driver.

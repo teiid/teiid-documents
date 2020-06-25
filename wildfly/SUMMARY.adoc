@@ -280,6 +280,7 @@
 ... link:reference/r_infinispan-translator.adoc[Infinispan translator]
 ... link:reference/as_jdbc-translators.adoc[JDBC translators]
 .... link:reference/r_actian-vector-translator.adoc[Actian vector translator]
+.... link:reference/r_amazon-athena-translator.adoc[Amazon Athena translator]
 .... link:reference/r_apache-phoenix-translator.adoc[Apache Phoenix translator]
 .... link:reference/r_cloudera-impala-translator.adoc[Cloudera Impala translator]
 .... link:reference/r_db2-translator.adoc[Db2 translator]

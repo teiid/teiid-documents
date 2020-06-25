@@ -350,6 +350,7 @@ See to Admin Guide section link:../client-dev/WildFly_DataSource.adoc[{{ book.as
 {% if book.targetDVProd %}
 include::r_actian-vector-translator.adoc[leveloffset=+1]
 include::r_apache-phoenix-translator.adoc[leveloffset=+1]
+include::r_amazon-athena-translator.adoc[leveloffset=+1]
 include::r_cloudera-impala-translator.adoc[leveloffset=+1]
 include::r_db2-translator.adoc[leveloffset=+1]
 include::r_derby-translator.adoc[leveloffset=+1]
