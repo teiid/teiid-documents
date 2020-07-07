@@ -13,7 +13,7 @@ Execute following command using the {{ book.asDocRoot }}/Admin+Guide#AdminGuide-
 /subsystem=resource-adapters/resource-adapter=hdfs:activate()
 ----
 
-To find out all the properties that are supported by this Ftp/Ftps Connector execute the following command in the CLI.
+To find out all the properties that are supported by this Connector execute the following command in the CLI.
 
 [source,java]
 ----

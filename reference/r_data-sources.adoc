@@ -91,7 +91,7 @@ See the link:r_ldap_translator.adoc[LDAP Translator] for access to:
 
 == Files
 
-See the link:File_Translator.adoc[File Translator] and file sources (file, hdfs, and ftp) for use with:
+See the link:File_Translator.adoc[File Translator] and file sources (file, hdfs, s3, and ftp) for use with:
 
 * link:r_texttable.adoc[Delimited/Fixed width]
 * link:r_xmltable.adoc[XML]
