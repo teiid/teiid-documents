@@ -3,7 +3,7 @@
 [id="amazon-s3-translator"]
 = S3 translator
 
-The Simple Storage Service (S3) translator, known by the type name _amazon-s3_, exposes stored procedures to leverage Amazon S3 object resources. 
+The Simple Storage Service (S3) translator, known by the type name _amazon-s3_, exposes stored procedures to leverage Amazon S3 object resources.  This translator is *deprecated*.  Please use an s3 source with an appropriate translator such as file or excel.
 The translator works with a range of S3-compatible data sources, including Ceph Storage, Google Cloud Storage _buckets_, MinIO, and NooBaa. 
 
 This translator is typically used with the `TEXTTABLE` or `XMLTABLE` functions to consume CSV or XML formatted data, or to read Microsoft Excel files  

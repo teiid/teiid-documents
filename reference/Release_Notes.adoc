@@ -28,6 +28,7 @@ Teiid {{ book.fullVersionNumber }} adds performance features, microservice enabl
 === from 14.0
 
 * https://issues.redhat.com/browse/TEIID-5967[TEIID-5967] CREATE FOREIGN DATA WRAPPER will no longer allow the usage of HANDLER.  Use TYPE instead.
+* https://issues.redhat.com/browse/TEIID-5936[TEIID-5936] The amazon-s3 translator is deprecated.  Use the s3 source with an appropriate translator, such as file or excel instead.
 
 === from 13.1
 
