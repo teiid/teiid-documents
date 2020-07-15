@@ -23,5 +23,5 @@ If you are not familiar with JCA API, please read the JCA 1.5 Specification at h
 
 For sample resource adapter code refer to the {{ book.productnameFull }} Source code at https://github.com/teiid/teiid/tree/master/connectors/[https://github.com/teiid/teiid/tree/master/connectors/].
 
-Refer to the JBoss Application Server Connectors documentation at http://docs.jboss.org/jbossas/jboss4guide/r4/html/ch7.chapt.html[http://docs.jboss.org/jbossas/jboss4guide/r4/html/ch7.chapt.html].
+Refer to the JBoss Application Server Connectors documentation at http://docs.jboss.org/jbossas/jboss4guide/r4/html/ch7.chapt.html.
 

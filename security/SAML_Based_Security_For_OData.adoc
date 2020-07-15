@@ -185,7 +185,7 @@ NOTE: \{CERTIFICATE-ALIAS} is typically something like "idp.example.com" for whi
 </EntitiesDescriptor>
 ----
 
-* Create a {{ book.asDocRoot }}/Deployment+Overlays[deployment-overlay] using the cli with the modified contents:
+* Create a {{ book.asDocRoot }}Admin_Guide.html#Deployment_Overlays[deployment-overlay] using the cli with the modified contents:
 
 [source]
 ----

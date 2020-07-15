@@ -8,7 +8,7 @@
         "copyrightYear" :  "2019",
         "copyrightHolder" :  "Red Hat, Inc.",
         "javaVersionUrl" : "https://docs.oracle.com/en/java/javase/11",
-        "asDocRoot" : "https://docs.jboss.org/author/display/WFLY/Documentation",
+        "asDocRoot" : "https://docs.wildfly.org/19/",
         "archeTypeVersion" : "12.0.0",
         "targetWildfly" : true,
         "targetSpring" : false,

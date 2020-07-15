@@ -16,7 +16,7 @@ All commands sent to your Translator are in the form of these language trees, wh
 * `BatchedUpdates`
 * `Call` 
 
-Important components of these commands are expressions, criteria, and joins, which are examined in closer detail below. For more on the classes and interfaces described here, refer to the {{ book.productnameFull }} JavaDocs http://docs.jboss.org/teiid/7.6/apidocs[http://docs.jboss.org/teiid/7.6/apidocs].
+Important components of these commands are expressions, criteria, and joins, which are examined in closer detail below. For more on the classes and interfaces described here, refer to the {{ book.productnameFull }} JavaDocs https://docs.jboss.org/teiid/{{ book.fullVersionNumber}}/apidocs/.
 
 == Expressions
 

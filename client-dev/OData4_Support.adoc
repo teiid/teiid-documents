@@ -244,7 +244,7 @@ NOTE: *"Behind Proxy or In Cloud Environments?"* - If the {{ book.productnameFul
     </init-param>  
 ----
 
-To modify the web.xml, create a {{ book.asDocRoot }}/Deployment+Overlays[deployment-overlay] using the cli with the modified contents:
+To modify the web.xml, create a {{ book.asDocRoot }}Admin_Guide.html#Deployment_Overlays[deployment-overlay] using the cli with the modified contents:
 
 [source]
 ----

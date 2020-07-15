@@ -5,7 +5,7 @@
 
 You should consult the release notes for compatibility and configuration changes from each minor version that you are upgrading over.  This guide expands upon the release notes included in the kit to cover changes since 8.x.
 
-If possible you should make your migration to {{ book.productnameFull }} 9 by first using {{ book.productnameFull }} 8.13.  8.13 is a non-feature transitional release that is effectively {{ book.productnameFull }} 8.12 running on WildFly 9.0.2.  See also https://docs.jboss.org/author/display/teiid813final/Migration+Guide+From+{{ book.productnameFull }}+8.12[8.13 Migration Guide]
+If possible you should make your migration to {{ book.productnameFull }} 9 by first using {{ book.productnameFull }} 8.13.  8.13 is a non-feature transitional release that is effectively {{ book.productnameFull }} 8.12 running on WildFly 9.0.2.
 
 == JRE Support
 
@@ -146,7 +146,7 @@ The names of the wars have been changed to strip version information - this make
 teiid-odata-odata2.war has become teiid-odata.war
 teiid-olingo-odata4.war has become teiid-olingo-odata4.war
 
-To change properties in an web.xml file or add other files to the default odata war, you should use a {{ book.asDocRoot }}/Deployment+Overlays[deployment overlay] instead.
+To change properties in an web.xml file or add other files to the default odata war, you should use a {{ book.asDocRoot }}Admin_Guide.html#Deployment_Overlays[deployment overlay] instead.
 
 === Materialization
 

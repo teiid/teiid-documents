@@ -43,7 +43,7 @@ Note: If you are using standalone ha or standalone full-ha, you should use the t
 
 === Domain Mode
 
-To start the server in "Domain" mode, install {{ book.asVersionNumber }} and {{ book.productnameFull }} {{ book.versionNumber }} on all the servers that are going to be part of the cluster. Select one of the servers as the "master" domain controller, the rest of the servers will be slaves that connect to the "master" domain controller for all the administrative operations. Please refer to {{ book.asVersionNumber }} provided https://docs.jboss.org/author/display/WFLY9/WildFly+9+Cluster+Howto[documentation] for full details.
+To start the server in "Domain" mode, install {{ book.asVersionNumber }} and {{ book.productnameFull }} {{ book.versionNumber }} on all the servers that are going to be part of the cluster. Select one of the servers as the "master" domain controller, the rest of the servers will be slaves that connect to the "master" domain controller for all the administrative operations. Please refer to {{ book.asVersionNumber }} provided {{ book.asVersionNumber }}Admin_Guide.html#Domain_Setup[documentation] for full details.
 
 Once you configured all the servers, start the "master" node with following command
 
