@@ -140,6 +140,17 @@ teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
 |This property defines the polling interval, in milliseconds, used with the polling query and STALENESS_PCT based refreshes.
 |true
 |60000
+
+
+|teiid_rel:MATVIEW_PART_LOAD_COLUMN
+|This property defines the partitioned load column.  If specified the default load strategy will be updated to refresh the materialization one partition at a time.  This must specify a column that exists on the view and it must be of a comparable type.  Currently only works with MATVIEW_LOADNUMBER_COLUMN specified.
+|true
+|n/a
+
+|teiid_rel:MATVIEW_PART_LOAD_VALUES
+|If MATVIEW_PART_LOAD_COLUMN is specified, this may be a query expression that returns a single column providing the partition values. e.g. for multi-source you can get the source names via the query "select s.name from (exec sysadmin.schemaSources('schema name')) s"
+|true
+|the distinct values for the MATVIEW_PART_LOAD_COLUMN selected with option no cache.
 |===
 
 TIP: for scripts that need more than one statement executed, use a procedure block BEGIN statement; statement; ... END

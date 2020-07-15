@@ -65,6 +65,17 @@ The materialized option must be set for the view to be materialized. The link:Hi
 |This property defines the polling interval, in milliseconds, used with the polling query.
 |true
 |60000
+
+|teiid_rel:MATVIEW_PART_LOAD_COLUMN
+|This property defines the partitioned load column.  If specified the default load strategy will be updated to refresh the materialization one partition at a time.  NOTE: this does not yet work for the initial load.  This must specify a column
+that exists on the view and it must be of a comparable type that is convertable to string values.
+|true
+|n/a
+
+|teiid_rel:MATVIEW_PART_LOAD_VALUES
+|If MATVIEW_PART_LOAD_COLUMN is specified, this may be a query expression that returns a single column providing the partition values. e.g. for multi-source you can get the source names via the query "select s.name from (exec sysadmin.schemaSources('schema name')) s"
+|true
+|the distinct values for the MATVIEW_PART_LOAD_COLUMN selected with option no cache.
 |===
 
 The pref_mem option also applies to internal materialized views. Internal table index pages already have a memory preference, so the perf_mem option indicates that the data pages should prefer memory as well.

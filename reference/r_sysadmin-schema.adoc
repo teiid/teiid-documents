@@ -507,6 +507,17 @@ Assuming the primary key comtain more columns, id, a and b compose of the primar
 EXEC SYSADMIN.refreshMatViewRows('TestMat.SAMPLEMATVIEW', ('100', 'a0', 'b0'), ('101', 'a1', 'b1'), ('102', 'a2', 'b2'))
 ----
 
+== SYSADMIN.schemaSources
+
+Get the sources assoicated for a given schema.
+
+[source,sql]
+----
+SYSADMIN.setColumnStats(IN tableName string NOT NULL, IN columnName string NOT NULL, IN distinctCount long, IN nullCount long, IN max string, IN min string)
+----
+
+All stat values are nullable. Passing a null stat value will leave corresponding metadata value unchanged.
+
 == SYSADMIN.setColumnStats
 
 Set statistics for the given column.

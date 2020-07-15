@@ -11,6 +11,7 @@ Teiid {{ book.fullVersionNumber }} adds performance features, microservice enabl
 * https://issues.redhat.com/browse/TEIID-3647[TEIID-3647] Added a HDFS file source utilizing the hadoop client jars.
 * https://issues.redhat.com/browse/TEIID-5950[TEIID-5950] Added an Amazon Athena Translator.
 * https://issues.redhat.com/browse/TEIID-5936[TEIID-5936] Added an S3 source, which can be used with the Excel translator, for all S3 sources.
+* https://issues.redhat.com/browse/TEIID-5928[TEIID-5928] Added properties for the partitioned load of materialized views.
 
 == Compatibility Issues
 
