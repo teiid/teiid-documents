@@ -21,6 +21,7 @@
 .... link:admin/MongoDB_Data_Sources.adoc[MongoDB Data Sources]
 .... link:admin/Phoenix_Data_Sources.adoc[Phoenix Data Sources]
 .... link:admin/PI_Data_Sources.adoc[OSISoft PI Data Sources]
+.... link:admin/S3_Data_Sources.adoc[S3 Data Sources]
 .... link:admin/Salesforce_Data_Sources.adoc[Salesforce Data Sources]
 .... link:admin/Solr_Data_Sources.adoc[Solr Data Sources]
 .... link:admin/Web_Service_Data_Sources.adoc[Web Service Data Sources]
