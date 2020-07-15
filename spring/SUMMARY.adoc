@@ -158,6 +158,7 @@
 //... link:reference/r_vdb-reuse.adoc[VDB Reuse]
 .. link:reference/as_sql-support.adoc[SQL Support]
 ... link:reference/r_identifiers.adoc[Identifiers]
+... link:reference/r_operator-precedence.adoc
 ... link:reference/as_expressions.adoc[Expressions]
 .... link:reference/r_column-identifiers.adoc[Column identifiers]
 .... link:reference/r_literals.adoc[Literals]
@@ -249,7 +250,7 @@
 ... link:reference/r_special-conversion-cases.adoc[Special conversion cases]
 ... link:reference/r_escaped-literal-syntax.adoc[Escaped literal syntax]
 .. link:reference/as_updatable-views.adoc[Updatable views]
-... link:reference/r_key-preserved-table.adoc[Key-preserved tables]
+... link:reference/r_key-preserved-tables.adoc[Key-preserved tables]
 .. link:reference/as_transaction-support.adoc[Transactions]
 ... link:reference/r_autocommittxn-execution-property.adoc[AutoCommitTxn execution property]
 ... link:reference/r_updating-model-count.adoc[Updating model count]
