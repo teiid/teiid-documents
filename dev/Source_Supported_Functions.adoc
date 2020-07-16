@@ -27,7 +27,7 @@ For example, to extend the Oracle Connector
 
 * Optionally register new FunctionModifiers on the start of the ExecutionFactory to handle translation of these functions. Given that the syntax of these functions is same as other typical functions, this probably isn’t needed - the default translation should work.
 
-* Create a new translator JAR containing your custom ExecutionFactory. Refer to link:Packaging.html[Packaging] and link:Deployment.adoc[Deployment] for instructions on using the JAR file. Once this is extended translator is deployed in the {{ book.productnameFull }} Server, use "myoracle" as translator name instead of the "oracle" in your VDB’s Oracle source configuration.
+* Create a new translator JAR containing your custom ExecutionFactory. Refer to link:Packaging.adoc[Packaging] and link:Deployment.adoc[Deployment] for instructions on using the JAR file. Once this is extended translator is deployed in the {{ book.productnameFull }} Server, use "myoracle" as translator name instead of the "oracle" in your VDB’s Oracle source configuration.
 {% endif %}
 
 If you source handing of the function can be described by simple parameter substitution into a string, then you may not need to extend the translator for a source specific function. You can use the extension property teiid_rel:native-query to define the syntax handling - see also link:../reference/r_ddl-metadata-for-schema-objects.adoc[DDL Metadata] for functions.

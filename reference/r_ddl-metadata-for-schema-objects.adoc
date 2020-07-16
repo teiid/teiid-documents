@@ -333,7 +333,7 @@ You cannot ADD or DROP new columns.
 
 .ALTER TABLE
 
-The BNF for ALTER VIEW, refer to xref:../reference/BNF_for_SQL_Grammar.adoc#alterTable[ALTER TABLE]
+The BNF for ALTER VIEW, refer to link:r_bnf_for_sql_grammar.adoc#alterTable[ALTER TABLE]
 
 Using the ALTER COMMAND you can change the transformation query of the VIEW. You are *NOT* allowed to 
 alter the column information. Transformation queries must be valid. 

@@ -108,7 +108,7 @@ To define such a connector, use the following XML fragment in standalone-teiid.x
 ----
 
 For information about more ways to create the connector see _MongoDB data sources_ in the 
-xref:http://teiid.github.io/teiid-documents/master/sb/admin/Administrators_Guide.html[Administrator's Guide]. 
+link:../admin/Administrators_Guide.adoc[Administrator's Guide]. 
 
 {% endif %}
 
