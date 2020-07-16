@@ -394,10 +394,10 @@ returns (col1 string, col2 string, col3 timestamp);
 
 This feature is turned off by default because of the security risk this exposes to execute any command against the source. 
 To enable direct query procedures, set the execution property called `SupportsDirectQueryProcedure` to `true`. For more information, 
-see _Override the execution properties_ in xref:as_translators[].
+see _Override the execution properties_ in xref:translators[].
 
 TIP: By default the name of the procedure that executes the queries directly is called *native*. For information about how to change the 
-default name, see _Override the execution properties_ in xref:as_translators[].
+default name, see _Override the execution properties_ in xref:translators[].
 
 The Salesforce translator provides a procedure to execute any ad-hoc SOQL query directly 
 against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of 

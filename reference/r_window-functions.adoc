@@ -55,7 +55,7 @@ and end is allowed such that the end is before the start - for example UNBOUNDED
 as a start nor is UNBOUNDED PRECEDING allowed as an end.
 * RANGE cannot be used n PRECEDING or n FOLLOWING
 
-[[analytical-function-definitions]]
+[id="analytical-function-definitions"]
 .Analytical function definitions
 
 Ranking functions::

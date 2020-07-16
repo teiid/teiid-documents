@@ -16,7 +16,7 @@ You can use following types of expressions in {{ book.productnameFull }}:
 * xref:scalar-subqueries[Scalar subqueries]
 * xref:parameter-references[Parameter references]
 * xref:arrays[Arrays]
-* xref:criteria[Criteria]
+* xref:sql-criteria[Criteria]
 * xref:scalar-functions[Scalar functions]
 
 {% if book.targetDVProd %}

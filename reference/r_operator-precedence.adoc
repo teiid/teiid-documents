@@ -26,5 +26,5 @@ The following table lists operator precedence from high to low:
 |concat
 
 |criteria
-|For information, see xref:criteria[Criteria].
+|For information, see xref:sql-criteria[Criteria].
 |===

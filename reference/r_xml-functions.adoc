@@ -107,7 +107,7 @@ WHERE  c.CustomerID = 87;
 ==========================================================
 <name>Wartian Herkku</name><a>b</a>
 ----
-[[xmlelement]]
+[id="xmlelement"]
 .XMLELEMENT
 
 Returns an XML element with the given name and content.
@@ -283,7 +283,7 @@ XMLPI([NAME] name [, content])
 
 Name is an identifier. Content is a string. Return value is XML.
 
-[[xmlquery]]
+[id="xmlquery"]
 .XMLQUERY
 
 Returns the XML result from evaluating the given xquery.
