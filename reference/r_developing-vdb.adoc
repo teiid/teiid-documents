@@ -147,7 +147,7 @@ No matter how you are developing the VDB, whether you are using the tooling or n
 
 The vdb-deployer.xsd schema for this xml file format is available in the schema folder under the docs with the {{ book.productnameFull }} distribution.
 
-See also link:xml_deployment_mode.adoc
+See also link:r_xml-deployment-mode.adoc
 
 == VDB Zip Deployment
 
@@ -180,4 +180,4 @@ In the above example a vdb.xml could use a DDL-FILE metadata type for schema1:
 </model>
 ----
 
-The contents inside schema1.ddl can include link:DDL_Metadata.adoc[DDL for Schema Objects]
+The contents inside schema1.ddl can include link:r_ddl-metadata-for-schema-objects.adoc[DDL for Schema Objects]

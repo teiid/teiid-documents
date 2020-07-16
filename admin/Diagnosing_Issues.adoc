@@ -24,9 +24,9 @@ You may experience situations where you incur performance issues or unexpected r
 Once the problem has been isolated as much as possible, you should further examine the query plan.  
 The only circumstance when this is not possible is when there are planning errors.  In this case the logs, either full debug or just the link:#_plan_debug_log[debug plan], is still useful to then log an issue with the community or with support.
 
-If you haven't done so already, you should start by familiarizing yourself with link:../reference/Federated_Planning.adoc[Federated Planning] - especially the sections on the query plan.
+If you haven't done so already, you should start by familiarizing yourself with link:../reference/as_federated-planning.adoc[Federated Planning] - especially the sections on the query plan.
 
-The link:../reference/Query_Plans.adoc[final processor plan] is generally what is meant when referring to by “the query plan”.  The plan can be viewed in an XML or a plain text format.
+The link:../reference/r_query-plans.adoc[final processor plan] is generally what is meant when referring to by “the query plan”.  The plan can be viewed in an XML or a plain text format.
 
 You can also use {{ book.productnameFull }} Extensions, or link:../client-dev/SHOW_Statement.adoc[SET/SHOW statements]:
 
@@ -37,7 +37,7 @@ SELECT ...
 SHOW PLAN  
 ----
 
-or an link:../reference/Explain_Statement.adoc[Explain Statement]:
+or an link:../reference/r_explain-statement.adoc[Explain Statement]:
 
 [source,sql]
 ----
@@ -89,7 +89,7 @@ In addition to the execution stats, note there are also cost estimates.  The val
 Unlike systems that own the data, {{ book.productnameFull }} does not build histograms or other in-depth models of the data.  Theses values are meant to be approximations with nominally distribution assumptions.
 The costing information from the metadata only matters for physical entities as we'll recompute the higher values in planning after merge virtual and other plan modifications.  
 If you see that join is being implemented inefficiently, then first make sure reasonable costing values are being set on the tables involved.  Statistics can be gathered for some sources at design time or deploy time.  
-In environments that fluctuate rapidly, you may need to issue runtime costing updates via link:../reference/sysadmin_schema.adoc#_foreign_procedures[system procedures].
+In environments that fluctuate rapidly, you may need to issue runtime costing updates via link:../reference/r_sysadmin-schema.adoc#_foreign_procedures[system procedures].
 
 Note: if you cardinality values are unknown - shown as 'Node Cardinality: -1.0' in the plan - and no hints are used, then the optimizer will not assume that dependent join plans should be used.
 
@@ -131,12 +131,12 @@ Beyond pushdown being inhibited, other common issues are:
  ** A cast may cause a source index not to be used
 * Join Performance
  ** Costing values not set leading to a non-performant plan.
- ** Use link:../reference/FROM_Clause.adoc[hints] if needed.
+ ** Use link:../reference/as_from-clause.adoc[hints] if needed.
  ** {{ book.productnameFull }} will replace outer with inner joins when possible, but just in case review outer join usage in the user query and view layers
    
 === XQuery
 
-link:../reference/XQuery_Optimization.adoc[XQuery/XPath] can be difficult to get correct when not assisted by tooling.  Having an incorrect namespace for example could simply result in no results rather than exception.
+link:../reference/r_xquery-optimization.adoc[XQuery/XPath] can be difficult to get correct when not assisted by tooling.  Having an incorrect namespace for example could simply result in no results rather than exception.
 
 With XMLQUERY/XMLTABLE each XPath/XQuery expression can have a large impact on performance.  In particular descendant access '//' can be costly.  Just accessing elements in the direct parentage is efficient though.   
 
@@ -159,7 +159,7 @@ The query plan alone does not provide a full accounting of processing.  Some dec
    
 === Plan Debug Log
    
-The logical plan optimization is represented by the link:../reference/Query_Planner.adoc[planning debug log] and is more useful to understand why planning decisions were made.
+The logical plan optimization is represented by the link:../reference/r_query-planner.adoc[planning debug log] and is more useful to understand why planning decisions were made.
 
 [source,sql]
 ----

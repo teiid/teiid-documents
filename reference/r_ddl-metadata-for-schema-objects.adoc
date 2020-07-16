@@ -6,7 +6,7 @@
 :toc-placement: preamble
 
 {% if book.targetWildfly %}
-The DDL for schema objects is common to both link:xml_deployment_mode.adoc[XML] and link:ddl_deployment_mode.adoc[DDL] VDBs.
+The DDL for schema objects is common to both link:r_xml-deployment-mode.adoc[XML] and link:r_ddl-deployment-mode.adoc[DDL] VDBs.
 {% endif %}
 
 Tables and views exist in the same namespace in a schema. Indexes are not considered schema scoped objects, 

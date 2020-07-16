@@ -1,7 +1,7 @@
 
 = VDB Reuse
 
-VDBs may reuse other VDBs deployed in the same server instance by using an "import-vdb" declaration in the link:xml_deployment_mode.adoc[vdb.xml file].  An imported VDB can have it’s tables and procedures referenced by views and procedures in the importing VDB as if they are part of the VDB.  Imported VDBs are required to exist before an importing VDB may start.  If an imported VDB is undeployed, then any importing VDB will be stopped.
+VDBs may reuse other VDBs deployed in the same server instance by using an "import-vdb" declaration in the link:r_xml-deployment-mode.adoc[vdb.xml file].  An imported VDB can have it’s tables and procedures referenced by views and procedures in the importing VDB as if they are part of the VDB.  Imported VDBs are required to exist before an importing VDB may start.  If an imported VDB is undeployed, then any importing VDB will be stopped.
 
 Once a VDB is imported it is mostly operationally independent from the base VDB.  Only cost related metadata may be updated for an object from an imported VDB in the scope of the importing VDB.  All other updates must be made through the original VDB, but they will be visible in all imported VDBs.  Even materialized views are separately maintained for an imported VDB in the scope of each importing VDB.
 

@@ -1,7 +1,7 @@
 
 = SAP Gateway Translator
 
-The SAP Gateway Translator, known by the type name _sap-gateway_, provides a translator for accessing the SAP Gateway using the OData protocol. This translator is extension of link:OData_Translator.adoc[OData Translator] and uses {{ book.productnameFull }} WS resource adapter for making web service calls. This translator understands the most of the SAP specific OData extensions to the metadata defined in the document http://scn.sap.com/docs/DOC-44986[SAP Annotations for OData Version 2.0]
+The SAP Gateway Translator, known by the type name _sap-gateway_, provides a translator for accessing the SAP Gateway using the OData protocol. This translator is extension of link:r_odata-translator.adoc[OData Translator] and uses {{ book.productnameFull }} WS resource adapter for making web service calls. This translator understands the most of the SAP specific OData extensions to the metadata defined in the document http://scn.sap.com/docs/DOC-44986[SAP Annotations for OData Version 2.0]
 
 When the metadata is imported from SAP Gateway, the {{ book.productnameFull }} models are created to accordingly for SAP specific _EntitySet_ and _Property_ annotations defined in document above.
 
@@ -41,5 +41,5 @@ Based on how you implemented your SAP Gateway service, if can choose to turn off
 
 NOTE: *Using pagable, topable metadata extensions?* - If metadata on your service defined "pagable" and/or "topable" as "false" on *any* table, you *must* turn off "SupportsOdataTop" and "SupportsOdataSkip" execution-properties in your translator, so that you will not end up with wrong results. SAP metadata has capability to control these in a fine grained fashion any on EnitySet, however {{ book.productnameFull }} can only control these at translator level.
 
-NOTE: *SAP Examples* - Sample examples defined at http://scn.sap.com/docs/DOC-31221[http://scn.sap.com/docs/DOC-31221], we found to be lacking in full metadata in certain examples. For example, "filterable" clause never defined on some properties, but if you send a request $filter it will silently ignore it. You can verify this behavior by directly executing the REST service using a web browser with respective query. So, Make sure you have implemented your service correctly, or you can turn off certain features in this translator by using "execution properties" override. See an example in link:OData_Translator.adoc[OData Translator]
+NOTE: *SAP Examples* - Sample examples defined at http://scn.sap.com/docs/DOC-31221[http://scn.sap.com/docs/DOC-31221], we found to be lacking in full metadata in certain examples. For example, "filterable" clause never defined on some properties, but if you send a request $filter it will silently ignore it. You can verify this behavior by directly executing the REST service using a web browser with respective query. So, Make sure you have implemented your service correctly, or you can turn off certain features in this translator by using "execution properties" override. See an example in link:r_odata-translator.adoc[OData Translator]
 

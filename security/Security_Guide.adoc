@@ -42,7 +42,7 @@ If your client application (web application or Web service) resides in the same 
 
 == Authorization
 
-Authorization covers both administrative activities and data roles. A data role is a collection of permissions (also referred to as entitlements) and a collection of entitled principals or groups. With the deployment of a VDB the deployer can choose which principals and groups have which data roles. Check out link:../reference/Data_Roles.adoc[Reference Guide Data Roles] chapter for more information. Any source level authorization decisions are up to the source systems being integrated.
+Authorization covers both administrative activities and data roles. A data role is a collection of permissions (also referred to as entitlements) and a collection of entitled principals or groups. With the deployment of a VDB the deployer can choose which principals and groups have which data roles. Check out link:../reference/as_data-roles.adoc[Reference Guide Data Roles] chapter for more information. Any source level authorization decisions are up to the source systems being integrated.
 
 VDBs without data roles defined are accessible by any authenticated user. If you want to ensure some attempt has been made at securing access, then set the data-roles-required configuration element to true via the CLI or in the standalone.xml on the teiid subsystem.
 

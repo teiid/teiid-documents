@@ -16,7 +16,7 @@ Scalar subqueries are a type of expression and can be used where single valued e
 
 Subqueries in the FROM clause of the outer query (also known as "inline views") can 
 return any number of rows and columns. This type of subquery must always be given an alias. 
-An inline view is nearly identical to a traditional view. See also link:WITH_Clause.adoc[WITH Clause].
+An inline view is nearly identical to a traditional view. See also link:r_with-clause.adoc[WITH Clause].
 
 [source,sql]
 .*Example subquery in FROM clause (inline view)*
@@ -49,4 +49,4 @@ SELECT a FROM X WHERE a = ALL (SELECT b FROM Y WHERE c=2)
 SELECT a FROM X WHERE a IN (SELECT b FROM Y WHERE c=3)
 ----
 
-See also link:Subquery_Optimization.adoc[Subquery Optimization].
+See also link:r_subquery-optimization.adoc[Subquery Optimization].

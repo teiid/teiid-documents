@@ -1,7 +1,7 @@
 
 = REST Service Through VDB
 
-With help of link:DDL_Metadata.html[DDL Metadata] variety of metadata can be defined on VDB schema models. This metadata is not limited to just defining the tables, procedures and functions. The capabilities of source systems or any extensions to metadata can also be defined on the schema objects using the OPTIONS clause. One such extension properties that {{ book.productnameFull }} defines is to expose {{ book.productnameFull }} procedures as REST based services.
+With help of link:r_ddl-metadata-for-schema-objects.html[DDL Metadata] variety of metadata can be defined on VDB schema models. This metadata is not limited to just defining the tables, procedures and functions. The capabilities of source systems or any extensions to metadata can also be defined on the schema objects using the OPTIONS clause. One such extension properties that {{ book.productnameFull }} defines is to expose {{ book.productnameFull }} procedures as REST based services.
 
 == Expose {{ book.productnameFull }} Procedure as Rest Service
 

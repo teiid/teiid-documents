@@ -35,7 +35,7 @@ If this is the case you should consider using a LOADNUMBER column, or a custom l
 
 === Infinispan
 
-*  Infinispan - for in-memory caching of results. see the link:../reference/Infinispan_Translator.adoc[Infinispan Translator].
+*  Infinispan - for in-memory caching of results. see the link:../reference/r_infinispan-translator.adoc[Infinispan Translator].
 
 
 == View Options
@@ -275,7 +275,7 @@ TIP: Example VDB based on DDL is defined below for reference.
 
 === Materialization Table Loading
 
-Upon deployment of the VDB to the {{ book.productnameFull }} server, link:../reference/sysadmin_schema.adoc#_sysadmin_loadmatview[SYSADMIN.loadMatView] used to perform a complete refresh of materialized table, this procedure reads the extension properties defined from <<View Options, View Options>> to customize the load. The following describes the sequence of events that occur inside this procedure
+Upon deployment of the VDB to the {{ book.productnameFull }} server, link:../reference/r_sysadmin-schema.adoc#_sysadmin_loadmatview[SYSADMIN.loadMatView] used to perform a complete refresh of materialized table, this procedure reads the extension properties defined from <<View Options, View Options>> to customize the load. The following describes the sequence of events that occur inside this procedure
 
 1. Inserts/updates an entry in `teiid_rel:MATVIEW_STATUS_TABLE`, which indicates that the cache is being loaded.
 2. Executes `teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT` if defined.
@@ -297,7 +297,7 @@ The values of StaleCount/Cardinality are used to calculate the percent of varian
 === Refresh Type: EAGER
 
 When a view refresh type is defined as "EAGER", the very first time the contents if the materialized view are loaded similar to that of other types using the `SYSADMIN.loadMatView` procedure upon the deployment of the VDB. However, once the contents are loaded, 
-link:../reference/sysadmin_schema.adoc#_sysadmin_updatematview[SYSADMIN.updateMatView] can be used to perform a eager incremental update based on any criteria provided. If you know that certain data points in the source system were changed after last full refresh of the materialized view, you can call this procedure with a criteria based on the view that cover those changed values, and this procedure will update only those affected rows in the materialized table instead of doing full snapshot update. This can save lot of time and resources and also keeps your view materialization cache upto date with source system changes. 
+link:../reference/r_sysadmin-schema.adoc#_sysadmin_updatematview[SYSADMIN.updateMatView] can be used to perform a eager incremental update based on any criteria provided. If you know that certain data points in the source system were changed after last full refresh of the materialized view, you can call this procedure with a criteria based on the view that cover those changed values, and this procedure will update only those affected rows in the materialized table instead of doing full snapshot update. This can save lot of time and resources and also keeps your view materialization cache upto date with source system changes. 
 
 Note: This script is not invoked automatically by {{ book.productnameFull }}, as the source update events may be occurring outside of {{ book.productnameFull }}. This procedure needs to be invoked by user, when he/she knows that there is change in the source systems. When CDC technologies like Debezium is used (new feature coming..), this procedure can be automatically invoked to keep the the View contents fresh.  
 

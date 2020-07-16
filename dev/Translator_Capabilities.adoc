@@ -403,7 +403,7 @@ The method `ExecutionFactory.getSupportedFunctions()` can be used to specify whi
 
 Not all system functions appear in SourceSystemFunctions, since some system functions will always be evaluated in {{ book.productnameFull }}, are simple aliases to other functions, or are rewritten to a more standard expression.
 
-This documentation for system functions can be found at link:../reference/Scalar_Functions.adoc[Scalar Functions]. If the Translator states that it supports a function, it must support all type combinations and overloaded forms of that function.
+This documentation for system functions can be found at link:../reference/as_scalar-functions.adoc[Scalar Functions]. If the Translator states that it supports a function, it must support all type combinations and overloaded forms of that function.
 
 A translator may also indicate support for scalar functions that are intended for pushdown evaluation by that translator, but are not registered as user defined functions via a model/schema.  These pushdown
 functions are reported to the engine via the `ExecutionFactory.getPushDownFunctions()` list as `FunctionMethod` metadata objects. The `FuncitonMethod` representation allow the translator to control all of the metadata related to the function, including type signature, determinism, varargs, etc. The simplest way to add a pushdown function is with a call to `ExecutionFactory.addPushDownFunction`:

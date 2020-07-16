@@ -24,15 +24,15 @@ The {{ book.productnameFull }} specific Cassandra Resource Adapter should be use
 
 == Native Queries
 
-Cassandra source procedures may be created using the teiid_rel:native-query extension - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The procedure will invoke the native-query similar to a direct procedure call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality.
+Cassandra source procedures may be created using the teiid_rel:native-query extension - see link:as_translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The procedure will invoke the native-query similar to a direct procedure call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality.
 
 === Direct Query Procedure
 
-This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:Translators.adoc#_override_execution_properties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
+This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:as_translators.adoc#_override_execution_properties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
 
-By default the name of the procedure that executes the queries directly is called *native*. link:Translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
+By default the name of the procedure that executes the queries directly is called *native*. link:as_translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
 
-The Cassandra translator provides a procedure to execute any ad-hoc CQL query directly against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as an object array. link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications.
+The Cassandra translator provides a procedure to execute any ad-hoc CQL query directly against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as an object array. link:r_arraytable.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications.
 
 [source,sql]
 .*Example CQL Direct Query*

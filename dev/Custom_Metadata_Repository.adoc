@@ -1,7 +1,7 @@
 
 = Custom Metadata Repository
 
-If the provided link:../reference/Metadata_Repositories.adoc[metadata facilities] are not sufficient then a developer can extend the _MetadataRepository_ class provided in the _org.teiid.api_ jar to plug-in their own metadata facilities into the {{ book.productnameFull }} engine. For example, a user can write a metadata facility that is based on reading data from a database or a JCR repository. 
+If the provided link:../reference/r_metadata-repositories.adoc[metadata facilities] are not sufficient then a developer can extend the _MetadataRepository_ class provided in the _org.teiid.api_ jar to plug-in their own metadata facilities into the {{ book.productnameFull }} engine. For example, a user can write a metadata facility that is based on reading data from a database or a JCR repository. 
 
 See the arche-type for creating a https://github.com/teiid/teiid-tools/tree/master/arche-types/metadatarepository-archetype[custom metadata repository].
 

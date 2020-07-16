@@ -37,12 +37,12 @@ The materialized option must be set for the view to be materialized. The link:Hi
 |false
 
 |teiid_rel:MATVIEW_TTL
-|Trigger a Scheduled ExecutorService which execute link:../reference/sysadmin_schema.adoc#_sysadmin_refreshmatview[refreshMatView] repeatedly with a specified time to live
+|Trigger a Scheduled ExecutorService which execute link:../reference/r_sysadmin-schema.adoc#_sysadmin_refreshmatview[refreshMatView] repeatedly with a specified time to live
 |true
 |null
 
 |teiid_rel:MATVIEW_UPDATABLE
-|Allow updating Materialized View via link:../reference/sysadmin_schema.adoc#_sysadmin_refreshmatview[refreshMatView], link:../reference/sysadmin_schema.adoc#_sysadmin_refreshmatviewrow[refreshMatViewRow], link:../reference/sysadmin_schema.adoc#_sysadmin_refreshmatviewrows[refreshMatViewRows]
+|Allow updating Materialized View via link:../reference/r_sysadmin-schema.adoc#_sysadmin_refreshmatview[refreshMatView], link:../reference/r_sysadmin-schema.adoc#_sysadmin_refreshmatviewrow[refreshMatViewRow], link:../reference/r_sysadmin-schema.adoc#_sysadmin_refreshmatviewrows[refreshMatViewRows]
 |true
 |false.
 
