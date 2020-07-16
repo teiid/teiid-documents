@@ -161,7 +161,7 @@
 ... link:reference/r_vdb-reuse.adoc[VDB Reuse]
 .. link:reference/as_sql-support.adoc[SQL Support]
 ... link:reference/r_identifiers.adoc[Identifiers]
-... link:reference/r_operator-precedence.adoc
+... link:reference/r_operator-precedence.adoc[Operator Precedence]
 ... link:reference/as_expressions.adoc[Expressions]
 .... link:reference/r_column-identifiers.adoc[Column identifiers]
 .... link:reference/r_literals.adoc[Literals]
