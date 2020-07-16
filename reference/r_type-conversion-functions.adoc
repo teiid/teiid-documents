@@ -4,7 +4,7 @@
 = Type conversion functions
 
 Within your queries, you can convert between datatypes using the CONVERT or CAST keyword. 
-For more information, see link:r_type-conversions.html[Type conversions]
+For more information, see link:r_type-conversions.adoc[Type conversions]
 
 |===
 |Function |Definition

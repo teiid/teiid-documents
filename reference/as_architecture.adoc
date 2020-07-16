@@ -14,7 +14,7 @@ used to connect/federate/transform datasources to produce a `.vdb` file.
 * **JVM** - {{ book.productnameFull }} is a pure Java Data Virtualization Platform.
 * **{{ book.asName }}** - {{ book.productnameFull }} use a plugable installation which need a {{ book.asName }} Server installed, alternatively, a full installed {{ book.asName }} kit be distributed.
 * **Subsystem** - Due to {{ book.asName }}'s Modular and Pluggable Architecture(a series of Management commands compose of a subsystem, a series of subsystems compose of the whole server), {{ book.productnameFull }} implement {{ book.asName }}'s Controller/Management API developed a `teiid` subsystem and reuse lots of other subsystems like `resource-adapter`, `infinispan`, `security`, `logging`, `datasource`.
-* **odata.war** - {{ book.productnameFull }} support OData via odata.war. For more information, see _OData support_ in the xref:../client-dev/OData_Support.adoc[Client Developer's Guide]. 
+* **odata.war** - {{ book.productnameFull }} support OData via odata.war. For more information, see _OData support_ in the link:../client-dev/OData_Support.adoc[Client Developer's Guide]. 
 * **dashboard.war** - A web based dashboard generator.
 * **teiid-console** - A web based administrative and monitoring tool for Teiid, more details refer to link:../admin/Teiid_Console.adoc[Teiid Console]
 * **JDBC Driver** - JDBC Driver to connect to Teiid Server.

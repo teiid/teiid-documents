@@ -103,7 +103,7 @@ TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalon
 Each web service data source may choose a particular CXF config file and port configuration. The `ConfigFile` config property specifies the Spring XML configuration file for the CXF Bus and port configuration to
 be used by connections. If no config file is specified then the system default configuration will be used.
 
-Only 1 port configuration can be used by this data source. You may explicitly set the local name of the port QName to use via the `ConfigName` property. The namespace URI for the QName in your config file should match your WSDL/namespace setting on the data source or use the default of http://teiid.org[http://teiid.org]. See the http://cxf.apache.org/docs/configuration.html[CXF Documentation] and the sections below on link:Web_Service_Data_Sources.html#55476955_WebServiceDataSources-WSSecurity[WS-Security], link:Web_Service_Data_Sources.html#55476955_WebServiceDataSources-Logging[Logging], etc. for examples of using the CXF configuration file.
+Only 1 port configuration can be used by this data source. You may explicitly set the local name of the port QName to use via the `ConfigName` property. The namespace URI for the QName in your config file should match your WSDL/namespace setting on the data source or use the default of http://teiid.org[http://teiid.org]. See the http://cxf.apache.org/docs/configuration.html[CXF Documentation] and the sections below on <<Security>>, <<Logging>>, etc. for examples of using the CXF configuration file.
 
 [source,xml]
 .*Sample Spring XML Configuration To Set Timeouts*

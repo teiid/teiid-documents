@@ -7,8 +7,8 @@ Below are the high-level steps for creating custom Translators, which is describ
 For sample Translator code, refer to the {{ book.productnameFull }} source code at https://github.com/teiid/teiid/tree/master/connectors/[https://github.com/teiid/teiid/tree/master/connectors/].
 
 1.  Create a new or reuse an existing Resource Adapter for the EIS system, to be used with this Translator. Refer to link:Developing_JEE_Connectors.adoc[Custom Resource Adapters].
-2.  Decide whether to use the {{ book.productnameFull }} archetype template to create your initial custom translator project and classes or manually create your environment. Refer to link:Environment_Setup.html[Environment Setup].
-3.  Implement the required classes defined by the Translator API. Refer to link:Implementing_the_Framework.html[Implementing the Framework]. +
+2.  Decide whether to use the {{ book.productnameFull }} archetype template to create your initial custom translator project and classes or manually create your environment. Refer to link:Environment_Setup.adoc[Environment Setup].
+3.  Implement the required classes defined by the Translator API. Refer to link:Implementing_the_Framework.adoc[Implementing the Framework]. +
 1) Create an ExecutionFactory – Extend the `org.teiid.translator.ExecutionFactory` class 
 2) Create relevant Executions (and sub-interfaces) – specifies how to execute each type of command
 4.  Define the template for exposing configuration properties. Refer to link:Packaging.adoc[Packaging].

@@ -353,7 +353,7 @@ REVOKE USAGE ON LANGUAGE {language-name}
 * column-name: Name of the column
 * expression: any valid sql expression, this can include columns from referenced resource
 
-BNF for link:r_bnf_for_sql_grammar.html#createPolicy[CREATE POLICY] and link:r_bnf_for_sql_grammar.html#dropPolicy[DROP POLICY].
+BNF for link:r_bnf_for_sql_grammar.adoc#createPolicy[CREATE POLICY] and link:r_bnf_for_sql_grammar.adoc#dropPolicy[DROP POLICY].
 
 WARNING: GRANT/REVOKE mostly function as direct replacements for the legacy permission model. They do not function the same as standard SQL GRANT/REVOKE.  GRANT/REVOKE apply/remove permissions from the given resource - but do not affect prior GRANT/REVOKEs against any other resource.  For example if you GRANT the select permission on a table, then REVOKE the select permission on the table's schema, the GRANT of the select permission will remain on the table.  At runtime GRANTs are still interpreted hierarchically - a select GRANT on a schema implies read access to all contained schema objects.  GRANT/REVOKE is also not ADD/DROP aware.  If the GRANT target is dropped the old GRANT still remains and could affect any recreated object.
 
