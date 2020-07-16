@@ -12,7 +12,8 @@ visiting the {{ book.javaVersionUrl }}/docs/api/java/text/SimpleDateFormat.html[
 |===
 |Function |Definition |Datatype constraint
 
-|CURDATE() CURRENT_DATE[()]
+|CURDATE() +
+CURRENT_DATE[()]
 |Return current date - will return the same value for all invocations in the user command.
 |returns date.
 
@@ -57,11 +58,10 @@ Since the current timestamp has only millisecond precision by default setting th
 |Return seconds since the unix epoch with microsecond precision
 |x in {date, timestamp}, returns double
 
-|EXTRACT(YEAR\|MONTH\|DAY
-\|HOUR\|MINUTE\|SECOND\|QUARTER\|EPOCH\|DOW\|DOY FROM x)
-|Return the given field value from the date value x. 
-Produces the same result as the associated YEAR, MONTH, DAYOFMONTH, HOUR, MINUTE, SECOND, QUARTER, EPOCH, DAYOFWEEK, and DAYOFYEAR functions respectively. 
-The SQL specification also allows for TIMEZONE_HOUR and TIMEZONE_MINUTE as extraction targets. 
+|EXTRACT(FIELD FROM x)
+|Return the given FIELD value from the date value x. 
+Valid fields are YEAR, MONTH, DAYOFMONTH, HOUR, MINUTE, SECOND, QUARTER, EPOCH, DAYOFWEEK, and DAYOFYEAR.  The extract behaves exactly like the function call FIELD(x) - and will return same results as the respective function. 
+The SQL specification also allows for TIMEZONE_HOUR and TIMEZONE_MINUTE as extraction targets, but those are not currently implemented.
 In {{ book.productnameFull }} all date values are in the timezone of the server.
 |x in {date, time, timestamp}, epoch returns double, the others return integer
 
