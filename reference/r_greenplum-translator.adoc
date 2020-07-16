@@ -3,7 +3,7 @@
 [id="greenplum-translator"]
 = Greenplum Translator (greenplum)
 
-Also see common xref:jdbc-translators[JDBC Translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC Translators] information.
 
 The Greenplum translator, known by the type name *_greenplum_*, is for use with the Greenplum database.
-This translator is an extension of the xref:postgresql-translator[PostgreSQL translator], and inherits its options.
+This translator is an extension of the {% if book.targetDVProd %}xref:postgresql-translator{% else %}link:r_postgresql-translator.adoc{% endif %}[PostgreSQL translator], and inherits its options.

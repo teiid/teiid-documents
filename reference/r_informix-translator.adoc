@@ -3,7 +3,7 @@
 [id="informix-translator"]
 = Informix translator (informix)
 
-Also see common xref:jdbc-translators[JDBC Translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC Translators] information.
 
 The Informix translator, known by the type name *_informix_*, is for use with any Informix version.
 

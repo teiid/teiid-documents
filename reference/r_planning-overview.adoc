@@ -20,11 +20,11 @@ These rules may trigger in turn trigger the execution of more rules.
 Within several rules, {{ book.productnameFull }} also takes advantage of costing information. 
 The logical plan optimization steps can be seen by using the `SET SHOWPLAN DEBUG`clause, as described in the 
 link:../client-dev/SET_Statement.adoc[Client Development Guide]. 
-For sample steps, see _Reading a debug plan_ in xref:query-planner[Query Planner]. 
-For more information about logical plan nodes and rule-based optimization, see xref:query-planner[Query Planner].
+For sample steps, see _Reading a debug plan_ in {% if book.targetDVProd %}xref:query-planner{% else %}link:r_query-planner.adoc{% endif %}[Query Planner]. 
+For more information about logical plan nodes and rule-based optimization, see {% if book.targetDVProd %}xref:query-planner{% else %}link:r_query-planner.adoc{% endif %}[Query Planner].
 
 .  *Processing plan conversion* -- Converts the logic plan to an executable form where the nodes represent basic 
-processing operations. The final processing plan is displayed as a query plan. For more information, see xref:query-plans[Query plans].
+processing operations. The final processing plan is displayed as a query plan. For more information, see {% if book.targetDVProd %}xref:query-plans{% else %}link:r_query-plans.adoc{% endif %}[Query plans].
 
 The logical query plan is a tree of operations that is used to transform data in source tables to the expected result set. 
 In the tree, data flows from the bottom (tables) to the top (output). The primary logical operations are 

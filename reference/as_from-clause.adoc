@@ -15,7 +15,7 @@ The FROM clause specifies the target tables for SELECT, UPDATE, and DELETE state
 
 * FROM (subquery) [AS] alias
 
-* FROM TABLE(subquery) [AS] alias. For more information, see xref:nested-tables[Nested tables]
+* FROM TABLE(subquery) [AS] alias. For more information, see {% if book.targetDVProd %}xref:nested-tables{% else %}link:r_nested-tables.adoc{% endif %}[Nested tables]
 
 * FROM table1 JOIN /*+ MAKEDEP */ table2 ON join-criteria
 
@@ -26,19 +26,19 @@ The FROM clause specifies the target tables for SELECT, UPDATE, and DELETE state
 * FROM /*+ NO_UNNEST */ vw1 JOIN table2 ON join-criteria
 
 * FROM table1 left outer join /*+ optional */ table2 ON join-criteria. 
-For more information, see _Optional join_ in xref:federated-optimizations[Federated optimizations].
+For more information, see _Optional join_ in {% if book.targetDVProd %}xref:federated-optimizations{% else %}link:r_federated-optimizations.adoc{% endif %}[Federated optimizations].
 
-* FROM TEXTTABLE… For more information, see xref:texttable[TEXTTABLE].
+* FROM TEXTTABLE… For more information, see {% if book.targetDVProd %}xref:texttable{% else %}link:r_texttable.adoc{% endif %}[TEXTTABLE].
 
-* FROM XMLTABLE… For more information, see xref:xmltable[XMLTABLE].
+* FROM XMLTABLE… For more information, see {% if book.targetDVProd %}xref:xmltable{% else %}link:r_xmltable.adoc{% endif %}[XMLTABLE].
 
-* FROM ARRAYTABLE… For more information, see xref:arraytable[ARRAYTABLE].
+* FROM ARRAYTABLE… For more information, see {% if book.targetDVProd %}xref:arraytable{% else %}link:r_arraytable.adoc{% endif %}[ARRAYTABLE].
 
-* FROM OBJECTTABLE… For more information, see xref:objecttable[OBJECTTABLE].
+* FROM OBJECTTABLE… For more information, see {% if book.targetDVProd %}xref:objecttable{% else %}link:r_objecttable.adoc{% endif %}[OBJECTTABLE].
 
-* FROM JSONTABLE… For more information, see xref:jsontable[JSONTABLE].
+* FROM JSONTABLE… For more information, see {% if book.targetDVProd %}xref:jsontable{% else %}link:r_jsontable.adoc{% endif %}[JSONTABLE].
 
-* FROM SELECT… For more information, see _Inline views_ in xref:subqueries[Subqueries].
+* FROM SELECT… For more information, see _Inline views_ in {% if book.targetDVProd %}xref:subqueries{% else %}link:r_subqueries.adoc{% endif %}[Subqueries].
 
 .From clause hints
 

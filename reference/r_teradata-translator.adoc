@@ -4,7 +4,7 @@
 
 = Teradata translator (teradata)
 
-Also see common xref:jdbc-translators[JDBC translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC translators] information.
 
 The Teradata translator, known by the type name *_teradata_*, is for use with Teradata Database V2R5.1 or later.
 

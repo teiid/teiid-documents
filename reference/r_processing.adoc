@@ -18,7 +18,7 @@ Based upon the actual row counts involved, the engine can choose to build an ind
 (which will perform similarly to a hash join) or to only partially sort the larger side of the relation.
 
 Joins involving equi-join predicates can be converted into dependent joins. 
-For more information, see _Dependent joins_ in xref:federated-optimizations[Federated optimizations].
+For more information, see _Dependent joins_ in {% if book.targetDVProd %}xref:federated-optimizations{% else %}link:r_federated-optimizations.adoc{% endif %}[Federated optimizations].
 
 .Sort-based algorithms
 Sorting is used as the basis of the Sort (ORDER BY), Grouping (GROUP BY), and DupRemoval (SELECT DISTINCT) operations. 

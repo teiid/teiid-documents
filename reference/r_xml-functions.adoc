@@ -7,7 +7,7 @@
 :toc-placement: preamble
 
 XML functions provide functionality for working with XML data. 
-For more information, see _JSONTOXML_ in xref:json-functions[JSON functions].
+For more information, see _JSONTOXML_ in {% if book.targetDVProd %}xref:json-functions{% else %}link:r_json-functions.adoc{% endif %}[JSON functions].
 
 .Sample data for examples
 
@@ -313,9 +313,9 @@ xquery in string. Return value is XML.
 
 XMLQUERY is part of the SQL/XML 2006 specification.
 
-For more information, see XMLTABLE in xref:from-clause[FROM clause].
+For more information, see XMLTABLE in {% if book.targetDVProd %}xref:from-clause{% else %}link:as_from-clause.adoc{% endif %}[FROM clause].
 
-NOTE: See also xref:xquery-optimization[XQuery optimization].
+NOTE: See also {% if book.targetDVProd %}xref:xquery-optimization{% else %}link:r_xquery-optimization.adoc{% endif %}[XQuery optimization].
 
 .XMLEXISTS
 
@@ -342,7 +342,7 @@ xquery in string. Return value is boolean.
 
 XMLEXISTS is part of the SQL/XML 2006 specification.
 
-NOTE: See also xref:xquery-optimization[XQuery optimization].
+NOTE: See also {% if book.targetDVProd %}xref:xquery-optimization{% else %}link:r_xquery-optimization.adoc{% endif %}[XQuery optimization].
 
 .XMLSERIALIZE
 

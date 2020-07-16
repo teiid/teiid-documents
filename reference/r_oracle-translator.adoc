@@ -3,7 +3,7 @@
 [id="oracle-translator"]
 = Oracle translator (oracle)
 
-Also see common xref:jdbc-translators[JDBC translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC translators] information.
 
 The Oracle translator, known by the type name *_oracle_*, is for use with Oracle Database 9i or later.
 
@@ -50,7 +50,7 @@ ifdef::dv-product[]
 You can import sequences automatically.
 endif::[]
 +
-For more information, see _Importer properties_ in xref:jdbc-translators[JDBC translators].
+For more information, see _Importer properties_ in {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC translators].
 ifndef::dv-product[]
 {{ book.productnameFull }} 8.4 and Prior Oracle Sequence DDL
 
@@ -63,7 +63,7 @@ With {{ book.productnameFull }} 8.5 it’s no longer necessary to rely on a tabl
 endif::[]
 
 For information about representing `currval` and `nextval` as source functions, 
-see xref:ddl-metadata-for-schema-objects[DDL metadata for schema objects]
+see {% if book.targetDVProd %}xref:ddl-metadata-for-schema-objects{% else %}link:r_ddl-metadata-for-schema-objects.adoc{% endif %}[DDL metadata for schema objects]
 
 
 [source,sql]

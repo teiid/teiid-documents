@@ -379,7 +379,7 @@ These SQL constructs will be pushed down to Salesforce.
 .Native Queries
 
 Salesforce procedures may optionally have native queries associated with them. For more information, 
-see _Parameterizable native queries_ in xref:translators[Translators]. 
+see _Parameterizable native queries_ in {% if book.targetDVProd %}xref:translators{% else %}link:as_translators.adoc{% endif %}[Translators]. 
 The operation prefix (select;, insert;, update;, delete; - see below for more) must be present 
 in the native-query, but it will not be issued as part of the query to the source.
 
@@ -394,15 +394,15 @@ returns (col1 string, col2 string, col3 timestamp);
 
 This feature is turned off by default because of the security risk this exposes to execute any command against the source. 
 To enable direct query procedures, set the execution property called `SupportsDirectQueryProcedure` to `true`. For more information, 
-see _Override the execution properties_ in xref:translators[].
+see _Override the execution properties_ in {% if book.targetDVProd %}xref:translators{% else %}link:as_translators.adoc{% endif %}[].
 
 TIP: By default the name of the procedure that executes the queries directly is called *native*. For information about how to change the 
-default name, see _Override the execution properties_ in xref:translators[].
+default name, see _Override the execution properties_ in {% if book.targetDVProd %}xref:translators{% else %}link:as_translators.adoc{% endif %}[].
 
 The Salesforce translator provides a procedure to execute any ad-hoc SOQL query directly 
 against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of 
 this procedure’s results are not known to {{ book.productnameFull }}, they are returned as an object array. 
-xref:arraytable[ARRAYTABLE] can be used construct tabular output for consumption by client applications. 
+{% if book.targetDVProd %}xref:arraytable{% else %}link:r_arraytable.adoc{% endif %}[ARRAYTABLE] can be used construct tabular output for consumption by client applications. 
 {{ book.productnameFull }} exposes this procedure with a simple query structure as follows:
 
 .Select
@@ -417,7 +417,7 @@ SELECT x.* FROM (call sf_source.native('search;SELECT Account.Id, Account.Type, 
 from the above code, the "search" keyword followed by a query statement.
 
 NOTE: The SOQL is treated as a parameterized native query so that parameter values may be inserted in the query 
-string properly. For more information, see _Parameterizable native queries_ in xref:translators[Translators]. 
+string properly. For more information, see _Parameterizable native queries_ in {% if book.targetDVProd %}xref:translators{% else %}link:as_translators.adoc{% endif %}[Translators]. 
 The results returned by search may contain the object Id as the first column value regardless of whether it was selected. 
 Also queries that select columns from multiple object types will not be correct.
 

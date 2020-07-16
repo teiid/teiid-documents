@@ -5,7 +5,7 @@
 
 {{ book.productnameFull }} is compatible with a subset of the DDL commands for creating or dropping temporary tables and manipulating procedure and view definitions at runtime. 
 It is not currently possible to arbitrarily drop or create non-temporary metadata entries. 
-For information about the DDL statements that you can use to define schemas in a virtual database, see xref:ddl-metadata-for-schema-objects[DDL metadata].
+For information about the DDL statements that you can use to define schemas in a virtual database, see {% if book.targetDVProd %}xref:ddl-metadata-for-schema-objects{% else %}link:r_ddl-metadata-for-schema-objects.adoc{% endif %}[DDL metadata].
 
 {% if book.targetWildfly %}
 To make non-temporary metadata updates persistent, you must configure a `MetadataRepository`. 

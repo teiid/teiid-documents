@@ -50,9 +50,9 @@ If you need secure passwords in transit and are not using SSL, then consider ins
 See the link:../security/Security_Guide.adoc[Security Guide] for details on configuring SSL for and using Kerberos with the pg transport.
 {% endif %}
 
-For a Windows client, see xref:client-dev-Configuring_the_Data_Source_Name_DSN-Configuring-the-Data-Source-Name-DSN[Configuring the Data Source Name].
+For a Windows client, see {% if book.targetDVProd %}xref:client-dev-Configuring_the_Data_Source_Name_DSN-Configuring-the-Data-Source-Name-DSN{% else %}link:Configuring_the_Data_Source_Name_DSN.adoc{% endif %}[Configuring the Data Source Name].
 
-See also xref:client-dev-DSN_Less_Connection-DSN-Less-Connection[DSN Less Connection].
+See also {% if book.targetDVProd %}xref:client-dev-DSN_Less_Connection-DSN-Less-Connection{% else %}link:DSN_Less_Connection.adoc{% endif %}[DSN Less Connection].
 
 [id="client-dev-ODBC_Support-Connection-Settings"]
 === Connection Settings
@@ -87,6 +87,6 @@ Any other setting that does have a client side affect, such as "LF <-> CR/LF con
 [id="client-dev-ODBC_Support--bookproductnameFull-Connection-Settings"]
 ==== {{ book.productnameFull }} Connection Settings
 
-Most {{ book.productnameFull }} specific connection properties do not map to ODBC client connection settings. If you find yourself in this situation and cannot use post connection SET statements, then you can set default xref:client-dev-ODBC_Connection_Properties-Configuring-Connection-Properties-with-ODBC[ODBC connection properties] for the virtual database. Use VDB properties of the form `connection.XXX` to control things like partial results mode, result set caching, etc.
+Most {{ book.productnameFull }} specific connection properties do not map to ODBC client connection settings. If you find yourself in this situation and cannot use post connection SET statements, then you can set default {% if book.targetDVProd %}xref:client-dev-ODBC_Connection_Properties-Configuring-Connection-Properties-with-ODBC{% else %}link:ODBC_Connection_Properties.adoc{% endif %}[ODBC connection properties] for the virtual database. Use VDB properties of the form `connection.XXX` to control things like partial results mode, result set caching, etc.
 
 The application name may be set by some clients.  If not, you may use a SET statement - "SET application_name name" - to set the name even after the connection is made.

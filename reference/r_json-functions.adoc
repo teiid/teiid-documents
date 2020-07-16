@@ -241,7 +241,7 @@ JSONTOXML(rootElementName, json)
 `rootElementName` is a string, `json` is in {clob, blob}. Return value is XML.
 
 The appropriate UTF encoding (8, 16LE. 16BE, 32LE, 32BE) will be detected for JSON blobs. 
-If another encoding is used, see the TO_CHARS function in xref:string-functions[String functions].
+If another encoding is used, see the TO_CHARS function in {% if book.targetDVProd %}xref:string-functions{% else %}link:r_string-functions.adoc{% endif %}[String functions].
 
 The result is always a well-formed XML document.
 
@@ -336,7 +336,7 @@ make sure that it's the array that you want, and not an array that would be retu
 If you encounter a situation where path names use reserved characters, such as '.', 
 then you must use the bracketed JsonPath notation as that allows for any key, e.g. $['.key'].
 
-For more information, see xref:jsontable[JSONTABLE].
+For more information, see {% if book.targetDVProd %}xref:jsontable{% else %}link:r_jsontable.adoc{% endif %}[JSONTABLE].
 
 .JSONPATHVALUE
 

@@ -4,6 +4,6 @@
 
 = Vertica translator (vertica)
 
-Also see common xref:jdbc-translators[JDBC translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC translators] information.
 
 The Vertica translator, known by the type name *_vertica_*, is for use with Vertica 6 or later.

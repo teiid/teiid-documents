@@ -16,12 +16,12 @@ You can get a query plan any time you execute a command.
 The following SQL options are available:
 
 *SET SHOWPLAN [ON|DEBUG]*- Returns the processing plan or the plan and the full planner debug log.
-For more information, see _Reading a debug plan_ in xref:query-planner[Query planner] and _SET statement_ in the Client Developer's Guide.
+For more information, see _Reading a debug plan_ in {% if book.targetDVProd %}xref:query-planner{% else %}link:r_query-planner.adoc{% endif %}[Query planner] and _SET statement_ in the Client Developer's Guide.
 //insert link to Client guide
 With the above options, the query plan is available from the Statement object by casting 
 to the `org.teiid.jdbc.TeiidStatement` interface or by using the SHOW PLAN statement. For more information, 
 see _SHOW Statement_ in the Client Developer's Guide. 
-Alternatively you may use the EXPLAIN statement. For more information, see, xref:explain-statements[Explain statement].
+Alternatively you may use the EXPLAIN statement. For more information, see, {% if book.targetDVProd %}xref:explain-statements{% else %}link:r_explain-statement.adoc{% endif %}[Explain statement].
 
 [source,java]
 .**Retrieving a query plan using {{ book.productnameFull }} extensions**
@@ -71,9 +71,9 @@ After you obtain a query plan, you can examine it for the following items:
 resources:
 ** _Hints and Options_ in the Caching Guide.
 //insert link to Caching Guide
-** _FROM clause hints_ in xref:from-clause[FROM clause].
-** xref:subquery-optimization[Subquery optimization].
-** xref:federated-optimizations[Federated optimizations].
+** _FROM clause hints_ in {% if book.targetDVProd %}xref:from-clause{% else %}link:as_from-clause.adoc{% endif %}[FROM clause].
+** {% if book.targetDVProd %}xref:subquery-optimization{% else %}link:r_subquery-optimization.adoc{% endif %}[Subquery optimization].
+** {% if book.targetDVProd %}xref:federated-optimizations{% else %}link:r_federated-optimizations.adoc{% endif %}[Federated optimizations].
 
 You can determine all of information in the preceding list from the processing plan. You will typically 
 be interested in analyzing the textual form of the final processing plan. To understand why 
@@ -119,7 +119,7 @@ always false (and whatever tree is underneath). There are no properties for this
 * Dependent procedure execution -- Executes a sub plan using multiple sets of input values.
 * Limit -- Returns a specified number of rows, then stops processing. Also processes an offset if present.
 * XML table -- Evaluates XMLTABLE. The debug plan will contain more information about the XQuery/XPath 
-with regards to their optimization. For more information, see xref:xquery-optimization[XQuery optimization].
+with regards to their optimization. For more information, see {% if book.targetDVProd %}xref:xquery-optimization{% else %}link:r_xquery-optimization.adoc{% endif %}[XQuery optimization].
 * Text table - Evaluates TEXTTABLE
 * Array table - Evaluates ARRAYTABLE
 * Object table - Evaluates OBJECTTABLE

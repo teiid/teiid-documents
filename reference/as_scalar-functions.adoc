@@ -5,7 +5,7 @@
 = Scalar functions
 
 {{ book.productnameFull }} provides an extensive set of built-in scalar functions. 
-For more information, see xref:dml-commands[DML commands] and xref:datatypes[Data types]. 
+For more information, see {% if book.targetDVProd %}xref:dml-commands{% else %}link:as_dml-commands.adoc{% endif %}[DML commands] and {% if book.targetDVProd %}xref:datatypes{% else %}link:as_datatypes.adoc{% endif %}[Data types]. 
 In addition, {{ book.productnameFull }} provides the capability for user-defined functions or UDFs. 
 For information about adding UDFs, see _User-defined functions_ in the Translator Development Guide. 
 After you add UDFs, you can call them in the same way that you call other functions.

@@ -13,7 +13,7 @@ You should narrow imported metadata to only what is necessary for use by your vi
 
 If data role validation is enabled and data roles are defined in a virtual database, then access permissions will be enforced 
 by the {{ book.productnameFull }} server. The use of data roles may be disabled system wide by removing the 
-setting for the `teiid` subsystem policy-decider-module. Data roles also have built-in xref:security-functions[security functions] 
+setting for the `teiid` subsystem policy-decider-module. Data roles also have built-in {% if book.targetDVProd %}xref:security-functions{% else %}link:r_security-functions.adoc{% endif %}[security functions] 
 that can be used for row-based and other authorization checks.
 
 WARNING: A virtual database that is deployed without data roles can be accessed by any authenticated user. {% if book.targetWildfly %}If you want to 

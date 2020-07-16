@@ -19,7 +19,7 @@ JSONTABLE(value, path [, nullLeafOnMissing] COLUMNS <COLUMN>, ... ) AS name
 COLUMN := name (FOR ORDINALITY | (datatype [PATH string]))
 ----
 
-See also xref:jsonpath[JsonPath]
+See also {% if book.targetDVProd %}xref:jsonpath{% else %}link:r_json-functions.adoc#jsonpath{% endif %}[JsonPath]
 
 .Parameters
 

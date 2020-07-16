@@ -3,7 +3,7 @@
 [id="db2-translator"]
 = Db2 Translator (db2)
 
-Also see common xref:jdbc-translators[JDBC Translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC Translators] information.
 
 The Db2 translator, known by the type name *_db2_*, is for use with IBM Db2 V8 or later, or IBM Db2 for i V5.4 or later.
 

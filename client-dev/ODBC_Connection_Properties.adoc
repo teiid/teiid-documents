@@ -1,7 +1,7 @@
 [id="client-dev-ODBC_Connection_Properties-Configuring-Connection-Properties-with-ODBC"]
 = Configuring Connection Properties with ODBC
 
-When working with ODBC connections, you can set the xref:client-dev-Driver_Connection-URL-Connection-Properties[URL connection properties] 
+When working with ODBC connections, you can set the {% if book.targetDVProd %}xref:client-dev-Driver_Connection-URL-Connection-Properties{% else %}link:Driver_Connection.adoc#client-dev-Driver_Connection-URL-Connection-Properties{% endif %}[URL connection properties] 
 that are available in {{ book.productnameFull }} by running a command such as the following:
 
 ----

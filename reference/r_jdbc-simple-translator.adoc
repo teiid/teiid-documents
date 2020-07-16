@@ -3,7 +3,7 @@
 [id="jdbc-simple-translator"]
 = JDBC simple translator (jdbc-simple)
 
-Also see common xref:jdbc-translators[JDBC Translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC Translators] information.
 
-The JDBC Simple translator, known by the type name *_jdbc-simple_*, is the same as the xref:jdbc-ansi-translator[jdbc-ansi-translator], 
+The JDBC Simple translator, known by the type name *_jdbc-simple_*, is the same as the {% if book.targetDVProd %}xref:jdbc-ansi-translator{% else %}link:r_jdbc-ansi-translator.adoc{% endif %}[jdbc-ansi-translator], 
 except that, to provide maximum compatibility, it does not handle most pushdown constructs. 

@@ -110,7 +110,7 @@ Effectively reserved. Will be set at deploy time by the server to the name of th
 Marks the schema as visible when the value is `true` (the default setting). 
 When the `visible` flag is set to `false`, the schema's metadata is hidden from any metadata requests. 
 Setting the property to `false` does not prohibit you from issuing queries against this schema. 
-For information about how to control access to data, see xref:data-roles[Data roles].
+For information about how to control access to data, see {% if book.targetDVProd %}xref:data-roles{% else %}link:as_data-roles.adoc{% endif %}[Data roles].
 
 * _multisource_
 

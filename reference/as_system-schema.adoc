@@ -11,7 +11,7 @@ By default, a system schema for ODBC metadata pg_catalog is also exposed. -- how
 
 The SYS system schema tables and procedures are always visible and accessible.
 
-When xref:data-roles[data roles] are in use, users can view only the tables, views, and procedure metadata entries that they 
+When {% if book.targetDVProd %}xref:data-roles{% else %}link:as_data-roles.adoc{% endif %}[data roles] are in use, users can view only the tables, views, and procedure metadata entries that they 
 have permissions to access. 
 All columns of a key must be accessible for an entry to be visible.  
 

@@ -16,7 +16,7 @@ Domain types are not schema-scoped; they are scoped to the entire VDB.
 
 .Data types
 
-For information about data types, see _simple data type_ in the xref:bnf-for-sql-grammar[BNF for SQL grammar].
+For information about data types, see _simple data type_ in the {% if book.targetDVProd %}xref:bnf-for-sql-grammar{% else %}link:r_bnf-for-sql-grammar.adoc{% endif %}[BNF for SQL grammar].
 
 .Foreign tables
 A _FOREIGN_ table is table that is defined on source schema that represents a real relational table in 
@@ -58,7 +58,7 @@ CREATE FOREIGN TABLE {table-name} (
     <key> <value>[,<key>, <value>]*
 ----
 
-For more information about creating foreign tables, see _CREATE TABLE_ in xref:bnf-for-sql-grammar[BNF for SQL grammar]. 
+For more information about creating foreign tables, see _CREATE TABLE_ in {% if book.targetDVProd %}xref:bnf-for-sql-grammar{% else %}link:r_bnf-for-sql-grammar.adoc{% endif %}[BNF for SQL grammar]. 
 
 Example: Create foreign table (Created on PHYSICAL model)
 [source,sql]
@@ -215,7 +215,7 @@ CREATE FOREIGN TABLE Orders (
 
 .ALTER TABLE
 
-For the full SQL grammar for the ALTER TABLE statement, see _ALTER TABLE_ in the xref:bnf-for-sql-grammar[BNF for SQL grammar].
+For the full SQL grammar for the ALTER TABLE statement, see _ALTER TABLE_ in the {% if book.targetDVProd %}xref:bnf-for-sql-grammar{% else %}link:r_bnf-for-sql-grammar.adoc{% endif %}[BNF for SQL grammar].
 
 Using the ALTER command, one can Add, Change, Delete columns, modify the values of any OPTIONS, and add constraints. 
 The following examples show how to use the ALTER command to modify table objects.
@@ -386,7 +386,7 @@ CREATE TRIGGER ON CustomerOrders INSTEAD OF UPDATE AS
 ----
 
 While updating you have access to previous and new values of the columns. For more information about update procedures, 
-see xref:update-procedures-triggers[Update procedures]. 
+see {% if book.targetDVProd %}xref:update-procedures-triggers{% else %}link:r_update-procedures-triggers.adoc{% endif %}[Update procedures]. 
 
 .AFTER triggers on source tables
 
@@ -408,7 +408,7 @@ CREATE TRIGGER ON Customer AFTER INSERT AS
 
 You will typically define a handler for each operation - INSERT/UPDATE/DELTE.
 
-For more detailed information about update procedures, see xref:update-procedures-triggers[Update procedures] 
+For more detailed information about update procedures, see {% if book.targetDVProd %}xref:update-procedures-triggers{% else %}link:r_update-procedures-triggers.adoc{% endif %}[Update procedures] 
 
 .Create procedure/function
 
@@ -426,7 +426,7 @@ link:../dev/Support_for_User-Defined_Functions_Non-Pushdown.adoc[Translator Deve
 
 image:images/create_procedure.png[images/create_procedure.png]
 
-For more information about creating functions or procedures, see the xref:bnf-for-sql-grammar[BNF for SQL grammar].
+For more information about creating functions or procedures, see the {% if book.targetDVProd %}xref:bnf-for-sql-grammar{% else %}link:r_bnf-for-sql-grammar.adoc{% endif %}[BNF for SQL grammar].
 
 .*Variable arguments* 
 
@@ -560,8 +560,8 @@ CREATE VIRTUAL PROCEDURE CustomerActivity(customerid integer)
     END
 ----
 
-For more information about virtual procedures and virtual procedure language, see xref:virtual-procedures[Virtual procedures], 
-and xref:procedure-language[Procedure language].
+For more information about virtual procedures and virtual procedure language, see {% if book.targetDVProd %}xref:virtual-procedures{% else %}link:r_virtual-procedures.adoc{% endif %}[Virtual procedures], 
+and {% if book.targetDVProd %}xref:procedure-language{% else %}link:as_procedure-language.adoc{% endif %}[Procedure language].
 
 [source,sql]
 .*Example: Define virtual function*
@@ -596,7 +596,7 @@ This matches the expectation of {{ book.productnameFull }} and JDBC calling sema
 |Parameterized String
 |Applies to both functions and procedures. 
 The replacement for the function syntax rather than the standard prefix form with parentheses. 
-For more information, see _Parameterizable native queries_ in xref:translators[Translators].
+For more information, see _Parameterizable native queries_ in {% if book.targetDVProd %}xref:translators{% else %}link:as_translators.adoc{% endif %}[Translators].
 
 |non-prepared
 |boolean

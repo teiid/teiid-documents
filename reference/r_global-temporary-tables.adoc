@@ -21,4 +21,4 @@ If you use the SERIAL data type, then each session’s instance of the global te
 
 You must explicitly specify UPDATABLE if you want to update the temporary table.
 
-For information about syntax options, see the `CREATE TABLE` DDL statements in xref:ddl-metadata-for-schema-objects[DDL metadata for schema objects].
+For information about syntax options, see the `CREATE TABLE` DDL statements in {% if book.targetDVProd %}xref:ddl-metadata-for-schema-objects{% else %}link:r_ddl-metadata-for-schema-objects.adoc{% endif %}[DDL metadata for schema objects].

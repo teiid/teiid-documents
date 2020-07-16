@@ -4,7 +4,7 @@
 
 = Microsoft Access translators
 
-Also see common xref:jdbc-translators[JDBC Translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC Translators] information.
 
 access:: The Microsoft Access translator known by the type name *_access_* is for use with Microsoft Access 2003 or later via the JDBC-ODBC bridge.
 +

@@ -72,7 +72,7 @@ As an XML VDB:
 
 .Headers in document 
 If the Excel document contains headers, you can guide the import process to select the cell headers as the column names in the table creation process. 
-For information about defining import properties, see the following table, and also see _Importer Properties_ in xref:jdbc-translators[JDBC translators].
+For information about defining import properties, see the following table, and also see _Importer Properties_ in {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC translators].
 
 .Import properties
 

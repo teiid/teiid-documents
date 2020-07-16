@@ -531,7 +531,7 @@ All stat values are nullable. Passing a null stat value will leave corresponding
 
 == SYSADMIN.setProperty
 
-Set an extension metadata property for the given record. Extension metadata is typically used by xref:translators[Translators].
+Set an extension metadata property for the given record. Extension metadata is typically used by {% if book.targetDVProd %}xref:translators{% else %}link:as_translators.adoc{% endif %}[Translators].
 
 [source,sql]
 ----

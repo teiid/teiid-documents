@@ -66,8 +66,8 @@ you must define the `allowed-languages` property.
 You must also set language access rights for user accounts to enable users to process OBJECTTABLE functions. 
 
 * For more information about about teiid_script, see the next section. 
-* For more information about enabling the use of languages other than teiid_script, see _allowed-languages_ in xref:vdb-properties[Virtual database properties].
-* For more information about setting user account permission, see _User query permissions_ in xref:permissions[Permissions]. 
+* For more information about enabling the use of languages other than teiid_script, see _allowed-languages_ in {% if book.targetDVProd %}xref:vdb-properties{% else %}link:r_vdb-properties.adoc{% endif %}[Virtual database properties].
+* For more information about setting user account permission, see _User query permissions_ in {% if book.targetDVProd %}xref:permissions{% else %}link:r_permissions.adoc{% endif %}[Permissions]. 
 ====
 
 *teiid_script*

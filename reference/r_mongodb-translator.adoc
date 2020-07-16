@@ -266,7 +266,7 @@ However, if you want to make use of the power of MongoDB itself in querying the 
 you need to look into building these complex documents.
 
 MongoDB translator defines two additional metadata properties along with other Teiid metadata properties to aid in building the complex "embedded" documents. 
-For more information about {{ book.productnameFull }} schema metadata, see xref:ddl-metadata-for-schema-objects[]. 
+For more information about {{ book.productnameFull }} schema metadata, see {% if book.targetDVProd %}xref:ddl-metadata-for-schema-objects{% else %}link:r_ddl-metadata-for-schema-objects.adoc{% endif %}[]. 
 You can use the following metadata properties in your DDL:
 
 teiid_mongo:EMBEDDABLE:: Means that data defined in this table is allowed to be included as an "embeddable" document in *any* parent document. 
@@ -718,7 +718,7 @@ You can use the MongoDB translator with the following functions:
 
 .Native queries
 
-MongoDB source procedures may be created using the `teiid_rel:native-query` extension. For more information, see _Parameterizable native queries_ in xref:translators[Translators]. 
+MongoDB source procedures may be created using the `teiid_rel:native-query` extension. For more information, see _Parameterizable native queries_ in {% if book.targetDVProd %}xref:translators{% else %}link:as_translators.adoc{% endif %}[Translators]. 
 The procedure will invoke the native-query similar to a direct procedure call with the benefits that the query is predetermined and 
 that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality.
 
@@ -726,10 +726,10 @@ that result column types are known, rather than requiring the use of ARRAYTABLE 
 
 This feature is turned off by default because of the security risk this exposes to execute any command against the source.  
 To enable direct query procedures, set the execution property called `SupportsDirectQueryProcedure` to `true`. For more information, 
-see _Override the execution properties_ in xref:translators[].
+see _Override the execution properties_ in {% if book.targetDVProd %}xref:translators{% else %}link:as_translators.adoc{% endif %}[].
 
 By default the name of the procedure that executes the queries directly is called *native*. For information about how to change the 
-default name, see _Override the execution properties_ in xref:translators[].
+default name, see _Override the execution properties_ in {% if book.targetDVProd %}xref:translators{% else %}link:as_translators.adoc{% endif %}[].
 
 The MongoDB translator provides a procedure to execute any ad-hoc aggregate query directly against the source 
 without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not 

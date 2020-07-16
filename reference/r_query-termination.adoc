@@ -29,7 +29,7 @@ Server-side timeouts start when the query is received by the engine. Network lat
 can delays the processing of I/O work after a client issues the query. The timeout will 
 be cancelled if the first result is sent back before the timeout has ended. 
 For more information about setting the `query-timeout` property for a virtual database, 
-see xref:vdb-properties[Virtual database properties]. For more information about modifying 
+see {% if book.targetDVProd %}xref:vdb-properties{% else %}link:r_vdb-properties.adoc{% endif %}[Virtual database properties]. For more information about modifying 
 system properties to set a default query timeout for all queries, see _System properties_ 
 in the Administrator's Guide.
 //Conditionalize link to Admin guide in preceding sentence

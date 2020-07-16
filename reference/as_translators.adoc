@@ -134,7 +134,7 @@ The preceding example overrides the _oracle_ translator and sets the _RequiresCr
 The modified translator is only available in the scope of this VDB.
 As many properties as desired may be overriden together.
 
-See also xref:vdb-properties[VDB Definition].
+See also {% if book.targetDVProd %}xref:vdb-properties{% else %}link:r_vdb-properties.adoc{% endif %}[VDB Definition].
 
 .Parameterizable native queries
 

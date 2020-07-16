@@ -5,9 +5,9 @@
 
 The {{ book.productnameFull }} type system is based on Java/JDBC types.  
 The runtime object is represented by the corresponding Java class, such as Long, Integer, Boolean, String, and so forth.
-For more information, see xref:supported-types[Runtime types].
+For more information, see {% if book.targetDVProd %}xref:supported-types{% else %}link:r_supported-types.adoc{% endif %}[Runtime types].
 You can use domain types to extend the type system. 
-For more information, see xref:ddl-metadata-for-domains[DDL metadata for domains].
+For more information, see {% if book.targetDVProd %}xref:ddl-metadata-for-domains{% else %}link:r_ddl-metadata-for-domains.adoc{% endif %}[DDL metadata for domains].
 
 {% if book.targetDVProd %}
 include::r_supported-types.adoc[leveloffset=+1]

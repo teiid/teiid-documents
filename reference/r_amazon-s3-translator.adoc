@@ -89,7 +89,7 @@ If provided, this will be used as default key for all "get" based calls.
 
 |===
 
-TIP: For information about setting properties, see _Override execution property_ in xref:translators[Translators], and review the examples in the 
+TIP: For information about setting properties, see _Override execution property_ in {% if book.targetDVProd %}xref:translators{% else %}link:as_translators.adoc{% endif %}[Translators], and review the examples in the 
 sections that follow.
 
 If you are using an S3 service other than AWS, then you need to set the EndPoint property on the associated source to the service URL, i.e. http://my-minio:9000

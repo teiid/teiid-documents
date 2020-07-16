@@ -3,7 +3,7 @@
 [id="cloudera-impala-translator"]
 = Cloudera Impala translator (impala)
 
-Also see common xref:jdbc-translators[JDBC Translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC Translators] information.
 
 The Cloudera Impala translator, known by the type name *_impala_*, is for use with Cloudera Impala 1.2.1 or later.
 

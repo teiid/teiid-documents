@@ -4,7 +4,7 @@
 
 = Ingres translators (ingres / ingres93)
 
-Also see common xref:jdbc-translators[JDBC Translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC Translators] information.
 
 You can use one of the following Ingres translators, depending on your Ingres version:
 

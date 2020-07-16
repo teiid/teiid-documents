@@ -3,6 +3,6 @@
 [id="h2-translator"]
 = H2 Translator (h2)
 
-Also see common xref:jdbc-translators[JDBC Translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC Translators] information.
 
 The H2 Translator, known by the type name *_h2_*, is for use with H2 version 1.1 or later.

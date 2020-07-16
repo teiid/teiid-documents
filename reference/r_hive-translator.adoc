@@ -3,7 +3,7 @@
 [id="hive-translator"]
 = Hive Translator (hive)
 
-Also see common xref:jdbc-translators[JDBC Translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC Translators] information.
 
 The Hive translator, known by the type name *_hive_*, is for use with Hive v.10 and SparkSQL v1.0 and later.
 

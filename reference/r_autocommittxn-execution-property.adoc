@@ -29,6 +29,6 @@ A wrapping transaction is not needed if the following criteria are true:
 * The user command is fully pushed to the source.
 * The user command is a SELECT (including XML) and the transaction isolation is not REPEATABLE_READ nor SERIALIABLE.
 * The user command is a stored procedure, the transaction isolation is not REPEATABLE_READ nor SERIALIABLE, 
-and the updating model count is zero. For more information, see xref:updating-model-count[Updating model count].
+and the updating model count is zero. For more information, see {% if book.targetDVProd %}xref:updating-model-count{% else %}link:r_updating-model-count.adoc{% endif %}[Updating model count].
 
 The update count may be set on all procedures as part of the procedure metadata in the model.

@@ -2,9 +2,9 @@
 [id="client-dev-JDBC_Support-JDBC-Support"]
 = JDBC compatibility
 
-{{ book.productnameFull }} provides a robust JDBC driver that implements most of the JDBC API according to the latest specification and compatible Java version. Most tooling designed to work with JDBC should work seamlessly with the {{ book.productnameFull }} driver. When in doubt, see xref:client-dev-Unsupported_JDBC_Methods-Unsupported-JDBC-Methods[Incompatible JDBC Methods] for functionality that has yet to be implemented.
+{{ book.productnameFull }} provides a robust JDBC driver that implements most of the JDBC API according to the latest specification and compatible Java version. Most tooling designed to work with JDBC should work seamlessly with the {{ book.productnameFull }} driver. When in doubt, see {% if book.targetDVProd %}xref:client-dev-Unsupported_JDBC_Methods-Unsupported-JDBC-Methods{% else %}link:Unsupported_JDBC_Methods.adoc{% endif %}[Incompatible JDBC Methods] for functionality that has yet to be implemented.
 
-If your needs go beyond JDBC, {{ book.productnameFull }} has also provided xref:client-dev-JDBC_Extensions-JDBC-Extensions[JDBC Extensions] for asynch handling, federation, and other features.
+If your needs go beyond JDBC, {{ book.productnameFull }} has also provided {% if book.targetDVProd %}xref:client-dev-JDBC_Extensions-JDBC-Extensions{% else %}link:JDBC_Extensions.adoc{% endif %}[JDBC Extensions] for asynch handling, federation, and other features.
 
 [id="client-dev-JDBC_Support-Generated-Keys"]
 == Generated Keys

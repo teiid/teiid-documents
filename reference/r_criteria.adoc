@@ -134,7 +134,7 @@ Conditions with equal precedence are left-associative. The following table lists
 |Condition |Description
 
 |SQL operators
-|See xref:expressions[Expressions]
+|See {% if book.targetDVProd %}xref:expressions{% else %}link:as_expressions.adoc{% endif %}[Expressions]
 
 |EXISTS, LIKE, SIMILAR TO, LIKE_REGEX, BETWEEN, IN, IS NULL, IS DISTINCT, <, <=, >, >=, =, <>
 |Comparison
@@ -154,4 +154,4 @@ For example, `a = b is null` is not accepted, because by the left-associative pa
 then look for a common value expression. 
 `b is null` is not a valid common value expression. 
 Thus, nesting must be used, for example, `(a = b) is null`. 
-For more information about parsing rules, see xref:bnf-for-sql-grammar[BNF for SQL grammar].
+For more information about parsing rules, see {% if book.targetDVProd %}xref:bnf-for-sql-grammar{% else %}link:r_bnf-for-sql-grammar.adoc{% endif %}[BNF for SQL grammar].

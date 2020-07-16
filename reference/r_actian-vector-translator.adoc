@@ -3,7 +3,7 @@
 [id="actian-vector-translator"]
 = Actian Vector translator (actian-vector)
 
-Also see common xref:jdbc-translators[JDBC Translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC Translators] information.
 
 The Actian Vector translator, known by the type name *_actian-vector_*, is for use with 
 http://esd.actian.com/Express/readme_HSE_2.0.html[Actian Vector in Hadoop].

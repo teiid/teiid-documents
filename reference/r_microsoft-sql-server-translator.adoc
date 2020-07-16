@@ -4,7 +4,7 @@
 
 = Microsoft SQL Server translator (sqlserver)
 
-Also see common xref:jdbc-translators[JDBC translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC translators] information.
 
 The Microsoft SQL Server translator, known by the type name *_sqlserver_*, is for use with SQL Server 2000 or later. 
 A SQL Server JDBC driver version 2.0 or later (or a compatible driver such as, JTDS 1.2 or later) should be used. 
@@ -13,15 +13,15 @@ The SQL Server `DatabaseVersion` property can be set to `2000`, `2005`, `2008`, 
 .Sequences
 {% if book.targetWildfly or book.targetSpring %}
 
-With {{ book.productnameFull }} 8.5+, sequence operations may be modeled as xref:ddl-metadata-for-domains[source functions].
+With {{ book.productnameFull }} 8.5+, sequence operations may be modeled as {% if book.targetDVProd %}xref:ddl-metadata-for-domains{% else %}link:r_ddl-metadata-for-domains.adoc{% endif %}[source functions].
 
-With {{ book.productnameFull }} 10.0+, sequences may be imported automatically xref:jdbc-translators[import properties].
+With {{ book.productnameFull }} 10.0+, sequences may be imported automatically {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[import properties].
 
 {% endif %}
 
 {% if book.Product %}
 Sequences can be imported automatically. 
-For more information, see the table of _Importer properties_ in xref:jdbc-translators[JDBC Translators].
+For more information, see the table of _Importer properties_ in {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC Translators].
 {% endif %}
 
 [source,sql]

@@ -26,7 +26,7 @@ along with costing information, and heuristics for pushdown optimization.
 
 Criteria and join push down are typically the most important aspects of the query to push down 
 when performance is a concern. For information about how to read a plan to ensure that source queries are as efficient as possible, 
-see xref:query-plans[Query plans].
+see {% if book.targetDVProd %}xref:query-plans{% else %}link:r_query-plans.adoc{% endif %}[Query plans].
 
 .Dependent joins
 
@@ -58,8 +58,8 @@ MAKEDEP(MAX:5000)::: meaning that the dependent join should only be performed if
 the maximum number of values from the independent side.
 MAKENOTDEP:: Prevents the clause from being the dependent side of a join.
 
-These can be placed in either the xref:option-clause[OPTION Clause] or directly in the 
-xref:from-clause[FROM Clause]. As long as all xref:access-patterns[Access Patterns] 
+These can be placed in either the {% if book.targetDVProd %}xref:option-clause{% else %}link:r_option-clause.adoc{% endif %}[OPTION Clause] or directly in the 
+{% if book.targetDVProd %}xref:from-clause{% else %}link:as_from-clause.adoc{% endif %}[FROM Clause]. As long as all xref:access-patterns[Access Patterns] 
 can be met, the MAKEIND, MAKEDEP, and MAKENOTDEP hints override any use of costing information. MAKENOTDEP supersedes the other hints.
 
 TIP: The MAKEDEP or MAKEIND hints should only be used if the proper query plan is not chosen by default. 
@@ -238,7 +238,7 @@ The view is partitioned on column x, since the first branch can only be the valu
 NOTE: More advanced or explicit partitioning will be considered for future releases. 
 
 The concept of a partitioned union is used for performing partition-wise joins, in 
-xref:updatable-views[Updatable Views], and xref:partial-aggregate-pushdown[Partial Aggregate Pushdown].
+{% if book.targetDVProd %}xref:updatable-views{% else %}link:as_updatable-views.adoc{% endif %}[Updatable Views], and xref:partial-aggregate-pushdown[Partial Aggregate Pushdown].
 These optimizations are also applied when using the multi-source feature as well - 
 which introduces an explicit partitioning column.
 
@@ -278,7 +278,7 @@ In an XML VDB:
 * Removal of unnecessary sort operations.
 * Advanced search techniques through the left-linear space of join trees.
 * Parallelizing of source access during execution.
-* xref:subquery-optimization[Subquery optimization].
+* {% if book.targetDVProd %}xref:subquery-optimization{% else %}link:r_subquery-optimization.adoc{% endif %}[Subquery optimization].
 
 .Join compensation
 

@@ -19,10 +19,10 @@ XMLTABLE([<NSP>,] xquery-expression [<PASSING>] [COLUMNS <COLUMN>, ... ]) AS nam
 COLUMN := name (FOR ORDINALITY | (datatype [DEFAULT expression] [PATH string]))
 ----
 
-For the definition of NSP - XMLNAMESPACES, see _XMLELEMENT_ in xref:xmlelement[XML functions].
-For the definition of PASSING, see _XMLQUERY_ in xref:xmlquery[XML functions].
+For the definition of NSP - XMLNAMESPACES, see _XMLELEMENT_ in {% if book.targetDVProd %}xref:xmlelement{% else %}link:r_xml-functions.adoc#xmlelement{% endif %}[XML functions].
+For the definition of PASSING, see _XMLQUERY_ in {% if book.targetDVProd %}xref:xmlquery{% else %}link:r_xml-functions.adoc#xmlquery{% endif %}[XML functions].
 
-NOTE: See also xref:xquery-optimization[XQuery optimization].
+NOTE: See also {% if book.targetDVProd %}xref:xquery-optimization{% else %}link:r_xquery-optimization.adoc{% endif %}[XQuery optimization].
 
 .Parameters
 

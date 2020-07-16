@@ -14,7 +14,7 @@ The translator is typically used with the `TEXTTABLE` or `XMLTABLE` functions to
 |Encoding
 |The encoding that should be used for CLOBs returned by the getTextFiles procedure. 
 The value should match an encoding known to {{ book.productnameFull }}. 
-For more information, see _TO_CHARS_ and _TO_BYTES_ in xref:string-functions[String functions].
+For more information, see _TO_CHARS_ and _TO_BYTES_ in {% if book.targetDVProd %}xref:string-functions{% else %}link:r_string-functions.adoc{% endif %}[String functions].
 |The system default encoding.
 
 |ExceptionIfFileNotFound
@@ -22,7 +22,7 @@ For more information, see _TO_CHARS_ and _TO_BYTES_ in xref:string-functions[Str
 |true 
 |===
 
-TIP: For information about how to set properties, see the following example, and _Override execution properties_ in xref:translators[Translators].
+TIP: For information about how to set properties, see the following example, and _Override execution properties_ in {% if book.targetDVProd %}xref:translators{% else %}link:as_translators.adoc{% endif %}[Translators].
 
 .Example: Virtual datbase DDL override 
 [source,sql]

@@ -8,16 +8,16 @@ be used in a query with nearly any keyword, including SELECT, FROM (if specifyin
 
 You can use following types of expressions in {{ book.productnameFull }}:
 
-* xref:column-identifiers[Column identifiers]
-* xref:literals[Literals]
-* xref:aggregate-functions[Aggregate functions]
-* xref:window-functions[Window functions]
-* xref:case-and-searched-case-expressions[Case and searched case]
-* xref:scalar-subqueries[Scalar subqueries]
-* xref:parameter-references[Parameter references]
-* xref:arrays[Arrays]
-* xref:sql-criteria[Criteria]
-* xref:scalar-functions[Scalar functions]
+* {% if book.targetDVProd %}xref:column-identifiers{% else %}link:r_column-identifiers.adoc{% endif %}[Column identifiers]
+* {% if book.targetDVProd %}xref:literals{% else %}link:r_literals.adoc{% endif %}[Literals]
+* {% if book.targetDVProd %}xref:aggregate-functions{% else %}link:r_aggregate-functions.adoc{% endif %}[Aggregate functions]
+* {% if book.targetDVProd %}xref:window-functions{% else %}link:r_window-functions.adoc{% endif %}[Window functions]
+* {% if book.targetDVProd %}xref:case-and-searched-case-expressions{% else %}link:r_case-and-searched-case-expressions.adoc{% endif %}[Case and searched case]
+* {% if book.targetDVProd %}xref:scalar-subqueries{% else %}link:r_scalar-subqueries.adoc{% endif %}[Scalar subqueries]
+* {% if book.targetDVProd %}xref:parameter-references{% else %}link:r_parameter-references.adoc{% endif %}[Parameter references]
+* {% if book.targetDVProd %}xref:arrays{% else %}link:r_arrays.adoc{% endif %}[Arrays]
+* {% if book.targetDVProd %}xref:sql-criteria{% else %}link:r_criteria.adoc{% endif %}[Criteria]
+* {% if book.targetDVProd %}xref:scalar-functions{% else %}link:as_scalar-functions.adoc{% endif %}[Scalar functions]
 
 {% if book.targetDVProd %}
 include::r_column-identifiers.adoc[leveloffset=+1]

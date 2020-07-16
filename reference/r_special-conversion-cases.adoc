@@ -66,4 +66,4 @@ to their associated date-related data types as shown in the following table:
 |===
 
 The preceding formats are those expected by the JDBC date types. 
-For information about using other formats, see the functions `PARSEDATE`, `PARSETIME`, and `PARSETIMESTAMP` in xref:date-time-functions[Date and time functions].
+For information about using other formats, see the functions `PARSEDATE`, `PARSETIME`, and `PARSETIMESTAMP` in {% if book.targetDVProd %}xref:date-time-functions{% else %}link:r_date-time-functions.adoc{% endif %}[Date and time functions].

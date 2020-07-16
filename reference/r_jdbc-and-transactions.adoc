@@ -5,7 +5,7 @@
 
 .JDBC API functionality
 
-The transaction scopes in xref:transaction-support[Transactions] map to the following JDBC modes:
+The transaction scopes in {% if book.targetDVProd %}xref:transaction-support{% else %}link:as_transaction-support.adoc{% endif %}[Transactions] map to the following JDBC modes:
 
 Command:: Connection autoCommit property set to true.
 

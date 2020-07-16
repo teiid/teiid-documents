@@ -4,7 +4,7 @@
 = INTO clause
 
 WARNING: Usage of the INTO Clause for inserting into a table has been been deprecated. 
-An INSERT with a query command should be used instead. For information about using INSERT, see xref:insert-command[INSERT command].
+An INSERT with a query command should be used instead. For information about using INSERT, see {% if book.targetDVProd %}xref:insert-command{% else %}link:r_insert-command.adoc{% endif %}[INSERT command].
 
 {% if book.targetSpring or book.targetWildfly %}
 When the into clause is specified with a SELECT, the results of the query are inserted into the specified table. 

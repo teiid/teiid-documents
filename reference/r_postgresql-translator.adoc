@@ -4,7 +4,7 @@
 
 = PostgreSQL translator (postgresql)
 
-Also see common xref:jdbc-translators[JDBC translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC translators] information.
 
 The PostgreSQL translator, known by the type name *_postgresql_*, is for use with the following PostgreSQL client and server versions:
 * Client -- 8.0 or later

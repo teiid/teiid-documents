@@ -26,5 +26,5 @@ The following table lists operator precedence from high to low:
 |concat
 
 |criteria
-|For information, see xref:sql-criteria[Criteria].
+|For information, see {% if book.targetDVProd %}xref:sql-criteria{% else %}link:r_criteria.adoc{% endif %}[Criteria].
 |===

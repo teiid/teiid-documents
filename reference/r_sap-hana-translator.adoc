@@ -4,7 +4,7 @@
 
 = SAP HANA translator (hana)
 
-Also see common xref:jdbc-translators[JDBC translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC translators] information.
 
 The SAP HANA translator, known by the name of *_hana_*, is for use with SAP HANA.
 

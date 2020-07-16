@@ -44,10 +44,10 @@ or to fail when sufficient criteria cannot be found.
 set columns cannot be used in a procedural relational command.
 * If there is already a table or view with the same name as the procedure, then it cannot be invoked via procedural relational syntax.
 * Default values for IN or IN_OUT parameters are not used if there is no criteria present for a given input. 
-Default values are only valid for named procedure syntax. For more information, see xref:execute-command[EXECUTE].
+Default values are only valid for named procedure syntax. For more information, see {% if book.targetDVProd %}xref:execute-command{% else %}link:r_execute-command.adoc{% endif %}[EXECUTE].
 
 NOTE: The preceding issues do not apply when you use a nested table reference. 
-For more information, see _Nested table reference_ in xref:from-clause[FROM clause].
+For more information, see _Nested table reference_ in {% if book.targetDVProd %}xref:from-clause{% else %}link:as_from-clause.adoc{% endif %}[FROM clause].
 
 .Multiple execution
 The use of `in` or join criteria can result in a procedure being executed multiple times.

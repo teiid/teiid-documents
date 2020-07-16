@@ -7,15 +7,15 @@ The SELECT command is used to retrieve records for any number of relations.
 
 A SELECT command can contain the following clauses:
 
-* xref:with-clause[WITH …]
-* xref:select-clause[SELECT …]
-* xref:from-clause[FROM …]
-* xref:where-clause[WHERE …]
-* xref:group-by-clause[GROUP BY …]
-* xref:having-clause[HAVING …]
-* xref:order-by-clause[ORDER BY …]
-* xref:limit-clause[(LIMIT …)] | ([OFFSET …] [FETCH …])
-* xref:option-clause[OPTION …]
+* {% if book.targetDVProd %}xref:with-clause{% else %}link:r_with-clause.adoc{% endif %}[WITH …]
+* {% if book.targetDVProd %}xref:select-clause{% else %}link:r_select-clause.adoc{% endif %}[SELECT …]
+* {% if book.targetDVProd %}xref:from-clause{% else %}link:as_from-clause.adoc{% endif %}[FROM …]
+* {% if book.targetDVProd %}xref:where-clause{% else %}link:r_where-clause.adoc{% endif %}[WHERE …]
+* {% if book.targetDVProd %}xref:group-by-clause{% else %}link:r_group-by-clause.adoc{% endif %}[GROUP BY …]
+* {% if book.targetDVProd %}xref:having-clause{% else %}link:r_having-clause.adoc{% endif %}[HAVING …]
+* {% if book.targetDVProd %}xref:order-by-clause{% else %}link:r_order-by-clause.adoc{% endif %}[ORDER BY …]
+* {% if book.targetDVProd %}xref:limit-clause{% else %}link:r_limit-clause.adoc{% endif %}[(LIMIT …)] | ([OFFSET …] [FETCH …])
+* {% if book.targetDVProd %}xref:option-clause{% else %}link:r_option-clause.adoc{% endif %}[OPTION …]
 
 Except for the OPTION clause, all of the preceding clauses are defined by the SQL specification. 
 The specification also specifies the order in which these clauses are logically processed. 

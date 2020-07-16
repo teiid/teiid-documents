@@ -33,7 +33,7 @@ The node structure of the debug plan resembles that of the processing plan, but 
 
 .Canonical plan and all nodes
 
-As described in the xref:planning-overview[Planning overview], a SQL statement submitted to the query engine is parsed, resolved, 
+As described in the {% if book.targetDVProd %}xref:planning-overview{% else %}link:r_planning-overview.adoc{% endif %}[Planning overview], a SQL statement submitted to the query engine is parsed, resolved, 
 validated, and rewritten before it is converted into a canonical plan form. The canonical plan form most closely resembles the 
 initial SQL structure. A SQL select query has the following possible clauses (all but SELECT are optional):  
 WITH, SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY, LIMIT. These clauses are logically executed in the following order:
@@ -303,7 +303,7 @@ Each node has a set of applicable properties that are typically shown on the nod
 |If the make ind hint is set.
 
 |SOURCE_HINT 
-|The source hint. See xref:federated-optimizations[Federated optimizations].
+|The source hint. See {% if book.targetDVProd %}xref:federated-optimizations{% else %}link:r_federated-optimizations.adoc{% endif %}[Federated optimizations].
 
 |ACCESS_PATTERNS 
 |Access patterns yet to be satisfied.
@@ -442,7 +442,7 @@ In cases where A is small and B is large, this can drastically reduce the data r
 Since the equality defines an equivalence, this is a valid way to create a new criteria that may limit 
 results on the other side of the join (especially in the case of a multi-source join).
 * Decompose Join -- This rule performs a partition-wise join optimization on joins of a partitioned union. For more information,
-see _Partitioned unions_ in xref:federated-optimizations[Federated optimizations]. 
+see _Partitioned unions_ in {% if book.targetDVProd %}xref:federated-optimizations{% else %}link:r_federated-optimizations.adoc{% endif %}[Federated optimizations]. 
 The decision to decompose is based upon detecting that each side of the join is a partitioned union 
 (note that non-ANSI joins of more than 2 tables may cause the optimization to not detect the appropriate join). 
 The rule currently only looks for situations where at most 1 partition matches from each side.
@@ -453,7 +453,7 @@ The rule currently only looks for situations where at most 1 partition matches f
 everything below the access node gets pushed to the source or is a plan invocation. 
 Later rules focus on either pushing under the access or pulling the access node up the tree to move 
 more work down to the sources. This rule is also responsible for placing access patterns. For more information, see 
-_Access patterns_ in xref:federated-optimizations[Federated optimizations]
+_Access patterns_ in {% if book.targetDVProd %}xref:federated-optimizations{% else %}link:r_federated-optimizations.adoc{% endif %}[Federated optimizations]
 * Plan Joins -- This rule attempts to find an optimal ordering of the joins performed in the plan, while ensuring that 
 access pattern dependencies are met. 
 This rule has three main steps. 
@@ -671,7 +671,7 @@ This is mostly a 1-to-1 mapping and very little optimization is performed.
 .XQuery
 
 XQuery is eligible for specific optimizations. 
-For more information, see xref:xquery-optimization[XQuery optimization]. 
+For more information, see {% if book.targetDVProd %}xref:xquery-optimization{% else %}link:r_xquery-optimization.adoc{% endif %}[XQuery optimization]. 
 Document projection is the most common optimization. It will be shown in the debug plan as an annotation. 
 For example, with the user query that contains "xmltable('/a/b' passing doc columns x string path '@x', val string path '.')", 
 the debug plan would show a tree of the document that will effectively be used by the context and path XQuerys:

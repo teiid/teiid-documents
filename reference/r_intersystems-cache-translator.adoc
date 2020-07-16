@@ -3,6 +3,6 @@
 [id="intersystems-cache-translator"]
 = Intersystems Caché translator (intersystems-cache)
 
-Also see common xref:jdbc-translators[JDBC Translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC Translators] information.
 
 The Intersystem Caché translator, known by the type name *_intersystems-cache_*, is for use with Intersystems Caché Object database (relational aspects only).

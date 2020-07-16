@@ -3,7 +3,7 @@
 [id="exasol-translator"]
 = Exasol translator (exasol)
 
-Also see common xref:jdbc-translators[JDBC Translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC Translators] information.
 
 The Exasol translator, known by the type name *_exasol_*, is for use with Exasol version 6 or later.
 

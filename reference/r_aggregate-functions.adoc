@@ -26,7 +26,7 @@ VAR_POP(x):: Biased variance (excluding null) logically equals(sum(x^2) - sum(x)
 VAR_SAMP(x):: Sample variance (excluding null) logically equals(sum(x^2) - sum(x)^2/count(x))/(count(x) - 1); returns a double; null if count < 2.
 STDDEV_POP(x):: Standard deviation (excluding null) logically equals SQRT(VAR_POP(x)).
 STDDEV_SAMP(x):: Sample standard deviation (excluding null) logically equals SQRT(VAR_SAMP(x)).
-TEXTAGG(expression [as name], … [DELIMITER char] [QUOTE char | NO QUOTE] [HEADER] [ENCODING id] [xref:order-by-clause[ORDER BY …]]):: CSV
+TEXTAGG(expression [as name], … [DELIMITER char] [QUOTE char | NO QUOTE] [HEADER] [ENCODING id] [{% if book.targetDVProd %}xref:order-by-clause{% else %}link:r_order-by-clause.adoc{% endif %}[ORDER BY …]]):: CSV
 text aggregation of all expressions in each row of a group. When DELIMITER is not specified, by default comma(,) is used as delimiter. 
 All non-null values will be quoted. Double quotes(") is the default quote character. Use QUOTE to specify a different value, or NO QUOTE 
 for no value quoting. If HEADER is specified, the result contains the header row as the first line - the header line will be present 
@@ -37,11 +37,11 @@ even if there are no rows in a group. This aggregation returns a blob.
 TEXTAGG(col1, col2 as name DELIMITER '|' HEADER ORDER BY col1)
 ----
 
-* XMLAGG(xml_expr [xref:order-by-clause[ORDER BY …]]) – XML concatenation of all XML expressions 
+* XMLAGG(xml_expr [{% if book.targetDVProd %}xref:order-by-clause{% else %}link:r_order-by-clause.adoc{% endif %}[ORDER BY …]]) – XML concatenation of all XML expressions 
 in a group (excluding null). The ORDER BY clause cannot reference alias names or use positional ordering.
-* JSONARRAY_AGG(x [xref:order-by-clause[ORDER BY …]]) – creates a JSON array result as a Clob 
+* JSONARRAY_AGG(x [{% if book.targetDVProd %}xref:order-by-clause{% else %}link:r_order-by-clause.adoc{% endif %}[ORDER BY …]]) – creates a JSON array result as a Clob 
 including null value. The ORDER BY clause cannot reference alias names or use positional ordering. 
-For more information, see xref:json-functions[JSONARRAY function].
+For more information, see {% if book.targetDVProd %}xref:json-functions{% else %}link:r_json-functions.adoc{% endif %}[JSONARRAY function].
 
 .Example: Integer value expression
 
@@ -94,9 +94,9 @@ could return
 'a,b,c'
 ----
 
-* ARRAY_AGG(x [xref:order-by-clause[ORDER BY …]]) – Creates an array with a base type that
+* ARRAY_AGG(x [{% if book.targetDVProd %}xref:order-by-clause{% else %}link:r_order-by-clause.adoc{% endif %}[ORDER BY …]]) – Creates an array with a base type that
 matches the expression x. The ORDER BY clause cannot reference alias names or use positional ordering.
-* agg([DISTINCT|ALL] arg … [xref:order-by-clause[ORDER BY …]]) – A user defined aggregate function.
+* agg([DISTINCT|ALL] arg … [{% if book.targetDVProd %}xref:order-by-clause{% else %}link:r_order-by-clause.adoc{% endif %}[ORDER BY …]]) – A user defined aggregate function.
 
 .Syntax rules
 

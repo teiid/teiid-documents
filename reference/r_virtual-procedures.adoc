@@ -6,7 +6,7 @@
 :toc-placement: preamble
 
 Virtual procedures are defined using the {{ book.productnameFull }} procedural language. 
-For more information, see xref:procedure-language[Procedure language].
+For more information, see {% if book.targetDVProd %}xref:procedure-language{% else %}link:as_procedure-language.adoc{% endif %}[Procedure language].
 
 A virtual procedure has zero or more INPUT, INOUT, or OUT parameters, an optional RETURN parameter, and an optional result set. 
 Virtual procedures can execute queries and other SQL commands, define temporary tables, 
@@ -14,12 +14,12 @@ add data to temporary tables, walk through result sets, use loops, and use condi
 
 .Virtual procedure definition
 
-For more information, see _Create procedure/function_ in xref:ddl-metadata-for-schema-objects[DDL metadata for schema objects].
+For more information, see _Create procedure/function_ in {% if book.targetDVProd %}xref:ddl-metadata-for-schema-objects{% else %}link:r_ddl-metadata-for-schema-objects.adoc{% endif %}[DDL metadata for schema objects].
 
 Note that the optional result parameter is always considered the first parameter. 
 
 Within the body of the procedure, you can use any valid statement. 
-For more information avbout procedure language statements, see  xref:procedure-language[Procedure language].
+For more information avbout procedure language statements, see  {% if book.targetDVProd %}xref:procedure-language{% else %}link:as_procedure-language.adoc{% endif %}[Procedure language].
 
 There is no explicit cursoring or value returning statement.
 Instead, the last unnamed command statement executed in the procedure that returns a result set will be returned as the result. 
@@ -102,7 +102,7 @@ END
 
 .Executing virtual procedures
 
-You execute procedures using the SQL `EXECUTE` command. For more information, see _Execute command_ in xref:dml-commands[DML commands]. 
+You execute procedures using the SQL `EXECUTE` command. For more information, see _Execute command_ in {% if book.targetDVProd %}xref:dml-commands{% else %}link:as_dml-commands.adoc{% endif %}[DML commands]. 
 
 If the procedure has defined inputs, you specify those in a sequential list, or using _name=value_ syntax. 
 You must use the name of the input parameter, scoped by the full procedure name if the parameter name 

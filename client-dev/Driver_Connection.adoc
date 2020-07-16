@@ -17,7 +17,7 @@ You should attempt to keep the client up-to-date though as fixes and features ar
 URL Components
 
 1.  <vdb-name> - Name of the VDB you are connecting to. Optionally VDB name can also contain version information inside it. For example: "myvdb.2", this is equivalent to supplying the "version=2" connection property defined below. However, use of vdb name in this format and the "version" property at the same time is not allowed.
-2.  mm - defines {{ book.productnameFull }} JDBC protocol, mms defines a secure channel (see xref:client-dev-SSL_Client_Connections-Client-SSL-Settings[SSL Client Connections] for more)
+2.  mm - defines {{ book.productnameFull }} JDBC protocol, mms defines a secure channel (see {% if book.targetDVProd %}xref:client-dev-SSL_Client_Connections-Client-SSL-Settings{% else %}link:SSL_Client_Connections.adoc{% endif %}[SSL Client Connections] for more)
 3.  <host> - defines the server where the {{ book.productnameFull }} Server is installed. If you are using IPv6 binding address as the host name, place it in square brackets. ex:[::1]
 4.  <port> - defines the port on which the {{ book.productnameFull }} Server is listening for incoming JDBC connections.
 5.  [prop-name=prop-value] - additionally you can supply any number of name value pairs separated by semi-colon [;]. All compatible URL properties are defined in the xref:client-dev-Driver_Connection-URL-Connection-Properties[connection properties] section. Property values should be URL encoded if they contain reserved characters, e.g. (’?’, '=', ';', etc.)
@@ -55,7 +55,7 @@ The following table shows all the connection properties that you can use with {{
 
 |`partialResultsMode`
 |`boolean`
-|Enable/disable partial results mode. Default false. See the xref:client-dev-Partial_Results_Mode-Partial-Results-Mode[Partial Results Mode] section.
+|Enable/disable partial results mode. Default false. See the {% if book.targetDVProd %}xref:client-dev-Partial_Results_Mode-Partial-Results-Mode{% else %}link:Partial_Results_Mode.adoc{% endif %}[Partial Results Mode] section.
 
 |`autoCommitTxn`
 |`String`

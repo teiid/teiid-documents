@@ -19,7 +19,7 @@ An inherently updatable view cannot be defined with a query that has:
 
 A `UNION ALL` can define an inherently updatable view only if each of the UNION branches are themselves inherently updatable. 
 A view defined by a `UNION ALL` can accommodate inherent `INSERT` statements if it is a partitioned union, and the `INSERT` specifies values that belong to a single partition.
-For more information, see _partitioned union_ in xref:federated-optimizations[Federated optimizations].
+For more information, see _partitioned union_ in {% if book.targetDVProd %}xref:federated-optimizations{% else %}link:r_federated-optimizations.adoc{% endif %}[Federated optimizations].
 
 Any view column that is not mapped directly to a column is not updatable and cannot be targeted by an UPDATE set clause or be an INSERT column.
 
@@ -31,11 +31,11 @@ For a non-simple query to be updatable, the following criteria apply:
 
 * To allow `DELETE` operations, there must be only a single key-preserved table.
 +
-For information about key-preserved tables, see xref:key-preserved-tables[Key-preserved tables].
+For information about key-preserved tables, see {% if book.targetDVProd %}xref:key-preserved-tables{% else %}link:r_key-preserved-tables.adoc{% endif %}[Key-preserved tables].
 
 If the default handling is not available or if you want to have an alternative implementation of an `INSERT/UPDATE/DELETE`, 
 you can use update procedures, or triggers, to define procedures to handle the respective operations. 
-For more information see xref:update-procedures-triggers[Update procedures (Triggers)].
+For more information see {% if book.targetDVProd %}xref:update-procedures-triggers{% else %}link:r_update-procedures-triggers.adoc{% endif %}[Update procedures (Triggers)].
 
 Consider the following example of an inherently updatable denormalized view:
 

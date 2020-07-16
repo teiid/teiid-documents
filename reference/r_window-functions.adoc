@@ -35,7 +35,7 @@ frameBound :=
 
 ----
 
-In the preceding syntax, `aggregate` can refer to any xref:aggregate-functions[aggregate function]. 
+In the preceding syntax, `aggregate` can refer to any {% if book.targetDVProd %}xref:aggregate-functions{% else %}link:r_aggregate-functions.adoc{% endif %}[aggregate function]. 
 Keywords exist for the following analytical functions ROW_NUMBER, RANK, DENSE_RANK, PERCENT_RANK, CUME_DIST.  
 There are also the FIRST_VALUE, LAST_VALUE, LEAD, LAG, NTH_VALUE, and NTILE analytical functions. For more information, 
 see xref:analytical-function-definitions[Analytical functions definitions].

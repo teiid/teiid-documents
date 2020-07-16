@@ -16,6 +16,6 @@ In addition to these main components, the service platform makes the following c
 to the applications that are built on top of it:
   Session::: The Session service manages active session information.
   Buffer manager::: The Buffer Manager service provides access to data management for intermediate results. 
-  For more information, see _Buffer management_  in xref:data-management[Data management].
+  For more information, see _Buffer management_  in {% if book.targetDVProd %}xref:data-management{% else %}link:r_data-management.adoc{% endif %}[Data management].
   Transaction::: The Transaction service manages global, local, and request scoped transactions. 
-  For more information, see xref:transaction-support[Transactions].
+  For more information, see {% if book.targetDVProd %}xref:transaction-support{% else %}link:as_transaction-support.adoc{% endif %}[Transactions].

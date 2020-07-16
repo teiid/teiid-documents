@@ -54,4 +54,4 @@ name will be treated the same as a qualified name and may conflict with fully qu
 Reserved words in {{ book.productnameFull }} include the standard SQL 2003 Foundation, SQL/MED, and SQL/XML reserved words, 
 as well as {{ book.productnameFull }} specific words such as BIGINTEGER, BIGDECIMAL, or MAKEDEP. 
 For more information about reserved words, see the _Reserved Keywords_ and _Reserved Keywords For Future Use_ sections 
-in xref:bnf-for-sql-grammar[BNF for SQL grammar].
+in {% if book.targetDVProd %}xref:bnf-for-sql-grammar{% else %}link:r_bnf-for-sql-grammar.adoc{% endif %}[BNF for SQL grammar].

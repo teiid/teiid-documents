@@ -4,7 +4,7 @@
 = Command statement
 
 A command statement executes a DML command, DDL command, or dynamic SQL against one or more data sources.
-For more information, see xref:dml-commands[DML commands] and xref:ddl-commands[DDL commands].
+For more information, see {% if book.targetDVProd %}xref:dml-commands{% else %}link:as_dml-commands.adoc{% endif %}[DML commands] and {% if book.targetDVProd %}xref:ddl-commands{% else %}link:as_ddl-commands.adoc{% endif %}[DDL commands].
  
 .Usage
 
@@ -27,7 +27,7 @@ To access the return value the statement will have the form `var = EXEC proc...`
 To access OUT or IN/OUT values named parameter syntax must be used. 
 For example, `EXEC proc(in_param=>'1', out_param=>var)` will assign the value of the out parameter to the variable var. 
 It is expected that the datatype of a parameter is implicitly convertible to the data type of the variable.
-For more information about EXECUTE command statements, see xref:execute-command[EXECUTE command].
+For more information about EXECUTE command statements, see {% if book.targetDVProd %}xref:execute-command{% else %}link:r_execute-command.adoc{% endif %}[EXECUTE command].
 
 * The RETURN clause determines if the result of the command is returnable from the procedure. 
 WITH RETURN is the default. 

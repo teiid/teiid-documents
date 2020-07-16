@@ -5,7 +5,7 @@
 
 A conformed table is a source table that is the same in several physical sources. 
 {% if book.targetWildfly %}
-Unlike xref:multisource-models[Multisource models] which assume a partitioning paradigm, 
+Unlike {% if book.targetDVProd %}xref:multisource-models{% else %}link:r_multisource-models.adoc{% endif %}[Multisource models] which assume a partitioning paradigm, 
 the planner assumes any conformed table may be substituted for another to improve performance. 
 {% endif %}
 Typically this would be used when reference data exists in multiple sources, but only a single metadata entry is desired to represent the table.
@@ -17,8 +17,8 @@ Conformed tables are defined by adding the following extension metadata property
 {http://www.teiid.org/ext/relational/2012}conformed-sources
 ----
 
-You can set extension properties in the DDL file by using full xref:ddl-metadata-for-schema-objects[DDL metadata] or alter statements, 
-or at runtime by using the `setProperty` xref:system-schema[system procedure]. 
+You can set extension properties in the DDL file by using full {% if book.targetDVProd %}xref:ddl-metadata-for-schema-objects{% else %}link:r_ddl-metadata-for-schema-objects.adoc{% endif %}[DDL metadata] or alter statements, 
+or at runtime by using the `setProperty` {% if book.targetDVProd %}xref:system-schema{% else %}link:as_system-schema.adoc{% endif %}[system procedure]. 
 The property is expected to be a comma separated list of physical model/schema names.
 
 .DDL alter example

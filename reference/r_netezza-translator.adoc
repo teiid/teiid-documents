@@ -3,7 +3,7 @@
 [id="netezza-translator"]
 = Netezza translator (netezza)
 
-Also see common xref:jdbc-translators[JDBC translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC translators] information.
 
 The Netezza translator, known by the type name *_netezza_*, is for use with any version of the IBM Netezza appliance.
 

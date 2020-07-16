@@ -14,7 +14,7 @@ CREATE FOREIGN TEMPORARY TABLE name ... ON schema
 ----
 
 Where the table creation body syntax is the same as a standard CREATE FOREIGN TABLE DDL statement. 
-For more information, see xref:ddl-metadata-for-domains[DDL metadata]. 
+For more information, see {% if book.targetDVProd %}xref:ddl-metadata-for-domains{% else %}link:r_ddl-metadata-for-domains.adoc{% endif %}[DDL metadata]. 
 In general, usage of DDL OPTION clauses might be required to properly access the source table, 
 including setting the name in the source, updatability, native types, and so forth.
 

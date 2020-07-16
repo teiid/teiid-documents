@@ -3,7 +3,7 @@
 [id="prestodb-translator"]
 = PrestoDB translator (prestodb)
 
-Also see common xref:jdbc-translators[JDBC translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC translators] information.
 
 The PrestoDB translator, known by the type name *_prestodb_*, exposes querying functionality to Presto data sources - 
 which includes both PrestoDB and PrestoSQL.

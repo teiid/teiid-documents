@@ -42,7 +42,7 @@ image:images/data_virt_engine.png[images/data_virt_engine.png]
 1. SQL is converted to a processor plan. The engine receives an incoming SQL query. 
 It is parsed to a internal command. Then the command is converted a logical plan via resolving, validating, and rewriting. 
 Finally, rule and cost-based optimization convert the logical plan to a final processor plan. 
-For more information, see xref:federated-planning[Federated planning].
+For more information, see {% if book.targetDVProd %}xref:federated-planning{% else %}link:as_federated-planning.adoc{% endif %}[Federated planning].
 2. Batch processing. The source and other aspects of query processing may return results 
 asynchronously to the processing thread. As soon as possible, batches of results are made available to the client. 
 3. Buffer management controls the bulk of the on and off heap memory that {{ book.productnameFull }} is using. 
@@ -55,7 +55,7 @@ connector layer which utilizes a translator to interact directly with a source.
 Connectivity is provided for heterogeneous data stores, such as databases or data warehouses, 
 NoSQL, Hadoop, data grid/cache, files, SaaS, and so on.
 
-Translator:: {{ book.productnameFull }} has developed a series of translators. For more information, see xref:translators[Translators]. 
+Translator:: {{ book.productnameFull }} has developed a series of translators. For more information, see {% if book.targetDVProd %}xref:translators{% else %}link:as_translators.adoc{% endif %}[Translators]. 
 {% if book.targetWildfly %}
 Resource adapter:: Provides container managed access to a source. For more information, 
 see _Developing JEE connectors_ in the link:../dev/Developing_JEE_Connectors.adoc[Developer's Guide].

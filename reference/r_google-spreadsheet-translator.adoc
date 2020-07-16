@@ -43,7 +43,7 @@ The {{ book.productnameFull }} specific Google Spreadsheet Data Sources Resource
 .Native queries
 
 Google spreadsheet source procedures may be created using the `teiid_rel:native-query` extension. 
-For more information, see _Parameterizable native queries_ in xref:translators[Translators]. 
+For more information, see _Parameterizable native queries_ in {% if book.targetDVProd %}xref:translators{% else %}link:as_translators.adoc{% endif %}[Translators]. 
 The procedure will invoke the native-query similar to an native procedure call, with the benefits that the query is predetermined, 
 and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality. 
 For more information, see the _Select_ section that follows.
@@ -52,15 +52,15 @@ For more information, see the _Select_ section that follows.
 
 NOTE: This feature is turned off by default, because of the security risk in permitting any command to execute against the data source. 
 To enable this feature, set the property _SupportsDirectQueryProcedure_ to true. 
-For more information, see _Override execution properties_ in xref:translators[Translators]. 
+For more information, see _Override execution properties_ in {% if book.targetDVProd %}xref:translators{% else %}link:as_translators.adoc{% endif %}[Translators]. 
 
 TIP: By default the name of the procedure that executes the queries directly is called *native*. 
 You can change its name by overriding the execution property _DirectQueryProcedureName_. 
-For more information, see _Override execution properties_ in xref:translators[Translators]. 
+For more information, see _Override execution properties_ in {% if book.targetDVProd %}xref:translators{% else %}link:as_translators.adoc{% endif %}[Translators]. 
 
 The Google spreadsheet translator provides a procedure to execute any ad-hoc query directly against the source without any {{ book.productnameFull }} parsing or resolving. 
 Because the metadata of this procedure’s execution results are not known to {{ book.productnameFull }}, they are returned as an object array. 
-You can use ARRAYTABLE to construct tabular output for consumption by client applications. For more information, see xref:arraytable[ARRAYTABLE].
+You can use ARRAYTABLE to construct tabular output for consumption by client applications. For more information, see {% if book.targetDVProd %}xref:arraytable{% else %}link:r_arraytable.adoc{% endif %}[ARRAYTABLE].
 
 {{ book.productnameFull }} exposes this procedure with a simple query structure as shown in the following example:
 

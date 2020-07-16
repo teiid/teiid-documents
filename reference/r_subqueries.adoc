@@ -27,7 +27,7 @@ SELECT a FROM (SELECT Y.b, Y.c FROM Y WHERE Y.d = '3') AS X WHERE a = X.c AND b 
 .Subqueries can appear anywhere where an expression or criteria is expected.
 
 You can use subqueries in quantified criteria, the `EXISTS` predicate, the `IN` predicate, 
-and as xref:scalar-subqueries[Scalar subqueries].
+and as {% if book.targetDVProd %}xref:scalar-subqueries{% else %}link:r_scalar-subqueries.adoc{% endif %}[Scalar subqueries].
 
 [source,sql]
 .*Example subquery in WHERE using EXISTS*

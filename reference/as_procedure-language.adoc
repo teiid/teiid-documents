@@ -9,8 +9,8 @@ You can use a procedural language in {{ book.productnameFull }} to define virtua
 These are similar to stored procedures in relational database management systems. 
 You can use this language to define the transformation logic for decomposing INSERT, UPDATE, and DELETE commands against views.
 These are known as update procedures. 
-For more information, see xref:virtual-procedures[Virtual procedures] 
-and xref:update-procedures-triggers[update procedures (Triggers)].
+For more information, see {% if book.targetDVProd %}xref:virtual-procedures{% else %}link:r_virtual-procedures.adoc{% endif %}[Virtual procedures] 
+and {% if book.targetDVProd %}xref:update-procedures-triggers{% else %}link:r_update-procedures-triggers.adoc{% endif %}[update procedures (Triggers)].
 
 {% if book.targetDVProd %}
 include::r_command-statement.adoc[leveloffset=+1]

@@ -18,4 +18,4 @@ ALTER TRIGGER ON name INSTEAD OF INSERT|UPDATE|DELETE (AS FOR EACH ROW block) | 
 They are scoped only to their view and have no name.
 
 * Update procedures must already exist for the given trigger event.
-For more information, see xref:update-procedures-triggers[Triggers].
+For more information, see {% if book.targetDVProd %}xref:update-procedures-triggers{% else %}link:r_update-procedures-triggers.adoc{% endif %}[Triggers].

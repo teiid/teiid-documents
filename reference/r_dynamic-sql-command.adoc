@@ -34,7 +34,7 @@ If a reference is made to a USING symbol in the SQL string that is not bound to 
 * The `UPDATE` clause is used to specify the updating model count.  
 Accepted values are (0,1,*). 
 0 is the default value if the clause is not specified.
-For more information, see xref:updating-model-count[Updating model count].
+For more information, see {% if book.targetDVProd %}xref:updating-model-count{% else %}link:r_updating-model-count.adoc{% endif %}[Updating model count].
 
 [source,sql]
 .*Example: Dynamic SQL*

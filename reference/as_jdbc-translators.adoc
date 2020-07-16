@@ -14,7 +14,7 @@ Usage of a JDBC source is straight-forward.
 Using {{ book.productnameFull }} SQL, the source can be queried as if the tables and procedures were local to the {{ book.productnameFull }} system.
 
 If you are using a relational data source, or a data source that has a JDBC driver, and you do not find a specific translator available for that data source type, 
-then start with the xref:jdbc-ansi-translator[JDBC ANSI translator]. 
+then start with the {% if book.targetDVProd %}xref:jdbc-ansi-translator{% else %}link:r_jdbc-ansi-translator.adoc{% endif %}[JDBC ANSI translator]. 
 The JDBC ANSI translator should enable you to perform the SQL basics. 
 If there specific data source capabilities that are not available, you can define a custom translator that does what you need. 
 For more information, see link:../dev/Translator_Development.adoc[Translator Development]. 
@@ -273,7 +273,7 @@ Or in an xml vdb:
 ----
 {% endif %}
 
-For more information about importer settings, see xref:virtual-databases[Virtual databases].
+For more information about importer settings, see {% if book.targetDVProd %}xref:virtual-databases{% else %}link:as_virtual-databases.adoc{% endif %}[Virtual databases].
 
 
 .Native queries
@@ -289,7 +289,7 @@ Note that the column names in the native query must match the `nameInSource` of 
 
 For physical procedures you may also set the `teiid_rel:native-query` extension metadata to a desired query string with 
 the added ability to positionally reference IN parameters . For more information, see _Parameterizable native queries_ in 
-xref:translators[Translators]. 
+{% if book.targetDVProd %}xref:translators{% else %}link:as_translators.adoc{% endif %}[Translators]. 
 The `teiid_rel:non-prepared` extension metadata property can be set to `false` to turn off parameter binding.  
 
 Be careful in setting this option, because inbound allows for SQL injection attacks if not properly validated. 
@@ -303,14 +303,14 @@ Note that `?` in this example will be replaced with the actual value bound to pa
 
 This feature is turned off by default, because of the inherent security risk in allowing any command to be run against the source. 
 To enable this feature, override the execution property called _SupportsDirectQueryProcedure_ and set it to `true`. 
-For more information, see _Override execution properties_ in xref:translators[Translators].
+For more information, see _Override execution properties_ in {% if book.targetDVProd %}xref:translators{% else %}link:as_translators.adoc{% endif %}[Translators].
 
 By default, the name of the procedure that executes the queries directly is *native*. 
 To change the name, override the execution property _DirectQueryProcedureName_.
 
 The JDBC translator provides a procedure to execute any ad-hoc SQL query directly against the source without {{ book.productnameFull }} parsing or resolving. 
 Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as an object array. 
-ARRAYTABLE can be used construct tabular output for consumption by client applications. For more information, see xref:arraytable[arraytable].
+ARRAYTABLE can be used construct tabular output for consumption by client applications. For more information, see {% if book.targetDVProd %}xref:arraytable{% else %}link:r_arraytable.adoc{% endif %}[arraytable].
 
 [source,sql]
 .*SELECT example*

@@ -3,7 +3,7 @@
 [id="my-sql-server-translator"]
 = MySQL translator (mysql)
 
-Also see common xref:jdbc-translators[JDBC translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC translators] information.
 
 You can use the following translators with MySQL and MariaDB:
 

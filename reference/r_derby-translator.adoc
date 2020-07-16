@@ -3,6 +3,6 @@
 [id="derby-translator"]
 = Derby translator (derby)
 
-Also see common xref:jdbc-translators[JDBC Translators] information.
+Also see common {% if book.targetDVProd %}xref:jdbc-translators{% else %}link:as_jdbc-translators.adoc{% endif %}[JDBC Translators] information.
 
 The Derby translator, known by the type name *_derby_*, is for use with Derby 10.1 or later.

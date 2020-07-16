@@ -35,7 +35,7 @@ is the same that has been provided by Teiid in prior versions.
 
 {% endif %}
 
-For more information about how to interpret results, see xref:query-plans[Query plans]. 
+For more information about how to interpret results, see {% if book.targetDVProd %}xref:query-plans{% else %}link:r_query-plans.adoc{% endif %}[Query plans]. 
 
 .Example
 

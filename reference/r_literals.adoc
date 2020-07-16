@@ -4,7 +4,7 @@
 = Literals
 
 Literal values represent fixed values. 
-These can be any of the 'standard' data types. For information about data types, see xref:datatypes[Data types].
+These can be any of the 'standard' data types. For information about data types, see {% if book.targetDVProd %}xref:datatypes{% else %}link:as_datatypes.adoc{% endif %}[Data types].
 
 .Syntax rules
 
@@ -67,7 +67,7 @@ false
 X'0F0A'
 ----
 
-Date/Time literals can use either JDBC xref:escaped-literal-syntax[Escaped literal syntax]:
+Date/Time literals can use either JDBC {% if book.targetDVProd %}xref:escaped-literal-syntax{% else %}link:r_escaped-literal-syntax.adoc{% endif %}[Escaped literal syntax]:
 
 [source,sql]
 .*Example: Date literal*
