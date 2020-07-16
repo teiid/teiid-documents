@@ -21,7 +21,7 @@ see http://narayana.io/documentation/index.html[the Narayana documentation].
 
 |Command
 |Treats the user command as if all source commands are executed within the scope of the same transaction. 
-The link:AutoCommitTxn_Execution_Property.adoc[AutoCommitTxn] execution property controls the behavior of command level transactions.
+The link:r_autocommittxn-execution-property.adoc[AutoCommitTxn] execution property controls the behavior of command level transactions.
 
 |Local
 |The transaction boundary is local defined by a single client session.

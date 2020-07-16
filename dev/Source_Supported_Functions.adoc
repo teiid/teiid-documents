@@ -30,9 +30,9 @@ For example, to extend the Oracle Connector
 * Create a new translator JAR containing your custom ExecutionFactory. Refer to link:Packaging.html[Packaging] and link:Deployment.adoc[Deployment] for instructions on using the JAR file. Once this is extended translator is deployed in the {{ book.productnameFull }} Server, use "myoracle" as translator name instead of the "oracle" in your VDB’s Oracle source configuration.
 {% endif %}
 
-If you source handing of the function can be described by simple parameter substitution into a string, then you may not need to extend the translator for a source specific function. You can use the extension property teiid_rel:native-query to define the syntax handling - see also link:../reference/DDL_Metadata.adoc[DDL Metadata] for functions.
+If you source handing of the function can be described by simple parameter substitution into a string, then you may not need to extend the translator for a source specific function. You can use the extension property teiid_rel:native-query to define the syntax handling - see also link:../reference/r_ddl-metadata-for-schema-objects.adoc[DDL Metadata] for functions.
 
-See defining the metadata link:../reference/DDL_Metadata.adoc[using DDL], you can define your source function in the VDB as
+See defining the metadata link:../reference/r_ddl-metadata-for-schema-objects.adoc[using DDL], you can define your source function in the VDB as
 
 [source,sql]
 ----

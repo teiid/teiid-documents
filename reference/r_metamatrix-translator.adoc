@@ -1,7 +1,7 @@
 
 = MetaMatrix Translator (metamatrix)
 
-Also see common link:JDBC_Translators.adoc[JDBC Translator Information]
+Also see common link:as_jdbc-translators.adoc[JDBC Translator Information]
 
 The MetaMatrix Translator, known by the type name *_metamatrix_*, is for use with MetaMatrix 5.5.0 or later.
 

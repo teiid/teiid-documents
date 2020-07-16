@@ -33,7 +33,7 @@ As an XML VDB:
 
 You must create a Java method that contains the function’s logic. This Java method should accept the necessary arguments, which the {{ book.productnameFull }} System will pass to it at runtime, and function should return the calculated or altered value.
 
-See link:../reference/DDL_Metadata.adoc[DDL Metadata] for all possible options related to functions defined via DDL.
+See link:../reference/r_ddl-metadata-for-schema-objects.adoc[DDL Metadata] for all possible options related to functions defined via DDL.
 
 === Writing the Java Code required by the UDF
 

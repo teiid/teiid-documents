@@ -22,11 +22,11 @@ The mdx parameter is a MDX query to be executed on the OLAP server.
 
 The results of the query will be returned such that each row on the row axis will be packed into an array value that will first contain each hierarchy member name on the row axis then each measure value from the column axis.
 
-The use of link:Data_Roles.adoc[Data Roles] should be considered to prevent arbitrary MDX from being submitted to the invokeMDX procedure.
+The use of link:as_data-roles.adoc[Data Roles] should be considered to prevent arbitrary MDX from being submitted to the invokeMDX procedure.
 
 == Native Queries
 
-OLAP source procedures may be created using the teiid_rel:native-query extension - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries].
+OLAP source procedures may be created using the teiid_rel:native-query extension - see link:as_translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries].
 
 The parameter value substitution directly inserts boolean, and number values, and treats all other values as string literals.
 

@@ -11,7 +11,7 @@ This caching solution is appropriate for integration of "reference data" with tr
 
 This caching mechanism is automatically invoked when the lookup scalar function is used. The lookup function returns a scalar value, so it may be used anywhere an expression is expected. Each time this function is called with a unique combination of referenced table, return column, and key column (the first 3 arguments to the function).
 
-See the link:../reference/Lookup_Function.adoc[Lookup Function] in the Reference Guide for more information on use of the _lookup_ function.
+See the link:../reference/r_lookup-function.adoc[Lookup Function] in the Reference Guide for more information on use of the _lookup_ function.
 
 [source,java]
 .*Country Code Lookup*

@@ -4,35 +4,35 @@
 :toc-title: The types of data sources that are currently accessible are:
 
 
-{{ book.productnameFull }} provides the means (i.e., link:Translators.adoc[Translators] and link:../admin/Deploying_VDB_Dependencies.adoc[JEE connectors]) to access a variety of types of data sources.
+{{ book.productnameFull }} provides the means (i.e., link:as_translators.adoc[Translators] and link:../admin/Deploying_VDB_Dependencies.adoc[JEE connectors]) to access a variety of types of data sources.
 
 == Databases
 
-See link:JDBC_Translators.adoc[JDBC Translators] for access to:
+See link:as_jdbc-translators.adoc[JDBC Translators] for access to:
 
-* link:Oracle_Translator.adoc[Oracle]
-* link:PostgreSQL_Translator.adoc[PostgreSQL]
-* link:MySQL_Translators.adoc[MySQL/MariaDB]
-* link:DB2_Translator.adoc[DB2]
-* link:Microsoft_SQL_Server_Translator.adoc[Microsoft SQL Server]
-* link:Sybase_Translator.adoc[Sybase]
-* link:SAPIQ_Translator.adoc[SAP IQ]
-* link:Microsoft_Access_Translators.adoc[Microsoft Access]
-* link:Derby_Translator.adoc[Derby]
-* link:H2_Translator.adoc[H2]
-* link:HSQL_Translator.adoc[HSQL]
-* link:Ingres_Translators.adoc[Ingres]
-* link:Informix_Translator.adoc[Informix]
-* link:MetaMatrix_Translator.adoc[MetaMatrix]
-* link:Teradata_Translator.adoc[Teradata]
-* link:Vertica_Translator.adoc[Vertica]
-* link:Exasol_Translator.adoc[Exasol]
-* link:JDBC_ANSI_Translator.adoc[Generic ANSI SQL] - for typical JDBC/ODBC sources
-* link:JDBC_Simple_Translator.adoc[Simple SQL] - for any JDBC/ODBC source
+* link:r_oracle-translator.adoc[Oracle]
+* link:r_postgresql-translator.adoc[PostgreSQL]
+* link:r_mysql-translators.adoc[MySQL/MariaDB]
+* link:r_db2-translator.adoc[DB2]
+* link:r_microsoft-sql-server-translator.adoc[Microsoft SQL Server]
+* link:r_sybase-translator.adoc[Sybase]
+* link:r_sap-iq-translator.adoc[SAP IQ]
+* link:r_microsoft-access-translators.adoc[Microsoft Access]
+* link:r_derby-translator.adoc[Derby]
+* link:r_h2-translator.adoc[H2]
+* link:r_hsql-translator.adoc[HSQL]
+* link:r_ingres-translators.adoc[Ingres]
+* link:r_informix-translator.adoc[Informix]
+* link:r_metamatrix-translator.adoc[MetaMatrix]
+* link:r_teradata-translator.adoc[Teradata]
+* link:r_vertica-translator.adoc[Vertica]
+* link:r_exasol-translator.adoc[Exasol]
+* link:r_jdbc-ansi-translator.adoc[Generic ANSI SQL] - for typical JDBC/ODBC sources
+* link:r_jdbc-simple-translator.adoc[Simple SQL] - for any JDBC/ODBC source
 
 == Web Services
 
-See link:Web_Services_Translator.adoc[Web Services Translator] for access to:
+See link:r_web-services-translator.adoc[Web Services Translator] for access to:
 
 * SOAP
 * REST
@@ -40,47 +40,47 @@ See link:Web_Services_Translator.adoc[Web Services Translator] for access to:
 
 == OData
 
-See the link:OData_Translator.adoc[OData Translator]
+See the link:r_odata-translator.adoc[OData Translator]
 
 == OpenAPI / Swagger
 
-See the link:OpenAPI_Translator.adoc[OpenAPI] and link:Swagger_Translator.adoc[Swagger] Translators
+See the link:r_openapi-translator.adoc[OpenAPI] and link:r_swagger-translator.adoc[Swagger] Translators
 
 == Big Data/No SQL/Search Engines/JCR and Other Sources
 
-* link:Actian_Vector_Translator.adoc[Actian Vector]
+* link:r_actian-vector-translator.adoc[Actian Vector]
 * link:r_amazon-athena-translator.adoc[Amazon Athena]
-* link:Amazon_S3_Translator.adoc[Amazon S3]
-* link:Amazon_SimpleDB_Translator.adoc[Amazon SimpleDB]
-* link:Apache_Accumulo_Translator.adoc[Apache Accumulo]
-* link:Cassandra_Translator.adoc[Apache Cassandra DB]
-* link:Apache_SOLR_Translator.adoc[Apache SOLR]
-* link:JDBC_Translators.adoc[Apache Spark]
-* link:couchbase_translator.adoc[Couchebase]
-* link:Greenplum_Translator.adoc[Greenplum]
-* link:Hive_Translator.adoc[Hive / Hadoop / Amazon Elastic MapReduce]
-* link:Cloudera_Impala_Translator.adoc[Impala / Hadoop / Amazon Elastic MapReduce]
-* link:ModeShape_Translator.adoc[ModeShape JCR Repository]
-* link:MongoDB_Translator.adoc[Mongo DB]
-* link:OLAP_Translator.adoc[Mondrian OLAP]
-* link:Netezza_Translator.adoc[Netezza data warehouse appliance]
-* link:Apache_Phoenix_Translator.adoc[Phoenix / HBase]
-* link:PrestoDB_Translator.adoc[PrestoDB]
-* link:Redshift_Translator.adoc[Redshift]
+* link:r_amazon-s3-translator.adoc[Amazon S3]
+* link:r_amazon-simpledb-translator.adoc[Amazon SimpleDB]
+* link:r_apache-accumulo-translator.adoc[Apache Accumulo]
+* link:r_cassandra-translator.adoc[Apache Cassandra DB]
+* link:r_apache-solr-translator.adoc[Apache SOLR]
+* link:as_jdbc-translators.adoc[Apache Spark]
+* link:r_couchbase-translator.adoc[Couchebase]
+* link:r_greenplum-translator.adoc[Greenplum]
+* link:r_hive-translator.adoc[Hive / Hadoop / Amazon Elastic MapReduce]
+* link:r_cloudera-impala-translator.adoc[Impala / Hadoop / Amazon Elastic MapReduce]
+* link:r_modeshape-translator.adoc[ModeShape JCR Repository]
+* link:r_mongodb-translator.adoc[Mongo DB]
+* link:r_olap-translator.adoc[Mondrian OLAP]
+* link:r_netezza-translator.adoc[Netezza data warehouse appliance]
+* link:r_apache-phoenix-translator.adoc[Phoenix / HBase]
+* link:r_prestodb-translator.adoc[PrestoDB]
+* link:r_redshift-translator.adoc[Redshift]
 
 == Enterprise Systems
 
-* link:OSISoft_PI_Translator.adoc[OSISoft PI]
-* link:Salesforce_Translators.adoc[SalesForce]
-* link:SAP_Gateway_Translator.adoc[SAP Gateway]
-* link:SAP_Hana_Translator.adoc[SAP Hana]
-* link:Teiid_Translator.adoc[Teiid]
+* link:r_osisoft-pi-translator.adoc[OSISoft PI]
+* link:r_salesforce-translators.adoc[SalesForce]
+* link:r_sap-gateway-translator.adoc[SAP Gateway]
+* link:r_sap-hana-translator.adoc[SAP Hana]
+* link:r_teiid-translator.adoc[Teiid]
 
 == Object Sources
 
-* link:Infinispan_Translator.adoc[Infinispan HotRod Mode]
-* link:Intersystems_Cache_Translator.adoc[Intersystems Cache Object Database]
-* link:JPA_Translator.adoc[JPA] sources
+* link:r_infinispan-translator.adoc[Infinispan HotRod Mode]
+* link:r_intersystems-cache-translator.adoc[Intersystems Cache Object Database]
+* link:r_jpa-translator.adoc[JPA] sources
 
 == LDAP 
 
@@ -91,7 +91,7 @@ See the link:r_ldap_translator.adoc[LDAP Translator] for access to:
 
 == Files
 
-See the link:File_Translator.adoc[File Translator] and file sources (file, hdfs, s3, and ftp) for use with:
+See the link:r_file-translator.adoc[File Translator] and file sources (file, hdfs, s3, and ftp) for use with:
 
 * link:r_texttable.adoc[Delimited/Fixed width]
 * link:r_xmltable.adoc[XML]

@@ -237,7 +237,7 @@ image:images/couchbase-schemaMapping-example-order-item.png[Order_Items]
 
 === Native Queries
 
-Couchbase source procedures may be created using the teiid_rel:native-query extension - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The procedure will invoke the native-query similar to a direct procedure call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality.
+Couchbase source procedures may be created using the teiid_rel:native-query extension - see link:as_translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The procedure will invoke the native-query similar to a direct procedure call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality.
 
 [source,sql]
 .*Example of executing N1QL directly*

@@ -13,15 +13,15 @@ The JPA Translator currently has no import or execution properties.
 
 == Native Queries
 
-JPA source procedures may be created using the teiid_rel:native-query extension - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The procedure will invoke the native-query similar to an native procedure call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality. See the query syntax below.
+JPA source procedures may be created using the teiid_rel:native-query extension - see link:as_translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries]. The procedure will invoke the native-query similar to an native procedure call with the benefits that the query is predetermined and that result column types are known, rather than requiring the use of ARRAYTABLE or similar functionality. See the query syntax below.
 
 === Direct Query Procedure
 
-NOTE: This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:Translators.adoc#_override_execution_properties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
+NOTE: This feature is turned off by default because of the security risk this exposes to execute any command against the source. To enable this feature, link:as_translators.adoc#_override_execution_properties[override the execution property] called _SupportsDirectQueryProcedure_ to true.
 
-TIP: By default the name of the procedure that executes the queries directly is *native*. link:Translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
+TIP: By default the name of the procedure that executes the queries directly is *native*. link:as_translators.adoc#_override_execution_properties[Override the execution property] _DirectQueryProcedureName_ to change it to another name.
 
-The JPA translator provides a procedure to execute any ad-hoc JPA-QL query directly against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as object array. User can use link:ARRAYTABLE.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications. {{ book.productnameFull }} exposes this procedure with a simple query structure as below
+The JPA translator provides a procedure to execute any ad-hoc JPA-QL query directly against the source without {{ book.productnameFull }} parsing or resolving. Since the metadata of this procedure’s results are not known to {{ book.productnameFull }}, they are returned as object array. User can use link:r_arraytable.adoc[ARRAYTABLE] can be used construct tabular output for consumption by client applications. {{ book.productnameFull }} exposes this procedure with a simple query structure as below
 
 === Select
 
@@ -32,7 +32,7 @@ SELECT x.* FROM (call jpa_source.native('search;FROM Account')) w,
  ARRAYTABLE(w.tuple COLUMNS "id" string , "type" string, "name" String) AS x
 ----
 
-from the above code, the "search" keyword followed by a query statement - see link:Translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries] to substitute parameter values.
+from the above code, the "search" keyword followed by a query statement - see link:as_translators.adoc#_parameterizable_native_queries[Parameterizable Native Queries] to substitute parameter values.
 
 === Delete
 

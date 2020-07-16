@@ -64,7 +64,7 @@ CREATE FOREIGN TABLE TBL (my_col integer options ("teiid_rel:multisource.partito
 
 == Planning and Execution
 
-The planner logically treats a multisource table as if it were a view containing the union all of the respective source tables.  More complex partitioning scenarios, such as heterogeneous sources or list partitioning will require the use of a link:Federated_Optimizations.adoc#_partitioned_union[Federated Optimizations#Partitioned Union].
+The planner logically treats a multisource table as if it were a view containing the union all of the respective source tables.  More complex partitioning scenarios, such as heterogeneous sources or list partitioning will require the use of a link:r_federated-optimizations.adoc#_partitioned_union[Federated Optimizations#Partitioned Union].
 
 Most of the federated optimizations available over unions are still applicable in multisource mode. This includes aggregation pushdown/decomposition, limit pushdown, join partitioning, etc.
 

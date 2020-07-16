@@ -36,7 +36,7 @@ Integrating data from a Enterprise Information System (EIS) into {{ book.product
 
 * *Salesforce Translator* - Works with Salesforce interfaces.
 
-To see a full list of available translators, see link:../reference/Translators.adoc[Translators]
+To see a full list of available translators, see link:../reference/as_translators.adoc[Translators]
 
 If there’s not an available translator that meets your need, {{ book.productnameFull }} provides the framework for developing your own custom translator. See the link:Translator_Development.adoc[Translator Development] section, as it will describe how to develop, package and deploy a custom developed translator.
 
