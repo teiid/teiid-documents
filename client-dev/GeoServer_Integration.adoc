@@ -12,7 +12,7 @@ deploy into the same WildFly instance. {% endif %}  {{ book.productnameFull }} i
 - Your {{ book.productnameFull }} installation should already be setup for pg/ODBC access.  This allows the built-in compatibility with GeoServer for PostGIS/PostgreSQL to be used.
 
 - Have a VDB deployed that exposes one or more tables containing an appropriate Geometry column.
-.. The {{ book.productnameFull }} system table link:../reference/sys_schema.adoc[GEOMETY_COLUMNS] will be used by GeoServer.  Please ensure that the relevant 
+.. The {{ book.productnameFull }} system table link:../reference/r_sys-schema.adoc[GEOMETY_COLUMNS] will be used by GeoServer.  Please ensure that the relevant 
 geometry columns have the appropriate srid and coord_dimensions, which may require setting the {http://www.teiid.org/translator/spatial/2015}srid and {http://www.teiid.org/translator/spatial/2015}coord_dimension
 extension property on the geometry column. 
 

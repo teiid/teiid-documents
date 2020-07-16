@@ -95,7 +95,7 @@ IMPORT FOREIGN SCHEMA public FROM SERVER pgsql INTO test
         importer.tableTypes 'TABLE,VIEW'
 );
 ----
-The above import statement is saying that, import the "public" schema from external data source defined by "pgsql" into local "test" schema in {{ book.productnameFull }}. It also further configures to only fetch TABLE, VIEW types, and do not use fully qualified schema names in the imported metadata. Each translator/source has many of these configuration options you can use to filter/refine your selections, for more information consult the translator documents at link:../reference/Translators.adoc[Translators] for every source you are trying to connect to. 
+The above import statement is saying that, import the "public" schema from external data source defined by "pgsql" into local "test" schema in {{ book.productnameFull }}. It also further configures to only fetch TABLE, VIEW types, and do not use fully qualified schema names in the imported metadata. Each translator/source has many of these configuration options you can use to filter/refine your selections, for more information consult the translator documents at link:../reference/as_translators.adoc[Translators] for every source you are trying to connect to. 
 
 ==== Step 3B: Define Metadata using DDL
 Instead of importing the metadata, you can manually define the tables and procedures inline to define the metadata. This will be further explained in next sections detail on every DDL statement supported. For example, you can define a table like
