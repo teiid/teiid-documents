@@ -307,7 +307,7 @@ Since OData schema model is not a relational schema model, {{ book.productnameFu
 |Foreign Key
 |Navigation Property on EntityType
 
-|Procedure
+|Procedure/Function
 |FunctionImport, ActionImport
 
 |Procedure’s Table Return
@@ -357,7 +357,9 @@ Where possible, array types will be mapped to a collection type.  However you ca
 [id="client-dev-OData4_Support-Functions-And-Actions"]
 === Functions And Actions
 
-The mapping of entities and their properties is relatively straight-forward.  The mapping of {{ book.productnameFull }} procedures to OData Functions and Actions is more involved.  Virtual procedures, source procedure, and virtual functions defined by DDL (not a Java class) are all eligible to be mapped.  Source functions or virtual functions defined by a Java class are currently not mapped to corresponding OData constructs - please log an issue if you need that functionality.  OData does not have an out parameter concept, thus OUT parameters are ignored, and INOUT parameters are treated only as IN.  A result set is mapped to a complex type collection result. An array result will be mapped to a simple type collection.
+The mapping of entities and their properties is relatively straight-forward.  The mapping of {{ book.productnameFull }} procedures/functions to OData Functions and Actions is more involved.  
+Virtual procedures, source procedure, and virtual functions defined by DDL (not a Java class) are all eligible to be mapped.  Source functions or virtual functions defined by a Java class are currently not mapped to corresponding OData constructs - please create a virtual procedure that invokes the desired function if calling through odata is needed.  
+OData does not have an out parameter concept, thus OUT parameters are ignored, and INOUT parameters are treated only as IN.  VARIADIC support is not yet enabled.  If there is a VARIADIC parameter it will be represented by single parameter.  A result set is mapped to a complex type collection result. An array result will be mapped to a simple type collection.
 
 An OData Function will be used if:
 
