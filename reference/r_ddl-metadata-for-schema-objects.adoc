@@ -601,6 +601,10 @@ For more information, see _Parameterizable native queries_ in {% if book.targetD
 |non-prepared
 |boolean
 |Applies to JDBC procedures using the native-query option. If true a PreparedStatement will not be used to execute the native query.
+
+|virtual-function
+|string
+|Applies to source functions.  Fully-qualified name of the virtual function that can be pushed to the source as the given function.  The function signature must match exactly with the virtual function for the pushdown to occur. 
 |===
 
 .Example: Native query
