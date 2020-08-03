@@ -1,0 +1,227 @@
+
+= Salesforce Data Sources
+
+Salesforce data sources use a {{ book.productnameFull }} specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. There are three versions of the salesforce resource adapter - salesforce, which currently provides connectivity to the 34.0 Salesforce API, salesforce-34, which provides connectivity to the 34.0 Salesforce API, and salesforce-41 which actually provides access to 37.0 through at least 45.0. The version 22.0 support has been removed.
+
+NOTE: If you need connectivity to an API version other than what is built in, you may try to use an existing connectivity pair, but in some circumstances - especially accessing a later remote api from an older java api - this is not possible and results in what appears to be hung connections.  Please raise an issue if you cannot successfully access a specific API version.
+
+There are many ways to create the salesforce data source, using CLI,link:../dev/AdminAPI.adoc[AdminAPI], admin-console etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
+
+Execute following command using the {{ book.asDocRoot }}/Admin+Guide#AdminGuide-RunningtheCLI[CLI] once you connected to the Server. Make sure you provide the correct URL and user credentials. Add any additional properties required by the connector by duplicating the "connection-definitions" command below. Edit the JNDI name to match the JNDI name you used in VDB.
+
+[source,java]
+----
+batch
+/subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS:add(jndi-name=java:/sfDS, class-name=org.teiid.resource.adapter.salesforce.SalesForceManagedConnectionFactory, enabled=true, use-java-context=true)
+/subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=URL:add(value=https://login.salesforce.com/services/Soap/u/34.0)
+/subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=username:add(value={user})
+/subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=password:add(value={password})
+/subsystem=resource-adapters/resource-adapter=salesforce:activate
+runbatch
+----
+
+The salesforce-xx connection definition configuration is similar to the above. The resource adapter name would instead be salesforce-xx, and the url would point to a later version.  It is recommended to set the url explicitly.  If you use just the salesforce resource adapter without setting the url, then later versions of Teiid can use a different default once the resource adapter moves to a different version.  The -34 resource adapter defaults to https://login.salesforce.com/services/Soap/u/34.0, and the -41 resource adapter defaults to https://login.salesforce.com/services/Soap/u/40.0 
+
+NOTE: that if you access a newer Salesforce API version than the resource adapter supports, you will receive low level metadata parsing exceptions - you can either access an older API or log an issue to have updated support. 
+
+To find out all the properties that are supported by this Salesforce Connector execute the following command in the CLI.
+
+[source,sql]
+----
+/subsystem=teiid:read-rar-description(rar-name=salesforce)
+----
+
+TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in *"<jboss-install>/docs/teiid/datasources/salesforce" directory under "resource-adapters" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
+
+== Mutual Authentication
+
+If you need to connect to Salesforce using Mutual Authentication, follow the directions to setup Salesforce at https://help.salesforce.com/apex/HTViewHelpDoc?id=security_keys_uploading_mutual_auth_cert.htm&language=en_US[https://help.salesforce.com/apex/HTViewHelpDoc?id=security_keys_uploading_mutual_auth_cert.htm&language=en_US] then configure the below CXF configuration file on the resource-adapter by adding following property to above cli script
+
+[source,java]
+----
+/subsystem=resource-adapters/resource-adapter=salesforce/connection-definitions=sfDS/config-properties=ConfigFile:add(value=${jboss.server.config.dir}/cxf-https.xml)
+----
+
+[source,xml]
+.*cxf-https.xml*
+----
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:sec="http://cxf.apache.org/configuration/security"
+    xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+    xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
+    xsi:schemaLocation="http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/configuration/security.xsd">
+  
+    <http-conf:conduit name="*.http-conduit">
+        <http-conf:client ConnectionTimeout="120000" ReceiveTimeout="240000"/>
+        <http-conf:tlsClientParameters secureSocketProtocol="SSL">
+          <sec:trustManagers>
+            <sec:keyStore type="JKS" password="changeit" file="/path/to/truststore.jks"/>
+          </sec:trustManagers>
+        </http-conf:tlsClientParameters>
+    </http-conf:conduit>
+</beans>
+----
+
+more information about CXF configuration file can be found at http://cxf.apache.org/docs/client-http-transport-including-ssl-support.html#ClientHTTPTransport(includingSSLsupport)-ConfiguringSSLSupport[http://cxf.apache.org/docs/client-http-transport-including-ssl-support.html#ClientHTTPTransport(includingSSLsupport)-ConfiguringSSLSupport]
+
+== OAuth Security with "Refresh Token"
+
+The below layout the directions to use Refresh Token based OAuth Authentication with Salesforce.
+
+1) create connected app (may need to setup custom domain)
+2) add profile and/or permissions set to the connected app
+3) grab the "callback url" ( one need to set as https://localhost:443/_callback"
+4) Run through the teiid-oauth-util.sh in "<eap>/bin" directory, use client_id, client_pass, and call back from connected app
+5) use "https://login.salesforce.com/services/oauth2/authorize" authorize link
+6) use "https://login.salesforce.com/services/oauth2/token" for access token url
+7) the you get a refresh token from it 
+8) create a security-domain by executing CLI
+
+----
+/subsystem=security/security-domain=oauth2-security:add(cache-type=default)
+/subsystem=security/security-domain=oauth2-security/authentication=classic:add
+/subsystem=security/security-domain=oauth2-security/authentication=classic/login-module=Kerberos:add(code=org.teiid.jboss.oauth.OAuth20LoginModule, flag=required, module=org.jboss.teiid.security,
+   module-options=[client-id=xxxx, client-secret=xxxx, refresh-token=xxxx, 
+   access-token-uri=https://login.salesforce.com/services/oauth2/token])
+reload
+----
+
+this will generate following XML in the standalone.xml or domain.xml (this can also be directly added to the standalone.xml or domain.xml files instead of executing the CLI)
+ 
+[source,xml]
+.standalone.xml
+----
+<security-domain name="oauth2-security">  
+    <authentication>  
+        <login-module code="org.teiid.jboss.oauth.OAuth20LoginModule" flag="required" module="org.jboss.teiid.security">  
+            <module-option name="client-id" value="xxxx"/>  
+            <module-option name="client-secret" value="xxxx"/>  
+            <module-option name="refresh-token" value="xxxx"/>  
+            <module-option name="access-token-uri" value="https://login.salesforce.com/services/oauth2/token"/>  
+        </login-module>  
+    </authentication>  
+</security-domain>
+----
+
+9) Then to use the above security domain in the sales force data source configuration, add "<security-domain>oauth2-security</security-domain>"
+
+
+== OAuth Security with "JWT Token" based Steps
+
+The below layout the directions to use JWT token based OAuth Authentication with Salesforce.
+
+
+1) Create a Self-Signed certificate locally or on Sales Force. (user->setup->security-controls->Certificate and Key Management)
+2) Download the certificate and also put in keystore and download keystore. Keystore is needed for {{ book.productnameFull }}, certificate for the salesforce setup
+3) Create connected app and select OAuth, and select all the scopes (some posts say refresh-token offline is must)
+4) create a profile and/or permission set assign to the connected app. I believe before you can create a connected app you need to set up custom domain
+5) When you creating connected app make sure you add the certificate in "Digital Certificate"
+6) Now in {{ book.productnameFull }} create security-domain by executing CLI
+
+----
+/subsystem=security/security-domain=oauth2-jwt-security:add(cache-type=default)
+/subsystem=security/security-domain=oauth2-jwt-security/authentication=classic:add
+/subsystem=security/security-domain=oauth2-jwt-security/authentication=classic/login-module=oauth:add(code=org.teiid.jboss.oauth.OAuth20LoginModule, flag=required, module=org.jboss.teiid.security,
+   module-options=[client-id=xxxx, client-secret=xxxx, access-token-uri=https://login.salesforce.com/services/oauth2/token, jwt-audience=https://login.salesforce.com, jwt-subject=your@sf-login.com,
+    keystore-type=JKS, keystore-password=changeme, keystore-url=${jboss.server.config.dir}/salesforce.jks, certificate-alias=teiidtest, signature-algorithm-name=SHA256withRSA])
+reload
+----
+
+this will generate following XML in the standalone.xml or domain.xml (this can also be directly added to the standalone.xml or domain.xml files instead of executing the CLI)
+
+[source,xml]
+.standalone.xml
+----
+<security-domain name="oauth2-jwt-security">
+    <authentication>
+        <login-module code="org.teiid.jboss.oauth.JWTBearerTokenLoginModule" flag="required" module="org.jboss.teiid.security">
+            <module-option name="client-id" value="xxxxx"/>
+            <module-option name="client-secret" value="xxxx"/>
+            <module-option name="access-token-uri" value="https://login.salesforce.com/services/oauth2/token"/>
+            <module-option name="jwt-audience" value="https://login.salesforce.com"/>                            
+            <module-option name="jwt-subject" value="your@sf-login.com"/>                            
+            
+            <module-option name="keystore-type" value="JKS"/>
+            <module-option name="keystore-password" value="changeme"/>
+            <module-option name="keystore-url" value="${jboss.server.config.dir}/salesforce.jks"/>
+            <module-option name="certificate-alias" value="teiidtest"/>                                                                                    
+            <module-option name="signature-algorithm-name" value="SHA256withRSA"/>                            
+        </login-module>
+    </authentication>
+</security-domain>
+----
+
+7) Then to use the above security domain in the sales force data source configuration, add "<security-domain>oauth2-jwt-security</security-domain>"
+
+More helpful links
+
+https://developer.salesforce.com/blogs/developer-relations/2011/03/oauth-and-the-soap-api.html
+https://help.salesforce.com/apex/HTViewHelpDoc?id=remoteaccess_oauth_jwt_flow.htm&language=en_US#create_token
+http://salesforce.stackexchange.com/questions/31904/how-and-when-does-a-salesforce-saml-oauth2-user-give-permission-to-use-a-conne
+http://salesforce.stackexchange.com/questions/30596/oauth-2-0-jwt-bearer-token-flow
+http://salesforce.stackexchange.com/questions/88396/invalid-assertion-error-in-jwt-bearer-token-flow
+
+== Logging
+
+Logging, when enabled, will be performed at an INFO level to the org.apache.cxf.interceptor context.
+
+=== Per Resource Adapder
+
+The CXF config property may also be used to control the logging of requests and responses.
+
+[source,xml]
+.*Example logging data source*
+----
+<resource-adapter id="salesforce-ds">
+    <module slot="main" id="org.jboss.teiid.resource-adapter.salesforce-34"/>
+    <transaction-support>NoTransaction</transaction-support>
+    <connection-definitions>
+        <connection-definition class-name="org.teiid.resource.adapter.salesforce.SalesForceManagedConnectionFactory" jndi-name="java:/salesforce_bulk_api" enabled="true" use-java-context="true" pool-name="salesforce-ds">
+            <config-property name="password">
+                token
+            </config-property>
+            <config-property name="URL">
+                https://login.salesforce.com/services/Soap/u/34.0
+            </config-property>
+            <config-property name="username">
+                name
+            </config-property>
+            <config-property name="ConfigFile">
+                /path/to/cxf.xml
+            </config-property>
+        </connection-definition>
+    </connection-definitions>
+</resource-adapter>
+----
+
+Corresponding cxf.xml
+
+[source,xml]
+.*Example logging data source*
+----
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:cxf="http://cxf.apache.org/core"
+      xsi:schemaLocation="http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+ 
+    <bean id="loggingFeature" class="org.apache.cxf.feature.LoggingFeature"/>
+    <cxf:bus>
+        <cxf:features>
+            <ref bean="loggingFeature"/>
+        </cxf:features>
+    </cxf:bus>
+</beans>
+----
+
+=== All CXF Usage
+
+With the {{ book.asName }} distribution of CXF a system property can be used to enable CXF logging across all usage in the application server - see https://docs.jboss.org/author/display/JBWS/Advanced+User+Guide[the {{ book.asName }} docs].
+
+[source,xml]
+.*Example System Property*
+----
+<system-properties>
+  <property name="org.apache.cxf.logging.enabled" value="true"/>
+</system-properties>
+----

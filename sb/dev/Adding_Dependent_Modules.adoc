@@ -1,0 +1,12 @@
+
+= Adding Dependent Modules
+
+Add a MANIFEST.MF file in the META-INF directory, and the core {{ book.productnameFull }} API dependencies for resource adapter with the following line.
+
+[source,java]
+----
+Dependencies: org.jboss.teiid.common-core,org.jboss.teiid.api,javax.api
+----
+
+If your translator depends upon any other third party jar files, ensure a module exists and add the module name to the above MANIFEST.MF file.
+

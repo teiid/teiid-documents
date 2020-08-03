@@ -1,0 +1,26 @@
+
+= Performance Tuning
+
+Performance tuning can be done by changing the property settings defined in the teiid subsystem and its sub components.
+
+Execute the following command on CLI to see the possible settings at the root of the teiid subsystem:
+
+----
+/subsystem=teiid:read-resource-description
+----
+
+There are several categories of properties:
+
+1.  Memory Management
+2.  BufferManager: all properties that start with "buffer-service"
+3.  Cache Tuning: all properties that start with "resultset-cache" or "preparedplan-cache"
+4.  Threading
+5.  LOBs
+6.  Other Considerations
+
+Socket Transport settings for one of the supported transport types (i.e., jdbc, odbc, embedded) can be viewed by executing the following command:
+
+----
+/subsystem=teiid/transport={jdbc | odbc | embedded}:read-resource-description
+----
+

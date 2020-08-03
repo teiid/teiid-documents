@@ -1,0 +1,345 @@
+
+= Web Service Data Sources
+
+Web service data sources use a {{ book.productnameFull }} specific JCA connector that is deployed into {{ book.asVersionNumber }} during installation. There are many ways to create the file data source, using CLI, admin-console etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
+
+Execute following command using the {{ book.asDocRoot }}/Admin+Guide#AdminGuide-RunningtheCLI[CLI] once you connected to the Server. Make sure you provide the correct endpoint and other properties below. Add any additional properties required by the connector by duplicating the "connection-definitions" command below. Edit the JNDI name to match the JNDI name you used in
+VDB.
+
+[source,java]
+----
+batch
+/subsystem=resource-adapters/resource-adapter=webservice/connection-definitions=wsDS:add(jndi-name=java:/wsDS, class-name=org.teiid.resource.adapter.ws.WSManagedConnectionFactory, enabled=true, use-java-context=true)
+/subsystem=resource-adapters/resource-adapter=webservice/connection-definitions=wsDS/config-properties=EndPoint:add(value={end_point})
+/subsystem=resource-adapters/resource-adapter=webservice:activate
+runbatch
+----
+
+To find out all the properties that are supported by this Web Service Connector execute the following command in the CLI.
+
+[source,java]
+----
+/subsystem=teiid:read-rar-description(rar-name=webservice)
+----
+
+The Web Service Data Source supports specifying a WSDL using the Wsdl property.  If the Wsdl property is set, then the ServiceName, EndPointName, and NamespaceUri properties should also be set.  The Wsdl property may be a URL or file location or the WSDL to use.
+
+TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in *"<jboss-install>/docs/teiid/datasources/web-service" directory under "resource-adapters" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
+
+== All available configuration properties of web resource-adapter
+
+|===
+|Property Name |applies to |Required |Default Value |Description
+
+|EndPoint
+|HTTP & SOAP
+|false
+|n/a
+|URL for HTTP, Service Endpoint for SOAP.  Not required if using HTTP invoke procedures that specify absolute URLs. Will be used as the base URL if an invoke procedure uses a relative URL.
+
+|SecurityType
+|HTTP & SOAP
+|false
+|none
+|Type of Authentication to used with the web service. Allowed values ["None","HTTPBasic","WSSecurity", "Kerberos", "OAuth"]
+
+|AuthUserName
+|HTTP & SOAP
+|false
+|n/a
+|Name value for authentication, used in HTTPBasic and WsSecurity
+
+|AuthPassword
+|HTTP & SOAP
+|false
+|n/a
+|Password value for authentication, used in HTTPBasic and WsSecurity
+
+|ConfigFile
+|HTTP & SOAP
+|false
+|n/a
+|CXF client configuration File or URL
+
+|EndPointName
+|HTTP & SOAP
+|false
+|teiid
+|Local part of the end point QName to use with this connection, needs to match one defined in cxf file
+
+|ServiceName
+|SOAP
+|false
+|n/a
+|Local part of the service QName to use with this connection
+
+|NamespaceUri
+|SOAP
+|false
+|http://teiid.org
+|Namespace URI of the service QName to use with this connection
+
+|RequestTimeout
+|HTTP & SOAP
+|false
+|n/a
+|Timeout for request
+
+|ConnectTimeout
+|HTTP & SOAP
+|false
+|n/a
+|Timeout for connection
+
+|Wsdl
+|SOAP
+|false
+|n/a
+|WSDL file or URL for the web service
+|===
+
+== CXF Configuration
+
+Each web service data source may choose a particular CXF config file and port configuration. The `ConfigFile` config property specifies the Spring XML configuration file for the CXF Bus and port configuration to
+be used by connections. If no config file is specified then the system default configuration will be used.
+
+Only 1 port configuration can be used by this data source. You may explicitly set the local name of the port QName to use via the `ConfigName` property. The namespace URI for the QName in your config file should match your WSDL/namespace setting on the data source or use the default of http://teiid.org[http://teiid.org]. See the http://cxf.apache.org/docs/configuration.html[CXF Documentation] and the sections below on <<Security>>, <<Logging>>, etc. for examples of using the CXF configuration file.
+
+[source,xml]
+.*Sample Spring XML Configuration To Set Timeouts*
+----
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+        xsi:schemaLocation="http://cxf.apache.org/transports/http/configuration
+        http://cxf.apache.org/schemas/configuration/http-conf.xsd
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <http-conf:conduit name="{http://teiid.org}configName.http-conduit">
+        <http-conf:client ConnectionTimeout="120000" ReceiveTimeout="240000"/>
+    </http-conf:conduit>
+</beans>
+----
+
+In the conduit name {http://teiid.org[http://teiid.org]}configName.http-conduit, the namespace, {http://teiid.org[http://teiid.org]}, may be set via the namespace datasource property. Typically that will only need done when also supplying the wsdl setting. The local name is followed by .http-conduit. It will be based upon the configName setting, with a default value of teiid.
+
+See the http://cxf.apache.org/docs/[CXF documentation] for all possible configuration options.
+
+NOTE: It is not required to use the Spring configuration to set just timeouts. The ConnectionTimeout and ReceiveTimeout can be set via the resource adapter connectTimeout and requestTimeout properties respectively.
+
+== Security
+
+To enable the use of WS-Security, the `SecurityType` should be set to WSSecurity. At this time {{ book.productnameFull }} does not expect a WSDL to describe the service being used. Thus a Spring XML configuration file is not only required, it must instead contain all of the relevant policy configuration. And just as with the general configuration, each data source is limited to specifying only a single port configuration to use.
+
+[source,java]
+----
+batch
+/subsystem=resource-adapters/resource-adapter=webservice/connection-definitions=wsDS:add(jndi-name=java:/wsDS, class-name=org.teiid.resource.adapter.ws.WSManagedConnectionFactory, enabled=true, use-java-context=true)
+/subsystem=resource-adapters/resource-adapter=webservice/connection-definitions=wsDS/config-properties=ConfigFile:add(value=${jboss.server.home.dir}/standalone/configuration/xxx-jbossws-cxf.xml)
+/subsystem=resource-adapters/resource-adapter=webservice/connection-definitions=wsDS/config-properties=ConfigName:add(value=port_x)
+/subsystem=resource-adapters/resource-adapter=webservice/connection-definitions=wsDS/config-properties=SecurityType:add(value=WSSecurity)
+/subsystem=resource-adapters/resource-adapter=webservice:activate
+runbatch
+----
+
+The corresponding xxx-jbossws-cxf.xml file that adds a timestamp to the SOAP header
+
+[source,xml]
+.*Example WS-Security enabled data source*
+----
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://cxf.apache.org/jaxws
+          http://cxf.apache.org/schemas/jaxws.xsd">
+
+    <jaxws:client name="{http://teiid.org}port_x"
+        createdFromAPI="true">
+        <jaxws:outInterceptors>
+            <bean/>
+            <ref bean="Timestamp_Request"/>
+        </jaxws:outInterceptors>
+    </jaxws:client>
+
+    <bean
+
+        id="Timestamp_Request">
+        <constructor-arg>
+            <map>
+                <entry key="action" value="Timestamp"/>
+            <map>
+        </constructor-arg>
+    </bean>
+
+</beans>
+----
+
+Note that the client port configuration is matched to the data source instance by the QName {http://teiid.org}port_x, where the namespace will match your namespace setting or the default of
+http://teiid.org[http://teiid.org]. The configuration may contain other port configurations with different local names.
+
+For more information on configuring CXF interceptors, please consult the http://cxf.apache.org/docs/security.html[CXF documentation]
+
+== Kerberos
+
+WS-Security Kerberos is only supported when the WSDL property is defined in resource-adapter connection configuration and only when WSDL Based Procedures are used. WSDL file must contain WS-Policy section, then
+WS-Policy section is correctly interpreted and enforced on the endpoint. The sample CXF configuration will look like
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:http="http://cxf.apache.org/transports/http/configuration" 
+    xmlns:jaxws="http://cxf.apache.org/jaxws" 
+    xmlns:cxf="http://cxf.apache.org/core" 
+    xmlns:p="http://cxf.apache.org/policy" 
+    xmlns:sec="http://cxf.apache.org/configuration/security" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans           http://www.springframework.org/schema/beans/spring-beans.xsd           http://cxf.apache.org/jaxws                           http://cxf.apache.org/schemas/jaxws.xsd           http://cxf.apache.org/transports/http/configuration   http://cxf.apache.org/schemas/configuration/http-conf.xsd           http://cxf.apache.org/configuration/security          http://cxf.apache.org/schemas/configuration/security.xsd           http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd           http://cxf.apache.org/policy http://cxf.apache.org/schemas/policy.xsd">
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
+    <cxf:bus>
+        <cxf:features>
+            <p:policies/>
+            <cxf:logging/>
+        </cxf:features>
+    </cxf:bus>
+
+    <jaxws:client name="{http://webservices.samples.jboss.org/}HelloWorldPort" createdFromAPI="true">
+        <jaxws:properties>
+            <entry key="ws-security.kerberos.client">
+                <bean class="org.apache.cxf.ws.security.kerberos.KerberosClient">
+                    <constructor-arg ref="cxf"/>
+                    <property name="contextName" value="alice"/>
+                    <property name="serviceName" value="bob@service.example.com"/>
+                </bean>
+            </entry>
+        </jaxws:properties>
+    </jaxws:client>
+</beans>
+----
+
+and you would need to configure the security-domain in the standalone-teiid.xml file under the 'security' subsystem as
+
+[source,xml]
+----
+<security-domain name="alice" cache-type="default">
+    <authentication>
+        <login-module code="Kerberos" flag="required">
+            <module-option name="storeKey" value="true"/>
+            <module-option name="useKeyTab" value="true"/>
+            <module-option name="keyTab" value="/home/alice/alice.keytab"/>
+            <module-option name="principal" value="alice@EXAMPLE.COM"/>
+            <module-option name="doNotPrompt" value="true"/>
+            <module-option name="debug" value="true"/>
+            <module-option name="refreshKrb5Config" value="true"/>
+        </login-module>
+    </authentication>
+</security-domain>
+----
+
+for complete list of kerberos properties please refer to http://anonsvn.jboss.org/repos/jbossws/stack/cxf/trunk/modules/testsuite/cxf-spring-tests/src/test/java/org/jboss/test/ws/jaxws/samples/wsse/kerberos/KerberosTestCase.java[this testcase]
+
+== Logging
+
+Logging, when enabled, will be performed at an INFO level to the org.apache.cxf.interceptor context.
+
+=== SOAP
+
+The CXF config property may also be used to control the logging of requests and responses for specific or all ports. 
+
+.*Example logging data source*
+----
+batch
+/subsystem=resource-adapters/resource-adapter=webservice/connection-definitions=wsDS:add(jndi-name=java:/wsDS, class-name=org.teiid.resource.adapter.ws.WSManagedConnectionFactory, enabled=true, use-java-context=true)
+/subsystem=resource-adapters/resource-adapter=webservice/connection-definitions=wsDS/config-properties=ConfigFile:add(value=${jboss.server.home.dir}/standalone/configuration/xxx-jbossws-cxf.xml)
+/subsystem=resource-adapters/resource-adapter=webservice/connection-definitions=wsDS/config-properties=ConfigName:add(value=port_x)
+/subsystem=resource-adapters/resource-adapter=webservice:activate
+runbatch
+----
+
+Corresponding xxx-jbossws-cxf.xml
+
+[source,xml]
+.*Example logging data source*
+----
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://cxf.apache.org/jaxws
+          http://cxf.apache.org/schemas/jaxws.xsd">
+
+    <jaxws:client name="{http://teiid.org}port_y"
+        createdFromAPI="true">
+        <jaxws:features>
+            <bean class="org.apache.cxf.feature.LoggingFeature"/>
+        </jaxws:features>
+    </jaxws:client>
+
+</beans>
+----
+
+=== All CXF Usage
+
+With the {{ book.asName }} distribution of CXF a system property can be used to enable CXF logging across all usage in the application server (including salesforce) - see https://docs.jboss.org/author/display/JBWS/Advanced+User+Guide[the {{ book.asName }} docs].
+
+[source,xml]
+.*Example System Property*
+----
+<system-properties>
+  <property name="org.apache.cxf.logging.enabled" value="true"/>
+</system-properties>
+----
+
+== Transport Settings
+
+The CXF config property may also be used to control low level aspects of the HTTP transport. See the http://cxf.apache.org/docs/client-http-transport-including-ssl-support.html[CXF documentation] for all possible options.
+
+[source,xml]
+.*Example Disabling Hostname Verification*
+----
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+       xsi:schemaLocation="http://cxf.apache.org/transports/http/configuration
+                           http://cxf.apache.org/schemas/configuration/http-conf.xsd
+                           http://www.springframework.org/schema/beans
+                             http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <http-conf:conduit name="{http://teiid.org}port_z.http-conduit">
+     <!-- WARNING ! disableCNcheck=true should NOT be used in production -->
+     <http-conf:tlsClientParameters disableCNcheck="true" />
+
+  </http-conf:conduit>
+</beans>
+----
+
+== Configuring SSL Support (Https)
+
+For using the HTTPS, you can configure CXF file as below
+
+[source,xml]
+----
+<beans xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:sec="http://cxf.apache.org/configuration/security" 
+    xmlns:http-conf="http://cxf.apache.org/transports/http/configuration" 
+    xmlns:jaxws="http://java.sun.com/xml/ns/jaxws" 
+    xsi:schemaLocation="http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/configuration/security.xsd">
+ 
+    <http-conf:conduit name="*.http-conduit">
+        <http-conf:client ConnectionTimeout="120000" ReceiveTimeout="240000"/>
+        <http-conf:tlsClientParameters secureSocketProtocol="SSL">
+          <sec:trustManagers>
+            <sec:keyStore type="JKS" password="changeit" file="/path/to/truststore.jks"/>
+          </sec:trustManagers>
+        </http-conf:tlsClientParameters>
+    </http-conf:conduit>
+</beans>
+----
+
+for all the http-conduit based configuration see http://cxf.apache.org/docs/client-http-transport-including-ssl-support.html[http://cxf.apache.org/docs/client-http-transport-including-ssl-support.html]. You can also configure for HTTPBasic, kerberos, etc.
+
