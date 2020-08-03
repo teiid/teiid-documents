@@ -34,34 +34,34 @@ Oracle/Sun 1.7 JREs are known not to support key lengths over 1024 bits. The lin
 
 * *disabled* - turns off any kind of encryption. This is the default for the odbc transport.
 
-== SSL Authentication Modes
+== SSL Client Authentication Modes
 
 * *anonymous* – *DEPRECATED* No certificates are required, but all communications are still encrypted using the TLS_DH_anon_WITH_AES_128_CBC_SHA SSL cipher suite. In most secure intranet environments anonymous is suitable to just bulk encrypt traffic without the need to setup SSL certificates. No certificates are exchanged, and settings are not needed for the keystore and truststore properties. JDBC Clients must have 'org.teiid.ssl.allowAnon' set to true (the default) to connect to an anonymous server.  
 
 NOTE: ODBC clients and some VMs, such as IBM, may not have the TLS_DH_anon_WITH_AES_128_CBC_SHA cipher suite available.  On other VMs it may require modifying the java.security file to enable the anon cipher suites.
   
-When the client or server lack the anonymous cipher suite, consider using 1-way with a self-signed certificate.  ODBC clients typically do not require server certificate validation.  {{ book.productnameFull }} JDBC clients by default validate the server certificate, but can use the org.teiid.ssl.trustAll property to accept any server certificate. 
+When the client or server lack the anonymous cipher suite, consider using server only or 1-way authentication with a self-signed certificate.  ODBC clients typically do not require server certificate validation.  {{ book.productnameFull }} JDBC clients by default validate the server certificate, but can use the org.teiid.ssl.trustAll property to accept any server certificate. 
 
 This mode is deprecated, as you may set the authentication mode to 1-way and the enabled-cipher-suites to TLS_DH_anon_WITH_AES_128_CBC_SHA for the same effect.
 
-* *1-way* – The default.  Only authenticates the server to the client. Requires a private key keystore to be created for the server.  If the client is configured to validate the server certificate, the client will need an appropriate truststore configured.
+* *NONE*, previously known as *1-way*, is the default.  Only authenticates the server to the client. Requires a private key keystore to be created for the server.  If the client is configured to validate the server certificate, the client will need an appropriate truststore configured.
 
-* *2-way* – Mutual client and server authentication. The server and client applications each have a keystore for their private keys and each has a truststore that authenticates the other. The server will present a certificate, which is obtained from the keystore related properties. The client should have a truststore configured to accept the server certificate. The client is also expected to present a certificate, which is obtained from its keystore. The client certificate should be accepted by the trust store configured by the truststore related properties.
+* *NEED*, previously known as *2-way*, is mutual client and server authentication. The server and client applications each have a keystore for their private keys and each has a truststore that authenticates the other. The server will present a certificate, which is obtained from the keystore related properties. The client should have a truststore configured to accept the server certificate. The client is also required to present a certificate, which is obtained from its keystore. The client certificate should be accepted by the trust store configured by the truststore related properties.
+
+* *WANT* – Similar to NEED, but the client is not required to authenticate.
 
 For non-anonymous SSL, the suite is negotiated - see _enabled-cipher-suites_ below below.
 
 Depending upon the SSL mode, follow the guidelines of your organization around creating/obtaining private keys. If you have no organizational requirements, then follow this guide to create
 link:JDBC_ODBC_SSL_SelfSigned.adoc[self-signed certificates] with their respective keystores and truststores. The following keystore and truststore combinations are required for different SSL modes. The names of the files can be chosen by the user. The following files are shown for example purposes only.
 
-_1-way_
+_For any non-anonymous server configuration, you must supply_
 
 1.  server.keystore - has server’s private key
 2.  server.truststore - has server’s public key
 
-_2-way_
+_For NEED or WANT client authentication, a client may also need to provide_
 
-1.  server.keystore - has server’s private key
-2.  server.truststore - has server’s public key
 3.  client.keystore - client’s private key
 4.  client.truststore - has client’s public key
 
@@ -70,7 +70,7 @@ Full Configuration Options
 [source,xml]
 .Example XML Configuration
 ----
-<ssl mode="enabled" authentication-mode="1-way" ssl-protocol="TSLv1" keymanagement-algorithm="algo"
+<ssl mode="enabled" authentication-mode="NONE" ssl-protocol="TSLv1" keymanagement-algorithm="algo"
          enabled-cipher-suites="SSL_RSA_WITH_RC4_128_MD5,SSL_RSA_WITH_RC4_128_SHA">
             <keystore name="cert.keystore" password="passwd" type="JKS" key-alias="alias" key-password="passwd1"/>
             <truststore name="cert.truststore" password="passwd"/>
@@ -87,11 +87,11 @@ CAUTION: SSLv3 is not recommended due to the POODLE security vulnerability.
 
 * keystore/type - Keystore type created by the keytool. Optional - by default "JKS" is used.
 
-* authentication-mode - anonymous|1-way|2-way, Type of SSL Authentication Mode.
+* authentication-mode - NONE|NEED|WANT - Type of SSL Client Authentication Mode.
 
 * keymanagement-algorithm - Type of key algorithm used. Optional - by default is based upon the VM, e.g. "SunX509"
 
-* keystore/name - The file name of the keystore, which contains the private key of the Server. The file name can be relative resource path available to the {{ book.productnameFull }} deployer classloader or an absolute file system path. A typical installation would place the keystore file in the conf directory of the profile where {{ book.productnameFull }} is deployed with a file name relative to the conf path. Typically required if 1-way or 2-way authentication is used.
+* keystore/name - The file name of the keystore, which contains the private key of the Server. The file name can be relative resource path available to the {{ book.productnameFull }} deployer classloader or an absolute file system path. A typical installation would place the keystore file in the conf directory of the profile where {{ book.productnameFull }} is deployed with a file name relative to the conf path. Typically required for non-anonymous authentication.
 
 * keystore/password - password for the keystore. Required if the keystore has a password.
 
@@ -99,7 +99,7 @@ CAUTION: SSLv3 is not recommended due to the POODLE security vulnerability.
 
 * keystore/key-password - Alias name for the private key to use. Optional - only needed if the key password is different than the keystore password.
 
-* truststore/name - This is the truststore containing the public certificate(s) for client keys. Depending upon how you created the keystore and truststores, this may be same file as defined under "keystore/name" property. Required if "authenticationMode" is "2-way".
+* truststore/name - This is the truststore containing the public certificate(s) for client keys. Depending upon how you created the keystore and truststores, this may be same file as defined under "keystore/name" property. Required if "authenticationMode" is "WANT" or "NEED".
 
 * truststore/password - password for the truststore. Required if the truststore has a password.
 
@@ -128,7 +128,7 @@ NOTE: If you do not like to leave clear text passwords in the configuration file
 
 == Encryption Strength
 
-Both anonymous SSL and login only (JDBC specific) encryption are configured to use 128 bit AES encryption by default. By default 1-way and 2-way SSL allow for cipher suite negotiation based upon the default cipher suites supported by the respective Java platforms of the client and server. Users can restrict the cipher suites used by specifying the _enabled-cipher-suites_ property above in the SSL configuration.
+Both anonymous SSL and login only (JDBC specific) encryption are configured to use 128 bit AES encryption by default. By default non-anonymous SSL allow for cipher suite negotiation based upon the default cipher suites supported by the respective Java platforms of the client and server. Users can restrict the cipher suites used by specifying the _enabled-cipher-suites_ property above in the SSL configuration.
 
 == Examples
 
