@@ -12,6 +12,8 @@ Teiid {{ book.fullVersionNumber }} adds performance features, microservice enabl
 * https://issues.redhat.com/browse/TEIID-5950[TEIID-5950] Added an Amazon Athena Translator.
 * https://issues.redhat.com/browse/TEIID-5936[TEIID-5936] Added an S3 source, which can be used with the Excel translator, for all S3 sources.
 * https://issues.redhat.com/browse/TEIID-5928[TEIID-5928] Added properties for the partitioned load of materialized views.
+* https://issues.redhat.com/browse/TEIID-5977[TEIID-5977] Added support for pushing virtual functions via a source function option teiid_rel:virtual-function
+* https://issues.redhat.com/browse/TEIID-6005[TEIID-6005] Better support for Teiid in DBeaver as a postgres source
 
 == Compatibility Issues
 

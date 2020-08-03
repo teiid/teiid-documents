@@ -158,6 +158,12 @@
 |[[token_DOUBLE]]_DOUBLE_
 |<<parseDataTypePrimary,simple data type>>
 
+|[[token_DOW]]_DOW_
+|<<function,function>>
+
+|[[token_DOY]]_DOY_
+|<<function,function>>
+
 |[[token_DROP]]_DROP_
 |<<alterDropColumn,DROP column>>, <<dropChildOption,drop option>>, <<dropDataWrapper,Drop data wrapper>>, <<dropOption,drop option>>, <<dropPolicy,DROP POLICY>>, <<dropProcedure,drop procedure>>, <<dropRole,drop role >>, <<dropSchema,drop schema>>, <<dropServer,drop server>>, <<dropTable,drop table>>, <<dropTableView,drop table>>, <<readGrantTypes,grant type>>
 
@@ -224,9 +230,6 @@
 |[[token_GROUP]]_GROUP_
 |<<function,function>>, <<groupBy,group by clause>>
 
-|[[token_HANDLER]]_HANDLER_
-|<<createDataWrapper,create data wrapper>>
-
 |[[token_HAVING]]_HAVING_
 |<<having,having clause>>
 
@@ -240,7 +243,7 @@
 |<<dynamicCommand,dynamic data statement>>
 
 |[[token_IMPORT]]_IMPORT_
-|<<importDatabase,Import another Database>>, <<importSchema,Import foreign schema>>
+|<<importDatabase,Import VDB>>, <<importSchema,Import foreign schema>>
 
 |[[token_IN]]_IN_
 |<<function,function>>, <<procedureParameter,procedure parameter>>, <<setCrit,in predicate>>
@@ -419,6 +422,9 @@
 |[[token_SERVER]]_SERVER_
 |<<alterServer,ALTER SERVER >>, <<createSchema,create schema>>, <<createServer,create server>>, <<dropServer,drop server>>, <<importSchema,Import foreign schema>>
 
+|[[token_SESSION_USER]]_SESSION_USER_
+|<<function,function>>
+
 |[[token_SET]]_SET_
 |<<addSetChildOption,add set child option>>, <<addSetOption,add set option>>, <<createNameSpace,option namespace>>, <<update,update statement>>, <<useSchema,set schema>>
 
@@ -519,7 +525,7 @@
 |<<whileStatement,while statement>>
 
 |[[token_WITH]]_WITH_
-|<<assignStatement,assignment statement>>, <<createRole,create role >>, <<importDatabase,Import another Database>>, <<queryExpression,query expression>>, <<sqlStatement,data statement>>
+|<<assignStatement,assignment statement>>, <<createRole,create role >>, <<importDatabase,Import VDB>>, <<queryExpression,query expression>>, <<sqlStatement,data statement>>
 
 |[[token_WITHIN]]_WITHIN_
 |<<function,function>>
@@ -589,7 +595,7 @@
 |Name |Usage
 
 |[[token_ACCESS]]_ACCESS_
-|<<basicNonReserved,basicNonReserved>>, <<importDatabase,Import another Database>>
+|<<basicNonReserved,basicNonReserved>>, <<importDatabase,Import VDB>>
 
 |[[token_ACCESSPATTERN]]_ACCESSPATTERN_
 |<<basicNonReserved,basicNonReserved>>, <<constraint,other constraints>>
@@ -622,7 +628,7 @@
 |<<basicNonReserved,basicNonReserved>>, <<xmlParse,xml parse>>, <<xmlSerialize,xml serialize>>
 
 |[[token_CONTROL]]_CONTROL_
-|<<basicNonReserved,basicNonReserved>>, <<importDatabase,Import another Database>>
+|<<basicNonReserved,basicNonReserved>>, <<importDatabase,Import VDB>>
 
 |[[token_COUNT]]_COUNT_
 |<<aggregateSymbol,standard aggregate function>>, <<basicNonReserved,basicNonReserved>>
@@ -637,7 +643,7 @@
 |<<alterTranslator,ALTER DATA WRAPPER >>, <<basicNonReserved,basicNonReserved>>, <<createDataWrapper,create data wrapper>>, <<createServer,create server>>, <<dropDataWrapper,Drop data wrapper>>
 
 |[[token_DATABASE]]_DATABASE_
-|<<alterDatabase,ALTER DATABASE >>, <<basicNonReserved,basicNonReserved>>, <<createDatabase,create database>>, <<importDatabase,Import another Database>>, <<useDatabase,use database>>
+|<<alterDatabase,ALTER DATABASE >>, <<basicNonReserved,basicNonReserved>>, <<createDatabase,create database>>, <<importDatabase,Import VDB>>, <<useDatabase,use database>>
 
 |[[token_DEFAULT_KEYWORD]]_DEFAULT_
 |<<namespaceItem,xml namespace element>>, <<nonReserved,non-reserved identifier>>, <<objectColumn,object table column>>, <<postCreateColumn,post create column>>, <<procedureParameter,procedure parameter>>, <<xmlColumn,xml table column>>
@@ -922,7 +928,7 @@
 |<<aggregateSymbol,standard aggregate function>>, <<basicNonReserved,basicNonReserved>>
 
 |[[token_VERSION]]_VERSION_
-|<<basicNonReserved,basicNonReserved>>, <<createDatabase,create database>>, <<createServer,create server>>, <<importDatabase,Import another Database>>, <<useDatabase,use database>>, <<xmlSerialize,xml serialize>>
+|<<basicNonReserved,basicNonReserved>>, <<createDatabase,create database>>, <<createServer,create server>>, <<importDatabase,Import VDB>>, <<useDatabase,use database>>, <<xmlSerialize,xml serialize>>
 
 |[[token_VIEW]]_VIEW_
 |<<alter,alter>>, <<alterTable,ALTER TABLE >>, <<basicNonReserved,basicNonReserved>>, <<createView,create view>>, <<dropTableView,drop table>>
@@ -957,20 +963,20 @@
 |DLURLPATH|DLURLPATHONLY|DLURLPATHWRITE
 |DLURLSCHEME|DLURLSERVER|DLVALUE
 |DYNAMIC|ELEMENT|EXTERNAL
-|FREE|GET|HAS
-|HOLD|IDENTITY|INDICATOR
-|INPUT|INSENSITIVE|INT
-|INTERVAL|ISOLATION|LARGE
-|LOCALTIME|LOCALTIMESTAMP|MATCH
-|MEMBER|METHOD|MODIFIES
-|MODULE|MULTISET|NATIONAL
-|NATURAL|NCHAR|NCLOB
-|NEW|NUMERIC|OLD
-|OPEN|OUTPUT|OVERLAPS
-|PRECISION|PREPARE|READS
-|RECURSIVE|REFERENCING|RELEASE
-|ROLLBACK|SAVEPOINT|SCROLL
-|SEARCH|SENSITIVE|SESSION_USER
+|FREE|GET|HANDLER
+|HAS|HOLD|IDENTITY
+|INDICATOR|INPUT|INSENSITIVE
+|INT|INTERVAL|ISOLATION
+|LARGE|LOCALTIME|LOCALTIMESTAMP
+|MATCH|MEMBER|METHOD
+|MODIFIES|MODULE|MULTISET
+|NATIONAL|NATURAL|NCHAR
+|NCLOB|NEW|NUMERIC
+|OLD|OPEN|OUTPUT
+|OVERLAPS|PRECISION|PREPARE
+|READS|RECURSIVE|REFERENCING
+|RELEASE|ROLLBACK|SAVEPOINT
+|SCROLL|SEARCH|SENSITIVE
 |SPECIFIC|SPECIFICTYPE|SQL
 |START|STATIC|SUBMULTILIST
 |SYMETRIC|SYSTEM|SYSTEM_USER
@@ -1447,7 +1453,7 @@
 |<<query,query>>
 
 |[[usage_id]]_<<id, identifier>>_
-|<<alter,alter>>, <<alterChildOptionPair,alter child option pair>>, <<alterColumn,alter column options>>, <<alterDatabase,ALTER DATABASE >>, <<alterDropColumn,DROP column>>, <<alterOptionPair,alter option pair>>, <<alterProcedure,ALTER PROCEDURE >>, <<alterRenameColumn,rename column options>>, <<alterRenameTable,RENAME Table>>, <<alterServer,ALTER SERVER >>, <<alterTable,ALTER TABLE >>, <<alterTranslator,ALTER DATA WRAPPER >>, <<alterTrigger,ALTER TRIGGER >>, <<arrayTable,array table>>, <<assignStatement,assignment statement>>, <<branchingStatement,branching statement>>, <<callableStatement,callable statement>>, <<columnList,column list>>, <<compoundStatement,compound statement>>, <<createColumn,table element>>, <<createDataWrapper,create data wrapper>>, <<createDatabase,create database>>, <<createElementsWithTypes,typed element list>>, <<createForeignTempTable,create foreign temp table>>, <<createNameSpace,option namespace>>, <<createPolicy,CREATE POLICY>>, <<createSchema,create schema>>, <<createTrigger,create trigger>>, <<createViewColumn,view element>>, <<declareStatement,declare statement>>, <<delete,delete statement>>, <<derivedColumn,derived column>>, <<dropChildOption,drop option>>, <<dropDataWrapper,Drop data wrapper>>, <<dropOption,drop option>>, <<dropPolicy,DROP POLICY>>, <<dropProcedure,drop procedure>>, <<dropRole,drop role >>, <<dropSchema,drop schema>>, <<dropServer,drop server>>, <<dropTable,drop table>>, <<dropTableView,drop table>>, <<dynamicCommand,dynamic data statement>>, <<exceptionReference,exception reference>>, <<executeNamedParams,named parameter list>>, <<foreignKey,foreign key>>, <<function,function>>, <<grant,GRANT>>, <<identifierList,identifier list>>, <<importDatabase,Import another Database>>, <<importSchema,Import foreign schema>>, <<insert,insert statement>>, <<into,into clause>>, <<jsonColumn,json table column>>, <<jsonTable,json table>>, <<loopStatement,loop statement>>, <<namespaceItem,xml namespace element>>, <<objectColumn,object table column>>, <<objectTable,object table>>, <<option,option clause>>, <<optionPair,option pair>>, <<procedureParameter,procedure parameter>>, <<procedureRsColumn,procedure result column>>, <<queryPrimary,query primary>>, <<revokeGrant,Revoke GRANT>>, <<selectExpression,select derived column>>, <<setClauseList,set clause list>>, <<statement,statement>>, <<storedProcedure,call statement>>, <<subqueryFromClause,table subquery>>, <<tableConstraint,table constraint>>, <<tableElement,temporary table element>>, <<textAgg,text aggreate function>>, <<textColumn,text table column>>, <<textTable,text table>>, <<unaryFromClause,table name>>, <<update,update statement>>, <<useDatabase,use database>>, <<useSchema,set schema>>, <<withListElement,with list element>>, <<xmlColumn,xml table column>>, <<xmlElement,xml element>>, <<xmlSerialize,xml serialize>>, <<xmlTable,xml table>>
+|<<alter,alter>>, <<alterChildOptionPair,alter child option pair>>, <<alterColumn,alter column options>>, <<alterDatabase,ALTER DATABASE >>, <<alterDropColumn,DROP column>>, <<alterOptionPair,alter option pair>>, <<alterProcedure,ALTER PROCEDURE >>, <<alterRenameColumn,rename column options>>, <<alterRenameTable,RENAME Table>>, <<alterServer,ALTER SERVER >>, <<alterTable,ALTER TABLE >>, <<alterTranslator,ALTER DATA WRAPPER >>, <<alterTrigger,ALTER TRIGGER >>, <<arrayTable,array table>>, <<assignStatement,assignment statement>>, <<branchingStatement,branching statement>>, <<callableStatement,callable statement>>, <<columnList,column list>>, <<compoundStatement,compound statement>>, <<createColumn,table element>>, <<createDataWrapper,create data wrapper>>, <<createDatabase,create database>>, <<createElementsWithTypes,typed element list>>, <<createForeignTempTable,create foreign temp table>>, <<createNameSpace,option namespace>>, <<createPolicy,CREATE POLICY>>, <<createSchema,create schema>>, <<createTrigger,create trigger>>, <<createViewColumn,view element>>, <<declareStatement,declare statement>>, <<delete,delete statement>>, <<derivedColumn,derived column>>, <<dropChildOption,drop option>>, <<dropDataWrapper,Drop data wrapper>>, <<dropOption,drop option>>, <<dropPolicy,DROP POLICY>>, <<dropProcedure,drop procedure>>, <<dropRole,drop role >>, <<dropSchema,drop schema>>, <<dropServer,drop server>>, <<dropTable,drop table>>, <<dropTableView,drop table>>, <<dynamicCommand,dynamic data statement>>, <<exceptionReference,exception reference>>, <<executeNamedParams,named parameter list>>, <<foreignKey,foreign key>>, <<function,function>>, <<grant,GRANT>>, <<identifierList,identifier list>>, <<importDatabase,Import VDB>>, <<importSchema,Import foreign schema>>, <<insert,insert statement>>, <<into,into clause>>, <<jsonColumn,json table column>>, <<jsonTable,json table>>, <<loopStatement,loop statement>>, <<namespaceItem,xml namespace element>>, <<objectColumn,object table column>>, <<objectTable,object table>>, <<option,option clause>>, <<optionPair,option pair>>, <<procedureParameter,procedure parameter>>, <<procedureRsColumn,procedure result column>>, <<queryPrimary,query primary>>, <<revokeGrant,Revoke GRANT>>, <<selectExpression,select derived column>>, <<setClauseList,set clause list>>, <<statement,statement>>, <<storedProcedure,call statement>>, <<subqueryFromClause,table subquery>>, <<tableConstraint,table constraint>>, <<tableElement,temporary table element>>, <<textAgg,text aggreate function>>, <<textColumn,text table column>>, <<textTable,text table>>, <<unaryFromClause,table name>>, <<update,update statement>>, <<useDatabase,use database>>, <<useSchema,set schema>>, <<withListElement,with list element>>, <<xmlColumn,xml table column>>, <<xmlElement,xml element>>, <<xmlSerialize,xml serialize>>, <<xmlTable,xml table>>
 
 |[[usage_identifierList]]_<<identifierList, identifier list>>_
 |<<createSchema,create schema>>, <<readWith,with role>>
@@ -1455,7 +1461,7 @@
 |[[usage_ifStatement]]_<<ifStatement, if statement>>_
 |<<statement,statement>>
 
-|[[usage_importDatabase]]_<<importDatabase, Import another Database>>_
+|[[usage_importDatabase]]_<<importDatabase, Import VDB>>_
 |<<ddlStmt,ddl statement>>
 
 |[[usage_importSchema]]_<<importSchema, Import foreign schema>>_
@@ -1651,7 +1657,7 @@
 |<<assignStatement,assignment statement>>, <<subquery,subquery>>, <<subqueryFromClause,table subquery>>, <<userCommand,directly executable statement>>
 
 |[[usage_stringVal]]_<<stringVal, string>>_
-|<<charVal,character>>, <<createDatabase,create database>>, <<createNameSpace,option namespace>>, <<createServer,create server>>, <<function,function>>, <<grant,GRANT>>, <<importDatabase,Import another Database>>, <<jsonColumn,json table column>>, <<jsonTable,json table>>, <<namespaceItem,xml namespace element>>, <<nonNumericLiteral,non numeric literal>>, <<objectColumn,object table column>>, <<objectTable,object table>>, <<textColumn,text table column>>, <<textTable,text table>>, <<useDatabase,use database>>, <<xmlColumn,xml table column>>, <<xmlExists,xml query>>, <<xmlQuery,xml query>>, <<xmlSerialize,xml serialize>>, <<xmlTable,xml table>>
+|<<charVal,character>>, <<createDatabase,create database>>, <<createNameSpace,option namespace>>, <<createServer,create server>>, <<function,function>>, <<grant,GRANT>>, <<importDatabase,Import VDB>>, <<jsonColumn,json table column>>, <<jsonTable,json table>>, <<namespaceItem,xml namespace element>>, <<nonNumericLiteral,non numeric literal>>, <<objectColumn,object table column>>, <<objectTable,object table>>, <<textColumn,text table column>>, <<textTable,text table>>, <<useDatabase,use database>>, <<xmlColumn,xml table column>>, <<xmlExists,xml query>>, <<xmlQuery,xml query>>, <<xmlSerialize,xml serialize>>, <<xmlTable,xml table>>
 
 |[[usage_subquery]]_<<subquery, subquery>>_
 |<<existsCriteria,exists predicate>>, <<setCrit,in predicate>>, <<subqueryCompareCriteria,quantified comparison predicate>>, <<unsignedValueExpressionPrimary,unsigned value expression primary>>
@@ -4303,7 +4309,7 @@ CASE WHEN x = 'a' THEN 1 WHEN y = 'b' THEN 2
 
 * ( <<token_SUBSTRING,SUBSTRING>> <<<token_LPAREN,lparen>>> <<<expression,expression>>> ( ( <<token_FROM,FROM>> <<<expression,expression>>> ( <<token_FOR,FOR>> <<<expression,expression>>> )? ) | ( <<<token_COMMA,comma>>> <<<expressionList,expression list>>> ) ) <<<token_RPAREN,rparen>>> )
 
-* ( <<token_EXTRACT,EXTRACT>> <<<token_LPAREN,lparen>>> ( <<token_YEAR,YEAR>> | <<token_MONTH,MONTH>> | <<token_DAY,DAY>> | <<token_HOUR,HOUR>> | <<token_MINUTE,MINUTE>> | <<token_SECOND,SECOND>> | <<token_QUARTER,QUARTER>> | <<token_EPOCH,EPOCH>> ) <<token_FROM,FROM>> <<<expression,expression>>> <<<token_RPAREN,rparen>>> )
+* ( <<token_EXTRACT,EXTRACT>> <<<token_LPAREN,lparen>>> ( <<token_YEAR,YEAR>> | <<token_MONTH,MONTH>> | <<token_DAY,DAY>> | <<token_HOUR,HOUR>> | <<token_MINUTE,MINUTE>> | <<token_SECOND,SECOND>> | <<token_QUARTER,QUARTER>> | <<token_EPOCH,EPOCH>> | <<token_DOW,DOW>> | <<token_DOY,DOY>> ) <<token_FROM,FROM>> <<<expression,expression>>> <<<token_RPAREN,rparen>>> )
 
 * ( <<token_TRIM,TRIM>> <<<token_LPAREN,lparen>>> ( ( ( ( <<token_LEADING,LEADING>> | <<token_TRAILING,TRAILING>> | <<token_BOTH,BOTH>> ) ( <<<expression,expression>>> )? ) | <<<expression,expression>>> ) <<token_FROM,FROM>> )? <<<expression,expression>>> <<<token_RPAREN,rparen>>> )
 
@@ -4340,6 +4346,8 @@ CASE WHEN x = 'a' THEN 1 WHEN y = 'b' THEN 2
 * ( <<token_CURRENT_DATE,CURRENT_DATE>> ( <<<token_LPAREN,lparen>>> <<<token_RPAREN,rparen>>> )? )
 
 * ( ( <<token_CURRENT_TIMESTAMP,CURRENT_TIMESTAMP>> | <<token_CURRENT_TIME,CURRENT_TIME>> ) ( <<<token_LPAREN,lparen>>> <<<intVal,unsigned integer>>> <<<token_RPAREN,rparen>>> )? )
+
+* <<token_SESSION_USER,SESSION_USER>>
 
 
 Calls a scalar function.
@@ -4751,7 +4759,7 @@ Example:
 
 * <<<importSchema,Import foreign schema>>>
 
-* <<<importDatabase,Import another Database>>>
+* <<<importDatabase,Import VDB>>>
 
 * <<<createDatabase,create database>>>
 
@@ -4913,7 +4921,7 @@ CREATE DOMAIN my_type AS INTEGER NOT NULL
 
 === [[createDataWrapper]]_<<usage_createDataWrapper, create data wrapper>>_ ::= 
 
-* <<token_CREATE,CREATE>> <<token_FOREIGN,FOREIGN>> ( ( <<token_DATA,DATA>> <<token_WRAPPER,WRAPPER>> ) | <<token_TRANSLATOR,TRANSLATOR>> ) <<<unqualifiedId,Unqualified identifier>>> ( ( <<token_TYPE,TYPE>> | <<token_HANDLER,HANDLER>> ) <<<id,identifier>>> )? ( <<<optionsClause,options clause>>> )?
+* <<token_CREATE,CREATE>> <<token_FOREIGN,FOREIGN>> ( ( <<token_DATA,DATA>> <<token_WRAPPER,WRAPPER>> ) | <<token_TRANSLATOR,TRANSLATOR>> ) <<<unqualifiedId,Unqualified identifier>>> ( <<token_TYPE,TYPE>> <<<id,identifier>>> ( <<<optionsClause,options clause>>> )? )?
 
 
 Defines a translator; use the options to override the translator properties.
@@ -5887,18 +5895,18 @@ IMPORT FOREIGN SCHEMA foo FROM SERVER bar
 '''
 
 
-=== [[importDatabase]]_<<usage_importDatabase, Import another Database>>_ ::= 
+=== [[importDatabase]]_<<usage_importDatabase, Import VDB>>_ ::= 
 
 * <<token_IMPORT,IMPORT>> <<token_DATABASE,DATABASE>> <<<id,identifier>>> <<token_VERSION,VERSION>> <<<stringVal,string>>> ( <<token_WITH,WITH>> <<token_ACCESS,ACCESS>> <<token_CONTROL,CONTROL>> )?
 
 
-imports another database into current database
+imports another VDB into current database
 
 
 Example:
 [source,sql]
 ----
-IMPORT DATABASE vdb VERSION '1.2.3' WITH ACCESS CONTROL]
+IMPORT DATABASE vdb VERSION '1.2.3' WITH ACCESS CONTROL
 ----
 
 

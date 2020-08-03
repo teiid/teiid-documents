@@ -108,6 +108,14 @@ SESSION_ID()
 
 return value is string.
 
+.SESSION_USER
+
+Retrieve the current user name, an alias for USER(false).
+
+SESSION_USER
+
+return value is string.
+
 USER
 
 Retrieve the name of the user executing the query.
