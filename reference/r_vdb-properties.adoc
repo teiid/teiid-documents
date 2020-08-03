@@ -60,21 +60,17 @@ CREATE DATABASE vdb OPTIONS ("connection.partialResultsMode" true);
 
 * _authentication-type_ 
 
-Authentication type of configured security domain. 
-Allowed values currently are (GSS, USERPASSWORD). 
-The default is set on the transport (typically USERPASSWORD).
+Authentication type to be used with this VDBs security domain. 
+Allowed values currently are (GSS, USERPASSWORD, SSL). 
+The default is set on the session service (typically USERPASSWORD).
 
-* _password-pattern_ 
-
-Regular expression matched against the connecting user’s name that determines if USERPASSWORD authentication is used. 
-_password-pattern_ takes precedence over _authentication-type_. 
-The default is _authentication-type_.
-
-* _gss-pattern_ 
-
-Regular expression matched against the connecting user’s name that determines if GSS authentication is used. 
-_gss-pattern_ takes precedence over _password-pattern_. 
-The default is _password-pattern_.
+* Authentication Patterns
++
+Authentication patterns further control the expected authentication using the user name given with the connection attempt.
++
+_password-pattern_:: Regular expression matched against the connecting user’s name that determines if USERPASSWORD authentication is used. _password-pattern_ takes precedence over _authentication-type_. 
+_ssl-pattern_:: Regular expression matched against the connecting user’s name that determines if SSL authentication is used. _ssl-pattern_ takes precedence over _password-pattern_. 
+_gss-pattern_:: Regular expression matched against the connecting user’s name that determines if GSS authentication is used. _gss-pattern_ takes precedence over _ssl-pattern_.
 
 * _max-sessions-per-user_ (11.2+)
 

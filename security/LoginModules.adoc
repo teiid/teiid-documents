@@ -5,6 +5,8 @@ LoginModules are an essential part of the JAAS security framework and provide {{
 
 {{ book.productnameFull }} can be configured with multiple named application policies that group together relevant LoginModules. These security-domain names can be referenced on a per vdb.
 
+You can control at the server level and per VDB what security domain and authentication type to use.  You need to ensure that security domain supports the chosen authentication type - that is if you for example specify SSL authentication that you have configured a LoginModule that accepts certificates.
+
 The security-domain attribute under the authentication element in `teiid` subsystem in the `<jboss-install>/standalone/configuration/standalone-teiid.xml` file is used set the security-domain name. For example, in default configuration under `teiid` subsystem you will find
 
 [source,xml]

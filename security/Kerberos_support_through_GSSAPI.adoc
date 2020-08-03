@@ -166,10 +166,10 @@ select or force the security-domain and authentication type.
 <property name="security-domain" value="MY_REALM" />
 <property name="gss-pattern" value="{regex}" />
 <property name="password-pattern" value="{regex}" />
-<property name="authentication-type" value="GSS or USERPASSWORD" />
+<property name="authentication-type" value="GSS or SSL or USERPASSWORD" />
 ----
 
-All the properties above are optional on a VDB. If you want to define VDB based security configuration "security-domain" property is required. If you want to enforce single authentication type use "authentication-type" property is required. If your security domain can support both GSS and USERPASSWORD, then you can define "gss-pattern" and "password-pattern" properties, and define a regular expression as the value. During the connection, these regular expressions are matched against the connecting user’s name provided to select which authentication method user prefers. For example, if the configuration is defined as below
+All the properties above are optional on a VDB. If you want to define VDB based security configuration "security-domain" property is required. If you want to enforce single authentication type use "authentication-type" property is required. If your security domain can support multiple types, then you can define "gss-pattern", "password-pattern", or "ssl-pattern" properties, and define a regular expression as the value. During the connection, these regular expressions are matched against the connecting user’s name provided to select which authentication method user prefers. For example, if the configuration is defined as below
 
 [source,xml]
 ----

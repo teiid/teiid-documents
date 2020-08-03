@@ -50,6 +50,8 @@ This mode is deprecated, as you may set the authentication mode to 1-way and the
 
 * *WANT* – Similar to NEED, but the client is not required to authenticate.
 
+If you have configured the authentication-type to be SSL or expect VDBs to specify an authentication-type of SSL, then you will need to use either the NEED or WANT client authentication modes.
+
 For non-anonymous SSL, the suite is negotiated - see _enabled-cipher-suites_ below below.
 
 Depending upon the SSL mode, follow the guidelines of your organization around creating/obtaining private keys. If you have no organizational requirements, then follow this guide to create
