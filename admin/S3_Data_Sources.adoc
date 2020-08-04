@@ -18,7 +18,9 @@ Execute following command using the {{ book.asDocRoot }}/Admin+Guide#AdminGuide-
 
 To find out all the properties that are supported by this Connector execute the following command in the CLI.
 
-Note that the endpoint and region have defaults that match AWS.  You will need to set the endpoint to use other services, such as minio or ceph.
+If you do not specify endpoint, the AWS S3 service will be assumed, and if you only specify region, the endpoint will effectively be to that AWS S3 region.
+
+For non-AWS services (such as ceph or minio), or AWS services with non-default endpoints, you will need to set the endpoint.  The endpoint is expected to be the full service endpoint containing protocol, service, region, and hostname information as applicable.  The region when the endpoint is specified is used as the signing region override only and does not otherwise affect the endpoint. 
 
 [source,java]
 ----

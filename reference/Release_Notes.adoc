@@ -207,6 +207,10 @@ Teiid {{ book.fullVersionNumber }} adds performance features, microservice enabl
 
 See the Admin Guide for more on configuration and installation.
 
+=== from 14.0
+
+* https://issues.redhat.com/browse/TEIID-6007[TEIID-6007] The meaning of the transport authentication mode was changed to specifically be the client authentication mode, 1-way has been replace by NONE, 2-way has been replaced by NEED, and a new value WANT is supported.
+
 === from 12.0
 
 * https://issues.redhat.com/browse/TEIID-5642[TEIID-5642] The generic sql query procedure for generated REST wars will not be exposed by default. The schema/model must have the property \{http://teiid.org/rest}sqlquery set to true.
