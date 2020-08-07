@@ -1,0 +1,14 @@
+
+= Migration Guide From {{ book.productnameFull }} 13.x to 14.x
+
+{{ book.productnameFull }} strives to maintain consistency between all versions, but when necessary breaking configuration and VDB/sql changes are made - and then typically only for major releases. 
+
+You should consult the release notes for compatibility and configuration changes from each minor version that you are upgrading over.  This guide expands upon the release notes included in the kit to cover changes since 12.x.
+
+If possible you should make your migration to {{ book.productnameFull }} 15 by first using {{ book.productnameFull }} 14.0.x.  {{ book.productnameFull }} 15 requires Java 8 and WildFly 19.1 (the same as Teiid 14).  See also link:Migration_Guide_From_Teiid_13.x.adoc[13 to 14 Migration Guide]
+
+== Configuration Changes
+
+* https://issues.redhat.com/browse/TEIID-6007[TEIID-6007] The meaning of the transport authentication mode was changed to specifically be the client authentication mode, 1-way has been replace by NONE, 2-way has been replaced by NEED, and a new value WANT is supported.
+
+* https://issues.redhat.com/browse/TEIID-5998[TEIID-5998] The restriction on the size of a single file store for a temporary lob was greatly relaxed. If you were allocating more disk space than desired to work around that limitation, you should be able to allocate less.
