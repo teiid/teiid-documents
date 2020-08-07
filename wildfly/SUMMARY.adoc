@@ -42,6 +42,8 @@
 .. link:admin/System_Properties.adoc[System Properties]
 .. link:admin/Teiid_Management_CLI.adoc[Teiid Management CLI]
 .. link:admin/Diagnosing_Issues.adoc[Diagnosing Issues]
+.. link:admin/Migration_Guide_From_Teiid_14.x.adoc[Migration Guide From Teiid 14.x]
+.. link:admin/Migration_Guide_From_Teiid_13.x.adoc[Migration Guide From Teiid 13.x]
 .. link:admin/Migration_Guide_From_Teiid_12.x.adoc[Migration Guide From Teiid 12.x]
 .. link:admin/Migration_Guide_From_Teiid_11.x.adoc[Migration Guide From Teiid 11.x]
 .. link:admin/Migration_Guide_From_Teiid_10.x.adoc[Migration Guide From Teiid 10.x]
