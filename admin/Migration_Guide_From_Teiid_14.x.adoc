@@ -1,9 +1,9 @@
 
-= Migration Guide From {{ book.productnameFull }} 13.x to 14.x
+= Migration Guide From {{ book.productnameFull }} 14.x to 15.x
 
 {{ book.productnameFull }} strives to maintain consistency between all versions, but when necessary breaking configuration and VDB/sql changes are made - and then typically only for major releases. 
 
-You should consult the release notes for compatibility and configuration changes from each minor version that you are upgrading over.  This guide expands upon the release notes included in the kit to cover changes since 12.x.
+You should consult the release notes for compatibility and configuration changes from each minor version that you are upgrading over.  This guide expands upon the release notes included in the kit to cover changes since 14.x.
 
 If possible you should make your migration to {{ book.productnameFull }} 15 by first using {{ book.productnameFull }} 14.0.x.  {{ book.productnameFull }} 15 requires Java 8 and WildFly 19.1 (the same as Teiid 14).  See also link:Migration_Guide_From_Teiid_13.x.adoc[13 to 14 Migration Guide]
 

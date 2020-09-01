@@ -199,7 +199,7 @@ The additional args should have a source-name that matches the source name assig
 If the source-name matches, the hint values will be supplied via the `ExecutionContext.getSourceHints` method. 
 For more information about using an ExecutionContext, see link:../dev/Translator_Development.adoc[Translator Development] .
 * Each of the arg values has the form of a string literal - it must be surrounded in single quotes 
-and a single quote can be escaped with another single quote. Only the Oracle translator does anything 
+and a single quote can be escaped with another single quote. Only the Oracle and Salesforce translators do anything 
 with source hints by default. The Oracle translator will use both the source hint and 
 the general hint (in that order) if available to form an Oracle hint enclosed in `/*+ … */`.
 * If the KEEP ALIASES option is used either for the general hint or on the applicable source specific hint, 

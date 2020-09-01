@@ -61,7 +61,7 @@ getFiles(String pathAndPattern) returns
 TABLE(file blob, filePath string, lastModified timestamp, created timestamp, size long)
 ----
 
-Retrieve all files as BLOBs matching the given path and pattern.
+Retrieve all files as BLOBs matching the given path and pattern.  The allowable path and pattern is a simplified glob syntax.
 
 [source,sql]
 ----
@@ -71,9 +71,9 @@ call getFiles('path/*.ext')
 If the path is a directory, then all files in the directory are returned. 
 If the path matches a single file, the file is returned. 
 
-The `*` character is treated as a wildcard to match any number of characters in the path name. Zero or matching files will be returned.
+The `*` character is treated as a wildcard to match any number of characters in the path name.  Multiple `*` characters may be used in the path/pattern.  To escape a `*` character, use an additional `*` - `**`.  Note that "globstar" recursive directory searching is not supported as double star means a literal match instead.
 
-If `*`' is not used, and if the path doesn’t exist and `ExceptionIfFileNotFound` is true, then an exception is raised.
+If no files exist at the given path/pattern and `ExceptionIfFileNotFound` is true, then an exception is raised.
 
 .getTextFiles
 

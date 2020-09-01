@@ -7,14 +7,8 @@ Teiid {{ book.fullVersionNumber }} adds performance features, microservice enabl
 
 == Highlights
 
-* https://issues.redhat.com/browse/TEIID-5040[TEIID-5040] The google spreadsheet source can specify more than one spreadsheet with the new SpreadsheetMap property.
-* https://issues.redhat.com/browse/TEIID-3647[TEIID-3647] Added a HDFS file source utilizing the hadoop client jars.
-* https://issues.redhat.com/browse/TEIID-5950[TEIID-5950] Added an Amazon Athena Translator.
-* https://issues.redhat.com/browse/TEIID-5936[TEIID-5936] Added an S3 source, which can be used with the Excel translator, for all S3 sources.
-* https://issues.redhat.com/browse/TEIID-5928[TEIID-5928] Added properties for the partitioned load of materialized views.
-* https://issues.redhat.com/browse/TEIID-5977[TEIID-5977] Added support for pushing virtual functions via a source function option teiid_rel:virtual-function
-* https://issues.redhat.com/browse/TEIID-6005[TEIID-6005] Better support for Teiid in DBeaver as a postgres source
-* https://issues.redhat.com/browse/TEIID-5780[TEIID-5780] Added SSL authentication support
+* https://issues.redhat.com/browse/TEIID-6021[TEIID-6021] Added bulk update and delete handling for Salesforce.  Bulk update can be controlled via a hint or now by execution properties.  Bulk delete behavior can also be specified as hard delete via a hint or execution property.
+* https://issues.redhat.com/browse/TEIID-4594[TEIID-4594] Thanks to Aditya Manglam Sharma we've added a parquet translator for use with file sources - namely file and s3.
 
 == Compatibility Issues
 
@@ -28,6 +22,10 @@ Teiid {{ book.fullVersionNumber }} adds performance features, microservice enabl
 * https://issues.redhat.com/browse/TEIID-4731[TEIID-4731] The default authentication scheme for MongoDB resource adapter has been changed to SCRAM_SHA_1 to match with latest versions of MongoDB. If using MongoDB version less than 3.0, to restore previous functionality change/add SecurityType to 'None' in the resource adapter configuration.
 * https://issues.redhat.com/browse/TEIID-5511[TEIID-5511] The AdminShell kit has been removed. No further releases are planned.
 * https://issues.redhat.com/browse/TEIID-5833[TEIID-5833] The use of SET NAMESPACE to define a custom prefix or namespace is no longer allowed.  Please remove this statement from your DDL and simply use a consistent property key.
+
+=== from 15.0
+
+* https://issues.redhat.com/browse/TEIID-6025[TEIID-6025] The file translator path and pattern will no longer default to initially attempting a literal match.  Instead it will always match against a simplified glob syntax.  Literal matches against the \* character now require it to be escaped as \*\*
 
 === from 14.0
 
