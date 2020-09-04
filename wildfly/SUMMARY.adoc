@@ -307,6 +307,7 @@
 .... link:reference/r_netezza-translator.adoc[Netezza translator]
 .... link:reference/r_oracle-translator.adoc[Oracle translator]
 .... link:reference/r_osisoft-pi-translator.adoc[OSISoft PI translator]
+.... link:reference/r_parquet-translator.adoc[Parquet translator]
 .... link:reference/r_postgresql-translator.adoc[PostgreSQL translator]
 .... link:reference/r_prestodb-translator.adoc[PrestoDB translator]
 .... link:reference/r_redshift-translator.adoc[Redshift translator]

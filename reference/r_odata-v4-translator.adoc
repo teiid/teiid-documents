@@ -182,7 +182,7 @@ You can leave this property undefined. If the translator does not detect a confi
 it specifies the default name of the EntityContainer.
 
 {% if book.targetWildfly %}
-.JCA resource adapter
+== JCA resource adapter
 
 The resource adapter for this translator is a link:../admin/Web_Service_Data_Sources.adoc[Web Service Data Source].
 {% endif %}

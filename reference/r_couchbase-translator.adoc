@@ -3,7 +3,7 @@
 :toc: manual
 :toc-placement: preamble
 
-The Couchbase Translator, known by the type name _couchbase_, exposes querying functionality to link:../admin/Couchbase_Data_Sources.adoc[Couchbase Data Sources]. The Couchbase Translator provide a SQL Integration solution for integrating Couchbase JSON document with relational model, which allows applications to use normal SQL queries against Couchbase Server, translating standard SQL-92 queries into equivalent N1QL client API calls. The translator translates {{ book.productnameFull }} push down commands into https://developer.couchbase.com/documentation/server/4.5/n1ql/n1ql-language-reference/index.html[Couchbase N1QL].
+The Couchbase Translator, known by the type name _couchbase_, provides a SQL Integration solution for integrating Couchbase JSON document with relational model, which allows applications to use normal SQL queries against Couchbase Server, translating standard SQL-92 queries into equivalent N1QL client API calls. The translator translates {{ book.productnameFull }} push down commands into https://developer.couchbase.com/documentation/server/4.5/n1ql/n1ql-language-reference/index.html[Couchbase N1QL].
 
 == Usage
 
@@ -99,7 +99,7 @@ the dimension 4 nested array coulmn must define a NAMEINSOURCE with value `trave
 
 ==== Importer Properties 
 
-To ensure consistent support for your Couchbase data, use the importer properties to do futher defining in shcema generation.
+To ensure consistent support for your Couchbase data, use the importer properties to do further defining in schema generation.
 
 [source,xml]
 .*An example of importer properties*
@@ -130,7 +130,7 @@ To ensure consistent support for your Couchbase data, use the importer propertie
 `KEYSPACE`:`ATTRIBUTE`,`KEYSPACE`:`ATTRIBUTE`,`KEYSPACE`:`ATTRIBUTE`
 ----
 * KEYSPACE - the keyspaces must be under same namespace it either can be different one, or are same one. 
-* ATTRIBUTE - the attribute must be non object/array, resident on the root of keyspace, and it's type should be equivalent String. If a typeNameList set a specifc bucket(keyspace) has multiple types, and a document has all these types, the first one will be chose.
+* ATTRIBUTE - the attribute must be non object/array, resident on the root of keyspace, and it's type should be equivalent String. If a typeNameList set a specific bucket(keyspace) has multiple types, and a document has all these types, the first one will be chose.
 
 For example, the TypeNameList below indicates that the buckets(keyspaces) test, default, and beer-sample use the type attribute to specify the type of each document, during schema generation, all type referenced value will be treated as table name.
 ----
@@ -280,5 +280,3 @@ getDocument(id, keyspace)
 ----
 call getDocument('customer-1', 'test')
 ----
-
-

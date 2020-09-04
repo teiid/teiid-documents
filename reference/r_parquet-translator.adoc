@@ -1,0 +1,33 @@
+
+= Parquet Translator
+:toc: manual
+:toc-placement: preamble
+
+The Parquet Translator, known by the type name _parquet_, exposes querying functionality to file data sources. The translator will convert pushdown SQL into filtering logic for the Apache Parquet API.  Column projection will be minimized, unnecessary file reads ignored, and row level filters applied before results are handed back to the engine.
+
+== Usage
+
+The Parquet Translator supports SELECT involving only simple WHERE clauses consisting of comparisons and is null checks.
+
+The type mapping of Parquet Primitive types are as follows: INT96 -> BigInteger, INT64 -> Long, INT32 -> Integer, Boolean -> Boolean, FLOAT -> Float, DOUBLE -> Double, Binary(of String Logical annotation) -> String, Binary(except String) -> byte array,  FIXED_LEN_BYTE_ARRAY -> byte array.  The only logical type that we are supporting right now is a list of primitive types with no nesting.
+
+
+{% if book.targetWildfly %}
+== JCA Resource Adapter
+
+A {{ book.productnameFull }} File Resource Adapter should be used with this translator. See link:../admin/File_Data_Sources.adoc[File Data Sources], link:../admin/HDFS_Data_Sources.adoc[HDFS Data Sources], and link:../admin/S3_Data_Sources.adoc[S3 Data Sources].  Note that while the FTP data source is also a file source, it does not yet support wildcard matches, so it may only be used if there is no partitioning and all of the parquet files are in a single directory. 
+{% endif %}
+
+== Execution Properties
+There are currently no properties to set.
+
+== Schema Definition
+
+* Only String, BigInteger, Long, Integer, Boolean primitive types are properly supported for comparison of partitioned column values.  Other value types may not appropriately convert to/from the expected string representation.
+* Only Primitive types (String, BinaryType, Long, Integer, Boolean, Double, and Float) are supported for comparison of non-partitioned columns.  Thus array columns should have the option comparable 'uncomparable' as the translator cannot currently compare them.
+* The teiid_parquet:LOCATION property specifies the root location for the parquet files - it may be a single file, or a directory.
+* The teiid_parquet:PARTITIONED_COLUMNS property is a comma separated list of source names for partitions.  Only directory-based partitioning is supported.  We assume that a partitioned column is represented in the name of a file path in the manner “PartitionedColumnName=Value”.  The property is expected to be in the order that the directories appear in.  Commas are not supported in partitioned column source names and leading/trailing whitespace will be treated as meaningful.  This property is not yet utilized by the engine, but there will likely be a generalization at some point to allow cost based optimization to understand the partitioning.
+
+== Limitations
+
+* The parquet files are expected to be stored with the .parquet extension and may be snappy compressed.
