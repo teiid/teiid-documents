@@ -388,6 +388,8 @@ These SQL constructs will be pushed down to Salesforce.
 * Basic Aggregates
 * OuterJoins with join criteria KEY
 
+OrderBy as implemented by Salesforce is not fully supported by {{ book.productnameFull }}.  You may optionally enable support on the translator, but you may receive an exception or unexpected results vs when ordering is performed in {{ book.productnameFull }}.
+
 .Native Queries
 
 Salesforce procedures may optionally have native queries associated with them. For more information, 
