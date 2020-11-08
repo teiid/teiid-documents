@@ -1,0 +1,72 @@
+
+= Developer’s Guide
+
+This guide contains information for developers creating custom solutions with {{ book.productnameFull }}. It covers creating JEE JCA connectors with the {{ book.productnameFull }} framework, {{ book.productnameFull }} Translators, {{ book.productnameFull }} User Defined Functions (UDFs) as well as related topics.
+
+Integrating data from a Enterprise Information System (EIS) into {{ book.productnameFull }}, is separated into two parts.
+
+1.  A Translator, which is required.
+2.  An optional Resource Adapter, which will typically be a JCA Resource Adapter (also called a JEE Connector)
+
+*A Translator is used to:*
+
+* Translate a {{ book.productnameFull }}-specific command into a native command
+* Execute the command
+* Return batches of results translated to expected {{ book.productnameFull }} types.
+
+*A Resource Adapter is used to:*
+
+* Handles all communications with individual enterprise information system (EIS), which can include databases, data feeds, flat files, etc.
+* Can be a JCA Connector or any other custom connection provider. The reason {{ book.productnameFull }} recommends and uses JCA is this specification defines how one can write, package, and configure access to EIS system in consistent manner. There are also various commercial/open source software vendors already providing JCA Connectors to access a variety of back-end systems. Refer to http://java.sun.com/j2ee/connector/[http://java.sun.com/j2ee/connector/].
+* Abstracts Translators from many common concerns, such as connection information, resource pooling, or authentication. + Given a combination of a Translator + Resource Adapter, one can connect any EIS system to {{ book.productnameFull }} for their data integration needs.
+
+== Do You Need a New Translator?
+
+{{ book.productnameFull }} provides several translators for common enterprise information system types. If you can use one of these enterprise information systems, you do not need to develop a custom one.
+
+{{ book.productnameFull }} offers numerous built-in translators, including:
+
+* *JDBC Translator* - Works with many relational databases. The JDBC translator is validated against the following database systems: Oracle, Microsoft SQL Server, IBM DB2, MySQL, Postgres, Derby, Sybase, SQP-IQ, H2, and HSQL. In addition, the JDBC Translator can often be used with other 3rd-party drivers and provides a wide range of extensibility options to specialize behavior against those drivers.
+
+* *File Translator* - Provides a procedural way to access the file system to handle text files.
+
+* *WS Translator* - Provides procedural access to XML content using Web Services.
+
+* *LDAP Translator* - Accesses to LDAP directory services.
+
+* *Salesforce Translator* - Works with Salesforce interfaces.
+
+To see a full list of available translators, see link:../reference/as_translators.adoc[Translators]
+
+If there’s not an available translator that meets your need, {{ book.productnameFull }} provides the framework for developing your own custom translator. See the link:Translator_Development.adoc[Translator Development] section, as it will describe how to develop, package and deploy a custom developed translator.
+
+== Do You Need a New Resource Adapter?
+
+As mentioned above, for every Translator that needs to gather data from external source systems, it requires a resource adapter.
+
+The following are some of resource adapters that are available to {{ book.productnameFull }}:
+
+* _DataSource:_ This is provided by the {{ book.asName }} container. This is used by the JDBC Translator.
+
+* _File:_ Provides a JEE JCA based Connector to access defined directory on the file system. This is used by the File Translator
+
+* _WS:_ Provides JEE JCA Connector to invoke Web Services using {{ book.asName }} Web services stack. This is used by the WS Translator
+
+* _LDAP:_ Provides JEE JCA connector to access LDAP; Used by the LDAP Translator.
+
+* _Salesforce:_ Provides JEE JCA connector to access Salesforce by invoking their Web Service interface. Used by the SalesForce Translator.
+
+To see a full list, see link:../admin/Deploying_VDB_Dependencies.adoc[Deploying VDB Dependencies]
+
+If there’s not an available resource-adapter that meets your need, {{ book.productnameFull }} provides the framework for developing your own JEE JCA Connector. See the link:Developing_JEE_Connectors.adoc[Developing JEE Connectors] section, as it will describe how to develop, package and deploy a resource adapter.
+
+== Other {{ book.productnameFull }} Development
+
+{{ book.productnameFull }} is highly extensible in other ways:
+
+* You may add User Defined Functions. Refer to link:User_Defined_Functions.adoc[User Defined Functions].
+
+* You may adapt logging to your needs, which is especially useful for custom audit or command logging. Refer to link:Custom_Logging.adoc[Custom Logging].
+
+* You may change the subsystem for custom authentication and authorization. Refer to link:../security/LoginModules.adoc#_custom_loginModules[Custom Login Modules].
+
