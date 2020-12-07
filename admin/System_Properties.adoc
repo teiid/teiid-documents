@@ -48,6 +48,10 @@ With 13.0 environment variables will be checked after the corresponding system p
 |Set to true to allow object column values to be comparable in {{ book.productnameFull }}. Source type metadata will determine if the comparison can be pushed down. The object instances are expected to correctly implement java.lang.Comparable.compareTo. If the instance object is not Comparable, then ClassCastExceptions may the thrown.
 |false
 
+|_org.teiid.enforceODataNullOrder_
+|Set to true to disable the engine enforcement of the OData specification of null ordering.  You may want to do this for performance reasons if you do not need conformance and are connecting to a source, such as Postgresql, that has a different default null order than the OData specification.
+|true
+
 |_org.teiid.padSpace_
 |Set to true to compare strings as if PAD SPACE collation is being used, that is strings are effectively right padded to the same length for comparison. If this property is set, it is not necessary to use the trimStrings translator option.
 |false
