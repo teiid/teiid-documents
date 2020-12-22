@@ -53,6 +53,11 @@ NOTE: The default URL for a Salesforce source may change from release to release
 |Enables `GROUP BY` Pushdown. Set to false to have {{ book.productnameFull }} process group by aggregations, 
 such as those returning more than 2000 rows which error in SOQL.
 |true
+
+|MaxFromGroups
+|Set to a value greater than 2 to allow for pushdown of addition joins.  Beyond the first join only additional joins (left outer or inner) to parents of the initial table in the join are allowed.
+Note that more than a single join is a new feature, which may not work in all circumstances.
+|2
 |===
 
 The Salesforce translator can import metadata.
@@ -299,7 +304,7 @@ operation in the Salesforce documentation for usage details.
 
 Unlike a relational database, Salesforce does not support join operations, but it does have support for queries that include 
 parent-to-child or child-to-parent relationships between objects. These are termed Relationship Queries. 
-You can run Relationship Queries in the SalesForce connector through Outer Join syntax.
+You can run Relationship Queries in the SalesForce connector through Outer Join syntax.  The translator will compensate if an inner join is used.
 
 [source,sql]
 ----
