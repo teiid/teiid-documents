@@ -9,6 +9,7 @@ Teiid {{ book.fullVersionNumber }} adds connectivity/performance features and fi
 
 * https://issues.redhat.com/browse/TEIID-6021[TEIID-6021] Added bulk update and delete handling for Salesforce.  Bulk update can be controlled via a hint or now by execution properties.  Bulk delete behavior can also be specified as hard delete via a hint or execution property.
 * https://issues.redhat.com/browse/TEIID-4594[TEIID-4594] Thanks to Aditya Manglam Sharma we've added a parquet translator for use with file sources - namely file, hdfs, and s3.
+* https://issues.redhat.com/browse/TEIID-5861[TEIID-5861] Added multiple join support to the salesforce translator which can be enabled with the maxFromGroups translator property.
 
 == Compatibility Issues
 
