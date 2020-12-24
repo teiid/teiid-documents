@@ -1,0 +1,46 @@
+
+= Setting up the build environment
+
+For Eclipse users (without maven integration), create a java project and add dependencies to "teiid-common-core", "teiid-api" and JEE "connector-api" jars.
+
+For maven users add the following as your dependencies:
+
+[source,java]
+----
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.teiid</groupId>
+                <artifactId>teiid-bom</artifactId>
+                <version>${teiid-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.teiid</groupId>
+            <artifactId>teiid-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.teiid</groupId>
+            <artifactId>teiid-resource-spi</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.teiid</groupId>
+            <artifactId>teiid-common-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.resource</groupId>
+            <artifactId>connector-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>        
+----
+
+Where the $\{teiid-version} property should be set to the expected version, such as {{ book.fullVersionNumber }}. You can find {{ book.productnameFull }} artifacts in the Maven Central Repository.
+

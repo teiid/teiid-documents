@@ -1,0 +1,294 @@
+= Infinispan Translator
+
+The Infinispan translator, known by the type name _"infinispan-hotrod"_ exposes the Infinispan cache store to be queried using SQL language, and it uses HotRod protocol to connect the remote Infinispan cluster farm. This translator does NOT work with any arbitary key/value mappings in the Infinispan.  However, if the Infinispan store is defined with "probuf" file then this translator works with definition objects in the protobuf file. Typical usage of HotRod protocol also dictates this requirement.
+
+NOTE: *What is Infinispan* - http://infinispan.org/[Infinispan] is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0
+
+The following will be explained
+
+* <<Usage>> +
+* <<Configuration of Translator>> +
+** <<Defining the Metadata>> +
+** <<Details on Protobuf to DDL conversion>> +
+** <<Protobuf Translation Rules>> +
+* <<Execution Properties>> +
+* <<Importer Properties>> +
+* <<Limitations >> +
+* <<JCA Resource Adapter >> +
+
+
+== Usage
+
+Below is a sample VDB that can read metadata from a protobuf file based on the AddressBook quick start on http://infinispan.org site.
+
+[source,xml]
+----
+<vdb name="addressbook" version="1">
+    <model name="ispn">
+        <property name="importer.ProtobufName" value="addressbook.proto"/>
+        <source name="localhost" translator-name="infinispan-hotrod" connection-jndi-name="java:/ispnDS"/>
+        <metadata type = "NATIVE"/>
+    </model>
+</vdb>
+----
+
+For the above VDB to work, a connection to Infinispan is required. Below shows an example configuration for the resource-adapter that is needed.  Be sure to edit the "RemoteServerList" to reflect your Infinispan server location. If you are working with "WilfFly" based {{ book.productnameFull }} installation, you need to edit the _/wf-install/standalone/configuration/standalone-teiid.xml_ file and add the following segment to the "resource-adapters" subsystem of the configuration.
+
+[source,xml]
+----
+<resource-adapter id="infinispanDS">
+    <module slot="main" id="org.jboss.teiid.resource-adapter.infinispan.hotrod"/>
+    <transaction-support>NoTransaction</transaction-support>
+    <connection-definitions>
+        <connection-definition class-name="org.teiid.resource.adapter.infinispan.hotrod.InfinispanManagedConnectionFactory" 
+            jndi-name="java:/ispnDS" enabled="true" use-java-context="true" pool-name="teiid-ispn-ds">
+            <config-property name="RemoteServerList">
+                localhost:11222
+            </config-property>
+        </connection-definition>
+    </connection-definitions>
+</resource-adapter>
+----
+
+Once you configure above resource-adapter and deploy the VDB successfully, then you can connect to the VDB  using {{ book.productnameFull }} JDBC driver and issue SQL statements like
+
+[source,sql]
+----
+select * from Person;
+select * PhoneNumber where number = <value>;
+
+insert into Person (...) values (...);
+update Person set name = <value> where id = <value>; 
+delete from person where id = <value>;
+----
+
+== Configuration of Translator
+
+=== Defining the Metadata
+
+There are three different ways to define the metadata for the Infinispan model in {{ book.productnameFull }}. Choose what best fits the needs.
+
+==== Metadata From New Protobuf File:
+User can register a .proto file with translator configuration, which will be read in {{ book.productnameFull }} and get converted to the model's schema.  Then {{ book.productnameFull }} will register this protobuf file in Infinispan. For details see <<Importer Properties>>
+
+Example::
+[source,xml]
+----
+<vdb name="vdbname" version="1">
+    <model name="modelname">
+..
+        <property name="importer.ProtoFilePath" value="/path/to/myschema.proto"/>
+..
+    </model>
+</vdb>
+----
+
+==== Metadata From Existing Registered Protobuf File
+If the protobuf file has already been registered in your Infinispan node, {{ book.productnameFull }} can obtain it and read the protobuf directly from the cache. For details see <<Importer Properties>>
+
+Example::
+[source,xml]
+ProtobufName
+----
+<vdb name="vdbname" version="1">
+    <model name="modelname">
+..
+        <property name="importer.ProtobufName" value="existing.proto"/>
+..
+    </model>
+</vdb>
+----
+
+==== Define Metadata in DDL
+
+Like any other translator, you can use the <metadata> tags to define the DDL directly. For example
+
+Example::
+[source,xml]
+----
+    <model name="ispn">
+        <source name="localhost" translator-name="infinispan-hotrod" connection-jndi-name="java:/ispnDS"/>
+        <metadata type = "DDL"><![CDATA[        
+            CREATE FOREIGN TABLE G1 (e1 integer PRIMARY KEY, e2 varchar(25), e3 double) OPTIONS(UPDATABLE true, , "teiid_ispn:cache" 'g1Cache');
+        ]]>        
+       </metadata>
+       <metadata type = "NATIVE"/>
+    </model>
+----
+
+NOTE:  The "<metadata type = "NATIVE"/>" is required in order to trigger the registration of the generated protobuf file.  The name of the protobuf registered in Infinispan will use the format of:  schemaName + ".proto".  So in the above example, it would be named *_ispn.proto_*.   This would be useful if another VDB wished to reference that same cache and would then use the Importer Property "importer.ProtobufName" to read it. The model must not contain dash ("-") in it's name.
+
+For this option, a compatible protobuf definition is generated automatically during the deployment of the VDB and registered in Infinispan. Please note, if for any reason the DDL is modified (Name changed, type changed, add/remove columns) after the initial VDB is deployed, then previous version of the protobuf file and data contents need to be manually cleared before next revision of the VDB is deployed. Failure to clear will result in data encoding/corruption issues.
+
+
+===  Details on Protobuf to DDL conversion
+
+This section show cases an example protobuf file and shows how that file converted to relational schema in the {{ book.productnameFull }}. This below is taken from the quick start examples of Infinispan.
+
+[source,java]
+----
+package quickstart;
+
+/* @Indexed */
+message Person {
+
+   /* @IndexedField */
+   required string name = 1;
+
+   /* @Id @IndexedField(index=false, store=false) */
+   required int32 id = 2;
+
+   optional string email = 3;
+
+   enum PhoneType {
+      MOBILE = 0;
+      HOME = 1;
+      WORK = 2;
+   }
+
+   /* @Indexed */
+   message PhoneNumber {
+
+      /* @IndexedField */
+      required string number = 1;
+
+      /* @IndexedField(index=false, store=false) */
+      optional PhoneType type = 2 [default = HOME];
+   }
+
+   /* @IndexedField(index=true, store=false) */
+   repeated PhoneNumber phone = 4;
+}
+----
+
+When {{ book.productnameFull }}'s translator processes the above protobuf file, the following DDL is generated automatically for {{ book.productnameFull }} model as the relational representation.
+
+[source,sql]
+----
+CREATE FOREIGN TABLE Person (
+    name string NOT NULL OPTIONS (ANNOTATION '@IndexedField', SEARCHABLE 'Searchable', NATIVE_TYPE 'string', "teiid_ispn:TAG" '1'),
+    id integer NOT NULL OPTIONS (ANNOTATION '@Id @IndexedField(index=false, store=false)', NATIVE_TYPE 'int32', "teiid_ispn:TAG" '2'),
+    email string OPTIONS (SEARCHABLE 'Searchable', NATIVE_TYPE 'string', "teiid_ispn:TAG" '3'),
+    CONSTRAINT PK_ID PRIMARY KEY(id)
+) OPTIONS (ANNOTATION '@Indexed', NAMEINSOURCE 'quickstart.Person', UPDATABLE TRUE, "teiid_ispn:cache" 'personCache');
+
+CREATE FOREIGN TABLE PhoneNumber (
+    number string NOT NULL OPTIONS (ANNOTATION '@IndexedField', SEARCHABLE 'Searchable', NATIVE_TYPE 'string', "teiid_ispn:TAG" '1'),
+    type integer DEFAULT '1' OPTIONS (ANNOTATION '@IndexedField(index=false, store=false)', NATIVE_TYPE 'PhoneType', "teiid_ispn:TAG" '2'),
+    Person_id integer OPTIONS (NAMEINSOURCE 'id', SEARCHABLE 'Searchable', "teiid_ispn:PSEUDO" 'phone'),
+    CONSTRAINT FK_PERSON FOREIGN KEY(Person_id) REFERENCES Person (id)
+) OPTIONS (ANNOTATION '@Indexed', NAMEINSOURCE 'quickstart.Person.PhoneNumber', 
+    UPDATABLE TRUE, "teiid_ispn:MERGE" 'model.Person', "teiid_ispn:PARENT_COLUMN_NAME" 'phone', 
+    "teiid_ispn:PARENT_TAG" '4');
+----
+
+===  Protobuf Translation Rules
+
+You can see from above DDL, {{ book.productnameFull }} makes use of the extension metadata properties to capture all the information required from .proto file into DDL form so that information can be used at runtime. The following are some rules the translation engine follows.
+
+|===
+|Infinispan |Mapped to Relational Entity|Example
+
+|Message
+|Table
+|Person, PhoneNumber
+
+|enum
+|integer attribute in table
+|n/a
+
+|repeated
+|As an array for simple types or as a separate table with one-2-many relationship to parent message.
+|PhoneNumber
+|===
+
+* All required fields will be modeled as NON NULL columns
+* All indexed columns will be marked as Searchable.
+* The default values are captured.
+* To enable updates, the top level message object MUST define @id annotation on one of its columns
+
+NOTE: Notice the *@Id* annotation on the Person message's "id" attribute in protobuf file. This is *NOT* defined by Infinispan, but required by {{ book.productnameFull }} to identify the key column of the cache entry. In the absence of this annotation, only "read only" access (SELECT) is provided to top level objects.  Any access to complex objects (PhoneNumber from above example) will not be provided.   
+
+
+IMPOTANT: When .proto file has more than single top level "message" objects to be stored as the root object in the cache, each of the objects must be stored in a different cache to avoid the key conflicts in a single cache store. This is restriction imposed by Infinispan, however {{ book.productnameFull }}'s single model can have multiple of these message types. Since each of the message will be in different cache store, you can define the cache store name for the "message" object. For this, define an extension property "teiid_ispn:cache" on the corresponding {{ book.productnameFull }}'s table. See below code example.
+
+[source,xml]
+----
+    <model name="ispn">
+        <property name="importer.ProtobufName" value="addressbook.proto"/>
+        <source name="localhost" translator-name="infinispan-hotrod" connection-jndi-name="java:/ispnDS"/>
+        <metadata type = "NATIVE"/>
+        <metadata type = "DDL"><![CDATA[        
+            ALTER FOREIGN TABLE Person OPTIONS (SET "teiid_ispn:cache" '<cache-name>');                        
+        ]]>        
+       </metadata>        
+    </model>
+----
+
+== Execution Properties
+
+Execution properties extend/limit the functionality of the translator based on the physical source capabilities. Sometimes default properties may need to adjusted for proper execution of the translator in your environment.
+
+Currently there are no defined execution properties for this translator.
+
+
+== Importer Properties
+
+Importer properties define the behavior options of the translator during the metadata import from the physical source.
+
+|===
+|Name |Description |Default
+
+|ProtoFilePath
+|The file path to a Protobuf .proto file accessible to the server to be read and convert into metadata.
+|n/a
+
+|ProtobufName
+|The name of the Protobuf .proto file that has been registered with the Infinispan node, that {{ book.productnameFull }} will read and convert into metadata.  The property value MUST exactly match registered name.
+|null
+
+|===
+
+
+Examples::
+
+[source,xml]
+ProtoFilePath
+----
+<vdb name="vdbname" version="1">
+    <model name="modelname">
+..
+        <property name="importer.ProtoFilePath" value="/path/to/myschema.proto"/>
+..
+    </model>
+</vdb>
+----
+
+
+== Limitations
+
+- Bulk update support is not available. 
+- Aggregate functions like SUM, AVG etc are not supported on inner objects (ex: PhoneNumber)
+- UPSERT support on complex objects is always results in INSERT
+- LOBS are not streamed, use caution as this can lead to OOM errors.
+- There is no function library in Infinispan
+- Array objects can not be projected currently, but they will show up in the metadata
+- When using DATE/TIMESTAMP/TIME types in {{ book.productnameFull }} metadata, they are by default marshaled into a LONG type in Infinispan.
+- SSL and identity support is not currently available (see TEIID-4904) 
+
+{% if book.targetWildfly %}
+== JCA Resource Adapter
+
+The resource adapter for this translator is a link:../admin/Infinispan_Data_Sources.adoc[Infinispan Data Source].
+{% endif %} 
+
+== Native Queries
+
+NOTE: This feature is not applicable for the Infinispan translator.
+
+=== Direct Query Procedure
+
+NOTE: This feature is not applicable for the Infinispan translator.
+ 
+
+

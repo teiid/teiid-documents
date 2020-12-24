@@ -1,0 +1,111 @@
+[id="multisource-models"]
+= Multisource Models
+
+Multisource models can be used to quickly access data in multiple sources with homogeneous metadata. When you have multiple instances using identical schema (horizontal sharding), {{ book.productnameFull }} can help you gather data across all the instances, using "multisource" models. In this scenario, instead of creating/importing a model for every data source, one source model is defined to represents the schema and is configured with multiple data "sources" underneath it. During runtime when a query issued against this model, the query engine analyzes the information and gathers the required data from all sources configured and gathers the results and provides in a single result. Since all sources utilize the same physical metadata, this feature is most appropriate for accessing the same source type with multiple instances.
+
+== Configuration
+
+To mark a model as multisource, the model property _multisource_ can be set to true or more than one source can be listed for the model in the "vdb.xml" file. Here is a code example showing a vdb with single model with multiple sources defined.
+
+[source,xml]
+----
+<vdb name="vdbname" version="1">
+    <model visible="true" type="PHYSICAL" name="Customers" path="/Test/Customers.xmi">
+        <property name="multisource" value="true"/>
+        <!-- optional properties
+        <property name="multisource.columnName" value="somename"/>
+        <property name="multisource.addColumn" value="true"/>
+        -->
+        <source name="chicago"
+            translator-name="oracle" connection-jndi-name="chicago-customers"/>
+        <source name="newyork"
+            translator-name="oracle" connection-jndi-name="newyork-customers"/>
+        <source name="la"
+            translator-name="oracle" connection-jndi-name="la-customers"/>
+    </model>
+</vdb>
+----
+
+NOTE： Tooling support for managing the multisource feature is limited. You must deploy a separate data source for each source defined in the xml file.
+
+In the above example, the VDB has a single model called `Customers`, that has multiple sources (`chicago`, `newyork`, and `la`) that define different instances of data.
+
+=== The Multisource Column
+
+When a model is marked as multisource, the engine will add or use an existing column on each table to represent the source name values. In the above vdb.xml the column would return `chicago`, `la`, `newyork` for each of the respective sources. The name of the column defaults to SOURCE_NAME, but is configurable by setting the model property *multisource.columnName*.  If a column already exists on the table (or an IN procedure parameter) with the same name, the engine will assume that it should represent the multisource column and it will not be used to retrieve physical data. If the multisource column is not present, the generated column will be treated as a pseudo column which is not selectable via wildcards (* nor tbl.*).
+
+This allows queries like the following:
+
+[source,sql]
+----
+select * from table where SOURCE_NAME = 'newyork'
+update table column=value where SOURCE_NAME='chicago'
+delete from table where column = x and SOURCE_NAME='la'
+insert into table (column, SOURCE_NAME) VALUES ('value', 'newyork')
+----
+
+=== The Multi-Source Column in System Metadata
+
+The pseudo column is by default not present in your actual metadata; it is not added on source tables/procedures when you import the metadata.  If you would like to use the multisource column in your transformations to control which sources are accessed or updated and/or want the column reported via metadata facilities, there are several options: 
+
+* If directly using DDL, the pseduo-column will already be available to transformations, but will not be present in your System metadata by default.  If using DDL and want to be selective (rather than using the *multisource.addColumn* property), you can manually add the column via DDL. 
+* With either VDB type to make the multisource column present in the system metadata, you may set the model property *multisource.addColumn* to true on a multisource model. If the table has a column or the procedure has a parameter already with a matching name, then an additional column will not be added. A variadic procedure can still have a source parameter added, but it can only be specified when using named parameters. Care should be taken though when using this property as any transformation logic (views/procedures) that you have defined will not have been aware of the multisource column and may fail validation upon server deployment.
+* You can manually add the multisource column. 
+
+=== Other Partitioning Columns
+
+If other columns on a multisource table are partitioned across the sources, the optimizer can be made aware via an extension property.  Operations over that column, such as group by or distinct, can then be pushed separately to each source without post-processing in the engine.  If you need to enable this, add the extension metadata property teiid_rel:multisource.partitioned=true to the column.
+
+[source,sql]
+.*Example DDL*
+----
+CREATE FOREIGN TABLE TBL (my_col integer options ("teiid_rel:multisource.partitoned" true) ...);
+----
+
+== Planning and Execution
+
+The planner logically treats a multisource table as if it were a view containing the union all of the respective source tables.  More complex partitioning scenarios, such as heterogeneous sources or list partitioning will require the use of a link:r_federated-optimizations.adoc#_partitioned_union[Federated Optimizations#Partitioned Union].
+
+Most of the federated optimizations available over unions are still applicable in multisource mode. This includes aggregation pushdown/decomposition, limit pushdown, join partitioning, etc.
+
+You can add/remove sources from multisource models at runtime with the admin addSource and removeSource options. The processing of a multisource plan will determine the set of multisource targets when the access node is opened. If the plan is reused and the sources change since the last execution, the multisource access will be regenerated. If a source is added after a relevant multisource query starts, it will not be in the results. If a source is removed after a relevant multisource query starts, it will be treated as a null source which should in most situations allow the query to complete normally.
+
+That the SHOW PLAN output will vary upon when it is obtained. If you get the SHOW PLAN output prior to execution, the multisource access will appear as a single access node. After execution the SHOW PLAN output will show the set of sources accessed as individual nodes.
+
+=== SELECTs, UPDATEs, DELETEs
+
+* A multisource query against a SELECT/UPDATE/DELETE may affect any subset of the sources based upon the evaluation of the WHERE clause.
+
+* The multisource column may not be targeted in an update change set.
+
+* The sum of the update counts for UPDATEs/DELETEs will be returned as the resultant update count.
+
+* When running under a transaction in a mode that detects the need for a transaction and multiple updates may performed or a transactional read is required and multiple sources may be read from, a transaction will be started to enlist each source.
+
+=== INSERTs
+
+* A multisource INSERT must use the source_name column as an insert column to specify which source should be targeted by the INSERT. Only an INSERT using the VALUES clause is supported.
+
+=== Stored Procedures
+
+A physical stored procedures requires the addition of a string in parameter matching the multisource column name to specify which source the procedure is executed on. If the parameter is not present and defaults to a null value, then the procedure will be executed on each source.  It is not possible to execute procedures that are required to return IN/OUT, OUT, or RETURN parameters values on more than 1 source.
+
+[source,sql]
+.*Example DDL*
+----
+CREATE FOREIGN PROCEDURE PROC (arg1 IN STRING NOT NULL, arg2 IN STRING, SOURCE_NAME IN STRING)
+----
+
+[source,sql]
+.*Example Calls Against A Single Source*
+----
+CALL PROC(arg1=>'x', SOURCE_NAME=>'sourceA')
+EXEC PROC('x', 'y', 'sourceB')
+----
+
+[source,sql]
+.*Example Calls Against All Sources*
+----
+CALL PROC(arg1=>'x')
+EXEC PROC('x', 'y')
+----

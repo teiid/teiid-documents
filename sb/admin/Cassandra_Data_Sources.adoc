@@ -1,0 +1,26 @@
+
+= Cassandra Data Sources
+
+Cassandra data sources use a built-in {{ book.productnameFull }} specific JCA connector. There are many ways to create a Cassandra data source, using CLI, admin-console, etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
+
+Execute the following command using the {{ book.asDocRoot }}Admin_Guide.html#running-the-cli[CLI] once you connected to the Server. Make sure you provide the correct URL and user credentials. Add any additional properties required by the connector by duplicating the "connection-definitions" command below. Edit the JNDI name to match the JNDI name you used in VDB.
+
+[source,java]
+----
+batch
+/subsystem=resource-adapters/resource-adapter=cassandra/connection-definitions=cassandraDS:add(jndi-name=java:/cassandraDS, class-name=org.teiid.resource.adapter.cassandra.CassandraManagedConnectionFactory, enabled=true, use-java-context=true)
+/subsystem=resource-adapters/resource-adapter=cassandra/connection-definitions=cassandraDS/config-properties=Address:add(value=127.0.0.1)
+/subsystem=resource-adapters/resource-adapter=cassandra/connection-definitions=cassandraDS/config-properties=Keyspace:add(value=my-keyspace)
+/subsystem=resource-adapters/resource-adapter=cassandra:activate
+runbatch
+----
+
+To find out all the properties that are supported by this Cassandra Connector execute the following command in the CLI.
+
+[source,java]
+----
+/subsystem=teiid:read-rar-description(rar-name=cassandra)
+----
+
+TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalone mode, you can also manually edit the "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in "<jboss-install>/docs/teiid/datasources/cassandra" directory under "resource-adapters" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
+

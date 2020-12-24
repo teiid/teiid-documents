@@ -1,0 +1,83 @@
+
+== Google Spreadsheet Data Sources
+
+The Google JCA connector is named teiid-connector-google.rar. The examples include a sample google.xml file. The JCA connector has number of config-properties to drive authentication.  The JCA connector connects to exactly one spreadsheet with each sheet exposed as a table.
+
+Authentication to your google account may be done using OAuth, which requires a refresh token (outlined below).
+
+|===
+|Config property |Description
+
+|ClientId
+|client ID for access.  If not specified, the {{ book.productnameFull }} default will be used.
+
+|ClientSecret
+|client secret for access.  If not specified, the {{ book.productnameFull }} default will be used.
+
+|RefreshToken
+|Use guide below to retrieve RefreshToken. Request access to Google Drive and Spreadsheet API.
+
+|SpreadsheetName
+|Name/Title of the Spreadsheet.  May be used with v3.
+
+|SpreadsheetId
+|ID of Spreadsheet.  May be used with v3 or v4.
+
+|SpreadsheetMap
+|If spreadsheetId is not set, specifies more than one spreadsheet for use in a format of prefix1=spreadsheetId1;prefix2=spreadsheet2... May be used with v4.
+
+|ApiVersion
+|Optional GData API version.  Can be v3 or v4.  Defaults to v3.
+
+|BatchSize
+|Maximum number of rows that can be fetched at a time. Defaults to 4096.
+|===
+
+The v4 api requires the use of SpreadsheetId and specifying ClientId and ClientSecret.  Some sheets such as those contained in a team drive will only be visible to the v4 api.
+
+== Create Authorization Credentials
+
+For v3 connections it is recommended that you create your own authorization credentials rather than relying on the default {{ book.productnameFull }} client id and client secret.  For v4 connections it is required that you create your own credentials.  Creating your own project will give you greater control over monitoring and controlling API access.
+
+You should follow the https://developers.google.com/accounts/docs/OAuth2ForDevices[OAuth2 For Devices Guide] prerequisites.  You should allow the project access to Google Drive API and the Sheets API. 
+
+A condensed form of the rest of the guide "Obtaining OAuth 2.0 access tokens" is covered next as "Getting an OAuth Refresh Token".
+
+== Getting an OAuth Refresh Token
+
+With a browser or other client issue the request with the appropriate client ID:
+
+https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fspreadsheets&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&client_id=<CLIENT_ID>
+
+Then copy the authorization code into following POST request and run it in command line:
+
+[source,curl]
+----
+curl \--data-urlencode code=<AUTHORIZATION_CODE> \
+--data-urlencode client_id=<CLIENT_ID> \
+--data-urlencode client_secret=<CLIENT_SECRET> \
+--data-urlencode redirect_uri=urn:ietf:wg:oauth:2.0:oob \
+--data-urlencode grant_type=authorization_code https://accounts.google.com/o/oauth2/token
+----
+
+The refresh token will be in the response.
+
+To use the {{ book.productnameFull }} defaults:
+
+Click on https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive+https%3A%2F%2Fspreadsheets.google.com%2Ffeeds&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&client_id=217138521084.apps.googleusercontent.com[https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive+https%3A%2F%2Fspreadsheets.google.com%2Ffeeds&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&client_id=217138521084.apps.googleusercontent.com]
+
+Then copy the authorization code into following POST request and run it in command line:
+
+[source,curl]
+----
+curl \--data-urlencode code=<AUTHORIZATION_CODE> \
+--data-urlencode client_id=217138521084.apps.googleusercontent.com \
+--data-urlencode client_secret=gXQ6-lOkEjE1lVcz7giB4Poy \
+--data-urlencode redirect_uri=urn:ietf:wg:oauth:2.0:oob \
+--data-urlencode grant_type=authorization_code https://accounts.google.com/o/oauth2/token
+----
+
+== Implementation Details
+
+Google Translator is implemented using GData API and the Google Visualization Protocol.  v4 connections still rely upon v3 functionality for update/delete as the v4 API does not provide appropriate search functionality.
+
