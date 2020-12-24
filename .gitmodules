@@ -82,3 +82,7 @@
 	path = 15.0.x
 	url = https://github.com/teiid/teiid-documents
 	branch = 15.0.x-gh-pages
+[submodule "16.0.x"]
+	path = 16.0.x
+	url = https://github.com/teiid/teiid-documents
+	branch = 16.0.x-gh-pages
