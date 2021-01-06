@@ -1,0 +1,150 @@
+// Module included in the following assemblies:
+// as_translators.adoc
+[id="odata-translator"]
+= OData translator
+
+The OData translator, known by the type name _"odata"_ exposes the OData V2 and V3 data sources and uses 
+the {{ book.productnameFull }} web services resource adapter for making web service calls. 
+This translator is an extension of the _Web services translator_.
+
+.What is OData? 
+The http://www.odata.org[Open Data Protocol (OData)] web protocol is for querying and updating data that provides 
+a way to unlock your data and free it from silos that exist in applications today. 
+OData does this by applying and building upon Web technologies such as HTTP, Atom Publishing Protocol (AtomPub) 
+and JSON to provide access to information from a variety of applications, services, and stores. 
+OData is being used to expose and access information from a variety of sources including, but not limited to, 
+relational databases, file systems, content management systems and traditional Web sites.
+
+Using this specification from the OASIS group, with help from the http://code.google.com/p/odata4j/[OData4J] framework, 
+{{ book.productnameFull }} maps OData entities into relational schema. 
+{{ book.productnameFull }} can read CSDL (Conceptual Schema Definition Language) from a provided OData endpoint, 
+and convert the OData schema into a relational schema. 
+The following table shows the mapping selections in the OData translator from a CSDL document.
+
+|===
+|OData |Mapped to relational entity
+
+|EntitySet
+|Table
+
+|FunctionImport
+|Procedure
+
+|AssociationSet
+|Foreign keys on the table*
+
+|ComplexType
+|ignored**
+
+|===
+
+* A many-to-many association will result in a link table that can not be selected from, but can be used for join purposes. 
+** When used in functions, an implicit table is exposed. When used to define a embedded table, all the columns will be in-lined.
+
+All CRUD operations will be appropriately mapped to the resulting entity based on the SQL submitted to the OData translator.
+
+. Usage
+
+Usage of a OData source is similar to that of a JDBC translator. The metadata import is provided through the translator, 
+once the metadata is imported from the source system and exposed in relational terms, then this source can be queried 
+as if the EntitySets and Function Imports were local to the {{ book.productnameFull }} system.
+
+.Execution properties
+
+|===
+|Name |Description |Default
+
+|DatabaseTimeZone
+|The time zone of the database. Used when fetchings date, time, or timestamp values.
+|The system default time zone
+
+|SupportsOdataCount
+|Enables the use of the `$count` option in system queries.
+|true
+
+|SupportsOdataFilter
+|Enables the use of the `$filter` option in system queries.
+|true
+
+|SupportsOdataOrderBy
+|Enables the use of the `$orderby` option in system queries.
+|true
+
+|SupportsOdataSkip
+|Enables the use of the `$skip` option in system queries.
+|true
+
+|SupportsOdataTop
+|Enables the use of the `$top` option in system queries.
+|true
+
+|===
+
+.*Importer Properties*
+
+|===
+|Name |Description |Default
+
+|schemaNamespace
+|Namespace of the schema to import.
+|null
+
+|entityContainer
+|Entity Container Name to import.
+|default container
+
+|===
+
+.Example: Importer settings to import only tables and views from NetflixCatalog
+
+[source,xml]
+----
+<property name="importer.schemaNamespace" value="System.Data.Objects"/>
+<property name="importer.entityContainer" value="NetflixCatalog"/>
+----
+
+.OData Server is not fully compatible
+NOTE: The OData server that you connect to might not fully implement the entire OData specification. 
+If the server's OData implementation does not support a feature, set "execution properties" to turn off the corresponding capability, 
+so that {{ book.productnameFull }} will not push down invalid queries to the translator. 
+
+{% if book.targetWildfly %}
+For example, to turn off `$filter`, add following to your vdb.xml
+
+[source,xml]
+----
+    <translator name="odata-override" type="odata">
+    <property name="SupportsOdataFilter" value="false"/>
+    </translator>
+----
+{% endif %}
+
+{% if book.targetSpring %}
+For example, to turn off `$filter`, add the following statement to the virtual database DDL: 
+
+```
+CREATE SERVER odata FOREIGN DATA WRAPPER "odata-override" OPTIONS ("SupportOdataFilter" 'false');
+```
+{% endif %}
+
+
+.Native queries
+TIP: The OData translator cannot perform native or direct query execution. 
+However, you can use the _invokehttp_ method of the Web services translator to issue REST-based calls, and then use SQLXML to parse results.
+
+.Using OData as server.
+TIP: {{ book.productnameFull }} can not only consume OData-based data sources, but it can also expose any data source as an OData-based web service. 
+
+{% if book.targetSpring %}
+For more information about configuring an OData server, see _OData support_ in the 
+http://teiid.github.io/teiid-documents/master/sb/client-dev/Client_Developers_Guide.html[Client Developer's Guide]. 
+//link:../client-dev/OData_Support.adoc[OData Support].  
+//Conditionalize using attribute or add full external URL: http://teiid.github.io/teiid-documents/master/sb/client-dev/Client_Developers_Guide.html
+{%endif%}
+{% if book.targetWildfly %}
+For more information about configuring an OData server, see link:../client-dev/OData_Support.adoc[OData Support].
+
+.JCA resource adapter
+
+The resource adapter for this translator is a link:../admin/Web_Service_Data_Sources.adoc[Web Service Data Source].
+{% endif %}

@@ -1,0 +1,85 @@
+
+== OAuth Authentication With REST Based Services
+
+=== Single user OAuth authentication
+
+Web Services resource-adapter can be configured to participate in http://oauth.org[OAuth 1.0a and OAuth2] authentication schemes. Using {{ book.productnameFull }} along with "ws" translator and "web-services" resource adapter once write applications communicating with web sites like http://google.com[Google] and http://twitter.com[Twitter].
+
+In order to support OAuth authentication, there is some preparation and configuration work involved. Individual web sites typically provide developer facing REST based APIs for accessing their content on the web sites and also provide ways to register custom applications on user’s behalf, where they can manage the Authorization of services offered by the web site. The first step is to register this custom application on the web site and collect consumer/API keys and secrets. The web-sites will also list the URLS, where to request for various different types of tokens for authorization using these credentials. A typical OAuth authentication flow is defined as below
+
+image:images/deviceflow.png[deviceflow]
+
+_The above image taken from https://developers.google.com/accounts/docs/OAuth2[https://developers.google.com/accounts/docs/OAuth2]_
+
+To accommodate above defined flow, {{ book.productnameFull }} provides a utility called "teiid-oauth-util.sh" or "teiid-oauth-util.bat" for windows in the "bin" directory of your server installation. By executing this utility, it will ask for various keys/secrets and URLs for the generating the Access Token that is used in the OAuth authentication and in the end output a XML fragment like below.
+
+----
+$./teiid-oauth-util.sh 
+Select type of OAuth authentication
+1) OAuth 1.0A
+2) OAuth 2.0
+
+2
+=== OAuth 2.0 Workflow ===
+
+Enter the Client ID = 10-xxxjb.apps.googleusercontent.com
+
+Enter the Client Secret = 3L6-xxx-v9xxDlznWq-o
+
+Enter the User Authorization URL = https://accounts.google.com/o/oauth2/auth
+
+Enter scope (hit enter for none) = profile
+
+Cut & Paste the URL in a web browser, and Authticate
+Authorize URL  = https://accounts.google.com/o/oauth2/auth?client_id=10-xxxjb.apps.googleusercontent.com&scope=profile&response_type=code&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&state=Auth+URL
+
+Enter Token Secret (Auth Code, Pin) from previous step = 4/z-RT632cr2hf_vYoXd06yIM-xxxxx
+
+Enter the Access Token URL = https://www.googleapis.com/oauth2/v3/token
+
+Refresh Token=1/xxxx_5qzAF52j-EmN2U
+
+Add the following XML into your standalone-teiid.xml file in security-domains subsystem,
+and configure data source securty to this domain
+
+<security-domain name="oauth2-security">  
+    <authentication>  
+        <login-module code="org.teiid.jboss.oauth.OAuth20LoginModule" flag="required" module="org.jboss.teiid.web.cxf">  
+            <module-option name="client-id" value="10-xxxjb.apps.googleusercontent.com"/>  
+            <module-option name="client-secret" value="3L6-xxx-v9xxDlznWq-o"/>  
+            <module-option name="refresh-token" value="1/xxxx_5qzAF52j-EmN2U"/>  
+            <module-option name="access-token-uri" value="https://www.googleapis.com/oauth2/v3/token"/>  
+        </login-module>  
+    </authentication>  
+</security-domain> 
+----
+
+The XML fragment at the end defines the JAAS Login Module configuration, edit the standalone-teiid.xml and add it under "security-domains" subsystem. User needs to use this security-domain in their resource
+adapter as the security provider for this data source. An example resource-adapter configuration to define the data source to the web site in standalone-teiid.xml file looks like
+
+[source,xml]
+----
+<resource-adapter id="webservice3">
+    <module slot="main" id="org.jboss.teiid.resource-adapter.webservice"/>
+    <transaction-support>NoTransaction</transaction-support>
+    <connection-definitions>
+        <connection-definition class-name="org.teiid.resource.adapter.ws.WSManagedConnectionFactory" jndi-name="java:/googleDS" enabled="true" use-java-context="true" pool-name="teiid-ws-ds">
+            <config-property name="SecurityType">
+                OAuth
+            </config-property>
+            <security>
+                <security-domain>oauth2-security</security-domain>
+            </security>
+        </connection-definition>
+    </connection-definitions>
+</resource-adapter> 
+---
+
+Then, any query written using the "ws" translator and above resource-adapter will be automatically Authorized with the target web site using OAuth, when you access a protected URL.
+
+=== OAuth with Delegation
+
+In the above configuration a single user is configured to access the web site, however if you want to delegate logged in user’s credential as OAuth authentication, then user needs to extend the above LoginModule
+_(org.teiid.jboss.oauth.OAuth20LoginModule or org.teiid.jboss.oauth.OAuth10LoginModule)_ and automate the process defined in the "teiid-oauth-util.sh" to define the Access Token
+details dynamically. Since this process will be different for different web sites (it involves login and authentication), {{ book.productnameFull }} will not be able to provide single solution. However, user can extend the login module to provide this feature much more easily since they will be working with targeted web sites.
+

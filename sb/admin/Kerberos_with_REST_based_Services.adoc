@@ -1,0 +1,99 @@
+
+== Kerberos with REST based Services
+
+NOTE: *"Kerberos in ws-security with SOAP services"* - 
+
+Check out the cxf configuration to allow Kerberos in SOAP web services at http://cxf.apache.org/docs/security.html[http://cxf.apache.org/docs/security.html]
+
+The kerberos support is based SPNEGO as described in http://cxf.apache.org/docs/client-http-transport-including-ssl-support.html#ClientHTTPTransport%28includingSSLsupport%29-SpnegoAuthentication%28Kerberos%29[http://cxf.apache.org/docs/client-http-transport-including-ssl-support.html#ClientHTTPTransport%28includingSSLsupport%29-SpnegoAuthentication%28Kerberos%29]. There two types of kerberos support
+
+=== Negotiation
+
+With this configuration, REST service is configured with Kerberos JAAS domain, to negotiate a token, then use it access the web service. For this first create a security domain in standalone.xml file as below
+
+[source,xml]
+----
+<security-domain name="MY_REALM" cache-type="default">
+     <authentication>
+         <login-module code="Kerberos" flag="required">
+             <module-option name="storeKey" value="true"/>
+             
+             <module-option name="useKeyTab" value="true"/>
+             <module-option name="keyTab" value="/home/username/service.keytab"/>
+             <module-option name="principal" value="host/testserver@MY_REALM"/>
+
+             <module-option name="doNotPrompt" value="true"/>
+             <module-option name="debug" value="false"/>
+             <module-option name="addGSSCredential" value="true"/>
+         </login-module>
+     </authentication>
+</security-domain> 
+----
+
+and the jboss-cxf-xxx.xml file needs to be set as
+
+[source,xml]
+----
+<beans xmlns="http://www.springframework.org/schema/beans"  
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+        xmlns:sec="http://cxf.apache.org/configuration/security"  
+        xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"  
+        xsi:schemaLocation="http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/configuration/security.xsd">  
+ 
+       <http-conf:conduit name="*.http-conduit">
+           <http-conf:authorization>
+               <sec:AuthorizationType>Negotiate</sec:AuthorizationType>
+               <sec:Authorization>MY_REALM</sec:Authorization>
+           </http-conf:authorization>
+       </http-conf:conduit>
+</beans>
+----
+
+The resource adapter creation needs to define the following properties
+
+[source,xml]
+----
+   <config-property name="ConfigFile">path/to/jboss-cxf-xxxx.xml</config-property>
+   <config-property name="ConfigName">test</config-property>
+----
+
+NOTE: Even though above configuration configures the value of "ConfigName", the cxf framework currently in the case of JAX-RS client does not give option to use it. For that reason use "*.http-conduit" which will
+apply to all the HTTP communications under this resource adapter.
+
+=== Delegation
+
+If in case the user is already logged into {{ book.productnameFull }} using Kerberos using JDBC/ODBC or used SPNEGO in web-tier and used pass-through authentication into {{ book.productnameFull }}, then there is no need to negotiate a new token for the Kerberos. The system can delegate the existing token.
+
+To configure for delegation, set up security domain defined exactly as defined in "negotiation", and jboss-cxf-xxx.xml file, however remove the following line from jboss-cxf-xxx.xml file, as it is not going to
+negotiate new token.
+
+[source,xml]
+----
+  <sec:Authorization>MY_REALM</sec:Authorization>
+----
+
+Add the following properties in web service resource adapter creation. One configures that "kerberos" security being used, the second defines a security domain to be used at the data source, in this case we want to use a security domain that passes through a logged in user
+
+[source,xml]
+----
+   <config-property name="SecurityType">Kerberos</config-property>
+   <security>  
+        <security-domain>passthrough-security</security-domain>  
+   </security> 
+----
+
+To configure in "passthrough-security" security domain, the "security" subsystem add following XML fragment
+
+[source,xml]
+----
+<security-domain name="passthrough-security" cache-type="default">  
+    <authentication>  
+        <login-module code="Kerberos" flag="required" module="org.jboss.security.negotiation">
+            <module-option name="delegationCredential" value="REQUIRED"/>
+        </login-module>  
+    </authentication>  
+</security-domain>  
+----
+
+If in case there is no delegationCredential is available on the context, the access will fail. 
+

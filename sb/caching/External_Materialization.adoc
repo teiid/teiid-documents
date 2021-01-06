@@ -1,0 +1,424 @@
+
+:toc:
+:toc-placement: preamble
+
+= External Materialization
+
+This document will explain what {{ book.productnameFull }} External Materialization is and how to use it.
+
+== What is it ?
+
+In {{ book.productnameFull }}, a view is a virtual table based on the computing(loading/transforming/federating) of a complex SQL statement across heterogeneous data sources.   {{ book.productnameFull }} external materialization process can cache the View data to an external data source systems on a periodic basis.  When a user issues queries against this View, the request will be redirected to this external data source system where cached results will be returned, rather than re-computing results from source systems. Materialization can prove to be time and resource saving if your View transformation is complex and/or access to the source systems is constrained.
+
+image:images/teiid-external-mat.png[External Materialization]
+
+**Materialized View** - Materialized view is just like other views, with additional options in <<View Options, View Options>>, to enable pre-computing and caching data to an external data source system. 
+
+**Materialized Table** - Materialized table represents the target table for the materialized View, has the same structure as the materialized view, but exists on the external data source system.
+
+**MatView Status Table** - Each materialized view has a reference to  'Status' table, this used to save the Materialized views' refresh status. This table typically exists on the same physical source with the `Materialized Table`.
+
+An external materialized view gives the administrator full control over the loading and refresh strategies. Refer to <<Materialization Management, Materialization Management>> for details.
+
+== External Materialized Data Source Systems
+
+The following are the types of data sources that have been tested to work in the external materialization process:
+
+=== RDBMS Systems
+
+*  RDBMS - a relational database should work.  Example databases; Oracle, Postgresql, MySQL, MS SqlServer, SAP Hana, etc.
+
+If the database supports a transactional rename operation, you can use the default load strategy that uses a staging table and rely on renaming the staging table to the live table in the after load script.
+
+NOTE: https://issues.redhat.com/browse/TEIID-4294[TEIID-4294] raises that not every database supports a transactional rename, either as separate or a block of statements.  
+If this is the case you should consider using a LOADNUMBER column, or a custom load strategy that maintains only a single table.
+
+=== Infinispan
+
+*  Infinispan - for in-memory caching of results. see the link:../reference/r_infinispan-translator.adoc[Infinispan Translator].
+
+
+== View Options
+
+The following View properties are extension properties that used in the management of the Materialized View.
+
+|===
+|Property Name |Description |Optional |Default
+
+|MATERIALIZED
+|Set the value to 'TRUE' for the View to be materialized.
+|false
+|n/a
+
+|MATERIALIZED_TABLE
+|Defines the name of target table, this also hints the materialization is using external materialization. Omitting this property and setting the MATERIALIZED property true, invokes internal materialization. 
+|false
+|n/a
+
+|UPDATABLE
+|Allow updating Materialized View via DML updates
+|true
+|false
+
+|teiid_rel:ALLOW_MATVIEW_MANAGEMENT
+|Allow {{ book.productnameFull }} based automatic management of load/refresh strategies of View. 
+|true
+|false
+
+|teiid_rel:MATVIEW_STATUS_TABLE
+|Fully qualified Status Table Name to manage the load/refresh of the materialized view. See below for table structure and DDL for it.
+|false
+|n/a
+
+|teiid_rel:MATVIEW_LOAD_SCRIPT - DEPRECATED
+|command to run for loading of the cache. Use of this property is deprecated in favor of using the "MATVIEW_LOADNUMBER_COLUMN" property.
+|true		
+|will be determined based on view transformation
+ 
+|teiid_rel:MATERIALIZED_STAGE_TABLE - DEPRECATED
+|When MATVIEW_LOAD_SCRIPT property not defined, {{ book.productnameFull }} loads the cache contents into this table. Required when MATVIEW_LOAD_SCRIPT not defined. Use of this property is deprecated in favor using the "MATVIEW_LOADNUMBER_COLUMN" property.
+|true		
+|n/a
+
+|teiid_rel:MATVIEW_LOADNUMBER_COLUMN
+|Name of column in the `MATERIALIZED_TABLE` that can hold status information about load/refresh load process. The column type MUST be long, and typically named as "LoadNumber". 
+|false
+|NONE
+
+|teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT
+|DDL/DML command to run before the actual load of the cache
+|true
+|When not defined, no script will be run
+
+|teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT
+|DDL/DML command to run after the actual load of the cache. 
+teiid_rel:MATVIEW_STAGE_TABLE to MATVIEW table
+|true
+|When not defined, no script will be run
+
+|teiid_rel:MATVIEW_SHARE_SCOPE
+|Allowed values are {IMPORTED, FULL}, which define if the cached contents are shared among different VDB versions and different imported VDBs and parent VDB.
+|true
+|IMPORTED
+
+|teiid_rel:ON_VDB_START_SCRIPT
+|DDL/DML command to run start of vdb
+|true
+|n/a
+
+|teiid_rel:ON_VDB_DROP_SCRIPT
+|DDL/DML command to run at VDB un-deploy; typically used for cleaning the cache/status tables. DO NOT use this script to delete the contents of Status table, when cache scope settings are configured for {FULL} scope, *if* another version of the VDB is still active. Deletion of this information will reload the materialization table.
+|true
+|n/a
+
+|teiid_rel:MATVIEW_ONERROR_ACTION
+|Action to be taken when mat view contents are requested but cache is invalid. Allowed values are (THROW_EXCEPTION = throws an exception, IGNORE = ignores the warning and supplied invalidated data, WAIT = waits until the data is refreshed and valid then provides the updated data)
+|true
+|WAIT
+
+|teiid_rel:MATVIEW_TTL
+|time to live in milliseconds. Provide property or cache hint on view transformation - property takes precedence.
+|true
+|2^63 milliseconds - effectively the table will not refresh, but will be loaded a single time initially
+
+|teiid_rel:MATVIEW_WRITE_THROUGH
+|When true {{ book.productnameFull }} will perform both the underlying update and the corresponding update against the materialization target for an insert/update/delete issued against the view.
+|true
+|false
+
+|teiid_rel:MATVIEW_MAX_STALENESS_PCT
+|This property defines the percentage max of staleness allowed before a refresh to the View is invoked. Any double value 0 to 100 is valid value. The _StateCount_ column on Status table is used to keep track of the number of updates, and this value is checked against Cardinality column to calculate the amount of variance. The availability of this property, supercedes the MATVIEW_TTL property interms of when a refresh job triggred to update the contents of the view.
+|true
+|n/a
+
+|teiid_rel:MATVIEW_POLLING_QUERY
+|This property defines a query that must return a single timestamp value.  If the value is greater than the last update time of the materialization table, it will be reloaded.
+|true
+|n/a
+
+|teiid_rel:MATVIEW_POLLING_INTERVAL
+|This property defines the polling interval, in milliseconds, used with the polling query and STALENESS_PCT based refreshes.
+|true
+|60000
+
+
+|teiid_rel:MATVIEW_PART_LOAD_COLUMN
+|This property defines the partitioned load column.  If specified the default load strategy will be updated to refresh the materialization one partition at a time.  This must specify a column that exists on the view and it must be of a comparable type.  Currently only works with MATVIEW_LOADNUMBER_COLUMN specified.
+|true
+|n/a
+
+|teiid_rel:MATVIEW_PART_LOAD_VALUES
+|If MATVIEW_PART_LOAD_COLUMN is specified, this may be a query expression that returns a single column providing the partition values. e.g. for multi-source you can get the source names via the query "select s.name from (exec sysadmin.schemaSources('schema name')) s"
+|true
+|the distinct values for the MATVIEW_PART_LOAD_COLUMN selected with option no cache.
+|===
+
+TIP: for scripts that need more than one statement executed, use a procedure block BEGIN statement; statement; ... END
+
+IMPORTANT: When a vdb is imported into another vdb, materializied views are automatically shared across these vdbs. The teiid_rel:MATVIEW_SHARE_SCOPE property must be set to 'IMPORTED' or 'FULL' on importing VDB's materialized views to enable sharing across the both vdbs. The below table shows an example of how this property works
+
+For example:
+Table A is in VDB X.1 and 
+Table C in VDB Y.1
+Table A & B in VDB X.2 and imports Y.1
+then depending on scope setting the system will cache sharing will work as
+
+|===
+|Scope|X.1|Y.1|X.2
+
+|IMPORTED
+|A-own copy
+|C-Shared w/X.2
+|A-own copy,B-own copy,C-Shared from Y.1
+
+|FULL
+|A-Shared with/X.*
+|C-Shared w/X.2
+|A-Shared with/ X,B-Shared w/X,C-Shared from/Y.1
+|===
+
+An example View definition with View Options 
+----
+  CREATE VIEW Person (
+    id varchar,
+    name varchar,
+    dob date,
+    PRIMARY KEY (id)
+  ) OPTIONS (
+    MATERIALIZED 'TRUE', 
+    UPDATABLE 'TRUE',
+    MATERIALIZED_TABLE 'materialized.PersonCached',
+    "teiid_rel:MATVIEW_TTL" 20000,
+    "teiid_rel:ALLOW_MATVIEW_MANAGEMENT" 'true',
+    "teiid_rel:MATVIEW_LOADNUMBER_COLUMN" 'LoadNumber',
+    "teiid_rel:MATVIEW_STATUS_TABLE" 'materialized.status'
+  )
+  AS
+    SELECT p.id, p.name, p.dob FROM Source.Person AS p;
+----
+
+== Materialization Management
+When designing Views, you can define additional metadata and extension properties(refer to above section) on the views to control the loading and refreshing of external materialization cache. This option provides a limited, but a powerful way to manage the materialization views. Below we will list steps need to take to configure a View to be materialized.
+
+=== 1. Creation of Status Table
+To manage and report the loading and refreshing activity of materialization of the view, a *Materialized Table* and *Status Table* need be be defined in one of the source models in the VDB. Create these tables on the physical database, before you deploy the VDB.
+
+The below defines the DDL for creating the Status table. 
+
+[source,sql]
+----
+CREATE TABLE status
+(
+  VDBName varchar(50) not null,
+  VDBVersion varchar(50) not null,
+  SchemaName varchar(50) not null,
+  Name varchar(256) not null,
+  TargetSchemaName varchar(50),
+  TargetName varchar(256) not null,
+  Valid boolean not null,
+  LoadState varchar(25) not null,
+  Cardinality long,
+  Updated timestamp not null,
+  LoadNumber long not null,
+  NodeName varchar(25) not null,
+  StaleCount long,
+  PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
+);
+----
+
+<<Appendix-1: DDL for creating MatView Status Table, Appendix-1: DDL for creating MatView Status Table>> contains a series of verified schemas against different RDBMS sources. These can be modified to suit your database, please make sure the names and data types match exactly.
+
+WARNING: Some databases, such as MySQL with the InnoDB backend, may not allow a large primary key such as the one for the status table.  If you experience this, you should consider making the field sizes shorter (such as the table name), using a different database to hold the status, or using a smaller index (for example just over vdbname and vdbversion).
+
+Description Status table: 
+|===
+|Column Name|Description
+
+|VDBName
+|Name of VDB
+
+|VDBVersion
+|Version of VDB
+
+|SchemaName
+|View's Schema 
+
+|TargetSchemaName
+|Schema name of materialization Table 
+
+|TargetName
+|Name of materialization Table 
+
+|Valid
+|true when view materialization contents are valid; false otherwise 
+
+|LoadState
+|Status of the View; LOADING, LOADED, FAILED_LOAD. During the materialization load, this status is set to LOADING, depending upon the success or failure either LOADED or FAILED_LOAD is set. 
+
+|Cardinality
+|Number of rows loaded 
+
+|Updated
+|Time stamp when the last update occurred on the materialization contents
+
+|LoadNumber
+|Counter to keep track of number of updates to the materialization contents
+
+|NodeName
+|Node name, which updated the materialization contents last
+
+|StaleCount
+|Number updates counted against View, based on source table changes when using LAZY-SNAPSHOT strategy.
+ 
+|===
+
+=== 2. Creation of View and Materialized Table
+
+Define the View and its transformation a VDB's model/schema. Then provide the extension properties on the View as defined in <<View Options, View Options>>
+
+Set the `MATERIALIZED` to 'TRUE' and the `MATERIALIZED_TABLE` point to a target table is necessary for external materialization, `UPDATABLE` is optional, set it to 'TRUE' if want the external materialized view be updatable, this must be set to true, if you want to issue incremental eager updates to the view. Define the TTL to define the load/refresh semantics.
+
+In an another *PHYSICAL* model in the VDB (where the Status table defined), define the Materialized table, where the *Materialized Table* should have the same structure as View it is representing, with additional "LoadNumber" column with "long" data type.
+
+Once a View, which is defined with the above properties, is deployed, the following sequence of events will take place:
+
+TIP: Example VDB based on DDL is defined below for reference. 
+
+=== Materialization Table Loading
+
+Upon deployment of the VDB to the {{ book.productnameFull }} server, link:../reference/r_sysadmin-schema.adoc#_sysadmin_loadmatview[SYSADMIN.loadMatView] used to perform a complete refresh of materialized table, this procedure reads the extension properties defined from <<View Options, View Options>> to customize the load. The following describes the sequence of events that occur inside this procedure
+
+1. Inserts/updates an entry in `teiid_rel:MATVIEW_STATUS_TABLE`, which indicates that the cache is being loaded.
+2. Executes `teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT` if defined.
+3. Runs a query to load the cache contents. This makes use of View's transformation to load the contents.
+4. Executes `teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT` if defined.
+5. Updates `teiid_rel:MATVIEW_STATUS_TABLE` entry to set materialized view status status to "LOADED" and valid. If failure happens it will be marked as such.
+
+TIP: The start/stop scripts are not cluster aware - that is they will run on each cluster member as the VDB is deployed. When deploying into a clustered environment, the scripts should be written in such a way as to be cluster safe.
+
+Once the first load of the materialized view, the update/refresh of the this View is controlled by the extension property "MATVIEW_TTL" or "MATVIEW_MAX_STALENESS_PCT". Currently there are three different refresh types allowed
+
+==== Refresh Type: TTL Based SNAPSHOT
+Based on the MATVIEW_TTL extension property defined on View, when the time configured is elapsed from the time of finish of loading the View, the whole view is reloaded automatically if the "ALLOW_MATVIEW_MANAGEMENT" property is set to true. If the contents are externally managed additional properties are required. Note, that "MATVIEW_MAX_STALENESS_PCT" is not provided in this case.
+
+==== Refresh Type: LAZY SNAPSHOT
+This is similar to TTL Based SNAPSHOT, but differs as to what triggers the reload of the view. Every source table update(s) is captured in the Status table's StaleCount column as single updated event, and when this updated count reaches or exceeds the defined "MATVIEW_MAX_STALENESS_PCT" value, then a full refresh is triggered.  
+The values of StaleCount/Cardinality are used to calculate the percent of variance to invoke the trigger for refresh. Also note this refresh type only applies when view is materialized to external sources. `SYSADMIN.updateStaleCount` procedure is used to increment the StaleCount counter. When integrated with CDC technologies like Debezium (new feature coming..) this procedure is called automatically. 
+
+=== Refresh Type: EAGER
+
+When a view refresh type is defined as "EAGER", the very first time the contents if the materialized view are loaded similar to that of other types using the `SYSADMIN.loadMatView` procedure upon the deployment of the VDB. However, once the contents are loaded, 
+link:../reference/r_sysadmin-schema.adoc#_sysadmin_updatematview[SYSADMIN.updateMatView] can be used to perform a eager incremental update based on any criteria provided. If you know that certain data points in the source system were changed after last full refresh of the materialized view, you can call this procedure with a criteria based on the view that cover those changed values, and this procedure will update only those affected rows in the materialized table instead of doing full snapshot update. This can save lot of time and resources and also keeps your view materialization cache upto date with source system changes. 
+
+Note: This script is not invoked automatically by {{ book.productnameFull }}, as the source update events may be occurring outside of {{ book.productnameFull }}. This procedure needs to be invoked by user, when he/she knows that there is change in the source systems. When CDC technologies like Debezium is used (new feature coming..), this procedure can be automatically invoked to keep the the View contents fresh.  
+
+== Appendix-1: DDL for creating MatView Status Table
+
+[source,sql]
+.*h2*
+----
+CREATE TABLE status
+(
+  VDBName varchar(50) not null,
+  VDBVersion varchar(50) not null,
+  SchemaName varchar(50) not null,
+  Name varchar(256) not null,
+  TargetSchemaName varchar(50),
+  TargetName varchar(256) not null,
+  Valid boolean not null,
+  LoadState varchar(25) not null,
+  Cardinality long,
+  Updated timestamp not null,
+  LoadNumber long not null,
+  NodeName varchar(25) not null,
+  StaleCount long,
+  PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
+);
+----
+
+[source,sql]
+.*MariaDB*
+----
+CREATE TABLE status
+(
+  VDBName varchar(50) not null,
+  VDBVersion varchar(50) not null,
+  SchemaName varchar(50) not null,
+  Name varchar(256) not null,
+  TargetSchemaName varchar(50),
+  TargetName varchar(256) not null,
+  Valid boolean not null,
+  LoadState varchar(25) not null,
+  Cardinality bigint,
+  Updated timestamp not null,
+  LoadNumber bigint not null,
+  NodeName varchar(25) not null,
+  StaleCount bigint,
+  PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
+);
+----
+
+== Appendix-2: Example VDB with External Materialized View Options
+
+The below VDB defines three models, one "Source" model that defines your source database where your business data is in, "ViewModel" defines a "Person" view which is derived from subset of the data from your table in the "Source" model's table(s). Note that view table also marked with few extension properties to allow external materialization. The "materialized" model defines a source database model, where it has a table with exact table structure as the ViewModel's materialized view with additional column called "LoadNumber". Note the "materialized table also contains the "status" table. Both these tables must be created manually on the source database before VDB is deployed to the server. The example below uses TTL_SNAPSHOT based refresh.
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<vdb name="example" version="1">
+    <model name="Source">
+        <source name="source" translator-name="h2" connection-jndi-name="java:/my-ds" />
+    </model>
+    
+    <model name="ViewModel" type="VIRTUAL">
+        <metadata type="DDL"><![CDATA[        
+          CREATE VIEW Person (
+            id varchar,
+            name varchar,
+            dob date,
+            PRIMARY KEY (id)
+          ) OPTIONS (
+            MATERIALIZED 'TRUE', UPDATABLE 'TRUE',         
+            MATERIALIZED_TABLE 'materialized.PersonCached', 
+            "teiid_rel:MATVIEW_TTL" 20000,
+            "teiid_rel:ALLOW_MATVIEW_MANAGEMENT" 'true', 
+            "teiid_rel:MATVIEW_LOADNUMBER_COLUMN" 'LoadNumber',
+            "teiid_rel:MATVIEW_STATUS_TABLE" 'materialized.status' 
+          )
+          AS
+            SELECT p.id, p.name, p.dob FROM Source.Person AS p;                
+        ]]>
+        </metadata>
+    </model>
+
+    <model name="materialized" type="PHYSICAL">
+        <source name="matview" translator-name="h2" connection-jndi-name="java:/matview-ds" />
+        <metadata type="DDL"><![CDATA[        
+          CREATE VIEW PersonCached (
+            id varchar,
+            name varchar,
+            dob date,
+            LoadNumber long,
+            PRIMARY KEY (id)
+          );
+          CREATE TABLE status (
+            VDBName varchar(50) not null,
+            VDBVersion varchar(50) not null,
+            SchemaName varchar(50) not null,
+            Name varchar(256) not null,
+            TargetSchemaName varchar(50),
+            TargetName varchar(256) not null,
+            Valid boolean not null,
+            LoadState varchar(25) not null,
+            Cardinality long,
+            Updated timestamp not null,
+            LoadNumber long not null,
+            NodeName varchar(25) not null,
+            StaleCount long,
+            PRIMARY KEY (VDBName, VDBVersion, SchemaName, Name)
+          ) OPTIONS (UPDATABLE true);          
+        ]]>
+        </metadata>
+    </model>
+</vdb>
+----

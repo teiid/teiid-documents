@@ -1,0 +1,14 @@
+
+= Migration Guide From {{ book.productnameFull }} 15.x to 16.x
+
+{{ book.productnameFull }} strives to maintain consistency between all versions, but when necessary breaking configuration and VDB/sql changes are made - and then typically only for major releases. 
+
+You should consult the release notes for compatibility and configuration changes from each minor version that you are upgrading over.  This guide expands upon the release notes included in the kit to cover changes since 15.x.
+
+If possible you should make your migration to {{ book.productnameFull }} 15 by first using {{ book.productnameFull }} 15.0.x.  {{ book.productnameFull }} 16 requires Java 8 and WildFly 19.1 (the same as Teiid 15).  See also link:Migration_Guide_From_Teiid_14.x.adoc[14 to 15 Migration Guide]
+
+== Configuration Changes
+
+== Compatibility Changes
+
+* https://issues.redhat.com/browse/TEIID-6025[TEIID-6025] The file translator path and pattern will no longer default to initially attempting a literal match.  Instead it will always match against a simplified glob syntax.  Literal matches against the \* character now require it to be escaped as \*\*

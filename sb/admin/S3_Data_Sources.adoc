@@ -1,0 +1,31 @@
+
+= S3 Data Sources
+
+S3 data sources use a built-in {{ book.productnameFull }} specific JCA connector. There are many ways to create the S3 data source, using CLI, admin-console, etc. The example shown below uses the CLI tool, as this works in both Standalone and Domain modes.
+
+Execute following command using the {{ book.asDocRoot }}/Admin+Guide#AdminGuide-RunningtheCLI[CLI] once you connected to the Server. Make sure you provide the correct directory name and other properties below. Add any additional properties required by the connector by duplicating the "connection-definitions" command below. Edit the JNDI name to match the JNDI name you used in VDB.
+
+[source,java]
+----
+/subsystem=resource-adapters/resource-adapter=s3:add(module=org.jboss.teiid.resource-adapter.s3)
+/subsystem=resource-adapters/resource-adapter=s3/connection-definitions=s3DS:add(jndi-name="${jndi.name}", class-name=org.teiid.resource.adapter.s3.S3ManagedConnectionFactory, enabled=true, use-java-context=true)
+/subsystem=resource-adapters/resource-adapter=s3/connection-definitions=s3DS/config-properties=Endpoint:add(value="${endpoint}" )
+/subsystem=resource-adapters/resource-adapter=s3/connection-definitions=s3DS/config-properties=Bucket:add(value="${bucket}" )
+/subsystem=resource-adapters/resource-adapter=s3/connection-definitions=s3DS/config-properties=AccessKey:add(value="${accessKey}" )
+/subsystem=resource-adapters/resource-adapter=s3/connection-definitions=s3DS/config-properties=SecretKey:add(value="${secretKey}" )
+/subsystem=resource-adapters/resource-adapter=s3:activate
+----
+
+To find out all the properties that are supported by this Connector execute the following command in the CLI.
+
+If you do not specify endpoint, the AWS S3 service will be assumed, and if you only specify region, the endpoint will effectively be to that AWS S3 region.
+
+For non-AWS services (such as ceph or minio), or AWS services with non-default endpoints, you will need to set the endpoint.  The endpoint is expected to be the full service endpoint containing protocol, service, region, and hostname information as applicable.  The region when the endpoint is specified is used as the signing region override only and does not otherwise affect the endpoint. 
+
+[source,java]
+----
+/subsystem=teiid:read-rar-description(rar-name=s3)
+----
+
+TIP: *Developer’s Tip* - If {{ book.asVersionNumber }} is running in standalone mode, you can also manually edit the  "<jboss-install>/standalone/configuration/standalone-teiid.xml" file and add the XML configuration defined in "<jboss-install>/docs/teiid/datasources/s3" directory under "resource-adapters" subsystem. Shutdown the server before you edit this file, and restart after the modifications are done.
+

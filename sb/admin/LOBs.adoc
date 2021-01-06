@@ -1,0 +1,13 @@
+
+= LOBs
+
+LOBs and XML documents are streamed from the {{ book.productnameFull }} Server to the {{ book.productnameFull }} JDBC API.   Normally, these values are not materialized in the server memory - avoiding potential out-of-memory issues. When using style sheets and non-streaming XQuery whole XML documents must be materialized on the server. Even when using the XMLQuery or XMLTable functions and document projection is applied, memory issues may occur for large documents.
+
+LOBs are broken into pieces when being created and streamed.  The maximum size of each piece when fetched by the client can be configured with the _"lob-chunk-size-in-kb"_ property on {{ book.productnameFull }} configuration. The default value is 100 KB. When dealing with extremely large LOBs, you may consider increasing this value to decrease the amount of round-trips to stream the result. Setting the value too high may cause the server or client to have memory issues.
+
+Source LOB values (LOBs from physical sources) are typically accessed by reference, rather than having the value copied to a temporary location. Thus care must be taken to ensure that source LOBs are returned in a memory-safe manner. This caution is more for the source driver vendors to not to consume VM memory for LOBs. Translators via the copyLobs property can instead copy lob values to a temporary location.
+
+Cached lobs will be copied rather than relying on the reference to the source lob.
+
+Temporary lobs created by {{ book.productnameFull }} will be cleaned up when the result set or statement is closed. To rely on implicit garbage collection based cleanup instead of statement close, the {{ book.productnameFull }} session variable clean_lobs_onclose can be set to false (by issuing the query "SELECT teiid_session_set('clean_lobs_onclose', false)" - which can be done for example via the new connection sql in the datasource definition). This can be used for local client scenarios that relied on the implicit behavior.
+
